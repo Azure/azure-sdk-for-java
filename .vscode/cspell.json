@@ -16,6 +16,7 @@
     "**/checkstyle-suppressions.xml",
     "**/spotbugs-exclude.xml",
     "**/sdk/**/target/**",
+    "**/sdk/**/target/**",
     "**/session-records/**",
     "**/sdk/**/**/assets.json",
     "**/sdk/**/*-matrix.json",
@@ -477,7 +478,9 @@
         "TGIANT",
         "tiktoken",
         "AITOKENS",
-        "Matryoshka"
+        "Matryoshka",
+        "OMINI",
+        "resyncing"
       ]
     },
     {
@@ -578,7 +581,23 @@
       "words": [
         "pericholecystic",
         "craniocaudally",
-        "angiomyolipomas"
+        "angiomyolipomas",
+        "acrad",
+        "mednax",
+        "birads",
+        "frax",
+        "ascvd",
+        "tyrer",
+        "cusick",
+        "agatston",
+        "kellgren",
+        "tonnis",
+	"CEUS",
+	"HNPCC",
+	"hilar",
+	"Fleischner",
+	"CTCHWO",
+	"USTHY"
       ]
     },
     {
@@ -921,7 +940,8 @@
         "Dokuka",
         "Netifi",
         "Zaugg",
-        "lrgrwrks"
+        "lrgrwrks",
+        "Brotli"
       ]
     },
     {
@@ -1384,6 +1404,34 @@
       "filename": "sdk/ai/azure-ai-agents-persistent/**",
       "words": [
         "AISEARCH"
+      ]
+    },
+    {
+      "filename": "sdk/keyvault-v2/*",
+      "words": [
+        "azsdkengsys",
+        "baos",
+        "centralus",
+        "ekus",
+        "FIPS",
+        "IMDS",
+        "inprogress",
+        "mhsm",
+        "myaccount",
+        "myalias",
+        "mydomain",
+        "myissuer",
+        "northcentralus",
+        "OAEP",
+        "RLSIGN",
+        "RSAES",
+        "RSNULL",
+        "SECG",
+        "SECP",
+        "southcentralus",
+        "uksouth",
+        "upns",
+        "vcolin" // TODO: Remove after all TODOs are removed from the codebase
       ]
     }
   ],

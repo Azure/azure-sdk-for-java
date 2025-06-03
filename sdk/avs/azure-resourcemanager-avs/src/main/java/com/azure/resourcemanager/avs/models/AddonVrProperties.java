@@ -25,11 +25,6 @@ public final class AddonVrProperties extends AddonProperties {
      */
     private int vrsCount;
 
-    /*
-     * The state of the addon provisioning
-     */
-    private AddonProvisioningState provisioningState;
-
     /**
      * Creates an instance of AddonVrProperties class.
      */
@@ -64,16 +59,6 @@ public final class AddonVrProperties extends AddonProperties {
     public AddonVrProperties withVrsCount(int vrsCount) {
         this.vrsCount = vrsCount;
         return this;
-    }
-
-    /**
-     * Get the provisioningState property: The state of the addon provisioning.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public AddonProvisioningState provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -113,8 +98,8 @@ public final class AddonVrProperties extends AddonProperties {
                 reader.nextToken();
 
                 if ("provisioningState".equals(fieldName)) {
-                    deserializedAddonVrProperties.provisioningState
-                        = AddonProvisioningState.fromString(reader.getString());
+                    deserializedAddonVrProperties
+                        .withProvisioningState(AddonProvisioningState.fromString(reader.getString()));
                 } else if ("vrsCount".equals(fieldName)) {
                     deserializedAddonVrProperties.vrsCount = reader.getInt();
                 } else if ("addonType".equals(fieldName)) {

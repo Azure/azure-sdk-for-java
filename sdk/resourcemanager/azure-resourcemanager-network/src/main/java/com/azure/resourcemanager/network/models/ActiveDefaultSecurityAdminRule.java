@@ -51,7 +51,7 @@ public final class ActiveDefaultSecurityAdminRule extends ActiveBaseSecurityAdmi
      * 
      * @return the innerProperties value.
      */
-    private DefaultAdminPropertiesFormat innerProperties() {
+    DefaultAdminPropertiesFormat innerProperties() {
         return this.innerProperties;
     }
 

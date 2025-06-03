@@ -6,8 +6,8 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.PlacementPolicy;
@@ -22,20 +22,20 @@ public final class PlacementPoliciesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Enabled\",\"displayName\":\"q\",\"provisioningState\":\"Building\"},\"id\":\"wsldrizetpwbr\",\"name\":\"lllibph\",\"type\":\"qzmiza\"}";
+            = "{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Disabled\",\"displayName\":\"svth\",\"provisioningState\":\"Deleting\"},\"id\":\"tekovmri\",\"name\":\"iattgplu\",\"type\":\"fotang\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AvsManager manager = AvsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PlacementPolicy response = manager.placementPolicies()
-            .getWithResponse("eafidltugsresm", "ssjhoiftxfkf", "egprhptil", "ucb", com.azure.core.util.Context.NONE)
+            .getWithResponse("s", "qgvriibakcla", "jfrnxousxauzlwv", "gmwohqfzizvu", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(PlacementPolicyState.ENABLED, response.properties().state());
-        Assertions.assertEquals("q", response.properties().displayName());
+        Assertions.assertEquals(PlacementPolicyState.DISABLED, response.properties().state());
+        Assertions.assertEquals("svth", response.properties().displayName());
     }
 }

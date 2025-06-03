@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,11 +17,13 @@ public final class ImageDetail extends ExpandableStringEnum<ImageDetail> {
     /**
      * Details recognized as celebrities.
      */
+    @Generated
     public static final ImageDetail CELEBRITIES = fromString("celebrities");
 
     /**
      * Details recognized as landmarks.
      */
+    @Generated
     public static final ImageDetail LANDMARKS = fromString("landmarks");
 
     /**
@@ -28,6 +31,7 @@ public final class ImageDetail extends ExpandableStringEnum<ImageDetail> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ImageDetail() {
     }
@@ -38,6 +42,7 @@ public final class ImageDetail extends ExpandableStringEnum<ImageDetail> {
      * @param name a name to look for.
      * @return the corresponding ImageDetail.
      */
+    @Generated
     public static ImageDetail fromString(String name) {
         return fromString(name, ImageDetail.class);
     }
@@ -47,6 +52,7 @@ public final class ImageDetail extends ExpandableStringEnum<ImageDetail> {
      * 
      * @return known ImageDetail values.
      */
+    @Generated
     public static Collection<ImageDetail> values() {
         return values(ImageDetail.class);
     }

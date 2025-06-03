@@ -6,8 +6,8 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.Quota;
@@ -20,17 +20,17 @@ public final class LocationsCheckQuotaAvailabilityWithResponseMockTests {
     @Test
     public void testCheckQuotaAvailabilityWithResponse() throws Exception {
         String responseStr
-            = "{\"hostsRemaining\":{\"uzaofjchvcyyy\":1357028156,\"gdotcubiipuipwo\":915050797,\"nmacj\":567350116,\"nizshqvcim\":167629289},\"quotaEnabled\":\"Disabled\"}";
+            = "{\"hostsRemaining\":{\"bbjjidjksyxk\":1060180082,\"vxevblb\":1920543012},\"quotaEnabled\":\"Enabled\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AvsManager manager = AvsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Quota response = manager.locations()
-            .checkQuotaAvailabilityWithResponse("dufiq", com.azure.core.util.Context.NONE)
+            .checkQuotaAvailabilityWithResponse("qgatjeaahhvjhhn", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

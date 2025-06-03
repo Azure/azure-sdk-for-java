@@ -70,7 +70,6 @@ public final class AvsScriptExecutionFailedEventData extends AvsScriptExecutionE
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("operationId", getOperationId());
         jsonWriter.writeStringField("cmdletId", getCmdletId());
-        jsonWriter.writeArrayField("output", getOutput(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("failureMessage", this.failureMessage);
         return jsonWriter.writeEndObject();
     }

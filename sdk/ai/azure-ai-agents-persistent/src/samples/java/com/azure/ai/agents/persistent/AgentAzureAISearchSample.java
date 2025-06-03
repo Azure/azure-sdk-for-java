@@ -3,8 +3,8 @@
 package com.azure.ai.agents.persistent;
 
 import com.azure.ai.agents.persistent.models.AISearchIndexResource;
-import com.azure.ai.agents.persistent.models.AzureAISearchResource;
 import com.azure.ai.agents.persistent.models.AzureAISearchToolDefinition;
+import com.azure.ai.agents.persistent.models.AzureAISearchToolResource;
 import com.azure.ai.agents.persistent.models.CreateAgentOptions;
 import com.azure.ai.agents.persistent.models.CreateRunOptions;
 import com.azure.ai.agents.persistent.models.MessageRole;
@@ -33,9 +33,12 @@ public class AgentAzureAISearchSample {
 
         String aiSearchConnectionId = Configuration.getGlobalConfiguration().get("AI_SEARCH_CONNECTION_ID", "");
 
+        AISearchIndexResource indexResource = new AISearchIndexResource()
+            .setIndexConnectionId(aiSearchConnectionId)
+            .setIndexName("azureblob-index");
         ToolResources toolResources = new ToolResources()
-            .setAzureAISearch(new AzureAISearchResource()
-                .setIndexList(Arrays.asList(new AISearchIndexResource(aiSearchConnectionId, "azureblob-index"))));
+            .setAzureAISearch(new AzureAISearchToolResource()
+                .setIndexList(Arrays.asList(indexResource)));
 
         String agentName = "ai_search_example";
         CreateAgentOptions createAgentOptions = new CreateAgentOptions("gpt-4o-mini")

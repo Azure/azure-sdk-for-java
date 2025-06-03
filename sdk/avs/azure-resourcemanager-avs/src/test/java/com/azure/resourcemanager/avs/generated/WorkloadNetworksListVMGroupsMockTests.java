@@ -7,8 +7,8 @@ package com.azure.resourcemanager.avs.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkVMGroup;
@@ -22,20 +22,20 @@ public final class WorkloadNetworksListVMGroupsMockTests {
     @Test
     public void testListVMGroups() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"fpubntnbatz\",\"members\":[\"sowsaael\"],\"status\":\"FAILURE\",\"provisioningState\":\"Building\",\"revision\":6305699352283667401},\"id\":\"lrvkmjc\",\"name\":\"mjvlgfgg\",\"type\":\"vkyylizrzbjpsf\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"fkndl\",\"members\":[\"w\",\"nvgmmbugtywa\"],\"status\":\"SUCCESS\",\"provisioningState\":\"Deleting\",\"revision\":9149431858503086708},\"id\":\"tgroesh\",\"name\":\"ygzc\",\"type\":\"yf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AvsManager manager = AvsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<WorkloadNetworkVMGroup> response
-            = manager.workloadNetworks().listVMGroups("qaxsipietgbebjf", "lbmoichd", com.azure.core.util.Context.NONE);
+            = manager.workloadNetworks().listVMGroups("kukjtasb", "wispkxk", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fpubntnbatz", response.iterator().next().displayName());
-        Assertions.assertEquals("sowsaael", response.iterator().next().members().get(0));
-        Assertions.assertEquals(6305699352283667401L, response.iterator().next().revision());
+        Assertions.assertEquals("fkndl", response.iterator().next().displayName());
+        Assertions.assertEquals("w", response.iterator().next().members().get(0));
+        Assertions.assertEquals(9149431858503086708L, response.iterator().next().revision());
     }
 }

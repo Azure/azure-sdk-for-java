@@ -7,8 +7,8 @@ package com.azure.resourcemanager.avs.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.VirtualMachine;
@@ -21,17 +21,17 @@ public final class VirtualMachinesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"qlsismjqfrddg\",\"moRefId\":\"quhiosrsjuivf\",\"folderPath\":\"is\",\"restrictMovement\":\"Enabled\"},\"id\":\"xzhczexrxz\",\"name\":\"ujrtrhqvwr\",\"type\":\"vk\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"vtiukyef\",\"moRefId\":\"nmnahmnx\",\"folderPath\":\"xjqirwrweoox\",\"restrictMovement\":\"Enabled\"},\"id\":\"hx\",\"name\":\"rsnewmozqvbubqma\",\"type\":\"hsycxhxzgaz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AvsManager manager = AvsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<VirtualMachine> response = manager.virtualMachines()
-            .list("ybpmzznrtffyaq", "tmhheioqa", "hvseufuqyrx", com.azure.core.util.Context.NONE);
+        PagedIterable<VirtualMachine> response
+            = manager.virtualMachines().list("yjwpfilkmkkh", "l", "dndviauogp", com.azure.core.util.Context.NONE);
 
     }
 }

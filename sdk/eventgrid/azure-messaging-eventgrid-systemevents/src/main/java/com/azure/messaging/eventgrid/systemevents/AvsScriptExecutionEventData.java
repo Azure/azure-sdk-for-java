@@ -99,7 +99,6 @@ public class AvsScriptExecutionEventData implements JsonSerializable<AvsScriptEx
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("operationId", this.operationId);
         jsonWriter.writeStringField("cmdletId", this.cmdletId);
-        jsonWriter.writeArrayField("output", this.output, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 

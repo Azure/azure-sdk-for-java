@@ -35,7 +35,7 @@ public final class ToolResources implements JsonSerializable<ToolResources> {
      * Resources to be used by the `azure_ai_search` tool consisting of index IDs and names.
      */
     @Generated
-    private AzureAISearchResource azureAISearch;
+    private AzureAISearchToolResource azureAISearch;
 
     /**
      * Creates an instance of ToolResources class.
@@ -95,21 +95,8 @@ public final class ToolResources implements JsonSerializable<ToolResources> {
      * @return the azureAISearch value.
      */
     @Generated
-    public AzureAISearchResource getAzureAISearch() {
+    public AzureAISearchToolResource getAzureAISearch() {
         return this.azureAISearch;
-    }
-
-    /**
-     * Set the azureAISearch property: Resources to be used by the `azure_ai_search` tool consisting of index IDs and
-     * names.
-     *
-     * @param azureAISearch the azureAISearch value to set.
-     * @return the ToolResources object itself.
-     */
-    @Generated
-    public ToolResources setAzureAISearch(AzureAISearchResource azureAISearch) {
-        this.azureAISearch = azureAISearch;
-        return this;
     }
 
     /**
@@ -145,12 +132,25 @@ public final class ToolResources implements JsonSerializable<ToolResources> {
                 } else if ("file_search".equals(fieldName)) {
                     deserializedToolResources.fileSearch = FileSearchToolResource.fromJson(reader);
                 } else if ("azure_ai_search".equals(fieldName)) {
-                    deserializedToolResources.azureAISearch = AzureAISearchResource.fromJson(reader);
+                    deserializedToolResources.azureAISearch = AzureAISearchToolResource.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedToolResources;
         });
+    }
+
+    /**
+     * Set the azureAISearch property: Resources to be used by the `azure_ai_search` tool consisting of index IDs and
+     * names.
+     *
+     * @param azureAISearch the azureAISearch value to set.
+     * @return the ToolResources object itself.
+     */
+    @Generated
+    public ToolResources setAzureAISearch(AzureAISearchToolResource azureAISearch) {
+        this.azureAISearch = azureAISearch;
+        return this;
     }
 }

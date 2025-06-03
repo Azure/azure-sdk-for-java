@@ -21,6 +21,7 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -30,7 +31,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
     private final ConcurrentHashMap<PartitionKeyRangeWrapper, PartitionLevelFailoverInfo> partitionKeyRangeToFailoverInfo;
     private final ConcurrentHashMap<PartitionKeyRangeWrapper, EndToEndTimeoutErrorTracker> partitionKeyRangeToEndToEndTimeoutErrorTracker;
     private final GlobalEndpointManager globalEndpointManager;
-    private final boolean isPerPartitionAutomaticFailoverEnabled;
+    private final AtomicBoolean isPerPartitionAutomaticFailoverEnabled;
     private final AtomicInteger warnLevelLoggedCounts = new AtomicInteger(0);
 
     public GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(
@@ -40,12 +41,14 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         this.globalEndpointManager = globalEndpointManager;
         this.partitionKeyRangeToFailoverInfo = new ConcurrentHashMap<>();
         this.partitionKeyRangeToEndToEndTimeoutErrorTracker = new ConcurrentHashMap<>();
-        this.isPerPartitionAutomaticFailoverEnabled = isPerPartitionAutomaticFailoverEnabled;
+        this.isPerPartitionAutomaticFailoverEnabled = new AtomicBoolean(isPerPartitionAutomaticFailoverEnabled);
     }
 
     public boolean resetEndToEndTimeoutErrorCountIfPossible(RxDocumentServiceRequest request) {
 
-        if (!this.isPerPartitionAutomaticFailoverEnabled) {
+        boolean isPerPartitionAutomaticFailoverEnabledSnapshot = this.isPerPartitionAutomaticFailoverEnabled.get();
+
+        if (isPerPartitionAutomaticFailoverEnabledSnapshot) {
             return false;
         }
 
@@ -93,7 +96,9 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
 
     public boolean tryAddPartitionLevelLocationOverride(RxDocumentServiceRequest request) {
 
-        if (!this.isPerPartitionAutomaticFailoverEnabled) {
+        boolean isPerPartitionAutomaticFailoverEnabledSnapshot = this.isPerPartitionAutomaticFailoverEnabled.get();
+
+        if (!isPerPartitionAutomaticFailoverEnabledSnapshot) {
             return false;
         }
 
@@ -177,7 +182,9 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
 
     public boolean tryMarkEndpointAsUnavailableForPartitionKeyRange(RxDocumentServiceRequest request, boolean isEndToEndTimeoutHit) {
 
-        if (!this.isPerPartitionAutomaticFailoverEnabled) {
+        boolean isPerPartitionAutomaticFailoverEnabledSnapshot = this.isPerPartitionAutomaticFailoverEnabled.get();
+
+        if (!isPerPartitionAutomaticFailoverEnabledSnapshot) {
             return false;
         }
 
@@ -257,12 +264,14 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
     }
 
     public boolean isPerPartitionAutomaticFailoverEnabled() {
-        return this.isPerPartitionAutomaticFailoverEnabled;
+        return this.isPerPartitionAutomaticFailoverEnabled.get();
     }
 
     public boolean isPerPartitionAutomaticFailoverApplicable(RxDocumentServiceRequest request) {
 
-        if (!this.isPerPartitionAutomaticFailoverEnabled) {
+        boolean isPerPartitionAutomaticFailoverEnabledSnapshot = this.isPerPartitionAutomaticFailoverEnabled.get();
+
+        if (!isPerPartitionAutomaticFailoverEnabledSnapshot) {
             return false;
         }
 
@@ -314,6 +323,10 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         }
 
         return false;
+    }
+
+    public void resetPerPartitionAutomaticFailoverEnabled(boolean isPerPartitionAutomaticFailoverEnabled) {
+        this.isPerPartitionAutomaticFailoverEnabled.set(isPerPartitionAutomaticFailoverEnabled);
     }
 
     private static void logAsWarnOrDebug(String message, AtomicInteger warnLogThreshold) {

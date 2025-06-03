@@ -35,7 +35,7 @@ public final class CosmosDiagnosticsSystemUsageSnapshot {
         this.usedMemory = usedMemory;
         this.availableMemory = availableMemory;
         this.availableProcessors = availableProcessors;
-        ImmutableMap.Builder<String, Object> builder = ImmutableMap.builder();
+        ImmutableMap.Builder<String, Object> builder = ImmutableMap.builderWithExpectedSize(4);
         builder.put("CPU", systemCpuLoad);
         builder.put("Memory used", usedMemory);
         builder.put("Memory available", availableMemory);

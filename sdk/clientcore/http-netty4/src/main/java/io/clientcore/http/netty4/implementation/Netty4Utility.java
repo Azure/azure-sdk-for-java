@@ -9,6 +9,7 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;
 import io.clientcore.core.instrumentation.logging.LoggingEvent;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.utils.CoreUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelPipeline;
@@ -88,7 +89,7 @@ public final class Netty4Utility {
             latch.await();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new RuntimeException("Interrupted while waiting for latch", e);
+            throw LOGGER.throwableAtError().log("Interrupted while waiting for latch", e, CoreException::from);
         }
     }
 

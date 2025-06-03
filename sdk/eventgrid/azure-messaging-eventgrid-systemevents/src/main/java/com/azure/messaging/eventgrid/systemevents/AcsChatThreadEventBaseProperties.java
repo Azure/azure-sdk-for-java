@@ -32,12 +32,6 @@ public class AcsChatThreadEventBaseProperties extends AcsChatEventBaseProperties
     private Long version;
 
     /*
-     * The chat thread id
-     */
-    @Generated
-    private String threadId;
-
-    /*
      * The transaction id will be used as co-relation vector
      */
     @Generated
@@ -47,12 +41,13 @@ public class AcsChatThreadEventBaseProperties extends AcsChatEventBaseProperties
      * Creates an instance of AcsChatThreadEventBaseProperties class.
      * 
      * @param recipientCommunicationIdentifier the recipientCommunicationIdentifier value to set.
+     * @param threadId the threadId value to set.
      * @param createTime the createTime value to set.
      */
     @Generated
     protected AcsChatThreadEventBaseProperties(CommunicationIdentifierModel recipientCommunicationIdentifier,
-        OffsetDateTime createTime) {
-        super(recipientCommunicationIdentifier);
+        String threadId, OffsetDateTime createTime) {
+        super(recipientCommunicationIdentifier, threadId);
         this.createTime = createTime;
     }
 
@@ -89,17 +84,6 @@ public class AcsChatThreadEventBaseProperties extends AcsChatEventBaseProperties
     }
 
     /**
-     * Get the threadId property: The chat thread id.
-     * 
-     * @return the threadId value.
-     */
-    @Generated
-    @Override
-    public String getThreadId() {
-        return this.threadId;
-    }
-
-    /**
      * Get the transactionId property: The transaction id will be used as co-relation vector.
      * 
      * @return the transactionId value.
@@ -118,8 +102,8 @@ public class AcsChatThreadEventBaseProperties extends AcsChatEventBaseProperties
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("recipientCommunicationIdentifier", getRecipientCommunicationIdentifier());
-        jsonWriter.writeStringField("transactionId", getTransactionId());
         jsonWriter.writeStringField("threadId", getThreadId());
+        jsonWriter.writeStringField("transactionId", getTransactionId());
         jsonWriter.writeStringField("createTime",
             this.createTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createTime));
         jsonWriter.writeNumberField("version", this.version);
@@ -139,8 +123,8 @@ public class AcsChatThreadEventBaseProperties extends AcsChatEventBaseProperties
     public static AcsChatThreadEventBaseProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CommunicationIdentifierModel recipientCommunicationIdentifier = null;
-            String transactionId = null;
             String threadId = null;
+            String transactionId = null;
             OffsetDateTime createTime = null;
             Long version = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -149,10 +133,10 @@ public class AcsChatThreadEventBaseProperties extends AcsChatEventBaseProperties
 
                 if ("recipientCommunicationIdentifier".equals(fieldName)) {
                     recipientCommunicationIdentifier = CommunicationIdentifierModel.fromJson(reader);
-                } else if ("transactionId".equals(fieldName)) {
-                    transactionId = reader.getString();
                 } else if ("threadId".equals(fieldName)) {
                     threadId = reader.getString();
+                } else if ("transactionId".equals(fieldName)) {
+                    transactionId = reader.getString();
                 } else if ("createTime".equals(fieldName)) {
                     createTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
@@ -163,9 +147,8 @@ public class AcsChatThreadEventBaseProperties extends AcsChatEventBaseProperties
                 }
             }
             AcsChatThreadEventBaseProperties deserializedAcsChatThreadEventBaseProperties
-                = new AcsChatThreadEventBaseProperties(recipientCommunicationIdentifier, createTime);
+                = new AcsChatThreadEventBaseProperties(recipientCommunicationIdentifier, threadId, createTime);
             deserializedAcsChatThreadEventBaseProperties.transactionId = transactionId;
-            deserializedAcsChatThreadEventBaseProperties.threadId = threadId;
             deserializedAcsChatThreadEventBaseProperties.version = version;
 
             return deserializedAcsChatThreadEventBaseProperties;

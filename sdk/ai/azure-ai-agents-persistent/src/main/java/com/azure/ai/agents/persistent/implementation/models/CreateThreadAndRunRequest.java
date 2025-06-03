@@ -5,8 +5,8 @@ package com.azure.ai.agents.persistent.implementation.models;
 
 import com.azure.ai.agents.persistent.models.PersistentAgentThreadCreationOptions;
 import com.azure.ai.agents.persistent.models.ToolDefinition;
+import com.azure.ai.agents.persistent.models.ToolResources;
 import com.azure.ai.agents.persistent.models.TruncationObject;
-import com.azure.ai.agents.persistent.models.UpdateToolResourcesOptions;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
@@ -58,7 +58,7 @@ public final class CreateThreadAndRunRequest implements JsonSerializable<CreateT
      * Override the tools the agent can use for this run. This is useful for modifying the behavior on a per-run basis
      */
     @Generated
-    private UpdateToolResourcesOptions toolResources;
+    private ToolResources toolResources;
 
     /*
      * If `true`, returns a stream of events that happen during the Run as server-sent events,
@@ -253,21 +253,8 @@ public final class CreateThreadAndRunRequest implements JsonSerializable<CreateT
      * @return the toolResources value.
      */
     @Generated
-    public UpdateToolResourcesOptions getToolResources() {
+    public ToolResources getToolResources() {
         return this.toolResources;
-    }
-
-    /**
-     * Set the toolResources property: Override the tools the agent can use for this run. This is useful for modifying
-     * the behavior on a per-run basis.
-     *
-     * @param toolResources the toolResources value to set.
-     * @return the CreateThreadAndRunRequest object itself.
-     */
-    @Generated
-    public CreateThreadAndRunRequest setToolResources(UpdateToolResourcesOptions toolResources) {
-        this.toolResources = toolResources;
-        return this;
     }
 
     /**
@@ -575,7 +562,7 @@ public final class CreateThreadAndRunRequest implements JsonSerializable<CreateT
             String model = null;
             String instructions = null;
             List<ToolDefinition> tools = null;
-            UpdateToolResourcesOptions toolResources = null;
+            ToolResources toolResources = null;
             Boolean stream = null;
             Double temperature = null;
             Double topP = null;
@@ -600,7 +587,7 @@ public final class CreateThreadAndRunRequest implements JsonSerializable<CreateT
                 } else if ("tools".equals(fieldName)) {
                     tools = reader.readArray(reader1 -> ToolDefinition.fromJson(reader1));
                 } else if ("tool_resources".equals(fieldName)) {
-                    toolResources = UpdateToolResourcesOptions.fromJson(reader);
+                    toolResources = ToolResources.fromJson(reader);
                 } else if ("stream".equals(fieldName)) {
                     stream = reader.getNullable(JsonReader::getBoolean);
                 } else if ("temperature".equals(fieldName)) {
@@ -646,5 +633,18 @@ public final class CreateThreadAndRunRequest implements JsonSerializable<CreateT
             deserializedCreateThreadAndRunRequest.metadata = metadata;
             return deserializedCreateThreadAndRunRequest;
         });
+    }
+
+    /**
+     * Set the toolResources property: Override the tools the agent can use for this run. This is useful for modifying
+     * the behavior on a per-run basis.
+     *
+     * @param toolResources the toolResources value to set.
+     * @return the CreateThreadAndRunRequest object itself.
+     */
+    @Generated
+    public CreateThreadAndRunRequest setToolResources(ToolResources toolResources) {
+        this.toolResources = toolResources;
+        return this;
     }
 }

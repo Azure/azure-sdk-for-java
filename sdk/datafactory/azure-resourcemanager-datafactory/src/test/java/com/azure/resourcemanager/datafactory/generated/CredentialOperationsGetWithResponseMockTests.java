@@ -21,7 +21,7 @@ public final class CredentialOperationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"Credential\",\"description\":\"dlcstucswhmns\",\"annotations\":[\"datahmatfgoerjmhtxip\",\"datavwzbkgt\"],\"\":{\"zeu\":\"datarzmkte\",\"l\":\"dataxt\",\"gpcccg\":\"datajcwlfzxxpwexck\"}},\"name\":\"knjjskzuh\",\"type\":\"yavfeyybyduy\",\"etag\":\"ty\",\"id\":\"miy\"}";
+            = "{\"properties\":{\"type\":\"Credential\",\"description\":\"dlcstucswhmns\",\"annotations\":[\"datahmatfgoerjmhtxip\",\"datavwzbkgt\"],\"zeu\":\"datarzmkte\",\"l\":\"dataxt\",\"gpcccg\":\"datajcwlfzxxpwexck\"},\"name\":\"knjjskzuh\",\"type\":\"yavfeyybyduy\",\"etag\":\"ty\",\"id\":\"miy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

@@ -42,7 +42,6 @@ import com.azure.cosmos.implementation.directconnectivity.StoreClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreClientFactory;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
-import com.azure.cosmos.implementation.http.Http2ConnectionConfig;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -50,6 +49,7 @@ import com.azure.cosmos.implementation.http.SharedGatewayHttpClient;
 import com.azure.cosmos.implementation.patch.PatchUtil;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PartitionLevelCircuitBreakerConfig;
 import com.azure.cosmos.implementation.query.DocumentQueryExecutionContextFactory;
 import com.azure.cosmos.implementation.query.IDocumentQueryClient;
 import com.azure.cosmos.implementation.query.IDocumentQueryExecutionContext;
@@ -183,7 +183,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private static final ImplementationBridgeHelpers.CosmosOperationDetailsHelper.CosmosOperationDetailsAccessor operationDetailsAccessor =
         ImplementationBridgeHelpers.CosmosOperationDetailsHelper.getCosmosOperationDetailsAccessor();
 
-    private static final String tempMachineId = "uuid:" + UUID.randomUUID();
+    private static final String tempMachineId = "uuid:" + UUIDs.nonBlockingRandomUUID();
     private static final AtomicInteger activeClientsCnt = new AtomicInteger(0);
     private static final Map<String, Integer> clientMap = new ConcurrentHashMap<>();
     private static final AtomicInteger clientIdGenerator = new AtomicInteger(0);
@@ -269,7 +269,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final boolean isRegionScopedSessionCapturingEnabledOnClientOrSystemConfig;
     private List<CosmosOperationPolicy> operationPolicies;
     private final AtomicReference<CosmosAsyncClient> cachedCosmosAsyncClientSnapshot;
-    private final CosmosEndToEndOperationLatencyPolicyConfig ppafEnforcedE2ELatencyPolicyConfigForReads;
+    private CosmosEndToEndOperationLatencyPolicyConfig ppafEnforcedE2ELatencyPolicyConfigForReads;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -291,8 +291,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 SessionRetryOptions sessionRetryOptions,
                                 CosmosContainerProactiveInitConfig containerProactiveInitConfig,
                                 CosmosItemSerializer defaultCustomSerializer,
-                                boolean isRegionScopedSessionCapturingEnabled,
-                                boolean isPerPartitionAutomaticFailoverEnabled) {
+                                boolean isRegionScopedSessionCapturingEnabled) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -314,8 +313,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 sessionRetryOptions,
                 containerProactiveInitConfig,
                 defaultCustomSerializer,
-                isRegionScopedSessionCapturingEnabled,
-                isPerPartitionAutomaticFailoverEnabled);
+                isRegionScopedSessionCapturingEnabled
+        );
 
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
@@ -365,8 +364,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 sessionRetryOptions,
                 containerProactiveInitConfig,
                 defaultCustomSerializer,
-                isRegionScopedSessionCapturingEnabled,
-                isPerPartitionAutomaticFailoverEnabled);
+                isRegionScopedSessionCapturingEnabled
+        );
 
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
         this.operationPolicies = operationPolicies;
@@ -392,8 +391,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 SessionRetryOptions sessionRetryOptions,
                                 CosmosContainerProactiveInitConfig containerProactiveInitConfig,
                                 CosmosItemSerializer defaultCustomSerializer,
-                                boolean isRegionScopedSessionCapturingEnabled,
-                                boolean isPerPartitionAutomaticFailoverEnabled) {
+                                boolean isRegionScopedSessionCapturingEnabled) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -414,8 +412,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 sessionRetryOptions,
                 containerProactiveInitConfig,
                 defaultCustomSerializer,
-                isRegionScopedSessionCapturingEnabled,
-                isPerPartitionAutomaticFailoverEnabled);
+                isRegionScopedSessionCapturingEnabled
+        );
 
         if (permissionFeed != null && permissionFeed.size() > 0) {
             this.resourceTokensMap = new HashMap<>();
@@ -478,8 +476,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          SessionRetryOptions sessionRetryOptions,
                          CosmosContainerProactiveInitConfig containerProactiveInitConfig,
                          CosmosItemSerializer defaultCustomSerializer,
-                         boolean isRegionScopedSessionCapturingEnabled,
-                         boolean isPerPartitionAutomaticFailoverEnabled) {
+                         boolean isRegionScopedSessionCapturingEnabled) {
 
         assert(clientTelemetryConfig != null);
         activeClientsCnt.incrementAndGet();
@@ -584,13 +581,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker
                 = new GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(this.globalEndpointManager);
+
+            // enablement of PPAF is revaluated in RxDocumentClientImpl#init
             this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover
-                = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(this.globalEndpointManager, isPerPartitionAutomaticFailoverEnabled);
+                = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(this.globalEndpointManager, false);
 
-            this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.init();
             this.cachedCosmosAsyncClientSnapshot = new AtomicReference<>();
-
-            this.diagnosticsClientConfig.withPartitionLevelCircuitBreakerConfig(this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getCircuitBreakerConfig());
 
             this.retryPolicy = new RetryPolicy(
                 this,
@@ -603,10 +599,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.queryPlanCache = new ConcurrentHashMap<>();
             this.apiType = apiType;
             this.clientTelemetryConfig = clientTelemetryConfig;
-            this.ppafEnforcedE2ELatencyPolicyConfigForReads = evaluatePpafEnforcedE2eLatencyPolicyCfgForReads(
-                this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
-                this.connectionPolicy
-            );
         } catch (RuntimeException e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -762,7 +754,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             clientTelemetry = new ClientTelemetry(
                     this,
                     null,
-                    randomUuid().toString(),
+                    UUIDs.nonBlockingRandomUUID().toString(),
                     ManagementFactory.getRuntimeMXBean().getName(),
                     connectionPolicy.getConnectionMode(),
                     globalEndpointManager.getLatestDatabaseAccount().getId(),
@@ -796,7 +788,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     && readConsistencyStrategy != ReadConsistencyStrategy.SESSION
                     && !sessionCapturingOverrideEnabled);
             this.sessionContainer.setDisableSessionCapturing(updatedDisableSessionCapturing);
-
+            this.initializePerPartitionFailover(databaseAccountSnapshot);
             this.addUserAgentSuffix(this.userAgentContainer, EnumSet.allOf(UserAgentFeatureFlags.class));
         } catch (Exception e) {
             logger.error("unexpected failure in initializing client.", e);
@@ -899,7 +891,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .withProxy(this.connectionPolicy.getProxy())
             .withNetworkRequestTimeout(this.connectionPolicy.getHttpNetworkRequestTimeout())
             .withServerCertValidationDisabled(this.connectionPolicy.isServerCertValidationDisabled())
-            .withHttp2Config(new Http2ConnectionConfig());
+            .withHttp2ConnectionConfig(this.connectionPolicy.getHttp2ConnectionConfig());
 
         if (connectionSharingAcrossClientsEnabled) {
             return SharedGatewayHttpClient.getOrCreateInstance(httpClientConfig, diagnosticsClientConfig);
@@ -1173,7 +1165,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .getImpl(nonNullQueryOptions)
             .getCorrelationActivityId();
         UUID correlationActivityId = correlationActivityIdOfRequestOptions != null ?
-            correlationActivityIdOfRequestOptions : randomUuid();
+            correlationActivityIdOfRequestOptions : UUIDs.nonBlockingRandomUUID();
 
         final AtomicBoolean isQueryCancelledOnTimeout = new AtomicBoolean(false);
 
@@ -1718,7 +1710,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if (consistencyLevel != null) {
-            headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, consistencyLevel.toString());
+            // adding the "x-ms-consistency-level" header with consistency level stricter than the
+            // account's default consistency level in Compute Gateway will result in a 400 Bad Request
+            // even when it is done for resource types / operations where this header should simply be ignored
+            // making the change here to restrict adding the header to when it is relevant.
+            if ((operationType.isReadOnlyOperation() || operationType == OperationType.Batch) && (resourceType.isMasterResource() || resourceType == ResourceType.Document)) {
+                headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, consistencyLevel.toString());
+            }
         }
 
         if (readConsistencyStrategy != null
@@ -4156,7 +4154,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return Flux.empty();
         }
 
-        UUID activityId = randomUuid();
+        UUID activityId = UUIDs.nonBlockingRandomUUID();
 
         final AtomicBoolean isQueryCancelledOnTimeout = new AtomicBoolean(false);
 
@@ -4577,7 +4575,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             SqlQuerySpec querySpec = createLogicalPartitionScanQuerySpec(partitionKey, partitionKeySelectors);
 
             String resourceLink = parentResourceLinkToQueryLink(collectionLink, ResourceType.Document);
-            UUID activityId = randomUuid();
+            UUID activityId = UUIDs.nonBlockingRandomUUID();
 
             final AtomicBoolean isQueryCancelledOnTimeout = new AtomicBoolean(false);
 
@@ -6375,29 +6373,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return new FeedRangeEpkImpl(pkRange.toRange());
     }
 
-    /**
-     * Creates a type 4 (pseudo randomly generated) UUID.
-     * <p>
-     * The {@link UUID} is generated using a non-cryptographically strong pseudo random number generator.
-     *
-     * @return A randomly generated {@link UUID}.
-     */
-    public static UUID randomUuid() {
-        // Note: Copied from CoreUtils
-        return randomUuid(ThreadLocalRandom.current().nextLong(), ThreadLocalRandom.current().nextLong());
-    }
-
-    static UUID randomUuid(long msb, long lsb) {
-        msb &= 0xffffffffffff0fffL; // Clear the UUID version.
-        msb |= 0x0000000000004000L; // Set the UUID version to 4.
-        lsb &= 0x3fffffffffffffffL; // Clear the variant.
-        lsb |= 0x8000000000000000L; // Set the variant to IETF.
-
-        // Use new UUID(long, long) instead of UUID.randomUUID as UUID.randomUUID may be blocking.
-        // For environments using Reactor's BlockHound this will raise an exception if called in non-blocking threads.
-        return new UUID(msb, lsb);
-    }
-
     public PartitionKeyRange addPartitionLevelUnavailableRegionsForPointOperationRequestForPerPartitionCircuitBreaker(
         RxDocumentServiceRequest request,
         RequestOptions options,
@@ -7182,7 +7157,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return false;
     }
 
-    private static CosmosEndToEndOperationLatencyPolicyConfig evaluatePpafEnforcedE2eLatencyPolicyCfgForReads(
+    private CosmosEndToEndOperationLatencyPolicyConfig evaluatePpafEnforcedE2eLatencyPolicyCfgForReads(
         GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
         ConnectionPolicy connectionPolicy) {
 
@@ -7191,6 +7166,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if (Configs.isReadAvailabilityStrategyEnabledWithPpaf()) {
+
+            logger.warn("Availability strategy for reads, queries, read all and read many" +
+                " is enabled when PerPartitionAutomaticFailover is enabled.");
 
             if (connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT) {
                 Duration networkRequestTimeout = connectionPolicy.getTcpNetworkRequestTimeout();
@@ -7619,12 +7597,64 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
+    // this is a one time call, so we can afford to synchronize as the benefit is now all PPAF and PPCB related dependencies are visible
+    // if initializePerPartitionFailover has been invoked prior
+    private synchronized void initializePerPartitionFailover(DatabaseAccount databaseAccountSnapshot) {
+        initializePerPartitionAutomaticFailover(databaseAccountSnapshot);
+        initializePerPartitionCircuitBreaker();
+        enableAvailabilityStrategyForReads();
+
+        checkNotNull(this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover, "Argument 'globalPartitionEndpointManagerForPerPartitionAutomaticFailover' cannot be null.");
+        checkNotNull(this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker, "Argument 'globalPartitionEndpointManagerForPerPartitionCircuitBreaker' cannot be null.");
+
+        this.diagnosticsClientConfig.withPartitionLevelCircuitBreakerConfig(this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getCircuitBreakerConfig());
+    }
+
+    private void initializePerPartitionAutomaticFailover(DatabaseAccount databaseAccountSnapshot) {
+
+        Boolean isPerPartitionAutomaticFailoverEnabledAsMandatedByService
+            = databaseAccountSnapshot.isPerPartitionFailoverBehaviorEnabled();
+
+        if (isPerPartitionAutomaticFailoverEnabledAsMandatedByService != null) {
+            this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.resetPerPartitionAutomaticFailoverEnabled(isPerPartitionAutomaticFailoverEnabledAsMandatedByService);
+        } else {
+            boolean isPerPartitionAutomaticFailoverOptedIntoByClient
+                = Configs.isPerPartitionAutomaticFailoverEnabled().equalsIgnoreCase("true");
+            this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.resetPerPartitionAutomaticFailoverEnabled(isPerPartitionAutomaticFailoverOptedIntoByClient);
+        }
+    }
+
+    private void initializePerPartitionCircuitBreaker() {
+        if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()) {
+
+            PartitionLevelCircuitBreakerConfig partitionLevelCircuitBreakerConfig = Configs.getPartitionLevelCircuitBreakerConfig();
+
+            if (partitionLevelCircuitBreakerConfig != null && !partitionLevelCircuitBreakerConfig.isPartitionLevelCircuitBreakerEnabled()) {
+                logger.warn("Per-Partition Circuit Breaker is enabled by default when Per-Partition Automatic Failover is enabled.");
+                System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", "{\"isPartitionLevelCircuitBreakerEnabled\": true}");
+            }
+        }
+
+        this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.resetCircuitBreakerConfig();
+        this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.init();
+    }
+
+    private void enableAvailabilityStrategyForReads() {
+        if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()) {
+            this.ppafEnforcedE2ELatencyPolicyConfigForReads = this.evaluatePpafEnforcedE2eLatencyPolicyCfgForReads(
+                this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+                this.connectionPolicy
+            );
+        }
+    }
+
     private boolean useThinClient() {
         return Configs.isThinClientEnabled() && this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY;
     }
 
     private boolean useThinClientStoreModel(RxDocumentServiceRequest request) {
         return useThinClient()
+            && this.globalEndpointManager.hasThinClientReadLocations()
             && request.getResourceType() == ResourceType.Document
             && request.getOperationType().isPointOperation();
     }

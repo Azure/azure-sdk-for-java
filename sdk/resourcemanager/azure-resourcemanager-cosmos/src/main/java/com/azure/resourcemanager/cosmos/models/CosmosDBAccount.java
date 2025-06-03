@@ -299,6 +299,13 @@ public interface CosmosDBAccount extends GroupableResource<CosmosManager, Databa
      */
     Mono<Void> regenerateKeyAsync(KeyKind keyKind);
 
+    /**
+     * Checks whether local auth is disabled.
+     *
+     * @return whether local auth is disabled or not.
+     */
+    boolean localAuthDisabled();
+
     /** Grouping of cosmos db definition stages. */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithKind,
         DefinitionStages.WithWriteReplication, DefinitionStages.WithReadReplication, DefinitionStages.WithCreate {
@@ -527,13 +534,23 @@ public interface CosmosDBAccount extends GroupableResource<CosmosManager, Databa
             WithCreate disablePublicNetworkAccess();
         }
 
+        /** The stage of CosmosDB account definition allowing to configure local auth settings. */
+        interface WithLocalAuth {
+            /**
+             * Disables local auth for the CosmosDB account.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate disableLocalAuth();
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
          */
         interface WithCreate extends Creatable<CosmosDBAccount>, WithConsistencyPolicy, WithReadReplication,
             WithIpRules, WithVirtualNetworkRule, WithMultipleLocations, WithConnector, WithKeyBasedMetadataWriteAccess,
-            WithPrivateEndpointConnection, DefinitionWithTags<WithCreate>, WithPublicNetworkAccess {
+            WithPrivateEndpointConnection, DefinitionWithTags<WithCreate>, WithPublicNetworkAccess, WithLocalAuth {
         }
     }
 

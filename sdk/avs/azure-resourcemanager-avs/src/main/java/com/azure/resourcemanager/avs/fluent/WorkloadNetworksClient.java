@@ -19,8 +19,8 @@ import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkInner;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkPortMirroringInner;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkPublicIpInner;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkSegmentInner;
-import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkVirtualMachineInner;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkVMGroupInner;
+import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkVirtualMachineInner;
 
 /**
  * An instance of this class provides access to all the operations defined in WorkloadNetworksClient.

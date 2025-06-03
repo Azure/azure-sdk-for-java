@@ -32,11 +32,6 @@ public final class VmPlacementPolicyProperties extends PlacementPolicyProperties
      */
     private AffinityType affinityType;
 
-    /*
-     * The provisioning state
-     */
-    private PlacementPolicyProvisioningState provisioningState;
-
     /**
      * Creates an instance of VmPlacementPolicyProperties class.
      */
@@ -91,16 +86,6 @@ public final class VmPlacementPolicyProperties extends PlacementPolicyProperties
     public VmPlacementPolicyProperties withAffinityType(AffinityType affinityType) {
         this.affinityType = affinityType;
         return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public PlacementPolicyProvisioningState provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -178,8 +163,8 @@ public final class VmPlacementPolicyProperties extends PlacementPolicyProperties
                 } else if ("displayName".equals(fieldName)) {
                     deserializedVmPlacementPolicyProperties.withDisplayName(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedVmPlacementPolicyProperties.provisioningState
-                        = PlacementPolicyProvisioningState.fromString(reader.getString());
+                    deserializedVmPlacementPolicyProperties
+                        .withProvisioningState(PlacementPolicyProvisioningState.fromString(reader.getString()));
                 } else if ("vmMembers".equals(fieldName)) {
                     List<String> vmMembers = reader.readArray(reader1 -> reader1.getString());
                     deserializedVmPlacementPolicyProperties.vmMembers = vmMembers;
