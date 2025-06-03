@@ -40,11 +40,17 @@ extends:
                 inputs:
                   targetType: 'inline'
                   script: |
-                    mvn --% -f eng/code-quality-reports/pom.xml clean install -B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip
-                    mvn --% -f sdk/parents/pom.xml clean install -B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip
-                    mvn --% -f common/perf-test-core/pom.xml clean install -B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip
-                    mvn --% -f sdk/clientcore/pom.xml clean install -B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip
-                    mvn --% -f sdk/core-v2/pom.xml clean install -B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip
+                    $commonFlags = "-B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip"
+                    $modulePaths = @(
+                      "eng/code-quality-reports/pom.xml",
+                      "sdk/parents/pom.xml",
+                      "common/perf-test-core/pom.xml",
+                      "sdk/clientcore/pom.xml",
+                      "sdk/core-v2/pom.xml"
+                    )
+                    foreach ($modulePath in $modulePaths) {
+                      mvn --% -f $modulePath clean install $commonFlags
+                    }
 
               - task: Maven@3
                 displayName: 'Build and Install OpenRewrite Compiler Maven Plugin'
