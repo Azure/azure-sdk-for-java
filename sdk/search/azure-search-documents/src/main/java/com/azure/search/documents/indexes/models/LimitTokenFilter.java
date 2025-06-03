@@ -6,6 +6,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,17 +21,20 @@ public final class LimitTokenFilter extends TokenFilter {
     /*
      * A URI fragment specifying the type of token filter.
      */
+    @Generated
     private String odataType = "#Microsoft.Azure.Search.LimitTokenFilter";
 
     /*
      * The maximum number of tokens to produce. Default is 1.
      */
+    @Generated
     private Integer maxTokenCount;
 
     /*
      * A value indicating whether all tokens from the input must be consumed even if maxTokenCount is reached. Default
      * is false.
      */
+    @Generated
     private Boolean allTokensConsumed;
 
     /**
@@ -38,6 +42,7 @@ public final class LimitTokenFilter extends TokenFilter {
      *
      * @param name the name value to set.
      */
+    @Generated
     public LimitTokenFilter(String name) {
         super(name);
     }
@@ -47,6 +52,7 @@ public final class LimitTokenFilter extends TokenFilter {
      *
      * @return the odataType value.
      */
+    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -57,6 +63,7 @@ public final class LimitTokenFilter extends TokenFilter {
      *
      * @return the maxTokenCount value.
      */
+    @Generated
     public Integer getMaxTokenCount() {
         return this.maxTokenCount;
     }
@@ -67,6 +74,7 @@ public final class LimitTokenFilter extends TokenFilter {
      * @param maxTokenCount the maxTokenCount value to set.
      * @return the LimitTokenFilter object itself.
      */
+    @Generated
     public LimitTokenFilter setMaxTokenCount(Integer maxTokenCount) {
         this.maxTokenCount = maxTokenCount;
         return this;
@@ -78,6 +86,7 @@ public final class LimitTokenFilter extends TokenFilter {
      *
      * @return the allTokensConsumed value.
      */
+    @Generated
     public Boolean areAllTokensConsumed() {
         return this.allTokensConsumed;
     }
@@ -89,6 +98,7 @@ public final class LimitTokenFilter extends TokenFilter {
      * @param allTokensConsumed the allTokensConsumed value to set.
      * @return the LimitTokenFilter object itself.
      */
+    @Generated
     public LimitTokenFilter setAllTokensConsumed(Boolean allTokensConsumed) {
         this.allTokensConsumed = allTokensConsumed;
         return this;
@@ -97,6 +107,7 @@ public final class LimitTokenFilter extends TokenFilter {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -116,6 +127,7 @@ public final class LimitTokenFilter extends TokenFilter {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the LimitTokenFilter.
      */
+    @Generated
     public static LimitTokenFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

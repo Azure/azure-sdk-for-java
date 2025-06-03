@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public final class ResourceAuthorization implements JsonSerializable<ResourceAut
     /*
      * The scope of the authorization.
      */
+    @Generated
     private String scope;
 
     /*
      * The action being requested.
      */
+    @Generated
     private String action;
 
     /*
      * The evidence for the authorization.
      */
+    @Generated
     private Map<String, String> evidence;
 
     /**
      * Creates an instance of ResourceAuthorization class.
      */
+    @Generated
     public ResourceAuthorization() {
     }
 
@@ -43,6 +48,7 @@ public final class ResourceAuthorization implements JsonSerializable<ResourceAut
      * 
      * @return the scope value.
      */
+    @Generated
     public String getScope() {
         return this.scope;
     }
@@ -53,6 +59,7 @@ public final class ResourceAuthorization implements JsonSerializable<ResourceAut
      * @param scope the scope value to set.
      * @return the ResourceAuthorization object itself.
      */
+    @Generated
     public ResourceAuthorization setScope(String scope) {
         this.scope = scope;
         return this;
@@ -63,6 +70,7 @@ public final class ResourceAuthorization implements JsonSerializable<ResourceAut
      * 
      * @return the action value.
      */
+    @Generated
     public String getAction() {
         return this.action;
     }
@@ -73,6 +81,7 @@ public final class ResourceAuthorization implements JsonSerializable<ResourceAut
      * @param action the action value to set.
      * @return the ResourceAuthorization object itself.
      */
+    @Generated
     public ResourceAuthorization setAction(String action) {
         this.action = action;
         return this;
@@ -83,6 +92,7 @@ public final class ResourceAuthorization implements JsonSerializable<ResourceAut
      * 
      * @return the evidence value.
      */
+    @Generated
     public Map<String, String> getEvidence() {
         return this.evidence;
     }
@@ -93,6 +103,7 @@ public final class ResourceAuthorization implements JsonSerializable<ResourceAut
      * @param evidence the evidence value to set.
      * @return the ResourceAuthorization object itself.
      */
+    @Generated
     public ResourceAuthorization setEvidence(Map<String, String> evidence) {
         this.evidence = evidence;
         return this;
@@ -101,6 +112,7 @@ public final class ResourceAuthorization implements JsonSerializable<ResourceAut
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -118,6 +130,7 @@ public final class ResourceAuthorization implements JsonSerializable<ResourceAut
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ResourceAuthorization.
      */
+    @Generated
     public static ResourceAuthorization fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ResourceAuthorization deserializedResourceAuthorization = new ResourceAuthorization();

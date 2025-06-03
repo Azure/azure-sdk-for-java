@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,11 +22,13 @@ public final class ResourceCounter implements JsonSerializable<ResourceCounter> 
     /*
      * The resource usage amount.
      */
+    @Generated
     private final long usage;
 
     /*
      * The resource amount quota.
      */
+    @Generated
     private Long quota;
 
     /**
@@ -33,6 +36,7 @@ public final class ResourceCounter implements JsonSerializable<ResourceCounter> 
      * 
      * @param usage the usage value to set.
      */
+    @Generated
     public ResourceCounter(long usage) {
         this.usage = usage;
     }
@@ -42,6 +46,7 @@ public final class ResourceCounter implements JsonSerializable<ResourceCounter> 
      * 
      * @return the usage value.
      */
+    @Generated
     public long getUsage() {
         return this.usage;
     }
@@ -51,6 +56,7 @@ public final class ResourceCounter implements JsonSerializable<ResourceCounter> 
      * 
      * @return the quota value.
      */
+    @Generated
     public Long getQuota() {
         return this.quota;
     }
@@ -61,6 +67,7 @@ public final class ResourceCounter implements JsonSerializable<ResourceCounter> 
      * @param quota the quota value to set.
      * @return the ResourceCounter object itself.
      */
+    @Generated
     public ResourceCounter setQuota(Long quota) {
         this.quota = quota;
         return this;
@@ -69,6 +76,7 @@ public final class ResourceCounter implements JsonSerializable<ResourceCounter> 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -86,6 +94,7 @@ public final class ResourceCounter implements JsonSerializable<ResourceCounter> 
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ResourceCounter.
      */
+    @Generated
     public static ResourceCounter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean usageFound = false;

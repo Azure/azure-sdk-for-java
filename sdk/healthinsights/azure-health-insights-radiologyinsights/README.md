@@ -5,7 +5,7 @@
 
 [Radiology Insights][radiology_insights_docs] is a model that aims to provide quality checks as feedback on errors and inconsistencies (mismatches) and ensures critical findings are identified and communicated using the full context of the report. Follow-up recommendations and clinical findings with measurements (sizes) documented by the radiologist are also identified.
 
-[Source code][source_code] | [Package (Maven)][package] | API reference documentation | [Product Documentation][product_documentation] | [Samples][samples_location]
+[Source code][source_code] | [Package (Maven)][package] | [Product Documentation][product_documentation] | [Samples][samples_location]
 
 ## Getting started
 
@@ -723,7 +723,7 @@ private static void displaySexMismatches(RadiologyInsightsInferenceResult radiol
 
 ### Get Guidance Inference information
 
-Display information about the guidance.
+Display information about the guidance. See [SampleGuidanceInferenceAsync.java][ri_async_sample_guidance] for the complete code.
 
 ```java com.azure.health.insights.radiologyinsights.displayresults.guidance
 private static void displayGuidanceInference(RadiologyInsightsInferenceResult radiologyInsightsResult) {
@@ -862,7 +862,7 @@ private static void displayFinding(FindingInference findingInference) {
 ```
 ### Get Quality Measure Inference information
 
-Display information about the quality measure.
+Display information about the quality measure. See [SampleQualityMeasureInferenceAsync.java][ri_async_sample_qualitymeasure] for the complete code.
 
 ```java com.azure.health.insights.radiologyinsights.displayresults.qualitymeasure
 private static void displayQualityMeasureInference(RadiologyInsightsInferenceResult radiologyInsightsResult) {
@@ -890,7 +890,7 @@ private static void displayQualityMeasureInference(RadiologyInsightsInferenceRes
 
 ### Get Scoring And Assessment Inference information
 
-Display information about the scoring and assessment.
+Display information about the scoring and assessment. See [SampleScoringAndAssessmentInferenceAsync.java][ri_async_sample_scoringandassessment] for the complete code.
 
 ```java com.azure.health.insights.radiologyinsights.displayresults.scoringandassessment
 private static void displayScoringAndAssessmentInference(RadiologyInsightsInferenceResult radiologyInsightsResult) {
@@ -992,6 +992,9 @@ For details on contributing to this repository, see the [contributing guide](htt
 [ri_async_sample_limitedorderdiscrepancy]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples/java/com/azure/health/insights/radiologyinsights/SampleLimitedOrderDiscrepancyInferenceAsync.java
 [ri_async_sample_radiologyprocedure]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples/java/com/azure/health/insights/radiologyinsights/SampleRadiologyProcedureInferenceAsync.java
 [ri_async_sample_sexmismatch]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples/java/com/azure/health/insights/radiologyinsights/SampleSexMismatchInferenceAsync.java
+[ri_async_sample_qualitymeasure]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples/java/com/azure/health/insights/radiologyinsights/SampleQualityMeasureInferenceAsync.java
+[ri_async_sample_scoringandassessment]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples/java/com/azure/health/insights/radiologyinsights/SampleScoringAndAssessmentInferenceAsync.java
+[ri_async_sample_guidance]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples/java/com/azure/health/insights/radiologyinsights/SampleGuidanceInferenceAsync.java
 [product_documentation]: https://learn.microsoft.com/azure/azure-health-insights/radiology-insights/
 [radiology_insights_inferences]: https://learn.microsoft.com/azure/azure-health-insights/radiology-insights/inferences
 [azure_subscription]: https://azure.microsoft.com/free/
@@ -1001,6 +1004,9 @@ For details on contributing to this repository, see the [contributing guide](htt
 [package]: https://central.sonatype.com/artifact/com.azure/azure-health-insights-radiologyinsights
 [samples_location]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples
 [azure_credential]: https://learn.microsoft.com/java/api/com.azure.identity.defaultazurecredential
+[add_headers_from_context_policy]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/AddHeadersFromContextPolicy.java
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
+[rest_api]: https://github.com/Azure/AppConfiguration#rest-api-reference
 
 ![Impressions]: https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fhealthinsights%2Fazure-health-insights-radiologyinsights%2FREADME.png
 
