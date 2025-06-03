@@ -31,7 +31,7 @@ public class AppConfigurationReplicaClientFactory {
     AppConfigurationReplicaClientFactory(AppConfigurationReplicaClientsBuilder clientBuilder,
         List<ConfigStore> configStores, ReplicaLookUp replicaLookUp) {
         this.configStores = configStores;
-        if (CONNECTIONS.size() == 0) {
+        if (CONNECTIONS.isEmpty()) {
             for (ConfigStore store : configStores) {
                 ConnectionManager manager = new ConnectionManager(clientBuilder, store, replicaLookUp);
                 CONNECTIONS.put(manager.getMainEndpoint(), manager);
@@ -51,9 +51,11 @@ public class AppConfigurationReplicaClientFactory {
     /**
      * Returns available replica clients for a given configuration store.
      * 
+     * @param originEndpoint identifier of the store (primary endpoint)
+     * @return list of available replica clients for the store
      */
     List<AppConfigurationReplicaClient> getAvailableClients(String originEndpoint) {
-        return CONNECTIONS.get(originEndpoint).getAvailableClients();
+        return getAvailableClients(originEndpoint, false);
     }
 
     /**
@@ -73,7 +75,7 @@ public class AppConfigurationReplicaClientFactory {
      * @param originEndpoint identifier of the store (primary endpoint)
      * @param endpoint the specific replica endpoint that failed
      */
-    void backoffClientClient(String originEndpoint, String endpoint) {
+    void backoffClient(String originEndpoint, String endpoint) {
         CONNECTIONS.get(originEndpoint).backoffClient(endpoint);
     }
 
@@ -98,10 +100,9 @@ public class AppConfigurationReplicaClientFactory {
      */
     String findOriginForEndpoint(String endpoint) {
         for (ConfigStore store : configStores) {
-            for (String replica : store.getEndpoints()) {
-                if (replica.equals(endpoint)) {
-                    return store.getEndpoint();
-                }
+            List<String> replicas = store.getEndpoints();
+            if (replicas != null && replicas.contains(endpoint)) {
+                return store.getEndpoint();
             }
         }
         return endpoint;

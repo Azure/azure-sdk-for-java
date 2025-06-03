@@ -56,22 +56,29 @@ public class AzureAppConfigDataLocationResolver
         if (!location.hasPrefix(PREFIX)) {
             return false;
         }
-        Boolean hasEndpoint = StringUtils.hasText(context.getBinder()
-            .bind(AppConfigurationProperties.CONFIG_PREFIX + ".stores[0].endpoint", String.class)
-            .orElse(""));
-        Boolean hasConnectionString = StringUtils.hasText(context.getBinder()
-            .bind(AppConfigurationProperties.CONFIG_PREFIX + ".stores[0].connection-string", String.class)
-            .orElse(""));
-        Boolean hasEndpoints = StringUtils.hasText(context.getBinder()
-            .bind(AppConfigurationProperties.CONFIG_PREFIX + ".stores[0].endpoints", String.class)
-            .orElse(""));
-        Boolean hasConnectionStrings = StringUtils.hasText(context.getBinder()
-            .bind(AppConfigurationProperties.CONFIG_PREFIX + ".stores[0].connection-strings", String.class)
-            .orElse(""));
 
-        return (hasEndpoint || hasConnectionString || hasEndpoints || hasConnectionStrings);
+        // Check if the configuration properties for Azure App Configuration are present
+        return hasValidStoreConfiguration(context.getBinder());
     }
 
+    /**
+     * Checks if the required configuration properties for Azure App Configuration are present.
+     * 
+     * @param binder the binder to check for properties
+     * @return true if at least one of the required properties is present, false otherwise
+     */
+    private boolean hasValidStoreConfiguration(Binder binder) {
+        // Check if any of the required properties for Azure App Configuration stores are present
+        String configPrefix = AppConfigurationProperties.CONFIG_PREFIX + ".stores[0].";
+
+        return hasNonEmptyProperty(binder, configPrefix + "endpoint")
+            || hasNonEmptyProperty(binder, configPrefix + "connection-string")
+            || hasNonEmptyProperty(binder, configPrefix + "endpoints")
+            || hasNonEmptyProperty(binder, configPrefix + "connection-strings");
+    }
+
+    private boolean hasNonEmptyProperty(Binder binder, String propertyPath) {
+        return StringUtils.hasText(binder.bind(propertyPath, String.class).orElse(""));
     }
 
     /**
@@ -104,6 +111,12 @@ public class AzureAppConfigDataLocationResolver
 
         AppConfigurationProperties properties = loadProperties(resolverContext);
         List<AzureAppConfigDataResource> locations = new ArrayList<>();
+
+        if (properties.getStores() == null || properties.getStores().isEmpty()) {
+            throw new ConfigDataLocationNotFoundException(location,
+                "No Azure App Configuration stores are configured. Please check your application properties.",
+                new IllegalStateException("No stores configured"));
+        }
 
         for (ConfigStore store : properties.getStores()) {
             locations.add(

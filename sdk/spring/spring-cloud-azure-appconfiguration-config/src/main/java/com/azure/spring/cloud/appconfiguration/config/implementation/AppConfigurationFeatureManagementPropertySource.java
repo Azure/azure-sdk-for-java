@@ -32,7 +32,8 @@ class AppConfigurationFeatureManagementPropertySource extends EnumerableProperty
 
     @Override
     public String[] getPropertyNames() {
-        if (featureFlagLoader != null && !featureFlagLoader.getFeatureFlags().isEmpty()) {
+        if (featureFlagLoader != null && featureFlagLoader.getFeatureFlags() != null 
+            && !featureFlagLoader.getFeatureFlags().isEmpty()) {
             return new String[] { FEATURE_FLAG_KEY };
         }
         return new String[0];

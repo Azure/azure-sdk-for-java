@@ -5,7 +5,6 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 import org.springframework.core.env.EnumerablePropertySource;
@@ -23,6 +22,8 @@ import com.azure.core.util.Context;
 abstract class AppConfigurationPropertySource extends EnumerablePropertySource<AppConfigurationReplicaClient> {
 
     /**
+     * Cache for storing configuration properties retrieved from Azure App Configuration.
+     */
     protected final Map<String, Object> properties = new LinkedHashMap<>();
 
     /**
@@ -39,7 +40,7 @@ abstract class AppConfigurationPropertySource extends EnumerablePropertySource<A
     AppConfigurationPropertySource(String name, AppConfigurationReplicaClient replicaClient) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
-        super(name);
+        super(name, replicaClient);
         this.replicaClient = replicaClient;
     }
 
@@ -50,13 +51,14 @@ abstract class AppConfigurationPropertySource extends EnumerablePropertySource<A
      */
     @Override
     public String[] getPropertyNames() {
-        Set<String> keySet = properties.keySet();
-        return keySet.toArray(new String[keySet.size()]);
+        return properties.keySet().toArray(String[]::new);
     }
 
     /**
      * Returns the value of the specified property.
      * 
+     * @param name the name of the property to retrieve
+     * @return the value of the property, or null if not found
      */
     @Override
     public Object getProperty(String name) {
@@ -70,11 +72,19 @@ abstract class AppConfigurationPropertySource extends EnumerablePropertySource<A
      * @return comma-separated string of labels, or empty string if null/empty
      */
     protected static String getLabelName(String[] labelFilters) {
-        if (labelFilters == null) {
+        if (labelFilters == null || labelFilters.length == 0) {
             return "";
         }
         return String.join(",", labelFilters);
     }
 
-    protected abstract void initProperties(List<String> trim, Context context) throws InvalidConfigurationPropertyValueException;
+    /**
+     * Initializes the properties for this property source by loading them from Azure App Configuration.
+     * 
+     * @param trim list of key prefixes to trim from configuration keys
+     * @param context the context for loading properties, may contain additional metadata
+     * @throws InvalidConfigurationPropertyValueException if there are issues with the configuration properties
+     */
+    protected abstract void initProperties(List<String> trim, Context context)
+        throws InvalidConfigurationPropertyValueException;
 }

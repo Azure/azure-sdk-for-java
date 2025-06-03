@@ -114,7 +114,7 @@ class ConnectionManager {
         if (clients == null) {
             clients = clientBuilder.buildClients(configStore);
 
-            if (clients.size() == 0) {
+            if (clients.isEmpty()) {
                 this.health = AppConfigurationStoreHealth.NOT_LOADED;
             }
         }
@@ -160,6 +160,8 @@ class ConnectionManager {
         } else if (clients.size() > 0) {
             this.health = AppConfigurationStoreHealth.UP;
         }
+
+        return availableClients;
     }
 
     /**
@@ -183,9 +185,10 @@ class ConnectionManager {
     }
 
     /**
-     * Updates the sync token of the client. Only works if no replicas are being used.
-     *
-     * @param syncToken App Configuration sync token
+     * Updates the synchronization token for the specified client endpoint.
+     * 
+     * @param endpoint the endpoint URL of the client to update; may be null (method will have no effect if null)
+     * @param syncToken the new synchronization token; may be null to clear the existing token
      */
     void updateSyncToken(String endpoint, String syncToken) {
         clients.stream().filter(client -> client.getEndpoint().equals(endpoint)).findFirst()
