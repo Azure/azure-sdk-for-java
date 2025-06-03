@@ -47,7 +47,8 @@ public final class OperatorDetails implements JsonSerializable<OperatorDetails> 
     }
 
     /**
-     * Get the mobileNetworkCode property: Mobile Network Code.
+     * Get the mobileNetworkCode property: Mobile Network Code, 2 or 3 decimal digits that identify mobile networks
+     * within a country/region.
      * 
      * @return the mobileNetworkCode value.
      */
@@ -56,7 +57,7 @@ public final class OperatorDetails implements JsonSerializable<OperatorDetails> 
     }
 
     /**
-     * Get the mobileCountryCode property: Mobile Country Code.
+     * Get the mobileCountryCode property: Mobile Country Code, 3 decimal digits that identify a country/region.
      * 
      * @return the mobileCountryCode value.
      */
@@ -79,7 +80,6 @@ public final class OperatorDetails implements JsonSerializable<OperatorDetails> 
      * @param jsonReader The JsonReader being read.
      * @return An instance of OperatorDetails if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the OperatorDetails.
      */
     public static OperatorDetails fromJson(JsonReader jsonReader) throws IOException {
