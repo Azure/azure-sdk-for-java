@@ -57,7 +57,7 @@
                 <include>com.beust:jcommander:[1.82]</include> <!-- {x-include-update;com.beust:jcommander;external_dependency} -->
 
                 <include>io.projectreactor:reactor-core:[3.4.41]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
-                <include>io.vertx:vertx-codegen:[5.0.0]</include> <!-- {x-include-update;io.vertx:vertx-codegen;external_dependency} -->
+                <include>io.vertx:vertx-codegen:[4.5.15]</include> <!-- {x-include-update;io.vertx:vertx-codegen;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -95,7 +95,7 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-codegen</artifactId>
-      <version>5.0.0</version> <!-- {x-version-update;io.vertx:vertx-codegen;external_dependency} -->
+      <version>4.5.15</version> <!-- {x-version-update;io.vertx:vertx-codegen;external_dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>

@@ -85,20 +85,14 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-codegen</artifactId>
-      <version>5.0.0</version> <!-- {x-version-update;io.vertx:vertx-codegen;external_dependency} -->
+      <version>4.5.15</version> <!-- {x-version-update;io.vertx:vertx-codegen;external_dependency} -->
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-core</artifactId>
-      <version>5.0.0</version> <!-- {x-version-update;io.vertx:vertx-core;external_dependency} -->
-    </dependency>
-
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-codec-compression</artifactId>
-      <version>4.2.1.Final</version> <!-- {x-version-update;io.netty:netty-codec-compression;external_dependency} -->
+      <version>4.5.15</version> <!-- {x-version-update;io.vertx:vertx-core;external_dependency} -->
     </dependency>
 
     <!-- test dependencies on azure-core, because we want to run tests inherited from this module using Vert.x Web Client -->
@@ -181,9 +175,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.netty:netty-codec-compression:[4.2.1.Final]</include> <!-- {x-include-update;io.netty:netty-codec-compression;external_dependency} -->
-                <include>io.vertx:vertx-codegen:[5.0.0]</include> <!-- {x-include-update;io.vertx:vertx-codegen;external_dependency} -->
-                <include>io.vertx:vertx-core:[5.0.0]</include> <!-- {x-include-update;io.vertx:vertx-core;external_dependency} -->
+                <include>io.vertx:vertx-codegen:[4.5.15]</include> <!-- {x-include-update;io.vertx:vertx-codegen;external_dependency} -->
+                <include>io.vertx:vertx-core:[4.5.15]</include> <!-- {x-include-update;io.vertx:vertx-core;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
