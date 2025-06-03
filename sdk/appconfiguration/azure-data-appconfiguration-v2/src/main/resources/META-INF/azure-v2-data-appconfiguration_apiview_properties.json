@@ -1,0 +1,24 @@
+{
+  "flavor": "azurev2", 
+  "CrossLanguageDefinitionId": {
+    "com.azure.v2.data.appconfiguration.AzureAppConfigurationClient": "AzureAppConfiguration",
+    "com.azure.v2.data.appconfiguration.AzureAppConfigurationClientBuilder": "AzureAppConfiguration",
+    "com.azure.v2.data.appconfiguration.implementation.models.KeyListResult": "AzureAppConfiguration.KeyListResult",
+    "com.azure.v2.data.appconfiguration.implementation.models.KeyValueListResult": "AzureAppConfiguration.KeyValueListResult",
+    "com.azure.v2.data.appconfiguration.implementation.models.LabelListResult": "AzureAppConfiguration.LabelListResult",
+    "com.azure.v2.data.appconfiguration.implementation.models.SnapshotListResult": "AzureAppConfiguration.SnapshotListResult",
+    "com.azure.v2.data.appconfiguration.models.CompositionType": "AzureAppConfiguration.CompositionType",
+    "com.azure.v2.data.appconfiguration.models.Error": "AzureAppConfiguration.Error",
+    "com.azure.v2.data.appconfiguration.models.Key": "AzureAppConfiguration.Key",
+    "com.azure.v2.data.appconfiguration.models.KeyValue": "AzureAppConfiguration.KeyValue",
+    "com.azure.v2.data.appconfiguration.models.KeyValueFields": "AzureAppConfiguration.KeyValueFields",
+    "com.azure.v2.data.appconfiguration.models.KeyValueFilter": "AzureAppConfiguration.KeyValueFilter",
+    "com.azure.v2.data.appconfiguration.models.Label": "AzureAppConfiguration.Label",
+    "com.azure.v2.data.appconfiguration.models.LabelFields": "AzureAppConfiguration.LabelFields",
+    "com.azure.v2.data.appconfiguration.models.Snapshot": "AzureAppConfiguration.Snapshot",
+    "com.azure.v2.data.appconfiguration.models.SnapshotFields": "AzureAppConfiguration.SnapshotFields",
+    "com.azure.v2.data.appconfiguration.models.SnapshotStatus": "AzureAppConfiguration.SnapshotStatus",
+    "com.azure.v2.data.appconfiguration.models.SnapshotUpdateParameters": "AzureAppConfiguration.SnapshotUpdateParameters",
+    "com.azure.v2.data.appconfiguration.models.UpdateSnapshotRequestContentType": "AzureAppConfiguration.updateSnapshot.RequestContentType.anonymous"
+  }
+}
