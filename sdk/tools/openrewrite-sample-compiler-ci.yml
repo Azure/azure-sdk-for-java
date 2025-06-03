@@ -31,28 +31,18 @@ extends:
                     - /sdk/tools/azure-openrewrite/
                     - sdk/core-v2/
                     - sdk/clientcore/
+                    - sdk/parents/
                     - eng/
                     - common/perf-test-core/
 
-              - task: Maven@3
-                displayName: 'Build and Install Code Quality Reports'
+              - task: PowerShell@2
+                displayName: 'Install Required Dependencies'
                 inputs:
-                  mavenPomFile: 'eng/code-quality-reports/pom.xml'
-                  goals: 'clean install'
-                  options: '-B'
-                  javaHomeOption: 'JDKVersion'
-                  jdkVersionOption: '1.8'
-                  mavenOptions: '-Xmx3072m'
-
-              - task: Maven@3
-                displayName: 'Build and Install Perf Test Core'
-                inputs:
-                  mavenPomFile: 'common/perf-test-core/pom.xml'
-                  goals: 'clean install'
-                  options: '-B'
-                  javaHomeOption: 'JDKVersion'
-                  jdkVersionOption: '1.8'
-                  mavenOptions: '-Xmx3072m'
+                  targetType: 'inline'
+                  script: |
+                    mvn -f sdk/parents/pom.xml clean install
+                    mvn -f eng/code-quality-reports/pom.xml clean install
+                    mvn -f common/perf-test-core/pom.xml clean install
 
               - task: Maven@3
                 displayName: 'Build and Install Clientcore from Source'
