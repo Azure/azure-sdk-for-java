@@ -1,15 +1,70 @@
 # Release History
 
-## 1.3.0 (2025-05-28)
+## 1.3.0 (2025-06-03)
 
+- Azure Resource Manager Avs client library for Java. This package contains Microsoft Azure SDK for Avs Management SDK. Azure VMware Solution API. Package api-version 2024-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 - Azure Resource Manager Avs client library for Java. This package contains Microsoft Azure SDK for Avs Management SDK. Azure VMware Solution API. Package tag package-2024-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
+#### `models.DatastoreList` was removed
+
+#### `models.ClusterList` was removed
+
+#### `models.GlobalReachConnectionList` was removed
+
+#### `models.AddonList` was removed
+
+#### `models.VirtualMachinesList` was removed
+
+#### `models.WorkloadNetworkDhcpList` was removed
+
+#### `models.ScriptCmdletsList` was removed
+
+#### `models.CloudLinkList` was removed
+
+#### `models.WorkloadNetworkVMGroupsList` was removed
+
+#### `models.ScriptExecutionsList` was removed
+
+#### `models.HcxEnterpriseSiteList` was removed
+
+#### `models.WorkloadNetworkPortMirroringList` was removed
+
+#### `models.WorkloadNetworkVirtualMachinesList` was removed
+
+#### `models.WorkloadNetworkList` was removed
+
+#### `models.PlacementPoliciesList` was removed
+
+#### `models.WorkloadNetworkPublicIPsList` was removed
+
+#### `models.WorkloadNetworkSegmentsList` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.WorkloadNetworkDnsServicesList` was removed
+
+#### `models.PrivateCloudList` was removed
+
+#### `models.ExpressRouteAuthorizationList` was removed
+
+#### `models.WorkloadNetworkDnsZonesList` was removed
+
+#### `models.WorkloadNetworkGatewayList` was removed
+
+#### `models.ScriptPackagesList` was removed
+
+#### `models.IscsiPathListResult` was removed
+
+#### `models.WorkloadNetworkSegmentPortVif` was modified
+
+* `withPortName(java.lang.String)` was removed
+
 #### `models.WorkloadNetworkDhcpRelay` was modified
 
-* `provisioningState()` was removed
 * `segments()` was removed
+* `provisioningState()` was removed
 
 #### `models.AddonArcProperties` was modified
 
@@ -22,6 +77,10 @@
 #### `models.AddonVrProperties` was modified
 
 * `provisioningState()` was removed
+
+#### `models.ScriptParameter` was modified
+
+* `withName(java.lang.String)` was removed
 
 #### `models.VmHostPlacementPolicyProperties` was modified
 
@@ -37,20 +96,24 @@
 
 #### `models.WorkloadNetworkDhcpServer` was modified
 
-* `segments()` was removed
 * `provisioningState()` was removed
+* `segments()` was removed
 
 ### Features Added
-
-* `models.ProvisionedNetworkListResult` was added
 
 * `models.HostKind` was added
 
 * `models.ProvisionedNetwork` was added
 
+* `models.PureStoragePolicyProperties` was added
+
 * `models.ResourceSkuRestrictionInfo` was added
 
 * `models.PureStoragePolicies` was added
+
+* `implementation.models.DatastoreList` was added
+
+* `implementation.models.ScriptPackagesList` was added
 
 * `models.SpecializedHostProperties` was added
 
@@ -66,7 +129,13 @@
 
 * `models.Skus` was added
 
+* `implementation.models.VirtualMachinesList` was added
+
 * `models.HostModel` was added
+
+* `implementation.models.ExpressRouteAuthorizationList` was added
+
+* `implementation.models.WorkloadNetworkList` was added
 
 * `models.HostProperties` was added
 
@@ -76,37 +145,81 @@
 
 * `models.ResourceSkuRestrictionsReasonCode` was added
 
-* `models.HostListResult` was added
-
 * `models.ResourceSkuZoneDetails` was added
 
 * `models.ResourceSkuRestrictionsType` was added
 
+* `implementation.models.PrivateCloudList` was added
+
 * `models.PureStoragePolicy$DefinitionStages` was added
+
+* `implementation.models.ClusterList` was added
 
 * `models.ResourceSkuResourceType` was added
 
 * `models.ResourceSkuRestrictions` was added
 
+* `implementation.models.CloudLinkList` was added
+
 * `models.PureStoragePolicy` was added
 
 * `models.PureStoragePolicy$Definition` was added
 
+* `implementation.models.AddonList` was added
+
+* `implementation.models.WorkloadNetworkDnsServicesList` was added
+
+* `implementation.models.PagedResourceSku` was added
+
 * `models.ProvisionedNetworkProvisioningState` was added
 
+* `implementation.models.WorkloadNetworkGatewayList` was added
+
 * `models.PureStorageVolume` was added
+
+* `implementation.models.PlacementPoliciesList` was added
 
 * `models.ResourceSkuCapabilities` was added
 
 * `models.Hosts` was added
 
+* `implementation.models.WorkloadNetworkVMGroupsList` was added
+
 * `models.PureStoragePolicy$Update` was added
 
-* `models.PagedResourceSku` was added
+* `implementation.models.WorkloadNetworkDhcpList` was added
+
+* `models.ProvisionedNetworkProperties` was added
+
+* `implementation.models.WorkloadNetworkVirtualMachinesList` was added
+
+* `implementation.models.ScriptExecutionsList` was added
+
+* `implementation.models.PureStoragePolicyListResult` was added
+
+* `implementation.models.HostListResult` was added
+
+* `implementation.models.WorkloadNetworkDnsZonesList` was added
+
+* `implementation.models.HcxEnterpriseSiteList` was added
+
+* `implementation.models.IscsiPathListResult` was added
+
+* `implementation.models.WorkloadNetworkSegmentsList` was added
+
+* `implementation.models.WorkloadNetworkPublicIPsList` was added
+
+* `implementation.models.ScriptCmdletsList` was added
+
+* `implementation.models.WorkloadNetworkPortMirroringList` was added
+
+* `implementation.models.ProvisionedNetworkListResult` was added
+
+* `implementation.models.OperationListResult` was added
 
 * `models.PureStoragePolicyProvisioningState` was added
 
-* `models.PureStoragePolicyListResult` was added
+* `implementation.models.GlobalReachConnectionList` was added
 
 * `models.ProvisionedNetworkTypes` was added
 
@@ -120,10 +233,10 @@
 
 #### `AvsManager` was modified
 
-* `pureStoragePolicies()` was added
-* `hosts()` was added
-* `provisionedNetworks()` was added
 * `skus()` was added
+* `provisionedNetworks()` was added
+* `hosts()` was added
+* `pureStoragePolicies()` was added
 
 #### `models.PrivateCloud$Definition` was modified
 
@@ -131,9 +244,9 @@
 
 #### `models.AddonHcxProperties` was modified
 
-* `withManagementNetwork(java.lang.String)` was added
-* `withUplinkNetwork(java.lang.String)` was added
 * `managementNetwork()` was added
+* `withUplinkNetwork(java.lang.String)` was added
+* `withManagementNetwork(java.lang.String)` was added
 * `uplinkNetwork()` was added
 
 #### `models.Datastore$Update` was modified
