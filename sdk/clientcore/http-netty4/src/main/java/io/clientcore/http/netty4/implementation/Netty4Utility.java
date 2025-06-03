@@ -125,8 +125,8 @@ public final class Netty4Utility {
      */
     public static HttpClientCodec createCodec() {
         return new HttpClientCodec(new HttpDecoderConfig().setHeadersFactory(HTTP_HEADERS_FACTORY)
-            // For now, set the max header size to 16KB. Follow up to see if this should be configurable.
-            .setMaxHeaderSize(16 * 1024), HttpClientCodec.DEFAULT_PARSE_HTTP_AFTER_CONNECT_REQUEST,
+            // For now, set the max header size to 256 KB. Follow up to see if this should be configurable.
+            .setMaxHeaderSize(256 * 1024), HttpClientCodec.DEFAULT_PARSE_HTTP_AFTER_CONNECT_REQUEST,
             HttpClientCodec.DEFAULT_FAIL_ON_MISSING_RESPONSE);
     }
 

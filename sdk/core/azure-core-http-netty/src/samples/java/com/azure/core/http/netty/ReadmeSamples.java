@@ -84,16 +84,16 @@ public class ReadmeSamples {
     /**
      * Sample for creating an async Netty HTTP client with a customized max header size.
      * <p>
-     * {@code maxHeaderSize} is used to determine the maximum header size Netty can process. The default value is 8192
-     * bytes (8KB). If a header exceeds this size, Netty will throw an exception. Passing a customized Reactor Netty
+     * {@code maxHeaderSize} is used to determine the maximum headers size Netty can process. The default value is 8192
+     * bytes (8KB). If the headers exceed this size, Netty will throw an exception. Passing a customized Reactor Netty
      * HttpClient to the NettyAsyncHttpClientBuilder allows you to set a different value for this parameter.
      */
     public void overrideMaxHeaderSize() {
         // BEGIN: readme-sample-customMaxHeaderSize
         // Constructs an HttpClient with a modified max header size.
-        // This creates a Netty HttpClient with a max header size of 16KB.
+        // This creates a Netty HttpClient with a max headers size of 256 KB.
         HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactor.netty.http.client.HttpClient.create()
-            .httpResponseDecoder(httpResponseDecoderSpec -> httpResponseDecoderSpec.maxHeaderSize(16 * 1024)))
+            .httpResponseDecoder(httpResponseDecoderSpec -> httpResponseDecoderSpec.maxHeaderSize(256 * 1024)))
             .build();
         // END: readme-sample-customMaxHeaderSize
     }

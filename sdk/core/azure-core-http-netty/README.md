@@ -128,9 +128,9 @@ io.netty.handler.codec.http.TooLongHttpHeaderException: HTTP header is larger th
 
 ```java readme-sample-customMaxHeaderSize
 // Constructs an HttpClient with a modified max header size.
-// This creates a Netty HttpClient with a max header size of 16KB.
+// This creates a Netty HttpClient with a max headers size of 256 KB.
 HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactor.netty.http.client.HttpClient.create()
-    .httpResponseDecoder(httpResponseDecoderSpec -> httpResponseDecoderSpec.maxHeaderSize(16 * 1024)))
+    .httpResponseDecoder(httpResponseDecoderSpec -> httpResponseDecoderSpec.maxHeaderSize(256 * 1024)))
     .build();
 ```
 

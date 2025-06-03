@@ -206,8 +206,8 @@ public class VertxHttpClientBuilder {
                 .setReadIdleTimeout((int) getTimeout(this.readTimeout, getDefaultReadTimeout()).toMillis())
                 .setWriteIdleTimeout((int) getTimeout(this.writeTimeout, getDefaultWriteTimeout()).toMillis());
 
-            // For now, set the max header size to 16KB. Follow up to see if this should be configurable.
-            buildOptions.setMaxHeaderSize(16 * 1024);
+            // For now, set the max header size to 256 KB. Follow up to see if this should be configurable.
+            buildOptions.setMaxHeaderSize(256 * 1024);
 
             Configuration buildConfiguration
                 = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;

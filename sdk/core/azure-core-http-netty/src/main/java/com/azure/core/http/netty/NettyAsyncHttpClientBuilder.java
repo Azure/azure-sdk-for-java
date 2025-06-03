@@ -221,8 +221,8 @@ public class NettyAsyncHttpClientBuilder {
                 if (maxHeaderSize == HttpDecoderSpec.DEFAULT_MAX_HEADER_SIZE) {
                     // Only change the max header size if it is the default value. If it's set, this was done external
                     // to the SDK and we should respect that.
-                    // For now, set the max header size to 16KB. Follow up to see if this should be configurable.
-                    maxHeaderSize = 16 * 1024;
+                    // For now, set the max header size to 256 KB. Follow up to see if this should be configurable.
+                    maxHeaderSize = 256 * 1024;
                 }
 
                 // TODO (alzimmer): What does validating HTTP response headers get us?

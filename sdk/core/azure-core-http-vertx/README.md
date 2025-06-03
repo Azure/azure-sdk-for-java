@@ -58,7 +58,7 @@ HttpClient client = new VertxHttpClientBuilder()
 
 ### Create an HttpClient with custom maxHeaderSize
 
-Create a Netty HttpClient that uses a custom maxHeaderSize. Use this sample if you're seeing an error such as
+Create a Vert.x HttpClient that uses a custom maxHeaderSize. Use this sample if you're seeing an error such as
 
 ```
 io.netty.handler.codec.http.TooLongHttpHeaderException: HTTP header is larger than 8192 bytes.
@@ -68,10 +68,10 @@ io.netty.handler.codec.http.TooLongHttpHeaderException: HTTP header is larger th
 
 ```java readme-sample-customMaxHeaderSize
 // Constructs an HttpClient with a modified max header size.
-// This creates a Vert.x HttpClient with a max header size of 16KB.
+// This creates a Vert.x HttpClient with a max headers size of 256 KB.
 // NOTE: If httpClientOptions is set, all other options set in the VertxHttpClientBuilder will be ignored.
 HttpClient httpClient = new VertxHttpClientBuilder()
-    .httpClientOptions(new HttpClientOptions().setMaxHeaderSize(16 * 1024))
+    .httpClientOptions(new HttpClientOptions().setMaxHeaderSize(256 * 1024))
     .build();
 ```
 
