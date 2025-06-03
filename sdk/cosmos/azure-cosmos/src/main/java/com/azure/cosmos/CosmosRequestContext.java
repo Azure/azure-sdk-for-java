@@ -39,6 +39,15 @@ public final class CosmosRequestContext {
     }
 
     /**
+     * Gets the read consistency strategy.
+     *
+     * @return the read consistency strategy. It could be null if not defined or called on an irrelevant operation.
+     */
+    public ReadConsistencyStrategy getReadConsistencyStrategy() {
+        return requestOptions.getReadConsistencyStrategy();
+    }
+
+    /**
      * Gets the content response on write enabled.
      *
      * @return the content response on write enabled. It could be null if not defined or called on an irrelevant operation.

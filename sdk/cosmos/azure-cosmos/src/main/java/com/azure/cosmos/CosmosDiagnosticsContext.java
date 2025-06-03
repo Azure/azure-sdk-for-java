@@ -255,6 +255,10 @@ public final class CosmosDiagnosticsContext {
      * @return the effective read consistency strategy used for the operation
      */
     public ReadConsistencyStrategy getEffectiveReadConsistencyStrategy() {
+        if (this.requestOptions != null && this.requestOptions.getReadConsistencyStrategy() != null) {
+            return this.requestOptions.getReadConsistencyStrategy();
+        }
+
         return this.readConsistencyStrategy;
     }
 
