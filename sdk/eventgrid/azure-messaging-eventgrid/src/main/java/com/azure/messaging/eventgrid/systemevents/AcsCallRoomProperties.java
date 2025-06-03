@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class AcsCallRoomProperties implements JsonSerializable<AcsCallRoom
     /*
      * Room Id. Format is Guid as string.
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of AcsCallRoomProperties class.
      */
+    @Generated
     public AcsCallRoomProperties() {
     }
 
@@ -32,6 +35,7 @@ public final class AcsCallRoomProperties implements JsonSerializable<AcsCallRoom
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -42,6 +46,7 @@ public final class AcsCallRoomProperties implements JsonSerializable<AcsCallRoom
      * @param id the id value to set.
      * @return the AcsCallRoomProperties object itself.
      */
+    @Generated
     public AcsCallRoomProperties setId(String id) {
         this.id = id;
         return this;
@@ -50,6 +55,7 @@ public final class AcsCallRoomProperties implements JsonSerializable<AcsCallRoom
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +71,7 @@ public final class AcsCallRoomProperties implements JsonSerializable<AcsCallRoom
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AcsCallRoomProperties.
      */
+    @Generated
     public static AcsCallRoomProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsCallRoomProperties deserializedAcsCallRoomProperties = new AcsCallRoomProperties();

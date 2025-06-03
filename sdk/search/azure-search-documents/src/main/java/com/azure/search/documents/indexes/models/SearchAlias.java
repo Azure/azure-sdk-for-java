@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,16 +25,19 @@ public final class SearchAlias implements JsonSerializable<SearchAlias> {
     /*
      * The name of the alias.
      */
+    @Generated
     private final String name;
 
     /*
      * The name of the index this alias maps to. Only one index name may be specified.
      */
+    @Generated
     private final List<String> indexes;
 
     /*
      * The ETag of the alias.
      */
+    @Generated
     private String eTag;
 
     /**
@@ -42,6 +46,7 @@ public final class SearchAlias implements JsonSerializable<SearchAlias> {
      * @param name the name value to set.
      * @param indexes the indexes value to set.
      */
+    @Generated
     public SearchAlias(String name, List<String> indexes) {
         this.name = name;
         this.indexes = indexes;
@@ -52,6 +57,7 @@ public final class SearchAlias implements JsonSerializable<SearchAlias> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -61,6 +67,7 @@ public final class SearchAlias implements JsonSerializable<SearchAlias> {
      * 
      * @return the indexes value.
      */
+    @Generated
     public List<String> getIndexes() {
         return this.indexes;
     }
@@ -70,6 +77,7 @@ public final class SearchAlias implements JsonSerializable<SearchAlias> {
      * 
      * @return the eTag value.
      */
+    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -80,6 +88,7 @@ public final class SearchAlias implements JsonSerializable<SearchAlias> {
      * @param eTag the eTag value to set.
      * @return the SearchAlias object itself.
      */
+    @Generated
     public SearchAlias setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -88,6 +97,7 @@ public final class SearchAlias implements JsonSerializable<SearchAlias> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -106,6 +116,7 @@ public final class SearchAlias implements JsonSerializable<SearchAlias> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchAlias.
      */
+    @Generated
     public static SearchAlias fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

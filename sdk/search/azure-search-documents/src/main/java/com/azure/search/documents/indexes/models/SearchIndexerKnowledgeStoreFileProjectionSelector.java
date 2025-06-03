@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -24,6 +25,7 @@ public final class SearchIndexerKnowledgeStoreFileProjectionSelector
      * 
      * @param storageContainer the storageContainer value to set.
      */
+    @Generated
     public SearchIndexerKnowledgeStoreFileProjectionSelector(String storageContainer) {
         super(storageContainer);
     }
@@ -31,6 +33,7 @@ public final class SearchIndexerKnowledgeStoreFileProjectionSelector
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SearchIndexerKnowledgeStoreFileProjectionSelector setReferenceKeyName(String referenceKeyName) {
         super.setReferenceKeyName(referenceKeyName);
@@ -40,6 +43,7 @@ public final class SearchIndexerKnowledgeStoreFileProjectionSelector
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SearchIndexerKnowledgeStoreFileProjectionSelector setGeneratedKeyName(String generatedKeyName) {
         super.setGeneratedKeyName(generatedKeyName);
@@ -49,6 +53,7 @@ public final class SearchIndexerKnowledgeStoreFileProjectionSelector
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SearchIndexerKnowledgeStoreFileProjectionSelector setSource(String source) {
         super.setSource(source);
@@ -58,6 +63,7 @@ public final class SearchIndexerKnowledgeStoreFileProjectionSelector
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SearchIndexerKnowledgeStoreFileProjectionSelector setSourceContext(String sourceContext) {
         super.setSourceContext(sourceContext);
@@ -67,6 +73,7 @@ public final class SearchIndexerKnowledgeStoreFileProjectionSelector
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SearchIndexerKnowledgeStoreFileProjectionSelector setInputs(List<InputFieldMappingEntry> inputs) {
         super.setInputs(inputs);
@@ -76,6 +83,7 @@ public final class SearchIndexerKnowledgeStoreFileProjectionSelector
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -97,6 +105,7 @@ public final class SearchIndexerKnowledgeStoreFileProjectionSelector
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchIndexerKnowledgeStoreFileProjectionSelector.
      */
+    @Generated
     public static SearchIndexerKnowledgeStoreFileProjectionSelector fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean storageContainerFound = false;

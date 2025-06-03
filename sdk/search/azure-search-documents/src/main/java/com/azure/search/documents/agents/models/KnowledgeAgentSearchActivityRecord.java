@@ -7,6 +7,7 @@
 package com.azure.search.documents.agents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -23,31 +24,37 @@ public final class KnowledgeAgentSearchActivityRecord extends KnowledgeAgentActi
     /*
      * The type of the activity record.
      */
+    @Generated
     private String type = "AzureSearchQuery";
 
     /*
      * The target index for the retrieval activity.
      */
+    @Generated
     private String targetIndex;
 
     /*
      * The query details for the retrieval activity.
      */
+    @Generated
     private KnowledgeAgentSearchActivityRecordQuery query;
 
     /*
      * The query time for this retrieval activity.
      */
+    @Generated
     private OffsetDateTime queryTime;
 
     /*
      * The count of documents retrieved.
      */
+    @Generated
     private Integer count;
 
     /*
      * The elapsed time in milliseconds for the retrieval activity.
      */
+    @Generated
     private Integer elapsedMs;
 
     /**
@@ -55,6 +62,7 @@ public final class KnowledgeAgentSearchActivityRecord extends KnowledgeAgentActi
      * 
      * @param id the id value to set.
      */
+    @Generated
     public KnowledgeAgentSearchActivityRecord(int id) {
         super(id);
     }
@@ -64,6 +72,7 @@ public final class KnowledgeAgentSearchActivityRecord extends KnowledgeAgentActi
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -74,6 +83,7 @@ public final class KnowledgeAgentSearchActivityRecord extends KnowledgeAgentActi
      * 
      * @return the targetIndex value.
      */
+    @Generated
     public String getTargetIndex() {
         return this.targetIndex;
     }
@@ -84,6 +94,7 @@ public final class KnowledgeAgentSearchActivityRecord extends KnowledgeAgentActi
      * @param targetIndex the targetIndex value to set.
      * @return the KnowledgeAgentSearchActivityRecord object itself.
      */
+    @Generated
     public KnowledgeAgentSearchActivityRecord setTargetIndex(String targetIndex) {
         this.targetIndex = targetIndex;
         return this;
@@ -94,6 +105,7 @@ public final class KnowledgeAgentSearchActivityRecord extends KnowledgeAgentActi
      * 
      * @return the query value.
      */
+    @Generated
     public KnowledgeAgentSearchActivityRecordQuery getQuery() {
         return this.query;
     }
@@ -104,6 +116,7 @@ public final class KnowledgeAgentSearchActivityRecord extends KnowledgeAgentActi
      * @param query the query value to set.
      * @return the KnowledgeAgentSearchActivityRecord object itself.
      */
+    @Generated
     public KnowledgeAgentSearchActivityRecord setQuery(KnowledgeAgentSearchActivityRecordQuery query) {
         this.query = query;
         return this;
@@ -114,6 +127,7 @@ public final class KnowledgeAgentSearchActivityRecord extends KnowledgeAgentActi
      * 
      * @return the queryTime value.
      */
+    @Generated
     public OffsetDateTime getQueryTime() {
         return this.queryTime;
     }
@@ -124,6 +138,7 @@ public final class KnowledgeAgentSearchActivityRecord extends KnowledgeAgentActi
      * @param queryTime the queryTime value to set.
      * @return the KnowledgeAgentSearchActivityRecord object itself.
      */
+    @Generated
     public KnowledgeAgentSearchActivityRecord setQueryTime(OffsetDateTime queryTime) {
         this.queryTime = queryTime;
         return this;
@@ -134,6 +149,7 @@ public final class KnowledgeAgentSearchActivityRecord extends KnowledgeAgentActi
      * 
      * @return the count value.
      */
+    @Generated
     public Integer getCount() {
         return this.count;
     }
@@ -144,6 +160,7 @@ public final class KnowledgeAgentSearchActivityRecord extends KnowledgeAgentActi
      * @param count the count value to set.
      * @return the KnowledgeAgentSearchActivityRecord object itself.
      */
+    @Generated
     public KnowledgeAgentSearchActivityRecord setCount(Integer count) {
         this.count = count;
         return this;
@@ -154,6 +171,7 @@ public final class KnowledgeAgentSearchActivityRecord extends KnowledgeAgentActi
      * 
      * @return the elapsedMs value.
      */
+    @Generated
     public Integer getElapsedMs() {
         return this.elapsedMs;
     }
@@ -164,6 +182,7 @@ public final class KnowledgeAgentSearchActivityRecord extends KnowledgeAgentActi
      * @param elapsedMs the elapsedMs value to set.
      * @return the KnowledgeAgentSearchActivityRecord object itself.
      */
+    @Generated
     public KnowledgeAgentSearchActivityRecord setElapsedMs(Integer elapsedMs) {
         this.elapsedMs = elapsedMs;
         return this;
@@ -172,6 +191,7 @@ public final class KnowledgeAgentSearchActivityRecord extends KnowledgeAgentActi
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -195,6 +215,7 @@ public final class KnowledgeAgentSearchActivityRecord extends KnowledgeAgentActi
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KnowledgeAgentSearchActivityRecord.
      */
+    @Generated
     public static KnowledgeAgentSearchActivityRecord fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean idFound = false;

@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,6 +17,7 @@ public final class KnowledgeAgentModelKind extends ExpandableStringEnum<Knowledg
     /**
      * Use Azure Open AI models for query planning.
      */
+    @Generated
     public static final KnowledgeAgentModelKind AZURE_OPEN_AI = fromString("azureOpenAI");
 
     /**
@@ -23,6 +25,7 @@ public final class KnowledgeAgentModelKind extends ExpandableStringEnum<Knowledg
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public KnowledgeAgentModelKind() {
     }
@@ -33,6 +36,7 @@ public final class KnowledgeAgentModelKind extends ExpandableStringEnum<Knowledg
      * @param name a name to look for.
      * @return the corresponding KnowledgeAgentModelKind.
      */
+    @Generated
     public static KnowledgeAgentModelKind fromString(String name) {
         return fromString(name, KnowledgeAgentModelKind.class);
     }
@@ -42,6 +46,7 @@ public final class KnowledgeAgentModelKind extends ExpandableStringEnum<Knowledg
      * 
      * @return known KnowledgeAgentModelKind values.
      */
+    @Generated
     public static Collection<KnowledgeAgentModelKind> values() {
         return values(KnowledgeAgentModelKind.class);
     }

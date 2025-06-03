@@ -23,6 +23,12 @@ public final class PhoneNumberPurchaseRequest implements JsonSerializable<PhoneN
     @Generated
     private String searchId;
 
+    /*
+     * The agreement to not resell the phone numbers. Defaults to false if not provided.
+     */
+    @Generated
+    private Boolean agreeToNotResell;
+
     /**
      * Creates an instance of PhoneNumberPurchaseRequest class.
      */
@@ -53,6 +59,30 @@ public final class PhoneNumberPurchaseRequest implements JsonSerializable<PhoneN
     }
 
     /**
+     * Get the agreeToNotResell property: The agreement to not resell the phone numbers. Defaults to false if not
+     * provided.
+     * 
+     * @return the agreeToNotResell value.
+     */
+    @Generated
+    public Boolean isAgreeToNotResell() {
+        return this.agreeToNotResell;
+    }
+
+    /**
+     * Set the agreeToNotResell property: The agreement to not resell the phone numbers. Defaults to false if not
+     * provided.
+     * 
+     * @param agreeToNotResell the agreeToNotResell value to set.
+     * @return the PhoneNumberPurchaseRequest object itself.
+     */
+    @Generated
+    public PhoneNumberPurchaseRequest setAgreeToNotResell(Boolean agreeToNotResell) {
+        this.agreeToNotResell = agreeToNotResell;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -60,6 +90,7 @@ public final class PhoneNumberPurchaseRequest implements JsonSerializable<PhoneN
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("searchId", this.searchId);
+        jsonWriter.writeBooleanField("agreeToNotResell", this.agreeToNotResell);
         return jsonWriter.writeEndObject();
     }
 
@@ -81,6 +112,9 @@ public final class PhoneNumberPurchaseRequest implements JsonSerializable<PhoneN
 
                 if ("searchId".equals(fieldName)) {
                     deserializedPhoneNumberPurchaseRequest.searchId = reader.getString();
+                } else if ("agreeToNotResell".equals(fieldName)) {
+                    deserializedPhoneNumberPurchaseRequest.agreeToNotResell
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,6 +24,7 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
     /*
      * The name of the semantic configuration.
      */
+    @Generated
     private final String name;
 
     /*
@@ -30,16 +32,19 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
      * answers. At least one of the three sub properties (titleField, prioritizedKeywordsFields and
      * prioritizedContentFields) need to be set.
      */
+    @Generated
     private final SemanticPrioritizedFields prioritizedFields;
 
     /*
      * Specifies the score type to be used for the sort order of the search results.
      */
+    @Generated
     private RankingOrder rankingOrder;
 
     /*
      * Determines which semantic or query rewrite models to use during model flighting/upgrades.
      */
+    @Generated
     private Boolean flightingOptIn;
 
     /**
@@ -48,6 +53,7 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
      * @param name the name value to set.
      * @param prioritizedFields the prioritizedFields value to set.
      */
+    @Generated
     public SemanticConfiguration(String name, SemanticPrioritizedFields prioritizedFields) {
         this.name = name;
         this.prioritizedFields = prioritizedFields;
@@ -58,6 +64,7 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -69,6 +76,7 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
      * 
      * @return the prioritizedFields value.
      */
+    @Generated
     public SemanticPrioritizedFields getPrioritizedFields() {
         return this.prioritizedFields;
     }
@@ -78,6 +86,7 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
      * 
      * @return the rankingOrder value.
      */
+    @Generated
     public RankingOrder getRankingOrder() {
         return this.rankingOrder;
     }
@@ -88,6 +97,7 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
      * @param rankingOrder the rankingOrder value to set.
      * @return the SemanticConfiguration object itself.
      */
+    @Generated
     public SemanticConfiguration setRankingOrder(RankingOrder rankingOrder) {
         this.rankingOrder = rankingOrder;
         return this;
@@ -99,6 +109,7 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
      * 
      * @return the flightingOptIn value.
      */
+    @Generated
     public Boolean isFlightingOptIn() {
         return this.flightingOptIn;
     }
@@ -110,6 +121,7 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
      * @param flightingOptIn the flightingOptIn value to set.
      * @return the SemanticConfiguration object itself.
      */
+    @Generated
     public SemanticConfiguration setFlightingOptIn(Boolean flightingOptIn) {
         this.flightingOptIn = flightingOptIn;
         return this;
@@ -118,6 +130,7 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -137,6 +150,7 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SemanticConfiguration.
      */
+    @Generated
     public static SemanticConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;
