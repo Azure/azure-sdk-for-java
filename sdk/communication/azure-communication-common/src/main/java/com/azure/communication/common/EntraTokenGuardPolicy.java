@@ -22,14 +22,18 @@ import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 
 /**
  * Pipeline policy that caches and validates Entra and ACS tokens in HTTP responses.
- *
- * <p><b>Constructor:</b></p>
- * <p>Creates a new instance of {@code EntraTokenGuardPolicy}.</p>
  */
 public final class EntraTokenGuardPolicy implements HttpPipelinePolicy {
 
     private String entraTokenCache;
     private HttpResponse responseCache;
+
+    /**
+     * Default constructor for {@code EntraTokenGuardPolicy}.
+     */
+    public EntraTokenGuardPolicy() {
+        super();
+    }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
