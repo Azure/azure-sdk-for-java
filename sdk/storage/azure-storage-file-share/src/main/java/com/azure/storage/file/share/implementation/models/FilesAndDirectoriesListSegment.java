@@ -5,7 +5,7 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -23,16 +23,19 @@ public final class FilesAndDirectoriesListSegment implements XmlSerializable<Fil
     /*
      * The DirectoryItems property.
      */
+    @Generated
     private List<DirectoryItem> directoryItems = new ArrayList<>();
 
     /*
      * The FileItems property.
      */
+    @Generated
     private List<FileItem> fileItems = new ArrayList<>();
 
     /**
      * Creates an instance of FilesAndDirectoriesListSegment class.
      */
+    @Generated
     public FilesAndDirectoriesListSegment() {
     }
 
@@ -41,6 +44,7 @@ public final class FilesAndDirectoriesListSegment implements XmlSerializable<Fil
      * 
      * @return the directoryItems value.
      */
+    @Generated
     public List<DirectoryItem> getDirectoryItems() {
         return this.directoryItems;
     }
@@ -51,6 +55,7 @@ public final class FilesAndDirectoriesListSegment implements XmlSerializable<Fil
      * @param directoryItems the directoryItems value to set.
      * @return the FilesAndDirectoriesListSegment object itself.
      */
+    @Generated
     public FilesAndDirectoriesListSegment setDirectoryItems(List<DirectoryItem> directoryItems) {
         this.directoryItems = directoryItems;
         return this;
@@ -61,6 +66,7 @@ public final class FilesAndDirectoriesListSegment implements XmlSerializable<Fil
      * 
      * @return the fileItems value.
      */
+    @Generated
     public List<FileItem> getFileItems() {
         return this.fileItems;
     }
@@ -71,19 +77,22 @@ public final class FilesAndDirectoriesListSegment implements XmlSerializable<Fil
      * @param fileItems the fileItems value to set.
      * @return the FilesAndDirectoriesListSegment object itself.
      */
+    @Generated
     public FilesAndDirectoriesListSegment setFileItems(List<FileItem> fileItems) {
         this.fileItems = fileItems;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Entries" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "Entries" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         if (this.directoryItems != null) {
             for (DirectoryItem element : this.directoryItems) {
@@ -106,6 +115,7 @@ public final class FilesAndDirectoriesListSegment implements XmlSerializable<Fil
      * if it was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the FilesAndDirectoriesListSegment.
      */
+    @Generated
     public static FilesAndDirectoriesListSegment fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -120,9 +130,11 @@ public final class FilesAndDirectoriesListSegment implements XmlSerializable<Fil
      * if it was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the FilesAndDirectoriesListSegment.
      */
+    @Generated
     public static FilesAndDirectoriesListSegment fromXml(XmlReader xmlReader, String rootElementName)
         throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Entries" : rootElementName;
+        String finalRootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "Entries" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             FilesAndDirectoriesListSegment deserializedFilesAndDirectoriesListSegment
                 = new FilesAndDirectoriesListSegment();
