@@ -192,6 +192,8 @@ implements IDocumentQueryExecutionContext<T> {
     public Map<String, String> createCommonHeadersAsync(CosmosQueryRequestOptions cosmosQueryRequestOptions) {
         Map<String, String> requestHeaders = new HashMap<>();
 
+        ReadConsistencyStrategy requestLevelConsistencyStrategy =
+            cosmosQueryRequestOptions.getReadConsistencyStrategy();
         ConsistencyLevel defaultConsistencyLevel = this.client.getDefaultConsistencyLevelAsync();
         ConsistencyLevel desiredConsistencyLevel = cosmosQueryRequestOptions.getConsistencyLevel() != null ?
             cosmosQueryRequestOptions.getConsistencyLevel():
@@ -202,10 +204,16 @@ implements IDocumentQueryExecutionContext<T> {
                 (defaultConsistencyLevel == ConsistencyLevel.SESSION &&
                     // skip applying the session token when Eventual Consistency is explicitly requested
                     // on request-level for data plane operations.
-                    // The session token is ignored on teh backend/gateway in this case anyway
+                    // The session token is ignored on the backend/gateway in this case anyway
                     // and the session token can be rather large (even run in the 16 KB header length problem
                     // on the gateway - so not worth sending when not needed
                     this.resourceTypeEnum == ResourceType.Document);
+
+        // Ignore and don't apply session token for effective consistency setting
+        // for which service will ignore the session token anyway
+        sessionTokenApplicable &= desiredConsistencyLevel != ConsistencyLevel.EVENTUAL
+            && desiredConsistencyLevel != ConsistencyLevel.CONSISTENT_PREFIX
+            && requestLevelConsistencyStrategy != ReadConsistencyStrategy.EVENTUAL;
 
         if (!Strings.isNullOrEmpty(cosmosQueryRequestOptions.getSessionToken())
                 && !ReplicatedResourceClientUtils.isReadingFromMaster(this.resourceTypeEnum, OperationType.ReadFeed)) {
