@@ -33,6 +33,11 @@ public final class PhoneNumberOperationType extends ExpandableStringEnum<PhoneNu
         = fromString("updatePhoneNumberCapabilities");
 
     /**
+     * Static value reservationPurchase for PhoneNumberOperationType.
+     */
+    public static final PhoneNumberOperationType RESERVATION_PURCHASE = fromString("reservationPurchase");
+
+    /**
      * Creates a new instance of PhoneNumberOperationType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class AcsRecordingStorageInfoProperties implements JsonSerializable
     /*
      * List of details of recording chunks information
      */
+    @Generated
     private List<AcsRecordingChunkInfoProperties> recordingChunks;
 
     /**
      * Creates an instance of AcsRecordingStorageInfoProperties class.
      */
+    @Generated
     public AcsRecordingStorageInfoProperties() {
     }
 
@@ -33,6 +36,7 @@ public final class AcsRecordingStorageInfoProperties implements JsonSerializable
      * 
      * @return the recordingChunks value.
      */
+    @Generated
     public List<AcsRecordingChunkInfoProperties> getRecordingChunks() {
         return this.recordingChunks;
     }
@@ -43,6 +47,7 @@ public final class AcsRecordingStorageInfoProperties implements JsonSerializable
      * @param recordingChunks the recordingChunks value to set.
      * @return the AcsRecordingStorageInfoProperties object itself.
      */
+    @Generated
     public AcsRecordingStorageInfoProperties setRecordingChunks(List<AcsRecordingChunkInfoProperties> recordingChunks) {
         this.recordingChunks = recordingChunks;
         return this;
@@ -51,6 +56,7 @@ public final class AcsRecordingStorageInfoProperties implements JsonSerializable
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -67,6 +73,7 @@ public final class AcsRecordingStorageInfoProperties implements JsonSerializable
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AcsRecordingStorageInfoProperties.
      */
+    @Generated
     public static AcsRecordingStorageInfoProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsRecordingStorageInfoProperties deserializedAcsRecordingStorageInfoProperties

@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class AcsIncomingCallCustomContext implements JsonSerializable<AcsI
     /*
      * Sip Headers for incoming call
      */
+    @Generated
     private Map<String, String> sipHeaders;
 
     /*
      * Voip Headers for incoming call
      */
+    @Generated
     private Map<String, String> voipHeaders;
 
     /**
      * Creates an instance of AcsIncomingCallCustomContext class.
      */
+    @Generated
     public AcsIncomingCallCustomContext() {
     }
 
@@ -38,6 +42,7 @@ public final class AcsIncomingCallCustomContext implements JsonSerializable<AcsI
      * 
      * @return the sipHeaders value.
      */
+    @Generated
     public Map<String, String> getSipHeaders() {
         return this.sipHeaders;
     }
@@ -48,6 +53,7 @@ public final class AcsIncomingCallCustomContext implements JsonSerializable<AcsI
      * @param sipHeaders the sipHeaders value to set.
      * @return the AcsIncomingCallCustomContext object itself.
      */
+    @Generated
     public AcsIncomingCallCustomContext setSipHeaders(Map<String, String> sipHeaders) {
         this.sipHeaders = sipHeaders;
         return this;
@@ -58,6 +64,7 @@ public final class AcsIncomingCallCustomContext implements JsonSerializable<AcsI
      * 
      * @return the voipHeaders value.
      */
+    @Generated
     public Map<String, String> getVoipHeaders() {
         return this.voipHeaders;
     }
@@ -68,6 +75,7 @@ public final class AcsIncomingCallCustomContext implements JsonSerializable<AcsI
      * @param voipHeaders the voipHeaders value to set.
      * @return the AcsIncomingCallCustomContext object itself.
      */
+    @Generated
     public AcsIncomingCallCustomContext setVoipHeaders(Map<String, String> voipHeaders) {
         this.voipHeaders = voipHeaders;
         return this;
@@ -76,6 +84,7 @@ public final class AcsIncomingCallCustomContext implements JsonSerializable<AcsI
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class AcsIncomingCallCustomContext implements JsonSerializable<AcsI
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AcsIncomingCallCustomContext.
      */
+    @Generated
     public static AcsIncomingCallCustomContext fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsIncomingCallCustomContext deserializedAcsIncomingCallCustomContext = new AcsIncomingCallCustomContext();
