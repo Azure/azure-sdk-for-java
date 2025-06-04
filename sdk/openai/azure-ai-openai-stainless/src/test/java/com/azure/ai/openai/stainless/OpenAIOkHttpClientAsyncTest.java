@@ -14,6 +14,7 @@ import com.openai.credential.BearerTokenCredential;
 import com.openai.errors.BadRequestException;
 import com.openai.errors.NotFoundException;
 import com.openai.models.ResponseFormatJsonObject;
+import com.openai.models.ResponseFormatJsonSchema;
 import com.openai.models.audio.transcriptions.TranscriptionCreateParams;
 import com.openai.models.audio.transcriptions.TranscriptionCreateResponse;
 import com.openai.models.chat.completions.ChatCompletion;
@@ -34,6 +35,7 @@ import com.openai.models.responses.ResponseOutputMessage;
 import com.openai.models.responses.ResponseRetrieveParams;
 import com.openai.models.responses.ResponseDeleteParams;
 import com.openai.models.responses.ResponseInputImage;
+import com.openai.models.ResponseFormatJsonSchema.JsonSchema;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -696,5 +698,26 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
         ImageGenerateParams params = createImageGenerateParams(testModel, prompt);
         Optional<List<Image>> images = client.images().generate(params).join().data();
         assertImageGeneration(images);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
+    public void testStructuredJsonOutputReturnSuccessfully(String apiType, String apiVersion, String testModel) {
+        client = createAsyncClient(apiType, apiVersion);
+        JsonSchema.Schema schema = createSchema();
+
+        ChatCompletionCreateParams params = ChatCompletionCreateParams.builder()
+            .model(testModel)
+            .temperature(0.0)
+            .maxCompletionTokens(512)
+            .responseFormat(ResponseFormatJsonSchema.builder()
+                .jsonSchema(ResponseFormatJsonSchema.JsonSchema.builder().name("employee-list").schema(schema).build())
+                .build())
+            .addUserMessage("List 3 OpenAI employees")
+            .build();
+
+        ChatCompletion result = client.chat().completions().create(params).join();
+        assertChatCompletionDetailedResponse(result, "employees");
+        assertChatCompletionContainsField(result, "employees");
     }
 }
