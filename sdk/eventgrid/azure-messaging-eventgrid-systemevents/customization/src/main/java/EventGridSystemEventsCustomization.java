@@ -36,14 +36,20 @@ import static com.github.javaparser.javadoc.description.JavadocDescription.parse
  * This class contains the customization code to customize the AutoRest generated code for Event Grid.
  */
 public class EventGridSystemEventsCustomization extends Customization {
-    private static final String newLine = System.lineSeparator();
 
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
         customizeModuleInfo(customization);
 
         PackageCustomization systemEvent = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
-        List<ClassCustomization> classCustomizations = systemEvent.listClasses();
+        // Manual listing of classes in the package until a bug is fixed in TypeSpec Java.
+        String packagePath = "src/main/java/com/azure/messaging/eventgrid/systemevents/";
+        List<ClassCustomization> classCustomizations = customization.getRawEditor().getContents().keySet().stream()
+            .filter(fileName -> fileName.startsWith(packagePath))
+            .map(fileName -> fileName.substring(packagePath.length(), fileName.length() - 5))
+            .filter(className -> !className.contains("/"))
+            .map(className -> systemEvent.getClass(className))
+            .collect(Collectors.toList());
 
         Map<String, String> nameMap = new TreeMap<>();
         Map<String, String> descriptionMap = new TreeMap<>();
@@ -69,7 +75,7 @@ public class EventGridSystemEventsCustomization extends Customization {
                 int endIndex = javadoc.lastIndexOf(" event.");
                 boolean hasEventName = startIndex > 0 && endIndex > 0;
                 if (!hasEventName) {
-                    logger.info("Class " + classCustomization.getClassName() + " " + classCustomization.getJavadoc().getDescription());
+                    logger.info("Class " + classCustomization.getClassName() + " " + javadoc);
                     return null;
                 }
 
@@ -167,7 +173,7 @@ public class EventGridSystemEventsCustomization extends Customization {
         StringBuilder sb = new StringBuilder();
         lines.forEach(line -> {
             if (!line.trim().equals("exports com.azure.messaging.eventgrid;")) {
-                sb.append(line).append(newLine);
+                sb.append(line).append('\n');
             }
         });
         editor.replaceFile("src/main/java/module-info.java", sb.toString());

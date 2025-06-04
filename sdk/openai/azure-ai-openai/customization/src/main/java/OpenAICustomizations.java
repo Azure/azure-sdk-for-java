@@ -2,6 +2,7 @@ import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
+import com.github.javaparser.ast.body.InitializerDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import org.slf4j.Logger;
 
@@ -49,18 +50,17 @@ public class OpenAICustomizations extends Customization {
         customization.getClass("com.azure.ai.openai.models", "CompletionsOptions").customizeAst(ast -> {
             ast.addImport("com.azure.ai.openai.implementation.accesshelpers.CompletionsOptionsAccessHelper");
             ast.getClassByName("CompletionsOptions").ifPresent(clazz -> clazz.getMembers()
-                .add(0, new ConstructorDeclaration().setStatic(true)
-                    .setBody(StaticJavaParser.parseBlock("{"
-                        + "CompletionsOptionsAccessHelper.setAccessor(new CompletionsOptionsAccessHelper.CompletionsOptionsAccessor() {"
-                        + "    @Override"
-                        + "    public void setStream(CompletionsOptions options, boolean stream) {"
-                        + "        options.setStream(stream);"
-                        + "    }"
-                        + "    @Override"
-                        + "    public void setStreamOptions(CompletionsOptions options, ChatCompletionStreamOptions streamOptions) {"
-                        + "        options.setStreamOptions(streamOptions);"
-                        + "    }"
-                        + "}); }"))));
+                .add(0, new InitializerDeclaration(true, StaticJavaParser.parseBlock("{"
+                    + "CompletionsOptionsAccessHelper.setAccessor(new CompletionsOptionsAccessHelper.CompletionsOptionsAccessor() {"
+                    + "    @Override"
+                    + "    public void setStream(CompletionsOptions options, boolean stream) {"
+                    + "        options.setStream(stream);"
+                    + "    }"
+                    + "    @Override"
+                    + "    public void setStreamOptions(CompletionsOptions options, ChatCompletionStreamOptions streamOptions) {"
+                    + "        options.setStreamOptions(streamOptions);"
+                    + "    }"
+                    + "}); }"))));
         });
     }
 
@@ -69,18 +69,17 @@ public class OpenAICustomizations extends Customization {
         customization.getClass("com.azure.ai.openai.models", "ChatCompletionsOptions").customizeAst(ast -> {
             ast.addImport("com.azure.ai.openai.implementation.accesshelpers.ChatCompletionsOptionsAccessHelper");
             ast.getClassByName("ChatCompletionsOptions").ifPresent(clazz -> clazz.getMembers()
-                .add(0, new ConstructorDeclaration().setStatic(true)
-                    .setBody(StaticJavaParser.parseBlock("{"
-                        + "ChatCompletionsOptionsAccessHelper.setAccessor(new ChatCompletionsOptionsAccessHelper.ChatCompletionsOptionsAccessor() {"
-                        + "    @Override"
-                        + "    public void setStream(ChatCompletionsOptions options, boolean stream) {"
-                        + "        options.setStream(stream);"
-                        + "    }"
-                        + "    @Override"
-                        + "    public void setStreamOptions(ChatCompletionsOptions options, ChatCompletionStreamOptions streamOptions) {"
-                        + "        options.setStreamOptions(streamOptions);"
-                        + "    }"
-                        + "}); }"))));
+                .add(0, new InitializerDeclaration(true, StaticJavaParser.parseBlock("{"
+                    + "ChatCompletionsOptionsAccessHelper.setAccessor(new ChatCompletionsOptionsAccessHelper.ChatCompletionsOptionsAccessor() {"
+                    + "    @Override"
+                    + "    public void setStream(ChatCompletionsOptions options, boolean stream) {"
+                    + "        options.setStream(stream);"
+                    + "    }"
+                    + "    @Override"
+                    + "    public void setStreamOptions(ChatCompletionsOptions options, ChatCompletionStreamOptions streamOptions) {"
+                    + "        options.setStreamOptions(streamOptions);"
+                    + "    }"
+                    + "}); }"))));
         });
     }
 }

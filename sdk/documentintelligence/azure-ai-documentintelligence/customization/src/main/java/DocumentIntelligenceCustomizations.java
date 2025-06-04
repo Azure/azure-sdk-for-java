@@ -6,7 +6,7 @@ import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.ConstructorDeclaration;
+import com.github.javaparser.ast.body.InitializerDeclaration;
 import com.github.javaparser.ast.nodeTypes.NodeWithModifiers;
 import com.github.javaparser.javadoc.Javadoc;
 import com.github.javaparser.javadoc.description.JavadocDescription;
@@ -37,7 +37,7 @@ public class DocumentIntelligenceCustomizations extends Customization {
         customization.getClass(MODELS_PACKAGE, "AnalyzeOperationDetails").customizeAst(ast -> {
             ast.addImport("com.azure.ai.documentintelligence.implementation.AnalyzeOperationDetailsHelper");
             ast.getClassByName("AnalyzeOperationDetails").ifPresent(clazz -> clazz.getMembers()
-                .add(0, new ConstructorDeclaration().setStatic(true).setBody(StaticJavaParser.parseBlock("{"
+                .add(0, new InitializerDeclaration(true, StaticJavaParser.parseBlock("{"
                     + "AnalyzeOperationDetailsHelper.setAccessor(new AnalyzeOperationDetailsHelper.AnalyzeOperationDetailsAccessor() {"
                     + "    @Override"
                     + "    public void setOperationId(AnalyzeOperationDetails analyzeOperation, String operationId) {"
@@ -217,18 +217,14 @@ public class DocumentIntelligenceCustomizations extends Customization {
     private void customizePollingStrategy(LibraryCustomization customization, Logger logger) {
         logger.info("Customizing the SyncOperationLocationPollingStrategy class");
         PackageCustomization packageCustomization = customization.getPackage("com.azure.ai.documentintelligence.implementation");
-        packageCustomization.getClass("SyncOperationLocationPollingStrategy").customizeAst(ast -> {
-            ast.addImport("com.azure.ai.documentintelligence.models.AnalyzeOperationDetails");
-            ast.addImport("static com.azure.ai.documentintelligence.implementation.PollingUtils.parseOperationId");
-            ast.getClassByName("SyncOperationLocationPollingStrategy").ifPresent(this::addSyncPollOverrideMethod);
-        });
+        packageCustomization.getClass("SyncOperationLocationPollingStrategy").customizeAst(ast ->
+            ast.addImport("com.azure.ai.documentintelligence.models.AnalyzeOperationDetails")
+                .getClassByName("SyncOperationLocationPollingStrategy").ifPresent(this::addSyncPollOverrideMethod));
 
         logger.info("Customizing the OperationLocationPollingStrategy class");
-        packageCustomization.getClass("OperationLocationPollingStrategy").customizeAst(ast -> {
-            ast.addImport("com.azure.ai.documentintelligence.models.AnalyzeOperationDetails");
-            ast.addImport("static com.azure.ai.documentintelligence.implementation.PollingUtils.parseOperationId");
-            ast.getClassByName("OperationLocationPollingStrategy").ifPresent(this::addAsyncPollOverrideMethod);
-        });
+        packageCustomization.getClass("OperationLocationPollingStrategy").customizeAst(ast ->
+            ast.addImport("com.azure.ai.documentintelligence.models.AnalyzeOperationDetails")
+                .getClassByName("OperationLocationPollingStrategy").ifPresent(this::addAsyncPollOverrideMethod));
     }
 
     private void addAsyncPollOverrideMethod(ClassOrInterfaceDeclaration clazz) {
@@ -242,7 +238,7 @@ public class DocumentIntelligenceCustomizations extends Customization {
                 + "    String operationLocationHeader = pollingContext.getData(String.valueOf(PollingUtils.OPERATION_LOCATION_HEADER));"
                 + "    String operationId = null;"
                 + "    if (operationLocationHeader != null) {"
-                + "        operationId = parseOperationId(operationLocationHeader);"
+                + "        operationId = PollingUtils.parseOperationId(operationLocationHeader);"
                 + "    }"
                 + "    if (pollResponse.getValue() instanceof AnalyzeOperationDetails) {"
                 + "        AnalyzeOperationDetails operation = (AnalyzeOperationDetails) pollResponse.getValue();"
@@ -262,7 +258,7 @@ public class DocumentIntelligenceCustomizations extends Customization {
                 + "String operationLocationHeader = pollingContext.getData(String.valueOf(PollingUtils.OPERATION_LOCATION_HEADER));"
                 + "String operationId = null;"
                 + "if (operationLocationHeader != null) {"
-                + "    operationId = parseOperationId(operationLocationHeader);"
+                + "    operationId = PollingUtils.parseOperationId(operationLocationHeader);"
                 + "}"
                 + "if (pollResponse.getValue() instanceof AnalyzeOperationDetails) {"
                 + "    AnalyzeOperationDetails operation = (AnalyzeOperationDetails) pollResponse.getValue();"

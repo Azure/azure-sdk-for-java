@@ -145,11 +145,11 @@ public class JobRouterSdkCustomization extends Customization {
         clazz.addMethod("connectionString", Modifier.Keyword.PUBLIC)
             .setType(methodReturnType)
             .addParameter(String.class, "AzureKeyCredential")
-            .setBody(StaticJavaParser.parseBlock(String.join("{"
+            .setBody(StaticJavaParser.parseBlock("{"
                 + "CommunicationConnectionString connection = new CommunicationConnectionString(connectionString);"
                 + "this.credential(new AzureKeyCredential(connection.getAccessKey()));"
                 + "this.endpoint(connection.getEndpoint());"
-                + "return this; }")))
+                + "return this; }"))
             .setJavadocComment(new Javadoc(JavadocDescription.parseText("Set a connection string for authorization."))
                 .addBlockTag("param", "connectionString", "valid connectionString as a string.")
                 .addBlockTag("return", "the updated " + methodReturnType + " object."));
