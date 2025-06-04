@@ -174,4 +174,74 @@ public class MetricsQueryClientTest extends TestProxyTestBase {
         PagedIterable<MetricNamespace> metricsNamespaces = client.listMetricNamespaces(resourceUri, null);
         assertEquals(1, metricsNamespaces.stream().count());
     }
+
+    @Test
+    public void testDurationBasedQueryTimeInterval_Last30Minutes() {
+        // Test the specific case mentioned in issue #45283
+        Response<MetricsQueryResult> metricsResponse
+            = client.queryResourceWithResponse(resourceUri, Arrays.asList("SuccessfulRequests"),
+                new MetricsQueryOptions().setMetricNamespace("Microsoft.EventHub/namespaces")
+                    .setTimeInterval(QueryTimeInterval.LAST_30_MINUTES)
+                    .setGranularity(Duration.ofMinutes(5))
+                    .setAggregations(Arrays.asList(AggregationType.COUNT)),
+                Context.NONE);
+
+        MetricsQueryResult result = metricsResponse.getValue();
+
+        // Verify that the service accepted the timespan and returned a valid result
+        Assertions.assertNotNull(result, "Metrics result should not be null");
+        Assertions.assertNotNull(result.getTimeInterval(), "Time interval should be present in response");
+        Assertions.assertFalse(result.getMetrics().isEmpty(), "Metrics should not be empty");
+
+        // Verify the timespan is in the correct absolute format, not just "PT30M"
+        String timespanString = result.getTimeInterval().toString();
+        Assertions.assertTrue(timespanString.contains("/"), "Time interval should contain '/' separator");
+        Assertions.assertFalse(timespanString.equals("PT30M"), "Time interval should not be the raw duration");
+    }
+
+    @Test
+    public void testDurationBasedQueryTimeInterval_Last1Hour() {
+        Response<MetricsQueryResult> metricsResponse
+            = client.queryResourceWithResponse(resourceUri, Arrays.asList("SuccessfulRequests"),
+                new MetricsQueryOptions().setMetricNamespace("Microsoft.EventHub/namespaces")
+                    .setTimeInterval(QueryTimeInterval.LAST_1_HOUR)
+                    .setGranularity(Duration.ofMinutes(15))
+                    .setAggregations(Arrays.asList(AggregationType.COUNT)),
+                Context.NONE);
+
+        MetricsQueryResult result = metricsResponse.getValue();
+
+        // Verify that the service accepted the timespan and returned a valid result
+        Assertions.assertNotNull(result, "Metrics result should not be null");
+        Assertions.assertNotNull(result.getTimeInterval(), "Time interval should be present in response");
+        Assertions.assertFalse(result.getMetrics().isEmpty(), "Metrics should not be empty");
+
+        // Verify the timespan is in absolute format
+        String timespanString = result.getTimeInterval().toString();
+        Assertions.assertTrue(timespanString.contains("/"), "Time interval should contain '/' separator");
+        Assertions.assertFalse(timespanString.equals("PT1H"), "Time interval should not be the raw duration");
+    }
+
+    @Test
+    public void testDurationBasedQueryTimeInterval_LastDay() {
+        Response<MetricsQueryResult> metricsResponse
+            = client.queryResourceWithResponse(resourceUri, Arrays.asList("SuccessfulRequests"),
+                new MetricsQueryOptions().setMetricNamespace("Microsoft.EventHub/namespaces")
+                    .setTimeInterval(QueryTimeInterval.LAST_DAY)
+                    .setGranularity(Duration.ofHours(1))
+                    .setAggregations(Arrays.asList(AggregationType.COUNT)),
+                Context.NONE);
+
+        MetricsQueryResult result = metricsResponse.getValue();
+
+        // Verify that the service accepted the timespan and returned a valid result
+        Assertions.assertNotNull(result, "Metrics result should not be null");
+        Assertions.assertNotNull(result.getTimeInterval(), "Time interval should be present in response");
+        Assertions.assertFalse(result.getMetrics().isEmpty(), "Metrics should not be empty");
+
+        // Verify the timespan is in absolute format
+        String timespanString = result.getTimeInterval().toString();
+        Assertions.assertTrue(timespanString.contains("/"), "Time interval should contain '/' separator");
+        Assertions.assertFalse(timespanString.equals("P1D"), "Time interval should not be the raw duration");
+    }
 }
