@@ -22,7 +22,7 @@ public class ShareFileSymbolicLinkInfo {
      * @param lastModified Last time the symbolic link file was modified.
      * @param linkText The absolute or relative path of the symbolic link file.
      */
-    public ShareFileSymbolicLinkInfo(String eTag, OffsetDateTime lastModified, String linkText) {
+    ShareFileSymbolicLinkInfo(String eTag, OffsetDateTime lastModified, String linkText) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.linkText = linkText;
