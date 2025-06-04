@@ -13,14 +13,14 @@ import java.util.Map;
 @Immutable
 public final class QueueProperties {
     private final Map<String, String> metadata;
-    private final Long approximateMessagesCount;
+    private final long approximateMessagesCount;
 
     /**
      * Creates an instance that contains properties of a queue.
      *
      * @param metadata Metadata associated with the queue.
      * @param approximateMessagesCount Approximate number of messages contained in the queue.
-     * @deprecated Use {@link #QueueProperties(Map, Long)} instead.
+     * @deprecated Use {@link #QueueProperties(Map, long)} instead.
      */
     @Deprecated
     public QueueProperties(Map<String, String> metadata, int approximateMessagesCount) {
@@ -33,7 +33,7 @@ public final class QueueProperties {
      * @param metadata Metadata associated with the queue.
      * @param approximateMessagesCount Approximate number of messages contained in the queue.
      */
-    public QueueProperties(Map<String, String> metadata, Long approximateMessagesCount) {
+    public QueueProperties(Map<String, String> metadata, long approximateMessagesCount) {
         this.metadata = metadata;
         this.approximateMessagesCount = approximateMessagesCount;
     }
@@ -51,11 +51,11 @@ public final class QueueProperties {
      * Gets the approximate number of messages contained in the queue at the time of properties retrieval.
      *
      * @return the approximate number of messages contained in the queue at the time of properties retrieval.
-     * @deprecated Use {@link #QueueProperties(Map, Long)} instead.
+     * @deprecated Use {@link #QueueProperties(Map, long)} instead.
      */
     @Deprecated
     public int getApproximateMessagesCount() {
-        return this.approximateMessagesCount == null ? 0 : Math.toIntExact(this.approximateMessagesCount);
+        return (int) this.approximateMessagesCount;
     }
 
     /**
@@ -63,7 +63,7 @@ public final class QueueProperties {
      *
      * @return the approximate number of messages contained in the queue at the time of properties retrieval.
      */
-    public Long getApproximateMessagesCountLong() {
+    public long getApproximateMessagesCountLong() {
         return approximateMessagesCount;
     }
 }
