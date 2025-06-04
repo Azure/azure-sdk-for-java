@@ -53,7 +53,7 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
      * @param exceptionHandlerUpdater A {@link Handler} that updates the
      * {@link HttpClientRequest#exceptionHandler(Handler)} to be {@link #onError(Throwable)}.
      * @param drainHandlerUpdater A {@link Handler} that updates the {@link HttpClientRequest#drainHandler(Handler)}
-     * to be {@link #requestNext(int)}.
+     * to be {@link #requestNext()}.
      * @param writeHandler A {@link Function} that will call {@link HttpClientRequest}.
      * @param isWriteQueueFull A {@link Supplier} that will call {@link HttpClientRequest#writeQueueFull()}.
      * @param reset A {@link BiConsumer} that will call {@link HttpClientRequest#reset(long, Throwable)}.
@@ -67,7 +67,7 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
         Supplier<Boolean> isWriteQueueFull, BiConsumer<Long, Throwable> reset, Supplier<Future<Void>> end,
         Promise<HttpResponse> promise, ProgressReporter progressReporter, ContextView contextView) {
         exceptionHandlerUpdater.accept(this::onError);
-        drainHandlerUpdater.accept(ignored -> requestNext(0));
+        drainHandlerUpdater.accept(ignored -> requestNext());
         this.writeHandler = writeHandler;
         this.isWriteQueueFull = isWriteQueueFull;
         this.reset = reset;
@@ -105,8 +105,8 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
     }
 
     private void write(ByteBuffer bytes) {
-        int remaining = bytes.remaining();
-        writeHandler.apply(Buffer.buffer(FluxUtil.byteBufferToArray(bytes))).andThen(result -> {
+        final int remaining = bytes.remaining();
+        writeHandler.apply(Buffer.buffer(FluxUtil.byteBufferToArray(bytes))).onComplete(result -> {
             State state = this.state;
             if (state == State.WRITING) {
                 this.state = State.UNINITIALIZED;
@@ -114,8 +114,11 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
 
             if (result.succeeded()) {
                 if (state == State.WRITING) {
+                    if (remaining > 0 && progressReporter != null) {
+                        progressReporter.reportProgress(remaining);
+                    }
                     if (!isWriteQueueFull.get()) {
-                        requestNext(remaining);
+                        requestNext();
                     }
                 } else if (state == State.COMPLETE) {
                     endRequest(remaining);
@@ -133,10 +136,7 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
         });
     }
 
-    private void requestNext(int previousWriteSize) {
-        if (progressReporter != null) {
-            progressReporter.reportProgress(previousWriteSize);
-        }
+    private void requestNext() {
         if (state == State.UNINITIALIZED) {
             subscription.request(1);
         }
@@ -219,7 +219,7 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
     }
 
     private void endRequest(int finishingWriteSize) {
-        if (progressReporter != null) {
+        if (finishingWriteSize > 0 && progressReporter != null) {
             progressReporter.reportProgress(finishingWriteSize);
         }
         end.get().onFailure(promise::fail);
