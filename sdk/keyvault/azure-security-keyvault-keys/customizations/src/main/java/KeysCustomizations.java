@@ -114,6 +114,7 @@ public class KeysCustomizations extends Customization {
             libraryCustomization.getPackage("com.azure.security.keyvault.keys.models").getClass("KeyAttestation"),
             "src/main/java/com/azure/security/keyvault/keys/models/KeyAttestation.java",
             new String[] {
+                "Creates an instance of KeyAttestation class.",
                 "Get the certificatePemFile property: A base64url-encoded string containing certificates in PEM format, used for attestation validation.",
                 "@return the certificatePemFile value.",
                 "Get the privateKeyAttestation property: The attestation blob bytes encoded as base64url string corresponding to a private key.",
@@ -123,6 +124,7 @@ public class KeysCustomizations extends Customization {
                 "Get the version property: The version of the attestation.",
                 "@return the version value."
             }, new String[] {
+                "Creates an instance of KeyAttestation.",
                 "Get a base64url-encoded string containing certificates in PEM format, used for attestation validation.",
                 "@return The certificate in PEM format.",
                 "Get the attestation blob bytes encoded as base64url string corresponding to a private key.",
