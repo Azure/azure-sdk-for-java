@@ -633,6 +633,12 @@ public abstract class HttpClientTests {
             .assertNext(responseBytes -> assertArraysEqual(expectedResponseBody, responseBytes))
             .verifyComplete();
 
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
         assertEquals(expectedResponseBody.length, progress.stream().reduce(Long::max).orElse(0L).intValue(),
             () -> "Received the following progress updates: "
                 + Arrays.toString(progress.stream().mapToLong(Long::longValue).toArray()));
@@ -650,6 +656,11 @@ public abstract class HttpClientTests {
         try (HttpResponse httpResponse = httpClient.sendSync(request, context)) {
             byte[] responseBytes = httpResponse.getBodyAsBinaryData().toBytes();
             assertArraysEqual(expectedResponseBody, responseBytes);
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             assertEquals(expectedResponseBody.length, progress.stream().reduce(Long::max).orElse(0L).intValue(),
                 () -> "Received the following progress updates: "
                     + Arrays.toString(progress.stream().mapToLong(Long::longValue).toArray()));
