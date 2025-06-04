@@ -118,6 +118,22 @@ HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactor.netty.http.clien
     .build();
 ```
 
+### Create an HttpClient with custom maxHeaderSize
+
+Create a Netty HttpClient that uses a custom maxHeaderSize. Use this sample if you're seeing an error such as
+
+```
+io.netty.handler.codec.http.TooLongHttpHeaderException: HTTP header is larger than 8192 bytes.
+```
+
+```java readme-sample-customMaxHeaderSize
+// Constructs an HttpClient with a modified max header size.
+// This creates a Netty HttpClient with a max headers size of 256 KB.
+HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactor.netty.http.client.HttpClient.create()
+    .httpResponseDecoder(httpResponseDecoderSpec -> httpResponseDecoderSpec.maxHeaderSize(256 * 1024)))
+    .build();
+```
+
 ## Next steps
 
 Get started with Azure libraries that are [built using Azure Core](https://azure.github.io/azure-sdk/releases/latest/#java).

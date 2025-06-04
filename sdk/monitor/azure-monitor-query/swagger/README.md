@@ -48,7 +48,7 @@ autorest --tag=metrics-namespaces
 These settings apply only when `--tag=log` is specified on the command line.
 
 ```yaml $(tag) == 'log'
-use: '@autorest/java@4.1.42'
+use: '@autorest/java@4.1.50'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/21f5332f2dc7437d1446edf240e9a3d4c90c6431/specification/operationalinsights/data-plane/Microsoft.OperationalInsights/stable/2022-10-27/OperationalInsights.json
 java: true
 output-folder: ../
@@ -60,13 +60,14 @@ credential-types: tokencredential
 artifact-id: azure-monitor-query
 customization-class: src/main/java/LogsCustomization.java
 enable-sync-stack: true
+use-eclipse-language-server: false
 ```
 
 ## Metrics Query
 These settings apply only when `--tag=metrics` is specified on the command line.
 
 ```yaml $(tag) == 'metrics'
-use: '@autorest/java@4.1.42'
+use: '@autorest/java@4.1.50'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0b64ca7cbe3af8cd13228dfb783a16b8272b8be2/specification/monitor/resource-manager/Microsoft.Insights/stable/2024-02-01/metrics_API.json
 java: true
 output-folder: ../
@@ -78,6 +79,7 @@ credential-types: tokencredential
 artifact-id: azure-monitor-query
 customization-class: src/main/java/MetricsCustomization.java
 enable-sync-stack: true
+use-eclipse-language-server: false
 directive:
     - rename-model:
         from: Response
@@ -106,7 +108,7 @@ directive:
 These settings apply only when `--tag=metrics-namespaces` is specified on the command line.
 
 ```yaml $(tag) == 'metrics-namespaces'
-use: '@autorest/java@4.1.42'
+use: '@autorest/java@4.1.50'
 service-name: MetricsNamespaces
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0b64ca7cbe3af8cd13228dfb783a16b8272b8be2/specification/monitor/resource-manager/Microsoft.Insights/stable/2024-02-01/metricNamespaces_API.json
 java: true
@@ -119,13 +121,14 @@ credential-types: tokencredential
 artifact-id: azure-monitor-query
 customization-class: src/main/java/MetricsNamespacesCustomization.java
 enable-sync-stack: true
+use-eclipse-language-server: false
 ```
 
 ## Metrics Definitions Query
 These settings apply only when `--tag=metrics-definitions` is specified on the command line.
 
 ```yaml $(tag) == 'metrics-definitions'
-use: '@autorest/java@4.1.42'
+use: '@autorest/java@4.1.50'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0b64ca7cbe3af8cd13228dfb783a16b8272b8be2/specification/monitor/resource-manager/Microsoft.Insights/stable/2024-02-01/metricDefinitions_API.json
 service-name: MetricsDefinitions
 java: true
@@ -138,13 +141,14 @@ credential-types: tokencredential
 artifact-id: azure-monitor-query
 customization-class: src/main/java/MetricsDefinitionsCustomization.java
 enable-sync-stack: true
+use-eclipse-language-server: false
 ```
 
 ## Metrics Batch Query
 These settings apply only when `--tag=metrics-batch` is specified on the command line.
 
 ```yaml $(tag) == 'metrics-batch'
-use: '@autorest/java@4.1.42'
+use: '@autorest/java@4.1.50'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0550754fb421cd3a5859abf6713a542b682f626c/specification/monitor/data-plane/Microsoft.Insights/stable/2024-02-01/metricBatch.json
 service-name: MetricsBatch
 java: true
@@ -157,6 +161,7 @@ credential-types: tokencredential
 artifact-id: azure-monitor-query
 enable-sync-stack: true
 customization-class: src/main/java/MetricsClientCustomization.java
+use-eclipse-language-server: false
 ```
 
 ### Change Interval to type 'Duration'
