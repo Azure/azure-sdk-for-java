@@ -21,7 +21,7 @@
 # BOM
 
 # PRLabel: %azure-sdk-bom
-/sdk/boms/azure-sdk-bom/                             @jairmyree @vcolin7 @alzimmermsft @jonathangiles @srnagar @anuchandy
+/sdk/boms/azure-sdk-bom/                             @jairmyree @vcolin7 @alzimmermsft @jonathangiles @srnagar @anuchandy @Azure/azure-java-sdk
 
 # ServiceLabel: %azure-sdk-bom
 # AzureSdkOwners:                                    @jairmyree @vcolin7 @alzimmermsft
@@ -32,32 +32,32 @@
 # ######## Core Libraries ########
 
 # PRLabel: %Azure.Core
-/sdk/core/                                           @alzimmermsft @samvaity @srnagar @anuchandy @lmolkova @vcolin7 @jonathangiles
+/sdk/core/                                           @alzimmermsft @samvaity @srnagar @anuchandy @lmolkova @vcolin7 @jonathangiles @Azure/azure-java-sdk
 
 # ServiceLabel: %Azure.Core
 # AzureSdkOwners:                                    @alzimmermsft @samvaity
 
 # PRLabel: %Azure.Core.V2
-/sdk/core-v2/                                         @alzimmermsft @samvaity @srnagar @anuchandy @lmolkova @vcolin7 @jonathangiles
+/sdk/core-v2/                                         @alzimmermsft @samvaity @srnagar @anuchandy @lmolkova @vcolin7 @jonathangiles @Azure/azure-java-sdk
 
 # ServiceLabel: %Azure.Core.V2
 # AzureSdkOwners:                                    @alzimmermsft @samvaity
 
 # PRLabel: %Azure.Core.AMQP
-/sdk/core/azure-core-amqp/                           @anuchandy @conniey @lmolkova
+/sdk/core/azure-core-amqp/                           @anuchandy @conniey @lmolkova @Azure/azure-java-sdk
 
 # ServiceLabel: %Azure.Core.AMQP
 # AzureSdkOwners:                                    @anuchandy @conniey @lmolkova
 
 # PRLabel: %OpenTelemetry
-/sdk/core/azure-core-tracing-opentelemetry/          @lmolkova @trask
+/sdk/core/azure-core-tracing-opentelemetry/          @lmolkova @trask @Azure/azure-java-sdk
 
 # ServiceLabel: %OpenTelemetry
 # AzureSdkOwners:                                    @lmolkova
 # ServiceOwners:                                     @trask @ramthi @jeanbisutti @harsimar @rajkumar-rangaraj @xiang17
 
 # PRLabel: %Azure.Core
-/sdk/parents/                                        @alzimmermsft @srnagar @jonathangiles @samvaity
+/sdk/parents/                                        @alzimmermsft @srnagar @jonathangiles @samvaity @Azure/azure-java-sdk
 
 # PRLabel: %Azure.Core
 /sdk/serialization/                                  @alzimmermsft @srnagar @Azure/azure-java-sdk
@@ -180,7 +180,7 @@
 # ServiceOwners:                                     @maertendMSFT
 
 # PRLabel: %Cognitive - Text Analytics
-/sdk/textanalytics/                                  @samvaity @quentinRobinson
+/sdk/textanalytics/                                  @samvaity @quentinRobinson @Azure/azure-java-sdk
 
 # ServiceLabel: %Cognitive - Text Analytics
 # AzureSdkOwners:                                    @samvaity
@@ -343,7 +343,7 @@
 # ServiceOwners:                                     @macolso
 
 # PRLabel: %Container Registry
-/sdk/containerregistry/                              @lmolkova @alzimmermsft @Azure/azsdk-acr
+/sdk/containerregistry/                              @lmolkova @alzimmermsft @Azure/azsdk-acr @Azure/azure-java-sdk
 
 # ServiceLabel: %Container Registry
 # AzureSdkOwners:                                    @lmolkova
@@ -462,7 +462,7 @@
 # ServiceOwners:                                     @Kishp01 @ahamad-MS
 
 # PRLabel: %Event Hubs
-/sdk/eventhubs/                                      @conniey @anuchandy @lmolkova
+/sdk/eventhubs/                                      @conniey @anuchandy @lmolkova @Azure/azure-java-sdk
 
 # ServiceLabel: %Event Hubs
 # AzureSdkOwners:                                    @conniey @anuchandy @lmolkova
@@ -486,7 +486,7 @@
 # ServiceOwners:                                     @ahmedelnably @fabiocav
 
 # PRLabel: %clientcore
-/sdk/clientcore/                                     @samvaity @vcolin7 @jonathangiles @srnagar @alzimmermsft
+/sdk/clientcore/                                     @samvaity @vcolin7 @jonathangiles @srnagar @alzimmermsft @Azure/azure-java-sdk
 
 # ServiceLabel: %clientcore
 # AzureSdkOwners:                                    @samvaity @vcolin7 @jonathangiles @srnagar @alzimmermsft
@@ -504,7 +504,7 @@
 # ServiceOwners:                                     @romahamu @omzevall
 
 # PRLabel: %Azure.Identity
-/sdk/identity/                                       @g2vinay @joshfree @Azure/azure-sdk-write-identity
+/sdk/identity/                                       @g2vinay @joshfree @Azure/azure-sdk-write-identity @Azure/azure-java-sdk
 
 # ServiceLabel: %Azure.Identity
 # AzureSdkOwners:                                    @g2vinay @joshfree
@@ -522,7 +522,7 @@
 # ServiceOwners:                                     @Azure/azure-iot-cli-triage
 
 # PRLabel: %KeyVault
-/sdk/keyvault/                                       @vcolin7 @g2vinay @Azure/azsdk-keyvault
+/sdk/keyvault/                                       @vcolin7 @g2vinay @Azure/azsdk-keyvault @Azure/azure-java-sdk
 
 # ServiceLabel: %KeyVault
 # AzureSdkOwners:                                    @vcolin7
@@ -584,10 +584,10 @@
 /sdk/modelsrepository/                               @timtay-microsoft @abhipsaMisra @digimaun @andyk-ms @brycewang-microsoft
 
 # PRLabel:  %Monitor
-/sdk/monitor/azure-monitor-query*/                   @srnagar @jairmyree @lmolkova @Azure/azure-sdk-write-monitor-data-plane
+/sdk/monitor/azure-monitor-query*/                   @srnagar @jairmyree @lmolkova @Azure/azure-sdk-write-monitor-data-plane @Azure/azure-java-sdk
 
 # PRLabel:  %Monitor
-/sdk/monitor/azure-monitor-ingestion*/               @srnagar @jairmyree @lmolkova @Azure/azure-sdk-write-monitor-data-plane
+/sdk/monitor/azure-monitor-ingestion*/               @srnagar @jairmyree @lmolkova @Azure/azure-sdk-write-monitor-data-plane @Azure/azure-java-sdk
 
 # ServiceLabel: %Monitor
 # AzureSdkOwners:                                    @srnagar @jairmyree
@@ -841,10 +841,10 @@
 /sdk/tools/                                          @srnagar @jonathangiles @Azure/azure-java-sdk
 
 # PRLabel: %Azure SDK Tools
-/sdk/tools/azure-openrewrite/                        @jairmyree @srnagar @jonathangiles @samvaity
+/sdk/tools/azure-openrewrite/                        @jairmyree @srnagar @jonathangiles @samvaity @Azure/azure-java-sdk
 
 # PRLabel: %Azure SDK Tools
-/sdk/tools/azure-openrewrite-compiler-maven-plugin/       @jairmyree @srnagar @jonathangiles @samvaity
+/sdk/tools/azure-openrewrite-compiler-maven-plugin/       @jairmyree @srnagar @jonathangiles @samvaity @Azure/azure-java-sdk
 
 # ServiceLabel: %Azure SDK Tools
 # AzureSdkOwners:                                    @srnagar @jonathangiles
@@ -893,16 +893,16 @@
 # ######## End-to-end tests ########
 
 # PRLabel: %Azure.Identity
-/sdk/e2e/                                            @g2vinay @joshfree
+/sdk/e2e/                                            @g2vinay @joshfree @Azure/azure-java-sdk
 
 # PRLabel: %common
-/common/smoke-tests/                                 @alzimmermsft @srnagar @joshfree @jonathangiles @g2vinay @conniey
+/common/smoke-tests/                                 @alzimmermsft @srnagar @joshfree @jonathangiles @g2vinay @conniey @Azure/azure-java-sdk
 
 # PRLabel: %common
-/common/perf-test-core/                              @alzimmermsft @srnagar @g2vinay
+/common/perf-test-core/                              @alzimmermsft @srnagar @g2vinay @Azure/azure-java-sdk
 
 # PRLabel: %common
-/.vscode/                                            @alzimmermsft @srnagar @g2vinay @conniey @rujche @netyyyy @saragluna @moarychan
+/.vscode/                                            @alzimmermsft @srnagar @g2vinay @conniey @rujche @netyyyy @saragluna @moarychan @Azure/azure-java-sdk
 
 # ServiceLabel: %common
 # AzureSdkOwners:                                    @alzimmermsft @srnagar
@@ -925,13 +925,12 @@
 
 /eng/                                                         @hallipr @weshaggard @benbp
 /eng/automation/                                              @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @hallipr @weshaggard @benbp
-/eng/bomgenerator/                                            @vcolin7 @alzimmermsft @srnagar @jonathangiles
-/eng/code-quality-reports/                                    @JonathanGiles @alzimmermsft @srnagar @rujche @netyyyy @saragluna @moarychan
+/eng/bomgenerator/                                            @vcolin7 @alzimmermsft @srnagar @jonathangiles @Azure/azure-java-sdk
+/eng/code-quality-reports/                                    @JonathanGiles @alzimmermsft @srnagar @rujche @netyyyy @saragluna @moarychan @Azure/azure-java-sdk
 /eng/common/                                                  @Azure/azure-sdk-eng
-/eng/spotbugs-aggregate-report/                               @srnagar @JonathanGiles
 /eng/versioning/                                              @alzimmermsft @samvaity @g2vinay @Azure/azure-java-sdk
-/eng/versioning/external_dependencies.txt                     @alzimmermsft @samvaity @g2vinay @jonathangiles @rujche @netyyyy @saragluna @moarychan
-/.github/CODEOWNERS                                           @joshfree @srnagar @anuchandy @conniey @lmolkova @jonathangiles @alzimmermsft @Azure/azure-sdk-eng
+/eng/versioning/external_dependencies.txt                     @alzimmermsft @samvaity @g2vinay @jonathangiles @rujche @netyyyy @saragluna @moarychan @Azure/azure-java-sdk
+/.github/CODEOWNERS                                           @joshfree @srnagar @anuchandy @conniey @lmolkova @jonathangiles @alzimmermsft @Azure/azure-sdk-eng @Azure/azure-java-sdk
 /.github/workflows/                                           @Azure/azure-sdk-eng
 /.config/1espt/                                               @benbp @weshaggard
 
@@ -940,8 +939,8 @@
 /eng/versioning/version_data.txt
 
 # Add owners for notifications for specific pipelines
-/eng/pipelines/aggregate-reports.yml                          @joshfree @jonathangiles
-/eng/common/pipelines/codeowners-linter.yml                   @alzimmermsft @srnagar @lmolkova
+/eng/pipelines/aggregate-reports.yml                          @joshfree @jonathangiles @Azure/azure-java-sdk
+/eng/common/pipelines/codeowners-linter.yml                   @alzimmermsft @srnagar @lmolkova @Azure/azure-java-sdk
 /eng/pipelines/docindex.yml                                   @danieljurek @hallipr @weshaggard @benbp
 
 # Add Cosmos source owners as the owners of their specialized matrix
