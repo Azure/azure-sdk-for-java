@@ -694,7 +694,6 @@ public class OpenAIOkHttpClientTestBase {
     }
 
     JsonSchema.Schema createSchema() {
-
         Map<String, Object> itemsMap = new HashMap<>();
         itemsMap.put("type", "string");
 
