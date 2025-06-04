@@ -9,6 +9,7 @@
 
 #### Bugs Fixed
 * Fixed an issue ignoring client-level diagnostic thresholds for point read operations in some cases - [PR 45488](https://github.com/Azure/azure-sdk-for-java/pull/45488)
+* Fixed an issue ignoring read consistency strategy for queries, readMany operations and change feed in some cases - [PR 45552](https://github.com/Azure/azure-sdk-for-java/pull/45552)
 
 #### Other Changes
 * Improved throughput for benchmarks with high concurrency by avoiding blocking `UUID.randomUUID` calls in the hot path. - [PR 45495](https://github.com/Azure/azure-sdk-for-java/pull/45495)
