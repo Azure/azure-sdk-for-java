@@ -512,3 +512,6 @@ unreleased_com.azure.v2:azure-core;2.0.0-beta.1
 # Format;
 # beta_<groupId>:<artifactId>;dependency-version
 # note: Released beta versions will not be manipulated with the automatic PR creation code.
+
+beta_com.azure.spring:spring-cloud-azure-service;5.22.0
+beta_com.azure.spring:spring-cloud-azure-autoconfigure;5.22.0
