@@ -858,6 +858,467 @@
           "code" : "java.class.removed",
           "old" : "class com.azure.resourcemanager.network.models.EvaluationState",
           "justification" :  "Removed `start` from `ConnectionMonitor`. It'll be started upon creation, hence no need for an explicit start."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.search.models.CheckNameAvailabilityInput com.azure.resourcemanager.search.models.CheckNameAvailabilityInput::withType(java.lang.String)",
+          "justification" : "The property is a constant, which should not be changed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.missing.newSuperType",
+          "old" : "enum com.azure.resourcemanager.search.models.IdentityType",
+          "new" : "class com.azure.resourcemanager.search.models.IdentityType",
+          "justification" : "class inherits from a missing class"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.kindChanged",
+          "old" : "enum com.azure.resourcemanager.search.models.IdentityType",
+          "new" : "class com.azure.resourcemanager.search.models.IdentityType",
+          "justification" : "class kind changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.noLongerImplementsInterface",
+          "old" : "enum com.azure.resourcemanager.search.models.IdentityType",
+          "new" : "class com.azure.resourcemanager.search.models.IdentityType",
+          "justification" : "class no longer implements interface"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.noLongerImplementsInterface",
+          "old" : "enum com.azure.resourcemanager.search.models.IdentityType",
+          "new" : "class com.azure.resourcemanager.search.models.IdentityType",
+          "justification" : "class no longer implements interface"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.noLongerImplementsInterface",
+          "old" : "enum com.azure.resourcemanager.search.models.IdentityType",
+          "new" : "class com.azure.resourcemanager.search.models.IdentityType",
+          "justification" : "class no longer implements interface"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.visibilityIncreased",
+          "old" : "method void com.azure.resourcemanager.search.models.IdentityType::<init>(java.lang.String)",
+          "new" : "method void com.azure.resourcemanager.search.models.IdentityType::<init>()",
+          "justification" : "visibility increased"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method int java.lang.Enum<E extends java.lang.Enum<E>>::compareTo(E) @ com.azure.resourcemanager.search.models.IdentityType",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method java.util.Optional<java.lang.Enum.EnumDesc<E>> java.lang.Enum<E extends java.lang.Enum<E>>::describeConstable() @ com.azure.resourcemanager.search.models.IdentityType",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method java.lang.Class<E> java.lang.Enum<E extends java.lang.Enum<E>>::getDeclaringClass() @ com.azure.resourcemanager.search.models.IdentityType",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method java.lang.String java.lang.Enum<E extends java.lang.Enum<E>>::name() @ com.azure.resourcemanager.search.models.IdentityType",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method int java.lang.Enum<E extends java.lang.Enum<E>>::ordinal() @ com.azure.resourcemanager.search.models.IdentityType",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method <T extends java.lang.Enum<T>> T java.lang.Enum<E extends java.lang.Enum<E>>::valueOf(java.lang.Class<T>, java.lang.String) @ com.azure.resourcemanager.search.models.IdentityType",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.search.models.IdentityType com.azure.resourcemanager.search.models.IdentityType::valueOf(java.lang.String)",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.returnTypeChanged",
+          "old" : "method com.azure.resourcemanager.search.models.IdentityType[] com.azure.resourcemanager.search.models.IdentityType::values()",
+          "new" : "method java.util.Collection<com.azure.resourcemanager.search.models.IdentityType> com.azure.resourcemanager.search.models.IdentityType::values()",
+          "justification" : "return type changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.missing.newSuperType",
+          "old" : "enum com.azure.resourcemanager.search.models.PublicNetworkAccess",
+          "new" : "class com.azure.resourcemanager.search.models.PublicNetworkAccess",
+          "justification" : "class inherits from a missing class"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.kindChanged",
+          "old" : "enum com.azure.resourcemanager.search.models.PublicNetworkAccess",
+          "new" : "class com.azure.resourcemanager.search.models.PublicNetworkAccess",
+          "justification" : "class kind changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.noLongerImplementsInterface",
+          "old" : "enum com.azure.resourcemanager.search.models.PublicNetworkAccess",
+          "new" : "class com.azure.resourcemanager.search.models.PublicNetworkAccess",
+          "justification" : "class no longer implements interface"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.noLongerImplementsInterface",
+          "old" : "enum com.azure.resourcemanager.search.models.PublicNetworkAccess",
+          "new" : "class com.azure.resourcemanager.search.models.PublicNetworkAccess",
+          "justification" : "class no longer implements interface"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.noLongerImplementsInterface",
+          "old" : "enum com.azure.resourcemanager.search.models.PublicNetworkAccess",
+          "new" : "class com.azure.resourcemanager.search.models.PublicNetworkAccess",
+          "justification" : "class no longer implements interface"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.visibilityIncreased",
+          "old" : "method void com.azure.resourcemanager.search.models.PublicNetworkAccess::<init>(java.lang.String)",
+          "new" : "method void com.azure.resourcemanager.search.models.PublicNetworkAccess::<init>()",
+          "justification" : "visibility increased"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method int java.lang.Enum<E extends java.lang.Enum<E>>::compareTo(E) @ com.azure.resourcemanager.search.models.PublicNetworkAccess",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method java.util.Optional<java.lang.Enum.EnumDesc<E>> java.lang.Enum<E extends java.lang.Enum<E>>::describeConstable() @ com.azure.resourcemanager.search.models.PublicNetworkAccess",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method java.lang.Class<E> java.lang.Enum<E extends java.lang.Enum<E>>::getDeclaringClass() @ com.azure.resourcemanager.search.models.PublicNetworkAccess",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method java.lang.String java.lang.Enum<E extends java.lang.Enum<E>>::name() @ com.azure.resourcemanager.search.models.PublicNetworkAccess",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method int java.lang.Enum<E extends java.lang.Enum<E>>::ordinal() @ com.azure.resourcemanager.search.models.PublicNetworkAccess",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method <T extends java.lang.Enum<T>> T java.lang.Enum<E extends java.lang.Enum<E>>::valueOf(java.lang.Class<T>, java.lang.String) @ com.azure.resourcemanager.search.models.PublicNetworkAccess",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.search.models.PublicNetworkAccess com.azure.resourcemanager.search.models.PublicNetworkAccess::valueOf(java.lang.String)",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.returnTypeChanged",
+          "old" : "method com.azure.resourcemanager.search.models.PublicNetworkAccess[] com.azure.resourcemanager.search.models.PublicNetworkAccess::values()",
+          "new" : "method java.util.Collection<com.azure.resourcemanager.search.models.PublicNetworkAccess> com.azure.resourcemanager.search.models.PublicNetworkAccess::values()",
+          "justification" : "return type changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.missing.newSuperType",
+          "old" : "enum com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProvisioningState",
+          "new" : "class com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProvisioningState",
+          "justification" : "class inherits from a missing class"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.kindChanged",
+          "old" : "enum com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProvisioningState",
+          "new" : "class com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProvisioningState",
+          "justification" : "class kind changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.noLongerImplementsInterface",
+          "old" : "enum com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProvisioningState",
+          "new" : "class com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProvisioningState",
+          "justification" : "class no longer implements interface"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.noLongerImplementsInterface",
+          "old" : "enum com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProvisioningState",
+          "new" : "class com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProvisioningState",
+          "justification" : "class no longer implements interface"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.noLongerImplementsInterface",
+          "old" : "enum com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProvisioningState",
+          "new" : "class com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProvisioningState",
+          "justification" : "class no longer implements interface"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.visibilityIncreased",
+          "old" : "method void com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProvisioningState::<init>(java.lang.String)",
+          "new" : "method void com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProvisioningState::<init>()",
+          "justification" : "visibility increased"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method int java.lang.Enum<E extends java.lang.Enum<E>>::compareTo(E) @ com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProvisioningState",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method java.util.Optional<java.lang.Enum.EnumDesc<E>> java.lang.Enum<E extends java.lang.Enum<E>>::describeConstable() @ com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProvisioningState",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method java.lang.Class<E> java.lang.Enum<E extends java.lang.Enum<E>>::getDeclaringClass() @ com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProvisioningState",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method java.lang.String java.lang.Enum<E extends java.lang.Enum<E>>::name() @ com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProvisioningState",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method int java.lang.Enum<E extends java.lang.Enum<E>>::ordinal() @ com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProvisioningState",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method <T extends java.lang.Enum<T>> T java.lang.Enum<E extends java.lang.Enum<E>>::valueOf(java.lang.Class<T>, java.lang.String) @ com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProvisioningState",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProvisioningState com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProvisioningState::valueOf(java.lang.String)",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.returnTypeChanged",
+          "old" : "method com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProvisioningState[] com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProvisioningState::values()",
+          "new" : "method java.util.Collection<com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProvisioningState> com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProvisioningState::values()",
+          "justification" : "return type changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.missing.newSuperType",
+          "old" : "enum com.azure.resourcemanager.search.models.SharedPrivateLinkResourceStatus",
+          "new" : "class com.azure.resourcemanager.search.models.SharedPrivateLinkResourceStatus",
+          "justification" : "class inherits from a missing class"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.kindChanged",
+          "old" : "enum com.azure.resourcemanager.search.models.SharedPrivateLinkResourceStatus",
+          "new" : "class com.azure.resourcemanager.search.models.SharedPrivateLinkResourceStatus",
+          "justification" : "class kind changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.noLongerImplementsInterface",
+          "old" : "enum com.azure.resourcemanager.search.models.SharedPrivateLinkResourceStatus",
+          "new" : "class com.azure.resourcemanager.search.models.SharedPrivateLinkResourceStatus",
+          "justification" : "class no longer implements interface"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.noLongerImplementsInterface",
+          "old" : "enum com.azure.resourcemanager.search.models.SharedPrivateLinkResourceStatus",
+          "new" : "class com.azure.resourcemanager.search.models.SharedPrivateLinkResourceStatus",
+          "justification" : "class no longer implements interface"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.noLongerImplementsInterface",
+          "old" : "enum com.azure.resourcemanager.search.models.SharedPrivateLinkResourceStatus",
+          "new" : "class com.azure.resourcemanager.search.models.SharedPrivateLinkResourceStatus",
+          "justification" : "class no longer implements interface"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.visibilityIncreased",
+          "old" : "method void com.azure.resourcemanager.search.models.SharedPrivateLinkResourceStatus::<init>(java.lang.String)",
+          "new" : "method void com.azure.resourcemanager.search.models.SharedPrivateLinkResourceStatus::<init>()",
+          "justification" : "visibility increased"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method int java.lang.Enum<E extends java.lang.Enum<E>>::compareTo(E) @ com.azure.resourcemanager.search.models.SharedPrivateLinkResourceStatus",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method java.util.Optional<java.lang.Enum.EnumDesc<E>> java.lang.Enum<E extends java.lang.Enum<E>>::describeConstable() @ com.azure.resourcemanager.search.models.SharedPrivateLinkResourceStatus",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method java.lang.Class<E> java.lang.Enum<E extends java.lang.Enum<E>>::getDeclaringClass() @ com.azure.resourcemanager.search.models.SharedPrivateLinkResourceStatus",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method java.lang.String java.lang.Enum<E extends java.lang.Enum<E>>::name() @ com.azure.resourcemanager.search.models.SharedPrivateLinkResourceStatus",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method int java.lang.Enum<E extends java.lang.Enum<E>>::ordinal() @ com.azure.resourcemanager.search.models.SharedPrivateLinkResourceStatus",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method <T extends java.lang.Enum<T>> T java.lang.Enum<E extends java.lang.Enum<E>>::valueOf(java.lang.Class<T>, java.lang.String) @ com.azure.resourcemanager.search.models.SharedPrivateLinkResourceStatus",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.search.models.SharedPrivateLinkResourceStatus com.azure.resourcemanager.search.models.SharedPrivateLinkResourceStatus::valueOf(java.lang.String)",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.returnTypeChanged",
+          "old" : "method com.azure.resourcemanager.search.models.SharedPrivateLinkResourceStatus[] com.azure.resourcemanager.search.models.SharedPrivateLinkResourceStatus::values()",
+          "new" : "method java.util.Collection<com.azure.resourcemanager.search.models.SharedPrivateLinkResourceStatus> com.azure.resourcemanager.search.models.SharedPrivateLinkResourceStatus::values()",
+          "justification" : "return type changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.missing.newSuperType",
+          "old" : "enum com.azure.resourcemanager.search.models.SkuName",
+          "new" : "class com.azure.resourcemanager.search.models.SkuName",
+          "justification" : "class inherits from a missing class"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.kindChanged",
+          "old" : "enum com.azure.resourcemanager.search.models.SkuName",
+          "new" : "class com.azure.resourcemanager.search.models.SkuName",
+          "justification" : "class kind changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.noLongerImplementsInterface",
+          "old" : "enum com.azure.resourcemanager.search.models.SkuName",
+          "new" : "class com.azure.resourcemanager.search.models.SkuName",
+          "justification" : "class no longer implements interface"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.noLongerImplementsInterface",
+          "old" : "enum com.azure.resourcemanager.search.models.SkuName",
+          "new" : "class com.azure.resourcemanager.search.models.SkuName",
+          "justification" : "class no longer implements interface"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.noLongerImplementsInterface",
+          "old" : "enum com.azure.resourcemanager.search.models.SkuName",
+          "new" : "class com.azure.resourcemanager.search.models.SkuName",
+          "justification" : "class no longer implements interface"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.visibilityIncreased",
+          "old" : "method void com.azure.resourcemanager.search.models.SkuName::<init>(java.lang.String)",
+          "new" : "method void com.azure.resourcemanager.search.models.SkuName::<init>()",
+          "justification" : "visibility increased"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method int java.lang.Enum<E extends java.lang.Enum<E>>::compareTo(E) @ com.azure.resourcemanager.search.models.SkuName",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method java.util.Optional<java.lang.Enum.EnumDesc<E>> java.lang.Enum<E extends java.lang.Enum<E>>::describeConstable() @ com.azure.resourcemanager.search.models.SkuName",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method java.lang.Class<E> java.lang.Enum<E extends java.lang.Enum<E>>::getDeclaringClass() @ com.azure.resourcemanager.search.models.SkuName",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method java.lang.String java.lang.Enum<E extends java.lang.Enum<E>>::name() @ com.azure.resourcemanager.search.models.SkuName",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method int java.lang.Enum<E extends java.lang.Enum<E>>::ordinal() @ com.azure.resourcemanager.search.models.SkuName",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method <T extends java.lang.Enum<T>> T java.lang.Enum<E extends java.lang.Enum<E>>::valueOf(java.lang.Class<T>, java.lang.String) @ com.azure.resourcemanager.search.models.SkuName",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.search.models.SkuName com.azure.resourcemanager.search.models.SkuName::valueOf(java.lang.String)",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.returnTypeChanged",
+          "old" : "method com.azure.resourcemanager.search.models.SkuName[] com.azure.resourcemanager.search.models.SkuName::values()",
+          "new" : "method java.util.Collection<com.azure.resourcemanager.search.models.SkuName> com.azure.resourcemanager.search.models.SkuName::values()",
+          "justification" : "return type changed"
         }
       ]
     }
