@@ -5,6 +5,7 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,26 +21,31 @@ public final class SetAccessControlRecursiveResponse implements JsonSerializable
     /*
      * The directoriesSuccessful property.
      */
+    @Generated
     private Integer directoriesSuccessful;
 
     /*
      * The filesSuccessful property.
      */
+    @Generated
     private Integer filesSuccessful;
 
     /*
      * The failureCount property.
      */
+    @Generated
     private Integer failureCount;
 
     /*
      * The failedEntries property.
      */
+    @Generated
     private List<AclFailedEntry> failedEntries;
 
     /**
      * Creates an instance of SetAccessControlRecursiveResponse class.
      */
+    @Generated
     public SetAccessControlRecursiveResponse() {
     }
 
@@ -48,6 +54,7 @@ public final class SetAccessControlRecursiveResponse implements JsonSerializable
      * 
      * @return the directoriesSuccessful value.
      */
+    @Generated
     public Integer getDirectoriesSuccessful() {
         return this.directoriesSuccessful;
     }
@@ -58,6 +65,7 @@ public final class SetAccessControlRecursiveResponse implements JsonSerializable
      * @param directoriesSuccessful the directoriesSuccessful value to set.
      * @return the SetAccessControlRecursiveResponse object itself.
      */
+    @Generated
     public SetAccessControlRecursiveResponse setDirectoriesSuccessful(Integer directoriesSuccessful) {
         this.directoriesSuccessful = directoriesSuccessful;
         return this;
@@ -68,6 +76,7 @@ public final class SetAccessControlRecursiveResponse implements JsonSerializable
      * 
      * @return the filesSuccessful value.
      */
+    @Generated
     public Integer getFilesSuccessful() {
         return this.filesSuccessful;
     }
@@ -78,6 +87,7 @@ public final class SetAccessControlRecursiveResponse implements JsonSerializable
      * @param filesSuccessful the filesSuccessful value to set.
      * @return the SetAccessControlRecursiveResponse object itself.
      */
+    @Generated
     public SetAccessControlRecursiveResponse setFilesSuccessful(Integer filesSuccessful) {
         this.filesSuccessful = filesSuccessful;
         return this;
@@ -88,6 +98,7 @@ public final class SetAccessControlRecursiveResponse implements JsonSerializable
      * 
      * @return the failureCount value.
      */
+    @Generated
     public Integer getFailureCount() {
         return this.failureCount;
     }
@@ -98,6 +109,7 @@ public final class SetAccessControlRecursiveResponse implements JsonSerializable
      * @param failureCount the failureCount value to set.
      * @return the SetAccessControlRecursiveResponse object itself.
      */
+    @Generated
     public SetAccessControlRecursiveResponse setFailureCount(Integer failureCount) {
         this.failureCount = failureCount;
         return this;
@@ -108,6 +120,7 @@ public final class SetAccessControlRecursiveResponse implements JsonSerializable
      * 
      * @return the failedEntries value.
      */
+    @Generated
     public List<AclFailedEntry> getFailedEntries() {
         return this.failedEntries;
     }
@@ -118,6 +131,7 @@ public final class SetAccessControlRecursiveResponse implements JsonSerializable
      * @param failedEntries the failedEntries value to set.
      * @return the SetAccessControlRecursiveResponse object itself.
      */
+    @Generated
     public SetAccessControlRecursiveResponse setFailedEntries(List<AclFailedEntry> failedEntries) {
         this.failedEntries = failedEntries;
         return this;
@@ -126,6 +140,7 @@ public final class SetAccessControlRecursiveResponse implements JsonSerializable
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -144,6 +159,7 @@ public final class SetAccessControlRecursiveResponse implements JsonSerializable
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SetAccessControlRecursiveResponse.
      */
+    @Generated
     public static SetAccessControlRecursiveResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SetAccessControlRecursiveResponse deserializedSetAccessControlRecursiveResponse

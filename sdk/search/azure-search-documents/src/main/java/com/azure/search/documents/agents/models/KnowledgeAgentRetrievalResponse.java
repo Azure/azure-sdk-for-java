@@ -7,6 +7,7 @@
 package com.azure.search.documents.agents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,21 +23,25 @@ public final class KnowledgeAgentRetrievalResponse implements JsonSerializable<K
     /*
      * The response property.
      */
+    @Generated
     private List<KnowledgeAgentMessage> response;
 
     /*
      * The activity records for tracking progress and billing implications.
      */
+    @Generated
     private List<KnowledgeAgentActivityRecord> activity;
 
     /*
      * The references for the retrieval data used in the response.
      */
+    @Generated
     private List<KnowledgeAgentReference> references;
 
     /**
      * Creates an instance of KnowledgeAgentRetrievalResponse class.
      */
+    @Generated
     public KnowledgeAgentRetrievalResponse() {
     }
 
@@ -45,6 +50,7 @@ public final class KnowledgeAgentRetrievalResponse implements JsonSerializable<K
      * 
      * @return the response value.
      */
+    @Generated
     public List<KnowledgeAgentMessage> getResponse() {
         return this.response;
     }
@@ -55,6 +61,7 @@ public final class KnowledgeAgentRetrievalResponse implements JsonSerializable<K
      * @param response the response value to set.
      * @return the KnowledgeAgentRetrievalResponse object itself.
      */
+    @Generated
     public KnowledgeAgentRetrievalResponse setResponse(List<KnowledgeAgentMessage> response) {
         this.response = response;
         return this;
@@ -65,6 +72,7 @@ public final class KnowledgeAgentRetrievalResponse implements JsonSerializable<K
      * 
      * @return the activity value.
      */
+    @Generated
     public List<KnowledgeAgentActivityRecord> getActivity() {
         return this.activity;
     }
@@ -75,6 +83,7 @@ public final class KnowledgeAgentRetrievalResponse implements JsonSerializable<K
      * @param activity the activity value to set.
      * @return the KnowledgeAgentRetrievalResponse object itself.
      */
+    @Generated
     public KnowledgeAgentRetrievalResponse setActivity(List<KnowledgeAgentActivityRecord> activity) {
         this.activity = activity;
         return this;
@@ -85,6 +94,7 @@ public final class KnowledgeAgentRetrievalResponse implements JsonSerializable<K
      * 
      * @return the references value.
      */
+    @Generated
     public List<KnowledgeAgentReference> getReferences() {
         return this.references;
     }
@@ -95,6 +105,7 @@ public final class KnowledgeAgentRetrievalResponse implements JsonSerializable<K
      * @param references the references value to set.
      * @return the KnowledgeAgentRetrievalResponse object itself.
      */
+    @Generated
     public KnowledgeAgentRetrievalResponse setReferences(List<KnowledgeAgentReference> references) {
         this.references = references;
         return this;
@@ -103,6 +114,7 @@ public final class KnowledgeAgentRetrievalResponse implements JsonSerializable<K
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -120,6 +132,7 @@ public final class KnowledgeAgentRetrievalResponse implements JsonSerializable<K
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the KnowledgeAgentRetrievalResponse.
      */
+    @Generated
     public static KnowledgeAgentRetrievalResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             KnowledgeAgentRetrievalResponse deserializedKnowledgeAgentRetrievalResponse

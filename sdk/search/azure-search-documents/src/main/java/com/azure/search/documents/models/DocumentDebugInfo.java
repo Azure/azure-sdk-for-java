@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,21 +24,25 @@ public final class DocumentDebugInfo implements JsonSerializable<DocumentDebugIn
     /*
      * Contains debugging information specific to semantic ranking requests.
      */
+    @Generated
     private SemanticDebugInfo semantic;
 
     /*
      * Contains debugging information specific to vector and hybrid search.
      */
+    @Generated
     private VectorsDebugInfo vectors;
 
     /*
      * Contains debugging information specific to vectors matched within a collection of complex types.
      */
+    @Generated
     private Map<String, List<QueryResultDocumentInnerHit>> innerHits;
 
     /**
      * Creates an instance of DocumentDebugInfo class.
      */
+    @Generated
     public DocumentDebugInfo() {
     }
 
@@ -46,6 +51,7 @@ public final class DocumentDebugInfo implements JsonSerializable<DocumentDebugIn
      * 
      * @return the semantic value.
      */
+    @Generated
     public SemanticDebugInfo getSemantic() {
         return this.semantic;
     }
@@ -55,6 +61,7 @@ public final class DocumentDebugInfo implements JsonSerializable<DocumentDebugIn
      * 
      * @return the vectors value.
      */
+    @Generated
     public VectorsDebugInfo getVectors() {
         return this.vectors;
     }
@@ -65,6 +72,7 @@ public final class DocumentDebugInfo implements JsonSerializable<DocumentDebugIn
      * 
      * @return the innerHits value.
      */
+    @Generated
     public Map<String, List<QueryResultDocumentInnerHit>> getInnerHits() {
         return this.innerHits;
     }
@@ -72,6 +80,7 @@ public final class DocumentDebugInfo implements JsonSerializable<DocumentDebugIn
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -86,6 +95,7 @@ public final class DocumentDebugInfo implements JsonSerializable<DocumentDebugIn
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the DocumentDebugInfo.
      */
+    @Generated
     public static DocumentDebugInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DocumentDebugInfo deserializedDocumentDebugInfo = new DocumentDebugInfo();

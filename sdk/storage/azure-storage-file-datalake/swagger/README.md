@@ -15,7 +15,7 @@ autorest
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.42'
+use: '@autorest/java@4.1.50'
 input-file: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/storage/data-plane/Azure.Storage.Files.DataLake/stable/2025-05-05/DataLakeStorage.json
 java: true
 output-folder: ../
@@ -31,6 +31,7 @@ custom-types-subpackage: models
 customization-class: src/main/java/DataLakeStorageCustomization.java
 use-input-stream-for-binary: true
 disable-client-builder: true
+use-eclipse-language-server: false
 ```
 
 ### Make the body of append octet-stream /{filesystem}/{path}?action=append
