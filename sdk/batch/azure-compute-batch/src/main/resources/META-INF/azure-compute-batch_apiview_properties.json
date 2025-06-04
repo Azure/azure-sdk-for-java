@@ -471,6 +471,7 @@
     "com.azure.compute.batch.models.GetBatchTaskFileOptions": null,
     "com.azure.compute.batch.models.GetBatchTaskFilePropertiesOptions": null,
     "com.azure.compute.batch.models.GetBatchTaskOptions": null,
+    "com.azure.compute.batch.models.GetCertificateResponse": "Client.getCertificate.Response.anonymous",
     "com.azure.compute.batch.models.HttpHeader": "Azure.Batch.HttpHeader",
     "com.azure.compute.batch.models.ImageReference": "Azure.Batch.ImageReference",
     "com.azure.compute.batch.models.ImageVerificationType": "Azure.Batch.ImageVerificationType",
