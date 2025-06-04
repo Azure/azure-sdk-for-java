@@ -60,7 +60,7 @@
 /sdk/parents/                                        @alzimmermsft @srnagar @jonathangiles @samvaity
 
 # PRLabel: %Azure.Core
-/sdk/serialization/                                  @alzimmermsft @srnagar @azure-java-sdk
+/sdk/serialization/                                  @alzimmermsft @srnagar @Azure/azure-java-sdk
 
 # ######## Services ########
 
@@ -92,7 +92,7 @@
 # ServiceOwners:                                     @miaojiang
 
 # PRLabel: %App Configuration
-/sdk/appconfiguration/                               @alzimmermsft @azure-java-sdk
+/sdk/appconfiguration/                               @alzimmermsft @Azure/azure-java-sdk
 
 # ServiceLabel: %App Configuration
 # AzureSdkOwners:                                    @alzimmermsft
@@ -187,21 +187,21 @@
 # ServiceOwners:                                     @assafi
 
 # PRLabel: %Cognitive - Form Recognizer
-/sdk/formrecognizer/                                 @samvaity @azure-java-sdk
+/sdk/formrecognizer/                                 @samvaity @Azure/azure-java-sdk
 
 # ServiceLabel: %Cognitive - Form Recognizer
 # AzureSdkOwners:                                    @samvaity
 # ServiceOwners:                                     @ctstone @vkurpad
 
 # PRLabel: %Cognitive - Metrics Advisor
-/sdk/metricsadvisor/                                 @samvaity @anuchandy @azure-java-sdk
+/sdk/metricsadvisor/                                 @samvaity @anuchandy @Azure/azure-java-sdk
 
 # ServiceLabel: %Cognitive - Metrics Advisor
 # AzureSdkOwners:                                    @samvaity
 # ServiceOwners:                                     @bowgong
 
 # PRLabel: %Document Intelligence
-/sdk/documentintelligence/                           @samvaity @azure-java-sdk
+/sdk/documentintelligence/                           @samvaity @Azure/azure-java-sdk
 
 # ServiceLabel: %Document Intelligence
 # AzureSdkOwners:                                    @samvaity
@@ -455,7 +455,7 @@
 # ServiceOwners:                                     @berndverst @kaibocai @torosent @RyanLettieri @philliphoff @cgillum
 
 # PRLabel: %Event Grid
-/sdk/eventgrid/                                      @samvaity @srnagar @lmolkova @azure-sdk-java
+/sdk/eventgrid/                                      @samvaity @srnagar @lmolkova @Azure/azure-java-sdk
 
 # ServiceLabel: %Event Grid
 # AzureSdkOwners:                                    @samvaity
@@ -725,14 +725,14 @@
 # ServiceOwners:                                     @derek1ee
 
 # PRLabel: %Schema Registry
-/sdk/schemaregistry/                                 @conniey @srnagar @azure-sdk-java
+/sdk/schemaregistry/                                 @conniey @srnagar @Azure/azure-java-sdk
 
 # ServiceLabel: %Schema Registry
 # AzureSdkOwners:                                    @conniey
 # ServiceOwners:                                     @hmlam
 
 # PRLabel: %Search
-/sdk/search/                                         @alzimmermsft @jairmyree @Azure/azsdk-search @azure-sdk-java
+/sdk/search/                                         @alzimmermsft @jairmyree @Azure/azsdk-search @Azure/azure-java-sdk
 
 # ServiceLabel: %Search
 # AzureSdkOwners:                                    @alzimmermsft @jairmyree
@@ -749,7 +749,7 @@
 # ServiceOwners:                                     @EldertGrootenboer
 
 # PRLabel: %Service Bus
-/sdk/servicebus/                                     @anuchandy @conniey @lmolkova @azure-sdk-java
+/sdk/servicebus/                                     @anuchandy @conniey @lmolkova @Azure/azure-java-sdk
 
 # PRLabel: %Service Bus %Track 1
 /sdk/servicebus/microsoft-azure-servicebus/          @shankarsama @yvgopal
@@ -815,7 +815,7 @@
 /sdk/synapse                                         @wanyang7
 
 # PRLabel: %Tables
-/sdk/tables/                                         @jairmyree @vcolin7 @azure-sdk-java
+/sdk/tables/                                         @jairmyree @vcolin7 @Azure/azure-java-sdk
 
 # ServiceLabel: %Tables
 # AzureSdkOwners:                                    @jairmyree
@@ -838,7 +838,7 @@
 # ServiceOwners:                                     @AzureAppServiceCLI @antcp
 
 # PRLabel: %Azure SDK Tools
-/sdk/tools/                                          @srnagar @jonathangiles @azure-sdk-java
+/sdk/tools/                                          @srnagar @jonathangiles @Azure/azure-java-sdk
 
 # PRLabel: %Azure SDK Tools
 /sdk/tools/azure-openrewrite/                        @jairmyree @srnagar @jonathangiles @samvaity
@@ -929,7 +929,7 @@
 /eng/code-quality-reports/                                    @JonathanGiles @alzimmermsft @srnagar @rujche @netyyyy @saragluna @moarychan
 /eng/common/                                                  @Azure/azure-sdk-eng
 /eng/spotbugs-aggregate-report/                               @srnagar @JonathanGiles
-/eng/versioning/                                              @alzimmermsft @samvaity @g2vinay @azure-sdk-java
+/eng/versioning/                                              @alzimmermsft @samvaity @g2vinay @Azure/azure-java-sdk
 /eng/versioning/external_dependencies.txt                     @alzimmermsft @samvaity @g2vinay @jonathangiles @rujche @netyyyy @saragluna @moarychan
 /.github/CODEOWNERS                                           @joshfree @srnagar @anuchandy @conniey @lmolkova @jonathangiles @alzimmermsft @Azure/azure-sdk-eng
 /.github/workflows/                                           @Azure/azure-sdk-eng
