@@ -3,8 +3,9 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -50,6 +51,7 @@ import com.azure.storage.common.test.shared.TestHttpClientType;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.common.test.shared.policy.InvalidServiceVersionPipelinePolicy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -2009,20 +2011,25 @@ public class ContainerApiTests extends BlobTestBase {
 
     @Test
     public void invalidServiceVersion() {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
-            .credential(ENVIRONMENT.getPrimaryAccount().getCredential());
-
-        BlobServiceClient serviceClient = instrument(builder
-            .addPolicy(new InvalidServiceVersionPipelinePolicy(), HttpPipelinePosition.PER_CALL)
-            .buildClient());
+        BlobServiceClient serviceClient
+            = instrument(new BlobServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+                .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+                .httpClient(HttpClient.createDefault())
+                .pipeline(new HttpPipelineBuilder().policies(new InvalidServiceVersionPipelinePolicy())
+                    .httpClient(HttpClient.createDefault())
+                    .build())).buildClient();
 
         BlobContainerClient containerClient = serviceClient.getBlobContainerClient(generateContainerName());
 
         BlobStorageException exception = assertThrows(BlobStorageException.class, containerClient::create);
 
-        assertEquals(BlobErrorCode.INVALID_HEADER_VALUE, exception.getErrorCode());
+        assertEquals(400, exception.getStatusCode());
+        System.out.println("Response status: " + exception.getStatusCode());
+        System.out.println("Response status: " + exception.getErrorCode());
+        System.out.println("Response status: " + exception.getMessage());
         assertTrue(exception.getMessage().contains(Constants.Errors.INVALID_VERSION_HEADER_MESSAGE));
+        assertEquals(BlobErrorCode.INVALID_HEADER_VALUE, exception.getErrorCode());
+
     }
 
     // TODO: Reintroduce these tests once service starts supporting it.

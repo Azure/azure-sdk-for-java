@@ -42,6 +42,7 @@ import java.util.function.Supplier;
 
 import static com.azure.storage.common.Utility.urlDecode;
 import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE_HEADER_NAME;
+import static com.azure.storage.common.implementation.Constants.HeaderConstants.HEADER_NAME;
 
 /**
  * Utility class which is used internally.
@@ -300,12 +301,12 @@ public class StorageImplUtils {
     public static String convertStorageExceptionMessage(String message, HttpResponse response) {
         if (response != null) {
             String errorCode = response.getHeaders().getValue(ERROR_CODE_HEADER_NAME);
-            String headerName = response.getHeaders().getValue("x-ms-error-header"); // Replace with actual header name retrieval logic if different
+            String headerName = response.getHeaders().getValue(HEADER_NAME);
 
             if (Constants.HeaderConstants.INVALID_HEADER_VALUE.equals(errorCode)
                 && headerName != null
                 && Constants.HeaderConstants.VERSION.equalsIgnoreCase(headerName)) {
-                return "The value provided for the 'x-ms-version' header is invalid. Please ensure you are using a supported version.";
+                return Constants.Errors.INVALID_VERSION_HEADER_MESSAGE + message;
             }
 
             if (response.getStatusCode() == 403) {
