@@ -3,7 +3,9 @@
 
 package com.azure.resourcemanager.compute;
 
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -17,6 +19,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.tracing.Tracer;
 import com.azure.resourcemanager.compute.fluent.models.CapacityReservationGroupInner;
 import com.azure.resourcemanager.compute.fluent.models.CapacityReservationInner;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
@@ -79,6 +82,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -89,6 +95,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class VirtualMachineOperationsTests extends ComputeManagementTest {
@@ -105,11 +112,13 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     private final String availabilitySetName = "availset1";
     private final String availabilitySetName2 = "availset2";
     private final ProximityPlacementGroupType proxGroupType = ProximityPlacementGroupType.STANDARD;
+    private AzureProfile profile;
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         rgName = generateRandomResourceName("javacsmrg", 15);
         rgName2 = generateRandomResourceName("javacsmrg2", 15);
+        this.profile = profile;
         super.initializeClients(httpPipeline, profile);
     }
 
@@ -2303,7 +2312,59 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertEquals(2, disk.virtualMachineIds().size());
     }
 
+    @Test
+    public void canBeginCreateWithContext() {
+        String vmName = generateRandomResourceName("jvm", 15);
+        String correlationId = UUID.randomUUID().toString();
+        String correlationKey = "x-ms-correlation-id";
+        HttpPipelinePolicy verificationPolicy = (context, next) -> {
+            Object correlationData = context.getContext().getData(correlationKey).get();
+            Assertions.assertEquals(correlationId, correlationData);
+            return next.process();
+        };
+        ComputeManager localComputeManager = addPolicyToManager(computeManager, verificationPolicy);
+        localComputeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS)
+            .withRootUsername("Foo12")
+            .withSsh(sshPublicKey())
+            .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
+            .beginCreate(new Context(correlationKey, correlationId));
+    }
+
+
     // *********************************** helper methods ***********************************
+    private ComputeManager addPolicyToManager(ComputeManager computeManager, HttpPipelinePolicy verificationPolicy) {
+        HttpPipeline currentPipeline = computeManager.httpPipeline();
+        try {
+
+            Constructor<HttpPipeline> pipelineConstructor = HttpPipeline.class.getDeclaredConstructor(HttpClient.class, List.class, Tracer.class);
+            setAccessible(pipelineConstructor);
+
+            List<HttpPipelinePolicy> pipelinePolicies = new ArrayList<>();
+            for (int i = 0; i < currentPipeline.getPolicyCount(); i++) {
+                pipelinePolicies.add(currentPipeline.getPolicy(i));
+            }
+
+            pipelinePolicies.addLast(verificationPolicy);
+
+            HttpPipeline newPipeline = pipelineConstructor.newInstance(currentPipeline.getHttpClient(), pipelinePolicies, currentPipeline.getTracer());
+            return ComputeManager.authenticate(newPipeline, profile);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void setAccessible(final AccessibleObject accessibleObject) {
+        // avoid bug in Java8
+        Runnable runnable = () -> accessibleObject.setAccessible(true);
+        runnable.run();
+    }
 
     private CreatablesInfo prepareCreatableVirtualMachines(Region region, String vmNamePrefix, String networkNamePrefix,
         String publicIpNamePrefix, int vmCount) {
