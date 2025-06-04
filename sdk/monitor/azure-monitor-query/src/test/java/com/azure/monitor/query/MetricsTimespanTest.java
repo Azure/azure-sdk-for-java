@@ -24,11 +24,11 @@ public class MetricsTimespanTest {
         // Test the case that was failing: QueryTimeInterval.LAST_30_MINUTES
         QueryTimeInterval interval = QueryTimeInterval.LAST_30_MINUTES;
         String result = MetricsHelper.toMetricsTimespan(interval);
-        
+
         assertNotNull(result, "Result should not be null");
         assertTrue(result.contains("/"), "Result should contain '/' separator");
         assertTrue(result.matches(".*\\d{4}-\\d{2}-\\d{2}T.*"), "Result should contain absolute timestamps");
-        
+
         // Verify it's not just the duration string
         assertTrue(!result.equals("PT30M"), "Result should not be just the duration string");
     }
@@ -38,7 +38,7 @@ public class MetricsTimespanTest {
         OffsetDateTime start = OffsetDateTime.parse("2025-01-01T00:00:00Z");
         OffsetDateTime end = OffsetDateTime.parse("2025-01-01T01:00:00Z");
         QueryTimeInterval interval = new QueryTimeInterval(start, end);
-        
+
         String result = MetricsHelper.toMetricsTimespan(interval);
         assertEquals("2025-01-01T00:00Z/2025-01-01T01:00Z", result);
     }
@@ -48,7 +48,7 @@ public class MetricsTimespanTest {
         OffsetDateTime start = OffsetDateTime.parse("2025-01-01T00:00:00Z");
         Duration duration = Duration.ofHours(1);
         QueryTimeInterval interval = new QueryTimeInterval(start, duration);
-        
+
         String result = MetricsHelper.toMetricsTimespan(interval);
         assertEquals("2025-01-01T00:00Z/2025-01-01T01:00Z", result);
     }

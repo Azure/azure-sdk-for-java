@@ -12,7 +12,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.monitor.query.implementation.logs.models.LogsQueryHelper;
 import com.azure.monitor.query.implementation.metrics.AzureMonitorMetricsDataAPI;
 import com.azure.monitor.query.implementation.metrics.models.ErrorResponseException;
 import com.azure.monitor.query.implementation.metrics.models.MetricsHelper;
