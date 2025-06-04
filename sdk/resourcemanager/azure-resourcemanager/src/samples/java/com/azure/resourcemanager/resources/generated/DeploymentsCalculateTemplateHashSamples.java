@@ -14,7 +14,7 @@ import java.io.IOException;
 public final class DeploymentsCalculateTemplateHashSamples {
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Resources/stable/2025-03-01/examples/CalculateTemplateHash.
+     * specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/CalculateTemplateHash.
      * json
      */
     /**
