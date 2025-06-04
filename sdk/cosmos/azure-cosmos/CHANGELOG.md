@@ -1,11 +1,10 @@
 ## Release History
 
-### 4.71.0-beta.2 (Unreleased)
+### 4.71.0 (2025-06-04)
 
 #### Features Added
 * Added `GetEffectiveReadConsistencyLevel` method on the `CosmosDiagnosticsContext`. - [PR 45414](https://github.com/Azure/azure-sdk-for-java/pull/45414)
-
-#### Breaking Changes
+* Added Weighted RRF for Hybrid and Full Text Search queries - [PR 45328](https://github.com/Azure/azure-sdk-for-java/pull/45328)
 
 #### Bugs Fixed
 * Fixed an issue ignoring client-level diagnostic thresholds for point read operations in some cases - [PR 45488](https://github.com/Azure/azure-sdk-for-java/pull/45488)
