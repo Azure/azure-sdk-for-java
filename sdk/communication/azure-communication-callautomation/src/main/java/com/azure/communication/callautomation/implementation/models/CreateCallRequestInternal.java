@@ -63,6 +63,11 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
      */
     private TranscriptionOptionsInternal transcriptionOptions;
 
+    /*
+     * The identifier of the source for creating call with Teams resource account ID.
+     */
+    private MicrosoftTeamsAppIdentifierModel teamsAppSource;
+
     /**
      * Creates an instance of CreateCallRequestInternal class.
      */
@@ -255,6 +260,26 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
     }
 
     /**
+     * Get the teamsAppSource property: The identifier of the source for creating call with Teams resource account ID.
+     * 
+     * @return the teamsAppSource value.
+     */
+    public MicrosoftTeamsAppIdentifierModel getTeamsAppSource() {
+        return this.teamsAppSource;
+    }
+
+    /**
+     * Set the teamsAppSource property: The identifier of the source for creating call with Teams resource account ID.
+     * 
+     * @param teamsAppSource the teamsAppSource value to set.
+     * @return the CreateCallRequestInternal object itself.
+     */
+    public CreateCallRequestInternal setTeamsAppSource(MicrosoftTeamsAppIdentifierModel teamsAppSource) {
+        this.teamsAppSource = teamsAppSource;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -269,6 +294,7 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
         jsonWriter.writeJsonField("callIntelligenceOptions", this.callIntelligenceOptions);
         jsonWriter.writeJsonField("mediaStreamingOptions", this.mediaStreamingOptions);
         jsonWriter.writeJsonField("transcriptionOptions", this.transcriptionOptions);
+        jsonWriter.writeJsonField("teamsAppSource", this.teamsAppSource);
         return jsonWriter.writeEndObject();
     }
 
@@ -312,6 +338,9 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
                 } else if ("transcriptionOptions".equals(fieldName)) {
                     deserializedCreateCallRequestInternal.transcriptionOptions
                         = TranscriptionOptionsInternal.fromJson(reader);
+                } else if ("teamsAppSource".equals(fieldName)) {
+                    deserializedCreateCallRequestInternal.teamsAppSource
+                        = MicrosoftTeamsAppIdentifierModel.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

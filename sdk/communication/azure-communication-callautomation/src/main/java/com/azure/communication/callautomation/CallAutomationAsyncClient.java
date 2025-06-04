@@ -11,6 +11,7 @@ import com.azure.communication.callautomation.implementation.accesshelpers.CallC
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.converters.CommunicationUserIdentifierConverter;
 import com.azure.communication.callautomation.implementation.converters.PhoneNumberIdentifierConverter;
+import com.azure.communication.callautomation.implementation.converters.MicrosoftTeamsAppIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.AnswerCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.AudioFormatInternal;
 import com.azure.communication.callautomation.implementation.models.CallIntelligenceOptionsInternal;
@@ -24,6 +25,7 @@ import com.azure.communication.callautomation.implementation.models.CreateCallRe
 import com.azure.communication.callautomation.implementation.models.MediaStreamingAudioChannelTypeInternal;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingContentTypeInternal;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingOptionsInternal;
+import com.azure.communication.callautomation.implementation.models.MicrosoftTeamsAppIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.RedirectCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.RejectCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.TranscriptionOptionsInternal;
@@ -239,6 +241,11 @@ public final class CallAutomationAsyncClient {
             request.setTranscriptionOptions(transcriptionOptionsInternal);
         }
 
+        if (createCallOptions.getTeamsAppSource() != null) {
+            request
+                .setTeamsAppSource(MicrosoftTeamsAppIdentifierConverter.convert(createCallOptions.getTeamsAppSource()));
+        }
+
         return request;
     }
 
@@ -276,6 +283,11 @@ public final class CallAutomationAsyncClient {
             TranscriptionOptionsInternal transcriptionOptionsInternal
                 = getTranscriptionOptionsInternal(createCallGroupOptions.getTranscriptionOptions());
             request.setTranscriptionOptions(transcriptionOptionsInternal);
+        }
+
+        if (createCallGroupOptions.getTeamsAppSource() != null) {
+            request.setTeamsAppSource(
+                MicrosoftTeamsAppIdentifierConverter.convert(createCallGroupOptions.getTeamsAppSource()));
         }
 
         return request;

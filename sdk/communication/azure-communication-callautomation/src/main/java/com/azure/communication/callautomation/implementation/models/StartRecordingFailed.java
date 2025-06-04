@@ -17,24 +17,48 @@ import java.io.IOException;
 @Fluent
 public final class StartRecordingFailed implements JsonSerializable<StartRecordingFailed> {
     /*
+     * The call recording Id.
+     */
+    private String recordingId;
+
+    /*
      * Call connection ID.
      */
     private String callConnectionId;
 
     /*
-     * Correlation ID for event to call correlation.
+     * Server call ID.
+     */
+    private String serverCallId;
+
+    /*
+     * Correlation ID for event to call correlation. Also called ChainId for skype chain ID.
      */
     private String correlationId;
 
     /*
-     * The call recording id
+     * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
-    private String recordingId;
+    private String operationContext;
+
+    /*
+     * Contains the resulting SIP code, sub-code and message.
+     */
+    private ResultInformation resultInformation;
 
     /**
      * Creates an instance of StartRecordingFailed class.
      */
     public StartRecordingFailed() {
+    }
+
+    /**
+     * Get the recordingId property: The call recording Id.
+     * 
+     * @return the recordingId value.
+     */
+    public String getRecordingId() {
+        return this.recordingId;
     }
 
     /**
@@ -58,7 +82,28 @@ public final class StartRecordingFailed implements JsonSerializable<StartRecordi
     }
 
     /**
-     * Get the correlationId property: Correlation ID for event to call correlation.
+     * Get the serverCallId property: Server call ID.
+     * 
+     * @return the serverCallId value.
+     */
+    public String getServerCallId() {
+        return this.serverCallId;
+    }
+
+    /**
+     * Set the serverCallId property: Server call ID.
+     * 
+     * @param serverCallId the serverCallId value to set.
+     * @return the StartRecordingFailed object itself.
+     */
+    public StartRecordingFailed setServerCallId(String serverCallId) {
+        this.serverCallId = serverCallId;
+        return this;
+    }
+
+    /**
+     * Get the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
+     * ID.
      * 
      * @return the correlationId value.
      */
@@ -67,7 +112,8 @@ public final class StartRecordingFailed implements JsonSerializable<StartRecordi
     }
 
     /**
-     * Set the correlationId property: Correlation ID for event to call correlation.
+     * Set the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
+     * ID.
      * 
      * @param correlationId the correlationId value to set.
      * @return the StartRecordingFailed object itself.
@@ -78,12 +124,45 @@ public final class StartRecordingFailed implements JsonSerializable<StartRecordi
     }
 
     /**
-     * Get the recordingId property: The call recording id.
+     * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
+     * the response event.
      * 
-     * @return the recordingId value.
+     * @return the operationContext value.
      */
-    public String getRecordingId() {
-        return this.recordingId;
+    public String getOperationContext() {
+        return this.operationContext;
+    }
+
+    /**
+     * Set the operationContext property: Used by customers when calling mid-call actions to correlate the request to
+     * the response event.
+     * 
+     * @param operationContext the operationContext value to set.
+     * @return the StartRecordingFailed object itself.
+     */
+    public StartRecordingFailed setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
+     * 
+     * @return the resultInformation value.
+     */
+    public ResultInformation getResultInformation() {
+        return this.resultInformation;
+    }
+
+    /**
+     * Set the resultInformation property: Contains the resulting SIP code, sub-code and message.
+     * 
+     * @param resultInformation the resultInformation value to set.
+     * @return the StartRecordingFailed object itself.
+     */
+    public StartRecordingFailed setResultInformation(ResultInformation resultInformation) {
+        this.resultInformation = resultInformation;
+        return this;
     }
 
     /**
@@ -93,7 +172,10 @@ public final class StartRecordingFailed implements JsonSerializable<StartRecordi
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("callConnectionId", this.callConnectionId);
+        jsonWriter.writeStringField("serverCallId", this.serverCallId);
         jsonWriter.writeStringField("correlationId", this.correlationId);
+        jsonWriter.writeStringField("operationContext", this.operationContext);
+        jsonWriter.writeJsonField("resultInformation", this.resultInformation);
         return jsonWriter.writeEndObject();
     }
 
@@ -112,12 +194,18 @@ public final class StartRecordingFailed implements JsonSerializable<StartRecordi
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("callConnectionId".equals(fieldName)) {
+                if ("recordingId".equals(fieldName)) {
+                    deserializedStartRecordingFailed.recordingId = reader.getString();
+                } else if ("callConnectionId".equals(fieldName)) {
                     deserializedStartRecordingFailed.callConnectionId = reader.getString();
+                } else if ("serverCallId".equals(fieldName)) {
+                    deserializedStartRecordingFailed.serverCallId = reader.getString();
                 } else if ("correlationId".equals(fieldName)) {
                     deserializedStartRecordingFailed.correlationId = reader.getString();
-                } else if ("recordingId".equals(fieldName)) {
-                    deserializedStartRecordingFailed.recordingId = reader.getString();
+                } else if ("operationContext".equals(fieldName)) {
+                    deserializedStartRecordingFailed.operationContext = reader.getString();
+                } else if ("resultInformation".equals(fieldName)) {
+                    deserializedStartRecordingFailed.resultInformation = ResultInformation.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -18,9 +18,14 @@ import java.util.List;
 @Fluent
 public final class StartCallRecordingRequestInternal implements JsonSerializable<StartCallRecordingRequestInternal> {
     /*
-     * The call locator.
+     * The call locator. (Only one of callLocator or callConnectionId to be used)
      */
     private CallLocatorInternal callLocator;
+
+    /*
+     * The call connection Id. (Only one of callLocator or callConnectionId to be used)
+     */
+    private String callConnectionId;
 
     /*
      * The uri to send notifications to.
@@ -75,7 +80,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     }
 
     /**
-     * Get the callLocator property: The call locator.
+     * Get the callLocator property: The call locator. (Only one of callLocator or callConnectionId to be used).
      * 
      * @return the callLocator value.
      */
@@ -84,13 +89,35 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     }
 
     /**
-     * Set the callLocator property: The call locator.
+     * Set the callLocator property: The call locator. (Only one of callLocator or callConnectionId to be used).
      * 
      * @param callLocator the callLocator value to set.
      * @return the StartCallRecordingRequestInternal object itself.
      */
     public StartCallRecordingRequestInternal setCallLocator(CallLocatorInternal callLocator) {
         this.callLocator = callLocator;
+        return this;
+    }
+
+    /**
+     * Get the callConnectionId property: The call connection Id. (Only one of callLocator or callConnectionId to be
+     * used).
+     * 
+     * @return the callConnectionId value.
+     */
+    public String getCallConnectionId() {
+        return this.callConnectionId;
+    }
+
+    /**
+     * Set the callConnectionId property: The call connection Id. (Only one of callLocator or callConnectionId to be
+     * used).
+     * 
+     * @param callConnectionId the callConnectionId value to set.
+     * @return the StartCallRecordingRequestInternal object itself.
+     */
+    public StartCallRecordingRequestInternal setCallConnectionId(String callConnectionId) {
+        this.callConnectionId = callConnectionId;
         return this;
     }
 
@@ -278,6 +305,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("callLocator", this.callLocator);
+        jsonWriter.writeStringField("callConnectionId", this.callConnectionId);
         jsonWriter.writeStringField("recordingStateCallbackUri", this.recordingStateCallbackUri);
         jsonWriter.writeStringField("recordingContentType",
             this.recordingContentType == null ? null : this.recordingContentType.toString());
@@ -300,7 +328,6 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
      * @param jsonReader The JsonReader being read.
      * @return An instance of StartCallRecordingRequestInternal if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the StartCallRecordingRequestInternal.
      */
     public static StartCallRecordingRequestInternal fromJson(JsonReader jsonReader) throws IOException {
@@ -313,6 +340,8 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
 
                 if ("callLocator".equals(fieldName)) {
                     deserializedStartCallRecordingRequestInternal.callLocator = CallLocatorInternal.fromJson(reader);
+                } else if ("callConnectionId".equals(fieldName)) {
+                    deserializedStartCallRecordingRequestInternal.callConnectionId = reader.getString();
                 } else if ("recordingStateCallbackUri".equals(fieldName)) {
                     deserializedStartCallRecordingRequestInternal.recordingStateCallbackUri = reader.getString();
                 } else if ("recordingContentType".equals(fieldName)) {
