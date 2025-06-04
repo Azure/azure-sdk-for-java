@@ -14,7 +14,7 @@ import java.util.Map;
 public final class ManagedClustersUpdateTagsSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-02-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-03-01/examples/
      * ManagedClustersUpdateTags.json
      */
     /**

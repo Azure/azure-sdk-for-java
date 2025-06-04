@@ -653,33 +653,6 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the enablePodSecurityPolicy property: (DEPRECATED) Whether to enable Kubernetes pod security policy
-     * (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn more
-     * at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
-     * 
-     * @return the enablePodSecurityPolicy value.
-     */
-    public Boolean enablePodSecurityPolicy() {
-        return this.innerProperties() == null ? null : this.innerProperties().enablePodSecurityPolicy();
-    }
-
-    /**
-     * Set the enablePodSecurityPolicy property: (DEPRECATED) Whether to enable Kubernetes pod security policy
-     * (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn more
-     * at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
-     * 
-     * @param enablePodSecurityPolicy the enablePodSecurityPolicy value to set.
-     * @return the ManagedClusterInner object itself.
-     */
-    public ManagedClusterInner withEnablePodSecurityPolicy(Boolean enablePodSecurityPolicy) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedClusterProperties();
-        }
-        this.innerProperties().withEnablePodSecurityPolicy(enablePodSecurityPolicy);
-        return this;
-    }
-
-    /**
      * Get the networkProfile property: The network configuration profile.
      * 
      * @return the networkProfile value.

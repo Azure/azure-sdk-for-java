@@ -161,13 +161,6 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     private KubernetesSupportPlan supportPlan;
 
     /*
-     * (DEPRECATED) Whether to enable Kubernetes pod security policy (preview). PodSecurityPolicy was deprecated in
-     * Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn more at https://aka.ms/k8s/psp and
-     * https://aka.ms/aks/psp.
-     */
-    private Boolean enablePodSecurityPolicy;
-
-    /*
      * The network configuration profile.
      */
     private ContainerServiceNetworkProfile networkProfile;
@@ -653,30 +646,6 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
      */
     public ManagedClusterProperties withSupportPlan(KubernetesSupportPlan supportPlan) {
         this.supportPlan = supportPlan;
-        return this;
-    }
-
-    /**
-     * Get the enablePodSecurityPolicy property: (DEPRECATED) Whether to enable Kubernetes pod security policy
-     * (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn more
-     * at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
-     * 
-     * @return the enablePodSecurityPolicy value.
-     */
-    public Boolean enablePodSecurityPolicy() {
-        return this.enablePodSecurityPolicy;
-    }
-
-    /**
-     * Set the enablePodSecurityPolicy property: (DEPRECATED) Whether to enable Kubernetes pod security policy
-     * (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn more
-     * at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
-     * 
-     * @param enablePodSecurityPolicy the enablePodSecurityPolicy value to set.
-     * @return the ManagedClusterProperties object itself.
-     */
-    public ManagedClusterProperties withEnablePodSecurityPolicy(Boolean enablePodSecurityPolicy) {
-        this.enablePodSecurityPolicy = enablePodSecurityPolicy;
         return this;
     }
 
@@ -1219,7 +1188,6 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
         jsonWriter.writeJsonField("nodeResourceGroupProfile", this.nodeResourceGroupProfile);
         jsonWriter.writeBooleanField("enableRBAC", this.enableRbac);
         jsonWriter.writeStringField("supportPlan", this.supportPlan == null ? null : this.supportPlan.toString());
-        jsonWriter.writeBooleanField("enablePodSecurityPolicy", this.enablePodSecurityPolicy);
         jsonWriter.writeJsonField("networkProfile", this.networkProfile);
         jsonWriter.writeJsonField("aadProfile", this.aadProfile);
         jsonWriter.writeJsonField("autoUpgradeProfile", this.autoUpgradeProfile);
@@ -1312,9 +1280,6 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
                 } else if ("supportPlan".equals(fieldName)) {
                     deserializedManagedClusterProperties.supportPlan
                         = KubernetesSupportPlan.fromString(reader.getString());
-                } else if ("enablePodSecurityPolicy".equals(fieldName)) {
-                    deserializedManagedClusterProperties.enablePodSecurityPolicy
-                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("networkProfile".equals(fieldName)) {
                     deserializedManagedClusterProperties.networkProfile
                         = ContainerServiceNetworkProfile.fromJson(reader);
