@@ -135,7 +135,9 @@ public final class CreateChatThreadOptions implements JsonSerializable<CreateCha
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("topic", this.topic);
         jsonWriter.writeArrayField("participants", this.participants, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        if (this.metadata != null) {
+            jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        }
         jsonWriter.writeJsonField("retentionPolicy", this.retentionPolicy);
         return jsonWriter.writeEndObject();
     }
