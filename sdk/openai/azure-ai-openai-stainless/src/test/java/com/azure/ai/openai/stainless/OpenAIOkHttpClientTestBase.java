@@ -13,6 +13,7 @@ import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.ChainedTokenCredentialBuilder;
 import com.azure.identity.EnvironmentCredentialBuilder;
 import com.openai.azure.AzureOpenAIServiceVersion;
+import com.openai.models.ResponseFormatJsonSchema.JsonSchema;
 import com.openai.core.JsonValue;
 import com.openai.errors.BadRequestException;
 import com.openai.models.FunctionDefinition;
@@ -617,7 +618,7 @@ public class OpenAIOkHttpClientTestBase {
         }
     }
 
-    static String extractOutputText(Response response) {
+    String extractOutputText(Response response) {
         return response.output()
             .stream()
             .map(item -> item.message().orElse(null))
@@ -666,5 +667,47 @@ public class OpenAIOkHttpClientTestBase {
         Embedding embedding = embeddings.get(0);
         assertNotNull(embedding.embedding(), "Embedding vector should not be null");
         assertFalse(embedding.embedding().isEmpty(), "Embedding vector should not be empty");
+    }
+
+    void assertChatCompletionContainsField(ChatCompletion result, String fieldName) {
+        List<ChatCompletion.Choice> choices = result.choices();
+        assertFalse(choices.isEmpty(), "Expected at least one completion choice");
+
+        Optional<String> content = choices.get(0).message().content();
+        assertTrue(content.isPresent(), "Expected non-null structured response content");
+
+        String json = content.get();
+        assertTrue(json.contains(fieldName), "Output should contain '" + fieldName + "' field");
+    }
+
+    void assertChatCompletionDetailedResponse(ChatCompletion result, String fieldName) {
+        assertChatCompletionContainsField(result, fieldName);
+
+        assertNotNull(result.id(), "ChatCompletion ID should not be null");
+        assertNotNull(result.created(), "ChatCompletion creation timestamp should not be null");
+        assertTrue(result.usage().isPresent(), "Usage information should be present");
+        result.usage().ifPresent(usage -> {
+            assertTrue(usage.promptTokens() > 0, "Prompt tokens should be greater than 0");
+            assertTrue(usage.completionTokens() > 0, "Completion tokens should be greater than 0");
+            assertTrue(usage.totalTokens() > 0, "Total tokens should be greater than 0");
+        });
+    }
+
+    JsonSchema.Schema createSchema() {
+
+        Map<String, Object> itemsMap = new HashMap<>();
+        itemsMap.put("type", "string");
+
+        Map<String, Object> employeesMap = new HashMap<>();
+        employeesMap.put("type", "array");
+        employeesMap.put("items", itemsMap);
+
+        Map<String, Object> propertiesMap = new HashMap<>();
+        propertiesMap.put("employees", employeesMap);
+
+        return JsonSchema.Schema.builder()
+            .putAdditionalProperty("type", JsonValue.from("object"))
+            .putAdditionalProperty("properties", JsonValue.from(propertiesMap))
+            .build();
     }
 }

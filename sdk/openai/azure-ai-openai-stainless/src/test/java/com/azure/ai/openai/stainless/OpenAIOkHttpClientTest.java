@@ -15,6 +15,7 @@ import com.openai.credential.BearerTokenCredential;
 import com.openai.errors.BadRequestException;
 import com.openai.errors.NotFoundException;
 import com.openai.models.ResponseFormatJsonObject;
+import com.openai.models.ResponseFormatJsonSchema;
 import com.openai.models.audio.transcriptions.Transcription;
 import com.openai.models.audio.transcriptions.TranscriptionCreateParams;
 import com.openai.models.chat.completions.ChatCompletion;
@@ -37,6 +38,7 @@ import com.openai.models.responses.ResponseInputItem;
 import com.openai.models.responses.ResponseInputImage;
 import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.ResponseOutputMessage;
+import com.openai.models.ResponseFormatJsonSchema.JsonSchema;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -69,7 +71,7 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     private OpenAIClient client;
 
     private OpenAIOkHttpClient.Builder setAzureServiceApiVersion(OpenAIOkHttpClient.Builder clientBuilder,
-        String apiVersion) {
+                                                                 String apiVersion) {
         if (GA.equals(apiVersion)) {
             clientBuilder.azureServiceVersion(AZURE_OPENAI_SERVICE_VERSION_GA);
         } else if (PREVIEW.equals(apiVersion)) {
@@ -700,5 +702,26 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
                 assertFalse(textEvent.delta().trim().isEmpty(), "Text delta should not be empty");
             }));
         }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
+    public void testStructuredOutputsExample(String apiType, String apiVersion, String testModel) {
+        client = createClient(apiType, apiVersion);
+
+        JsonSchema.Schema schema = createSchema();
+
+        ChatCompletionCreateParams params = ChatCompletionCreateParams.builder()
+            .model(testModel)
+            .temperature(0.0)
+            .maxCompletionTokens(512)
+            .responseFormat(ResponseFormatJsonSchema.builder()
+                .jsonSchema(ResponseFormatJsonSchema.JsonSchema.builder().name("employee-list").schema(schema).build())
+                .build())
+            .addUserMessage("Who works at OpenAI?")
+            .build();
+
+        ChatCompletion result = client.chat().completions().create(params);
+        assertChatCompletionDetailedResponse(result, "employees");
     }
 }
