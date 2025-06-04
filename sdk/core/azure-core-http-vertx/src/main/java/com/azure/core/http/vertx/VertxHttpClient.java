@@ -190,6 +190,8 @@ class VertxHttpClient implements HttpClient {
                 || bodyContent instanceof ByteBufferContent
                 || bodyContent instanceof StringContent
                 || bodyContent instanceof SerializableContent) {
+                // This cannot produce a NullPointerException for the BinaryDataContent types that trigger this as they
+                // are in-memory and have a length.
                 long contentLength = bodyContent.getLength();
                 vertxRequest.send(Buffer.buffer(FluxUtil.byteBufferToArray(bodyContent.toByteBuffer())))
                     .onSuccess(ignored -> reportProgress(contentLength, progressReporter))
