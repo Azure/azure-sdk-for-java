@@ -57,6 +57,8 @@ class BatchClientTestBase extends TestProxyTestBase {
 
     protected BatchClient batchClient;
 
+    protected BatchAsyncClient batchAsyncClient;
+
     static final int MAX_LEN_ID = 64;
 
     static String redacted = "REDACTED";
@@ -90,6 +92,7 @@ class BatchClientTestBase extends TestProxyTestBase {
         authenticateClient(AuthMode.AAD);
 
         batchClient = batchClientBuilder.buildClient();
+        batchAsyncClient = batchClientBuilder.buildAsyncClient();
     }
 
     public void addTestRulesOnPlayback(InterceptorManager interceptorManager) {
@@ -342,6 +345,39 @@ class BatchClientTestBase extends TestProxyTestBase {
         }
 
         // Timeout, return false
+        return false;
+    }
+
+    boolean waitForTasksToComplete(BatchAsyncClient batchAsyncClient, String jobId, int expiryTimeInSeconds) {
+        long startTime = System.currentTimeMillis();
+        long elapsedTime = 0L;
+
+        while (elapsedTime < expiryTimeInSeconds * 1000L) {
+            BatchTasksListOptions options = new BatchTasksListOptions();
+            options.setSelect(Arrays.asList("id", "state"));
+
+            Iterable<BatchTask> taskIterator = batchAsyncClient.listTasks(jobId, options).toIterable();
+
+            boolean allComplete = true;
+            for (BatchTask task : taskIterator) {
+                if (task.getState() != BatchTaskState.COMPLETED) {
+                    allComplete = false;
+                    break;
+                }
+            }
+
+            if (allComplete) {
+                return true;
+            }
+
+            sleepIfRunningAgainstService(10 * 1000);
+            if (interceptorManager.isPlaybackMode()) {
+                elapsedTime += 10 * 1000;
+            } else {
+                elapsedTime = System.currentTimeMillis() - startTime;
+            }
+        }
+
         return false;
     }
 
