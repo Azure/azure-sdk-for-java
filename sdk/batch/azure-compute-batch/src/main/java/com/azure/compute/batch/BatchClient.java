@@ -90,7 +90,6 @@ import com.azure.compute.batch.models.GetBatchPoolOptions;
 import com.azure.compute.batch.models.GetBatchTaskFileOptions;
 import com.azure.compute.batch.models.GetBatchTaskFilePropertiesOptions;
 import com.azure.compute.batch.models.GetBatchTaskOptions;
-import com.azure.compute.batch.models.GetCertificateResponse;
 import com.azure.compute.batch.models.ListBatchApplicationsOptions;
 import com.azure.compute.batch.models.ListBatchCertificatesOptions;
 import com.azure.compute.batch.models.ListBatchJobPreparationAndReleaseTaskStatusOptions;
@@ -5780,6 +5779,9 @@ public final class BatchClient {
      *             }
      *         ]
      *     }
+     *     data: String (Required)
+     *     certificateFormat: String(pfx/cer) (Optional)
+     *     password: String (Optional)
      * }
      * }
      * </pre>
@@ -11126,8 +11128,12 @@ public final class BatchClient {
         // Generated convenience method for listApplications
         RequestOptions requestOptions = new RequestOptions();
         Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
         }
         return serviceClient.listApplications(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchApplication.class));
@@ -11249,11 +11255,15 @@ public final class BatchClient {
         // Generated convenience method for listPoolUsageMetrics
         RequestOptions requestOptions = new RequestOptions();
         Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         OffsetDateTime startTime = options == null ? null : options.getStartTime();
         OffsetDateTime endtime = options == null ? null : options.getEndtime();
         String filter = options == null ? null : options.getFilter();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
         }
         if (startTime != null) {
             requestOptions.addQueryParam("startTime", String.valueOf(startTime), false);
@@ -11365,11 +11375,15 @@ public final class BatchClient {
         // Generated convenience method for listPools
         RequestOptions requestOptions = new RequestOptions();
         Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
         }
         if (filter != null) {
             requestOptions.addQueryParam("$filter", filter, false);
@@ -12205,9 +12219,13 @@ public final class BatchClient {
         // Generated convenience method for listSupportedImages
         RequestOptions requestOptions = new RequestOptions();
         Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
         }
         if (filter != null) {
             requestOptions.addQueryParam("$filter", filter, false);
@@ -12257,9 +12275,13 @@ public final class BatchClient {
         // Generated convenience method for listPoolNodeCounts
         RequestOptions requestOptions = new RequestOptions();
         Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
         }
         if (filter != null) {
             requestOptions.addQueryParam("$filter", filter, false);
@@ -12924,11 +12946,15 @@ public final class BatchClient {
         // Generated convenience method for listJobs
         RequestOptions requestOptions = new RequestOptions();
         Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
         }
         if (filter != null) {
             requestOptions.addQueryParam("$filter", filter, false);
@@ -12988,11 +13014,15 @@ public final class BatchClient {
         // Generated convenience method for listJobsFromSchedule
         RequestOptions requestOptions = new RequestOptions();
         Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
         }
         if (filter != null) {
             requestOptions.addQueryParam("$filter", filter, false);
@@ -13065,10 +13095,14 @@ public final class BatchClient {
         // Generated convenience method for listJobPreparationAndReleaseTaskStatus
         RequestOptions requestOptions = new RequestOptions();
         Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
         }
         if (filter != null) {
             requestOptions.addQueryParam("$filter", filter, false);
@@ -13236,10 +13270,14 @@ public final class BatchClient {
         // Generated convenience method for listCertificates
         RequestOptions requestOptions = new RequestOptions();
         Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
         }
         if (filter != null) {
             requestOptions.addQueryParam("$filter", filter, false);
@@ -13418,7 +13456,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GetCertificateResponse getCertificate(String thumbprintAlgorithm, String thumbprint,
+    public BatchCertificate getCertificate(String thumbprintAlgorithm, String thumbprint,
         GetBatchCertificateOptions options) {
         // Generated convenience method for getCertificateWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -13435,7 +13473,7 @@ public final class BatchClient {
                 false);
         }
         return getCertificateWithResponse(thumbprintAlgorithm, thumbprint, requestOptions).getValue()
-            .toObject(GetCertificateResponse.class);
+            .toObject(BatchCertificate.class);
     }
 
     /**
@@ -13453,11 +13491,11 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GetCertificateResponse getCertificate(String thumbprintAlgorithm, String thumbprint) {
+    public BatchCertificate getCertificate(String thumbprintAlgorithm, String thumbprint) {
         // Generated convenience method for getCertificateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getCertificateWithResponse(thumbprintAlgorithm, thumbprint, requestOptions).getValue()
-            .toObject(GetCertificateResponse.class);
+            .toObject(BatchCertificate.class);
     }
 
     /**
@@ -14095,11 +14133,15 @@ public final class BatchClient {
         // Generated convenience method for listJobSchedules
         RequestOptions requestOptions = new RequestOptions();
         Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
         }
         if (filter != null) {
             requestOptions.addQueryParam("$filter", filter, false);
@@ -14217,11 +14259,15 @@ public final class BatchClient {
         // Generated convenience method for listTasks
         RequestOptions requestOptions = new RequestOptions();
         Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
         }
         if (filter != null) {
             requestOptions.addQueryParam("$filter", filter, false);
@@ -15005,10 +15051,14 @@ public final class BatchClient {
         // Generated convenience method for listTaskFiles
         RequestOptions requestOptions = new RequestOptions();
         Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         Boolean recursive = options == null ? null : options.isRecursive();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
         }
         if (filter != null) {
             requestOptions.addQueryParam("$filter", filter, false);
@@ -15733,10 +15783,14 @@ public final class BatchClient {
         // Generated convenience method for listNodes
         RequestOptions requestOptions = new RequestOptions();
         Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
         }
         if (filter != null) {
             requestOptions.addQueryParam("$filter", filter, false);
@@ -15855,9 +15909,13 @@ public final class BatchClient {
         // Generated convenience method for listNodeExtensions
         RequestOptions requestOptions = new RequestOptions();
         Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         List<String> select = options == null ? null : options.getSelect();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -16088,10 +16146,14 @@ public final class BatchClient {
         // Generated convenience method for listNodeFiles
         RequestOptions requestOptions = new RequestOptions();
         Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         Boolean recursive = options == null ? null : options.isRecursive();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
         }
         if (filter != null) {
             requestOptions.addQueryParam("$filter", filter, false);
