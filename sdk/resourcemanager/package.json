@@ -21,6 +21,7 @@
     "format": "prettier --write *.js"
   },
   "devDependencies": {
+    "axios": "1.9.0",
     "colors": "1.1.2",
     "execa": "^4.0.0",
     "gulp": "^4.0.2",
@@ -28,12 +29,14 @@
     "gulp-gh-pages": "^0.5.4",
     "gulp-if": "^3.0.0",
     "gulp-shell": "^0.8.0",
-    "p-all": "^1.0.0",
-    "yargs": "3.31.0",
     "npm-run-all": "4.1.5",
+    "p-all": "^1.0.0",
     "pom-parser": "1.2.0",
-    "axios": "1.9.0",
+    "prettier": "2.8.4",
     "yaml": "2.1.0",
-    "prettier": "2.8.4"
+    "yargs": "3.31.0"
+  },
+  "dependencies": {
+    "azure-sdk-for-java-codegen": "file:"
   }
 }
