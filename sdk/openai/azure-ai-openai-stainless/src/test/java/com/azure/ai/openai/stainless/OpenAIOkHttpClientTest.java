@@ -71,7 +71,7 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     private OpenAIClient client;
 
     private OpenAIOkHttpClient.Builder setAzureServiceApiVersion(OpenAIOkHttpClient.Builder clientBuilder,
-                                                                 String apiVersion) {
+        String apiVersion) {
         if (GA.equals(apiVersion)) {
             clientBuilder.azureServiceVersion(AZURE_OPENAI_SERVICE_VERSION_GA);
         } else if (PREVIEW.equals(apiVersion)) {
