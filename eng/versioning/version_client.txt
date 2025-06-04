@@ -441,7 +441,7 @@ com.azure.resourcemanager:azure-resourcemanager-hdinsight-containers;1.0.0-beta.
 com.azure.resourcemanager:azure-resourcemanager-apicenter;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-hybridconnectivity;1.1.0;1.2.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-playwrighttesting;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-recoveryservicesdatareplication;1.0.0-beta.2;1.0.0-beta.3
+com.azure.resourcemanager:azure-resourcemanager-recoveryservicesdatareplication;1.0.0-beta.2;1.0.0
 com.azure.resourcemanager:azure-resourcemanager-networkanalytics;1.0.1;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-springappdiscovery;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-astro;1.0.0-beta.2;1.0.0-beta.3
@@ -453,7 +453,7 @@ com.azure.resourcemanager:azure-resourcemanager-deviceregistry;1.0.0;1.1.0-beta.
 com.azure.resourcemanager:azure-resourcemanager-standbypool;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-edgezones;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-devopsinfrastructure;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-oracledatabase;1.0.0;1.1.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-oracledatabase;1.0.0;1.1.0
 com.azure.resourcemanager:azure-resourcemanager-informaticadatamanagement;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-mongocluster;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-computefleet;1.0.0;1.1.0-beta.1
@@ -461,7 +461,7 @@ com.azure.resourcemanager:azure-resourcemanager-servicefabricmanagedclusters;1.0
 com.azure.resourcemanager:azure-resourcemanager-healthdataaiservices;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-redhatopenshift;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-fabric;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-computeschedule;1.0.0;1.1.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-computeschedule;1.0.0;1.1.0
 com.azure.resourcemanager:azure-resourcemanager-trustedsigning;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-iotoperations;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerorchestratorruntime;1.0.0-beta.1;1.0.0-beta.2
@@ -490,6 +490,7 @@ com.azure.resourcemanager:azure-resourcemanager-planetarycomputer;1.0.0-beta.1;1
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-fluxconfigurations;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-extensions;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-extensiontypes;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-cloudhealth;1.0.0-beta.1;1.0.0-beta.1
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
 com.azure.v2:azure-client-sdk-parent;2.0.0-beta.1;2.0.0-beta.1
