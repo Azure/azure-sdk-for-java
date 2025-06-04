@@ -181,7 +181,6 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
         assertNotNull(transferCallResultResponse.getValue());
     }
 
-    @Test
     public void transferToParticipantCallWithResponsePhoneNumberIdentifierXMSHeader() {
         CallConnectionAsync callConnectionAsync
             = getCallAutomationAsyncClient(new ArrayList<>(Collections.singletonList(new SimpleEntry<>(

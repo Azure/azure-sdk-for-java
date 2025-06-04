@@ -48,6 +48,11 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
      */
     private MicrosoftTeamsAppIdentifierModel microsoftTeamsApp;
 
+    /*
+     * The Microsoft Teams Extension user.
+     */
+    private TeamsExtensionUserIdentifierModel teamsExtensionUser;
+
     /**
      * Creates an instance of CommunicationIdentifierModel class.
      */
@@ -175,6 +180,26 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
     }
 
     /**
+     * Get the teamsExtensionUser property: The Microsoft Teams Extension user.
+     * 
+     * @return the teamsExtensionUser value.
+     */
+    public TeamsExtensionUserIdentifierModel getTeamsExtensionUser() {
+        return this.teamsExtensionUser;
+    }
+
+    /**
+     * Set the teamsExtensionUser property: The Microsoft Teams Extension user.
+     * 
+     * @param teamsExtensionUser the teamsExtensionUser value to set.
+     * @return the CommunicationIdentifierModel object itself.
+     */
+    public CommunicationIdentifierModel setTeamsExtensionUser(TeamsExtensionUserIdentifierModel teamsExtensionUser) {
+        this.teamsExtensionUser = teamsExtensionUser;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -186,6 +211,7 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
         jsonWriter.writeJsonField("phoneNumber", this.phoneNumber);
         jsonWriter.writeJsonField("microsoftTeamsUser", this.microsoftTeamsUser);
         jsonWriter.writeJsonField("microsoftTeamsApp", this.microsoftTeamsApp);
+        jsonWriter.writeJsonField("teamsExtensionUser", this.teamsExtensionUser);
         return jsonWriter.writeEndObject();
     }
 
@@ -220,6 +246,9 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
                 } else if ("microsoftTeamsApp".equals(fieldName)) {
                     deserializedCommunicationIdentifierModel.microsoftTeamsApp
                         = MicrosoftTeamsAppIdentifierModel.fromJson(reader);
+                } else if ("teamsExtensionUser".equals(fieldName)) {
+                    deserializedCommunicationIdentifierModel.teamsExtensionUser
+                        = TeamsExtensionUserIdentifierModel.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
