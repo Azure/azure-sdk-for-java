@@ -23,6 +23,7 @@ import com.azure.monitor.query.models.NamespaceClassification;
 import com.azure.monitor.query.models.QueryTimeInterval;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -266,6 +267,43 @@ public final class MetricsHelper {
         int i = s.indexOf("subscriptions/") + 14;
         String subscriptionId = s.substring(i, s.indexOf("/", i));
         return subscriptionId;
+    }
+
+    /**
+     * Returns this {@link QueryTimeInterval} in ISO 8601 string format suitable for Azure Monitor Metrics API.
+     * For duration-only intervals, this method converts them to absolute start/end times based on current time.
+     *
+     * @param timeInterval The time interval to convert.
+     * @return ISO 8601 formatted string representation with absolute start/end times.
+     */
+    public static String toMetricsTimespan(QueryTimeInterval timeInterval) {
+        if (timeInterval == null) {
+            return null;
+        }
+
+        // If we have both start and end times, use them directly
+        if (timeInterval.getStartTime() != null && timeInterval.getEndTime() != null) {
+            return timeInterval.getStartTime() + "/" + timeInterval.getEndTime();
+        }
+
+        // If we have start time and duration, calculate end time
+        if (timeInterval.getStartTime() != null && timeInterval.getDuration() != null) {
+            return timeInterval.getStartTime() + "/" + timeInterval.getStartTime().plus(timeInterval.getDuration());
+        }
+
+        // If we have duration and end time, calculate start time
+        if (timeInterval.getDuration() != null && timeInterval.getEndTime() != null) {
+            return timeInterval.getEndTime().minus(timeInterval.getDuration()) + "/" + timeInterval.getEndTime();
+        }
+
+        // If we only have duration, calculate absolute start and end times based on current time
+        if (timeInterval.getDuration() != null) {
+            OffsetDateTime now = OffsetDateTime.now();
+            OffsetDateTime startTime = now.minus(timeInterval.getDuration());
+            return startTime + "/" + now;
+        }
+
+        return null;
     }
 
 }

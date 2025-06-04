@@ -144,7 +144,7 @@ public final class MetricsQueryClient {
         }
         String timespan = options == null || options.getTimeInterval() == null
             ? null
-            : LogsQueryHelper.toIso8601Format(options.getTimeInterval());
+            : MetricsHelper.toMetricsTimespan(options.getTimeInterval());
         Duration granularity = options == null ? null : options.getGranularity();
         Integer top = options == null ? null : options.getTop();
         String orderBy = options == null ? null : options.getOrderBy();

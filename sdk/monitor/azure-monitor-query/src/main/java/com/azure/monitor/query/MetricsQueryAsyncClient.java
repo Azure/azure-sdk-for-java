@@ -194,7 +194,7 @@ public final class MetricsQueryAsyncClient {
                 = options.getAggregations().stream().map(type -> type.toString()).collect(Collectors.joining(","));
         }
         String timespan
-            = options.getTimeInterval() == null ? null : LogsQueryHelper.toIso8601Format(options.getTimeInterval());
+            = options.getTimeInterval() == null ? null : MetricsHelper.toMetricsTimespan(options.getTimeInterval());
         return metricsClient.getMetrics()
             .listWithResponseAsync(resourceUri, timespan, options.getGranularity(), String.join(",", metricsNames),
                 aggregation, options.getTop(), options.getOrderBy(), options.getFilter(), ResultType.DATA,
