@@ -256,8 +256,7 @@ public final class MetricsHelper {
     }
 
     private static List<MetricAvailability> mapMetricAvailabilities(
-        List<com.azure.monitor.query.implementation.metricsdefinitions.models.MetricAvailability>
-            metricAvailabilities) {
+        List<com.azure.monitor.query.implementation.metricsdefinitions.models.MetricAvailability> metricAvailabilities) {
         return metricAvailabilities.stream().map(availabilityImpl -> {
             MetricAvailability metricAvailability = new MetricAvailability();
             MetricsHelper.setMetricAvailabilityProperties(metricAvailability, availabilityImpl.getRetention(),

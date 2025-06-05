@@ -30,7 +30,7 @@ public class MetricsTimespanTest {
         assertTrue(result.matches(".*\\d{4}-\\d{2}-\\d{2}T.*"), "Result should contain absolute timestamps");
 
         // Verify it's not just the duration string
-        assertTrue(!result.equals("PT30M"), "Result should not be just the duration string");
+        assertTrue(!"PT30M".equals(result), "Result should not be just the duration string");
     }
 
     @Test
