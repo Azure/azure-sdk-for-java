@@ -652,6 +652,4 @@ abstract class AsyncBenchmark<T> {
         }
         else return null;
     }
-
-
 }
