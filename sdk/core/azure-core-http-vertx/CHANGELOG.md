@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (2025-06-05)
+## 1.0.4 (2025-06-05)
 
 ### Bugs 
 
@@ -8,6 +8,8 @@
   the default 8 KB limit. The new limit is now 256 KB when the default of 8 KB is seen. ([#45291](https://github.com/Azure/azure-sdk-for-java/pull/45291))
 
 ### Other Changes
+
+- Few small changes to implementation to improve support for Vert.x 5.x.
 
 #### Dependency Updates
 
