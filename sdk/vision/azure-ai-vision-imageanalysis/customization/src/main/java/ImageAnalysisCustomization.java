@@ -1,5 +1,6 @@
 import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
+import com.azure.autorest.customization.JavadocCustomization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.github.javaparser.javadoc.description.JavadocDescription;
 import org.slf4j.Logger;
@@ -21,10 +22,10 @@ public class ImageAnalysisCustomization extends Customization {
     private void updateClientJavadoc(ClassCustomization clientClass, String apiKeyAuthTag, String entraIdAuthTag) {
         clientClass.customizeAst(ast -> ast.getClassByName(clientClass.getClassName()).ifPresent(clazz ->
             clazz.getJavadoc().ifPresent(javadoc -> {
-                String codeSnippetTags = String.format("\n* <!-- src_embed com.azure.ai.vision.imageanalysis.%1$s -->"
-                        + "\n* <!-- end com.azure.ai.vision.imageanalysis.%1$s -->"
-                        + "\n* <!-- src_embed com.azure.ai.vision.imageanalysis.%2$s -->"
-                        + "\n* <!-- end com.azure.ai.vision.imageanalysis.%2$s -->", apiKeyAuthTag, entraIdAuthTag);
+                String codeSnippetTags = String.format("\n<!-- src_embed com.azure.ai.vision.imageanalysis.%1$s -->"
+                    + "\n<!-- end com.azure.ai.vision.imageanalysis.%1$s -->"
+                    + "\n<!-- src_embed com.azure.ai.vision.imageanalysis.%2$s -->"
+                    + "\n<!-- end com.azure.ai.vision.imageanalysis.%2$s -->", apiKeyAuthTag, entraIdAuthTag);
                 String javadocDescription = javadoc.getDescription().toText();
                 javadocDescription += codeSnippetTags;
                 javadoc.getDescription().getElements().clear();

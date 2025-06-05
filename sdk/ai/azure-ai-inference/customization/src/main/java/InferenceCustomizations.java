@@ -4,6 +4,7 @@ import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
+import com.github.javaparser.ast.body.InitializerDeclaration;
 import org.slf4j.Logger;
 import com.github.javaparser.StaticJavaParser;
 
@@ -28,7 +29,7 @@ public class InferenceCustomizations extends Customization {
             ast.addImport("com.azure.ai.inference.implementation.accesshelpers.ChatCompletionsOptionsAccessHelper");
 
             ast.getClassByName("ChatCompletionsOptions").ifPresent(clazz -> clazz.getMembers()
-                .add(0, new ConstructorDeclaration().setStatic(true).setBody(StaticJavaParser.parseBlock("{"
+                .add(0, new InitializerDeclaration(true, StaticJavaParser.parseBlock("{"
                     + "ChatCompletionsOptionsAccessHelper.setAccessor(new ChatCompletionsOptionsAccessHelper.ChatCompletionsOptionsAccessor() {"
                     + "    @Override"
                     + "    public void setStream(ChatCompletionsOptions options, boolean stream) {"
@@ -38,8 +39,9 @@ public class InferenceCustomizations extends Customization {
         });
 
         customization.getClass("com.azure.ai.inference", "ModelServiceVersion").customizeAst(ast ->
-            ast.getClassByName("ModelServiceVersion").ifPresent(clazz -> clazz.getMethodsByName("getLatest")
+            ast.getEnumByName("ModelServiceVersion").ifPresent(clazz -> clazz.getMethodsByName("getLatest")
                 .forEach(method -> method.setBody(StaticJavaParser.parseBlock("{ return V2024_05_01_PREVIEW; }")))));
+
         customizeChatCompletionsBaseClasses(customization, logger);
     }
 
