@@ -20,22 +20,18 @@ import java.net.URL;
 public class AdministrationCustomizations extends Customization {
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
-        Editor editor = libraryCustomization.getRawEditor();
-
-        removeFiles(editor);
-        customizeModuleInfo(editor);
-        customizePackageInfos(editor);
-        customizeImplClients(libraryCustomization);
+        removeFiles(libraryCustomization.getRawEditor());
         customizeKeyVaultRoleScope(libraryCustomization);
+        customizeServiceVersion(libraryCustomization);
+        customizeImplClients(libraryCustomization);
+        customizeModuleInfo(libraryCustomization.getRawEditor());
+        customizePackageInfos(libraryCustomization.getRawEditor());
     }
 
     private static void removeFiles(Editor editor) {
-        // Remove the next line in favor of renaming to KeyServiceVersion once the TSP spec includes all service
-        // versions.
-        editor.removeFile("src/main/java/com/azure/security/keyvault/administration/KeyVaultServiceVersion.java");
-        editor.removeFile("src/main/java/com/azure/security/keyvault/administration/KeyVaultAsyncClient.java");
-        editor.removeFile("src/main/java/com/azure/security/keyvault/administration/KeyVaultClient.java");
-        editor.removeFile("src/main/java/com/azure/security/keyvault/administration/KeyVaultClientBuilder.java");
+        editor.removeFile("src/main/java/com/azure/security/keyvault/administration/KeyVaultAdministrationAsyncClient.java");
+        editor.removeFile("src/main/java/com/azure/security/keyvault/administration/KeyVaultAdministrationClient.java");
+        editor.removeFile("src/main/java/com/azure/security/keyvault/administration/KeyVaultAdministrationClientBuilder.java");
         editor.removeFile("src/main/java/com/azure/security/keyvault/administration/RoleAssignmentsAsyncClient.java");
         editor.removeFile("src/main/java/com/azure/security/keyvault/administration/RoleAssignmentsClient.java");
         editor.removeFile("src/main/java/com/azure/security/keyvault/administration/RoleDefinitionsAsyncClient.java");
@@ -48,10 +44,10 @@ public class AdministrationCustomizations extends Customization {
         String implPath = "src/main/java/com/azure/security/keyvault/administration/implementation/";
 
         // Make some implementation methods public to facilitate calling LROs:
-        // KeyVaultClientImpl
-        replaceInFile(packageCustomization.getClass("KeyVaultClientImpl"), implPath + "KeyVaultClientImpl.java",
+        // KeyVaultAdministrationClientImpl
+        replaceInFile(packageCustomization.getClass("KeyVaultAdministrationClientImpl"),
+            implPath + "KeyVaultAdministrationClientImpl.java",
             new String[] {
-                "KeyVault",
                 "private Mono<Response<BinaryData>> fullBackupWithResponseAsync",
                 "private Response<BinaryData> fullBackupWithResponse",
                 "private Mono<Response<BinaryData>> preFullBackupWithResponseAsync",
@@ -61,8 +57,8 @@ public class AdministrationCustomizations extends Customization {
                 "private Mono<Response<BinaryData>> fullRestoreOperationWithResponseAsync",
                 "private Response<BinaryData> fullRestoreOperationWithResponse",
                 "private Mono<Response<BinaryData>> selectiveKeyRestoreOperationWithResponseAsync",
-                "private Response<BinaryData> selectiveKeyRestoreOperationWithResponse" }, new String[] {
-                "KeyVaultAdministration",
+                "private Response<BinaryData> selectiveKeyRestoreOperationWithResponse" },
+            new String[] {
                 "public Mono<Response<BinaryData>> fullBackupWithResponseAsync",
                 "public Response<BinaryData> fullBackupWithResponse",
                 "public Mono<Response<BinaryData>> preFullBackupWithResponseAsync",
@@ -77,127 +73,143 @@ public class AdministrationCustomizations extends Customization {
         // RoleAssignmentsImpl
         replaceInFile(packageCustomization.getClass("RoleAssignmentsImpl"), implPath + "RoleAssignmentsImpl.java",
             new String[] {
-                "KeyVault",
                 "private Mono<PagedResponse<BinaryData>> listForScopeSinglePageAsync",
-                "private Mono<PagedResponse<BinaryData>> listForScopeNextSinglePageAsync" }, new String[] {
-                "KeyVaultAdministration",
+                "private Mono<PagedResponse<BinaryData>> listForScopeNextSinglePageAsync" },
+            new String[] {
                 "public Mono<PagedResponse<BinaryData>> listForScopeSinglePageAsync",
                 "public Mono<PagedResponse<BinaryData>> listForScopeNextSinglePageAsync" });
 
         // RoleDefinitionsImpl
         replaceInFile(packageCustomization.getClass("RoleDefinitionsImpl"), implPath + "RoleDefinitionsImpl.java",
             new String[] {
-                "KeyVault",
                 "private Mono<PagedResponse<BinaryData>> listSinglePageAsync",
-                "private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync" }, new String[] {
-                "KeyVaultAdministration",
+                "private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync" },
+            new String[] {
                 "public Mono<PagedResponse<BinaryData>> listSinglePageAsync",
                 "public Mono<PagedResponse<BinaryData>> listNextSinglePageAsync" });
-
-        // Then rename KeyVaultClientImpl to KeyVaultAdministrationClientImpl.
-        libraryCustomization.getRawEditor()
-            .renameFile(implPath + "KeyVaultClientImpl.java", implPath + "KeyVaultAdministrationClientImpl.java");
     }
 
     private static void customizeKeyVaultRoleScope(LibraryCustomization libraryCustomization) {
-        ClassCustomization classCustomization = libraryCustomization
+        libraryCustomization
             .getPackage("com.azure.security.keyvault.administration.models")
-            .getClass("KeyVaultRoleScope");
+            .getClass("KeyVaultRoleScope")
+            .customizeAst(ast -> {
+                ast.addImport(IllegalArgumentException.class)
+                    .addImport(URL.class)
+                    .addImport(MalformedURLException.class);
 
-        classCustomization.customizeAst(ast -> {
-            ast.addImport(IllegalArgumentException.class).addImport(URL.class).addImport(MalformedURLException.class);
+                ClassOrInterfaceDeclaration clazz = ast.getClassByName("KeyVaultRoleScope").get();
 
-            ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
+                clazz.addMethod("fromUrl", Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC)
+                    .setType("KeyVaultRoleScope")
+                    .addParameter("String", "url")
+                    .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline("/**",
+                        " * Creates of finds a {@link KeyVaultRoleScope} from its string representation.", " *",
+                        " * @param url A string representing a URL containing the name of the scope to look for.",
+                        " * @return The corresponding {@link KeyVaultRoleScope}.",
+                        " * @throws IllegalArgumentException If the given {@code url} is malformed.", " */")))
+                    .setBody(StaticJavaParser.parseBlock(
+                        joinWithNewline("{", "try {", "    return fromString(new URL(url).getPath());",
+                            "} catch (MalformedURLException e) {", "    throw new IllegalArgumentException(e);", "}",
+                            "}")));
 
-            clazz.addMethod("fromUrl", Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC)
-                .setType("KeyVaultRoleScope")
-                .addParameter("String", "url")
-                .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
+                clazz.addMethod("fromUrl", Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC)
+                    .setType("KeyVaultRoleScope")
+                    .addParameter("URL", "url")
+                    .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline("/**",
+                        " * Creates of finds a {@link KeyVaultRoleScope} from its string representation.", " *",
+                        " * @param url A URL containing the name of the scope to look for.",
+                        " * @return The corresponding {@link KeyVaultRoleScope}.", " */")))
+                    .setBody(StaticJavaParser.parseBlock("{return fromString(url.getPath());}"));
+            });
+    }
+
+    private static void customizeServiceVersion(LibraryCustomization libraryCustomization) {
+        libraryCustomization.getPackage("com.azure.security.keyvault.administration")
+            .getClass("KeyVaultServiceVersion")
+            .rename("KeyVaultAdministrationServiceVersion");
+
+        libraryCustomization.getRawEditor()
+            .replaceFile("src/main/java/com/azure/security/keyvault/administration/KeyVaultAdministrationServiceVersion.java",
+                joinWithNewline(
+                    "// Copyright (c) Microsoft Corporation. All rights reserved.",
+                    "// Licensed under the MIT License.",
+                    "// Code generated by Microsoft (R) TypeSpec Code Generator.",
+                    "",
+                    "package com.azure.security.keyvault.administration;",
+                    "",
+                    "import com.azure.core.util.ServiceVersion;",
+                    "",
                     "/**",
-                    " * Creates of finds a {@link KeyVaultRoleScope} from its string representation.",
-                    " *",
-                    " * @param url A string representing a URL containing the name of the scope to look for.",
-                    " * @return The corresponding {@link KeyVaultRoleScope}.",
-                    " * @throws IllegalArgumentException If the given {@code url} is malformed.",
-                    " */")))
-                .setBody(StaticJavaParser.parseBlock(joinWithNewline(
-                    "{",
-                    "    try {",
-                    "        return fromString(new URL(url).getPath());",
-                    "    } catch (MalformedURLException e) {",
-                    "        throw new IllegalArgumentException(e);",
+                    " * The versions of Azure Key Vault supported by this client library.",
+                    " */",
+                    "public enum KeyVaultAdministrationServiceVersion implements ServiceVersion {",
+                    "    /**",
+                    "     * Service version {@code 7.2}.",
+                    "     */",
+                    "    V7_2(\"7.2\"),",
+                    "",
+                    "    /**",
+                    "     * Service version {@code 7.3}.",
+                    "     */",
+                    "    V7_3(\"7.3\"),",
+                    "",
+                    "    /**",
+                    "     * Service version {@code 7.4}.",
+                    "     */",
+                    "    V7_4(\"7.4\"),",
+                    "",
+                    "    /**",
+                    "     * Service version {@code 7.5}.",
+                    "     */",
+                    "    V7_5(\"7.5\"),",
+                    "",
+                    "    /**",
+                    "     * Service version {@code 7.6-preview.2}.",
+                    "     */",
+                    "    V7_6_PREVIEW_2(\"7.6-preview.2\");",
+                    "",
+                    "    private final String version;",
+                    "",
+                    "    KeyVaultAdministrationServiceVersion(String version) {",
+                    "        this.version = version;",
                     "    }",
-                    "}")));
-
-            clazz.addMethod("fromUrl", Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC)
-                .setType("KeyVaultRoleScope")
-                .addParameter("URL", "url")
-                .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
-                    "/**",
-                    " * Creates of finds a {@link KeyVaultRoleScope} from its string representation.",
-                    " *",
-                    " * @param url A URL containing the name of the scope to look for.",
-                    " * @return The corresponding {@link KeyVaultRoleScope}.",
-                    " */")))
-                .setBody(StaticJavaParser.parseBlock("{return fromString(url.getPath());}"));
-        });
-    }
-
-    /**
-     * This method replaces all the provided strings in the specified file with new strings provided in the latter half
-     * of the 'strings' parameter.
-     *
-     * @param classCustomization The class customization to use to edit the file.
-     * @param classPath The path to the file to edit.
-     * @param stringsToReplace The strings to replace.
-     * @param replacementStrings The strings to replace with.
-     */
-    private static void replaceInFile(ClassCustomization classCustomization, String classPath,
-        String[] stringsToReplace, String[] replacementStrings) {
-
-        if (stringsToReplace != null && replacementStrings != null) {
-            // Replace all instances of KeyVaultServiceVersion with KeyVaultAdministrationServiceVersion. We'll remove this
-            // once the TSP spec includes all service versions.
-            Editor editor = classCustomization.getEditor();
-            String fileContent = editor.getFileContent(classPath);
-
-            // Ensure names has an even length.
-            if (stringsToReplace.length != replacementStrings.length) {
-                throw new IllegalArgumentException(
-                    "'stringsToReplace' must have the same number of elements as 'replacementStrings'.");
-            }
-
-            for (int i = 0; i < stringsToReplace.length; i++) {
-                fileContent = fileContent.replace(stringsToReplace[i], replacementStrings[i]);
-            }
-
-            editor.replaceFile(classPath, fileContent);
-        } else if (stringsToReplace != null || replacementStrings != null) {
-            throw new IllegalArgumentException(
-                "'stringsToReplace' must have the same number of elements as 'replacementStrings'.");
-        }
-    }
-
-    private static String joinWithNewline(String... lines) {
-        return String.join("\n", lines);
+                    "",
+                    "    /**",
+                    "     * {@inheritDoc}",
+                    "     */",
+                    "    @Override",
+                    "    public String getVersion() {",
+                    "        return this.version;",
+                    "    }",
+                    "",
+                    "    /**",
+                    "     * Gets the latest service version supported by this client library.",
+                    "     *",
+                    "     * @return The latest {@link KeyVaultAdministrationServiceVersion}.",
+                    "     */",
+                    "    public static KeyVaultAdministrationServiceVersion getLatest() {",
+                    "        return V7_6_PREVIEW_2;",
+                    "    }",
+                    "}",
+                    ""));
     }
 
     private static void customizeModuleInfo(Editor editor) {
-        editor.replaceFile("src/main/java/module-info.java",
-            joinWithNewline(
-                "// Copyright (c) Microsoft Corporation. All rights reserved.",
-                "// Licensed under the MIT License.",
-                "",
-                "module com.azure.security.keyvault.administration {",
-                "    requires transitive com.azure.core;",
-                "",
-                "    exports com.azure.security.keyvault.administration;",
-                "    exports com.azure.security.keyvault.administration.models;",
-                "",
-                "    opens com.azure.security.keyvault.administration to com.azure.core;",
-                "    opens com.azure.security.keyvault.administration.models to com.azure.core;",
-                "    opens com.azure.security.keyvault.administration.implementation.models to com.azure.core;",
-                "}"));
+        editor.replaceFile("src/main/java/module-info.java", joinWithNewline(
+            "// Copyright (c) Microsoft Corporation. All rights reserved.",
+            "// Licensed under the MIT License.",
+            "",
+            "module com.azure.security.keyvault.administration {",
+            "    requires transitive com.azure.core;",
+            "",
+            "    exports com.azure.security.keyvault.administration;",
+            "    exports com.azure.security.keyvault.administration.models;",
+            "",
+            "    opens com.azure.security.keyvault.administration to com.azure.core;",
+            "    opens com.azure.security.keyvault.administration.models to com.azure.core;",
+            "    opens com.azure.security.keyvault.administration.implementation.models to com.azure.core;",
+            "}"));
     }
 
     private static void customizePackageInfos(Editor editor) {
@@ -822,7 +834,8 @@ public class AdministrationCustomizations extends Customization {
                 " * @see com.azure.security.keyvault.administration.KeyVaultSettingsAsyncClient",
                 " * @see com.azure.security.keyvault.administration.KeyVaultSettingsClientBuilder",
                 " */",
-                "package com.azure.security.keyvault.administration;"));
+                "package com.azure.security.keyvault.administration;",
+                ""));
 
         editor.replaceFile("src/main/java/com/azure/security/keyvault/administration/models/package-info.java",
             joinWithNewline(
@@ -834,7 +847,8 @@ public class AdministrationCustomizations extends Customization {
                 " * Package containing the data models for Administration clients. The Key Vault clients perform cryptographic key and",
                 " * vault operations against the Key Vault service.",
                 " */",
-                "package com.azure.security.keyvault.administration.models;"));
+                "package com.azure.security.keyvault.administration.models;",
+                ""));
 
         editor.replaceFile("src/main/java/com/azure/security/keyvault/administration/implementation/package-info.java",
             joinWithNewline(
@@ -846,7 +860,8 @@ public class AdministrationCustomizations extends Customization {
                 " * Package containing the implementations for Administration clients. The Key Vault clients perform cryptographic key",
                 " * operations and vault operations against the Key Vault service.",
                 " */",
-                "package com.azure.security.keyvault.administration.implementation;"));
+                "package com.azure.security.keyvault.administration.implementation;",
+                ""));
 
         editor.replaceFile("src/main/java/com/azure/security/keyvault/administration/implementation/models/package-info.java",
             joinWithNewline(
@@ -858,6 +873,43 @@ public class AdministrationCustomizations extends Customization {
                 " * Package containing the implementation data models for Administration clients. The Key Vault clients perform",
                 " * cryptographic key operations and vault operations against the Key Vault service.",
                 " */",
-                "package com.azure.security.keyvault.administration.implementation.models;"));
+                "package com.azure.security.keyvault.administration.implementation.models;",
+                ""));
+    }
+
+    /**
+     * This method replaces all the provided strings in the specified file with new strings provided in the latter half
+     * of the 'strings' parameter.
+     *
+     * @param classCustomization The class customization to use to edit the file.
+     * @param classPath The path to the file to edit.
+     * @param stringsToReplace The strings to replace.
+     * @param replacementStrings The strings to replace with.
+     */
+    private static void replaceInFile(ClassCustomization classCustomization, String classPath,
+        String[] stringsToReplace, String[] replacementStrings) {
+
+        if (stringsToReplace != null && replacementStrings != null) {
+            Editor editor = classCustomization.getEditor();
+            String fileContent = editor.getFileContent(classPath);
+
+            if (stringsToReplace.length != replacementStrings.length) {
+                throw new IllegalArgumentException(
+                    "'stringsToReplace' must have the same number of elements as 'replacementStrings'.");
+            }
+
+            for (int i = 0; i < stringsToReplace.length; i++) {
+                fileContent = fileContent.replace(stringsToReplace[i], replacementStrings[i]);
+            }
+
+            editor.replaceFile(classPath, fileContent);
+        } else if (stringsToReplace != null || replacementStrings != null) {
+            throw new IllegalArgumentException(
+                "'stringsToReplace' must have the same number of elements as 'replacementStrings'.");
+        }
+    }
+
+    private static String joinWithNewline(String... lines) {
+        return String.join("\n", lines);
     }
 }
