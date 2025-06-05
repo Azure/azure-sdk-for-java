@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,11 +17,13 @@ public final class RankingOrder extends ExpandableStringEnum<RankingOrder> {
     /**
      * Sets sort order as BoostedRerankerScore.
      */
+    @Generated
     public static final RankingOrder BOOSTED_RERANKER_SCORE = fromString("BoostedRerankerScore");
 
     /**
      * Sets sort order as ReRankerScore.
      */
+    @Generated
     public static final RankingOrder RE_RANKER_SCORE = fromString("RerankerScore");
 
     /**
@@ -28,6 +31,7 @@ public final class RankingOrder extends ExpandableStringEnum<RankingOrder> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public RankingOrder() {
     }
@@ -38,6 +42,7 @@ public final class RankingOrder extends ExpandableStringEnum<RankingOrder> {
      * @param name a name to look for.
      * @return the corresponding RankingOrder.
      */
+    @Generated
     public static RankingOrder fromString(String name) {
         return fromString(name, RankingOrder.class);
     }
@@ -47,6 +52,7 @@ public final class RankingOrder extends ExpandableStringEnum<RankingOrder> {
      * 
      * @return known RankingOrder values.
      */
+    @Generated
     public static Collection<RankingOrder> values() {
         return values(RankingOrder.class);
     }

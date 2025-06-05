@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,26 +22,31 @@ public final class CollectionConfigurationInfo implements JsonSerializable<Colle
     /*
      * An encoded string that indicates whether the collection configuration is changed.
      */
+    @Generated
     private String eTag;
 
     /*
      * An array of metric configuration info.
      */
+    @Generated
     private List<DerivedMetricInfo> metrics;
 
     /*
      * An array of document stream configuration info.
      */
+    @Generated
     private List<DocumentStreamInfo> documentStreams;
 
     /*
      * Controls document quotas to be sent to Live Metrics.
      */
+    @Generated
     private QuotaConfigurationInfo quotaInfo;
 
     /**
      * Creates an instance of CollectionConfigurationInfo class.
      */
+    @Generated
     public CollectionConfigurationInfo() {
     }
 
@@ -49,6 +55,7 @@ public final class CollectionConfigurationInfo implements JsonSerializable<Colle
      * 
      * @return the eTag value.
      */
+    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -59,6 +66,7 @@ public final class CollectionConfigurationInfo implements JsonSerializable<Colle
      * @param eTag the eTag value to set.
      * @return the CollectionConfigurationInfo object itself.
      */
+    @Generated
     public CollectionConfigurationInfo setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -69,6 +77,7 @@ public final class CollectionConfigurationInfo implements JsonSerializable<Colle
      * 
      * @return the metrics value.
      */
+    @Generated
     public List<DerivedMetricInfo> getMetrics() {
         return this.metrics;
     }
@@ -79,6 +88,7 @@ public final class CollectionConfigurationInfo implements JsonSerializable<Colle
      * @param metrics the metrics value to set.
      * @return the CollectionConfigurationInfo object itself.
      */
+    @Generated
     public CollectionConfigurationInfo setMetrics(List<DerivedMetricInfo> metrics) {
         this.metrics = metrics;
         return this;
@@ -89,6 +99,7 @@ public final class CollectionConfigurationInfo implements JsonSerializable<Colle
      * 
      * @return the documentStreams value.
      */
+    @Generated
     public List<DocumentStreamInfo> getDocumentStreams() {
         return this.documentStreams;
     }
@@ -99,6 +110,7 @@ public final class CollectionConfigurationInfo implements JsonSerializable<Colle
      * @param documentStreams the documentStreams value to set.
      * @return the CollectionConfigurationInfo object itself.
      */
+    @Generated
     public CollectionConfigurationInfo setDocumentStreams(List<DocumentStreamInfo> documentStreams) {
         this.documentStreams = documentStreams;
         return this;
@@ -109,6 +121,7 @@ public final class CollectionConfigurationInfo implements JsonSerializable<Colle
      * 
      * @return the quotaInfo value.
      */
+    @Generated
     public QuotaConfigurationInfo getQuotaInfo() {
         return this.quotaInfo;
     }
@@ -119,6 +132,7 @@ public final class CollectionConfigurationInfo implements JsonSerializable<Colle
      * @param quotaInfo the quotaInfo value to set.
      * @return the CollectionConfigurationInfo object itself.
      */
+    @Generated
     public CollectionConfigurationInfo setQuotaInfo(QuotaConfigurationInfo quotaInfo) {
         this.quotaInfo = quotaInfo;
         return this;
@@ -127,6 +141,7 @@ public final class CollectionConfigurationInfo implements JsonSerializable<Colle
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -147,6 +162,7 @@ public final class CollectionConfigurationInfo implements JsonSerializable<Colle
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CollectionConfigurationInfo.
      */
+    @Generated
     public static CollectionConfigurationInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CollectionConfigurationInfo deserializedCollectionConfigurationInfo = new CollectionConfigurationInfo();

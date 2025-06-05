@@ -24,6 +24,7 @@ import io.netty.resolver.DefaultAddressResolverGroup;
 import io.netty.resolver.NoopAddressResolverGroup;
 import reactor.netty.Connection;
 import reactor.netty.NettyPipeline;
+import reactor.netty.http.HttpDecoderSpec;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpResponseDecoderSpec;
@@ -215,8 +216,18 @@ public class NettyAsyncHttpClientBuilder {
         nettyHttpClient = nettyHttpClient.port(port)
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS,
                 (int) getTimeout(connectTimeout, getDefaultConnectTimeout()).toMillis())
-            // TODO (alzimmer): What does validating HTTP response headers get us?
-            .httpResponseDecoder(httpResponseDecoderSpec -> initialSpec.validateHeaders(false))
+            .httpResponseDecoder(httpResponseDecoderSpec -> {
+                int maxHeaderSize = initialSpec.maxHeaderSize();
+                if (maxHeaderSize == HttpDecoderSpec.DEFAULT_MAX_HEADER_SIZE) {
+                    // Only change the max header size if it is the default value. If it's set, this was done external
+                    // to the SDK and we should respect that.
+                    // For now, set the max header size to 256 KB. Follow up to see if this should be configurable.
+                    maxHeaderSize = 256 * 1024;
+                }
+
+                // TODO (alzimmer): What does validating HTTP response headers get us?
+                return initialSpec.validateHeaders(false).maxHeaderSize(maxHeaderSize);
+            })
             .doOnRequest(
                 (request, connection) -> addHandler(request, connection, writeTimeout, responseTimeout, readTimeout))
             .doAfterResponseSuccess((ignored, connection) -> removeHandler(connection));

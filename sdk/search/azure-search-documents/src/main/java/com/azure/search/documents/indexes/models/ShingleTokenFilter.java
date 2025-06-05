@@ -6,6 +6,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,38 +21,45 @@ public final class ShingleTokenFilter extends TokenFilter {
     /*
      * A URI fragment specifying the type of token filter.
      */
+    @Generated
     private String odataType = "#Microsoft.Azure.Search.ShingleTokenFilter";
 
     /*
      * The maximum shingle size. Default and minimum value is 2.
      */
+    @Generated
     private Integer maxShingleSize;
 
     /*
      * The minimum shingle size. Default and minimum value is 2. Must be less than the value of maxShingleSize.
      */
+    @Generated
     private Integer minShingleSize;
 
     /*
      * A value indicating whether the output stream will contain the input tokens (unigrams) as well as shingles.
      * Default is true.
      */
+    @Generated
     private Boolean outputUnigrams;
 
     /*
      * A value indicating whether to output unigrams for those times when no shingles are available. This property takes
      * precedence when outputUnigrams is set to false. Default is false.
      */
+    @Generated
     private Boolean outputUnigramsIfNoShingles;
 
     /*
      * The string to use when joining adjacent tokens to form a shingle. Default is a single space (" ").
      */
+    @Generated
     private String tokenSeparator;
 
     /*
      * The string to insert for each position at which there is no token. Default is an underscore ("_").
      */
+    @Generated
     private String filterToken;
 
     /**
@@ -59,6 +67,7 @@ public final class ShingleTokenFilter extends TokenFilter {
      *
      * @param name the name value to set.
      */
+    @Generated
     public ShingleTokenFilter(String name) {
         super(name);
     }
@@ -68,6 +77,7 @@ public final class ShingleTokenFilter extends TokenFilter {
      *
      * @return the odataType value.
      */
+    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -78,6 +88,7 @@ public final class ShingleTokenFilter extends TokenFilter {
      *
      * @return the maxShingleSize value.
      */
+    @Generated
     public Integer getMaxShingleSize() {
         return this.maxShingleSize;
     }
@@ -88,6 +99,7 @@ public final class ShingleTokenFilter extends TokenFilter {
      * @param maxShingleSize the maxShingleSize value to set.
      * @return the ShingleTokenFilter object itself.
      */
+    @Generated
     public ShingleTokenFilter setMaxShingleSize(Integer maxShingleSize) {
         this.maxShingleSize = maxShingleSize;
         return this;
@@ -99,6 +111,7 @@ public final class ShingleTokenFilter extends TokenFilter {
      *
      * @return the minShingleSize value.
      */
+    @Generated
     public Integer getMinShingleSize() {
         return this.minShingleSize;
     }
@@ -110,6 +123,7 @@ public final class ShingleTokenFilter extends TokenFilter {
      * @param minShingleSize the minShingleSize value to set.
      * @return the ShingleTokenFilter object itself.
      */
+    @Generated
     public ShingleTokenFilter setMinShingleSize(Integer minShingleSize) {
         this.minShingleSize = minShingleSize;
         return this;
@@ -121,6 +135,7 @@ public final class ShingleTokenFilter extends TokenFilter {
      *
      * @return the outputUnigrams value.
      */
+    @Generated
     public Boolean areOutputUnigrams() {
         return this.outputUnigrams;
     }
@@ -132,6 +147,7 @@ public final class ShingleTokenFilter extends TokenFilter {
      * @param outputUnigrams the outputUnigrams value to set.
      * @return the ShingleTokenFilter object itself.
      */
+    @Generated
     public ShingleTokenFilter setOutputUnigrams(Boolean outputUnigrams) {
         this.outputUnigrams = outputUnigrams;
         return this;
@@ -143,6 +159,7 @@ public final class ShingleTokenFilter extends TokenFilter {
      *
      * @return the outputUnigramsIfNoShingles value.
      */
+    @Generated
     public Boolean areOutputUnigramsIfNoShingles() {
         return this.outputUnigramsIfNoShingles;
     }
@@ -154,6 +171,7 @@ public final class ShingleTokenFilter extends TokenFilter {
      * @param outputUnigramsIfNoShingles the outputUnigramsIfNoShingles value to set.
      * @return the ShingleTokenFilter object itself.
      */
+    @Generated
     public ShingleTokenFilter setOutputUnigramsIfNoShingles(Boolean outputUnigramsIfNoShingles) {
         this.outputUnigramsIfNoShingles = outputUnigramsIfNoShingles;
         return this;
@@ -165,6 +183,7 @@ public final class ShingleTokenFilter extends TokenFilter {
      *
      * @return the tokenSeparator value.
      */
+    @Generated
     public String getTokenSeparator() {
         return this.tokenSeparator;
     }
@@ -176,6 +195,7 @@ public final class ShingleTokenFilter extends TokenFilter {
      * @param tokenSeparator the tokenSeparator value to set.
      * @return the ShingleTokenFilter object itself.
      */
+    @Generated
     public ShingleTokenFilter setTokenSeparator(String tokenSeparator) {
         this.tokenSeparator = tokenSeparator;
         return this;
@@ -187,6 +207,7 @@ public final class ShingleTokenFilter extends TokenFilter {
      *
      * @return the filterToken value.
      */
+    @Generated
     public String getFilterToken() {
         return this.filterToken;
     }
@@ -198,6 +219,7 @@ public final class ShingleTokenFilter extends TokenFilter {
      * @param filterToken the filterToken value to set.
      * @return the ShingleTokenFilter object itself.
      */
+    @Generated
     public ShingleTokenFilter setFilterToken(String filterToken) {
         this.filterToken = filterToken;
         return this;
@@ -206,6 +228,7 @@ public final class ShingleTokenFilter extends TokenFilter {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -229,6 +252,7 @@ public final class ShingleTokenFilter extends TokenFilter {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ShingleTokenFilter.
      */
+    @Generated
     public static ShingleTokenFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

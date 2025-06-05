@@ -356,7 +356,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                 }).subscribeOn(scheduler);
     }
 
-    public boolean hasTinClientReadLocations() {
+    public boolean hasThinClientReadLocations() {
         return this.hasThinClientReadLocations.get();
     }
 
@@ -370,8 +370,9 @@ public class GlobalEndpointManager implements AutoCloseable {
                     try {
                         this.latestDatabaseAccount = databaseAccount;
                         Collection<DatabaseAccountLocation> thinClientReadLocations =
-                            databaseAccount.getThinClientReadableLocations();
+                                databaseAccount.getThinClientReadableLocations();
                         this.hasThinClientReadLocations.set(thinClientReadLocations != null && !thinClientReadLocations.isEmpty());
+
                         this.setLatestDatabaseRefreshError(null);
                     } finally {
                         this.databaseAccountWriteLock.unlock();

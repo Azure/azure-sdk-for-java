@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+- Few small changes to implementation to improve support for Vert.x 5.x.
+
 ## 1.0.3 (2025-03-10)
 
 ### Other Changes

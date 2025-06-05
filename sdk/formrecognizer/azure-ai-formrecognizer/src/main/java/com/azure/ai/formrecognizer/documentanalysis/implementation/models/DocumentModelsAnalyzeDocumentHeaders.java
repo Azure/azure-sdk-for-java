@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -16,6 +17,7 @@ public final class DocumentModelsAnalyzeDocumentHeaders {
     /*
      * The Operation-Location property.
      */
+    @Generated
     private String operationLocation;
 
     // HttpHeaders containing the raw property values.
@@ -33,6 +35,7 @@ public final class DocumentModelsAnalyzeDocumentHeaders {
      * 
      * @return the operationLocation value.
      */
+    @Generated
     public String getOperationLocation() {
         return this.operationLocation;
     }
@@ -43,6 +46,7 @@ public final class DocumentModelsAnalyzeDocumentHeaders {
      * @param operationLocation the operationLocation value to set.
      * @return the DocumentModelsAnalyzeDocumentHeaders object itself.
      */
+    @Generated
     public DocumentModelsAnalyzeDocumentHeaders setOperationLocation(String operationLocation) {
         this.operationLocation = operationLocation;
         return this;

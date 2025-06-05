@@ -63,7 +63,7 @@
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.10</version> <!-- {x-version-update;io.clientcore:core;current} -->
+      <version>1.0.0-beta.11</version> <!-- {x-version-update;io.clientcore:core;current} -->
     </dependency>
 
     <dependency>
@@ -121,7 +121,7 @@
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.10</version> <!-- {x-version-update;io.clientcore:core;current} -->
+      <version>1.0.0-beta.11</version> <!-- {x-version-update;io.clientcore:core;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>

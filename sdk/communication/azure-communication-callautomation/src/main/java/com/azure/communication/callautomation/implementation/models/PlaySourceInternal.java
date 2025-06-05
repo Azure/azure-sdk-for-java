@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,31 +20,37 @@ public final class PlaySourceInternal implements JsonSerializable<PlaySourceInte
     /*
      * Defines the type of the play source
      */
+    @Generated
     private PlaySourceTypeInternal kind;
 
     /*
      * Defines the identifier to be used for caching related media
      */
+    @Generated
     private String playSourceCacheId;
 
     /*
      * Defines the file source info to be used for play
      */
+    @Generated
     private FileSourceInternal file;
 
     /*
      * Defines the text source info to be used for play
      */
+    @Generated
     private TextSourceInternal text;
 
     /*
      * Defines the ssml(Speech Synthesis Markup Language) source info to be used for play
      */
+    @Generated
     private SsmlSourceInternal ssml;
 
     /**
      * Creates an instance of PlaySourceInternal class.
      */
+    @Generated
     public PlaySourceInternal() {
     }
 
@@ -52,6 +59,7 @@ public final class PlaySourceInternal implements JsonSerializable<PlaySourceInte
      * 
      * @return the kind value.
      */
+    @Generated
     public PlaySourceTypeInternal getKind() {
         return this.kind;
     }
@@ -62,6 +70,7 @@ public final class PlaySourceInternal implements JsonSerializable<PlaySourceInte
      * @param kind the kind value to set.
      * @return the PlaySourceInternal object itself.
      */
+    @Generated
     public PlaySourceInternal setKind(PlaySourceTypeInternal kind) {
         this.kind = kind;
         return this;
@@ -72,6 +81,7 @@ public final class PlaySourceInternal implements JsonSerializable<PlaySourceInte
      * 
      * @return the playSourceCacheId value.
      */
+    @Generated
     public String getPlaySourceCacheId() {
         return this.playSourceCacheId;
     }
@@ -82,6 +92,7 @@ public final class PlaySourceInternal implements JsonSerializable<PlaySourceInte
      * @param playSourceCacheId the playSourceCacheId value to set.
      * @return the PlaySourceInternal object itself.
      */
+    @Generated
     public PlaySourceInternal setPlaySourceCacheId(String playSourceCacheId) {
         this.playSourceCacheId = playSourceCacheId;
         return this;
@@ -92,6 +103,7 @@ public final class PlaySourceInternal implements JsonSerializable<PlaySourceInte
      * 
      * @return the file value.
      */
+    @Generated
     public FileSourceInternal getFile() {
         return this.file;
     }
@@ -102,6 +114,7 @@ public final class PlaySourceInternal implements JsonSerializable<PlaySourceInte
      * @param file the file value to set.
      * @return the PlaySourceInternal object itself.
      */
+    @Generated
     public PlaySourceInternal setFile(FileSourceInternal file) {
         this.file = file;
         return this;
@@ -112,6 +125,7 @@ public final class PlaySourceInternal implements JsonSerializable<PlaySourceInte
      * 
      * @return the text value.
      */
+    @Generated
     public TextSourceInternal getText() {
         return this.text;
     }
@@ -122,6 +136,7 @@ public final class PlaySourceInternal implements JsonSerializable<PlaySourceInte
      * @param text the text value to set.
      * @return the PlaySourceInternal object itself.
      */
+    @Generated
     public PlaySourceInternal setText(TextSourceInternal text) {
         this.text = text;
         return this;
@@ -132,6 +147,7 @@ public final class PlaySourceInternal implements JsonSerializable<PlaySourceInte
      * 
      * @return the ssml value.
      */
+    @Generated
     public SsmlSourceInternal getSsml() {
         return this.ssml;
     }
@@ -142,6 +158,7 @@ public final class PlaySourceInternal implements JsonSerializable<PlaySourceInte
      * @param ssml the ssml value to set.
      * @return the PlaySourceInternal object itself.
      */
+    @Generated
     public PlaySourceInternal setSsml(SsmlSourceInternal ssml) {
         this.ssml = ssml;
         return this;
@@ -150,6 +167,7 @@ public final class PlaySourceInternal implements JsonSerializable<PlaySourceInte
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -170,6 +188,7 @@ public final class PlaySourceInternal implements JsonSerializable<PlaySourceInte
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PlaySourceInternal.
      */
+    @Generated
     public static PlaySourceInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PlaySourceInternal deserializedPlaySourceInternal = new PlaySourceInternal();

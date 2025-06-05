@@ -33,6 +33,7 @@ import com.azure.resourcemanager.mongocluster.fluent.OperationsClient;
 import com.azure.resourcemanager.mongocluster.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.mongocluster.fluent.PrivateLinksClient;
 import com.azure.resourcemanager.mongocluster.fluent.ReplicasClient;
+import com.azure.resourcemanager.mongocluster.fluent.UsersClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -216,6 +217,20 @@ public final class MongoClusterManagementClientImpl implements MongoClusterManag
     }
 
     /**
+     * The UsersClient object to access its operations.
+     */
+    private final UsersClient users;
+
+    /**
+     * Gets the UsersClient object to access its operations.
+     * 
+     * @return the UsersClient object.
+     */
+    public UsersClient getUsers() {
+        return this.users;
+    }
+
+    /**
      * Initializes an instance of MongoClusterManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -232,13 +247,14 @@ public final class MongoClusterManagementClientImpl implements MongoClusterManag
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-10-01-preview";
+        this.apiVersion = "2025-04-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.mongoClusters = new MongoClustersClientImpl(this);
         this.firewallRules = new FirewallRulesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinks = new PrivateLinksClientImpl(this);
         this.replicas = new ReplicasClientImpl(this);
+        this.users = new UsersClientImpl(this);
     }
 
     /**

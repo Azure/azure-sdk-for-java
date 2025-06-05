@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,41 +22,49 @@ public final class DocumentTableCell implements JsonSerializable<DocumentTableCe
     /*
      * Table cell kind.
      */
+    @Generated
     private DocumentTableCellKind kind;
 
     /*
      * Row index of the cell.
      */
+    @Generated
     private final int rowIndex;
 
     /*
      * Column index of the cell.
      */
+    @Generated
     private final int columnIndex;
 
     /*
      * Number of rows spanned by this cell.
      */
+    @Generated
     private Integer rowSpan;
 
     /*
      * Number of columns spanned by this cell.
      */
+    @Generated
     private Integer columnSpan;
 
     /*
      * Concatenated content of the table cell in reading order.
      */
+    @Generated
     private final String content;
 
     /*
      * Bounding regions covering the table cell.
      */
+    @Generated
     private List<BoundingRegion> boundingRegions;
 
     /*
      * Location of the table cell in the reading order concatenated content.
      */
+    @Generated
     private final List<DocumentSpan> spans;
 
     /**
@@ -66,6 +75,7 @@ public final class DocumentTableCell implements JsonSerializable<DocumentTableCe
      * @param content the content value to set.
      * @param spans the spans value to set.
      */
+    @Generated
     public DocumentTableCell(int rowIndex, int columnIndex, String content, List<DocumentSpan> spans) {
         this.rowIndex = rowIndex;
         this.columnIndex = columnIndex;
@@ -78,6 +88,7 @@ public final class DocumentTableCell implements JsonSerializable<DocumentTableCe
      * 
      * @return the kind value.
      */
+    @Generated
     public DocumentTableCellKind getKind() {
         return this.kind;
     }
@@ -88,6 +99,7 @@ public final class DocumentTableCell implements JsonSerializable<DocumentTableCe
      * @param kind the kind value to set.
      * @return the DocumentTableCell object itself.
      */
+    @Generated
     public DocumentTableCell setKind(DocumentTableCellKind kind) {
         this.kind = kind;
         return this;
@@ -98,6 +110,7 @@ public final class DocumentTableCell implements JsonSerializable<DocumentTableCe
      * 
      * @return the rowIndex value.
      */
+    @Generated
     public int getRowIndex() {
         return this.rowIndex;
     }
@@ -107,6 +120,7 @@ public final class DocumentTableCell implements JsonSerializable<DocumentTableCe
      * 
      * @return the columnIndex value.
      */
+    @Generated
     public int getColumnIndex() {
         return this.columnIndex;
     }
@@ -116,6 +130,7 @@ public final class DocumentTableCell implements JsonSerializable<DocumentTableCe
      * 
      * @return the rowSpan value.
      */
+    @Generated
     public Integer getRowSpan() {
         return this.rowSpan;
     }
@@ -126,6 +141,7 @@ public final class DocumentTableCell implements JsonSerializable<DocumentTableCe
      * @param rowSpan the rowSpan value to set.
      * @return the DocumentTableCell object itself.
      */
+    @Generated
     public DocumentTableCell setRowSpan(Integer rowSpan) {
         this.rowSpan = rowSpan;
         return this;
@@ -136,6 +152,7 @@ public final class DocumentTableCell implements JsonSerializable<DocumentTableCe
      * 
      * @return the columnSpan value.
      */
+    @Generated
     public Integer getColumnSpan() {
         return this.columnSpan;
     }
@@ -146,6 +163,7 @@ public final class DocumentTableCell implements JsonSerializable<DocumentTableCe
      * @param columnSpan the columnSpan value to set.
      * @return the DocumentTableCell object itself.
      */
+    @Generated
     public DocumentTableCell setColumnSpan(Integer columnSpan) {
         this.columnSpan = columnSpan;
         return this;
@@ -156,6 +174,7 @@ public final class DocumentTableCell implements JsonSerializable<DocumentTableCe
      * 
      * @return the content value.
      */
+    @Generated
     public String getContent() {
         return this.content;
     }
@@ -165,6 +184,7 @@ public final class DocumentTableCell implements JsonSerializable<DocumentTableCe
      * 
      * @return the boundingRegions value.
      */
+    @Generated
     public List<BoundingRegion> getBoundingRegions() {
         return this.boundingRegions;
     }
@@ -175,6 +195,7 @@ public final class DocumentTableCell implements JsonSerializable<DocumentTableCe
      * @param boundingRegions the boundingRegions value to set.
      * @return the DocumentTableCell object itself.
      */
+    @Generated
     public DocumentTableCell setBoundingRegions(List<BoundingRegion> boundingRegions) {
         this.boundingRegions = boundingRegions;
         return this;
@@ -185,6 +206,7 @@ public final class DocumentTableCell implements JsonSerializable<DocumentTableCe
      * 
      * @return the spans value.
      */
+    @Generated
     public List<DocumentSpan> getSpans() {
         return this.spans;
     }
@@ -192,6 +214,7 @@ public final class DocumentTableCell implements JsonSerializable<DocumentTableCe
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -216,6 +239,7 @@ public final class DocumentTableCell implements JsonSerializable<DocumentTableCe
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentTableCell.
      */
+    @Generated
     public static DocumentTableCell fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean rowIndexFound = false;

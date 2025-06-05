@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,11 +23,13 @@ public final class IndexerResyncBody implements JsonSerializable<IndexerResyncBo
     /*
      * Re-sync options that have been pre-defined from data source.
      */
+    @Generated
     private List<IndexerResyncOption> options;
 
     /**
      * Creates an instance of IndexerResyncBody class.
      */
+    @Generated
     public IndexerResyncBody() {
     }
 
@@ -35,6 +38,7 @@ public final class IndexerResyncBody implements JsonSerializable<IndexerResyncBo
      * 
      * @return the options value.
      */
+    @Generated
     public List<IndexerResyncOption> getOptions() {
         return this.options;
     }
@@ -45,6 +49,7 @@ public final class IndexerResyncBody implements JsonSerializable<IndexerResyncBo
      * @param options the options value to set.
      * @return the IndexerResyncBody object itself.
      */
+    @Generated
     public IndexerResyncBody setOptions(List<IndexerResyncOption> options) {
         this.options = options;
         return this;
@@ -53,6 +58,7 @@ public final class IndexerResyncBody implements JsonSerializable<IndexerResyncBo
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -69,6 +75,7 @@ public final class IndexerResyncBody implements JsonSerializable<IndexerResyncBo
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the IndexerResyncBody.
      */
+    @Generated
     public static IndexerResyncBody fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             IndexerResyncBody deserializedIndexerResyncBody = new IndexerResyncBody();

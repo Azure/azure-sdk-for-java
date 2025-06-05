@@ -5,6 +5,7 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
@@ -18,26 +19,31 @@ public final class TablesMergeEntityHeaders {
     /*
      * The x-ms-version property.
      */
+    @Generated
     private String xMsVersion;
 
     /*
      * The ETag property.
      */
+    @Generated
     private String eTag;
 
     /*
      * The x-ms-request-id property.
      */
+    @Generated
     private String xMsRequestId;
 
     /*
      * The x-ms-client-request-id property.
      */
+    @Generated
     private String xMsClientRequestId;
 
     /*
      * The Date property.
      */
+    @Generated
     private DateTimeRfc1123 date;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
@@ -56,6 +62,8 @@ public final class TablesMergeEntityHeaders {
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
+        } else {
+            this.date = null;
         }
     }
 
@@ -64,6 +72,7 @@ public final class TablesMergeEntityHeaders {
      * 
      * @return the xMsVersion value.
      */
+    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -74,6 +83,7 @@ public final class TablesMergeEntityHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the TablesMergeEntityHeaders object itself.
      */
+    @Generated
     public TablesMergeEntityHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -84,6 +94,7 @@ public final class TablesMergeEntityHeaders {
      * 
      * @return the eTag value.
      */
+    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -94,6 +105,7 @@ public final class TablesMergeEntityHeaders {
      * @param eTag the eTag value to set.
      * @return the TablesMergeEntityHeaders object itself.
      */
+    @Generated
     public TablesMergeEntityHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -104,6 +116,7 @@ public final class TablesMergeEntityHeaders {
      * 
      * @return the xMsRequestId value.
      */
+    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -114,6 +127,7 @@ public final class TablesMergeEntityHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the TablesMergeEntityHeaders object itself.
      */
+    @Generated
     public TablesMergeEntityHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -124,6 +138,7 @@ public final class TablesMergeEntityHeaders {
      * 
      * @return the xMsClientRequestId value.
      */
+    @Generated
     public String getXMsClientRequestId() {
         return this.xMsClientRequestId;
     }
@@ -134,6 +149,7 @@ public final class TablesMergeEntityHeaders {
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the TablesMergeEntityHeaders object itself.
      */
+    @Generated
     public TablesMergeEntityHeaders setXMsClientRequestId(String xMsClientRequestId) {
         this.xMsClientRequestId = xMsClientRequestId;
         return this;
@@ -144,6 +160,7 @@ public final class TablesMergeEntityHeaders {
      * 
      * @return the date value.
      */
+    @Generated
     public OffsetDateTime getDate() {
         if (this.date == null) {
             return null;
@@ -157,6 +174,7 @@ public final class TablesMergeEntityHeaders {
      * @param date the date value to set.
      * @return the TablesMergeEntityHeaders object itself.
      */
+    @Generated
     public TablesMergeEntityHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;

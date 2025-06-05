@@ -100,7 +100,8 @@ public class ClientCertificateCredentialBuilder
      * @return An updated instance of this builder.
      */
     public ClientCertificateCredentialBuilder clientCertificate(InputStream certificate) {
-        this.confidentialClientOptions.setCertificateBytes(IdentityUtil.convertInputStreamToByteArray(certificate));
+        this.confidentialClientOptions
+            .setCertificateBytes(IdentityUtil.convertInputStreamToByteArray(certificate, LOGGER));
         return this;
     }
 

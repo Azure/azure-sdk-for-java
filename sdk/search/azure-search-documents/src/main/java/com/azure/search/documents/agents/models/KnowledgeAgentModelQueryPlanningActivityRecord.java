@@ -7,6 +7,7 @@
 package com.azure.search.documents.agents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,21 +21,25 @@ public final class KnowledgeAgentModelQueryPlanningActivityRecord extends Knowle
     /*
      * The type of the activity record.
      */
+    @Generated
     private String type = "ModelQueryPlanning";
 
     /*
      * The number of input tokens for the LLM query planning activity.
      */
+    @Generated
     private Integer inputTokens;
 
     /*
      * The number of output tokens for the LLM query planning activity.
      */
+    @Generated
     private Integer outputTokens;
 
     /*
      * The elapsed time in milliseconds for the model activity.
      */
+    @Generated
     private Integer elapsedMs;
 
     /**
@@ -42,6 +47,7 @@ public final class KnowledgeAgentModelQueryPlanningActivityRecord extends Knowle
      * 
      * @param id the id value to set.
      */
+    @Generated
     public KnowledgeAgentModelQueryPlanningActivityRecord(int id) {
         super(id);
     }
@@ -51,6 +57,7 @@ public final class KnowledgeAgentModelQueryPlanningActivityRecord extends Knowle
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -61,6 +68,7 @@ public final class KnowledgeAgentModelQueryPlanningActivityRecord extends Knowle
      * 
      * @return the inputTokens value.
      */
+    @Generated
     public Integer getInputTokens() {
         return this.inputTokens;
     }
@@ -71,6 +79,7 @@ public final class KnowledgeAgentModelQueryPlanningActivityRecord extends Knowle
      * @param inputTokens the inputTokens value to set.
      * @return the KnowledgeAgentModelQueryPlanningActivityRecord object itself.
      */
+    @Generated
     public KnowledgeAgentModelQueryPlanningActivityRecord setInputTokens(Integer inputTokens) {
         this.inputTokens = inputTokens;
         return this;
@@ -81,6 +90,7 @@ public final class KnowledgeAgentModelQueryPlanningActivityRecord extends Knowle
      * 
      * @return the outputTokens value.
      */
+    @Generated
     public Integer getOutputTokens() {
         return this.outputTokens;
     }
@@ -91,6 +101,7 @@ public final class KnowledgeAgentModelQueryPlanningActivityRecord extends Knowle
      * @param outputTokens the outputTokens value to set.
      * @return the KnowledgeAgentModelQueryPlanningActivityRecord object itself.
      */
+    @Generated
     public KnowledgeAgentModelQueryPlanningActivityRecord setOutputTokens(Integer outputTokens) {
         this.outputTokens = outputTokens;
         return this;
@@ -101,6 +112,7 @@ public final class KnowledgeAgentModelQueryPlanningActivityRecord extends Knowle
      * 
      * @return the elapsedMs value.
      */
+    @Generated
     public Integer getElapsedMs() {
         return this.elapsedMs;
     }
@@ -111,6 +123,7 @@ public final class KnowledgeAgentModelQueryPlanningActivityRecord extends Knowle
      * @param elapsedMs the elapsedMs value to set.
      * @return the KnowledgeAgentModelQueryPlanningActivityRecord object itself.
      */
+    @Generated
     public KnowledgeAgentModelQueryPlanningActivityRecord setElapsedMs(Integer elapsedMs) {
         this.elapsedMs = elapsedMs;
         return this;
@@ -119,6 +132,7 @@ public final class KnowledgeAgentModelQueryPlanningActivityRecord extends Knowle
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -139,6 +153,7 @@ public final class KnowledgeAgentModelQueryPlanningActivityRecord extends Knowle
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KnowledgeAgentModelQueryPlanningActivityRecord.
      */
+    @Generated
     public static KnowledgeAgentModelQueryPlanningActivityRecord fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean idFound = false;

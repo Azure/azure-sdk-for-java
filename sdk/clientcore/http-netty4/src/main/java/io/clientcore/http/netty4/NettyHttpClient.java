@@ -203,7 +203,7 @@ class NettyHttpClient implements HttpClient {
 
         Response<BinaryData> response = responseReference.get();
         if (response == null) {
-            throw CoreException.from(errorReference.get());
+            throw LOGGER.throwableAtError().log(errorReference.get(), CoreException::from);
         }
 
         if (response.getValue() != BinaryData.empty()

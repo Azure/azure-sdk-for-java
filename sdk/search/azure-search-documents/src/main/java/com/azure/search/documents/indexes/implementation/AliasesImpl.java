@@ -395,7 +395,7 @@ public final class AliasesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SearchAlias> list(RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> listSinglePage(requestOptions, Context.NONE));
+        return new PagedIterable<>(() -> listSinglePage(requestOptions));
     }
 
     /**
