@@ -2106,7 +2106,8 @@ class VirtualMachineImpl
                 this.networkManager, this.authorizationManager),
             VirtualMachineInner.class, () -> {
                 Flux<Indexable> dependencyTasksAsync
-                    = taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
+                    = taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext())
+                        .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()));
                 dependencyTasksAsync.blockLast();
 
                 // same as createResourceAsync

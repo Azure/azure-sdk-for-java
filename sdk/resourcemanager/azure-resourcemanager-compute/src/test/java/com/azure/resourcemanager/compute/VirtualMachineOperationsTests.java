@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedIterable;
@@ -2318,12 +2319,15 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         String correlationId = UUID.randomUUID().toString();
         String correlationKey = "x-ms-correlation-id";
         HttpPipelinePolicy verificationPolicy = (context, next) -> {
-            Object correlationData = context.getContext().getData(correlationKey).get();
-            Assertions.assertEquals(correlationId, correlationData);
+            if (context.getHttpRequest().getHttpMethod() == HttpMethod.PUT) {
+                // verify that all co-related resource creation requests will have the Context information
+                Object correlationData = context.getContext().getData(correlationKey).get();
+                Assertions.assertEquals(correlationId, correlationData);
+            }
             return next.process();
         };
         ComputeManager localComputeManager = addPolicyToManager(computeManager, verificationPolicy);
-        localComputeManager.virtualMachines()
+        Accepted<VirtualMachine> accepted = localComputeManager.virtualMachines()
             .define(vmName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
@@ -2333,17 +2337,19 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS)
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
+            .withNewDataDisk(1)
             .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
             .beginCreate(new Context(correlationKey, correlationId));
+        accepted.getFinalResult();
     }
-
 
     // *********************************** helper methods ***********************************
     private ComputeManager addPolicyToManager(ComputeManager computeManager, HttpPipelinePolicy verificationPolicy) {
         HttpPipeline currentPipeline = computeManager.httpPipeline();
         try {
 
-            Constructor<HttpPipeline> pipelineConstructor = HttpPipeline.class.getDeclaredConstructor(HttpClient.class, List.class, Tracer.class);
+            Constructor<HttpPipeline> pipelineConstructor
+                = HttpPipeline.class.getDeclaredConstructor(HttpClient.class, List.class, Tracer.class);
             setAccessible(pipelineConstructor);
 
             List<HttpPipelinePolicy> pipelinePolicies = new ArrayList<>();
@@ -2351,9 +2357,10 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 pipelinePolicies.add(currentPipeline.getPolicy(i));
             }
 
-            pipelinePolicies.addLast(verificationPolicy);
+            pipelinePolicies.add(verificationPolicy);
 
-            HttpPipeline newPipeline = pipelineConstructor.newInstance(currentPipeline.getHttpClient(), pipelinePolicies, currentPipeline.getTracer());
+            HttpPipeline newPipeline = pipelineConstructor.newInstance(currentPipeline.getHttpClient(),
+                pipelinePolicies, currentPipeline.getTracer());
             return ComputeManager.authenticate(newPipeline, profile);
         } catch (Exception e) {
             throw new RuntimeException(e);
