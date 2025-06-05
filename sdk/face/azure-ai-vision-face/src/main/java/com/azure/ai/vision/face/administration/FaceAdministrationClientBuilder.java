@@ -51,8 +51,8 @@ import java.util.Objects;
         FaceAdministrationClient.class,
         FaceAdministrationAsyncClient.class,
         LargeFaceListClient.class,
-        LargePersonGroupClient.class,
         LargeFaceListAsyncClient.class,
+        LargePersonGroupClient.class,
         LargePersonGroupAsyncClient.class })
 public final class FaceAdministrationClientBuilder implements HttpTrait<FaceAdministrationClientBuilder>,
     ConfigurationTrait<FaceAdministrationClientBuilder>, TokenCredentialTrait<FaceAdministrationClientBuilder>,
@@ -240,40 +240,6 @@ public final class FaceAdministrationClientBuilder implements HttpTrait<FaceAdmi
     }
 
     /*
-     * Valid character is letter in lower case or digit or '-' or '_', maximum length is 64.
-     */
-    @Generated
-    private String largeFaceListId;
-
-    /**
-     * Sets Valid character is letter in lower case or digit or '-' or '_', maximum length is 64.
-     *
-     * @param largeFaceListId the largeFaceListId value.
-     * @return the FaceAdministrationClientBuilder.
-     */
-    FaceAdministrationClientBuilder largeFaceListId(String largeFaceListId) {
-        this.largeFaceListId = largeFaceListId;
-        return this;
-    }
-
-    /*
-     * ID of the container.
-     */
-    @Generated
-    private String largePersonGroupId;
-
-    /**
-     * Sets ID of the container.
-     *
-     * @param largePersonGroupId the largePersonGroupId value.
-     * @return the FaceAdministrationClientBuilder.
-     */
-    FaceAdministrationClientBuilder largePersonGroupId(String largePersonGroupId) {
-        this.largePersonGroupId = largePersonGroupId;
-        return this;
-    }
-
-    /*
      * Service version
      */
     @Generated
@@ -320,9 +286,8 @@ public final class FaceAdministrationClientBuilder implements HttpTrait<FaceAdmi
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         FaceServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : FaceServiceVersion.getLatest();
-        FaceAdministrationClientImpl client
-            = new FaceAdministrationClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(),
-                this.endpoint, this.largeFaceListId, this.largePersonGroupId, localServiceVersion);
+        FaceAdministrationClientImpl client = new FaceAdministrationClientImpl(localPipeline,
+            JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
         return client;
     }
 
@@ -375,40 +340,16 @@ public final class FaceAdministrationClientBuilder implements HttpTrait<FaceAdmi
         return httpPipeline;
     }
 
-    /**
-     * Builds an instance of LargeFaceListAsyncClient class.
-     *
-     * @return an instance of LargeFaceListAsyncClient.
-     */
-    LargeFaceListAsyncClient buildLargeFaceListAsyncClient() {
-        return new LargeFaceListAsyncClient(buildInnerClient().getLargeFaceLists());
-    }
+    private static final ClientLogger LOGGER = new ClientLogger(FaceAdministrationClientBuilder.class);
 
     /**
-     * Builds an instance of LargePersonGroupAsyncClient class.
+     * Builds an instance of FaceAdministrationAsyncClient class.
      *
-     * @return an instance of LargePersonGroupAsyncClient.
+     * @return an instance of FaceAdministrationAsyncClient.
      */
-    LargePersonGroupAsyncClient buildLargePersonGroupAsyncClient() {
-        return new LargePersonGroupAsyncClient(buildInnerClient().getLargePersonGroups());
-    }
-
-    /**
-     * Builds an instance of LargeFaceListClient class.
-     *
-     * @return an instance of LargeFaceListClient.
-     */
-    LargeFaceListClient buildLargeFaceListClient() {
-        return new LargeFaceListClient(buildInnerClient().getLargeFaceLists());
-    }
-
-    /**
-     * Builds an instance of LargePersonGroupClient class.
-     *
-     * @return an instance of LargePersonGroupClient.
-     */
-    LargePersonGroupClient buildLargePersonGroupClient() {
-        return new LargePersonGroupClient(buildInnerClient().getLargePersonGroups());
+    @Generated
+    public FaceAdministrationAsyncClient buildAsyncClient() {
+        return new FaceAdministrationAsyncClient(buildInnerClient());
     }
 
     /**
@@ -416,28 +357,8 @@ public final class FaceAdministrationClientBuilder implements HttpTrait<FaceAdmi
      *
      * @return an instance of FaceAdministrationClient.
      */
+    @Generated
     public FaceAdministrationClient buildClient() {
-        this.validateClient();
-        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        FaceServiceVersion localServiceVersion
-            = (serviceVersion != null) ? serviceVersion : FaceServiceVersion.getLatest();
-        return new FaceAdministrationClient(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(),
-            this.endpoint, localServiceVersion);
+        return new FaceAdministrationClient(buildInnerClient());
     }
-
-    /**
-     * Builds an instance of FaceAdministrationAsyncClient class.
-     *
-     * @return an instance of FaceAdministrationAsyncClient.
-     */
-    public FaceAdministrationAsyncClient buildAsyncClient() {
-        this.validateClient();
-        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        FaceServiceVersion localServiceVersion
-            = (serviceVersion != null) ? serviceVersion : FaceServiceVersion.getLatest();
-        return new FaceAdministrationAsyncClient(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(),
-            this.endpoint, localServiceVersion);
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(FaceAdministrationClientBuilder.class);
 }
