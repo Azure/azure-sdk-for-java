@@ -6,7 +6,7 @@ package com.azure.security.keyvault.secrets;
 import com.azure.core.util.ServiceVersion;
 
 /**
- * The versions of Azure Key Vault supported by this client library.
+ * The versions of Azure Key Vault Secrets supported by this client library.
  */
 public enum SecretServiceVersion implements ServiceVersion {
 

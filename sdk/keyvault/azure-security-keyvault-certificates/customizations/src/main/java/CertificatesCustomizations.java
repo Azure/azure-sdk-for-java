@@ -48,10 +48,10 @@ public class CertificatesCustomizations extends Customization {
         // Rename KeyVaultErrorError to CertificateOperationError and move it to the public models package.
         String fileContent = customization.getRawEditor().getFileContent(implModelsDirectory + oldClassName + ".java");
         customization.getRawEditor().removeFile(implModelsDirectory + oldClassName + ".java");
-        fileContent = fileContent.replace(oldClassName, newClassName);
+        fileContent = fileContent.replace(oldClassName, newClassName)
+            .replace("com.azure.security.keyvault.certificates.implementation.models",
+                "com.azure.security.keyvault.certificates.models");
         customization.getRawEditor().addFile(modelsDirectory + newClassName + ".java", fileContent);
-        customization.getClass("com.azure.security.keyvault.certificates.models", newClassName)
-            .customizeAst(ast -> ast.setPackageDeclaration("com.azure.security.keyvault.certificates.models"));
 
         // The class is used in CertificateOperation, which is in the implementation package.
         // Add an import to handle the class moving.
@@ -84,7 +84,7 @@ public class CertificatesCustomizations extends Customization {
 
         EnumDeclaration enumDeclaration = compilationUnit.addEnum("CertificateServiceVersion", Modifier.Keyword.PUBLIC)
             .addImplementedType("ServiceVersion")
-            .setJavadocComment("The versions of Azure Key Vault supported by this client library.");
+            .setJavadocComment("The versions of Azure Key Vault Certificates supported by this client library.");
 
         for (String version : Arrays.asList("7.0", "7.1", "7.2", "7.3", "7.4", "7.5", "7.6-preview.2")) {
             enumDeclaration.addEnumConstant("V" + version.replace('.', '_').replace('-', '_').toUpperCase())

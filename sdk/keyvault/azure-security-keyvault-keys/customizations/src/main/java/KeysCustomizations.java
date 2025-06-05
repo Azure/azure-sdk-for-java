@@ -50,7 +50,7 @@ public class KeysCustomizations extends Customization {
 
         EnumDeclaration enumDeclaration = compilationUnit.addEnum("KeyServiceVersion", Modifier.Keyword.PUBLIC)
             .addImplementedType("ServiceVersion")
-            .setJavadocComment("The versions of Azure Key Vault supported by this client library.");
+            .setJavadocComment("The versions of Azure Key Vault Keys supported by this client library.");
 
         for (String version : Arrays.asList("7.0", "7.1", "7.2", "7.3", "7.4", "7.5", "7.6-preview.2")) {
             enumDeclaration.addEnumConstant("V" + version.replace('.', '_').replace('-', '_').toUpperCase())
