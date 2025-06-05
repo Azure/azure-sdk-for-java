@@ -688,7 +688,7 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
-    void streamingReturnSuccessfully(String apiType, String apiVersion, String testModel) {
+    public void streamingReturnSuccessfully(String apiType, String apiVersion, String testModel) {
         client = createClient(apiType, apiVersion);
 
         ResponseCreateParams createParams = ResponseCreateParams.builder()
@@ -706,7 +706,7 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
-    public void testStructuredOutputsExample(String apiType, String apiVersion, String testModel) {
+    public void testStructuredOutputsReturnSuccessfully(String apiType, String apiVersion, String testModel) {
         client = createClient(apiType, apiVersion);
 
         JsonSchema.Schema schema = createSchema();
