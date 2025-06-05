@@ -79,23 +79,57 @@ public final class MetricsHelper {
         MetricsHelper.metricDefinitionAccessor = metricDefinitionAccessor;
     }
 
+    /**
+     * Sets the accessor instance.
+     * @param metricAvailabilityAccessor the accessor instance
+     */
     public static void setMetricAvailabilityAccessor(final MetricAvailabilityAccessor metricAvailabilityAccessor) {
         MetricsHelper.metricAvailabilityAccessor = metricAvailabilityAccessor;
     }
 
+    /**
+     * Sets the accessor instance.
+     * @param metricNamespaceAccessor the accessor instance
+     */
     public static void setMetricNamespaceAccessor(MetricNamespaceAccessor metricNamespaceAccessor) {
         MetricsHelper.metricNamespaceAccessor = metricNamespaceAccessor;
     }
 
+    /**
+     * Sets the accessor instance.
+     * @param accessor the accessor instance
+     */
     public static void setMetricsQueryResultAccessor(final MetricsQueryResultResourceIdAccessor accessor) {
         MetricsHelper.metricsQueryResultResourceIdAccessor = accessor;
     }
 
+    /**
+     * Sets the resource ID property on a MetricsQueryResult.
+     * @param metricsQueryResult the metrics query result to update
+     * @param resourceId the resource ID to set
+     */
     public static void setMetricsQueryResultResourceIdProperty(MetricsQueryResult metricsQueryResult,
         String resourceId) {
         metricsQueryResultResourceIdAccessor.setMetricsQueryResultResourceIdProperty(metricsQueryResult, resourceId);
     }
 
+    /**
+     * Sets properties on a MetricDefinition.
+     * @param metricDefinition the metric definition to update
+     * @param dimensionRequired whether dimensions are required
+     * @param resourceId the resource ID
+     * @param namespace the namespace
+     * @param name the name
+     * @param displayDescription the display description
+     * @param category the category
+     * @param metricClass the metric class
+     * @param unit the unit
+     * @param primaryAggregationType the primary aggregation type
+     * @param supportedAggregationTypes the supported aggregation types
+     * @param metricAvailabilities the metric availabilities
+     * @param id the ID
+     * @param dimensions the dimensions
+     */
     public static void setMetricDefinitionProperties(MetricDefinition metricDefinition, Boolean dimensionRequired,
         String resourceId, String namespace, String name, String displayDescription, String category,
         MetricClass metricClass, MetricUnit unit, AggregationType primaryAggregationType,
@@ -106,12 +140,27 @@ public final class MetricsHelper {
             supportedAggregationTypes, metricAvailabilities, id, dimensions);
     }
 
+    /**
+     * Sets properties on a MetricAvailability.
+     * @param metricAvailability the metric availability to update
+     * @param retention the retention period
+     * @param granularity the granularity
+     */
     public static void setMetricAvailabilityProperties(MetricAvailability metricAvailability, Duration retention,
         Duration granularity) {
         metricAvailabilityAccessor.setMetricAvailabilityProperties(metricAvailability, retention, granularity);
 
     }
 
+    /**
+     * Sets properties on a MetricNamespace.
+     * @param metricNamespace the metric namespace to update
+     * @param classification the namespace classification
+     * @param id the ID
+     * @param name the name
+     * @param fullyQualifiedName the fully qualified name
+     * @param type the type
+     */
     public static void setMetricNamespaceProperties(MetricNamespace metricNamespace,
         NamespaceClassification classification, String id, String name, String fullyQualifiedName, String type) {
         metricNamespaceAccessor.setMetricNamespaceProperties(metricNamespace, classification, id, name,
@@ -211,7 +260,8 @@ public final class MetricsHelper {
     }
 
     private static List<MetricAvailability> mapMetricAvailabilities(
-        List<com.azure.monitor.query.implementation.metricsdefinitions.models.MetricAvailability> metricAvailabilities) {
+        List<com.azure.monitor.query.implementation.metricsdefinitions.models.MetricAvailability>
+            metricAvailabilities) {
         return metricAvailabilities.stream().map(availabilityImpl -> {
             MetricAvailability metricAvailability = new MetricAvailability();
             MetricsHelper.setMetricAvailabilityProperties(metricAvailability, availabilityImpl.getRetention(),
@@ -270,7 +320,7 @@ public final class MetricsHelper {
     }
 
     /**
-     * Returns this {@link QueryTimeInterval} in ISO 8601 string format suitable for Azure Monitor Metrics API.
+     * Converts a {@link QueryTimeInterval} to ISO 8601 string format suitable for Azure Monitor Metrics API.
      * For duration-only intervals, this method converts them to absolute start/end times based on current time.
      *
      * @param timeInterval The time interval to convert.
