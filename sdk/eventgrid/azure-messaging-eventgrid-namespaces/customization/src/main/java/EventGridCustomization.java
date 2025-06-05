@@ -52,7 +52,7 @@ public class EventGridCustomization extends Customization {
             List<String> classNames = customization.getRawEditor().getContents().keySet().stream()
                 .filter(fileName -> fileName.startsWith(packagePath))
                 .map(fileName -> fileName.substring(packagePath.length(), fileName.length() - 5))
-                .filter(className -> !className.contains("/"))
+                .filter(className -> !className.contains("/") && !"package-info".equals(className))
                 .collect(Collectors.toList());
 
             for (String className : classNames) {

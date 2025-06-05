@@ -47,8 +47,8 @@ public class EventGridSystemEventsCustomization extends Customization {
         List<ClassCustomization> classCustomizations = customization.getRawEditor().getContents().keySet().stream()
             .filter(fileName -> fileName.startsWith(packagePath))
             .map(fileName -> fileName.substring(packagePath.length(), fileName.length() - 5))
-            .filter(className -> !className.contains("/"))
-            .map(className -> systemEvent.getClass(className))
+            .filter(className -> !className.contains("/") && !"package-info".equals(className))
+            .map(systemEvent::getClass)
             .collect(Collectors.toList());
 
         Map<String, String> nameMap = new TreeMap<>();
@@ -56,7 +56,7 @@ public class EventGridSystemEventsCustomization extends Customization {
         Map<String, String> constantNameMap = new TreeMap<>();
         List<String> imports = new ArrayList<>();
 
-        logger.info("Total number of classes " + classCustomizations.size());
+        logger.info("Total number of classes {}", classCustomizations.size());
 
         List<ClassCustomization> eventData = classCustomizations
             .stream()
@@ -75,7 +75,7 @@ public class EventGridSystemEventsCustomization extends Customization {
                 int endIndex = javadoc.lastIndexOf(" event.");
                 boolean hasEventName = startIndex > 0 && endIndex > 0;
                 if (!hasEventName) {
-                    logger.info("Class " + classCustomization.getClassName() + " " + javadoc);
+                    logger.info("Class {} {}", classCustomization.getClassName(), javadoc);
                     return null;
                 }
 
@@ -147,8 +147,8 @@ public class EventGridSystemEventsCustomization extends Customization {
 
         clazz.addConstructor(Modifier.Keyword.PRIVATE);
 
-        logger.info("Total number of events " + eventData.size());
-        logger.info("Total number of events with proper description " + validEventDescription.size());
+        logger.info("Total number of events {}", eventData.size());
+        logger.info("Total number of events with proper description {}", validEventDescription.size());
 
         customization.getRawEditor()
             .addFile("src/main/java/com/azure/messaging/eventgrid/SystemEventNames.java", compilationUnit.toString());
