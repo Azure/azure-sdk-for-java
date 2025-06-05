@@ -166,6 +166,7 @@ import com.azure.messaging.eventgrid.systemevents.ResourceDeleteFailureEventData
 import com.azure.messaging.eventgrid.systemevents.ResourceDeleteSuccessEventData;
 import com.azure.messaging.eventgrid.systemevents.ResourceNotificationsContainerServiceEventResourcesScheduledEventData;
 import com.azure.messaging.eventgrid.systemevents.ResourceNotificationsHealthResourcesAnnotatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData;
 import com.azure.messaging.eventgrid.systemevents.ResourceNotificationsResourceManagementCreatedOrUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.ResourceNotificationsResourceManagementDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.ResourceWriteCancelEventData;
@@ -1111,6 +1112,14 @@ public final class SystemEventNames {
 
     /**
      * Schema of the Data property of an EventGridEvent for a
+     * Microsoft.ResourceNotifications.HealthResources.AvailabilityStatusChanged
+     * event.
+     */
+    public static final String RESOURCE_NOTIFICATIONS_HEALTH_RESOURCES_AVAILABILITY_STATUS_CHANGED
+        = "Microsoft.ResourceNotifications.HealthResources.AvailabilityStatusChanged\n";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a
      * Microsoft.ResourceNotifications.Resources.CreatedOrUpdated event.
      */
     public static final String RESOURCE_NOTIFICATIONS_RESOURCE_MANAGEMENT_CREATED_OR_UPDATED
@@ -1537,6 +1546,8 @@ public final class SystemEventNames {
             ResourceNotificationsContainerServiceEventResourcesScheduledEventData.class);
         SYSTEM_EVENT_MAPPINGS.put(RESOURCE_NOTIFICATIONS_HEALTH_RESOURCES_ANNOTATED,
             ResourceNotificationsHealthResourcesAnnotatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(RESOURCE_NOTIFICATIONS_HEALTH_RESOURCES_AVAILABILITY_STATUS_CHANGED,
+            ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData.class);
         SYSTEM_EVENT_MAPPINGS.put(RESOURCE_NOTIFICATIONS_RESOURCE_MANAGEMENT_CREATED_OR_UPDATED,
             ResourceNotificationsResourceManagementCreatedOrUpdatedEventData.class);
         SYSTEM_EVENT_MAPPINGS.put(RESOURCE_NOTIFICATIONS_RESOURCE_MANAGEMENT_DELETED,

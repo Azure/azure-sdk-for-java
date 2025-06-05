@@ -67,8 +67,9 @@ public class EventGridSystemEventsCustomization extends Customization {
             .map(classCustomization -> {
                 String className = classCustomization.getClassName();
                 AtomicReference<String> javadocRef = new AtomicReference<>();
-                classCustomization.customizeAst(ast -> ast.getClassByName(className).flatMap(NodeWithJavadoc::getJavadoc)
-                    .ifPresent(javadoc -> javadocRef.set(javadoc.getDescription().toText())));
+                classCustomization.customizeAst(ast -> ast.getClassByName(className)
+                    .flatMap(NodeWithJavadoc::getJavadocComment)
+                    .ifPresent(javadoc -> javadocRef.set(javadoc.getContent())));
 
                 String javadoc = javadocRef.get();
                 int startIndex = javadoc.indexOf("Microsoft.");
