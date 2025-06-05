@@ -40,9 +40,9 @@ public class EventGridSystemEventsCustomization extends Customization {
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
         customizeModuleInfo(customization);
-        PackageCustomization systemEvent = customization.getPackage("com.azure.messaging.eventgrid.models");
+        PackageCustomization systemEvent = customization.getPackage("com.azure.messaging.eventgrid.systemevents.models");
         // Manual listing of classes in the package until a bug is fixed in TypeSpec Java.
-        String packagePath = "src/main/java/com/azure/messaging/eventgrid/models/";
+        String packagePath = "src/main/java/com/azure/messaging/eventgrid/systemevents/models/";
         List<ClassCustomization> classCustomizations = customization.getRawEditor().getContents().keySet().stream()
             .filter(fileName -> fileName.startsWith(packagePath))
             .map(fileName -> fileName.substring(packagePath.length(), fileName.length() - 5))
@@ -104,10 +104,12 @@ public class EventGridSystemEventsCustomization extends Customization {
         compilationUnit.addImport("java.util.HashMap");
         compilationUnit.addImport("java.util.Map");
         // these two imports are for deprecated events.
-        compilationUnit.addImport("com.azure.messaging.eventgrid.systemevents.AcsChatMemberAddedToThreadWithUserEventData");
-        compilationUnit.addImport("com.azure.messaging.eventgrid.systemevents.AcsChatMemberRemovedFromThreadWithUserEventData");
+        compilationUnit.addImport("com.azure.messaging.eventgrid.systemevents" +
+            ".models.AcsChatMemberAddedToThreadWithUserEventData");
+        compilationUnit.addImport("com.azure.messaging.eventgrid.systemevents" +
+            ".models.AcsChatMemberRemovedFromThreadWithUserEventData");
         for (String className : imports) {
-            compilationUnit.addImport("com.azure.messaging.eventgrid.models." + className);
+            compilationUnit.addImport("com.azure.messaging.eventgrid.systemevents.models." + className);
         }
 
         ClassOrInterfaceDeclaration clazz = compilationUnit.addClass("SystemEventNames", Modifier.Keyword.PUBLIC,
