@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,46 +20,55 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
     /*
      * The context associated with the call.
      */
+    @Generated
     private String incomingCallContext;
 
     /*
      * The callback uri.
      */
+    @Generated
     private String callbackUri;
 
     /*
      * Used by customer to send custom calling context to targets when answering On-Behalf-Of call
      */
+    @Generated
     private CustomCallingContext customCallingContext;
 
     /*
      * A customer set value used to track the answering of a call.
      */
+    @Generated
     private String operationContext;
 
     /*
      * AI options for the call.
      */
+    @Generated
     private CallIntelligenceOptionsInternal callIntelligenceOptions;
 
     /*
      * The identifier of the call automation entity which answers the call
      */
+    @Generated
     private CommunicationUserIdentifierModel answeredBy;
 
     /*
      * Media Streaming Options.
      */
+    @Generated
     private MediaStreamingOptionsInternal mediaStreamingOptions;
 
     /*
      * Transcription Options.
      */
+    @Generated
     private TranscriptionOptionsInternal transcriptionOptions;
 
     /**
      * Creates an instance of AnswerCallRequestInternal class.
      */
+    @Generated
     public AnswerCallRequestInternal() {
     }
 
@@ -67,6 +77,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
      * 
      * @return the incomingCallContext value.
      */
+    @Generated
     public String getIncomingCallContext() {
         return this.incomingCallContext;
     }
@@ -77,6 +88,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
      * @param incomingCallContext the incomingCallContext value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
+    @Generated
     public AnswerCallRequestInternal setIncomingCallContext(String incomingCallContext) {
         this.incomingCallContext = incomingCallContext;
         return this;
@@ -87,6 +99,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
      * 
      * @return the callbackUri value.
      */
+    @Generated
     public String getCallbackUri() {
         return this.callbackUri;
     }
@@ -97,6 +110,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
      * @param callbackUri the callbackUri value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
+    @Generated
     public AnswerCallRequestInternal setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
         return this;
@@ -108,6 +122,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
      * 
      * @return the customCallingContext value.
      */
+    @Generated
     public CustomCallingContext getCustomCallingContext() {
         return this.customCallingContext;
     }
@@ -119,6 +134,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
      * @param customCallingContext the customCallingContext value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
+    @Generated
     public AnswerCallRequestInternal setCustomCallingContext(CustomCallingContext customCallingContext) {
         this.customCallingContext = customCallingContext;
         return this;
@@ -129,6 +145,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
      * 
      * @return the operationContext value.
      */
+    @Generated
     public String getOperationContext() {
         return this.operationContext;
     }
@@ -139,6 +156,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
      * @param operationContext the operationContext value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
+    @Generated
     public AnswerCallRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
@@ -149,6 +167,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
      * 
      * @return the callIntelligenceOptions value.
      */
+    @Generated
     public CallIntelligenceOptionsInternal getCallIntelligenceOptions() {
         return this.callIntelligenceOptions;
     }
@@ -159,6 +178,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
      * @param callIntelligenceOptions the callIntelligenceOptions value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
+    @Generated
     public AnswerCallRequestInternal
         setCallIntelligenceOptions(CallIntelligenceOptionsInternal callIntelligenceOptions) {
         this.callIntelligenceOptions = callIntelligenceOptions;
@@ -170,6 +190,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
      * 
      * @return the answeredBy value.
      */
+    @Generated
     public CommunicationUserIdentifierModel getAnsweredBy() {
         return this.answeredBy;
     }
@@ -180,6 +201,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
      * @param answeredBy the answeredBy value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
+    @Generated
     public AnswerCallRequestInternal setAnsweredBy(CommunicationUserIdentifierModel answeredBy) {
         this.answeredBy = answeredBy;
         return this;
@@ -190,6 +212,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
      * 
      * @return the mediaStreamingOptions value.
      */
+    @Generated
     public MediaStreamingOptionsInternal getMediaStreamingOptions() {
         return this.mediaStreamingOptions;
     }
@@ -200,6 +223,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
      * @param mediaStreamingOptions the mediaStreamingOptions value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
+    @Generated
     public AnswerCallRequestInternal setMediaStreamingOptions(MediaStreamingOptionsInternal mediaStreamingOptions) {
         this.mediaStreamingOptions = mediaStreamingOptions;
         return this;
@@ -210,6 +234,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
      * 
      * @return the transcriptionOptions value.
      */
+    @Generated
     public TranscriptionOptionsInternal getTranscriptionOptions() {
         return this.transcriptionOptions;
     }
@@ -220,6 +245,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
      * @param transcriptionOptions the transcriptionOptions value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
+    @Generated
     public AnswerCallRequestInternal setTranscriptionOptions(TranscriptionOptionsInternal transcriptionOptions) {
         this.transcriptionOptions = transcriptionOptions;
         return this;
@@ -228,6 +254,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -251,6 +278,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AnswerCallRequestInternal.
      */
+    @Generated
     public static AnswerCallRequestInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AnswerCallRequestInternal deserializedAnswerCallRequestInternal = new AnswerCallRequestInternal();

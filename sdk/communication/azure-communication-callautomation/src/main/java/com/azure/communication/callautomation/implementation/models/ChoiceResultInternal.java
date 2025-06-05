@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,17 +20,21 @@ public final class ChoiceResultInternal implements JsonSerializable<ChoiceResult
     /*
      * Label is the primary identifier for the choice detected
      */
+    @Generated
     private String label;
 
     /*
      * Phrases are set to the value if choice is selected via phrase detection.
-     * If Dtmf input is recognized, then Label will be the identifier for the choice detected and phrases will be set to null
+     * If Dtmf input is recognized, then Label will be the identifier for the choice detected and phrases will be set to
+     * null
      */
+    @Generated
     private String recognizedPhrase;
 
     /**
      * Creates an instance of ChoiceResultInternal class.
      */
+    @Generated
     public ChoiceResultInternal() {
     }
 
@@ -38,6 +43,7 @@ public final class ChoiceResultInternal implements JsonSerializable<ChoiceResult
      * 
      * @return the label value.
      */
+    @Generated
     public String getLabel() {
         return this.label;
     }
@@ -48,6 +54,7 @@ public final class ChoiceResultInternal implements JsonSerializable<ChoiceResult
      * @param label the label value to set.
      * @return the ChoiceResultInternal object itself.
      */
+    @Generated
     public ChoiceResultInternal setLabel(String label) {
         this.label = label;
         return this;
@@ -60,6 +67,7 @@ public final class ChoiceResultInternal implements JsonSerializable<ChoiceResult
      * 
      * @return the recognizedPhrase value.
      */
+    @Generated
     public String getRecognizedPhrase() {
         return this.recognizedPhrase;
     }
@@ -72,6 +80,7 @@ public final class ChoiceResultInternal implements JsonSerializable<ChoiceResult
      * @param recognizedPhrase the recognizedPhrase value to set.
      * @return the ChoiceResultInternal object itself.
      */
+    @Generated
     public ChoiceResultInternal setRecognizedPhrase(String recognizedPhrase) {
         this.recognizedPhrase = recognizedPhrase;
         return this;
@@ -80,6 +89,7 @@ public final class ChoiceResultInternal implements JsonSerializable<ChoiceResult
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -96,6 +106,7 @@ public final class ChoiceResultInternal implements JsonSerializable<ChoiceResult
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ChoiceResultInternal.
      */
+    @Generated
     public static ChoiceResultInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ChoiceResultInternal deserializedChoiceResultInternal = new ChoiceResultInternal();
