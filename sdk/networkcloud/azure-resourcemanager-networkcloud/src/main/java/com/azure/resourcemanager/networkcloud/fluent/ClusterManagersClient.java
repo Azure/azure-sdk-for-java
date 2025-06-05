@@ -134,6 +134,10 @@ public interface ClusterManagersClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterManagerName The name of the cluster manager.
      * @param clusterManagerParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -143,7 +147,8 @@ public interface ClusterManagersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ClusterManagerInner>, ClusterManagerInner> beginCreateOrUpdate(String resourceGroupName,
-        String clusterManagerName, ClusterManagerInner clusterManagerParameters, Context context);
+        String clusterManagerName, ClusterManagerInner clusterManagerParameters, String ifMatch, String ifNoneMatch,
+        Context context);
 
     /**
      * Create or update the cluster manager.
@@ -170,6 +175,10 @@ public interface ClusterManagersClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterManagerName The name of the cluster manager.
      * @param clusterManagerParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -178,7 +187,7 @@ public interface ClusterManagersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ClusterManagerInner createOrUpdate(String resourceGroupName, String clusterManagerName,
-        ClusterManagerInner clusterManagerParameters, Context context);
+        ClusterManagerInner clusterManagerParameters, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete the cluster manager.
@@ -203,6 +212,10 @@ public interface ClusterManagersClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterManagerName The name of the cluster manager.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -211,7 +224,7 @@ public interface ClusterManagersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
-        String clusterManagerName, Context context);
+        String clusterManagerName, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete the cluster manager.
@@ -235,6 +248,10 @@ public interface ClusterManagersClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterManagerName The name of the cluster manager.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -242,7 +259,8 @@ public interface ClusterManagersClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner delete(String resourceGroupName, String clusterManagerName, Context context);
+    OperationStatusResultInner delete(String resourceGroupName, String clusterManagerName, String ifMatch,
+        String ifNoneMatch, Context context);
 
     /**
      * Patch the cluster manager.
@@ -252,6 +270,10 @@ public interface ClusterManagersClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterManagerName The name of the cluster manager.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param clusterManagerUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -262,7 +284,8 @@ public interface ClusterManagersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ClusterManagerInner> updateWithResponse(String resourceGroupName, String clusterManagerName,
-        ClusterManagerPatchParameters clusterManagerUpdateParameters, Context context);
+        String ifMatch, String ifNoneMatch, ClusterManagerPatchParameters clusterManagerUpdateParameters,
+        Context context);
 
     /**
      * Patch the cluster manager.
