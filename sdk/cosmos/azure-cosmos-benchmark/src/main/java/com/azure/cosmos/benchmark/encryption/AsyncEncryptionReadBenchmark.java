@@ -15,7 +15,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
-import java.util.concurrent.Semaphore;
 
 public class AsyncEncryptionReadBenchmark extends AsyncEncryptionBenchmark<PojoizedJson> {
 
@@ -55,7 +54,7 @@ public class AsyncEncryptionReadBenchmark extends AsyncEncryptionBenchmark<Pojoi
     }
 
     @Override
-    protected void performWorkload(BaseSubscriber<PojoizedJson> baseSubscriber, long i, Semaphore concurrencyThreshold) throws InterruptedException {
+    protected void performWorkload(BaseSubscriber<PojoizedJson> baseSubscriber, long i) throws InterruptedException {
         int index = (int) (i % docsToRead.size());
         PojoizedJson doc = docsToRead.get(index);
         String partitionKeyValue = doc.getId();
@@ -65,7 +64,7 @@ public class AsyncEncryptionReadBenchmark extends AsyncEncryptionBenchmark<Pojoi
             new CosmosItemRequestOptions(),
             PojoizedJson.class).map(CosmosItemResponse::getItem);
 
-        concurrencyThreshold.acquire();
+        concurrencyControlSemaphore.acquire();
 
         switch (configuration.getOperationType()) {
             case ReadThroughput:

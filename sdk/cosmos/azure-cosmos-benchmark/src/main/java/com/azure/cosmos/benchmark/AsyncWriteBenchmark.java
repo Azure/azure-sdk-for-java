@@ -13,7 +13,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.UUID;
-import java.util.concurrent.Semaphore;
 
 class AsyncWriteBenchmark extends AsyncBenchmark<CosmosItemResponse> {
 
@@ -59,7 +58,7 @@ class AsyncWriteBenchmark extends AsyncBenchmark<CosmosItemResponse> {
     }
 
     @Override
-    protected void performWorkload(BaseSubscriber<CosmosItemResponse> baseSubscriber, long i, Semaphore concurrencyThreshold) throws InterruptedException {
+    protected void performWorkload(BaseSubscriber<CosmosItemResponse> baseSubscriber, long i) throws InterruptedException {
         String id = uuid + i;
         Mono<CosmosItemResponse<PojoizedJson>> obs;
         if (configuration.isDisablePassingPartitionKeyAsOptionOnWrite()) {
@@ -78,7 +77,7 @@ class AsyncWriteBenchmark extends AsyncBenchmark<CosmosItemResponse> {
                 null);
         }
 
-        concurrencyThreshold.acquire();
+        concurrencyControlSemaphore.acquire();
 
         if (configuration.getOperationType() == Configuration.Operation.WriteThroughput) {
             obs.subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);

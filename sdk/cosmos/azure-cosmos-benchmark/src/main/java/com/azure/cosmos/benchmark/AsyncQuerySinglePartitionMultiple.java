@@ -10,8 +10,6 @@ import com.azure.cosmos.models.PartitionKey;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.scheduler.Schedulers;
 
-import java.util.concurrent.Semaphore;
-
 class AsyncQuerySinglePartitionMultiple extends AsyncBenchmark<FeedResponse<PojoizedJson>> {
 
     private static final String SQL_QUERY = "Select * from c where c.pk = \"pk\"";
@@ -36,10 +34,10 @@ class AsyncQuerySinglePartitionMultiple extends AsyncBenchmark<FeedResponse<Pojo
     }
 
     @Override
-    protected void performWorkload(BaseSubscriber<FeedResponse<PojoizedJson>> baseSubscriber, long i, Semaphore concurrencyThreshold) throws InterruptedException {
+    protected void performWorkload(BaseSubscriber<FeedResponse<PojoizedJson>> baseSubscriber, long i) throws InterruptedException {
         CosmosPagedFlux<PojoizedJson> obs = cosmosAsyncContainer.queryItems(SQL_QUERY, options, PojoizedJson.class);
 
-        concurrencyThreshold.acquire();
+        concurrencyControlSemaphore.acquire();
 
         obs.byPage(10).subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
     }

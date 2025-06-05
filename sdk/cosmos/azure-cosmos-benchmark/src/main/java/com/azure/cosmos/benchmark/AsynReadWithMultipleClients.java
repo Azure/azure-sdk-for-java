@@ -53,8 +53,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class AsynReadWithMultipleClients<T> {
     private final static String ACCOUNT_ENDPOINT_TAG = "AccountEndpoint=";
     private final static String ACCOUNT_KEY_TAG = "AccountKey=";
-    final Semaphore concurrencyControlSemaphore;
-    final Semaphore concurrencyControlWarmupSemaphore;
+    private final Semaphore concurrencyControlSemaphore;
     private final Logger logger;
     private final Configuration configuration;
     private MetricRegistry metricsRegistry = new MetricRegistry();
@@ -82,12 +81,9 @@ public class AsynReadWithMultipleClients<T> {
             reporter = ConsoleReporter.forRegistry(metricsRegistry).convertRatesTo(TimeUnit.SECONDS)
                 .convertDurationsTo(TimeUnit.MILLISECONDS).build();
         }
-        concurrencyControlWarmupSemaphore = new Semaphore(Math.max(1, cfg.getConcurrency() / 10));
         concurrencyControlSemaphore = new Semaphore(cfg.getConcurrency());
     }
-    protected boolean isStillInWarmup(AtomicLong count) {
-        return count.get() >= configuration.getSkipWarmUpOperations();
-    }
+
     void run() throws Exception {
         successMeter = metricsRegistry.meter("#Successful Operations");
         failureMeter = metricsRegistry.meter("#Unsuccessful Operations");
@@ -97,10 +93,6 @@ public class AsynReadWithMultipleClients<T> {
         long i;
         long startTime = System.currentTimeMillis();
         for (i = 0; BenchmarkHelper.shouldContinue(startTime, i, configuration); i++) {
-
-            final Semaphore concurrencySemaphoreSnapshot = this.isStillInWarmup(count)
-                ? this.concurrencyControlSemaphore
-                : this.concurrencyControlWarmupSemaphore;
 
             BaseSubscriber<PojoizedJson> baseSubscriber = new BaseSubscriber<PojoizedJson>() {
                 @Override
@@ -121,7 +113,7 @@ public class AsynReadWithMultipleClients<T> {
                 @Override
                 protected void hookOnComplete() {
                     successMeter.mark();
-                    concurrencySemaphoreSnapshot.release();
+                    concurrencyControlSemaphore.release();
                     AsynReadWithMultipleClients.this.onSuccess();
 
                     synchronized (count) {
@@ -135,7 +127,7 @@ public class AsynReadWithMultipleClients<T> {
                     failureMeter.mark();
                     logger.error("Encountered failure {} on thread {}",
                         throwable.getMessage(), Thread.currentThread().getName(), throwable);
-                    concurrencySemaphoreSnapshot.release();
+                    concurrencyControlSemaphore.release();
                     AsynReadWithMultipleClients.this.onError(throwable);
 
                     synchronized (count) {
@@ -145,7 +137,7 @@ public class AsynReadWithMultipleClients<T> {
                 }
             };
 
-            performWorkload(baseSubscriber, i, concurrencySemaphoreSnapshot);
+            performWorkload(baseSubscriber, i);
         }
         synchronized (count) {
             while (count.get() < i) {
@@ -301,7 +293,7 @@ public class AsynReadWithMultipleClients<T> {
         }
     }
 
-    private void performWorkload(BaseSubscriber<PojoizedJson> baseSubscriber, long i, Semaphore concurrencyThreshold) throws InterruptedException {
+    private void performWorkload(BaseSubscriber<PojoizedJson> baseSubscriber, long i) throws InterruptedException {
         Mono<PojoizedJson> result;
         int clientIndex = (int) (i % clientDocsMap.size());
         CosmosAsyncClient client = (CosmosAsyncClient) clientDocsMap.keySet().toArray()[clientIndex];
@@ -312,7 +304,7 @@ public class AsynReadWithMultipleClients<T> {
         result = client.getDatabase(configuration.getDatabaseId()).getContainer(configuration.getCollectionId()).readItem(doc.getId(),
             new PartitionKey(partitionKeyValue),
             PojoizedJson.class).map(CosmosItemResponse::getItem);
-        concurrencyThreshold.acquire();
+        concurrencyControlSemaphore.acquire();
         AsyncReadBenchmark.LatencySubscriber<PojoizedJson> latencySubscriber = new AsyncReadBenchmark.LatencySubscriber<>(baseSubscriber);
         latencySubscriber.context = latency.time();
         result.subscribeOn(Schedulers.parallel()).subscribe(latencySubscriber);
