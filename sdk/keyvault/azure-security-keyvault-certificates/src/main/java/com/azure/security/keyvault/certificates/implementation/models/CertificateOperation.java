@@ -11,7 +11,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.security.keyvault.certificates.models.CertificateOperationError;
 import java.io.IOException;
 
 /**
@@ -59,7 +58,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
      * Error encountered, if any, during the certificate operation.
      */
     @Generated
-    private CertificateOperationError error;
+    private KeyVaultErrorError error;
 
     /*
      * Location which contains the result of the certificate operation.
@@ -213,7 +212,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
      * @return the error value.
      */
     @Generated
-    public CertificateOperationError getError() {
+    public KeyVaultErrorError getError() {
         return this.error;
     }
 
@@ -224,7 +223,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
      * @return the CertificateOperation object itself.
      */
     @Generated
-    public CertificateOperation setError(CertificateOperationError error) {
+    public CertificateOperation setError(KeyVaultErrorError error) {
         this.error = error;
         return this;
     }
@@ -345,7 +344,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
                 } else if ("status_details".equals(fieldName)) {
                     deserializedCertificateOperation.statusDetails = reader.getString();
                 } else if ("error".equals(fieldName)) {
-                    deserializedCertificateOperation.error = CertificateOperationError.fromJson(reader);
+                    deserializedCertificateOperation.error = KeyVaultErrorError.fromJson(reader);
                 } else if ("target".equals(fieldName)) {
                     deserializedCertificateOperation.target = reader.getString();
                 } else if ("preserveCertOrder".equals(fieldName)) {
