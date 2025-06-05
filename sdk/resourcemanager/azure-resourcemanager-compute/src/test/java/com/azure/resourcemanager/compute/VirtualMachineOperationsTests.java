@@ -3,9 +3,9 @@
 
 package com.azure.resourcemanager.compute;
 
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
@@ -20,7 +20,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.tracing.Tracer;
 import com.azure.resourcemanager.compute.fluent.models.CapacityReservationGroupInner;
 import com.azure.resourcemanager.compute.fluent.models.CapacityReservationInner;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
@@ -85,7 +84,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.AccessibleObject;
-import java.lang.reflect.Constructor;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -2326,7 +2324,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             }
             return next.process();
         };
-        ComputeManager localComputeManager = addPolicyToManager(computeManager, verificationPolicy);
+        ComputeManager localComputeManager = buildComputeManager(computeManager.httpPipeline(), verificationPolicy);
 
         Accepted<VirtualMachine> accepted = localComputeManager.virtualMachines()
             .define(vmName)
@@ -2345,32 +2343,23 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     }
 
     // *********************************** helper methods ***********************************
-    private ComputeManager addPolicyToManager(ComputeManager computeManager, HttpPipelinePolicy verificationPolicy) {
-        HttpPipeline currentPipeline = computeManager.httpPipeline();
-        try {
-
-            Constructor<HttpPipeline> pipelineConstructor
-                = HttpPipeline.class.getDeclaredConstructor(HttpClient.class, List.class, Tracer.class);
-            setAccessible(pipelineConstructor);
-
-            List<HttpPipelinePolicy> pipelinePolicies = new ArrayList<>();
-            for (int i = 0; i < currentPipeline.getPolicyCount(); i++) {
-                pipelinePolicies.add(currentPipeline.getPolicy(i));
-            }
-
-            pipelinePolicies.add(verificationPolicy);
-
-            HttpPipeline newPipeline = pipelineConstructor.newInstance(currentPipeline.getHttpClient(),
-                pipelinePolicies, currentPipeline.getTracer());
-            ComputeManager manager = ComputeManager.authenticate(newPipeline, profile);
-            ResourceManagerUtils.InternalRuntimeContext internalContext
-                = new ResourceManagerUtils.InternalRuntimeContext();
-            internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
-            setInternalContext(internalContext, manager);
-            return manager;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+    private ComputeManager buildComputeManager(HttpPipeline httpPipeline, HttpPipelinePolicy policy) {
+        List<HttpPipelinePolicy> pipelinePolicies = new ArrayList<>();
+        for (int i = 0; i < httpPipeline.getPolicyCount(); i++) {
+            pipelinePolicies.add(httpPipeline.getPolicy(i));
         }
+
+        pipelinePolicies.add(policy);
+
+        HttpPipeline newPipeline = new HttpPipelineBuilder().httpClient(httpPipeline.getHttpClient())
+            .policies(pipelinePolicies.toArray(new HttpPipelinePolicy[0]))
+            .tracer(httpPipeline.getTracer())
+            .build();
+        ComputeManager manager = ComputeManager.authenticate(newPipeline, profile);
+        ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
+        internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
+        setInternalContext(internalContext, manager);
+        return manager;
     }
 
     private void setAccessible(final AccessibleObject accessibleObject) {
