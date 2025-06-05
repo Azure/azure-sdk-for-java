@@ -12,9 +12,12 @@ import java.util.regex.Pattern;
 /**
  * The @ServiceInterface class should have the following rules:
  *   1) The annotation property 'name' should be non-empty
- *   2) The length of value of property 'name' should be less than 20 characters and without space
+ *   2) 'name' should not contain spaces
  */
 public class ServiceInterfaceCheck extends AbstractCheck {
+
+    private static final Pattern SERVICE_NAME_PATTERN = Pattern.compile("^[a-zA-Z0-9]{1,}$");
+
     @Override
     public int[] getDefaultTokens() {
         return getRequiredTokens();
@@ -81,12 +84,10 @@ public class ServiceInterfaceCheck extends AbstractCheck {
         }
 
         // 'name' is required at @ServiceInterface
-        // 'name' should not be empty, no Space allowed and the length should less than or equal to 20 characters
-        Pattern serviceNamePattern = Pattern.compile("^[a-zA-Z0-9]{1,20}$");
-        if (!serviceNamePattern.matcher(nameValue).find()) {
+        // 'name' should not be empty and no space allowed
+        if (!SERVICE_NAME_PATTERN.matcher(nameValue).find()) {
             log(serviceInterfaceAnnotationNode, String.format(
-                "The ''name'' property of @ServiceInterface, ''%s'' should be non-empty, alphanumeric and not more "
-                    + "than 20 characters", nameValue));
+                "The ''name'' property of @ServiceInterface, ''%s'' should be non-empty, alphanumeric and not contain spaces", nameValue));
         }
     }
 
