@@ -4,6 +4,7 @@
 
 package com.azure.communication.phonenumbers.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class PhoneNumbersReservationStatus extends ExpandableStringEnum<Ph
     /**
      * Static value active for PhoneNumbersReservationStatus.
      */
+    @Generated
     public static final PhoneNumbersReservationStatus ACTIVE = fromString("active");
 
     /**
      * Static value submitted for PhoneNumbersReservationStatus.
      */
+    @Generated
     public static final PhoneNumbersReservationStatus SUBMITTED = fromString("submitted");
 
     /**
      * Static value completed for PhoneNumbersReservationStatus.
      */
+    @Generated
     public static final PhoneNumbersReservationStatus COMPLETED = fromString("completed");
 
     /**
      * Static value expired for PhoneNumbersReservationStatus.
      */
+    @Generated
     public static final PhoneNumbersReservationStatus EXPIRED = fromString("expired");
 
     /**
@@ -36,6 +41,7 @@ public final class PhoneNumbersReservationStatus extends ExpandableStringEnum<Ph
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PhoneNumbersReservationStatus() {
     }
@@ -46,6 +52,7 @@ public final class PhoneNumbersReservationStatus extends ExpandableStringEnum<Ph
      * @param name a name to look for.
      * @return the corresponding PhoneNumbersReservationStatus.
      */
+    @Generated
     public static PhoneNumbersReservationStatus fromString(String name) {
         return fromString(name, PhoneNumbersReservationStatus.class);
     }
@@ -55,6 +62,7 @@ public final class PhoneNumbersReservationStatus extends ExpandableStringEnum<Ph
      * 
      * @return known PhoneNumbersReservationStatus values.
      */
+    @Generated
     public static Collection<PhoneNumbersReservationStatus> values() {
         return values(PhoneNumbersReservationStatus.class);
     }
