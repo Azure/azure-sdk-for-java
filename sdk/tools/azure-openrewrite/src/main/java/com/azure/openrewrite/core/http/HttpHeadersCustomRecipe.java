@@ -87,11 +87,12 @@ public class HttpHeadersCustomRecipe extends Recipe {
 
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpHeaders setAll(java.util.Map)");
                 if (methodMatcher.matches(visitedMethodInvocation, true)) {
-                    replacementTemplate = templateBuilder.getJavaTemplateBuilder("setAll(#{any(io.clientcore.core.http.models.HttpHeaders)})")
-                        .imports("io.clientcore.core.http.models.HttpHeaders")
+                    replacementTemplate = templateBuilder.getJavaTemplateBuilder("setAll(#{any(java.util.Map)}.entrySet().stream().collect(HttpHeaders::new, (newHeaders, entry) -> newHeaders.set(HttpHeaderName.fromString(entry.getKey()), entry.getValue() instanceof java.util.List ? (java.util.List<String>) entry.getValue() : java.util.Collections.singletonList(entry.getValue().toString())), HttpHeaders::setAll))")
+                        .imports("io.clientcore.core.http.models.HttpHeaders", "io.clientcore.core.http.models.HttpHeaderName")
                         .build();
                     visitedMethodInvocation = replacementTemplate.apply(updateCursor(visitedMethodInvocation), visitedMethodInvocation.getCoordinates().replaceMethod(), visitedMethodInvocation.getArguments().toArray());
                     maybeAddImport("io.clientcore.core.http.models.HttpHeaders");
+                    maybeAddImport("io.clientcore.core.http.models.HttpHeaderName");
                 }
 
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpHeaders get(java.lang.String)");
