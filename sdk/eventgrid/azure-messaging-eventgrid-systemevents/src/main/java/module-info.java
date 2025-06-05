@@ -5,8 +5,8 @@
 module com.azure.messaging.eventgrid {
     requires transitive com.azure.core;
 
-    exports com.azure.messaging.eventgrid.systemevents;
+    exports com.azure.messaging.eventgrid.models;
 
     opens com.azure.messaging.eventgrid.implementation.models to com.azure.core;
-    opens com.azure.messaging.eventgrid.systemevents to com.azure.core;
+    opens com.azure.messaging.eventgrid.models to com.azure.core;
 }

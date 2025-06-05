@@ -40,10 +40,9 @@ public class EventGridSystemEventsCustomization extends Customization {
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
         customizeModuleInfo(customization);
-
-        PackageCustomization systemEvent = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+        PackageCustomization systemEvent = customization.getPackage("com.azure.messaging.eventgrid.models");
         // Manual listing of classes in the package until a bug is fixed in TypeSpec Java.
-        String packagePath = "src/main/java/com/azure/messaging/eventgrid/systemevents/";
+        String packagePath = "src/main/java/com/azure/messaging/eventgrid/models/";
         List<ClassCustomization> classCustomizations = customization.getRawEditor().getContents().keySet().stream()
             .filter(fileName -> fileName.startsWith(packagePath))
             .map(fileName -> fileName.substring(packagePath.length(), fileName.length() - 5))
@@ -108,7 +107,7 @@ public class EventGridSystemEventsCustomization extends Customization {
         compilationUnit.addImport("com.azure.messaging.eventgrid.systemevents.AcsChatMemberAddedToThreadWithUserEventData");
         compilationUnit.addImport("com.azure.messaging.eventgrid.systemevents.AcsChatMemberRemovedFromThreadWithUserEventData");
         for (String className : imports) {
-            compilationUnit.addImport("com.azure.messaging.eventgrid.systemevents." + className);
+            compilationUnit.addImport("com.azure.messaging.eventgrid.models." + className);
         }
 
         ClassOrInterfaceDeclaration clazz = compilationUnit.addClass("SystemEventNames", Modifier.Keyword.PUBLIC,
