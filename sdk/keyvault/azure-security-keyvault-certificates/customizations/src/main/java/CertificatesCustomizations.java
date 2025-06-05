@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.Editor;
 import com.azure.autorest.customization.LibraryCustomization;
@@ -26,7 +25,7 @@ public class CertificatesCustomizations extends Customization {
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         // Remove unnecessary files.
         removeFiles(libraryCustomization.getRawEditor());
-//        customizeError(libraryCustomization);
+        customizeError(libraryCustomization);
         customizeCertificateKeyUsage(libraryCustomization);
         customizeServiceVersion(libraryCustomization);
         customizeModuleInfo(libraryCustomization.getRawEditor());
@@ -40,44 +39,31 @@ public class CertificatesCustomizations extends Customization {
         editor.removeFile("src/main/java/com/azure/security/keyvault/certificates/KeyVaultServiceVersion.java");
     }
 
-    private static void customizeError(LibraryCustomization libraryCustomization) {
-        // Rename KeyVaultErrorError to CertificateOperationError and move it to the public models package.
-
-        // The class is used in CertificateOperation, which is in the implementation package.
-        // Add an import to handle the class moving.
-
-        String implModelsPackage = "com.azure.security.keyvault.certificates.implementation.models";
+    private static void customizeError(LibraryCustomization customization) {
         String implModelsDirectory = "src/main/java/com/azure/security/keyvault/certificates/implementation/models/";
         String oldClassName = "KeyVaultErrorError";
-        String modelsPackage = "com.azure.security.keyvault.certificates.models";
         String modelsDirectory = "src/main/java/com/azure/security/keyvault/certificates/models/";
         String newClassName = "CertificateOperationError";
 
-        // Rename KeyVaultErrorError to CertificateOperationError.
-        ClassCustomization classCustomization = libraryCustomization.getPackage(implModelsPackage)
-            .getClass(oldClassName)
-            .rename(newClassName)
-            .customizeAst(ast -> ast.getPackageDeclaration()
-                .ifPresent(packageDeclaration -> packageDeclaration.setName(modelsPackage)));
+        // Rename KeyVaultErrorError to CertificateOperationError and move it to the public models package.
+        String fileContent = customization.getRawEditor().getFileContent(implModelsDirectory + oldClassName + ".java");
+        customization.getRawEditor().removeFile(implModelsDirectory + oldClassName + ".java");
+        fileContent = fileContent.replace(oldClassName, newClassName);
+        customization.getRawEditor().addFile(modelsDirectory + newClassName + ".java", fileContent);
+        customization.getClass("com.azure.security.keyvault.certificates.models", newClassName)
+            .customizeAst(ast -> ast.setPackageDeclaration("com.azure.security.keyvault.certificates.models"));
 
-        String oldClassPath = implModelsDirectory + newClassName + ".java";
-        String newClassPath = modelsDirectory + newClassName + ".java";
-
-        replaceInFile(classCustomization, oldClassPath,
-            new String[] { oldClassName },
-            new String[] { newClassName });
-
-        // Move to the public models package.
-        libraryCustomization.getRawEditor().renameFile(oldClassPath, newClassPath);
-
-        // Add import statement in impl CertificateOperation class.
-        classCustomization = libraryCustomization.getPackage(implModelsPackage)
-            .getClass("CertificateOperation")
-            .addImports(modelsPackage + "." + newClassName);
-
-        replaceInFile(classCustomization, implModelsDirectory + "CertificateOperation.java",
-            new String[] { oldClassName },
-            new String[] { newClassName });
+        // The class is used in CertificateOperation, which is in the implementation package.
+        // Add an import to handle the class moving.
+        customization.getClass("com.azure.security.keyvault.certificates.implementation.models", "CertificateOperation")
+            .customizeAst(ast -> ast.addImport("com.azure.security.keyvault.certificates.models." + newClassName)
+                .getClassByName("CertificateOperation").ifPresent(clazz -> {
+                    clazz.getFieldByName("error").ifPresent(field -> field.getVariable(0).setType(newClassName));
+                    clazz.getMethodsByName("getError").forEach(method -> method.setType(newClassName));
+                    clazz.getMethodsByName("setError").forEach(method -> method.getParameter(0).setType(newClassName));
+                    clazz.getMethodsByName("fromJson").forEach(method -> method.getBody().ifPresent(body ->
+                        method.setBody(StaticJavaParser.parseBlock(body.toString().replace(oldClassName, newClassName)))));
+                }));
     }
 
     private static void customizeCertificateKeyUsage(LibraryCustomization customization) {
@@ -131,30 +117,6 @@ public class CertificatesCustomizations extends Customization {
         String fileContent = libraryCustomization.getRawEditor().getFileContent(fileName);
         fileContent = fileContent.replace("KeyVaultServiceVersion", "CertificateServiceVersion");
         libraryCustomization.getRawEditor().replaceFile(fileName, fileContent);
-    }
-
-    private static void replaceInFile(ClassCustomization classCustomization, String classPath,
-        String[] stringsToReplace, String[] replacementStrings) {
-
-        if (stringsToReplace != null && replacementStrings != null) {
-            Editor editor = classCustomization.getEditor();
-            String fileContent = editor.getFileContent(classPath);
-
-            // Ensure names has an even length.
-            if (stringsToReplace.length != replacementStrings.length) {
-                throw new IllegalArgumentException(
-                    "'stringsToReplace' must have the same number of elements as 'replacementStrings'.");
-            }
-
-            for (int i = 0; i < stringsToReplace.length; i++) {
-                fileContent = fileContent.replace(stringsToReplace[i], replacementStrings[i]);
-            }
-
-            editor.replaceFile(classPath, fileContent);
-        } else if (stringsToReplace != null || replacementStrings != null) {
-            throw new IllegalArgumentException(
-                "'stringsToReplace' must have the same number of elements as 'replacementStrings'.");
-        }
     }
 
     private static void customizeModuleInfo(Editor editor) {
