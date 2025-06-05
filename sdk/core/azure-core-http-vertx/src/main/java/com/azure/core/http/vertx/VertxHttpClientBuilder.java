@@ -254,7 +254,7 @@ public class VertxHttpClientBuilder {
         }
 
         io.vertx.core.http.HttpClient client = configuredVertx.createHttpClient(buildOptions);
-        return new VertxHttpClient(client, getTimeout(this.responseTimeout, getDefaultResponseTimeout()));
+        return new VertxHttpClient(client, buildOptions, getTimeout(this.responseTimeout, getDefaultResponseTimeout()));
     }
 
     static Vertx getVertx(Iterator<VertxProvider> iterator) {
@@ -320,7 +320,7 @@ public class VertxHttpClientBuilder {
         return () -> {
             CountDownLatch latch = new CountDownLatch(1);
             if (vertxToClose != null) {
-                vertxToClose.close(event -> {
+                vertxToClose.close().andThen(event -> {
                     if (event.failed() && event.cause() != null) {
                         LOGGER.logThrowableAsError(event.cause());
                     }
