@@ -35,7 +35,7 @@ public class EntraTokenGuardPolicyTests {
     }
 
     @Test
-    void process_FirstCall_WithNoCachedToken_InvokesNextProcess() {
+    void processFirstCallWithNoCachedTokenInvokesNextProcess() {
         HttpPipelinePolicy countingPolicy = (context, next) -> {
             callCount.incrementAndGet();
             return Mono.just(new MockHttpResponse(context.getHttpRequest(), 200,
@@ -49,7 +49,7 @@ public class EntraTokenGuardPolicyTests {
     }
 
     @Test
-    void process_SecondCall_WithDifferentToken_InvokesNextProcessAgain() {
+    void processSecondCallWithDifferentTokenInvokesNextProcessAgain() {
         HttpPipelinePolicy countingPolicy = (context, next) -> {
             callCount.incrementAndGet();
             return Mono.just(new MockHttpResponse(context.getHttpRequest(), 200,
@@ -65,7 +65,7 @@ public class EntraTokenGuardPolicyTests {
     }
 
     @Test
-    void process_WithExpiredAcsTokenInResponse_InvokesNextProcessAgain() {
+    void processWithExpiredAcsTokenInResponseInvokesNextProcessAgain() {
         String expiredToken = new JwtTokenMocker().generateRawToken("resource", "user",
             OffsetDateTime.now().minusMinutes(1).toInstant());
         String expiredTokenResponse
@@ -85,7 +85,7 @@ public class EntraTokenGuardPolicyTests {
     }
 
     @Test
-    void process_PreviousExchangeCallFailed_InvokesNextProcessAgain() {
+    void processPreviousExchangeCallFailedInvokesNextProcessAgain() {
         HttpPipelinePolicy countingPolicy = (context, next) -> {
             callCount.incrementAndGet();
             return Mono.just(new MockHttpResponse(context.getHttpRequest(), 400));
@@ -99,7 +99,7 @@ public class EntraTokenGuardPolicyTests {
     }
 
     @Test
-    void process_WithInvalidResponseBody_InvokesNextProcessAgain() {
+    void processWithInvalidResponseBodyInvokesNextProcessAgain() {
         HttpPipelinePolicy countingPolicy = (context, next) -> {
             callCount.incrementAndGet();
             return Mono
@@ -114,7 +114,7 @@ public class EntraTokenGuardPolicyTests {
     }
 
     @Test
-    void process_SecondCall_WithSameTokenAndValidAcsToken_UsesCacheAndReturnsOriginalResponse() {
+    void processSecondCallWithSameTokenAndValidAcsTokenUsesCacheAndReturnsOriginalResponse() {
         AtomicReference<MockHttpResponse> responseRef = new AtomicReference<>(
             new MockHttpResponse(request, 200, VALID_TOKEN_RESPONSE.getBytes(StandardCharsets.UTF_8)));
 

@@ -56,7 +56,7 @@ public class EntraTokenCredentialTests {
     }
 
     @Test
-    void entraTokenCredentialOptions_Construct_ThrowsOnNulls() {
+    void entraTokenCredentialOptionsConstructThrowsOnNulls() {
         assertThrows(IllegalArgumentException.class,
             () -> new EntraCommunicationTokenCredentialOptions(new MockTokenCredential(), null));
         assertThrows(IllegalArgumentException.class,
@@ -66,14 +66,14 @@ public class EntraTokenCredentialTests {
     }
 
     @Test
-    void entraTokenCredentialOptions_ConstructWithoutScopes_DefaultScopeIsSet() {
+    void entraTokenCredentialOptionsConstructWithoutScopesDefaultScopeIsSet() {
         EntraCommunicationTokenCredentialOptions options
             = new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT);
         assertArrayEquals(new String[] { DEFAULT_SCOPE }, options.getScopes());
     }
 
     @Test
-    void entraTokenCredentialOptions_ConstructWithExplicitScopes_ScopesAreSet() {
+    void entraTokenCredentialOptionsConstructWithExplicitScopesScopesAreSet() {
         String[] scopes = new String[] { TEAMS_EXTENSION_SCOPE };
         EntraCommunicationTokenCredentialOptions options
             = new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT, scopes);
@@ -82,7 +82,7 @@ public class EntraTokenCredentialTests {
 
     @ParameterizedTest
     @MethodSource("com.azure.communication.common.EntraCredentialHelper#nullOrEmptyScopesProvider")
-    void entraTokenCredentialOptions_ConstructWithNullOrEmptyScopes_ThrowsException(String[] scopes) {
+    void entraTokenCredentialOptionsConstructWithNullOrEmptyScopesThrowsException(String[] scopes) {
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
             () -> new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT, scopes));
         assertTrue(ex.getMessage().contains("Scopes must not be null or empty. Ensure all scopes start with either"));
@@ -90,14 +90,14 @@ public class EntraTokenCredentialTests {
 
     @ParameterizedTest
     @MethodSource("com.azure.communication.common.EntraCredentialHelper#invalidScopesProvider")
-    void entraTokenCredentialOptions_ConstructWithInvalidScopes_ThrowsException(String[] scopes) {
+    void entraTokenCredentialOptionsConstructWithInvalidScopesThrowsException(String[] scopes) {
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
             () -> new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT, scopes));
         assertTrue(ex.getMessage().contains("Scopes validation failed. Ensure all scopes start with either"));
     }
 
     @Test
-    void entraTokenCredential_Construct_FetchesAccessTokenImmediately() {
+    void entraTokenCredentialConstructFetchesAccessTokenImmediately() {
         HttpResponse resp = createHttpResponse(200, VALID_TOKEN_RESPONSE);
         createEntraCredentialWithMocks(null, resp);
 
@@ -107,7 +107,7 @@ public class EntraTokenCredentialTests {
     }
 
     @Test
-    void entraTokenCredential_ConstructWithoutScopes_ExchangeEntraToken_ReturnsCommunicationClientsToken() {
+    void entraTokenCredentialConstructWithoutScopesExchangeEntraTokenReturnsCommunicationClientsToken() {
         OffsetDateTime expiryTime = OffsetDateTime.parse(SAMPLE_TOKEN_EXPIRY).truncatedTo(ChronoUnit.SECONDS);
         HttpResponse resp = createHttpResponse(200, VALID_TOKEN_RESPONSE);
         createEntraCredentialWithMocks(null, resp);
@@ -123,7 +123,7 @@ public class EntraTokenCredentialTests {
 
     @ParameterizedTest
     @MethodSource("com.azure.communication.common.EntraCredentialHelper#validScopesProvider")
-    void entraTokenCredential_WithExplicitScopes_ExchangeEntraToken_ReturnsAccessToken(String[] scopes) {
+    void entraTokenCredentialWithExplicitScopesExchangeEntraTokenReturnsAccessToken(String[] scopes) {
         OffsetDateTime expiryTime = OffsetDateTime.parse(SAMPLE_TOKEN_EXPIRY).truncatedTo(ChronoUnit.SECONDS);
         HttpResponse resp = createHttpResponse(200, VALID_TOKEN_RESPONSE);
         createEntraCredentialWithMocks(scopes, resp);
@@ -141,7 +141,7 @@ public class EntraTokenCredentialTests {
 
     @ParameterizedTest
     @MethodSource("com.azure.communication.common.EntraCredentialHelper#validScopesProvider")
-    void entraTokenCredential_ExchangeEntraToken_MultipleCalls_ReturnsCachedToken(String[] scopes) {
+    void entraTokenCredentialExchangeEntraTokenMultipleCallsReturnsCachedToken(String[] scopes) {
         HttpResponse resp = createHttpResponse(200, VALID_TOKEN_RESPONSE);
         createEntraCredentialWithMocks(scopes, resp);
 
@@ -157,7 +157,7 @@ public class EntraTokenCredentialTests {
 
     @ParameterizedTest
     @MethodSource("com.azure.communication.common.EntraCredentialHelper#validScopesProvider")
-    void entraTokenCredential_ExchangeEntraToken_InternalEntraTokenChanged_InvalidatesCachedToken(String[] scopes) {
+    void entraTokenCredentialExchangeEntraTokenInternalEntraTokenChangedInvalidatesCachedToken(String[] scopes) {
         mockTokenCredential
             = new MockTokenCredential(new AccessToken("Entra token for call from constructor", OffsetDateTime.now()),
                 new AccessToken("Entra token for the exchangeToken call", OffsetDateTime.parse(SAMPLE_TOKEN_EXPIRY)));
@@ -181,7 +181,7 @@ public class EntraTokenCredentialTests {
     }
 
     @Test
-    void entraTokenCredential_ScopesChangedAfterCredentialConstruction_NoImpact_ReturnsToken() {
+    void entraTokenCredentialScopesChangedAfterCredentialConstructionNoImpactReturnsToken() {
         String[] scopes = new String[] { COMMUNICATION_CLIENTS_SCOPE, COMMUNICATION_CLIENTS_PREFIX + "Chat" };
 
         mockTokenCredential
@@ -213,7 +213,7 @@ public class EntraTokenCredentialTests {
     }
 
     @Test
-    void entraTokenCredential_ScopesChangedAfterOptionsConstruction_DoesNotAffectOriginalScopes() {
+    void entraTokenCredentialScopesChangedAfterOptionsConstructionDoesNotAffectOriginalScopes() {
         String[] validScopes = new String[] { COMMUNICATION_CLIENTS_SCOPE };
         EntraCommunicationTokenCredentialOptions options
             = new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT, validScopes);
@@ -235,7 +235,7 @@ public class EntraTokenCredentialTests {
 
     @ParameterizedTest
     @MethodSource("com.azure.communication.common.EntraCredentialHelper#validScopesProvider")
-    void entraTokenCredential_ExchangeEntraToken_FailedResponse_ThrowsException(String[] scopes) {
+    void entraTokenCredentialExchangeEntraTokenFailedResponseThrowsException(String[] scopes) {
         String errorMessage = "{\"error\":{\"code\":\"BadRequest\",\"message\":\"Invalid request.\"}}";
         HttpResponse resp1 = createHttpResponse(400, errorMessage);
         HttpResponse resp2 = createHttpResponse(400, errorMessage);
@@ -247,7 +247,7 @@ public class EntraTokenCredentialTests {
 
     @ParameterizedTest
     @MethodSource("com.azure.communication.common.EntraCredentialHelper#validScopesProvider")
-    void entraTokenCredential_ExchangeEntraToken_InvalidJson_ThrowsException(String[] scopes) {
+    void entraTokenCredentialExchangeEntraTokenInvalidJsonThrowsException(String[] scopes) {
         String invalidJsonResponse = "{\"notAccessToken\":true}";
         HttpResponse resp1 = createHttpResponse(200, invalidJsonResponse);
         HttpResponse resp2 = createHttpResponse(200, invalidJsonResponse);
@@ -260,7 +260,7 @@ public class EntraTokenCredentialTests {
     @Execution(ExecutionMode.SAME_THREAD)
     @ParameterizedTest
     @MethodSource("com.azure.communication.common.EntraCredentialHelper#validScopesProvider")
-    void entraTokenCredential_ExchangeEntraToken_RetriesThreeTimesOnTransientError(String[] scopes) {
+    void entraTokenCredentialExchangeEntraTokenRetriesThreeTimesOnTransientError(String[] scopes) {
         String lastRetryErrorMessage = "Last Retry Error Message";
         HttpResponse[] mockResponses = new HttpResponse[] {
             createHttpResponse(500, "First Retry Error Message for the pre-warm fetch"),

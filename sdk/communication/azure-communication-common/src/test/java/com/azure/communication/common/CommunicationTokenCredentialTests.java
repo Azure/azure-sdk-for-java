@@ -385,13 +385,13 @@ public class CommunicationTokenCredentialTests {
     }
 
     @Test
-    public void communicationTokenCredential_Construct_WithEntraOptionsNull_ThrowsException() {
+    public void communicationTokenCredentialConstructWithEntraOptionsNullThrowsException() {
         assertThrows(NullPointerException.class,
             () -> new CommunicationTokenCredential((EntraCommunicationTokenCredentialOptions) null));
     }
 
     @Test
-    public void communicationTokenCredential_Construct_WithInvalidEntraTokenCredential_ThrowsExceptionOnTokenExchange()
+    public void communicationTokenCredentialConstructWithInvalidEntraTokenCredentialThrowsExceptionOnTokenExchange()
         throws IOException {
         EntraCommunicationTokenCredentialOptions options
             = new EntraCommunicationTokenCredentialOptions(new MockTokenCredential(), RESOURCE_ENDPOINT);

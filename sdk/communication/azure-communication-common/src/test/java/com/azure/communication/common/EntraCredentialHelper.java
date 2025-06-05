@@ -59,7 +59,7 @@ public final class EntraCredentialHelper {
         return Stream.of(Arguments.of((Object) new String[] { }), Arguments.of((Object) null));
     }
 
-    static class MockTokenCredential implements TokenCredential {
+    public static class MockTokenCredential implements TokenCredential {
         private int callCount = 0;
         private final AccessToken[] tokens;
 
