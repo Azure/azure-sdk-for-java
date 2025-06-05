@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.Editor;
 import com.azure.autorest.customization.LibraryCustomization;
@@ -9,10 +8,13 @@ import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.javadoc.Javadoc;
 import org.slf4j.Logger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import static com.github.javaparser.javadoc.description.JavadocDescription.parseText;
 
 /**
  * Contains customizations for Azure Key Vault Administration code generation.
@@ -22,10 +24,10 @@ public class AdministrationCustomizations extends Customization {
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         removeFiles(libraryCustomization.getRawEditor());
         customizeKeyVaultRoleScope(libraryCustomization);
-        customizeServiceVersion(libraryCustomization);
+//        customizeServiceVersion(libraryCustomization);
         customizeImplClients(libraryCustomization);
-        customizeModuleInfo(libraryCustomization.getRawEditor());
-        customizePackageInfos(libraryCustomization.getRawEditor());
+//        customizeModuleInfo(libraryCustomization.getRawEditor());
+//        customizePackageInfos(libraryCustomization.getRawEditor());
     }
 
     private static void removeFiles(Editor editor) {
@@ -41,87 +43,58 @@ public class AdministrationCustomizations extends Customization {
     private static void customizeImplClients(LibraryCustomization libraryCustomization) {
         PackageCustomization packageCustomization = libraryCustomization.getPackage(
             "com.azure.security.keyvault.administration.implementation");
-        String implPath = "src/main/java/com/azure/security/keyvault/administration/implementation/";
 
         // Make some implementation methods public to facilitate calling LROs:
         // KeyVaultAdministrationClientImpl
-        replaceInFile(packageCustomization.getClass("KeyVaultAdministrationClientImpl"),
-            implPath + "KeyVaultAdministrationClientImpl.java",
-            new String[] {
-                "private Mono<Response<BinaryData>> fullBackupWithResponseAsync",
-                "private Response<BinaryData> fullBackupWithResponse",
-                "private Mono<Response<BinaryData>> preFullBackupWithResponseAsync",
-                "private Response<BinaryData> preFullBackupWithResponse",
-                "private Mono<Response<BinaryData>> preFullRestoreOperationWithResponseAsync",
-                "private Response<BinaryData> preFullRestoreOperationWithResponse",
-                "private Mono<Response<BinaryData>> fullRestoreOperationWithResponseAsync",
-                "private Response<BinaryData> fullRestoreOperationWithResponse",
-                "private Mono<Response<BinaryData>> selectiveKeyRestoreOperationWithResponseAsync",
-                "private Response<BinaryData> selectiveKeyRestoreOperationWithResponse" },
-            new String[] {
-                "public Mono<Response<BinaryData>> fullBackupWithResponseAsync",
-                "public Response<BinaryData> fullBackupWithResponse",
-                "public Mono<Response<BinaryData>> preFullBackupWithResponseAsync",
-                "public Response<BinaryData> preFullBackupWithResponse",
-                "public Mono<Response<BinaryData>> preFullRestoreOperationWithResponseAsync",
-                "public Response<BinaryData> preFullRestoreOperationWithResponse",
-                "public Mono<Response<BinaryData>> fullRestoreOperationWithResponseAsync",
-                "public Response<BinaryData> fullRestoreOperationWithResponse",
-                "public Mono<Response<BinaryData>> selectiveKeyRestoreOperationWithResponseAsync",
-                "public Response<BinaryData> selectiveKeyRestoreOperationWithResponse" });
+        packageCustomization.getClass("KeyVaultAdministrationClientImpl").customizeAst(ast ->
+            ast.getClassByName("KeyVaultAdministrationClientImpl").ifPresent(clazz -> makeAllMethodsPublic(clazz,
+                "fullBackupWithResponseAsync", "fullBackupWithResponse", "preFullBackupWithResponseAsync",
+                "preFullBackupWithResponse", "preFullRestoreOperationWithResponseAsync",
+                "preFullRestoreOperationWithResponse", "fullRestoreOperationWithResponseAsync",
+                "fullRestoreOperationWithResponse", "selectiveKeyRestoreOperationWithResponseAsync",
+                "selectiveKeyRestoreOperationWithResponse")));
 
         // RoleAssignmentsImpl
-        replaceInFile(packageCustomization.getClass("RoleAssignmentsImpl"), implPath + "RoleAssignmentsImpl.java",
-            new String[] {
-                "private Mono<PagedResponse<BinaryData>> listForScopeSinglePageAsync",
-                "private Mono<PagedResponse<BinaryData>> listForScopeNextSinglePageAsync" },
-            new String[] {
-                "public Mono<PagedResponse<BinaryData>> listForScopeSinglePageAsync",
-                "public Mono<PagedResponse<BinaryData>> listForScopeNextSinglePageAsync" });
+        packageCustomization.getClass("RoleAssignmentsImpl").customizeAst(ast ->
+            ast.getClassByName("RoleAssignmentsImpl").ifPresent(clazz ->
+                makeAllMethodsPublic(clazz, "listForScopeSinglePageAsync", "listForScopeNextSinglePageAsync")));
 
         // RoleDefinitionsImpl
-        replaceInFile(packageCustomization.getClass("RoleDefinitionsImpl"), implPath + "RoleDefinitionsImpl.java",
-            new String[] {
-                "private Mono<PagedResponse<BinaryData>> listSinglePageAsync",
-                "private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync" },
-            new String[] {
-                "public Mono<PagedResponse<BinaryData>> listSinglePageAsync",
-                "public Mono<PagedResponse<BinaryData>> listNextSinglePageAsync" });
+        packageCustomization.getClass("RoleDefinitionsImpl").customizeAst(ast ->
+            ast.getClassByName("RoleDefinitionsImpl").ifPresent(clazz ->
+                makeAllMethodsPublic(clazz, "listSinglePageAsync", "listNextSinglePageAsync")));
+    }
+
+    private static void makeAllMethodsPublic(ClassOrInterfaceDeclaration clazz, String... methodNames) {
+        for (String methodName : methodNames) {
+            clazz.getMethodsByName(methodName).forEach(method -> method.setModifiers(Modifier.Keyword.PUBLIC));
+        }
     }
 
     private static void customizeKeyVaultRoleScope(LibraryCustomization libraryCustomization) {
-        libraryCustomization
-            .getPackage("com.azure.security.keyvault.administration.models")
-            .getClass("KeyVaultRoleScope")
-            .customizeAst(ast -> {
-                ast.addImport(IllegalArgumentException.class)
-                    .addImport(URL.class)
-                    .addImport(MalformedURLException.class);
+        libraryCustomization.getClass("com.azure.security.keyvault.administration.models", "KeyVaultRoleScope")
+            .customizeAst(ast -> ast.addImport(IllegalArgumentException.class)
+                .addImport(URL.class)
+                .addImport(MalformedURLException.class)
+                .getClassByName("KeyVaultRoleScope").ifPresent(clazz -> {
+                    clazz.addMethod("fromUrl", Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC)
+                        .setType("KeyVaultRoleScope")
+                        .addParameter("String", "url")
+                        .setJavadocComment(new Javadoc(parseText("Creates of finds a {@link KeyVaultRoleScope} from its string representation."))
+                            .addBlockTag("param", "url", "A string representing a URL containing the name of the scope to look for.")
+                            .addBlockTag("return", "The corresponding {@link KeyVaultRoleScope}.")
+                            .addBlockTag("throws", "IllegalArgumentException", "If the given {@code url} is malformed."))
+                        .setBody(StaticJavaParser.parseBlock("{ try { return fromString(new URL(url).getPath()); }"
+                            + "catch (MalformedURLException e) { throw new IllegalArgumentException(e); } }"));
 
-                ClassOrInterfaceDeclaration clazz = ast.getClassByName("KeyVaultRoleScope").get();
-
-                clazz.addMethod("fromUrl", Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC)
-                    .setType("KeyVaultRoleScope")
-                    .addParameter("String", "url")
-                    .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline("/**",
-                        " * Creates of finds a {@link KeyVaultRoleScope} from its string representation.", " *",
-                        " * @param url A string representing a URL containing the name of the scope to look for.",
-                        " * @return The corresponding {@link KeyVaultRoleScope}.",
-                        " * @throws IllegalArgumentException If the given {@code url} is malformed.", " */")))
-                    .setBody(StaticJavaParser.parseBlock(
-                        joinWithNewline("{", "try {", "    return fromString(new URL(url).getPath());",
-                            "} catch (MalformedURLException e) {", "    throw new IllegalArgumentException(e);", "}",
-                            "}")));
-
-                clazz.addMethod("fromUrl", Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC)
-                    .setType("KeyVaultRoleScope")
-                    .addParameter("URL", "url")
-                    .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline("/**",
-                        " * Creates of finds a {@link KeyVaultRoleScope} from its string representation.", " *",
-                        " * @param url A URL containing the name of the scope to look for.",
-                        " * @return The corresponding {@link KeyVaultRoleScope}.", " */")))
-                    .setBody(StaticJavaParser.parseBlock("{return fromString(url.getPath());}"));
-            });
+                    clazz.addMethod("fromUrl", Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC)
+                        .setType("KeyVaultRoleScope")
+                        .addParameter("URL", "url")
+                        .setJavadocComment(new Javadoc(parseText("Creates of finds a {@link KeyVaultRoleScope} from its string representation."))
+                            .addBlockTag("param", "url", "A URL containing the name of the scope to look for.")
+                            .addBlockTag("return", "The corresponding {@link KeyVaultRoleScope}."))
+                        .setBody(StaticJavaParser.parseBlock("{ return fromString(url.getPath()); }"));
+                }));
     }
 
     private static void customizeServiceVersion(LibraryCustomization libraryCustomization) {
@@ -875,38 +848,6 @@ public class AdministrationCustomizations extends Customization {
                 " */",
                 "package com.azure.security.keyvault.administration.implementation.models;",
                 ""));
-    }
-
-    /**
-     * This method replaces all the provided strings in the specified file with new strings provided in the latter half
-     * of the 'strings' parameter.
-     *
-     * @param classCustomization The class customization to use to edit the file.
-     * @param classPath The path to the file to edit.
-     * @param stringsToReplace The strings to replace.
-     * @param replacementStrings The strings to replace with.
-     */
-    private static void replaceInFile(ClassCustomization classCustomization, String classPath,
-        String[] stringsToReplace, String[] replacementStrings) {
-
-        if (stringsToReplace != null && replacementStrings != null) {
-            Editor editor = classCustomization.getEditor();
-            String fileContent = editor.getFileContent(classPath);
-
-            if (stringsToReplace.length != replacementStrings.length) {
-                throw new IllegalArgumentException(
-                    "'stringsToReplace' must have the same number of elements as 'replacementStrings'.");
-            }
-
-            for (int i = 0; i < stringsToReplace.length; i++) {
-                fileContent = fileContent.replace(stringsToReplace[i], replacementStrings[i]);
-            }
-
-            editor.replaceFile(classPath, fileContent);
-        } else if (stringsToReplace != null || replacementStrings != null) {
-            throw new IllegalArgumentException(
-                "'stringsToReplace' must have the same number of elements as 'replacementStrings'.");
-        }
     }
 
     private static String joinWithNewline(String... lines) {
