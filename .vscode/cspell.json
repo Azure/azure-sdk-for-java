@@ -1433,6 +1433,14 @@
         "upns",
         "vcolin" // TODO: Remove after all TODOs are removed from the codebase
       ]
+    },
+    {
+      "filename": "sdk/onlineexperimentation/**",
+      "words": [
+        "momo",
+        "RESOURCEID",
+        "sweedencentral"
+      ]
     }
   ],
   "allowCompoundWords": true
