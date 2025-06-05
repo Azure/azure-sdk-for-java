@@ -14,9 +14,7 @@ class HttpHeadersCustomRecipeTest implements RewriteTest {
 
     @Override
     public void defaults(RecipeSpec spec) {
-        spec.recipe(new HttpHeadersCustomRecipe())
-            .parser(JavaParser.fromJavaVersion()
-                .classpath("azure-core", "core", "jackson-core"));
+        spec.recipe(new HttpHeadersCustomRecipe());
     }
 
     @Test
@@ -56,7 +54,7 @@ class HttpHeadersCustomRecipeTest implements RewriteTest {
                         headerMap.put("Content-Type", Arrays.asList("application/json"));
                         headerMap.put("Authorization", Arrays.asList("Bearer token"));
                         
-                        headers.setAll(headerMap.entrySet().stream().collect(() -> new HttpHeaders(), (h, entry) -> h.set(HttpHeaderName.fromString(entry.getKey()), entry.getValue()), (h1, h2) -> h1.setAll(h2)));
+                        headers.setAll(headerMap.entrySet().stream().collect(HttpHeaders::new, (newHeaders, entry) -> newHeaders.set(HttpHeaderName.fromString(entry.getKey()), entry.getValue() instanceof java.util.List ? (java.util.List<String>) entry.getValue() : java.util.Collections.singletonList(entry.getValue().toString())), HttpHeaders::setAll));
                     }
                 }
                 """
