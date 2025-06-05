@@ -4,7 +4,7 @@
 
 ### Bugs Fixed
 
-- Fixed a bug where `TooLongHttpHeaderException` would be thrown is an Azure service returned HTTP headers that exceeded
+- Fixed a bug where `TooLongHttpHeaderException` would be thrown if an Azure service returned HTTP headers that exceeded
   the default 8 KB limit. The new limit is now 256 KB when the default of 8 KB is seen. ([#45291](https://github.com/Azure/azure-sdk-for-java/pull/45291))
 
 ### Other Changes
