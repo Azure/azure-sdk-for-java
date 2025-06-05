@@ -78,6 +78,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
+import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import com.azure.security.keyvault.keys.models.KeyType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -2327,6 +2328,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             return next.process();
         };
         ComputeManager localComputeManager = addPolicyToManager(computeManager, verificationPolicy);
+
         Accepted<VirtualMachine> accepted = localComputeManager.virtualMachines()
             .define(vmName)
             .withRegion(region)
@@ -2361,7 +2363,12 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
             HttpPipeline newPipeline = pipelineConstructor.newInstance(currentPipeline.getHttpClient(),
                 pipelinePolicies, currentPipeline.getTracer());
-            return ComputeManager.authenticate(newPipeline, profile);
+            ComputeManager manager = ComputeManager.authenticate(newPipeline, profile);
+            ResourceManagerUtils.InternalRuntimeContext internalContext
+                = new ResourceManagerUtils.InternalRuntimeContext();
+            internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
+            setInternalContext(internalContext, manager);
+            return manager;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
