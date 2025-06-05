@@ -159,11 +159,11 @@ public class EntraTokenCredentialTests {
     @MethodSource("com.azure.communication.common.EntraCredentialHelper#validScopesProvider")
     void entraTokenCredentialExchangeEntraTokenInternalEntraTokenChangedInvalidatesCachedToken(String[] scopes) {
         mockTokenCredential
-            = new MockTokenCredential(new AccessToken("Entra token for call from constructor", OffsetDateTime.now()),
+            = new MockTokenCredential(new AccessToken("Entra token for call from constructor", OffsetDateTime.now().minusMinutes(1)),
                 new AccessToken("Entra token for the exchangeToken call", OffsetDateTime.parse(SAMPLE_TOKEN_EXPIRY)));
 
         String tobeExpiredToken
-            = new JwtTokenMocker().generateRawToken("resource", "user", OffsetDateTime.now().toInstant());
+            = new JwtTokenMocker().generateRawToken("resource", "user", OffsetDateTime.now().minusMinutes(1).toInstant());
         String tobeExpiredTokenResponse
             = String.format(TOKEN_RESPONSE_TEMPLATE, tobeExpiredToken, OffsetDateTime.now());
         HttpResponse resp1 = createHttpResponse(200, tobeExpiredTokenResponse);
@@ -185,11 +185,11 @@ public class EntraTokenCredentialTests {
         String[] scopes = new String[] { COMMUNICATION_CLIENTS_SCOPE, COMMUNICATION_CLIENTS_PREFIX + "Chat" };
 
         mockTokenCredential
-            = new MockTokenCredential(new AccessToken("Entra token for call from constructor", OffsetDateTime.now()),
+            = new MockTokenCredential(new AccessToken("Entra token for call from constructor", OffsetDateTime.now().minusMinutes(1)),
                 new AccessToken("Entra token for the exchangeToken call", OffsetDateTime.parse(SAMPLE_TOKEN_EXPIRY)));
 
         String tobeExpiredToken
-            = new JwtTokenMocker().generateRawToken("resource", "user", OffsetDateTime.now().toInstant());
+            = new JwtTokenMocker().generateRawToken("resource", "user", OffsetDateTime.now().minusMinutes(1).toInstant());
         String tobeExpiredTokenResponse
             = String.format(TOKEN_RESPONSE_TEMPLATE, tobeExpiredToken, OffsetDateTime.now());
         HttpResponse resp1 = createHttpResponse(200, tobeExpiredTokenResponse);
