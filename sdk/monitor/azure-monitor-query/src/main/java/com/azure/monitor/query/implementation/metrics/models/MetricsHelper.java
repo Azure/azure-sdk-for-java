@@ -7,11 +7,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.CoreUtils;
-import com.azure.monitor.query.LogsQueryAsyncClient;
 import com.azure.monitor.query.implementation.metricsbatch.models.MetricResultsResponseValuesItem;
 import com.azure.monitor.query.implementation.metricsdefinitions.models.LocalizableString;
 import com.azure.monitor.query.models.AggregationType;
-import com.azure.monitor.query.models.LogsBatchQuery;
 import com.azure.monitor.query.models.MetricAvailability;
 import com.azure.monitor.query.models.MetricClass;
 import com.azure.monitor.query.models.MetricDefinition;
@@ -29,7 +27,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Helper to access package-private method of {@link LogsBatchQuery} from {@link LogsQueryAsyncClient}.
+ * Helper for metrics-related utilities and conversions.
  */
 public final class MetricsHelper {
     private static MetricDefinitionAccessor metricDefinitionAccessor;
@@ -149,7 +147,6 @@ public final class MetricsHelper {
     public static void setMetricAvailabilityProperties(MetricAvailability metricAvailability, Duration retention,
         Duration granularity) {
         metricAvailabilityAccessor.setMetricAvailabilityProperties(metricAvailability, retention, granularity);
-
     }
 
     /**
@@ -165,7 +162,6 @@ public final class MetricsHelper {
         NamespaceClassification classification, String id, String name, String fullyQualifiedName, String type) {
         metricNamespaceAccessor.setMetricNamespaceProperties(metricNamespace, classification, id, name,
             fullyQualifiedName, type);
-
     }
 
     public static Response<MetricsQueryResult> convertToMetricsQueryResult(Response<MetricsResponse> response) {
