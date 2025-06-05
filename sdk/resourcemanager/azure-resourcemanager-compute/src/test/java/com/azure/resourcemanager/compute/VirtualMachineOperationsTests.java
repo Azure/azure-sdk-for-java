@@ -83,7 +83,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.AccessibleObject;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -2313,14 +2312,17 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
     @Test
     public void canBeginCreateWithContext() {
-        String vmName = generateRandomResourceName("jvm", 15);
-        String correlationId = UUID.randomUUID().toString();
-        String correlationKey = "x-ms-correlation-id";
+        final String vmName = generateRandomResourceName("jvm", 15);
+        final String correlationId = UUID.randomUUID().toString();
+        final String correlationKey = "x-ms-correlation-id";
+        final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
+        final AtomicInteger createCounter = new AtomicInteger(0);
         HttpPipelinePolicy verificationPolicy = (context, next) -> {
             if (context.getHttpRequest().getHttpMethod() == HttpMethod.PUT) {
                 // verify that all co-related resource creation requests will have the Context information
                 Object correlationData = context.getContext().getData(correlationKey).get();
                 Assertions.assertEquals(correlationId, correlationData);
+                createCounter.incrementAndGet();
             }
             return next.process();
         };
@@ -2332,14 +2334,16 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withNewResourceGroup(rgName)
             .withNewPrimaryNetwork("10.0.0.0/28")
             .withPrimaryPrivateIPAddressDynamic()
-            .withoutPrimaryPublicIPAddress()
+            .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS)
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
-            .withNewDataDisk(1)
             .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
             .beginCreate(new Context(correlationKey, correlationId));
         accepted.getFinalResult();
+
+        // resourceGroup + network + neworkInterface + publicIp + VM = 5
+        Assertions.assertEquals(5, createCounter.get());
     }
 
     // *********************************** helper methods ***********************************
@@ -2360,12 +2364,6 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         setInternalContext(internalContext, manager);
         return manager;
-    }
-
-    private void setAccessible(final AccessibleObject accessibleObject) {
-        // avoid bug in Java8
-        Runnable runnable = () -> accessibleObject.setAccessible(true);
-        runnable.run();
     }
 
     private CreatablesInfo prepareCreatableVirtualMachines(Region region, String vmNamePrefix, String networkNamePrefix,
