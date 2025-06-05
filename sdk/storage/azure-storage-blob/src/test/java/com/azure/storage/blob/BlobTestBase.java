@@ -63,11 +63,14 @@ import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.TestEnvironment;
 import com.azure.storage.common.test.shared.policy.PerCallVersionPolicy;
+import com.azure.xml.XmlWriter;
 import org.junit.jupiter.params.provider.Arguments;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import javax.xml.stream.XMLStreamException;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -1078,154 +1081,146 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected static final class PagingTimeoutTestClient implements HttpClient {
         private final Queue<String> responses = new java.util.LinkedList<>();
-        private final int maxResourcesPerPage;
-        private final int totalResourcesExpected;
-        private final int totalPagesExpected;
 
         private int resourceCounter = 0;
         private int pageCounter;
 
-        public PagingTimeoutTestClient(int totalResourcesExpected, int maxResourcesPerPage) {
-            this.totalResourcesExpected = totalResourcesExpected;
-            this.maxResourcesPerPage = maxResourcesPerPage;
-            this.totalPagesExpected = (int) Math.ceil((double) totalResourcesExpected / maxResourcesPerPage);
+        private enum PageType {
+            LIST_BLOBS, FIND_BLOBS, LIST_CONTAINERS
         }
 
-        public PagingTimeoutTestClient addListBlobsResponse(boolean isHierarchical) {
+        public PagingTimeoutTestClient() {
+        }
+
+        public PagingTimeoutTestClient addListBlobsResponses(int totalResourcesExpected, int maxResourcesPerPage,
+            boolean isHierarchical) {
+            return addPagedResponses(totalResourcesExpected, maxResourcesPerPage, PageType.LIST_BLOBS, isHierarchical);
+        }
+
+        public PagingTimeoutTestClient addFindBlobsResponses(int totalResourcesExpected, int maxResourcesPerPage) {
+            return addPagedResponses(totalResourcesExpected, maxResourcesPerPage, PageType.FIND_BLOBS, false);
+        }
+
+        public PagingTimeoutTestClient addListContainersResponses(int totalResourcesExpected, int maxResourcesPerPage) {
+            return addPagedResponses(totalResourcesExpected, maxResourcesPerPage, PageType.LIST_CONTAINERS, false);
+        }
+
+        private PagingTimeoutTestClient addPagedResponses(int totalResourcesExpected, int maxResourcesPerPage,
+            PageType pageType, boolean isHierarchical) {
+            int totalPagesExpected = (int) Math.ceil((double) totalResourcesExpected / maxResourcesPerPage);
+
             for (pageCounter = 0; pageCounter < totalPagesExpected; pageCounter++) {
-                responses.add(buildListBlobsXmlPage(isHierarchical));
+                int numberOfElementsOnThisPage
+                    = Math.min(maxResourcesPerPage, totalResourcesExpected - resourceCounter);
+
+                try {
+                    responses.add(buildXmlPage(maxResourcesPerPage, totalPagesExpected, numberOfElementsOnThisPage,
+                        pageType, isHierarchical));
+                } catch (XMLStreamException e) {
+                    throw new RuntimeException("Failed to generate XML for paged response", e);
+                }
             }
             return this;
         }
 
-        public PagingTimeoutTestClient addFindBlobsResponse() {
-            for (pageCounter = 0; pageCounter < totalPagesExpected; pageCounter++) {
-                responses.add(buildFindBlobsXmlPage());
+        private String buildXmlPage(int maxResourcesPerPage, int totalPagesExpected, int numberOfElementsOnThisPage,
+            PageType pageType, boolean isHierarchicalForBlobs) throws XMLStreamException {
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            XmlWriter xmlWriter = XmlWriter.toStream(output);
+
+            String elementType;
+            boolean includeDummyTagsInListElement;
+
+            switch (pageType) {
+                case LIST_BLOBS:
+                    elementType = "Blob";
+                    includeDummyTagsInListElement = false;
+                    startXml(xmlWriter, true);
+                    xmlWriter.writeStringElement("MaxResults", String.valueOf(maxResourcesPerPage));
+                    if (isHierarchicalForBlobs) {
+                        xmlWriter.writeStringElement("Delimiter", "/");
+                    }
+                    break;
+
+                case FIND_BLOBS:
+                    elementType = "Blob";
+                    includeDummyTagsInListElement = true;
+                    startXml(xmlWriter, false);
+                    xmlWriter.writeStringElement("Where", "\"dummyKey\"='dummyValue'");
+                    xmlWriter.writeStringElement("MaxResults", String.valueOf(maxResourcesPerPage));
+                    break;
+
+                case LIST_CONTAINERS:
+                    elementType = "Container";
+                    includeDummyTagsInListElement = false;
+                    startXml(xmlWriter, false);
+                    xmlWriter.writeStringElement("MaxResults", String.valueOf(maxResourcesPerPage));
+                    break;
+
+                default:
+                    throw new IllegalArgumentException("Unknown PageType: " + pageType);
             }
-            return this;
+
+            writeGenericListElement(xmlWriter, elementType, numberOfElementsOnThisPage, includeDummyTagsInListElement);
+            endXml(xmlWriter, totalPagesExpected); // This calls flush
+
+            return output.toString();
         }
 
-        public PagingTimeoutTestClient addListContainersResponse() {
-            for (pageCounter = 0; pageCounter < totalPagesExpected; pageCounter++) {
-                responses.add(buildListContainersXmlPage());
+        private void startXml(XmlWriter xmlWriter, Boolean hasContainerAttribute) throws XMLStreamException {
+            xmlWriter.writeStartDocument();
+            xmlWriter.writeStartElement("EnumerationResults");
+            xmlWriter.writeStringAttribute("ServiceEndpoint", "https://account.blob.core.windows.net/");
+            if (hasContainerAttribute) {
+                xmlWriter.writeStringAttribute("ContainerName", "foo");
             }
-            return this;
-        }
 
-        private int getNumberOfResultsOnThisPage() {
-            int remainingItemsToGenerate = this.totalResourcesExpected - this.resourceCounter;
-            return Math.min(remainingItemsToGenerate, this.maxResourcesPerPage);
-        }
-
-        private boolean isLastPage() {
-            return pageCounter == totalPagesExpected - 1;
-        }
-
-        private String buildListBlobsXmlPage(boolean isHierarchical) {
-            StringBuilder xml = new StringBuilder();
-
-            // header
-            xml.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>")
-                .append("<EnumerationResults ServiceEndpoint=\"https://account.blob.core.windows.net/\"")
-                .append(" ContainerName=\"foo\">");
-
+            // Write marker if not first page
             if (pageCounter != 0) {
-                xml.append("<Marker>MARKER--</Marker>");
+                xmlWriter.writeStringElement("Marker", "MARKER--");
             }
-            xml.append("<MaxResults>").append(maxResourcesPerPage).append("</MaxResults>");
-            if (isHierarchical) {
-                xml.append("<Delimiter>/</Delimiter>");
-            }
-
-            // blobs
-            int numberOfResultsOnThisPage = getNumberOfResultsOnThisPage();
-            xml.append("<Blobs>");
-            for (int i = 0; i < numberOfResultsOnThisPage; i++) {
-                xml.append("<Blob><Name>blob").append(resourceCounter++).append("</Name></Blob>");
-            }
-            xml.append("</Blobs>");
-
-            // footer
-            if (isLastPage()) {
-                xml.append("<NextMarker/>");
-            } else {
-                xml.append("<NextMarker>MARKER--</NextMarker>");
-
-            }
-            xml.append("</EnumerationResults>");
-
-            return xml.toString();
         }
 
-        private String buildFindBlobsXmlPage() {
-            StringBuilder xml = new StringBuilder();
-
-            // header
-            xml.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>")
-                .append("<EnumerationResults ServiceEndpoint=\"https://account.blob.core.windows.net/\">");
-
-            if (pageCounter != 0) {
-                xml.append("<Marker>MARKER--</Marker>");
-            }
-            xml.append("<Where>&quot;dummyKey&quot;=&apos;dummyValue&apos;</Where>");
-            xml.append("<MaxResults>").append(maxResourcesPerPage).append("</MaxResults>");
-
-            // blobs
-            int numberOfResultsOnThisPage = getNumberOfResultsOnThisPage();
-            xml.append("<Blobs>");
-            for (int i = 0; i <= numberOfResultsOnThisPage; i++) {
-                xml.append("<Blob>")
-                    .append("<Name>blob")
-                    .append(resourceCounter++)
-                    .append("</Name>")
-                    .append("<ContainerName>foo</ContainerName>")
-                    .append("<Tags><TagSet><Tag><Key>dummyKey</Key><Value>dummyValue</Value></Tag></TagSet></Tags>")
-                    .append("</Blob>");
-            }
-            xml.append("</Blobs>");
-
-            // footer
-            if (isLastPage()) {
-                xml.append("<NextMarker/>");
+        private void endXml(XmlWriter xmlWriter, int totalPagesExpected) throws XMLStreamException {
+            // Write NextMarker
+            if (pageCounter == totalPagesExpected - 1) {
+                xmlWriter.writeStringElement("NextMarker", null);
             } else {
-                xml.append("<NextMarker>MARKER--</NextMarker>");
-
+                xmlWriter.writeStringElement("NextMarker", "MARKER--");
             }
-            xml.append("</EnumerationResults>");
 
-            return xml.toString();
+            xmlWriter.writeEndElement(); // End EnumerationResults
+            xmlWriter.flush();
         }
 
-        private String buildListContainersXmlPage() {
-            StringBuilder xml = new StringBuilder();
+        private void writeGenericListElement(XmlWriter xmlWriter, String elementType, int numberOfElementsOnThisPage,
+            Boolean includeDummyTags) throws XMLStreamException {
+            // Start elementType + s
+            xmlWriter.writeStartElement(elementType + "s");
 
-            // header
-            xml.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>")
-                .append("<EnumerationResults ServiceEndpoint=\"https://account.blob.core.windows.net/\">");
+            // Write  entries
+            for (int i = 0; i < numberOfElementsOnThisPage; i++) {
+                xmlWriter.writeStartElement(elementType); // Start elementType
+                xmlWriter.writeStringElement("Name", elementType.toLowerCase() + resourceCounter++);
 
-            if (pageCounter != 0) {
-                xml.append("<Marker>MARKER--</Marker>");
+                if (includeDummyTags) {
+                    xmlWriter.writeStringElement("ContainerName", "foo");
+
+                    // Write Tags
+                    xmlWriter.writeStartElement("Tags");
+                    xmlWriter.writeStartElement("TagSet");
+                    xmlWriter.writeStartElement("Tag");
+                    xmlWriter.writeStringElement("Key", "dummyKey");
+                    xmlWriter.writeStringElement("Value", "dummyValue");
+                    xmlWriter.writeEndElement(); // End Tag
+                    xmlWriter.writeEndElement(); // End TagSet
+                    xmlWriter.writeEndElement(); // End Tags
+
+                }
+                xmlWriter.writeEndElement(); // End elementType
             }
-            xml.append("<MaxResults>").append(maxResourcesPerPage).append("</MaxResults>");
 
-            // containers
-            int numberOfResultsOnThisPage = getNumberOfResultsOnThisPage();
-            xml.append("<Containers>");
-            for (int i = 0; i <= numberOfResultsOnThisPage; i++) {
-                xml.append("<Container><Name>container").append(resourceCounter++).append("</Name></Container>");
-            }
-            xml.append("</Containers>");
-
-            // footer
-            if (isLastPage()) {
-                xml.append("<NextMarker/>");
-            } else {
-                xml.append("<NextMarker>MARKER--</NextMarker>");
-
-            }
-            xml.append("</EnumerationResults>");
-
-            return xml.toString();
+            xmlWriter.writeEndElement(); // End elementType + s
         }
 
         @Override
