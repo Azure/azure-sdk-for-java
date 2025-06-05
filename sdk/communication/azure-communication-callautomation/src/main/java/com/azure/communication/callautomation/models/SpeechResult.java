@@ -3,16 +3,14 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.core.annotation.Fluent;
+import java.io.IOException;
+
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
-import java.io.IOException;
-
 /** The continuous speech recognition result. */
-@Fluent
 @Immutable
 public final class SpeechResult extends RecognizeResult {
 

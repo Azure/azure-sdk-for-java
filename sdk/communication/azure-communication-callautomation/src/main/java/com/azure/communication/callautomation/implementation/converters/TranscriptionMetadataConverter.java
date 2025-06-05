@@ -33,6 +33,11 @@ public final class TranscriptionMetadataConverter {
      */
     private String correlationId;
 
+    /*
+     * The custom speech recognition model endpoint id
+     */
+    private String speechRecognitionModelEndpointId;
+
     /**
      * Get the transcriptionSubscriptionId property.
      *
@@ -70,6 +75,15 @@ public final class TranscriptionMetadataConverter {
     }
 
     /**
+     * Get the speechRecognitionModelEndpointId property.
+     *
+     * @return the speechRecognitionModelEndpointId value.
+     */
+    public String getSpeechRecognitionModelEndpointId() {
+        return speechRecognitionModelEndpointId;
+    }
+
+    /**
      * Reads an instance of TranscriptionMetadataConverter from the JsonReader.
      *<p>
      * Note: TranscriptionMetadataConverter does not have to implement JsonSerializable, model is only used in deserialization
@@ -94,6 +108,8 @@ public final class TranscriptionMetadataConverter {
                     converter.callConnectionId = reader.getString();
                 } else if ("correlationId".equals(fieldName)) {
                     converter.correlationId = reader.getString();
+                } else if ("speechRecognitionModelEndpointId".equals(fieldName)) {
+                    converter.speechRecognitionModelEndpointId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

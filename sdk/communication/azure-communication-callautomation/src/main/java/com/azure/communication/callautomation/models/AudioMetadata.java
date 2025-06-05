@@ -30,12 +30,7 @@ public final class AudioMetadata extends StreamingData {
     /*
      * Specifies the number of audio channels in the audio configuration. Currently, only "mono" (single channel) is supported.
      */
-    private final Channels channels;
-
-    /*
-     * The size of the audio data being sent, based on the sample rate and duration.
-     */
-    private final Integer length;
+    private final AudioChannelType channels;
 
     static {
         AudioMetadataContructorProxy
@@ -53,25 +48,15 @@ public final class AudioMetadata extends StreamingData {
      * @param internalData The audiodataconvertor
      */
     AudioMetadata(AudioMetadataConverter internalData) {
+        super(StreamingDataKind.AUDIO_METADATA);
         this.mediaSubscriptionId = internalData.getMediaSubscriptionId();
         this.encoding = internalData.getEncoding();
         this.sampleRate = internalData.getSampleRate();
         this.channels = convertToChannelsEnum(internalData.getChannels());
-        this.length = internalData.getLength();
     }
 
     /**
-     * Creats the audiometadata instance
-     */
-    public AudioMetadata() {
-        this.mediaSubscriptionId = null;
-        this.encoding = null;
-        this.sampleRate = null;
-        this.channels = null;
-        this.length = null;
-    }
-
-    /**
+     * A unique identifier for the media subscription.
      * Get the mediaSubscriptionId property.
      *
      * @return the mediaSubscriptionId value.
@@ -81,6 +66,7 @@ public final class AudioMetadata extends StreamingData {
     }
 
     /**
+     * The format used to encode the audio. Currently, only "pcm" (Pulse Code Modulation) is supported.
      * Get the encoding property.
      *
      * @return the encoding value.
@@ -90,6 +76,7 @@ public final class AudioMetadata extends StreamingData {
     }
 
     /**
+     * The number of samples per second in the audio. Supported values are 16kHz or 24kHz.
      * Get the sampleRate property.
      *
      * @return the sampleRate value.
@@ -99,21 +86,13 @@ public final class AudioMetadata extends StreamingData {
     }
 
     /**
+     * Specifies the number of audio channels in the audio configuration. Currently, only "mono" (single channel) is supported.
      * Get the channels property.
      *
      * @return the channels value.
      */
-    public Channels getChannels() {
+    public AudioChannelType getChannelType() {
         return channels;
-    }
-
-    /**
-     * Get the length property.
-     *
-     * @return the length value.
-     */
-    public int getLength() {
-        return length;
     }
 
     /**
@@ -121,9 +100,9 @@ public final class AudioMetadata extends StreamingData {
      * @param channels channels id for the audio
      * @return Channels enum
      */
-    private Channels convertToChannelsEnum(Integer channels) {
+    private AudioChannelType convertToChannelsEnum(Integer channels) {
         if (1 == channels) {
-            return Channels.MONO;
+            return AudioChannelType.MONO;
         } else {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unsupported Channels "));
         }

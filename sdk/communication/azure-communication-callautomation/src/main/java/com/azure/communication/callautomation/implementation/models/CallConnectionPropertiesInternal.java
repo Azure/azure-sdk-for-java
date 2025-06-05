@@ -69,16 +69,6 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
     private CommunicationUserIdentifierModel answeredBy;
 
     /*
-     * SubscriptionId for media streaming
-     */
-    private String mediaSubscriptionId;
-
-    /*
-     * SubscriptionId for transcription
-     */
-    private String dataSubscriptionId;
-
-    /*
      * The state of media streaming subscription for the call
      */
     private MediaStreamingSubscriptionInternal mediaStreamingSubscription;
@@ -307,46 +297,6 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
     }
 
     /**
-     * Get the mediaSubscriptionId property: SubscriptionId for media streaming.
-     * 
-     * @return the mediaSubscriptionId value.
-     */
-    public String getMediaSubscriptionId() {
-        return this.mediaSubscriptionId;
-    }
-
-    /**
-     * Set the mediaSubscriptionId property: SubscriptionId for media streaming.
-     * 
-     * @param mediaSubscriptionId the mediaSubscriptionId value to set.
-     * @return the CallConnectionPropertiesInternal object itself.
-     */
-    public CallConnectionPropertiesInternal setMediaSubscriptionId(String mediaSubscriptionId) {
-        this.mediaSubscriptionId = mediaSubscriptionId;
-        return this;
-    }
-
-    /**
-     * Get the dataSubscriptionId property: SubscriptionId for transcription.
-     * 
-     * @return the dataSubscriptionId value.
-     */
-    public String getDataSubscriptionId() {
-        return this.dataSubscriptionId;
-    }
-
-    /**
-     * Set the dataSubscriptionId property: SubscriptionId for transcription.
-     * 
-     * @param dataSubscriptionId the dataSubscriptionId value to set.
-     * @return the CallConnectionPropertiesInternal object itself.
-     */
-    public CallConnectionPropertiesInternal setDataSubscriptionId(String dataSubscriptionId) {
-        this.dataSubscriptionId = dataSubscriptionId;
-        return this;
-    }
-
-    /**
      * Get the mediaStreamingSubscription property: The state of media streaming subscription for the call.
      * 
      * @return the mediaStreamingSubscription value.
@@ -427,8 +377,6 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
         jsonWriter.writeJsonField("source", this.source);
         jsonWriter.writeStringField("correlationId", this.correlationId);
         jsonWriter.writeJsonField("answeredBy", this.answeredBy);
-        jsonWriter.writeStringField("mediaSubscriptionId", this.mediaSubscriptionId);
-        jsonWriter.writeStringField("dataSubscriptionId", this.dataSubscriptionId);
         jsonWriter.writeJsonField("mediaStreamingSubscription", this.mediaStreamingSubscription);
         jsonWriter.writeJsonField("transcriptionSubscription", this.transcriptionSubscription);
         jsonWriter.writeJsonField("answeredFor", this.answeredFor);
@@ -476,10 +424,6 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
                 } else if ("answeredBy".equals(fieldName)) {
                     deserializedCallConnectionPropertiesInternal.answeredBy
                         = CommunicationUserIdentifierModel.fromJson(reader);
-                } else if ("mediaSubscriptionId".equals(fieldName)) {
-                    deserializedCallConnectionPropertiesInternal.mediaSubscriptionId = reader.getString();
-                } else if ("dataSubscriptionId".equals(fieldName)) {
-                    deserializedCallConnectionPropertiesInternal.dataSubscriptionId = reader.getString();
                 } else if ("mediaStreamingSubscription".equals(fieldName)) {
                     deserializedCallConnectionPropertiesInternal.mediaStreamingSubscription
                         = MediaStreamingSubscriptionInternal.fromJson(reader);

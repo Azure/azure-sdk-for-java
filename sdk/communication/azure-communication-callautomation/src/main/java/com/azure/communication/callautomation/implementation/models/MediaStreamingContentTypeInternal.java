@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Content type to stream, eg. audio.
+ * Defines values for MediaStreamingContentTypeInternal.
  */
 public final class MediaStreamingContentTypeInternal extends ExpandableStringEnum<MediaStreamingContentTypeInternal> {
     /**
