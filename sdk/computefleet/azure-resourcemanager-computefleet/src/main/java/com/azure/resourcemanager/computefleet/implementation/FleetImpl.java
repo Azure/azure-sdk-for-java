@@ -223,6 +223,6 @@ public final class FleetImpl implements Fleet, Fleet.Definition, Fleet.Update {
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

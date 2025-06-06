@@ -1,14 +1,10 @@
 # Release History
 
-## 1.56.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.55.4 (2025-06-05)
 
 ### Other Changes
+
+- Updated Jackson dependencies from `2.17.2` to `2.18.3`.
 
 ## 1.55.3 (2025-03-10)
 

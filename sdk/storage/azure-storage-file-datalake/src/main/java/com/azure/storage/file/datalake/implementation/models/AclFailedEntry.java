@@ -5,6 +5,7 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class AclFailedEntry implements JsonSerializable<AclFailedEntry> {
     /*
      * The name property.
      */
+    @Generated
     private String name;
 
     /*
      * The type property.
      */
+    @Generated
     private String type;
 
     /*
      * The errorMessage property.
      */
+    @Generated
     private String errorMessage;
 
     /**
      * Creates an instance of AclFailedEntry class.
      */
+    @Generated
     public AclFailedEntry() {
     }
 
@@ -42,6 +47,7 @@ public final class AclFailedEntry implements JsonSerializable<AclFailedEntry> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -52,6 +58,7 @@ public final class AclFailedEntry implements JsonSerializable<AclFailedEntry> {
      * @param name the name value to set.
      * @return the AclFailedEntry object itself.
      */
+    @Generated
     public AclFailedEntry setName(String name) {
         this.name = name;
         return this;
@@ -62,6 +69,7 @@ public final class AclFailedEntry implements JsonSerializable<AclFailedEntry> {
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -72,6 +80,7 @@ public final class AclFailedEntry implements JsonSerializable<AclFailedEntry> {
      * @param type the type value to set.
      * @return the AclFailedEntry object itself.
      */
+    @Generated
     public AclFailedEntry setType(String type) {
         this.type = type;
         return this;
@@ -82,6 +91,7 @@ public final class AclFailedEntry implements JsonSerializable<AclFailedEntry> {
      * 
      * @return the errorMessage value.
      */
+    @Generated
     public String getErrorMessage() {
         return this.errorMessage;
     }
@@ -92,6 +102,7 @@ public final class AclFailedEntry implements JsonSerializable<AclFailedEntry> {
      * @param errorMessage the errorMessage value to set.
      * @return the AclFailedEntry object itself.
      */
+    @Generated
     public AclFailedEntry setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
         return this;
@@ -100,6 +111,7 @@ public final class AclFailedEntry implements JsonSerializable<AclFailedEntry> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -117,6 +129,7 @@ public final class AclFailedEntry implements JsonSerializable<AclFailedEntry> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the AclFailedEntry.
      */
+    @Generated
     public static AclFailedEntry fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AclFailedEntry deserializedAclFailedEntry = new AclFailedEntry();

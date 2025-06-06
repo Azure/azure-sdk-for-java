@@ -39,6 +39,16 @@ public class DeploymentProperties implements JsonSerializable<DeploymentProperti
     private Map<String, DeploymentParameter> parameters;
 
     /*
+     * External input values, used by external tooling for parameter evaluation.
+     */
+    private Map<String, DeploymentExternalInput> externalInputs;
+
+    /*
+     * External input definitions, used by external tooling to define expected external input values.
+     */
+    private Map<String, DeploymentExternalInputDefinition> externalInputDefinitions;
+
+    /*
      * The URI of parameters file. You use this element to link to an existing parameters file. Use either the
      * parametersLink property or the parameters property, but not both.
      */
@@ -154,6 +164,49 @@ public class DeploymentProperties implements JsonSerializable<DeploymentProperti
      */
     public DeploymentProperties withParameters(Map<String, DeploymentParameter> parameters) {
         this.parameters = parameters;
+        return this;
+    }
+
+    /**
+     * Get the externalInputs property: External input values, used by external tooling for parameter evaluation.
+     * 
+     * @return the externalInputs value.
+     */
+    public Map<String, DeploymentExternalInput> externalInputs() {
+        return this.externalInputs;
+    }
+
+    /**
+     * Set the externalInputs property: External input values, used by external tooling for parameter evaluation.
+     * 
+     * @param externalInputs the externalInputs value to set.
+     * @return the DeploymentProperties object itself.
+     */
+    public DeploymentProperties withExternalInputs(Map<String, DeploymentExternalInput> externalInputs) {
+        this.externalInputs = externalInputs;
+        return this;
+    }
+
+    /**
+     * Get the externalInputDefinitions property: External input definitions, used by external tooling to define
+     * expected external input values.
+     * 
+     * @return the externalInputDefinitions value.
+     */
+    public Map<String, DeploymentExternalInputDefinition> externalInputDefinitions() {
+        return this.externalInputDefinitions;
+    }
+
+    /**
+     * Set the externalInputDefinitions property: External input definitions, used by external tooling to define
+     * expected external input values.
+     * 
+     * @param externalInputDefinitions the externalInputDefinitions value to set.
+     * @return the DeploymentProperties object itself.
+     */
+    public DeploymentProperties
+        withExternalInputDefinitions(Map<String, DeploymentExternalInputDefinition> externalInputDefinitions) {
+        this.externalInputDefinitions = externalInputDefinitions;
         return this;
     }
 
@@ -331,6 +384,20 @@ public class DeploymentProperties implements JsonSerializable<DeploymentProperti
                 }
             });
         }
+        if (externalInputs() != null) {
+            externalInputs().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
+        if (externalInputDefinitions() != null) {
+            externalInputDefinitions().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
         if (parametersLink() != null) {
             parametersLink().validate();
         }
@@ -374,6 +441,9 @@ public class DeploymentProperties implements JsonSerializable<DeploymentProperti
         }
         jsonWriter.writeJsonField("templateLink", this.templateLink);
         jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("externalInputs", this.externalInputs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("externalInputDefinitions", this.externalInputDefinitions,
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("parametersLink", this.parametersLink);
         jsonWriter.writeMapField("extensionConfigs", this.extensionConfigs,
             (writer, element) -> writer.writeMap(element, (writer1, element1) -> writer1.writeJson(element1)));
@@ -411,6 +481,14 @@ public class DeploymentProperties implements JsonSerializable<DeploymentProperti
                     Map<String, DeploymentParameter> parameters
                         = reader.readMap(reader1 -> DeploymentParameter.fromJson(reader1));
                     deserializedDeploymentProperties.parameters = parameters;
+                } else if ("externalInputs".equals(fieldName)) {
+                    Map<String, DeploymentExternalInput> externalInputs
+                        = reader.readMap(reader1 -> DeploymentExternalInput.fromJson(reader1));
+                    deserializedDeploymentProperties.externalInputs = externalInputs;
+                } else if ("externalInputDefinitions".equals(fieldName)) {
+                    Map<String, DeploymentExternalInputDefinition> externalInputDefinitions
+                        = reader.readMap(reader1 -> DeploymentExternalInputDefinition.fromJson(reader1));
+                    deserializedDeploymentProperties.externalInputDefinitions = externalInputDefinitions;
                 } else if ("parametersLink".equals(fieldName)) {
                     deserializedDeploymentProperties.parametersLink = ParametersLink.fromJson(reader);
                 } else if ("extensionConfigs".equals(fieldName)) {

@@ -5,6 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
@@ -18,31 +19,37 @@ public final class ContainersCreateHeaders {
     /*
      * The x-ms-version property.
      */
+    @Generated
     private String xMsVersion;
 
     /*
      * The ETag property.
      */
+    @Generated
     private String eTag;
 
     /*
      * The Last-Modified property.
      */
+    @Generated
     private DateTimeRfc1123 lastModified;
 
     /*
      * The x-ms-request-id property.
      */
+    @Generated
     private String xMsRequestId;
 
     /*
      * The x-ms-client-request-id property.
      */
+    @Generated
     private String xMsClientRequestId;
 
     /*
      * The Date property.
      */
+    @Generated
     private DateTimeRfc1123 date;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
@@ -59,12 +66,16 @@ public final class ContainersCreateHeaders {
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
+        } else {
+            this.lastModified = null;
         }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
+        } else {
+            this.date = null;
         }
     }
 
@@ -73,6 +84,7 @@ public final class ContainersCreateHeaders {
      * 
      * @return the xMsVersion value.
      */
+    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -83,6 +95,7 @@ public final class ContainersCreateHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the ContainersCreateHeaders object itself.
      */
+    @Generated
     public ContainersCreateHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -93,6 +106,7 @@ public final class ContainersCreateHeaders {
      * 
      * @return the eTag value.
      */
+    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -103,6 +117,7 @@ public final class ContainersCreateHeaders {
      * @param eTag the eTag value to set.
      * @return the ContainersCreateHeaders object itself.
      */
+    @Generated
     public ContainersCreateHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -113,6 +128,7 @@ public final class ContainersCreateHeaders {
      * 
      * @return the lastModified value.
      */
+    @Generated
     public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
@@ -126,6 +142,7 @@ public final class ContainersCreateHeaders {
      * @param lastModified the lastModified value to set.
      * @return the ContainersCreateHeaders object itself.
      */
+    @Generated
     public ContainersCreateHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
@@ -140,6 +157,7 @@ public final class ContainersCreateHeaders {
      * 
      * @return the xMsRequestId value.
      */
+    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -150,6 +168,7 @@ public final class ContainersCreateHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the ContainersCreateHeaders object itself.
      */
+    @Generated
     public ContainersCreateHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -160,6 +179,7 @@ public final class ContainersCreateHeaders {
      * 
      * @return the xMsClientRequestId value.
      */
+    @Generated
     public String getXMsClientRequestId() {
         return this.xMsClientRequestId;
     }
@@ -170,6 +190,7 @@ public final class ContainersCreateHeaders {
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the ContainersCreateHeaders object itself.
      */
+    @Generated
     public ContainersCreateHeaders setXMsClientRequestId(String xMsClientRequestId) {
         this.xMsClientRequestId = xMsClientRequestId;
         return this;
@@ -180,6 +201,7 @@ public final class ContainersCreateHeaders {
      * 
      * @return the date value.
      */
+    @Generated
     public OffsetDateTime getDate() {
         if (this.date == null) {
             return null;
@@ -193,6 +215,7 @@ public final class ContainersCreateHeaders {
      * @param date the date value to set.
      * @return the ContainersCreateHeaders object itself.
      */
+    @Generated
     public ContainersCreateHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;
