@@ -42,7 +42,8 @@ public final class ResponsesImageBase64Example {
             byte[] imageBytes = Files.readAllBytes(Paths.get("src/samples/java/com/azure/ai/openai/stainless/resources/" + fileName));
             base64Image = Base64.getEncoder().encodeToString(imageBytes);
         } catch (IOException e) {
-            return;
+            System.err.println("Failed to read image file: " + e.getMessage());
+            throw e;
         }
 
         String logoBase64Url = "data:image/jpeg;base64," + base64Image;
