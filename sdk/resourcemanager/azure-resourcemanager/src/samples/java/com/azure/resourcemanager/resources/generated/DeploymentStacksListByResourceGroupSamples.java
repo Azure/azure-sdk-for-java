@@ -9,7 +9,8 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class DeploymentStacksListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/deploymentStacks/stable/2024-03-01/examples/
      * DeploymentStackResourceGroupList.json
      */
     /**
@@ -20,7 +21,7 @@ public final class DeploymentStacksListByResourceGroupSamples {
     public static void deploymentStacksResourceGroupList(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.genericResources()
             .manager()
-            .deploymentStackClient()
+            .deploymentClient()
             .getDeploymentStacks()
             .listByResourceGroup("deploymentStacksRG", com.azure.core.util.Context.NONE);
     }

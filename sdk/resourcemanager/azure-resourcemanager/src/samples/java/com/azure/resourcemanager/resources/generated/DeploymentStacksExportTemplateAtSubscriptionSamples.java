@@ -9,7 +9,8 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class DeploymentStacksExportTemplateAtSubscriptionSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/deploymentStacks/stable/2024-03-01/examples/
      * DeploymentStackSubscriptionExportTemplate.json
      */
     /**
@@ -21,7 +22,7 @@ public final class DeploymentStacksExportTemplateAtSubscriptionSamples {
         deploymentStacksSubscriptionExportTemplate(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.genericResources()
             .manager()
-            .deploymentStackClient()
+            .deploymentClient()
             .getDeploymentStacks()
             .exportTemplateAtSubscriptionWithResponse("simpleDeploymentStack", com.azure.core.util.Context.NONE);
     }

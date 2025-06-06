@@ -9,7 +9,8 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class DeploymentStacksDeleteSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/deploymentStacks/stable/2024-03-01/examples/
      * DeploymentStackResourceGroupDelete.json
      */
     /**
@@ -20,7 +21,7 @@ public final class DeploymentStacksDeleteSamples {
     public static void deploymentStacksResourceGroupDelete(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.genericResources()
             .manager()
-            .deploymentStackClient()
+            .deploymentClient()
             .getDeploymentStacks()
             .delete("deploymentStacksRG", "simpleDeploymentStack", null, null, null, null,
                 com.azure.core.util.Context.NONE);

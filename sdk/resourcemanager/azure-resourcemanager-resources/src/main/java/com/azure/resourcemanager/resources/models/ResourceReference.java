@@ -15,7 +15,7 @@ import java.io.IOException;
  * The resource Id model.
  */
 @Immutable
-public class ResourceReference implements JsonSerializable<ResourceReference> {
+public final class ResourceReference implements JsonSerializable<ResourceReference> {
     /*
      * The fully qualified Azure resource ID.
      */

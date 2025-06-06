@@ -20,7 +20,8 @@ import java.util.Map;
  */
 public final class DeploymentStacksValidateStackAtSubscriptionSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/deploymentStacks/stable/2024-03-01/examples/
      * DeploymentStackSubscriptionValidate.json
      */
     /**
@@ -31,7 +32,7 @@ public final class DeploymentStacksValidateStackAtSubscriptionSamples {
     public static void deploymentStacksSubscriptionValidate(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.genericResources()
             .manager()
-            .deploymentStackClient()
+            .deploymentClient()
             .getDeploymentStacks()
             .validateStackAtSubscription("simpleDeploymentStack",
                 new DeploymentStackInner().withLocation("eastus")

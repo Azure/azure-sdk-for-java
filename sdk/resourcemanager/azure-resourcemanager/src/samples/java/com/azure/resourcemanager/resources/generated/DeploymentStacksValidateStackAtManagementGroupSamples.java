@@ -20,7 +20,8 @@ import java.util.Map;
  */
 public final class DeploymentStacksValidateStackAtManagementGroupSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/deploymentStacks/stable/2024-03-01/examples/
      * DeploymentStackManagementGroupValidate.json
      */
     /**
@@ -31,7 +32,7 @@ public final class DeploymentStacksValidateStackAtManagementGroupSamples {
     public static void deploymentStacksManagementGroupValidate(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.genericResources()
             .manager()
-            .deploymentStackClient()
+            .deploymentClient()
             .getDeploymentStacks()
             .validateStackAtManagementGroup("myMg", "simpleDeploymentStack",
                 new DeploymentStackInner().withLocation("eastus")

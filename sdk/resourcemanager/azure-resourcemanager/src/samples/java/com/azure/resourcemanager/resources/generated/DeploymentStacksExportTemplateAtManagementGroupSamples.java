@@ -9,7 +9,8 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class DeploymentStacksExportTemplateAtManagementGroupSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/deploymentStacks/stable/2024-03-01/examples/
      * DeploymentStackManagementGroupExportTemplate.json
      */
     /**
@@ -21,7 +22,7 @@ public final class DeploymentStacksExportTemplateAtManagementGroupSamples {
         deploymentStacksManagementGroupExportTemplate(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.genericResources()
             .manager()
-            .deploymentStackClient()
+            .deploymentClient()
             .getDeploymentStacks()
             .exportTemplateAtManagementGroupWithResponse("myMg", "simpleDeploymentStack",
                 com.azure.core.util.Context.NONE);
