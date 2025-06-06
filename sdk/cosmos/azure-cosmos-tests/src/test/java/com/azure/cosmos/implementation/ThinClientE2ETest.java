@@ -32,10 +32,9 @@ public class ThinClientE2ETest {
     public void testThinClientQuery() {
         CosmosAsyncClient client = null;
         try {
-            // it's set in the test profile, but when running locally you need to set them manually
-            // so having it here makes it easier to not forget
-            System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-            System.setProperty("COSMOS.HTTP2_ENABLED", "true");
+            // If running locally, uncomment these lines
+            //System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+            //System.setProperty("COSMOS.HTTP2_ENABLED", "true");
 
             client = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -70,8 +69,6 @@ public class ThinClientE2ETest {
             assertThat(docFromResponse.get(idName).textValue()).isEqualTo(idValue);
 
         } finally {
-            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
-            System.clearProperty("COSMOS.HTTP2_ENABLED");
             if (client != null) {
                 client.close();
             }
@@ -82,10 +79,10 @@ public class ThinClientE2ETest {
     public void testThinClientDocumentPointOperations() {
         CosmosAsyncClient client = null;
         try {
-            // it's set in the test profile, but when running locally you need to set them manually
-            // so having it here makes it easier to not forget
-            System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-            System.setProperty("COSMOS.HTTP2_ENABLED", "true");
+            // if running locally, uncomment these lines
+            // System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+            // System.setProperty("COSMOS.HTTP2_ENABLED", "true");
+
             client  = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
@@ -171,8 +168,6 @@ public class ThinClientE2ETest {
             assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
             assertThat(deleteResponse.getRequestCharge()).isGreaterThan(0.0);
         } finally {
-            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
-            System.clearProperty("COSMOS.HTTP2_ENABLED");
             if (client != null) {
                 client.close();
             }
