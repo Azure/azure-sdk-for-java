@@ -41,14 +41,14 @@ public class EventGridSystemEventsCustomization extends Customization {
     public void customize(LibraryCustomization customization, Logger logger) {
         customizeModuleInfo(customization);
 
-        PackageCustomization systemEvent = customization.getPackage("com.azure.messaging.eventgrid.systemevents.models");
+        PackageCustomization modelsPackage = customization.getPackage("com.azure.messaging.eventgrid.systemevents.models");
         // Manual listing of classes in the package until a bug is fixed in TypeSpec Java.
-        String packagePath = "src/main/java/com/azure/messaging/eventgrid/systemevents/models";
+        String packagePath = "src/main/java/com/azure/messaging/eventgrid/systemevents/models/";
         List<ClassCustomization> classCustomizations = customization.getRawEditor().getContents().keySet().stream()
             .filter(fileName -> fileName.startsWith(packagePath))
             .map(fileName -> fileName.substring(packagePath.length(), fileName.length() - 5))
             .filter(className -> !className.contains("/") && !"package-info".equals(className))
-            .map(systemEvent::getClass)
+            .map(modelsPackage::getClass)
             .collect(Collectors.toList());
 
         Map<String, String> nameMap = new TreeMap<>();
@@ -156,10 +156,10 @@ public class EventGridSystemEventsCustomization extends Customization {
             .addFile("src/main/java/com/azure/messaging/eventgrid/systemevents/SystemEventNames.java",
                 compilationUnit.toString());
 
-        customizeAcsRouterEvents(systemEvent);
-        customizeAcsRecordingFileStatusUpdatedEventDataDuration(systemEvent);
-        customizeStorageDirectoryDeletedEventData(systemEvent);
-        customizeAcsMessageEventDataAndInheritingClasses(systemEvent);
+        customizeAcsRouterEvents(modelsPackage);
+        customizeAcsRecordingFileStatusUpdatedEventDataDuration(modelsPackage);
+        customizeStorageDirectoryDeletedEventData(modelsPackage);
+        customizeAcsMessageEventDataAndInheritingClasses(modelsPackage);
     }
 
 
