@@ -85,8 +85,8 @@ public class EntraTokenCredentialTests {
     @MethodSource("com.azure.communication.common.EntraCredentialHelper#nullOrEmptyScopesProvider")
     void entraTokenCredentialOptionsConstructWithNullOrEmptyScopesThrowsException(List<String> scopes) {
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
-            EntraCommunicationTokenCredentialOptions options =
-                new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT);
+            EntraCommunicationTokenCredentialOptions options
+                = new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT);
             options.setScopes(scopes);
         });
         assertTrue(ex.getMessage().contains("Scopes must not be null or empty. Ensure all scopes start with either"));
@@ -96,8 +96,8 @@ public class EntraTokenCredentialTests {
     @MethodSource("com.azure.communication.common.EntraCredentialHelper#invalidScopesProvider")
     void entraTokenCredentialOptionsConstructWithInvalidScopesThrowsException(List<String> scopes) {
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
-            EntraCommunicationTokenCredentialOptions options =
-                new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT);
+            EntraCommunicationTokenCredentialOptions options
+                = new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT);
             options.setScopes(scopes);
         });
         assertTrue(ex.getMessage().contains("Scopes validation failed. Ensure all scopes start with either"));
@@ -140,9 +140,9 @@ public class EntraTokenCredentialTests {
             assertEquals(SAMPLE_TOKEN, accessToken.getToken());
             assertEquals(expiryTime.toInstant(),
                 accessToken.getExpiresAt().truncatedTo(ChronoUnit.SECONDS).toInstant());
-            assertEquals(scopes.contains(TEAMS_EXTENSION_SCOPE)
-                ? TEAMS_EXTENSION_ENDPOINT
-                : COMMUNICATION_CLIENTS_ENDPOINT, mockHttpClient.getRequest().getUrl().getPath());
+            assertEquals(
+                scopes.contains(TEAMS_EXTENSION_SCOPE) ? TEAMS_EXTENSION_ENDPOINT : COMMUNICATION_CLIENTS_ENDPOINT,
+                mockHttpClient.getRequest().getUrl().getPath());
         }).verifyComplete();
     }
 
@@ -189,7 +189,12 @@ public class EntraTokenCredentialTests {
 
     @Test
     void entraTokenCredentialScopesChangedAfterCredentialConstructionNoImpactReturnsToken() {
-        List<String> scopes = new ArrayList<>() {{ add(COMMUNICATION_CLIENTS_SCOPE); add(COMMUNICATION_CLIENTS_PREFIX + "Chat"); }};
+        List<String> scopes = new ArrayList<>() {
+            {
+                add(COMMUNICATION_CLIENTS_SCOPE);
+                add(COMMUNICATION_CLIENTS_PREFIX + "Chat");
+            }
+        };
 
         mockTokenCredential = new MockTokenCredential(
             new AccessToken("Entra token for call from constructor", OffsetDateTime.now().minusMinutes(1)),
@@ -223,7 +228,11 @@ public class EntraTokenCredentialTests {
 
     @Test
     void entraTokenCredentialScopesChangedAfterOptionsConstructionDoesAffectOriginalScopes() {
-        List<String> validScopes = new ArrayList<>() {{ add(COMMUNICATION_CLIENTS_SCOPE); }};
+        List<String> validScopes = new ArrayList<>() {
+            {
+                add(COMMUNICATION_CLIENTS_SCOPE);
+            }
+        };
         EntraCommunicationTokenCredentialOptions options
             = new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT);
         options.setScopes(validScopes);

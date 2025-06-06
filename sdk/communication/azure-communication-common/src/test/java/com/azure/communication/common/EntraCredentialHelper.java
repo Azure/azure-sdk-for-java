@@ -48,26 +48,17 @@ public final class EntraCredentialHelper {
     public static final String DEFAULT_SCOPE = "https://communication.azure.com/clients/.default";
 
     static Stream<Arguments> validScopesProvider() {
-        return Stream.of(
-            Arguments.of(of(COMMUNICATION_CLIENTS_SCOPE)),
-            Arguments.of(of(TEAMS_EXTENSION_SCOPE))
-        );
+        return Stream.of(Arguments.of(of(COMMUNICATION_CLIENTS_SCOPE)), Arguments.of(of(TEAMS_EXTENSION_SCOPE)));
     }
 
     static Stream<Arguments> invalidScopesProvider() {
-        return Stream.of(
-            Arguments.of(of(COMMUNICATION_CLIENTS_SCOPE, TEAMS_EXTENSION_SCOPE)),
-            Arguments.of(of(TEAMS_EXTENSION_SCOPE, COMMUNICATION_CLIENTS_SCOPE)),
-            Arguments.of(of("invalidScope")),
-            Arguments.of(of(""))
-        );
+        return Stream.of(Arguments.of(of(COMMUNICATION_CLIENTS_SCOPE, TEAMS_EXTENSION_SCOPE)),
+            Arguments.of(of(TEAMS_EXTENSION_SCOPE, COMMUNICATION_CLIENTS_SCOPE)), Arguments.of(of("invalidScope")),
+            Arguments.of(of("")));
     }
 
     static Stream<Arguments> nullOrEmptyScopesProvider() {
-        return Stream.of(
-            Arguments.of(Collections.emptyList()),
-            Arguments.of((Object) null)
-        );
+        return Stream.of(Arguments.of(Collections.emptyList()), Arguments.of((Object) null));
     }
 
     public static class MockTokenCredential implements TokenCredential {

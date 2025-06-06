@@ -70,8 +70,8 @@ final class EntraTokenCredential implements AutoCloseable {
 
     private HttpPipeline createPipelineFromOptions(EntraCommunicationTokenCredentialOptions entraTokenOptions,
         HttpClient httpClient) {
-        BearerTokenAuthenticationPolicy authPolicy
-            = new BearerTokenAuthenticationPolicy(entraTokenOptions.getTokenCredential(), scopes.toArray(new String[0]));
+        BearerTokenAuthenticationPolicy authPolicy = new BearerTokenAuthenticationPolicy(
+            entraTokenOptions.getTokenCredential(), scopes.toArray(new String[0]));
         HttpPipelinePolicy guardPolicy = new EntraTokenGuardPolicy();
         RetryPolicy retryPolicy = new RetryPolicy();
         HttpClient clientToUse = (httpClient != null) ? httpClient : HttpClient.createDefault();
