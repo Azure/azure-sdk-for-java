@@ -3,10 +3,13 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
+import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
@@ -49,7 +52,7 @@ public final class ServiceBusReceivedMessageContext {
     }
 
     /**
-     *  Gets the Service Bus resource this instance of {@link ServiceBusProcessorClient} interacts with.
+     * Gets the Service Bus resource this instance of {@link ServiceBusProcessorClient} interacts with.
      *
      * @return The Service Bus resource this instance of {@link ServiceBusProcessorClient} interacts with.
      */
@@ -72,19 +75,17 @@ public final class ServiceBusReceivedMessageContext {
      * Abandons the {@link #getMessage() message} in this context.
      */
     public void abandon() {
-        if (sessionReceivers != null) {
-            sessionReceivers.abandon(receivedMessageContext.getMessage()).block();
-            return;
-        }
-        receiverClient.abandon(receivedMessageContext.getMessage()).block();
+        abandon(new AbandonOptions());
     }
 
     /**
      * Abandons the {@link #getMessage() message} in this context.
      *
      * @param options Additional options for abandoning the message.
+     * @throws NullPointerException if {@code options} are null.
      */
     public void abandon(AbandonOptions options) {
+        Objects.requireNonNull(options, "'options' cannot be null");
         if (sessionReceivers != null) {
             sessionReceivers.abandon(receivedMessageContext.getMessage(), options).block();
             return;
@@ -96,11 +97,7 @@ public final class ServiceBusReceivedMessageContext {
      * Completes the {@link #getMessage() message} in this context.
      */
     public void complete() {
-        if (sessionReceivers != null) {
-            sessionReceivers.complete(receivedMessageContext.getMessage()).block();
-            return;
-        }
-        receiverClient.complete(receivedMessageContext.getMessage()).block();
+        complete(new CompleteOptions());
     }
 
     /**
@@ -110,6 +107,7 @@ public final class ServiceBusReceivedMessageContext {
      * @throws NullPointerException if {@code options} are null.
      */
     public void complete(CompleteOptions options) {
+        Objects.requireNonNull(options, "'options' cannot be null");
         if (sessionReceivers != null) {
             sessionReceivers.complete(receivedMessageContext.getMessage(), options).block();
             return;
@@ -121,11 +119,7 @@ public final class ServiceBusReceivedMessageContext {
      * Defers the {@link #getMessage() message} in this context.
      */
     public void defer() {
-        if (sessionReceivers != null) {
-            sessionReceivers.defer(receivedMessageContext.getMessage()).block();
-            return;
-        }
-        receiverClient.defer(receivedMessageContext.getMessage()).block();
+        defer(new DeferOptions());
     }
 
     /**
@@ -135,6 +129,7 @@ public final class ServiceBusReceivedMessageContext {
      * @throws NullPointerException if {@code options} are null.
      */
     public void defer(DeferOptions options) {
+        Objects.requireNonNull(options, "'options' cannot be null");
         if (sessionReceivers != null) {
             sessionReceivers.defer(receivedMessageContext.getMessage(), options).block();
             return;
@@ -146,25 +141,114 @@ public final class ServiceBusReceivedMessageContext {
      * Dead-letters the {@link #getMessage() message} in this context.
      */
     public void deadLetter() {
-        if (sessionReceivers != null) {
-            sessionReceivers.deadLetter(receivedMessageContext.getMessage()).block();
-            return;
-        }
-        receiverClient.deadLetter(receivedMessageContext.getMessage()).block();
+        deadLetter(new DeadLetterOptions());
     }
 
     /**
      * Dead-letters the {@link #getMessage() message} in this context.
      *
      * @param options Additional options for dead-lettering the message.
-     *
      * @throws NullPointerException if {@code options} are null.
      */
     public void deadLetter(DeadLetterOptions options) {
+        Objects.requireNonNull(options, "'options' cannot be null");
         if (sessionReceivers != null) {
             sessionReceivers.deadLetter(receivedMessageContext.getMessage(), options).block();
             return;
         }
         receiverClient.deadLetter(receivedMessageContext.getMessage(), options).block();
     }
+
+    /**
+     * Abandons the {@link #getMessage() message} in this context.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> abandonAsync() {
+        return abandonAsync(new AbandonOptions());
+    }
+
+    /**
+     * Abandons the {@link #getMessage() message} in this context.
+     *
+     * @param options Additional options for abandoning the message.
+     * @throws NullPointerException if {@code options} are null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> abandonAsync(AbandonOptions options) {
+        Objects.requireNonNull(options, "'options' cannot be null");
+        if (sessionReceivers != null) {
+            return sessionReceivers.abandon(receivedMessageContext.getMessage(), options);
+        }
+        return receiverClient.abandon(receivedMessageContext.getMessage(), options);
+    }
+
+    /**
+     * Completes the {@link #getMessage() message} in this context.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> completeAsync() {
+        return completeAsync(new CompleteOptions());
+    }
+
+    /**
+     * Completes the {@link #getMessage() message} in this context.
+     *
+     * @param options Additional options for completing the message.
+     * @throws NullPointerException if {@code options} are null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> completeAsync(CompleteOptions options) {
+        Objects.requireNonNull(options, "'options' cannot be null");
+        if (sessionReceivers != null) {
+            return sessionReceivers.complete(receivedMessageContext.getMessage(), options);
+        }
+        return receiverClient.complete(receivedMessageContext.getMessage(), options);
+    }
+
+    /**
+     * Defers the {@link #getMessage() message} in this context.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deferAsync() {
+        return deferAsync(new DeferOptions());
+    }
+
+    /**
+     * Defers the {@link #getMessage() message} in this context.
+     *
+     * @param options Additional options for deferring the message.
+     * @throws NullPointerException if {@code options} are null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deferAsync(DeferOptions options) {
+        Objects.requireNonNull(options, "'options' cannot be null");
+        if (sessionReceivers != null) {
+            return sessionReceivers.defer(receivedMessageContext.getMessage(), options);
+        }
+        return receiverClient.defer(receivedMessageContext.getMessage(), options);
+    }
+
+    /**
+     * Dead-letters the {@link #getMessage() message} in this context.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deadLetterAsync() {
+        return deadLetterAsync(new DeadLetterOptions());
+    }
+
+    /**
+     * Dead-letters the {@link #getMessage() message} in this context.
+     *
+     * @param options Additional options for dead-lettering the message.
+     * @throws NullPointerException if {@code options} are null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deadLetterAsync(DeadLetterOptions options) {
+        Objects.requireNonNull(options, "'options' cannot be null");
+        if (sessionReceivers != null) {
+            return sessionReceivers.deadLetter(receivedMessageContext.getMessage(), options);
+        }
+        return receiverClient.deadLetter(receivedMessageContext.getMessage(), options);
+    }
+
 }
