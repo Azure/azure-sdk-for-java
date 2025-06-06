@@ -12,8 +12,8 @@ import com.openai.credential.BearerTokenCredential;
 import com.openai.models.ChatModel;
 import com.openai.models.responses.ResponseCreateParams;
 
-public final class ResponsesStreamingAsyncExample {
-    private ResponsesStreamingAsyncExample() {}
+public final class ResponsesStreamingAsyncSample {
+    private ResponsesStreamingAsyncSample() {}
 
     public static void main(String[] args) {
         // Configures using one of:

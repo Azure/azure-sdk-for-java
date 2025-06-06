@@ -14,8 +14,8 @@ import com.openai.models.ChatModel;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseStreamEvent;
 
-public final class ResponsesStreamingExample {
-    private ResponsesStreamingExample() {}
+public final class ResponsesStreamingSample {
+    private ResponsesStreamingSample() {}
 
     public static void main(String[] args) {
         // Configures using one of:
