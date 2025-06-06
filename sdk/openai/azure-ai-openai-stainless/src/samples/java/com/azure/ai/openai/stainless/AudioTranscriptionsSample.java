@@ -8,13 +8,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.credential.BearerTokenCredential;
-import com.openai.models.embeddings.EmbeddingCreateParams;
-import com.openai.models.embeddings.EmbeddingModel;
+import com.openai.models.audio.AudioModel;
+import com.openai.models.audio.transcriptions.Transcription;
+import com.openai.models.audio.transcriptions.TranscriptionCreateParams;
 
-public final class EmbeddingsExample {
-    private EmbeddingsExample() {}
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-    public static void main(String[] args) {
+public final class AudioTranscriptionsSample {
+    private AudioTranscriptionsSample() {}
+
+    public static void main(String[] args) throws Exception {
         // Configures using one of:
         // - The `OPENAI_API_KEY` environment variable
         // - The `AZURE_OPENAI_ENDPOINT` and `AZURE_OPENAI_KEY` environment variables
@@ -32,11 +36,16 @@ public final class EmbeddingsExample {
         // All code from this line down is general-purpose OpenAI code
         OpenAIClient client = clientBuilder.build();
 
-        EmbeddingCreateParams createParams = EmbeddingCreateParams.builder()
-                .input("The quick brown fox jumped over the lazy dog")
-                .model(EmbeddingModel.TEXT_EMBEDDING_ADA_002)
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        Path path = Paths.get(classloader.getResource("sports.wav").toURI());
+
+        TranscriptionCreateParams createParams = TranscriptionCreateParams.builder()
+                .file(path)
+                .model(AudioModel.of("whisper"))
                 .build();
 
-        System.out.println(client.embeddings().create(createParams));
+        Transcription transcription =
+                client.audio().transcriptions().create(createParams).asTranscription();
+        System.out.println(transcription.text());
     }
 }

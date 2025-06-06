@@ -10,17 +10,15 @@ import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.credential.BearerTokenCredential;
 import com.openai.models.ChatModel;
+import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
-import com.openai.models.responses.ResponseInputImage;
-import com.openai.models.responses.ResponseInputItem;
+import com.openai.models.responses.ResponseRetrieveParams;
+import com.openai.models.responses.ResponseDeleteParams;
 
-import java.io.IOException;
-import java.util.Collections;
+public final class ResponsesSample {
+    private ResponsesSample() {}
 
-public final class ResponsesImageUrlExample {
-    private ResponsesImageUrlExample() {}
-
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         // Configures using one of:
         // - The `OPENAI_API_KEY` environment variable
         // - The `AZURE_OPENAI_ENDPOINT` and `AZURE_OPENAI_KEY` environment variables
@@ -33,26 +31,35 @@ public final class ResponsesImageUrlExample {
                 new DefaultAzureCredentialBuilder().build(), "https://cognitiveservices.azure.com/.default")))
             .build();
 
-        String logoUrl = "https://th.bing.com/th/id/R.565799473e5e4ffb1d36bb3b5fc0400c?rik=HWolfL7xZmcc3g&pid=ImgRaw&r=0";
-
-        ResponseInputImage logoInputImage = ResponseInputImage.builder()
-                .detail(ResponseInputImage.Detail.AUTO)
-                .imageUrl(logoUrl)
-                .build();
-        ResponseInputItem messageInputItem = ResponseInputItem.ofMessage(ResponseInputItem.Message.builder()
-                .role(ResponseInputItem.Message.Role.USER)
-                .addInputTextContent("Describe this image.")
-                .addContent(logoInputImage)
-                .build());
         ResponseCreateParams createParams = ResponseCreateParams.builder()
-                .inputOfResponse(Collections.singletonList(messageInputItem))
-                .model(ChatModel.GPT_4O_MINI)
-                .build();
+            .input("Tell me a story about building the best SDK!")
+            .model(ChatModel.GPT_4O_MINI)
+            .build();
 
-        client.responses().create(createParams).output().stream()
-            .forEach(item -> item.message().ifPresent(
-                message -> message.content().stream()
-                    .forEach(content -> content.outputText().ifPresent(
+        Response response = client.responses().create(createParams);
+
+        response.output().forEach(item ->
+            item.message().ifPresent(message ->
+                message.content().forEach(content ->
+                    content.outputText().ifPresent(
                         outputText -> System.out.println(outputText.text())))));
+
+        ResponseRetrieveParams getPreviousResponse = ResponseRetrieveParams.builder()
+            .responseId(response.id())
+            .build();
+
+        Response previousResponse = client.responses().retrieve(getPreviousResponse);
+
+        previousResponse.output().forEach(item ->
+            item.message().ifPresent(message ->
+                message.content().forEach(content ->
+                    content.outputText().ifPresent(
+                        outputText -> System.out.println(outputText.text())))));
+
+        ResponseDeleteParams deletePreviousResponse = ResponseDeleteParams.builder()
+            .responseId(response.id())
+            .build();
+
+        client.responses().delete(deletePreviousResponse);
     }
 }

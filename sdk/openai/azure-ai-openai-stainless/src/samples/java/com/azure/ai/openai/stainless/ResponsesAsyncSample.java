@@ -12,8 +12,8 @@ import com.openai.credential.BearerTokenCredential;
 import com.openai.models.ChatModel;
 import com.openai.models.responses.ResponseCreateParams;
 
-public final class ResponsesAsyncExample {
-    private ResponsesAsyncExample() {}
+public final class ResponsesAsyncSample {
+    private ResponsesAsyncSample() {}
 
     public static void main(String[] args) {
         // Configures using one of:

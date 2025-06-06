@@ -20,8 +20,8 @@ import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.Collections;
 
-public final class ResponsesImageBase64Example {
-    private ResponsesImageBase64Example() {}
+public final class ResponsesImageBase64Sample {
+    private ResponsesImageBase64Sample() {}
 
     public static void main(String[] args) throws IOException {
         // Configures using one of:

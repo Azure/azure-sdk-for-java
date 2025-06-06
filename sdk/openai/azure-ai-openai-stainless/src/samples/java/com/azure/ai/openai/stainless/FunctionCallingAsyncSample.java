@@ -26,8 +26,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public final class FunctionCallingAsyncExample {
-    private FunctionCallingAsyncExample() {}
+public final class FunctionCallingAsyncSample {
+    private FunctionCallingAsyncSample() {}
 
     public static void main(String[] args) {
         // Configures using one of:

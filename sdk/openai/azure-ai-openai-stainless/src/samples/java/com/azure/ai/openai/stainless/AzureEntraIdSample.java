@@ -11,8 +11,8 @@ import com.openai.credential.BearerTokenCredential;
 import com.openai.models.ChatModel;
 import com.openai.models.chat.completions.ChatCompletionCreateParams;
 
-public final class AzureEntraIdExample {
-    private AzureEntraIdExample() {}
+public final class AzureEntraIdSample {
+    private AzureEntraIdSample() {}
 
     public static void main(String[] args) {
         OpenAIClient client = OpenAIOkHttpClient.builder()

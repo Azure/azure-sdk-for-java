@@ -15,8 +15,8 @@ import com.openai.models.chat.completions.ChatCompletionCreateParams;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public final class CompletionsStreamingCancellationAsyncExample {
-    private CompletionsStreamingCancellationAsyncExample() {}
+public final class CompletionsStreamingCancellationAsyncSample {
+    private CompletionsStreamingCancellationAsyncSample() {}
 
     public static void main(String[] args) {
         // Configures using one of:
