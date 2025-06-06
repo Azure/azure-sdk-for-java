@@ -7,7 +7,7 @@
     <Or>
       <Class name="com.azure.ai.inference.implementation.models.CompleteRequest" />
       <Class name="com.azure.ai.inference.implementation.models.EmbedRequest" />
-      <Class name="com.azure.ai.inference.implementation.models.ImageEmbedRequest" />
+      <Class name="com.azure.ai.inference.implementation.models.EmbedRequest1" />
       <Class name="com.azure.ai.inference.models.ChatCompletions" />
       <Class name="com.azure.ai.inference.models.ChatCompletionsOptions" />
       <Class name="com.azure.ai.inference.models.ChatRequestAssistantMessage" />
@@ -28,7 +28,7 @@
       <Class name="com.azure.ai.inference.ImageEmbeddingsClientBuilder" />
       <Class name="com.azure.ai.inference.implementation.models.CompleteRequest" />
       <Class name="com.azure.ai.inference.implementation.models.EmbedRequest" />
-      <Class name="com.azure.ai.inference.implementation.models.ImageEmbedRequest" />
+      <Class name="com.azure.ai.inference.implementation.models.EmbedRequest1" />
       <Class name="com.azure.ai.inference.models.ChatCompletionsOptions" />
       <Class name="com.azure.ai.inference.models.ChatRequestAssistantMessage" />
       <Class name="com.azure.ai.inference.models.ChatRequestUserMessage" />

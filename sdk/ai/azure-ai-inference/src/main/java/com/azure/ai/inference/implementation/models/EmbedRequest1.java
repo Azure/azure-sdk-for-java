@@ -22,7 +22,7 @@ import java.util.Map;
  * The EmbedRequest1 model.
  */
 @Fluent
-public final class ImageEmbedRequest implements JsonSerializable<ImageEmbedRequest> {
+public final class EmbedRequest1 implements JsonSerializable<EmbedRequest1> {
 
     /*
      * Input image to embed. To embed multiple inputs in a single request, pass an array.
@@ -72,7 +72,7 @@ public final class ImageEmbedRequest implements JsonSerializable<ImageEmbedReque
      * @param input the input value to set.
      */
     @Generated
-    public ImageEmbedRequest(List<ImageEmbeddingInput> input) {
+    public EmbedRequest1(List<ImageEmbeddingInput> input) {
         this.input = input;
     }
 
@@ -108,7 +108,7 @@ public final class ImageEmbedRequest implements JsonSerializable<ImageEmbedReque
      * @return the EmbedRequest1 object itself.
      */
     @Generated
-    public ImageEmbedRequest setDimensions(Integer dimensions) {
+    public EmbedRequest1 setDimensions(Integer dimensions) {
         this.dimensions = dimensions;
         return this;
     }
@@ -134,7 +134,7 @@ public final class ImageEmbedRequest implements JsonSerializable<ImageEmbedReque
      * @return the EmbedRequest1 object itself.
      */
     @Generated
-    public ImageEmbedRequest setEncodingFormat(EmbeddingEncodingFormat encodingFormat) {
+    public EmbedRequest1 setEncodingFormat(EmbeddingEncodingFormat encodingFormat) {
         this.encodingFormat = encodingFormat;
         return this;
     }
@@ -158,7 +158,7 @@ public final class ImageEmbedRequest implements JsonSerializable<ImageEmbedReque
      * @return the EmbedRequest1 object itself.
      */
     @Generated
-    public ImageEmbedRequest setInputType(EmbeddingInputType inputType) {
+    public EmbedRequest1 setInputType(EmbeddingInputType inputType) {
         this.inputType = inputType;
         return this;
     }
@@ -180,7 +180,7 @@ public final class ImageEmbedRequest implements JsonSerializable<ImageEmbedReque
      * @return the EmbedRequest1 object itself.
      */
     @Generated
-    public ImageEmbedRequest setModel(String model) {
+    public EmbedRequest1 setModel(String model) {
         this.model = model;
         return this;
     }
@@ -202,7 +202,7 @@ public final class ImageEmbedRequest implements JsonSerializable<ImageEmbedReque
      * @return the EmbedRequest1 object itself.
      */
     @Generated
-    public ImageEmbedRequest setAdditionalProperties(Map<String, BinaryData> additionalProperties) {
+    public EmbedRequest1 setAdditionalProperties(Map<String, BinaryData> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
@@ -243,7 +243,7 @@ public final class ImageEmbedRequest implements JsonSerializable<ImageEmbedReque
      * @throws IOException If an error occurs while reading the EmbedRequest1.
      */
     @Generated
-    public static ImageEmbedRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static EmbedRequest1 fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             List<ImageEmbeddingInput> input = null;
             Integer dimensions = null;
@@ -272,7 +272,7 @@ public final class ImageEmbedRequest implements JsonSerializable<ImageEmbedReque
                         reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 }
             }
-            ImageEmbedRequest deserializedEmbedRequest1 = new ImageEmbedRequest(input);
+            EmbedRequest1 deserializedEmbedRequest1 = new EmbedRequest1(input);
             deserializedEmbedRequest1.dimensions = dimensions;
             deserializedEmbedRequest1.encodingFormat = encodingFormat;
             deserializedEmbedRequest1.inputType = inputType;
