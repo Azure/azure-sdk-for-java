@@ -131,6 +131,10 @@ public interface VolumesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @param volumeParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -140,7 +144,7 @@ public interface VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VolumeInner>, VolumeInner> beginCreateOrUpdate(String resourceGroupName, String volumeName,
-        VolumeInner volumeParameters, Context context);
+        VolumeInner volumeParameters, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Create or update the volume.
@@ -166,6 +170,10 @@ public interface VolumesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @param volumeParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -174,7 +182,7 @@ public interface VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     VolumeInner createOrUpdate(String resourceGroupName, String volumeName, VolumeInner volumeParameters,
-        Context context);
+        String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete the volume.
@@ -199,6 +207,10 @@ public interface VolumesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -207,7 +219,7 @@ public interface VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
-        String volumeName, Context context);
+        String volumeName, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete the volume.
@@ -231,6 +243,10 @@ public interface VolumesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -238,7 +254,8 @@ public interface VolumesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner delete(String resourceGroupName, String volumeName, Context context);
+    OperationStatusResultInner delete(String resourceGroupName, String volumeName, String ifMatch, String ifNoneMatch,
+        Context context);
 
     /**
      * Patch the volume.
@@ -247,6 +264,10 @@ public interface VolumesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param volumeUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -256,8 +277,8 @@ public interface VolumesClient {
      * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VolumeInner> updateWithResponse(String resourceGroupName, String volumeName,
-        VolumePatchParameters volumeUpdateParameters, Context context);
+    Response<VolumeInner> updateWithResponse(String resourceGroupName, String volumeName, String ifMatch,
+        String ifNoneMatch, VolumePatchParameters volumeUpdateParameters, Context context);
 
     /**
      * Patch the volume.

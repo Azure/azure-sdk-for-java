@@ -134,6 +134,10 @@ public interface TrunkedNetworksClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @param trunkedNetworkParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -143,7 +147,8 @@ public interface TrunkedNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TrunkedNetworkInner>, TrunkedNetworkInner> beginCreateOrUpdate(String resourceGroupName,
-        String trunkedNetworkName, TrunkedNetworkInner trunkedNetworkParameters, Context context);
+        String trunkedNetworkName, TrunkedNetworkInner trunkedNetworkParameters, String ifMatch, String ifNoneMatch,
+        Context context);
 
     /**
      * Create or update the trunked network.
@@ -171,6 +176,10 @@ public interface TrunkedNetworksClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @param trunkedNetworkParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -180,7 +189,7 @@ public interface TrunkedNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     TrunkedNetworkInner createOrUpdate(String resourceGroupName, String trunkedNetworkName,
-        TrunkedNetworkInner trunkedNetworkParameters, Context context);
+        TrunkedNetworkInner trunkedNetworkParameters, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete the trunked network.
@@ -205,6 +214,10 @@ public interface TrunkedNetworksClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -213,7 +226,7 @@ public interface TrunkedNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
-        String trunkedNetworkName, Context context);
+        String trunkedNetworkName, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete the trunked network.
@@ -237,6 +250,10 @@ public interface TrunkedNetworksClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -244,7 +261,8 @@ public interface TrunkedNetworksClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner delete(String resourceGroupName, String trunkedNetworkName, Context context);
+    OperationStatusResultInner delete(String resourceGroupName, String trunkedNetworkName, String ifMatch,
+        String ifNoneMatch, Context context);
 
     /**
      * Patch the trunked network.
@@ -253,6 +271,10 @@ public interface TrunkedNetworksClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param trunkedNetworkUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -263,7 +285,8 @@ public interface TrunkedNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TrunkedNetworkInner> updateWithResponse(String resourceGroupName, String trunkedNetworkName,
-        TrunkedNetworkPatchParameters trunkedNetworkUpdateParameters, Context context);
+        String ifMatch, String ifNoneMatch, TrunkedNetworkPatchParameters trunkedNetworkUpdateParameters,
+        Context context);
 
     /**
      * Patch the trunked network.

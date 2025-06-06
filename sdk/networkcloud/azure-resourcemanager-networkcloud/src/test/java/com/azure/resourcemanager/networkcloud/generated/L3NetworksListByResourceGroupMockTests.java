@@ -25,7 +25,7 @@ public final class L3NetworksListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"extendedLocation\":{\"name\":\"rquv\",\"type\":\"ygg\"},\"properties\":{\"associatedResourceIds\":[\"crdcueljti\",\"hxmfqryarvsxzqb\"],\"clusterId\":\"cjkay\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"zodubtlm\",\"hybridAksClustersAssociatedIds\":[\"blioskkfmkmf\",\"jxyxgb\",\"kqvjcteoedlr\"],\"hybridAksIpamEnabled\":\"False\",\"hybridAksPluginType\":\"SRIOV\",\"interfaceName\":\"pxvjnzd\",\"ipAllocationType\":\"IPV6\",\"ipv4ConnectedPrefix\":\"ojhpcnabxzfsn\",\"ipv6ConnectedPrefix\":\"ytexvzilmhivzk\",\"l3IsolationDomainId\":\"ww\",\"provisioningState\":\"Failed\",\"virtualMachinesAssociatedIds\":[\"zdajlskzptjxu\"],\"vlan\":8745820474740488161},\"location\":\"cyrthxqlehm\",\"tags\":{\"ue\":\"jei\"},\"id\":\"oka\",\"name\":\"vfejvqnttmbqda\",\"type\":\"zfivfokpysthhzag\"}]}";
+            = "{\"value\":[{\"etag\":\"fsrhkhgsnxu\",\"extendedLocation\":{\"name\":\"wkpphefsb\",\"type\":\"xlb\"},\"properties\":{\"associatedResourceIds\":[\"meikj\",\"lwzacn\"],\"clusterId\":\"pfsuqtaaz\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"yxoyfp\",\"hybridAksClustersAssociatedIds\":[\"iqezxlhdj\"],\"hybridAksIpamEnabled\":\"False\",\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"wvpsoz\",\"ipAllocationType\":\"IPV6\",\"ipv4ConnectedPrefix\":\"jriyb\",\"ipv6ConnectedPrefix\":\"zo\",\"l3IsolationDomainId\":\"pnx\",\"provisioningState\":\"Accepted\",\"virtualMachinesAssociatedIds\":[\"jkgv\",\"nmx\",\"ursqf\"],\"vlan\":8569779612826853365},\"location\":\"yibuyvpirfqjpnqn\",\"tags\":{\"rexkxbhxvucn\":\"sbede\"},\"id\":\"lgmnhjevdyzn\",\"name\":\"ajsvk\",\"type\":\"kmq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,19 +35,19 @@ public final class L3NetworksListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<L3Network> response
-            = manager.l3Networks().listByResourceGroup("g", com.azure.core.util.Context.NONE);
+            = manager.l3Networks().listByResourceGroup("rr", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cyrthxqlehm", response.iterator().next().location());
-        Assertions.assertEquals("jei", response.iterator().next().tags().get("ue"));
-        Assertions.assertEquals("rquv", response.iterator().next().extendedLocation().name());
-        Assertions.assertEquals("ygg", response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals("yibuyvpirfqjpnqn", response.iterator().next().location());
+        Assertions.assertEquals("sbede", response.iterator().next().tags().get("rexkxbhxvucn"));
+        Assertions.assertEquals("wkpphefsb", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("xlb", response.iterator().next().extendedLocation().type());
         Assertions.assertEquals(HybridAksIpamEnabled.FALSE, response.iterator().next().hybridAksIpamEnabled());
-        Assertions.assertEquals(HybridAksPluginType.SRIOV, response.iterator().next().hybridAksPluginType());
-        Assertions.assertEquals("pxvjnzd", response.iterator().next().interfaceName());
+        Assertions.assertEquals(HybridAksPluginType.DPDK, response.iterator().next().hybridAksPluginType());
+        Assertions.assertEquals("wvpsoz", response.iterator().next().interfaceName());
         Assertions.assertEquals(IpAllocationType.IPV6, response.iterator().next().ipAllocationType());
-        Assertions.assertEquals("ojhpcnabxzfsn", response.iterator().next().ipv4ConnectedPrefix());
-        Assertions.assertEquals("ytexvzilmhivzk", response.iterator().next().ipv6ConnectedPrefix());
-        Assertions.assertEquals("ww", response.iterator().next().l3IsolationDomainId());
-        Assertions.assertEquals(8745820474740488161L, response.iterator().next().vlan());
+        Assertions.assertEquals("jriyb", response.iterator().next().ipv4ConnectedPrefix());
+        Assertions.assertEquals("zo", response.iterator().next().ipv6ConnectedPrefix());
+        Assertions.assertEquals("pnx", response.iterator().next().l3IsolationDomainId());
+        Assertions.assertEquals(8569779612826853365L, response.iterator().next().vlan());
     }
 }

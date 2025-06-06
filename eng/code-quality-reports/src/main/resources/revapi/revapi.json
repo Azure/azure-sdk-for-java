@@ -858,6 +858,330 @@
           "code" : "java.class.removed",
           "old" : "class com.azure.resourcemanager.network.models.EvaluationState",
           "justification" :  "Removed `start` from `ConnectionMonitor`. It'll be started upon creation, hence no need for an explicit start."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.AgentPools::delete(java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.AgentPools::delete(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.AgentPools::deleteByIdWithResponse(java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.AgentPools::deleteByIdWithResponse(java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.BareMetalMachineKeySets::delete(java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.BareMetalMachineKeySets::delete(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.BareMetalMachineKeySets::deleteByIdWithResponse(java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.BareMetalMachineKeySets::deleteByIdWithResponse(java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.BareMetalMachines::delete(java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.BareMetalMachines::delete(java.lang.String, java.lang.String)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.BareMetalMachines::deleteByIdWithResponse(java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.BareMetalMachines::deleteByIdWithResponse(java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.BareMetalMachines::deleteByResourceGroup(java.lang.String, java.lang.String)",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.BmcKeySets::delete(java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.BmcKeySets::delete(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.BmcKeySets::deleteByIdWithResponse(java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.BmcKeySets::deleteByIdWithResponse(java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.CloudServicesNetworks::delete(java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.CloudServicesNetworks::delete(java.lang.String, java.lang.String)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.CloudServicesNetworks::deleteByIdWithResponse(java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.CloudServicesNetworks::deleteByIdWithResponse(java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.CloudServicesNetworks::deleteByResourceGroup(java.lang.String, java.lang.String)",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.ClusterManagers::delete(java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.ClusterManagers::delete(java.lang.String, java.lang.String)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.ClusterManagers::deleteByIdWithResponse(java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.ClusterManagers::deleteByIdWithResponse(java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.ClusterManagers::deleteByResourceGroup(java.lang.String, java.lang.String)",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.Clusters::delete(java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.Clusters::delete(java.lang.String, java.lang.String)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.Clusters::deleteByIdWithResponse(java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.Clusters::deleteByIdWithResponse(java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.Clusters::deleteByResourceGroup(java.lang.String, java.lang.String)",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.Consoles::delete(java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.Consoles::delete(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.Consoles::deleteByIdWithResponse(java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.Consoles::deleteByIdWithResponse(java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.KubernetesClusterFeatures::delete(java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.KubernetesClusterFeatures::delete(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.KubernetesClusterFeatures::deleteByIdWithResponse(java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.KubernetesClusterFeatures::deleteByIdWithResponse(java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.KubernetesClusters::delete(java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.KubernetesClusters::delete(java.lang.String, java.lang.String)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.KubernetesClusters::deleteByIdWithResponse(java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.KubernetesClusters::deleteByIdWithResponse(java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.KubernetesClusters::deleteByResourceGroup(java.lang.String, java.lang.String)",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.L2Networks::delete(java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.L2Networks::delete(java.lang.String, java.lang.String)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.L2Networks::deleteByIdWithResponse(java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.L2Networks::deleteByIdWithResponse(java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.L2Networks::deleteByResourceGroup(java.lang.String, java.lang.String)",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.L3Networks::delete(java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.L3Networks::delete(java.lang.String, java.lang.String)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.L3Networks::deleteByIdWithResponse(java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.L3Networks::deleteByIdWithResponse(java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.L3Networks::deleteByResourceGroup(java.lang.String, java.lang.String)",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.MetricsConfigurations::delete(java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.MetricsConfigurations::delete(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.MetricsConfigurations::deleteByIdWithResponse(java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.MetricsConfigurations::deleteByIdWithResponse(java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.Racks::delete(java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.Racks::delete(java.lang.String, java.lang.String)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.Racks::deleteByIdWithResponse(java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.Racks::deleteByIdWithResponse(java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.Racks::deleteByResourceGroup(java.lang.String, java.lang.String)",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.StorageAppliances::delete(java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.StorageAppliances::delete(java.lang.String, java.lang.String)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.StorageAppliances::deleteByIdWithResponse(java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.StorageAppliances::deleteByIdWithResponse(java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.StorageAppliances::deleteByResourceGroup(java.lang.String, java.lang.String)",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.TrunkedNetworks::delete(java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.TrunkedNetworks::delete(java.lang.String, java.lang.String)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.TrunkedNetworks::deleteByIdWithResponse(java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.TrunkedNetworks::deleteByIdWithResponse(java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.TrunkedNetworks::deleteByResourceGroup(java.lang.String, java.lang.String)",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.VirtualMachines::delete(java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.VirtualMachines::delete(java.lang.String, java.lang.String)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.VirtualMachines::deleteByIdWithResponse(java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.VirtualMachines::deleteByIdWithResponse(java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.VirtualMachines::deleteByResourceGroup(java.lang.String, java.lang.String)",
+          "justification" : "method removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.Volumes::delete(java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.Volumes::delete(java.lang.String, java.lang.String)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.Volumes::deleteByIdWithResponse(java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.Volumes::deleteByIdWithResponse(java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "number of parameters changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.networkcloud.models.OperationStatusResult com.azure.resourcemanager.networkcloud.models.Volumes::deleteByResourceGroup(java.lang.String, java.lang.String)",
+          "justification" : "method removed"
         }
       ]
     }

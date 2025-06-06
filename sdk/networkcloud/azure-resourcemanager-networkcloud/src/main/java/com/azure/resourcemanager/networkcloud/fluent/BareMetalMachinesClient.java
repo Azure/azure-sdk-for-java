@@ -143,6 +143,10 @@ public interface BareMetalMachinesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -151,7 +155,8 @@ public interface BareMetalMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BareMetalMachineInner>, BareMetalMachineInner> beginCreateOrUpdate(String resourceGroupName,
-        String bareMetalMachineName, BareMetalMachineInner bareMetalMachineParameters, Context context);
+        String bareMetalMachineName, BareMetalMachineInner bareMetalMachineParameters, String ifMatch,
+        String ifNoneMatch, Context context);
 
     /**
      * Create or update the bare metal machine.
@@ -180,6 +185,10 @@ public interface BareMetalMachinesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -188,7 +197,7 @@ public interface BareMetalMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     BareMetalMachineInner createOrUpdate(String resourceGroupName, String bareMetalMachineName,
-        BareMetalMachineInner bareMetalMachineParameters, Context context);
+        BareMetalMachineInner bareMetalMachineParameters, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete the bare metal machine.
@@ -215,6 +224,10 @@ public interface BareMetalMachinesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -223,7 +236,7 @@ public interface BareMetalMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
-        String bareMetalMachineName, Context context);
+        String bareMetalMachineName, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete the bare metal machine.
@@ -249,6 +262,10 @@ public interface BareMetalMachinesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -256,7 +273,8 @@ public interface BareMetalMachinesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner delete(String resourceGroupName, String bareMetalMachineName, Context context);
+    OperationStatusResultInner delete(String resourceGroupName, String bareMetalMachineName, String ifMatch,
+        String ifNoneMatch, Context context);
 
     /**
      * Patch the bare metal machine.
@@ -283,6 +301,10 @@ public interface BareMetalMachinesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param bareMetalMachineUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -292,7 +314,8 @@ public interface BareMetalMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BareMetalMachineInner>, BareMetalMachineInner> beginUpdate(String resourceGroupName,
-        String bareMetalMachineName, BareMetalMachinePatchParameters bareMetalMachineUpdateParameters, Context context);
+        String bareMetalMachineName, String ifMatch, String ifNoneMatch,
+        BareMetalMachinePatchParameters bareMetalMachineUpdateParameters, Context context);
 
     /**
      * Patch the bare metal machine.
@@ -318,6 +341,10 @@ public interface BareMetalMachinesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param bareMetalMachineUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -326,8 +353,8 @@ public interface BareMetalMachinesClient {
      * @return bareMetalMachine represents the physical machine in the rack.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BareMetalMachineInner update(String resourceGroupName, String bareMetalMachineName,
-        BareMetalMachinePatchParameters bareMetalMachineUpdateParameters, Context context);
+    BareMetalMachineInner update(String resourceGroupName, String bareMetalMachineName, String ifMatch,
+        String ifNoneMatch, BareMetalMachinePatchParameters bareMetalMachineUpdateParameters, Context context);
 
     /**
      * Cordon the bare metal machine.

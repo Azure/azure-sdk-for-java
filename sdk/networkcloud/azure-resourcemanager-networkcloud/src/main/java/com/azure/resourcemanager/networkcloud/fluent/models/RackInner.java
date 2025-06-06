@@ -23,6 +23,11 @@ import java.util.Map;
 @Fluent
 public final class RackInner extends Resource {
     /*
+     * Resource ETag.
+     */
+    private String etag;
+
+    /*
      * The extended location of the cluster associated with the resource.
      */
     private ExtendedLocation extendedLocation;
@@ -56,6 +61,15 @@ public final class RackInner extends Resource {
      * Creates an instance of RackInner class.
      */
     public RackInner() {
+    }
+
+    /**
+     * Get the etag property: Resource ETag.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -345,6 +359,8 @@ public final class RackInner extends Resource {
                     deserializedRackInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedRackInner.innerProperties = RackProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedRackInner.etag = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
                     deserializedRackInner.systemData = SystemData.fromJson(reader);
                 } else {

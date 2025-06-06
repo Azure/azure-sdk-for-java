@@ -28,6 +28,11 @@ import java.util.Map;
 @Fluent
 public final class BareMetalMachineKeySetInner extends Resource {
     /*
+     * Resource ETag.
+     */
+    private String etag;
+
+    /*
      * The extended location of the cluster associated with the resource.
      */
     private ExtendedLocation extendedLocation;
@@ -61,6 +66,15 @@ public final class BareMetalMachineKeySetInner extends Resource {
      * Creates an instance of BareMetalMachineKeySetInner class.
      */
     public BareMetalMachineKeySetInner() {
+    }
+
+    /**
+     * Get the etag property: Resource ETag.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -409,6 +423,8 @@ public final class BareMetalMachineKeySetInner extends Resource {
                 } else if ("properties".equals(fieldName)) {
                     deserializedBareMetalMachineKeySetInner.innerProperties
                         = BareMetalMachineKeySetProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedBareMetalMachineKeySetInner.etag = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
                     deserializedBareMetalMachineKeySetInner.systemData = SystemData.fromJson(reader);
                 } else {
