@@ -633,6 +633,33 @@ public final class AppServicePlanInner extends Resource {
     }
 
     /**
+     * Get the asyncScalingEnabled property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will attempt to
+     * scale asynchronously if there are insufficient workers to scale synchronously.
+     * If &lt;code&gt;false&lt;/code&gt;, this App Service Plan will only attempt sync scaling.
+     * 
+     * @return the asyncScalingEnabled value.
+     */
+    public Boolean asyncScalingEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().asyncScalingEnabled();
+    }
+
+    /**
+     * Set the asyncScalingEnabled property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will attempt to
+     * scale asynchronously if there are insufficient workers to scale synchronously.
+     * If &lt;code&gt;false&lt;/code&gt;, this App Service Plan will only attempt sync scaling.
+     * 
+     * @param asyncScalingEnabled the asyncScalingEnabled value to set.
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withAsyncScalingEnabled(Boolean asyncScalingEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanProperties();
+        }
+        this.innerProperties().withAsyncScalingEnabled(asyncScalingEnabled);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

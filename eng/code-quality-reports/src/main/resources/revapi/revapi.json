@@ -858,6 +858,162 @@
           "code" : "java.class.removed",
           "old" : "class com.azure.resourcemanager.network.models.EvaluationState",
           "justification" :  "Removed `start` from `ConnectionMonitor`. It'll be started upon creation, hence no need for an explicit start."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.ActiveRevisionsMode",
+          "justification" : "class removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.Configuration",
+          "justification" : "class removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.Container",
+          "justification" : "class removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.ContainerAppCollection",
+          "justification" : "class removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.ContainerAppProvisioningState",
+          "justification" : "class removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.ContainerAppSecret",
+          "justification" : "class removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.ContainerResources",
+          "justification" : "class removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.CustomScaleRule",
+          "justification" : "class removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.Dapr",
+          "justification" : "class removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.DaprComponent",
+          "justification" : "class removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.DaprMetadata",
+          "justification" : "class removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.EnvironmentVar",
+          "justification" : "class removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.HttpScaleRule",
+          "justification" : "class removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.Ingress",
+          "justification" : "class removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.IngressTransportMethod",
+          "justification" : "class removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.QueueScaleRule",
+          "justification" : "class removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.RegistryCredentials",
+          "justification" : "class removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.RevisionCollection",
+          "justification" : "class removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.RevisionHealthState",
+          "justification" : "class removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.RevisionProvisioningState",
+          "justification" : "class removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.Scale",
+          "justification" : "class removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.ScaleRule",
+          "justification" : "class removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.ScaleRuleAuth",
+          "justification" : "class removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.Secret",
+          "justification" : "class removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.Template",
+          "justification" : "class removed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.TrafficWeight",
+          "justification" : "class removed"
         }
       ]
     }

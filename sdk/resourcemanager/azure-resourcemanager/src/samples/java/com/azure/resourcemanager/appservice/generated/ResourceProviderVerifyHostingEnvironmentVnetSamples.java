@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appservice.models.VnetParameters;
 public final class ResourceProviderVerifyHostingEnvironmentVnetSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/VerifyHostingEnvironmentVnet.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/VerifyHostingEnvironmentVnet.json
      */
     /**
      * Sample code: VerifyHostingEnvironmentVnet.

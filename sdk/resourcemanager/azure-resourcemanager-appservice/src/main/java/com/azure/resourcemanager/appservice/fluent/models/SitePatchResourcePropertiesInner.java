@@ -135,6 +135,12 @@ public final class SitePatchResourcePropertiesInner implements JsonSerializable<
     private Boolean clientAffinityEnabled;
 
     /*
+     * <code>true</code> to override client affinity cookie domain with X-Forwarded-Host request header.
+     * <code>false</code> to use default domain. Default is <code>false</code>.
+     */
+    private Boolean clientAffinityProxyEnabled;
+
+    /*
      * <code>true</code> to enable client certificate authentication (TLS mutual authentication); otherwise,
      * <code>false</code>. Default is <code>false</code>.
      */
@@ -578,6 +584,30 @@ public final class SitePatchResourcePropertiesInner implements JsonSerializable<
     }
 
     /**
+     * Get the clientAffinityProxyEnabled property: &lt;code&gt;true&lt;/code&gt; to override client affinity cookie
+     * domain with X-Forwarded-Host request header. &lt;code&gt;false&lt;/code&gt; to use default domain. Default is
+     * &lt;code&gt;false&lt;/code&gt;.
+     * 
+     * @return the clientAffinityProxyEnabled value.
+     */
+    public Boolean clientAffinityProxyEnabled() {
+        return this.clientAffinityProxyEnabled;
+    }
+
+    /**
+     * Set the clientAffinityProxyEnabled property: &lt;code&gt;true&lt;/code&gt; to override client affinity cookie
+     * domain with X-Forwarded-Host request header. &lt;code&gt;false&lt;/code&gt; to use default domain. Default is
+     * &lt;code&gt;false&lt;/code&gt;.
+     * 
+     * @param clientAffinityProxyEnabled the clientAffinityProxyEnabled value to set.
+     * @return the SitePatchResourcePropertiesInner object itself.
+     */
+    public SitePatchResourcePropertiesInner withClientAffinityProxyEnabled(Boolean clientAffinityProxyEnabled) {
+        this.clientAffinityProxyEnabled = clientAffinityProxyEnabled;
+        return this;
+    }
+
+    /**
      * Get the clientCertEnabled property: &lt;code&gt;true&lt;/code&gt; to enable client certificate authentication
      * (TLS mutual authentication); otherwise, &lt;code&gt;false&lt;/code&gt;. Default is
      * &lt;code&gt;false&lt;/code&gt;.
@@ -990,6 +1020,7 @@ public final class SitePatchResourcePropertiesInner implements JsonSerializable<
         jsonWriter.writeBooleanField("scmSiteAlsoStopped", this.scmSiteAlsoStopped);
         jsonWriter.writeJsonField("hostingEnvironmentProfile", this.hostingEnvironmentProfile);
         jsonWriter.writeBooleanField("clientAffinityEnabled", this.clientAffinityEnabled);
+        jsonWriter.writeBooleanField("clientAffinityProxyEnabled", this.clientAffinityProxyEnabled);
         jsonWriter.writeBooleanField("clientCertEnabled", this.clientCertEnabled);
         jsonWriter.writeStringField("clientCertMode",
             this.clientCertMode == null ? null : this.clientCertMode.toString());
@@ -1073,6 +1104,9 @@ public final class SitePatchResourcePropertiesInner implements JsonSerializable<
                         = HostingEnvironmentProfile.fromJson(reader);
                 } else if ("clientAffinityEnabled".equals(fieldName)) {
                     deserializedSitePatchResourcePropertiesInner.clientAffinityEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("clientAffinityProxyEnabled".equals(fieldName)) {
+                    deserializedSitePatchResourcePropertiesInner.clientAffinityProxyEnabled
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("clientCertEnabled".equals(fieldName)) {
                     deserializedSitePatchResourcePropertiesInner.clientCertEnabled

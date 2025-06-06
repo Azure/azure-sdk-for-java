@@ -144,7 +144,9 @@ public class Expression implements JsonSerializable<Expression> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("text", this.text);
-        jsonWriter.writeUntypedField("value", this.value);
+        if (this.value != null) {
+            jsonWriter.writeUntypedField("value", this.value);
+        }
         jsonWriter.writeArrayField("subexpressions", this.subexpressions,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("error", this.error);

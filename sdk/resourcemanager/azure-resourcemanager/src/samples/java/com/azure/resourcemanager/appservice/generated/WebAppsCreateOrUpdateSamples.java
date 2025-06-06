@@ -29,7 +29,7 @@ import java.util.Map;
  */
 public final class WebAppsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/
      * CreateOrUpdateFunctionAppFlexConsumptionWithDetails.json
      */
     /**
@@ -70,7 +70,7 @@ public final class WebAppsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/
      * CreateOrUpdateFunctionAppFlexConsumption.json
      */
     /**
@@ -106,7 +106,7 @@ public final class WebAppsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/CreateOrUpdateWebApp.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/CreateOrUpdateWebApp.json
      */
     /**
      * Sample code: Create or Update web app.
@@ -126,7 +126,7 @@ public final class WebAppsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/CloneWebApp.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/CloneWebApp.json
      */
     /**
      * Sample code: Clone web app.

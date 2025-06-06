@@ -9,7 +9,7 @@
     "dir": "azure-resourcemanager-appservice",
     "source": "specification/web/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.appservice",
-    "args": "--tag=package-2024-04 --add-inner=AppServiceCertificate --remove-inner=CsmDeploymentStatus --name-for-ungrouped-operations=ResourceProvider --enable-sync-stack=false"
+    "args": "--tag=package-2024-11 --add-inner=AppServiceCertificate --remove-inner=CsmDeploymentStatus --name-for-ungrouped-operations=ResourceProvider --enable-sync-stack=false"
   },
   "appservice-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-appservice",

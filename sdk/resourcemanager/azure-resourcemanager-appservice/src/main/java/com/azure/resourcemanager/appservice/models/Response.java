@@ -114,7 +114,9 @@ public final class Response implements JsonSerializable<Response> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("headers", this.headers);
+        if (this.headers != null) {
+            jsonWriter.writeUntypedField("headers", this.headers);
+        }
         jsonWriter.writeNumberField("statusCode", this.statusCode);
         jsonWriter.writeJsonField("bodyLink", this.bodyLink);
         return jsonWriter.writeEndObject();

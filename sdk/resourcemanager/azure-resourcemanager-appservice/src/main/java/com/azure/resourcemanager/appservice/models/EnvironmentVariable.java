@@ -23,7 +23,9 @@ public final class EnvironmentVariable implements JsonSerializable<EnvironmentVa
     private String name;
 
     /*
-     * Environment variable value
+     * The value of this environment variable must be the name of an AppSetting. The actual value of the environment
+     * variable in container will be retrieved from the specified AppSetting at runtime. If the AppSetting is not found,
+     * the value will be set to an empty string in the container at runtime.
      */
     private String value;
 
@@ -54,7 +56,9 @@ public final class EnvironmentVariable implements JsonSerializable<EnvironmentVa
     }
 
     /**
-     * Get the value property: Environment variable value.
+     * Get the value property: The value of this environment variable must be the name of an AppSetting. The actual
+     * value of the environment variable in container will be retrieved from the specified AppSetting at runtime. If the
+     * AppSetting is not found, the value will be set to an empty string in the container at runtime.
      * 
      * @return the value value.
      */
@@ -63,7 +67,9 @@ public final class EnvironmentVariable implements JsonSerializable<EnvironmentVa
     }
 
     /**
-     * Set the value property: Environment variable value.
+     * Set the value property: The value of this environment variable must be the name of an AppSetting. The actual
+     * value of the environment variable in container will be retrieved from the specified AppSetting at runtime. If the
+     * AppSetting is not found, the value will be set to an empty string in the container at runtime.
      * 
      * @param value the value value to set.
      * @return the EnvironmentVariable object itself.

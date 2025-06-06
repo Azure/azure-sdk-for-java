@@ -18,6 +18,7 @@ import com.azure.resourcemanager.appservice.models.FunctionAppConfig;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.HostnameSslState;
 import com.azure.resourcemanager.appservice.models.IpMode;
+import com.azure.resourcemanager.appservice.models.OutboundVnetRouting;
 import com.azure.resourcemanager.appservice.models.RedundancyMode;
 import com.azure.resourcemanager.appservice.models.ResourceConfig;
 import com.azure.resourcemanager.appservice.models.SiteAvailabilityState;
@@ -108,28 +109,13 @@ public final class SitePropertiesInner implements JsonSerializable<SitePropertie
     private SiteDnsConfig dnsConfiguration;
 
     /*
-     * Virtual Network Route All enabled. This causes all outbound traffic to have Virtual Network Security Groups and
-     * User Defined Routes applied.
+     * Property to configure various outbound traffic routing options over virtual network for a site
      */
-    private Boolean vnetRouteAllEnabled;
+    private OutboundVnetRouting outboundVnetRouting;
 
     /*
-     * To enable pulling image over Virtual Network
-     */
-    private Boolean vnetImagePullEnabled;
-
-    /*
-     * To enable accessing content over virtual network
-     */
-    private Boolean vnetContentShareEnabled;
-
-    /*
-     * To enable Backup and Restore operations over virtual network
-     */
-    private Boolean vnetBackupRestoreEnabled;
-
-    /*
-     * Configuration of the app.
+     * Configuration of an App Service app. This property is not returned in response to normal create and read requests
+     * since it may contain sensitive information.
      */
     private SiteConfigInner siteConfig;
 
@@ -181,6 +167,19 @@ public final class SitePropertiesInner implements JsonSerializable<SitePropertie
     private Boolean clientAffinityEnabled;
 
     /*
+     * <code>true</code> to enable client affinity partitioning using CHIPS cookies, this will add the
+     * <code>partitioned</code> property to the affinity cookies; <code>false</code> to stop sending partitioned
+     * affinity cookies. Default is <code>false</code>.
+     */
+    private Boolean clientAffinityPartitioningEnabled;
+
+    /*
+     * <code>true</code> to override client affinity cookie domain with X-Forwarded-Host request header.
+     * <code>false</code> to use default domain. Default is <code>false</code>.
+     */
+    private Boolean clientAffinityProxyEnabled;
+
+    /*
      * <code>true</code> to enable client certificate authentication (TLS mutual authentication); otherwise,
      * <code>false</code>. Default is <code>false</code>.
      */
@@ -208,6 +207,11 @@ public final class SitePropertiesInner implements JsonSerializable<SitePropertie
      * Whether to use end to end encryption between the FrontEnd and the Worker
      */
     private Boolean endToEndEncryptionEnabled;
+
+    /*
+     * Whether to enable ssh access.
+     */
+    private Boolean sshEnabled;
 
     /*
      * <code>true</code> to disable the public hostnames of the app; otherwise, <code>false</code>.
@@ -553,89 +557,30 @@ public final class SitePropertiesInner implements JsonSerializable<SitePropertie
     }
 
     /**
-     * Get the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to have
-     * Virtual Network Security Groups and User Defined Routes applied.
+     * Get the outboundVnetRouting property: Property to configure various outbound traffic routing options over virtual
+     * network for a site.
      * 
-     * @return the vnetRouteAllEnabled value.
+     * @return the outboundVnetRouting value.
      */
-    public Boolean vnetRouteAllEnabled() {
-        return this.vnetRouteAllEnabled;
+    public OutboundVnetRouting outboundVnetRouting() {
+        return this.outboundVnetRouting;
     }
 
     /**
-     * Set the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to have
-     * Virtual Network Security Groups and User Defined Routes applied.
+     * Set the outboundVnetRouting property: Property to configure various outbound traffic routing options over virtual
+     * network for a site.
      * 
-     * @param vnetRouteAllEnabled the vnetRouteAllEnabled value to set.
+     * @param outboundVnetRouting the outboundVnetRouting value to set.
      * @return the SitePropertiesInner object itself.
      */
-    public SitePropertiesInner withVnetRouteAllEnabled(Boolean vnetRouteAllEnabled) {
-        this.vnetRouteAllEnabled = vnetRouteAllEnabled;
+    public SitePropertiesInner withOutboundVnetRouting(OutboundVnetRouting outboundVnetRouting) {
+        this.outboundVnetRouting = outboundVnetRouting;
         return this;
     }
 
     /**
-     * Get the vnetImagePullEnabled property: To enable pulling image over Virtual Network.
-     * 
-     * @return the vnetImagePullEnabled value.
-     */
-    public Boolean vnetImagePullEnabled() {
-        return this.vnetImagePullEnabled;
-    }
-
-    /**
-     * Set the vnetImagePullEnabled property: To enable pulling image over Virtual Network.
-     * 
-     * @param vnetImagePullEnabled the vnetImagePullEnabled value to set.
-     * @return the SitePropertiesInner object itself.
-     */
-    public SitePropertiesInner withVnetImagePullEnabled(Boolean vnetImagePullEnabled) {
-        this.vnetImagePullEnabled = vnetImagePullEnabled;
-        return this;
-    }
-
-    /**
-     * Get the vnetContentShareEnabled property: To enable accessing content over virtual network.
-     * 
-     * @return the vnetContentShareEnabled value.
-     */
-    public Boolean vnetContentShareEnabled() {
-        return this.vnetContentShareEnabled;
-    }
-
-    /**
-     * Set the vnetContentShareEnabled property: To enable accessing content over virtual network.
-     * 
-     * @param vnetContentShareEnabled the vnetContentShareEnabled value to set.
-     * @return the SitePropertiesInner object itself.
-     */
-    public SitePropertiesInner withVnetContentShareEnabled(Boolean vnetContentShareEnabled) {
-        this.vnetContentShareEnabled = vnetContentShareEnabled;
-        return this;
-    }
-
-    /**
-     * Get the vnetBackupRestoreEnabled property: To enable Backup and Restore operations over virtual network.
-     * 
-     * @return the vnetBackupRestoreEnabled value.
-     */
-    public Boolean vnetBackupRestoreEnabled() {
-        return this.vnetBackupRestoreEnabled;
-    }
-
-    /**
-     * Set the vnetBackupRestoreEnabled property: To enable Backup and Restore operations over virtual network.
-     * 
-     * @param vnetBackupRestoreEnabled the vnetBackupRestoreEnabled value to set.
-     * @return the SitePropertiesInner object itself.
-     */
-    public SitePropertiesInner withVnetBackupRestoreEnabled(Boolean vnetBackupRestoreEnabled) {
-        this.vnetBackupRestoreEnabled = vnetBackupRestoreEnabled;
-        return this;
-    }
-
-    /**
-     * Get the siteConfig property: Configuration of the app.
+     * Get the siteConfig property: Configuration of an App Service app. This property is not returned in response to
+     * normal create and read requests since it may contain sensitive information.
      * 
      * @return the siteConfig value.
      */
@@ -644,7 +589,8 @@ public final class SitePropertiesInner implements JsonSerializable<SitePropertie
     }
 
     /**
-     * Set the siteConfig property: Configuration of the app.
+     * Set the siteConfig property: Configuration of an App Service app. This property is not returned in response to
+     * normal create and read requests since it may contain sensitive information.
      * 
      * @param siteConfig the siteConfig value to set.
      * @return the SitePropertiesInner object itself.
@@ -819,6 +765,56 @@ public final class SitePropertiesInner implements JsonSerializable<SitePropertie
     }
 
     /**
+     * Get the clientAffinityPartitioningEnabled property: &lt;code&gt;true&lt;/code&gt; to enable client affinity
+     * partitioning using CHIPS cookies, this will add the &lt;code&gt;partitioned&lt;/code&gt; property to the affinity
+     * cookies; &lt;code&gt;false&lt;/code&gt; to stop sending partitioned affinity cookies. Default is
+     * &lt;code&gt;false&lt;/code&gt;.
+     * 
+     * @return the clientAffinityPartitioningEnabled value.
+     */
+    public Boolean clientAffinityPartitioningEnabled() {
+        return this.clientAffinityPartitioningEnabled;
+    }
+
+    /**
+     * Set the clientAffinityPartitioningEnabled property: &lt;code&gt;true&lt;/code&gt; to enable client affinity
+     * partitioning using CHIPS cookies, this will add the &lt;code&gt;partitioned&lt;/code&gt; property to the affinity
+     * cookies; &lt;code&gt;false&lt;/code&gt; to stop sending partitioned affinity cookies. Default is
+     * &lt;code&gt;false&lt;/code&gt;.
+     * 
+     * @param clientAffinityPartitioningEnabled the clientAffinityPartitioningEnabled value to set.
+     * @return the SitePropertiesInner object itself.
+     */
+    public SitePropertiesInner withClientAffinityPartitioningEnabled(Boolean clientAffinityPartitioningEnabled) {
+        this.clientAffinityPartitioningEnabled = clientAffinityPartitioningEnabled;
+        return this;
+    }
+
+    /**
+     * Get the clientAffinityProxyEnabled property: &lt;code&gt;true&lt;/code&gt; to override client affinity cookie
+     * domain with X-Forwarded-Host request header. &lt;code&gt;false&lt;/code&gt; to use default domain. Default is
+     * &lt;code&gt;false&lt;/code&gt;.
+     * 
+     * @return the clientAffinityProxyEnabled value.
+     */
+    public Boolean clientAffinityProxyEnabled() {
+        return this.clientAffinityProxyEnabled;
+    }
+
+    /**
+     * Set the clientAffinityProxyEnabled property: &lt;code&gt;true&lt;/code&gt; to override client affinity cookie
+     * domain with X-Forwarded-Host request header. &lt;code&gt;false&lt;/code&gt; to use default domain. Default is
+     * &lt;code&gt;false&lt;/code&gt;.
+     * 
+     * @param clientAffinityProxyEnabled the clientAffinityProxyEnabled value to set.
+     * @return the SitePropertiesInner object itself.
+     */
+    public SitePropertiesInner withClientAffinityProxyEnabled(Boolean clientAffinityProxyEnabled) {
+        this.clientAffinityProxyEnabled = clientAffinityProxyEnabled;
+        return this;
+    }
+
+    /**
      * Get the clientCertEnabled property: &lt;code&gt;true&lt;/code&gt; to enable client certificate authentication
      * (TLS mutual authentication); otherwise, &lt;code&gt;false&lt;/code&gt;. Default is
      * &lt;code&gt;false&lt;/code&gt;.
@@ -927,6 +923,26 @@ public final class SitePropertiesInner implements JsonSerializable<SitePropertie
      */
     public SitePropertiesInner withEndToEndEncryptionEnabled(Boolean endToEndEncryptionEnabled) {
         this.endToEndEncryptionEnabled = endToEndEncryptionEnabled;
+        return this;
+    }
+
+    /**
+     * Get the sshEnabled property: Whether to enable ssh access.
+     * 
+     * @return the sshEnabled value.
+     */
+    public Boolean sshEnabled() {
+        return this.sshEnabled;
+    }
+
+    /**
+     * Set the sshEnabled property: Whether to enable ssh access.
+     * 
+     * @param sshEnabled the sshEnabled value to set.
+     * @return the SitePropertiesInner object itself.
+     */
+    public SitePropertiesInner withSshEnabled(Boolean sshEnabled) {
+        this.sshEnabled = sshEnabled;
         return this;
     }
 
@@ -1320,6 +1336,9 @@ public final class SitePropertiesInner implements JsonSerializable<SitePropertie
         if (dnsConfiguration() != null) {
             dnsConfiguration().validate();
         }
+        if (outboundVnetRouting() != null) {
+            outboundVnetRouting().validate();
+        }
         if (siteConfig() != null) {
             siteConfig().validate();
         }
@@ -1357,10 +1376,7 @@ public final class SitePropertiesInner implements JsonSerializable<SitePropertie
         jsonWriter.writeBooleanField("isXenon", this.isXenon);
         jsonWriter.writeBooleanField("hyperV", this.hyperV);
         jsonWriter.writeJsonField("dnsConfiguration", this.dnsConfiguration);
-        jsonWriter.writeBooleanField("vnetRouteAllEnabled", this.vnetRouteAllEnabled);
-        jsonWriter.writeBooleanField("vnetImagePullEnabled", this.vnetImagePullEnabled);
-        jsonWriter.writeBooleanField("vnetContentShareEnabled", this.vnetContentShareEnabled);
-        jsonWriter.writeBooleanField("vnetBackupRestoreEnabled", this.vnetBackupRestoreEnabled);
+        jsonWriter.writeJsonField("outboundVnetRouting", this.outboundVnetRouting);
         jsonWriter.writeJsonField("siteConfig", this.siteConfig);
         jsonWriter.writeJsonField("functionAppConfig", this.functionAppConfig);
         jsonWriter.writeJsonField("daprConfig", this.daprConfig);
@@ -1369,12 +1385,15 @@ public final class SitePropertiesInner implements JsonSerializable<SitePropertie
         jsonWriter.writeBooleanField("scmSiteAlsoStopped", this.scmSiteAlsoStopped);
         jsonWriter.writeJsonField("hostingEnvironmentProfile", this.hostingEnvironmentProfile);
         jsonWriter.writeBooleanField("clientAffinityEnabled", this.clientAffinityEnabled);
+        jsonWriter.writeBooleanField("clientAffinityPartitioningEnabled", this.clientAffinityPartitioningEnabled);
+        jsonWriter.writeBooleanField("clientAffinityProxyEnabled", this.clientAffinityProxyEnabled);
         jsonWriter.writeBooleanField("clientCertEnabled", this.clientCertEnabled);
         jsonWriter.writeStringField("clientCertMode",
             this.clientCertMode == null ? null : this.clientCertMode.toString());
         jsonWriter.writeStringField("clientCertExclusionPaths", this.clientCertExclusionPaths);
         jsonWriter.writeStringField("ipMode", this.ipMode == null ? null : this.ipMode.toString());
         jsonWriter.writeBooleanField("endToEndEncryptionEnabled", this.endToEndEncryptionEnabled);
+        jsonWriter.writeBooleanField("sshEnabled", this.sshEnabled);
         jsonWriter.writeBooleanField("hostNamesDisabled", this.hostNamesDisabled);
         jsonWriter.writeStringField("customDomainVerificationId", this.customDomainVerificationId);
         jsonWriter.writeNumberField("containerSize", this.containerSize);
@@ -1442,16 +1461,8 @@ public final class SitePropertiesInner implements JsonSerializable<SitePropertie
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("dnsConfiguration".equals(fieldName)) {
                     deserializedSitePropertiesInner.dnsConfiguration = SiteDnsConfig.fromJson(reader);
-                } else if ("vnetRouteAllEnabled".equals(fieldName)) {
-                    deserializedSitePropertiesInner.vnetRouteAllEnabled = reader.getNullable(JsonReader::getBoolean);
-                } else if ("vnetImagePullEnabled".equals(fieldName)) {
-                    deserializedSitePropertiesInner.vnetImagePullEnabled = reader.getNullable(JsonReader::getBoolean);
-                } else if ("vnetContentShareEnabled".equals(fieldName)) {
-                    deserializedSitePropertiesInner.vnetContentShareEnabled
-                        = reader.getNullable(JsonReader::getBoolean);
-                } else if ("vnetBackupRestoreEnabled".equals(fieldName)) {
-                    deserializedSitePropertiesInner.vnetBackupRestoreEnabled
-                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("outboundVnetRouting".equals(fieldName)) {
+                    deserializedSitePropertiesInner.outboundVnetRouting = OutboundVnetRouting.fromJson(reader);
                 } else if ("siteConfig".equals(fieldName)) {
                     deserializedSitePropertiesInner.siteConfig = SiteConfigInner.fromJson(reader);
                 } else if ("functionAppConfig".equals(fieldName)) {
@@ -1474,6 +1485,12 @@ public final class SitePropertiesInner implements JsonSerializable<SitePropertie
                         = HostingEnvironmentProfile.fromJson(reader);
                 } else if ("clientAffinityEnabled".equals(fieldName)) {
                     deserializedSitePropertiesInner.clientAffinityEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("clientAffinityPartitioningEnabled".equals(fieldName)) {
+                    deserializedSitePropertiesInner.clientAffinityPartitioningEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("clientAffinityProxyEnabled".equals(fieldName)) {
+                    deserializedSitePropertiesInner.clientAffinityProxyEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("clientCertEnabled".equals(fieldName)) {
                     deserializedSitePropertiesInner.clientCertEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("clientCertMode".equals(fieldName)) {
@@ -1485,6 +1502,8 @@ public final class SitePropertiesInner implements JsonSerializable<SitePropertie
                 } else if ("endToEndEncryptionEnabled".equals(fieldName)) {
                     deserializedSitePropertiesInner.endToEndEncryptionEnabled
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sshEnabled".equals(fieldName)) {
+                    deserializedSitePropertiesInner.sshEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("hostNamesDisabled".equals(fieldName)) {
                     deserializedSitePropertiesInner.hostNamesDisabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("customDomainVerificationId".equals(fieldName)) {
