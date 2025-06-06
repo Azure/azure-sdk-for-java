@@ -54,6 +54,13 @@ extends:
     # Short term hack to get 1es canary validation working until we can fix manual runs with 'auto'
     ${{ if and(eq(parameters.oneESTemplateTag, 'canary'), eq(parameters.Service, 'auto')) }}:
       ServiceDirectory: template
+      TestPipeline: true
+      Artifacts:
+        - name: azure-sdk-template
+          groupId: com.azure
+          safeName: azuresdktemplate
+          releaseInBatch: 'azure-sdk-template'
+          skipPublishDocMs: true
     ${{ else }}:
       ServiceDirectory: ${{ parameters.Service }}
     # This is Necessary since FromSource runs hover around 60,
