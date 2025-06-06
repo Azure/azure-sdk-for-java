@@ -40,7 +40,7 @@ public final class EntraCommunicationTokenCredentialOptions {
         }
         this.resourceEndpoint = resourceEndpoint;
         this.tokenCredential = tokenCredential;
-        this.scopes = new ArrayList<>() {{ add(DEFAULT_SCOPE); }};
+        this.scopes = new ArrayList<String>() {{ add(DEFAULT_SCOPE); }};
     }
 
     /**
