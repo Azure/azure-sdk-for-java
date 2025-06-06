@@ -227,7 +227,7 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/Microsoft.Resources/deployments/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-2025-04 --add-inner=Deployment --graalvm-config-suffix=deployments --enable-sync-stack=false"
+    "args": "--tag=package-2025-04 --add-inner=Deployment,Provider --graalvm-config-suffix=deployments --enable-sync-stack=false"
   },
   "deploymentstacks": {
     "dir": "azure-resourcemanager-resources",
