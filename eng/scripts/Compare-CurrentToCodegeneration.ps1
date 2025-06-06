@@ -10,14 +10,16 @@ code.
 If the regenerated code is different than the current code this will tell the differences, the files the differences
 are in, and exit with a failure status.
 
-.PARAMETER Directory
-The directory that will be searched for 'Update-Codegeneration.ps1' scripts. The default is the root directory of the
-Azure SDK for Java repository. CI jobs should use the 'ServiceDirectory', such as /sdk/storage.
+.PARAMETER ScanDirectories
+A comma-separated list of directories that will be scanned for'Update-Codegeneration.ps1' scripts. If nothing is passed
+the default behavior is a no-op. CI jobs should determine which directories to scan based either on the 'ServiceDirectory',
+such as /sdk/storage, of the ci.yml being used or for Pull Request pipelines determine all directories based on what files
+were changed.
 #>
 
 param(
   [Parameter(Mandatory = $false)]
-  [string]$ServiceDirectories
+  [string]$ScanDirectories
 )
 
 $SeparatorBars = "==========================================================================="
@@ -26,20 +28,20 @@ $SeparatorBars = "==============================================================
 function Compare-CurrentToCodegeneration {
   param(
     [Parameter(Mandatory=$true)]
-    $ServiceDirectory
+    $ScanDirectory
   )
 
-  $swaggers = Get-ChildItem -Path $ServiceDirectory -Filter "Update-Codegeneration.ps1" -Recurse
+  $swaggers = Get-ChildItem -Path $ScanDirectory -Filter "Update-Codegeneration.ps1" -Recurse
   if ($swaggers.Count -eq 0) {
     Write-Host "$SeparatorBars"
-    Write-Host "No Swagger files to regenerate for $ServiceDirectory"
+    Write-Host "No Swagger files to regenerate for $ScanDirectory"
     Write-Host "$SeparatorBars"
     return $false
   }
 
 
   Write-Host "$SeparatorBars"
-  Write-Host "Invoking Autorest code regeneration for $ServiceDirectory"
+  Write-Host "Invoking Autorest code regeneration for $ScanDirectory"
   Write-Host "$SeparatorBars"
 
   foreach ($script in $swaggers) {
@@ -48,7 +50,7 @@ function Compare-CurrentToCodegeneration {
   }
 
   Write-Host "$SeparatorBars"
-  Write-Host "Verify no diff for $ServiceDirectory"
+  Write-Host "Verify no diff for $ScanDirectory"
   Write-Host "$SeparatorBars"
 
   # prevent warning related to EOL differences which triggers an exception for some reason
@@ -56,7 +58,7 @@ function Compare-CurrentToCodegeneration {
 
   if ($LastExitCode -ne 0) {
     $status = git status -s | Out-String
-    Write-Host "The following files in $ServiceDirectory are out of date:"
+    Write-Host "The following files in $ScanDirectory are out of date:"
     Write-Host "$status"
     return $true
   }
@@ -65,11 +67,11 @@ function Compare-CurrentToCodegeneration {
 
 $hasError = $false
 
-# If a list of ServiceDirectories was passed in, process the entire list otherwise
+# If a list of ScanDirectories was passed in, process the entire list otherwise
 # pass in an empty string to verify everything
-if ($ServiceDirectories) {
-  foreach ($ServiceDirectory in $ServiceDirectories.Split(',')) {
-    $path = "sdk/$ServiceDirectory"
+if ($ScanDirectories) {
+  foreach ($ScanDirectory in $ScanDirectories.Split(',')) {
+    $path = "sdk/$ScanDirectory"
     $result = Compare-CurrentToCodegeneration $path
     if ($result) {
       $hasError = $true
