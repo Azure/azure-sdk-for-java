@@ -338,7 +338,10 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
      * based on Azure REST API.
      *
      * @return wrapped inner deployment stack client.
+     *
+     * @deprecated Use the azure-resourcemanager-resources-deploymentstacks package.
      */
+    @Deprecated
     public DeploymentStacksManagementClient deploymentStackClient() {
         return deploymentStackClient;
     }
