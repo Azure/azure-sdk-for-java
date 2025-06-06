@@ -230,7 +230,7 @@ public class EntraTokenCredentialTests {
 
     @Test
     void entraTokenCredentialScopesChangedAfterOptionsConstructionDoesAffectOriginalScopes() {
-        List<String> validScopes = new ArrayList<>() {
+        List<String> validScopes = new ArrayList<String>() {
             {
                 add(COMMUNICATION_CLIENTS_SCOPE);
             }
