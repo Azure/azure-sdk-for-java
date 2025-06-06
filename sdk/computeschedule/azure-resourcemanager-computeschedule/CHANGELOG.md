@@ -1,14 +1,27 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0 (2025-06-04)
+
+- Azure Resource Manager Compute Schedule client library for Java. This package contains Microsoft Azure SDK for Compute Schedule Management SDK. Microsoft.ComputeSchedule Resource Provider management API. Package api-version 2025-05-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.ResourceProvisionPayload` was added
 
-### Bugs Fixed
+* `models.CreateResourceOperationResponse` was added
 
-### Other Changes
+* `models.ExecuteDeleteRequest` was added
+
+* `models.ExecuteCreateRequest` was added
+
+* `models.DeleteResourceOperationResponse` was added
+
+#### `models.ScheduledActions` was modified
+
+* `virtualMachinesExecuteCreate(java.lang.String,models.ExecuteCreateRequest)` was added
+* `virtualMachinesExecuteCreateWithResponse(java.lang.String,models.ExecuteCreateRequest,com.azure.core.util.Context)` was added
+* `virtualMachinesExecuteDelete(java.lang.String,models.ExecuteDeleteRequest)` was added
+* `virtualMachinesExecuteDeleteWithResponse(java.lang.String,models.ExecuteDeleteRequest,com.azure.core.util.Context)` was added
 
 ## 1.0.0 (2025-01-22)
 

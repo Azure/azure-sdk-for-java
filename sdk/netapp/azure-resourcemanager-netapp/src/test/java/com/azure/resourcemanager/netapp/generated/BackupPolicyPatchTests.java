@@ -21,7 +21,7 @@ public final class BackupPolicyPatchTests {
         Assertions.assertEquals(514038226, model.dailyBackupsToKeep());
         Assertions.assertEquals(664044730, model.weeklyBackupsToKeep());
         Assertions.assertEquals(524245347, model.monthlyBackupsToKeep());
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertTrue(model.enabled());
     }
 
     @org.junit.jupiter.api.Test
@@ -38,7 +38,7 @@ public final class BackupPolicyPatchTests {
         Assertions.assertEquals(514038226, model.dailyBackupsToKeep());
         Assertions.assertEquals(664044730, model.weeklyBackupsToKeep());
         Assertions.assertEquals(524245347, model.monthlyBackupsToKeep());
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertTrue(model.enabled());
     }
 
     // Use "Map.of" if available

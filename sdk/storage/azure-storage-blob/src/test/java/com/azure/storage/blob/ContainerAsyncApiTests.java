@@ -1859,6 +1859,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     @Test
+    @PlaybackOnly
     public void rootExplicit() {
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(BlobContainerClient.ROOT_CONTAINER_NAME);
         // create root container if not exist.
@@ -1874,6 +1875,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     @Test
+    @PlaybackOnly
     public void rootExplicitInEndpoint() {
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(BlobContainerClient.ROOT_CONTAINER_NAME);
         // create root container if not exist.
@@ -1893,6 +1895,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     @Test
+    @PlaybackOnly
     public void blobClientBuilderRootImplicit() {
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(BlobContainerClient.ROOT_CONTAINER_NAME);
         // createroot container if not exist.
@@ -1917,6 +1920,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     @Test
+    @PlaybackOnly
     public void containerClientBuilderRootImplicit() {
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(BlobContainerClient.ROOT_CONTAINER_NAME);
         // create root container if not exist.
@@ -2096,6 +2100,44 @@ public class ContainerAsyncApiTests extends BlobTestBase {
                 .buildAsyncClient();
 
         StepVerifier.create(aadContainer.exists()).expectNext(true);
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
+    public void getSetAccessPolicyOAuth() {
+        // Arrange
+        BlobServiceAsyncClient serviceClient = getOAuthServiceAsyncClient();
+        BlobContainerAsyncClient containerClient = serviceClient.getBlobContainerAsyncClient(containerName);
+
+        Mono<Void> testMono = containerClient.exists().flatMap(exists -> {
+            if (!exists) {
+                return containerClient.create();
+            }
+            return Mono.empty();
+        })
+            .then(containerClient.getAccessPolicy())
+            .flatMap(response -> containerClient.setAccessPolicy(null, response.getIdentifiers()));
+
+        // Act & Assert
+        StepVerifier.create(testMono).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
+    @Test
+    public void getAccountInfoOAuth() {
+        // Arrange
+        BlobServiceAsyncClient serviceClient = getOAuthServiceAsyncClient();
+        BlobContainerAsyncClient containerClient = serviceClient.getBlobContainerAsyncClient(containerName);
+
+        Mono<Void> testMono = containerClient.exists().flatMap(exists -> {
+            if (!exists) {
+                return containerClient.create();
+            }
+            return Mono.empty();
+        }).then(containerClient.getAccountInfo()).then();
+
+        // Act & Assert
+        StepVerifier.create(testMono).verifyComplete();
     }
 
 }

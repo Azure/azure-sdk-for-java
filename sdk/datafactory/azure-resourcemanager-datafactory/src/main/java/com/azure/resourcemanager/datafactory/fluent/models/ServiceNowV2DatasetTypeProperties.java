@@ -87,7 +87,9 @@ public final class ServiceNowV2DatasetTypeProperties implements JsonSerializable
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("tableName", this.tableName);
+        if (this.tableName != null) {
+            jsonWriter.writeUntypedField("tableName", this.tableName);
+        }
         jsonWriter.writeStringField("valueType", this.valueType == null ? null : this.valueType.toString());
         return jsonWriter.writeEndObject();
     }

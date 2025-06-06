@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class VolumeRevertTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VolumeRevert model = BinaryData.fromString("{\"snapshotId\":\"dtmhrkwofyyvoqa\"}").toObject(VolumeRevert.class);
-        Assertions.assertEquals("dtmhrkwofyyvoqa", model.snapshotId());
+        VolumeRevert model = BinaryData.fromString("{\"snapshotId\":\"ggkzzlvmbmpa\"}").toObject(VolumeRevert.class);
+        Assertions.assertEquals("ggkzzlvmbmpa", model.snapshotId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeRevert model = new VolumeRevert().withSnapshotId("dtmhrkwofyyvoqa");
+        VolumeRevert model = new VolumeRevert().withSnapshotId("ggkzzlvmbmpa");
         model = BinaryData.fromObject(model).toObject(VolumeRevert.class);
-        Assertions.assertEquals("dtmhrkwofyyvoqa", model.snapshotId());
+        Assertions.assertEquals("ggkzzlvmbmpa", model.snapshotId());
     }
 }

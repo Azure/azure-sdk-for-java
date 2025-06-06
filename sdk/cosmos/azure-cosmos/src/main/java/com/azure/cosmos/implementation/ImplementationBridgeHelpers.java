@@ -20,12 +20,14 @@ import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.CosmosRegionSwitchHint;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.CosmosOperationPolicy;
+import com.azure.cosmos.CosmosRegionSwitchHint;
 import com.azure.cosmos.CosmosRequestContext;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GlobalThroughputControlConfig;
+import com.azure.cosmos.Http2ConnectionConfig;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
@@ -59,6 +61,7 @@ import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosMetricName;
+import com.azure.cosmos.models.CosmosOperationDetails;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -69,7 +72,6 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PriorityLevel;
-import com.azure.cosmos.models.CosmosOperationDetails;
 import com.azure.cosmos.models.ShowQueryMode;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -891,6 +893,7 @@ public class ImplementationBridgeHelpers {
                 OperationType operationType,
                 String operationId,
                 ConsistencyLevel consistencyLevel,
+                ReadConsistencyStrategy readConsistencyStrategy,
                 Integer maxItemCount,
                 CosmosDiagnosticsThresholds thresholds,
                 String trackingId,
@@ -1444,6 +1447,12 @@ public class ImplementationBridgeHelpers {
                 OperationType operationType,
                 ConsistencyLevel desiredConsistencyLevelOfOperation);
 
+            ReadConsistencyStrategy getEffectiveReadConsistencyStrategy(
+                CosmosAsyncClient client,
+                ResourceType resourceType,
+                OperationType operationType,
+                ReadConsistencyStrategy desiredReadConsistencyStrategy);
+
             CosmosDiagnosticsThresholds getEffectiveDiagnosticsThresholds(
                 CosmosAsyncClient client,
                 CosmosDiagnosticsThresholds operationLevelThresholds);
@@ -1458,6 +1467,43 @@ public class ImplementationBridgeHelpers {
         }
     }
 
+    public static final class Http2ConnectionConfigHelper {
+        private static final AtomicReference<Http2ConnectionConfigAccessor> accessor = new AtomicReference<>();
+        private static final AtomicBoolean http2ConnectionConfigClassLoaded = new AtomicBoolean(false);
+
+        private Http2ConnectionConfigHelper() {}
+
+        public static void setHttp2ConnectionConfigAccessor(final Http2ConnectionConfigAccessor newAccessor) {
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("Http2ConnectionConfigAccessor already initialized!");
+            } else {
+                logger.debug("Setting Http2ConnectionConfigAccessor...");
+                http2ConnectionConfigClassLoaded.set(true);
+            }
+        }
+
+        public static Http2ConnectionConfigAccessor getHttp2ConnectionConfigAccessor() {
+            if (!http2ConnectionConfigClassLoaded.get()) {
+                logger.debug("Initializing Http2ConnectionConfigAccessor...");
+                initializeAllAccessors();
+            }
+
+            Http2ConnectionConfigAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("Http2ConnectionConfigAccessor is not initialized yet!");
+            }
+
+            return snapshot;
+        }
+
+        public interface Http2ConnectionConfigAccessor {
+            String toDiagnosticsString(Http2ConnectionConfig cfg);
+            int getEffectiveMaxConcurrentStreams(Http2ConnectionConfig cfg);
+            int getEffectiveMaxConnectionPoolSize(Http2ConnectionConfig cfg);
+            int getEffectiveMinConnectionPoolSize(Http2ConnectionConfig cfg);
+            boolean isEffectivelyEnabled(Http2ConnectionConfig cfg);
+        }
+    }
     public static final class CosmosDiagnosticsThresholdsHelper {
         private static final AtomicReference<CosmosDiagnosticsThresholdsAccessor> accessor = new AtomicReference<>();
         private static final AtomicBoolean cosmosDiagnosticsThresholdsClassLoaded = new AtomicBoolean(false);
@@ -1812,6 +1858,40 @@ public class ImplementationBridgeHelpers {
 
             void setItemObjectMapper(CosmosItemSerializer serializer, ObjectMapper mapper);
             ObjectMapper getItemObjectMapper(CosmosItemSerializer serializer);
+        }
+    }
+
+    public static final class ReadConsistencyStrategyHelper {
+        private static final AtomicReference<ReadConsistencyStrategyAccessor> accessor = new AtomicReference<>();
+        private static final AtomicBoolean readConsistencyStrategyClassLoaded = new AtomicBoolean(false);
+
+        private ReadConsistencyStrategyHelper() {}
+
+        public static void setReadConsistencyStrategyAccessor(final ReadConsistencyStrategyAccessor newAccessor) {
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("ReadConsistencyStrategyAccessor already initialized!");
+            } else {
+                logger.debug("Setting ReadConsistencyStrategyAccessor...");
+                readConsistencyStrategyClassLoaded.set(true);
+            }
+        }
+
+        public static ReadConsistencyStrategyAccessor getReadConsistencyStrategyAccessor() {
+            if (!readConsistencyStrategyClassLoaded.get()) {
+                logger.debug("Initializing ReadConsistencyStrategyAccessor...");
+                initializeAllAccessors();
+            }
+
+            ReadConsistencyStrategyAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("ReadConsistencyStrategyAccessor is not initialized yet!");
+            }
+
+            return snapshot;
+        }
+
+        public interface ReadConsistencyStrategyAccessor {
+            ReadConsistencyStrategy createFromServiceSerializedFormat(String serviceSerializedFormat);
         }
     }
 }

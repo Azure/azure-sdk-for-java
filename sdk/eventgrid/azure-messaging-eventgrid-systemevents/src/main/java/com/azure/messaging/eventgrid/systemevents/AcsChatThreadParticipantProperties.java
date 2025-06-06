@@ -34,19 +34,16 @@ public final class AcsChatThreadParticipantProperties implements JsonSerializabl
      * The metadata of the user
      */
     @Generated
-    private final Map<String, String> metadata;
+    private Map<String, String> metadata;
 
     /**
      * Creates an instance of AcsChatThreadParticipantProperties class.
      * 
      * @param participantCommunicationIdentifier the participantCommunicationIdentifier value to set.
-     * @param metadata the metadata value to set.
      */
     @Generated
-    private AcsChatThreadParticipantProperties(CommunicationIdentifierModel participantCommunicationIdentifier,
-        Map<String, String> metadata) {
+    private AcsChatThreadParticipantProperties(CommunicationIdentifierModel participantCommunicationIdentifier) {
         this.participantCommunicationIdentifier = participantCommunicationIdentifier;
-        this.metadata = metadata;
     }
 
     /**
@@ -87,8 +84,8 @@ public final class AcsChatThreadParticipantProperties implements JsonSerializabl
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("participantCommunicationIdentifier", this.participantCommunicationIdentifier);
-        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -105,25 +102,26 @@ public final class AcsChatThreadParticipantProperties implements JsonSerializabl
     public static AcsChatThreadParticipantProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CommunicationIdentifierModel participantCommunicationIdentifier = null;
-            Map<String, String> metadata = null;
             String displayName = null;
+            Map<String, String> metadata = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("participantCommunicationIdentifier".equals(fieldName)) {
                     participantCommunicationIdentifier = CommunicationIdentifierModel.fromJson(reader);
-                } else if ("metadata".equals(fieldName)) {
-                    metadata = reader.readMap(reader1 -> reader1.getString());
                 } else if ("displayName".equals(fieldName)) {
                     displayName = reader.getString();
+                } else if ("metadata".equals(fieldName)) {
+                    metadata = reader.readMap(reader1 -> reader1.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
             AcsChatThreadParticipantProperties deserializedAcsChatThreadParticipantProperties
-                = new AcsChatThreadParticipantProperties(participantCommunicationIdentifier, metadata);
+                = new AcsChatThreadParticipantProperties(participantCommunicationIdentifier);
             deserializedAcsChatThreadParticipantProperties.displayName = displayName;
+            deserializedAcsChatThreadParticipantProperties.metadata = metadata;
 
             return deserializedAcsChatThreadParticipantProperties;
         });

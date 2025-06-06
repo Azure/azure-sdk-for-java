@@ -338,7 +338,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             ReflectionUtils.setTransportClient(storeReader, mockTransportClient);
             String query = "select * from c";
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-            options.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
+            options.setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL);
             Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer.queryItems(query,
                 options, InternalObjectNode.class)
                 .iterableByPage()
@@ -702,7 +702,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             ReflectionUtils.setTransportClient(storeReader, mockTransportClient);
 
             CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
-            requestOptions.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
+            requestOptions.setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL);
             CosmosItemResponse<TestPojo> readItemResponse = cosmosContainer.readItem(testPojo.getId(),
                 new PartitionKey(testPojo.getMypk()), requestOptions, TestPojo.class);
 
@@ -771,7 +771,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             String query = "select * from c";
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
             options.setPartitionKey(new PartitionKey(testPojo.getMypk()));
-            options.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
+            options.setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL);
             Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer.queryItems(query,
                 options, InternalObjectNode.class)
                 .iterableByPage()

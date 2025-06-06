@@ -6,6 +6,7 @@ package com.azure.v2.core.http.polling;
 import com.azure.v2.core.implementation.polling.PollContextRequiredException;
 import com.azure.v2.core.implementation.polling.PollingUtils;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -31,7 +32,7 @@ import static com.azure.v2.core.implementation.polling.PollingUtils.validateTime
  * @param <T> The type of poll response value
  * @param <U> The type of the final result of the long running operation
  *
- * @see com.azure.core.util.polling
+ * @see com.azure.v2.core.http.polling
  * @see Poller
  * @see PollResponse
  * @see LongRunningOperationStatus
@@ -70,8 +71,8 @@ final class SimplePoller<T, U> implements Poller<T, U> {
         Function<PollingContext<T>, U> fetchResultOperation) {
         Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
         if (pollInterval.isNegative() || pollInterval.isZero()) {
-            throw LOGGER.logThrowableAsWarning(
-                new IllegalArgumentException("Negative or zero value for 'defaultPollInterval' is not allowed."));
+            throw LOGGER.throwableAtWarning()
+                .log("Negative or zero value for 'defaultPollInterval' is not allowed.", IllegalArgumentException::new);
         }
         this.pollInterval = pollInterval;
         Objects.requireNonNull(syncActivationOperation, "'syncActivationOperation' cannot be null.");
@@ -92,7 +93,7 @@ final class SimplePoller<T, U> implements Poller<T, U> {
         try {
             pollingSemaphore.acquire();
         } catch (InterruptedException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
 
         try {

@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -21,36 +22,43 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
     /*
      * The chat message id
      */
+    @Generated
     private String messageId;
 
     /*
      * The communication identifier of the sender
      */
+    @Generated
     private CommunicationIdentifierModel senderCommunicationIdentifier;
 
     /*
      * The display name of the sender
      */
+    @Generated
     private String senderDisplayName;
 
     /*
      * The original compose time of the message
      */
+    @Generated
     private OffsetDateTime composeTime;
 
     /*
      * The type of the message
      */
+    @Generated
     private String type;
 
     /*
      * The version of the message
      */
+    @Generated
     private Long version;
 
     /**
      * Creates an instance of AcsChatMessageEventInThreadBaseProperties class.
      */
+    @Generated
     public AcsChatMessageEventInThreadBaseProperties() {
     }
 
@@ -59,6 +67,7 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
      * 
      * @return the messageId value.
      */
+    @Generated
     public String getMessageId() {
         return this.messageId;
     }
@@ -69,6 +78,7 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
      * @param messageId the messageId value to set.
      * @return the AcsChatMessageEventInThreadBaseProperties object itself.
      */
+    @Generated
     public AcsChatMessageEventInThreadBaseProperties setMessageId(String messageId) {
         this.messageId = messageId;
         return this;
@@ -79,6 +89,7 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
      * 
      * @return the senderCommunicationIdentifier value.
      */
+    @Generated
     public CommunicationIdentifierModel getSenderCommunicationIdentifier() {
         return this.senderCommunicationIdentifier;
     }
@@ -89,6 +100,7 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
      * @param senderCommunicationIdentifier the senderCommunicationIdentifier value to set.
      * @return the AcsChatMessageEventInThreadBaseProperties object itself.
      */
+    @Generated
     public AcsChatMessageEventInThreadBaseProperties
         setSenderCommunicationIdentifier(CommunicationIdentifierModel senderCommunicationIdentifier) {
         this.senderCommunicationIdentifier = senderCommunicationIdentifier;
@@ -100,6 +112,7 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
      * 
      * @return the senderDisplayName value.
      */
+    @Generated
     public String getSenderDisplayName() {
         return this.senderDisplayName;
     }
@@ -110,6 +123,7 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
      * @param senderDisplayName the senderDisplayName value to set.
      * @return the AcsChatMessageEventInThreadBaseProperties object itself.
      */
+    @Generated
     public AcsChatMessageEventInThreadBaseProperties setSenderDisplayName(String senderDisplayName) {
         this.senderDisplayName = senderDisplayName;
         return this;
@@ -120,6 +134,7 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
      * 
      * @return the composeTime value.
      */
+    @Generated
     public OffsetDateTime getComposeTime() {
         return this.composeTime;
     }
@@ -130,6 +145,7 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
      * @param composeTime the composeTime value to set.
      * @return the AcsChatMessageEventInThreadBaseProperties object itself.
      */
+    @Generated
     public AcsChatMessageEventInThreadBaseProperties setComposeTime(OffsetDateTime composeTime) {
         this.composeTime = composeTime;
         return this;
@@ -140,6 +156,7 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -150,6 +167,7 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
      * @param type the type value to set.
      * @return the AcsChatMessageEventInThreadBaseProperties object itself.
      */
+    @Generated
     public AcsChatMessageEventInThreadBaseProperties setType(String type) {
         this.type = type;
         return this;
@@ -160,6 +178,7 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
      * 
      * @return the version value.
      */
+    @Generated
     public Long getVersion() {
         return this.version;
     }
@@ -170,6 +189,7 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
      * @param version the version value to set.
      * @return the AcsChatMessageEventInThreadBaseProperties object itself.
      */
+    @Generated
     public AcsChatMessageEventInThreadBaseProperties setVersion(Long version) {
         this.version = version;
         return this;
@@ -178,6 +198,7 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AcsChatMessageEventInThreadBaseProperties setTransactionId(String transactionId) {
         super.setTransactionId(transactionId);
@@ -187,6 +208,7 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AcsChatMessageEventInThreadBaseProperties setThreadId(String threadId) {
         super.setThreadId(threadId);
@@ -196,6 +218,7 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -203,10 +226,10 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
         jsonWriter.writeStringField("threadId", getThreadId());
         jsonWriter.writeStringField("messageId", this.messageId);
         jsonWriter.writeJsonField("senderCommunicationIdentifier", this.senderCommunicationIdentifier);
+        jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("senderDisplayName", this.senderDisplayName);
         jsonWriter.writeStringField("composeTime",
             this.composeTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.composeTime));
-        jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeNumberField("version", this.version);
         return jsonWriter.writeEndObject();
     }
@@ -217,8 +240,10 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsChatMessageEventInThreadBaseProperties if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsChatMessageEventInThreadBaseProperties.
      */
+    @Generated
     public static AcsChatMessageEventInThreadBaseProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsChatMessageEventInThreadBaseProperties deserializedAcsChatMessageEventInThreadBaseProperties
@@ -236,13 +261,13 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
                 } else if ("senderCommunicationIdentifier".equals(fieldName)) {
                     deserializedAcsChatMessageEventInThreadBaseProperties.senderCommunicationIdentifier
                         = CommunicationIdentifierModel.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedAcsChatMessageEventInThreadBaseProperties.type = reader.getString();
                 } else if ("senderDisplayName".equals(fieldName)) {
                     deserializedAcsChatMessageEventInThreadBaseProperties.senderDisplayName = reader.getString();
                 } else if ("composeTime".equals(fieldName)) {
                     deserializedAcsChatMessageEventInThreadBaseProperties.composeTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("type".equals(fieldName)) {
-                    deserializedAcsChatMessageEventInThreadBaseProperties.type = reader.getString();
                 } else if ("version".equals(fieldName)) {
                     deserializedAcsChatMessageEventInThreadBaseProperties.version
                         = reader.getNullable(JsonReader::getLong);

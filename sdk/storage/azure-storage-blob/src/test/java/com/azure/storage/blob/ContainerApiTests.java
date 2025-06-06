@@ -14,6 +14,7 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobAccessPolicy;
 import com.azure.storage.blob.models.BlobAudience;
+import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobItem;
@@ -1759,6 +1760,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    @PlaybackOnly
     public void rootExplicit() {
         cc = primaryBlobServiceClient.getBlobContainerClient(BlobContainerClient.ROOT_CONTAINER_NAME);
         // create root container if not exist.
@@ -1770,6 +1772,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    @PlaybackOnly
     public void rootExplicitInEndpoint() {
         cc = primaryBlobServiceClient.getBlobContainerClient(BlobContainerClient.ROOT_CONTAINER_NAME);
         // create root container if not exist.
@@ -1787,6 +1790,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    @PlaybackOnly
     public void blobClientBuilderRootImplicit() {
         cc = primaryBlobServiceClient.getBlobContainerClient(BlobContainerClient.ROOT_CONTAINER_NAME);
         // createroot container if not exist.
@@ -1809,6 +1813,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    @PlaybackOnly
     public void containerClientBuilderRootImplicit() {
         cc = primaryBlobServiceClient.getBlobContainerClient(BlobContainerClient.ROOT_CONTAINER_NAME);
         // create root container if not exist.
@@ -1974,6 +1979,35 @@ public class ContainerApiTests extends BlobTestBase {
             = getContainerClientBuilderWithTokenCredential(cc.getBlobContainerUrl()).audience(audience).buildClient();
 
         assertTrue(aadContainer.exists());
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
+    public void getSetAccessPolicyOAuth() {
+        // Arrange
+        BlobServiceClient serviceClient = getOAuthServiceClient();
+
+        if (!cc.exists()) {
+            cc.create();
+        }
+        cc = serviceClient.getBlobContainerClient(containerName);
+
+        // Act
+        BlobContainerAccessPolicies response = cc.getAccessPolicy();
+        assertDoesNotThrow(() -> cc.setAccessPolicy(null, response.getIdentifiers()));
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
+    @Test
+    public void getAccountInfoOAuth() {
+        // Arrange
+        BlobServiceClient serviceClient = getOAuthServiceClient();
+
+        if (!cc.exists()) {
+            cc.create();
+        }
+        cc = serviceClient.getBlobContainerClient(containerName);
+        assertDoesNotThrow(() -> cc.getAccountInfo(null));
     }
 
     // TODO: Reintroduce these tests once service starts supporting it.

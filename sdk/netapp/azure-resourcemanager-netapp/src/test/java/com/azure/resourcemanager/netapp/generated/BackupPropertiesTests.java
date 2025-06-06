@@ -16,7 +16,7 @@ public final class BackupPropertiesTests {
             .toObject(BackupProperties.class);
         Assertions.assertEquals("ntiew", model.label());
         Assertions.assertEquals("gohbuffkmrq", model.volumeResourceId());
-        Assertions.assertEquals(true, model.useExistingSnapshot());
+        Assertions.assertTrue(model.useExistingSnapshot());
         Assertions.assertEquals("hmxtdr", model.snapshotName());
     }
 
@@ -29,7 +29,7 @@ public final class BackupPropertiesTests {
         model = BinaryData.fromObject(model).toObject(BackupProperties.class);
         Assertions.assertEquals("ntiew", model.label());
         Assertions.assertEquals("gohbuffkmrq", model.volumeResourceId());
-        Assertions.assertEquals(true, model.useExistingSnapshot());
+        Assertions.assertTrue(model.useExistingSnapshot());
         Assertions.assertEquals("hmxtdr", model.snapshotName());
     }
 }

@@ -15,7 +15,7 @@ autorest
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.42'
+use: '@autorest/java@4.1.50'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/d18a495685ccec837b72891b4deea017f62e8190/specification/storage/data-plane/Microsoft.FileStorage/stable/2025-05-05/file.json
 java: true
 output-folder: ../
@@ -26,10 +26,11 @@ enable-sync-stack: true
 default-http-exception-type: com.azure.storage.file.share.implementation.models.ShareStorageExceptionInternal
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: ShareFileHttpHeaders,ShareServiceProperties,ShareCorsRule,Range,FileRange,ClearRange,ShareFileRangeList,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,ShareAccessTier,ShareRootSquash,ShareRetentionPolicy,ShareProtocolSettings,ShareSmbSettings,SmbMultichannel,FileLastWrittenMode,ShareTokenIntent,AccessRight,FilePermissionFormat,NfsFileType,ModeCopyMode,OwnerCopyMode
+custom-types: ShareFileHttpHeaders,ShareServiceProperties,ShareCorsRule,Range,FileRange,ClearRange,ShareFileRangeList,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,ShareAccessTier,ShareRootSquash,ShareRetentionPolicy,ShareProtocolSettings,ShareSmbSettings,SmbMultichannel,FileLastWrittenMode,ShareTokenIntent,ShareFileHandleAccessRights,FilePermissionFormat,NfsFileType,ModeCopyMode,OwnerCopyMode
 customization-class: src/main/java/ShareStorageCustomization.java
 use-input-stream-for-binary: true
 disable-client-builder: true
+use-eclipse-language-server: false
 ```
 
 ### Query Parameters
@@ -121,6 +122,18 @@ directive:
   where: $["x-ms-paths"]
   transform: >
         const op = $["/{shareName}/{directory}/{fileName}?restype=hardlink"];
+        op.put.responses["201"].headers["x-ms-file-creation-time"].format = "date-time";
+        op.put.responses["201"].headers["x-ms-file-last-write-time"].format = "date-time";
+        op.put.responses["201"].headers["x-ms-file-change-time"].format = "date-time";
+```
+
+### /{shareName}/{directory}/{fileName}?restype=symboliclink
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+        const op = $["/{shareName}/{directory}/{fileName}?restype=symboliclink"];
         op.put.responses["201"].headers["x-ms-file-creation-time"].format = "date-time";
         op.put.responses["201"].headers["x-ms-file-last-write-time"].format = "date-time";
         op.put.responses["201"].headers["x-ms-file-change-time"].format = "date-time";
@@ -417,6 +430,13 @@ directive:
   transform: >
     $.xml = {"name": "Ranges"};
 ```
-        
 
-
+### Rename AccessRight to ShareFileHandleAccessRights
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.AccessRight
+  transform: >
+    $.xml = {"name": "AccessRight"};
+    $["x-ms-enum"].name = "ShareFileHandleAccessRights";
+```

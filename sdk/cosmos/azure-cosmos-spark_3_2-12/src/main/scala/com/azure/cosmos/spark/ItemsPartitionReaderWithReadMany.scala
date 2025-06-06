@@ -88,7 +88,7 @@ private[spark] case class ItemsPartitionReaderWithReadMany
   )
 
   private val clientCacheItem = CosmosClientCache(
-    CosmosClientConfiguration(config, readConfig.forceEventualConsistency, sparkEnvironmentInfo),
+    CosmosClientConfiguration(config, readConfig.readConsistencyStrategy, sparkEnvironmentInfo),
     Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
     s"ItemsPartitionReader($feedRange, ${containerTargetConfig.database}.${containerTargetConfig.container})"
   )

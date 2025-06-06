@@ -7,6 +7,7 @@ package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 import com.azure.ai.formrecognizer.documentanalysis.models.FontStyle;
 import com.azure.ai.formrecognizer.documentanalysis.models.FontWeight;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,42 +24,50 @@ public final class DocumentStyle implements JsonSerializable<DocumentStyle> {
     /*
      * Is content handwritten?
      */
+    @Generated
     private Boolean isHandwritten;
 
     /*
      * Visually most similar font from among the set of supported font families, with fallback fonts following CSS
      * convention (ex. 'Arial, sans-serif').
      */
+    @Generated
     private String similarFontFamily;
 
     /*
      * Font style.
      */
+    @Generated
     private FontStyle fontStyle;
 
     /*
      * Font weight.
      */
+    @Generated
     private FontWeight fontWeight;
 
     /*
      * Foreground color in #rrggbb hexadecimal format.
      */
+    @Generated
     private String color;
 
     /*
      * Background color in #rrggbb hexadecimal format..
      */
+    @Generated
     private String backgroundColor;
 
     /*
      * Location of the text elements in the concatenated content the style applies to.
      */
+    @Generated
     private final List<DocumentSpan> spans;
 
     /*
      * Confidence of correctly identifying the style.
      */
+    @Generated
     private final float confidence;
 
     /**
@@ -67,6 +76,7 @@ public final class DocumentStyle implements JsonSerializable<DocumentStyle> {
      * @param spans the spans value to set.
      * @param confidence the confidence value to set.
      */
+    @Generated
     public DocumentStyle(List<DocumentSpan> spans, float confidence) {
         this.spans = spans;
         this.confidence = confidence;
@@ -77,6 +87,7 @@ public final class DocumentStyle implements JsonSerializable<DocumentStyle> {
      * 
      * @return the isHandwritten value.
      */
+    @Generated
     public Boolean isHandwritten() {
         return this.isHandwritten;
     }
@@ -87,6 +98,7 @@ public final class DocumentStyle implements JsonSerializable<DocumentStyle> {
      * @param isHandwritten the isHandwritten value to set.
      * @return the DocumentStyle object itself.
      */
+    @Generated
     public DocumentStyle setIsHandwritten(Boolean isHandwritten) {
         this.isHandwritten = isHandwritten;
         return this;
@@ -98,6 +110,7 @@ public final class DocumentStyle implements JsonSerializable<DocumentStyle> {
      * 
      * @return the similarFontFamily value.
      */
+    @Generated
     public String getSimilarFontFamily() {
         return this.similarFontFamily;
     }
@@ -109,6 +122,7 @@ public final class DocumentStyle implements JsonSerializable<DocumentStyle> {
      * @param similarFontFamily the similarFontFamily value to set.
      * @return the DocumentStyle object itself.
      */
+    @Generated
     public DocumentStyle setSimilarFontFamily(String similarFontFamily) {
         this.similarFontFamily = similarFontFamily;
         return this;
@@ -119,6 +133,7 @@ public final class DocumentStyle implements JsonSerializable<DocumentStyle> {
      * 
      * @return the fontStyle value.
      */
+    @Generated
     public FontStyle getFontStyle() {
         return this.fontStyle;
     }
@@ -129,6 +144,7 @@ public final class DocumentStyle implements JsonSerializable<DocumentStyle> {
      * @param fontStyle the fontStyle value to set.
      * @return the DocumentStyle object itself.
      */
+    @Generated
     public DocumentStyle setFontStyle(FontStyle fontStyle) {
         this.fontStyle = fontStyle;
         return this;
@@ -139,6 +155,7 @@ public final class DocumentStyle implements JsonSerializable<DocumentStyle> {
      * 
      * @return the fontWeight value.
      */
+    @Generated
     public FontWeight getFontWeight() {
         return this.fontWeight;
     }
@@ -149,6 +166,7 @@ public final class DocumentStyle implements JsonSerializable<DocumentStyle> {
      * @param fontWeight the fontWeight value to set.
      * @return the DocumentStyle object itself.
      */
+    @Generated
     public DocumentStyle setFontWeight(FontWeight fontWeight) {
         this.fontWeight = fontWeight;
         return this;
@@ -159,6 +177,7 @@ public final class DocumentStyle implements JsonSerializable<DocumentStyle> {
      * 
      * @return the color value.
      */
+    @Generated
     public String getColor() {
         return this.color;
     }
@@ -169,6 +188,7 @@ public final class DocumentStyle implements JsonSerializable<DocumentStyle> {
      * @param color the color value to set.
      * @return the DocumentStyle object itself.
      */
+    @Generated
     public DocumentStyle setColor(String color) {
         this.color = color;
         return this;
@@ -179,6 +199,7 @@ public final class DocumentStyle implements JsonSerializable<DocumentStyle> {
      * 
      * @return the backgroundColor value.
      */
+    @Generated
     public String getBackgroundColor() {
         return this.backgroundColor;
     }
@@ -189,6 +210,7 @@ public final class DocumentStyle implements JsonSerializable<DocumentStyle> {
      * @param backgroundColor the backgroundColor value to set.
      * @return the DocumentStyle object itself.
      */
+    @Generated
     public DocumentStyle setBackgroundColor(String backgroundColor) {
         this.backgroundColor = backgroundColor;
         return this;
@@ -199,6 +221,7 @@ public final class DocumentStyle implements JsonSerializable<DocumentStyle> {
      * 
      * @return the spans value.
      */
+    @Generated
     public List<DocumentSpan> getSpans() {
         return this.spans;
     }
@@ -208,6 +231,7 @@ public final class DocumentStyle implements JsonSerializable<DocumentStyle> {
      * 
      * @return the confidence value.
      */
+    @Generated
     public float getConfidence() {
         return this.confidence;
     }
@@ -215,6 +239,7 @@ public final class DocumentStyle implements JsonSerializable<DocumentStyle> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -238,6 +263,7 @@ public final class DocumentStyle implements JsonSerializable<DocumentStyle> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentStyle.
      */
+    @Generated
     public static DocumentStyle fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean spansFound = false;

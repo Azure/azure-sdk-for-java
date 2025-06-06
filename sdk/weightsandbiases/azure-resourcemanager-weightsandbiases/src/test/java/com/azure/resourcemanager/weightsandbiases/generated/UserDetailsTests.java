@@ -12,27 +12,27 @@ public final class UserDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserDetails model = BinaryData.fromString(
-            "{\"firstName\":\"ozwyiftyhxhuro\",\"lastName\":\"tyxolniwpwc\",\"emailAddress\":\"jfkgiawxk\",\"upn\":\"ypl\",\"phoneNumber\":\"kbasyypn\"}")
+            "{\"firstName\":\"yb\",\"lastName\":\"qedqytbciqfoufl\",\"emailAddress\":\"nkzsmodmglou\",\"upn\":\"b\",\"phoneNumber\":\"tmut\"}")
             .toObject(UserDetails.class);
-        Assertions.assertEquals("ozwyiftyhxhuro", model.firstName());
-        Assertions.assertEquals("tyxolniwpwc", model.lastName());
-        Assertions.assertEquals("jfkgiawxk", model.emailAddress());
-        Assertions.assertEquals("ypl", model.upn());
-        Assertions.assertEquals("kbasyypn", model.phoneNumber());
+        Assertions.assertEquals("yb", model.firstName());
+        Assertions.assertEquals("qedqytbciqfoufl", model.lastName());
+        Assertions.assertEquals("nkzsmodmglou", model.emailAddress());
+        Assertions.assertEquals("b", model.upn());
+        Assertions.assertEquals("tmut", model.phoneNumber());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserDetails model = new UserDetails().withFirstName("ozwyiftyhxhuro")
-            .withLastName("tyxolniwpwc")
-            .withEmailAddress("jfkgiawxk")
-            .withUpn("ypl")
-            .withPhoneNumber("kbasyypn");
+        UserDetails model = new UserDetails().withFirstName("yb")
+            .withLastName("qedqytbciqfoufl")
+            .withEmailAddress("nkzsmodmglou")
+            .withUpn("b")
+            .withPhoneNumber("tmut");
         model = BinaryData.fromObject(model).toObject(UserDetails.class);
-        Assertions.assertEquals("ozwyiftyhxhuro", model.firstName());
-        Assertions.assertEquals("tyxolniwpwc", model.lastName());
-        Assertions.assertEquals("jfkgiawxk", model.emailAddress());
-        Assertions.assertEquals("ypl", model.upn());
-        Assertions.assertEquals("kbasyypn", model.phoneNumber());
+        Assertions.assertEquals("yb", model.firstName());
+        Assertions.assertEquals("qedqytbciqfoufl", model.lastName());
+        Assertions.assertEquals("nkzsmodmglou", model.emailAddress());
+        Assertions.assertEquals("b", model.upn());
+        Assertions.assertEquals("tmut", model.phoneNumber());
     }
 }

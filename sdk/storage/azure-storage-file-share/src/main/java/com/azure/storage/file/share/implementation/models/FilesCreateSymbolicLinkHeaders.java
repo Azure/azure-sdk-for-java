@@ -5,6 +5,7 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
@@ -19,76 +20,91 @@ public final class FilesCreateSymbolicLinkHeaders {
     /*
      * The x-ms-group property.
      */
+    @Generated
     private String xMsGroup;
 
     /*
      * The x-ms-version property.
      */
+    @Generated
     private String xMsVersion;
 
     /*
      * The x-ms-file-id property.
      */
+    @Generated
     private String xMsFileId;
 
     /*
      * The x-ms-file-creation-time property.
      */
-    private DateTimeRfc1123 xMsFileCreationTime;
+    @Generated
+    private OffsetDateTime xMsFileCreationTime;
 
     /*
      * The x-ms-file-file-type property.
      */
+    @Generated
     private NfsFileType xMsFileFileType;
 
     /*
      * The Last-Modified property.
      */
+    @Generated
     private DateTimeRfc1123 lastModified;
 
     /*
      * The Date property.
      */
+    @Generated
     private DateTimeRfc1123 date;
 
     /*
      * The x-ms-mode property.
      */
+    @Generated
     private String xMsMode;
 
     /*
      * The ETag property.
      */
+    @Generated
     private String eTag;
 
     /*
      * The x-ms-file-change-time property.
      */
-    private DateTimeRfc1123 xMsFileChangeTime;
+    @Generated
+    private OffsetDateTime xMsFileChangeTime;
 
     /*
      * The x-ms-file-parent-id property.
      */
+    @Generated
     private String xMsFileParentId;
 
     /*
      * The x-ms-request-id property.
      */
+    @Generated
     private String xMsRequestId;
 
     /*
      * The x-ms-file-last-write-time property.
      */
-    private DateTimeRfc1123 xMsFileLastWriteTime;
+    @Generated
+    private OffsetDateTime xMsFileLastWriteTime;
 
     /*
      * The x-ms-client-request-id property.
      */
+    @Generated
     private String xMsClientRequestId;
 
     /*
      * The x-ms-owner property.
      */
+    @Generated
     private String xMsOwner;
 
     private static final HttpHeaderName X_MS_GROUP = HttpHeaderName.fromString("x-ms-group");
@@ -124,31 +140,43 @@ public final class FilesCreateSymbolicLinkHeaders {
         this.xMsFileId = rawHeaders.getValue(X_MS_FILE_ID);
         String xMsFileCreationTime = rawHeaders.getValue(X_MS_FILE_CREATION_TIME);
         if (xMsFileCreationTime != null) {
-            this.xMsFileCreationTime = new DateTimeRfc1123(xMsFileCreationTime);
+            this.xMsFileCreationTime = OffsetDateTime.parse(xMsFileCreationTime);
+        } else {
+            this.xMsFileCreationTime = null;
         }
         String xMsFileFileType = rawHeaders.getValue(X_MS_FILE_FILE_TYPE);
         if (xMsFileFileType != null) {
             this.xMsFileFileType = NfsFileType.fromString(xMsFileFileType);
+        } else {
+            this.xMsFileFileType = null;
         }
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
+        } else {
+            this.lastModified = null;
         }
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
+        } else {
+            this.date = null;
         }
         this.xMsMode = rawHeaders.getValue(X_MS_MODE);
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         String xMsFileChangeTime = rawHeaders.getValue(X_MS_FILE_CHANGE_TIME);
         if (xMsFileChangeTime != null) {
-            this.xMsFileChangeTime = new DateTimeRfc1123(xMsFileChangeTime);
+            this.xMsFileChangeTime = OffsetDateTime.parse(xMsFileChangeTime);
+        } else {
+            this.xMsFileChangeTime = null;
         }
         this.xMsFileParentId = rawHeaders.getValue(X_MS_FILE_PARENT_ID);
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         String xMsFileLastWriteTime = rawHeaders.getValue(X_MS_FILE_LAST_WRITE_TIME);
         if (xMsFileLastWriteTime != null) {
-            this.xMsFileLastWriteTime = new DateTimeRfc1123(xMsFileLastWriteTime);
+            this.xMsFileLastWriteTime = OffsetDateTime.parse(xMsFileLastWriteTime);
+        } else {
+            this.xMsFileLastWriteTime = null;
         }
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         this.xMsOwner = rawHeaders.getValue(X_MS_OWNER);
@@ -159,6 +187,7 @@ public final class FilesCreateSymbolicLinkHeaders {
      * 
      * @return the xMsGroup value.
      */
+    @Generated
     public String getXMsGroup() {
         return this.xMsGroup;
     }
@@ -169,6 +198,7 @@ public final class FilesCreateSymbolicLinkHeaders {
      * @param xMsGroup the xMsGroup value to set.
      * @return the FilesCreateSymbolicLinkHeaders object itself.
      */
+    @Generated
     public FilesCreateSymbolicLinkHeaders setXMsGroup(String xMsGroup) {
         this.xMsGroup = xMsGroup;
         return this;
@@ -179,6 +209,7 @@ public final class FilesCreateSymbolicLinkHeaders {
      * 
      * @return the xMsVersion value.
      */
+    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -189,6 +220,7 @@ public final class FilesCreateSymbolicLinkHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the FilesCreateSymbolicLinkHeaders object itself.
      */
+    @Generated
     public FilesCreateSymbolicLinkHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -199,6 +231,7 @@ public final class FilesCreateSymbolicLinkHeaders {
      * 
      * @return the xMsFileId value.
      */
+    @Generated
     public String getXMsFileId() {
         return this.xMsFileId;
     }
@@ -209,6 +242,7 @@ public final class FilesCreateSymbolicLinkHeaders {
      * @param xMsFileId the xMsFileId value to set.
      * @return the FilesCreateSymbolicLinkHeaders object itself.
      */
+    @Generated
     public FilesCreateSymbolicLinkHeaders setXMsFileId(String xMsFileId) {
         this.xMsFileId = xMsFileId;
         return this;
@@ -219,11 +253,9 @@ public final class FilesCreateSymbolicLinkHeaders {
      * 
      * @return the xMsFileCreationTime value.
      */
+    @Generated
     public OffsetDateTime getXMsFileCreationTime() {
-        if (this.xMsFileCreationTime == null) {
-            return null;
-        }
-        return this.xMsFileCreationTime.getDateTime();
+        return this.xMsFileCreationTime;
     }
 
     /**
@@ -232,12 +264,9 @@ public final class FilesCreateSymbolicLinkHeaders {
      * @param xMsFileCreationTime the xMsFileCreationTime value to set.
      * @return the FilesCreateSymbolicLinkHeaders object itself.
      */
+    @Generated
     public FilesCreateSymbolicLinkHeaders setXMsFileCreationTime(OffsetDateTime xMsFileCreationTime) {
-        if (xMsFileCreationTime == null) {
-            this.xMsFileCreationTime = null;
-        } else {
-            this.xMsFileCreationTime = new DateTimeRfc1123(xMsFileCreationTime);
-        }
+        this.xMsFileCreationTime = xMsFileCreationTime;
         return this;
     }
 
@@ -246,6 +275,7 @@ public final class FilesCreateSymbolicLinkHeaders {
      * 
      * @return the xMsFileFileType value.
      */
+    @Generated
     public NfsFileType getXMsFileFileType() {
         return this.xMsFileFileType;
     }
@@ -256,6 +286,7 @@ public final class FilesCreateSymbolicLinkHeaders {
      * @param xMsFileFileType the xMsFileFileType value to set.
      * @return the FilesCreateSymbolicLinkHeaders object itself.
      */
+    @Generated
     public FilesCreateSymbolicLinkHeaders setXMsFileFileType(NfsFileType xMsFileFileType) {
         this.xMsFileFileType = xMsFileFileType;
         return this;
@@ -266,6 +297,7 @@ public final class FilesCreateSymbolicLinkHeaders {
      * 
      * @return the lastModified value.
      */
+    @Generated
     public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
@@ -279,6 +311,7 @@ public final class FilesCreateSymbolicLinkHeaders {
      * @param lastModified the lastModified value to set.
      * @return the FilesCreateSymbolicLinkHeaders object itself.
      */
+    @Generated
     public FilesCreateSymbolicLinkHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
@@ -293,6 +326,7 @@ public final class FilesCreateSymbolicLinkHeaders {
      * 
      * @return the date value.
      */
+    @Generated
     public OffsetDateTime getDate() {
         if (this.date == null) {
             return null;
@@ -306,6 +340,7 @@ public final class FilesCreateSymbolicLinkHeaders {
      * @param date the date value to set.
      * @return the FilesCreateSymbolicLinkHeaders object itself.
      */
+    @Generated
     public FilesCreateSymbolicLinkHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;
@@ -320,6 +355,7 @@ public final class FilesCreateSymbolicLinkHeaders {
      * 
      * @return the xMsMode value.
      */
+    @Generated
     public String getXMsMode() {
         return this.xMsMode;
     }
@@ -330,6 +366,7 @@ public final class FilesCreateSymbolicLinkHeaders {
      * @param xMsMode the xMsMode value to set.
      * @return the FilesCreateSymbolicLinkHeaders object itself.
      */
+    @Generated
     public FilesCreateSymbolicLinkHeaders setXMsMode(String xMsMode) {
         this.xMsMode = xMsMode;
         return this;
@@ -340,6 +377,7 @@ public final class FilesCreateSymbolicLinkHeaders {
      * 
      * @return the eTag value.
      */
+    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -350,6 +388,7 @@ public final class FilesCreateSymbolicLinkHeaders {
      * @param eTag the eTag value to set.
      * @return the FilesCreateSymbolicLinkHeaders object itself.
      */
+    @Generated
     public FilesCreateSymbolicLinkHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -360,11 +399,9 @@ public final class FilesCreateSymbolicLinkHeaders {
      * 
      * @return the xMsFileChangeTime value.
      */
+    @Generated
     public OffsetDateTime getXMsFileChangeTime() {
-        if (this.xMsFileChangeTime == null) {
-            return null;
-        }
-        return this.xMsFileChangeTime.getDateTime();
+        return this.xMsFileChangeTime;
     }
 
     /**
@@ -373,12 +410,9 @@ public final class FilesCreateSymbolicLinkHeaders {
      * @param xMsFileChangeTime the xMsFileChangeTime value to set.
      * @return the FilesCreateSymbolicLinkHeaders object itself.
      */
+    @Generated
     public FilesCreateSymbolicLinkHeaders setXMsFileChangeTime(OffsetDateTime xMsFileChangeTime) {
-        if (xMsFileChangeTime == null) {
-            this.xMsFileChangeTime = null;
-        } else {
-            this.xMsFileChangeTime = new DateTimeRfc1123(xMsFileChangeTime);
-        }
+        this.xMsFileChangeTime = xMsFileChangeTime;
         return this;
     }
 
@@ -387,6 +421,7 @@ public final class FilesCreateSymbolicLinkHeaders {
      * 
      * @return the xMsFileParentId value.
      */
+    @Generated
     public String getXMsFileParentId() {
         return this.xMsFileParentId;
     }
@@ -397,6 +432,7 @@ public final class FilesCreateSymbolicLinkHeaders {
      * @param xMsFileParentId the xMsFileParentId value to set.
      * @return the FilesCreateSymbolicLinkHeaders object itself.
      */
+    @Generated
     public FilesCreateSymbolicLinkHeaders setXMsFileParentId(String xMsFileParentId) {
         this.xMsFileParentId = xMsFileParentId;
         return this;
@@ -407,6 +443,7 @@ public final class FilesCreateSymbolicLinkHeaders {
      * 
      * @return the xMsRequestId value.
      */
+    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -417,6 +454,7 @@ public final class FilesCreateSymbolicLinkHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the FilesCreateSymbolicLinkHeaders object itself.
      */
+    @Generated
     public FilesCreateSymbolicLinkHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -427,11 +465,9 @@ public final class FilesCreateSymbolicLinkHeaders {
      * 
      * @return the xMsFileLastWriteTime value.
      */
+    @Generated
     public OffsetDateTime getXMsFileLastWriteTime() {
-        if (this.xMsFileLastWriteTime == null) {
-            return null;
-        }
-        return this.xMsFileLastWriteTime.getDateTime();
+        return this.xMsFileLastWriteTime;
     }
 
     /**
@@ -440,12 +476,9 @@ public final class FilesCreateSymbolicLinkHeaders {
      * @param xMsFileLastWriteTime the xMsFileLastWriteTime value to set.
      * @return the FilesCreateSymbolicLinkHeaders object itself.
      */
+    @Generated
     public FilesCreateSymbolicLinkHeaders setXMsFileLastWriteTime(OffsetDateTime xMsFileLastWriteTime) {
-        if (xMsFileLastWriteTime == null) {
-            this.xMsFileLastWriteTime = null;
-        } else {
-            this.xMsFileLastWriteTime = new DateTimeRfc1123(xMsFileLastWriteTime);
-        }
+        this.xMsFileLastWriteTime = xMsFileLastWriteTime;
         return this;
     }
 
@@ -454,6 +487,7 @@ public final class FilesCreateSymbolicLinkHeaders {
      * 
      * @return the xMsClientRequestId value.
      */
+    @Generated
     public String getXMsClientRequestId() {
         return this.xMsClientRequestId;
     }
@@ -464,6 +498,7 @@ public final class FilesCreateSymbolicLinkHeaders {
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the FilesCreateSymbolicLinkHeaders object itself.
      */
+    @Generated
     public FilesCreateSymbolicLinkHeaders setXMsClientRequestId(String xMsClientRequestId) {
         this.xMsClientRequestId = xMsClientRequestId;
         return this;
@@ -474,6 +509,7 @@ public final class FilesCreateSymbolicLinkHeaders {
      * 
      * @return the xMsOwner value.
      */
+    @Generated
     public String getXMsOwner() {
         return this.xMsOwner;
     }
@@ -484,6 +520,7 @@ public final class FilesCreateSymbolicLinkHeaders {
      * @param xMsOwner the xMsOwner value to set.
      * @return the FilesCreateSymbolicLinkHeaders object itself.
      */
+    @Generated
     public FilesCreateSymbolicLinkHeaders setXMsOwner(String xMsOwner) {
         this.xMsOwner = xMsOwner;
         return this;

@@ -16,7 +16,7 @@ public final class BackupInnerTests {
             .toObject(BackupInner.class);
         Assertions.assertEquals("plodqkdlwwqfbu", model.label());
         Assertions.assertEquals("w", model.volumeResourceId());
-        Assertions.assertEquals(false, model.useExistingSnapshot());
+        Assertions.assertFalse(model.useExistingSnapshot());
         Assertions.assertEquals("rtawcoezb", model.snapshotName());
     }
 
@@ -29,7 +29,7 @@ public final class BackupInnerTests {
         model = BinaryData.fromObject(model).toObject(BackupInner.class);
         Assertions.assertEquals("plodqkdlwwqfbu", model.label());
         Assertions.assertEquals("w", model.volumeResourceId());
-        Assertions.assertEquals(false, model.useExistingSnapshot());
+        Assertions.assertFalse(model.useExistingSnapshot());
         Assertions.assertEquals("rtawcoezb", model.snapshotName());
     }
 }

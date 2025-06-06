@@ -69,6 +69,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
         this.settings = settings;
         this.checkpointer = checkPointer;
         this.lease = lease;
+        this.lastServerContinuationToken = this.lease.getContinuationToken();
 
         ChangeFeedState state = settings.getStartState();
         this.options = ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(state);

@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -16,6 +17,7 @@ public final class CustomModelsAuthorizeModelCopyHeaders {
     /*
      * The Location property.
      */
+    @Generated
     private String location;
 
     // HttpHeaders containing the raw property values.
@@ -33,6 +35,7 @@ public final class CustomModelsAuthorizeModelCopyHeaders {
      * 
      * @return the location value.
      */
+    @Generated
     public String getLocation() {
         return this.location;
     }
@@ -43,6 +46,7 @@ public final class CustomModelsAuthorizeModelCopyHeaders {
      * @param location the location value to set.
      * @return the CustomModelsAuthorizeModelCopyHeaders object itself.
      */
+    @Generated
     public CustomModelsAuthorizeModelCopyHeaders setLocation(String location) {
         this.location = location;
         return this;

@@ -10,7 +10,8 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 public final class ServersStartSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/ServerStart.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
+     * ServerStart.json
      */
     /**
      * Sample code: ServerStart.

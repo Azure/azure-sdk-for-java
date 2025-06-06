@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
@@ -139,7 +141,30 @@ class ChangeFeedQueryImpl<T> {
             headers.put(HttpConstants.HttpHeaders.POPULATE_QUOTA_INFO, String.valueOf(true));
         }
 
-        if (this.client.getConsistencyLevel() != null) {
+        boolean consistencyLevelOverrideApplicable = true;
+
+        if (this.options.getReadConsistencyStrategy() != null) {
+
+            String readConsistencyStrategyName = options.getReadConsistencyStrategy().toString();
+            this.client.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
+            headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, readConsistencyStrategyName);
+
+            consistencyLevelOverrideApplicable =
+                this.options.getReadConsistencyStrategy() == ReadConsistencyStrategy.DEFAULT;
+        }
+
+        if (consistencyLevelOverrideApplicable && this.client.getReadConsistencyStrategy() != null) {
+            String readConsistencyStrategyName = this.client.getReadConsistencyStrategy().toString();
+            this.client.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
+            headers.put(
+                HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
+                readConsistencyStrategyName);
+
+            consistencyLevelOverrideApplicable =
+                this.client.getReadConsistencyStrategy() == ReadConsistencyStrategy.DEFAULT;
+        }
+
+        if (consistencyLevelOverrideApplicable && this.client.getConsistencyLevel() != null) {
             headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, this.client.getConsistencyLevel().toString());
         }
 

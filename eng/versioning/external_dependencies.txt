@@ -63,8 +63,8 @@ io.netty:netty-transport-native-unix-common;4.1.118.Final
 io.netty:netty-transport-native-kqueue;4.1.118.Final
 io.projectreactor.netty:reactor-netty-http;1.0.48
 io.projectreactor:reactor-core;3.4.41
-io.vertx:vertx-codegen;4.5.13
-io.vertx:vertx-core;4.5.13
+io.vertx:vertx-codegen;4.5.15
+io.vertx:vertx-core;4.5.15
 javax.websocket:javax.websocket-api;1.1
 org.apache.commons:commons-compress;1.26.0
 org.apache.ant:ant;1.10.14
@@ -81,6 +81,7 @@ org.apache.maven.archetype:archetype-packaging;3.3.0
 org.apache.maven.plugins:maven-archetype-plugin;3.3.0
 org.apache.qpid:proton-j;0.34.1
 org.asynchttpclient:async-http-client;2.12.1
+org.brotli:dec;0.1.2
 org.codehaus.groovy:groovy-jsr223;3.0.19
 org.codehaus.janino:janino;3.1.10
 org.codehaus.woodstox:stax2-api;4.2.2
@@ -90,16 +91,15 @@ org.openjfx:javafx-graphics;17.0.6
 org.graalvm.buildtools:junit-platform-native;0.9.19
 org.graalvm.buildtools:native-maven-plugin;0.10.5
 org.postgresql:postgresql;42.3.9
-org.projectlombok:lombok;1.18.34
 org.slf4j:slf4j-api;1.7.36
 org.slf4j:slf4j-nop;1.7.36
 org.slf4j:slf4j-simple;1.7.36
 redis.clients:jedis;5.2.0
 io.lettuce:lettuce-core;6.4.0.RELEASE
 org.redisson:redisson;3.36.0
-testdep_net.bytebuddy:byte-buddy;1.15.5
-testdep_net.bytebuddy:byte-buddy-agent;1.15.5
-org.openrewrite.recipe:rewrite-recipe-bom;3.0.2
+testdep_net.bytebuddy:byte-buddy;1.17.5
+testdep_net.bytebuddy:byte-buddy-agent;1.17.5
+org.openrewrite.recipe:rewrite-recipe-bom;3.6.1
 
 ## Spring boot dependency versions
 org.springframework.boot:spring-boot-maven-plugin;2.7.18
@@ -144,8 +144,8 @@ org.assertj:assertj-core;3.22.0
 org.bouncycastle:bcprov-jdk15to18;1.78.1
 org.bouncycastle:bcprov-jdk18on;1.78.1
 org.bouncycastle:bcpkix-lts8on;2.73.6
-org.eclipse.jetty:jetty-server;9.4.56.v20240826
-org.eclipse.jetty:jetty-servlet;9.4.56.v20240826
+org.eclipse.jetty:jetty-server;9.4.57.v20241219
+org.eclipse.jetty:jetty-servlet;9.4.57.v20241219
 org.hamcrest:hamcrest;2.2
 org.hamcrest:hamcrest-all;1.3
 org.hamcrest:hamcrest-library;2.2
@@ -175,7 +175,6 @@ io.reactivex.rxjava2:rxjava;2.2.21
 net.java.dev.jna:jna-platform;5.13.0
 net.oneandone.reflections8:reflections8;0.11.7
 net.jonathangiles.tools:dependencyChecker-maven-plugin;1.0.6
-net.bytebuddy:byte-buddy;1.14.10
 org.apache.commons:commons-collections4;4.4
 org.apache.commons:commons-text;1.10.0
 org.apache.maven:maven-plugin-api;3.9.9
@@ -205,15 +204,15 @@ org.codehaus.mojo:animal-sniffer-maven-plugin;1.24
 org.codehaus.mojo:build-helper-maven-plugin;3.6.0
 org.codehaus.mojo:exec-maven-plugin;3.5.0
 org.codehaus.mojo:xml-maven-plugin;1.1.0
-org.eclipse.jetty:jetty-maven-plugin;9.4.33.v20201020
+org.eclipse.jetty:jetty-maven-plugin;9.4.57.v20241219
 org.eclipse.m2e:lifecycle-mapping;1.0.0
-org.jacoco:jacoco-maven-plugin;0.8.12
-org.jacoco:org.jacoco.agent;0.8.12
+org.jacoco:jacoco-maven-plugin;0.8.13
+org.jacoco:org.jacoco.agent;0.8.13
 org.mockito:mockito-core;4.11.0
 org.mockito:mockito-inline;4.11.0
 org.moditect:moditect-maven-plugin;1.0.0.RC1
-org.owasp:dependency-check-maven;11.1.1
-org.ow2.asm:asm;9.7.1
+org.owasp:dependency-check-maven;12.1.1
+org.ow2.asm:asm;9.8
 org.revapi:revapi;0.15.1
 org.revapi:revapi-java;0.28.3
 org.revapi:revapi-java-spi;0.25.1
@@ -293,7 +292,7 @@ cosmos_org.testcontainers:testcontainers;1.19.5
 cosmos_org.testcontainers:kafka;1.19.5
 cosmos_org.sourcelab:kafka-connect-client;4.0.4
 cosmos_io.confluent:kafka-avro-serializer;7.6.0
-cosmos_org.apache.avro:avro;1.11.3
+cosmos_org.apache.avro:avro;1.11.4
 # Maven Tools for Cosmos Kafka connector only
 
 # sdk\mediaservices\microsoft-azure-media\pom.xml which hasn't been released for 2 years
@@ -414,6 +413,13 @@ springboot3_org.testcontainers:azure;1.20.6
 # Used for Spring version updates
 springboot3_org.springframework.boot:spring-boot-dependencies;3.4.4
 springboot3_org.springframework.cloud:spring-cloud-dependencies;2024.0.1
+
+# Azure OpenRewrite Dependency Versions
+
+azureopenrewrite_org.junit.jupiter:junit-jupiter-api;5.12.1
+azureopenrewrite_org.junit.jupiter:junit-jupiter-engine;5.12.1
+azureopenrewrite_org.junit.jupiter:junit-jupiter-params;5.12.1
+azureopenrewrite_org.junit.platform:junit-platform-launcher;1.12.1
 
 # Java 7 support
 

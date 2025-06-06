@@ -6,6 +6,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -25,12 +26,14 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
     /*
      * A URI fragment specifying the type of analyzer.
      */
+    @Generated
     private String odataType = "#Microsoft.Azure.Search.CustomAnalyzer";
 
     /*
      * The name of the tokenizer to use to divide continuous text into a sequence of tokens, such as breaking a sentence
      * into words.
      */
+    @Generated
     private final LexicalTokenizerName tokenizer;
 
     /*
@@ -38,12 +41,14 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
      * specify a lowercase filter that converts all characters to lowercase. The filters are run in the order in which
      * they are listed.
      */
+    @Generated
     private List<TokenFilterName> tokenFilters;
 
     /*
      * A list of character filters used to prepare input text before it is processed by the tokenizer. For instance,
      * they can replace certain characters or symbols. The filters are run in the order in which they are listed.
      */
+    @Generated
     private List<CharFilterName> charFilters;
 
     /**
@@ -52,6 +57,7 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
      * @param name the name value to set.
      * @param tokenizer the tokenizer value to set.
      */
+    @Generated
     public CustomAnalyzer(String name, LexicalTokenizerName tokenizer) {
         super(name);
         this.tokenizer = tokenizer;
@@ -62,6 +68,7 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
      *
      * @return the odataType value.
      */
+    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -73,6 +80,7 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
      *
      * @return the tokenizer value.
      */
+    @Generated
     public LexicalTokenizerName getTokenizer() {
         return this.tokenizer;
     }
@@ -84,6 +92,7 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
      *
      * @return the tokenFilters value.
      */
+    @Generated
     public List<TokenFilterName> getTokenFilters() {
         return this.tokenFilters;
     }
@@ -96,6 +105,7 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
      * @param tokenFilters the tokenFilters value to set.
      * @return the CustomAnalyzer object itself.
      */
+    @Generated
     public CustomAnalyzer setTokenFilters(List<TokenFilterName> tokenFilters) {
         this.tokenFilters = tokenFilters;
         return this;
@@ -108,6 +118,7 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
      *
      * @return the charFilters value.
      */
+    @Generated
     public List<CharFilterName> getCharFilters() {
         return this.charFilters;
     }
@@ -120,6 +131,7 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
      * @param charFilters the charFilters value to set.
      * @return the CustomAnalyzer object itself.
      */
+    @Generated
     public CustomAnalyzer setCharFilters(List<CharFilterName> charFilters) {
         this.charFilters = charFilters;
         return this;
@@ -128,6 +140,7 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -150,6 +163,7 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CustomAnalyzer.
      */
+    @Generated
     public static CustomAnalyzer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

@@ -14,6 +14,7 @@ import io.clientcore.core.implementation.http.RetryUtils;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LoggingEvent;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.DateTimeRfc1123;
@@ -179,11 +180,14 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
                     } catch (InterruptedException ie) {
                         interrupted = true;
                         err.addSuppressed(ie);
+                        logger.atWarning().setThrowable(ie).log();
                     }
                 }
 
                 if (interrupted) {
-                    throw logger.logThrowableAsError(err);
+                    // not logging err here since the err should have been logged in HTTP
+                    // instrumentation policy. We'll log it again if it's a terminal one
+                    throw err;
                 }
 
                 List<Exception> suppressedLocal = suppressed == null ? new LinkedList<>() : suppressed;
@@ -192,13 +196,15 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
 
                 return attempt(httpRequest, next, tryCount + 1, suppressedLocal);
             } else {
-                logRetry(logger.atWarning(), tryCount, null, err, true, instrumentationContext);
-
                 if (suppressed != null) {
                     suppressed.forEach(err::addSuppressed);
                 }
 
-                throw logger.logThrowableAsError(err);
+                logRetry(logger.atWarning(), tryCount, null, err, true, instrumentationContext);
+
+                // we already logged the exception in the instrumentation policy
+                // and also logged retry information above.
+                throw err;
             }
         }
 
@@ -214,7 +220,7 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
                 try {
                     Thread.sleep(millis);
                 } catch (InterruptedException ie) {
-                    throw LOGGER.logThrowableAsError(new RuntimeException(ie));
+                    throw logger.throwableAtError().log(ie, (m, c) -> CoreException.from(m, c, false));
                 }
             }
 
@@ -286,8 +292,8 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
         return false;
     }
 
-    private void logRetry(LoggingEvent log, int tryCount, Duration delayDuration, Throwable throwable, boolean lastTry,
-        InstrumentationContext context) {
+    private void logRetry(LoggingEvent log, int tryCount, Duration delayDuration, RuntimeException throwable,
+        boolean lastTry, InstrumentationContext context) {
         if (log.isEnabled()) {
             log.addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount)
                 .addKeyValue(RETRY_MAX_ATTEMPT_COUNT_KEY, maxRetries)

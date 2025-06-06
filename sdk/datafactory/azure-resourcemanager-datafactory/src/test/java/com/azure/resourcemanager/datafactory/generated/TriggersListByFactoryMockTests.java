@@ -22,7 +22,7 @@ public final class TriggersListByFactoryMockTests {
     @Test
     public void testListByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"Trigger\",\"description\":\"ixxxgltqldlh\",\"runtimeState\":\"Disabled\",\"annotations\":[\"datald\"],\"\":{\"nogyvpfyjlfnjmwb\":\"datacajhnnbp\",\"rpwkvz\":\"dataoqhy\",\"tfc\":\"databvdlhcyoykmp\",\"fea\":\"dataugitjnwajqzig\"}},\"name\":\"bkcqoyqmbup\",\"type\":\"bzhczyhtjqtzl\",\"etag\":\"qp\",\"id\":\"c\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"Trigger\",\"description\":\"ixxxgltqldlh\",\"runtimeState\":\"Disabled\",\"annotations\":[\"datald\"],\"nogyvpfyjlfnjmwb\":\"datacajhnnbp\",\"rpwkvz\":\"dataoqhy\",\"tfc\":\"databvdlhcyoykmp\",\"fea\":\"dataugitjnwajqzig\"},\"name\":\"bkcqoyqmbup\",\"type\":\"bzhczyhtjqtzl\",\"etag\":\"qp\",\"id\":\"c\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

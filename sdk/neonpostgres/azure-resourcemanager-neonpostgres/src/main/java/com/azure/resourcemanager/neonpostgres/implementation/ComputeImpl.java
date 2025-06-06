@@ -5,15 +5,19 @@
 package com.azure.resourcemanager.neonpostgres.implementation;
 
 import com.azure.core.management.SystemData;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.neonpostgres.fluent.models.ComputeInner;
 import com.azure.resourcemanager.neonpostgres.models.Compute;
 import com.azure.resourcemanager.neonpostgres.models.ComputeProperties;
 
-public final class ComputeImpl implements Compute, Compute.Definition, Compute.Update {
+public final class ComputeImpl implements Compute {
     private ComputeInner innerObject;
 
     private final com.azure.resourcemanager.neonpostgres.NeonPostgresManager serviceManager;
+
+    ComputeImpl(ComputeInner innerObject, com.azure.resourcemanager.neonpostgres.NeonPostgresManager serviceManager) {
+        this.innerObject = innerObject;
+        this.serviceManager = serviceManager;
+    }
 
     public String id() {
         return this.innerModel().id();
@@ -35,107 +39,11 @@ public final class ComputeImpl implements Compute, Compute.Definition, Compute.U
         return this.innerModel().systemData();
     }
 
-    public String resourceGroupName() {
-        return resourceGroupName;
-    }
-
     public ComputeInner innerModel() {
         return this.innerObject;
     }
 
     private com.azure.resourcemanager.neonpostgres.NeonPostgresManager manager() {
         return this.serviceManager;
-    }
-
-    private String resourceGroupName;
-
-    private String organizationName;
-
-    private String projectName;
-
-    private String branchName;
-
-    private String computeName;
-
-    public ComputeImpl withExistingBranche(String resourceGroupName, String organizationName, String projectName,
-        String branchName) {
-        this.resourceGroupName = resourceGroupName;
-        this.organizationName = organizationName;
-        this.projectName = projectName;
-        this.branchName = branchName;
-        return this;
-    }
-
-    public Compute create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getComputes()
-            .createOrUpdate(resourceGroupName, organizationName, projectName, branchName, computeName,
-                this.innerModel(), Context.NONE);
-        return this;
-    }
-
-    public Compute create(Context context) {
-        this.innerObject = serviceManager.serviceClient()
-            .getComputes()
-            .createOrUpdate(resourceGroupName, organizationName, projectName, branchName, computeName,
-                this.innerModel(), context);
-        return this;
-    }
-
-    ComputeImpl(String name, com.azure.resourcemanager.neonpostgres.NeonPostgresManager serviceManager) {
-        this.innerObject = new ComputeInner();
-        this.serviceManager = serviceManager;
-        this.computeName = name;
-    }
-
-    public ComputeImpl update() {
-        return this;
-    }
-
-    public Compute apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getComputes()
-            .update(resourceGroupName, organizationName, projectName, branchName, computeName, this.innerModel(),
-                Context.NONE);
-        return this;
-    }
-
-    public Compute apply(Context context) {
-        this.innerObject = serviceManager.serviceClient()
-            .getComputes()
-            .update(resourceGroupName, organizationName, projectName, branchName, computeName, this.innerModel(),
-                context);
-        return this;
-    }
-
-    ComputeImpl(ComputeInner innerObject, com.azure.resourcemanager.neonpostgres.NeonPostgresManager serviceManager) {
-        this.innerObject = innerObject;
-        this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.organizationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "organizations");
-        this.projectName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "projects");
-        this.branchName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "branches");
-        this.computeName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "computes");
-    }
-
-    public Compute refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getComputes()
-            .getWithResponse(resourceGroupName, organizationName, projectName, branchName, computeName, Context.NONE)
-            .getValue();
-        return this;
-    }
-
-    public Compute refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient()
-            .getComputes()
-            .getWithResponse(resourceGroupName, organizationName, projectName, branchName, computeName, context)
-            .getValue();
-        return this;
-    }
-
-    public ComputeImpl withProperties(ComputeProperties properties) {
-        this.innerModel().withProperties(properties);
-        return this;
     }
 }

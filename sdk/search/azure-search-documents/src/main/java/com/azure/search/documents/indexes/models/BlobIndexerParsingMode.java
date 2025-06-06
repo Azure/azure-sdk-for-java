@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,36 +17,43 @@ public final class BlobIndexerParsingMode extends ExpandableStringEnum<BlobIndex
     /**
      * Set to default for normal file processing.
      */
+    @Generated
     public static final BlobIndexerParsingMode DEFAULT = fromString("default");
 
     /**
      * Set to text to improve indexing performance on plain text files in blob storage.
      */
+    @Generated
     public static final BlobIndexerParsingMode TEXT = fromString("text");
 
     /**
      * Set to delimitedText when blobs are plain CSV files.
      */
+    @Generated
     public static final BlobIndexerParsingMode DELIMITED_TEXT = fromString("delimitedText");
 
     /**
      * Set to json to extract structured content from JSON files.
      */
+    @Generated
     public static final BlobIndexerParsingMode JSON = fromString("json");
 
     /**
      * Set to jsonArray to extract individual elements of a JSON array as separate documents.
      */
+    @Generated
     public static final BlobIndexerParsingMode JSON_ARRAY = fromString("jsonArray");
 
     /**
      * Set to jsonLines to extract individual JSON entities, separated by a new line, as separate documents.
      */
+    @Generated
     public static final BlobIndexerParsingMode JSON_LINES = fromString("jsonLines");
 
     /**
      * Set to markdown to extract content from markdown files.
      */
+    @Generated
     public static final BlobIndexerParsingMode MARKDOWN = fromString("markdown");
 
     /**
@@ -53,6 +61,7 @@ public final class BlobIndexerParsingMode extends ExpandableStringEnum<BlobIndex
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public BlobIndexerParsingMode() {
     }
@@ -63,6 +72,7 @@ public final class BlobIndexerParsingMode extends ExpandableStringEnum<BlobIndex
      * @param name a name to look for.
      * @return the corresponding BlobIndexerParsingMode.
      */
+    @Generated
     public static BlobIndexerParsingMode fromString(String name) {
         return fromString(name, BlobIndexerParsingMode.class);
     }
@@ -72,6 +82,7 @@ public final class BlobIndexerParsingMode extends ExpandableStringEnum<BlobIndex
      * 
      * @return known BlobIndexerParsingMode values.
      */
+    @Generated
     public static Collection<BlobIndexerParsingMode> values() {
         return values(BlobIndexerParsingMode.class);
     }

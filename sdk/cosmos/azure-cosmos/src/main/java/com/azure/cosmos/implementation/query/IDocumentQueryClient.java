@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
@@ -68,6 +69,12 @@ public interface IDocumentQueryClient {
         final String collectionLink);
 
     <T> CosmosItemSerializer getEffectiveItemSerializer(CosmosQueryRequestOptions queryRequestOptions);
+
+    ReadConsistencyStrategy getReadConsistencyStrategy();
+
+    ConsistencyLevel getConsistencyLevel();
+
+    void validateAndLogNonDefaultReadConsistencyStrategy(String readConsistencyStrategyName);
 
     /// <summary>
     /// A client query compatibility mode when making query request.

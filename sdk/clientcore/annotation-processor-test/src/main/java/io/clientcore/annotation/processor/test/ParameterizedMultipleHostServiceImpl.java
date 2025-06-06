@@ -14,8 +14,8 @@ import io.clientcore.annotation.processor.test.implementation.ParameterizedMulti
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
+import io.clientcore.core.utils.GeneratedCodeUtils;
 import io.clientcore.core.utils.CoreUtils;
-import io.clientcore.core.utils.Base64Uri;
 import java.lang.reflect.ParameterizedType;
 import io.clientcore.core.serialization.SerializationFormat;
 
@@ -47,30 +47,30 @@ public class ParameterizedMultipleHostServiceImpl implements ParameterizedMultip
         return new ParameterizedMultipleHostServiceImpl(httpPipeline);
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON get(String scheme, String hostPart1, String hostPart2) {
-        String uri = scheme + "://" + hostPart1 + hostPart2 + "/get";
-        // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(scheme + "://" + hostPart1 + hostPart2 + "/get");
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            networkResponse.close();
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
         }
-        networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 }

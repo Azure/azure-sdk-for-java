@@ -3,10 +3,8 @@
 
 package com.azure.cosmos.implementation;
 
-import java.net.IDN;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -22,6 +20,10 @@ public class UserAgentContainer {
     private String userAgent;
     public final static String AZSDK_USERAGENT_PREFIX = "azsdk-java-";
 
+    public final static String BASE_USER_AGENT_STRING = Utils.getUserAgent(
+        HttpConstants.Versions.SDK_NAME,
+        HttpConstants.Versions.getSdkVersion());
+
     private UserAgentContainer(String sdkName, String sdkVersion) {
         this.baseUserAgent = Utils.getUserAgent(sdkName, sdkVersion);
         this.suffix = "";
@@ -35,6 +37,20 @@ public class UserAgentContainer {
 
     public String getSuffix() {
         return this.suffix;
+    }
+
+    public void setFeatureEnabledFlagsAsSuffix(Set<UserAgentFeatureFlags> userAgentFeatureFlags) {
+        if (userAgentFeatureFlags == null || userAgentFeatureFlags.isEmpty()) {
+            return;
+        }
+
+        int value = 0;
+
+        for (UserAgentFeatureFlags userAgentFeatureFlag : userAgentFeatureFlags) {
+            value += userAgentFeatureFlag.getValue();
+        }
+
+        this.userAgent = this.userAgent + "|F" + value;
     }
 
     public void setSuffix(String suffix) {

@@ -74,7 +74,7 @@ public class Netty4ProgressAndTimeoutHandlerTests {
         MockChannelHandlerContext ctx = new MockChannelHandlerContext(new DefaultEventExecutor());
 
         // Fake that the scheduled timer completed before any read operations happened.
-        netty4ProgressAndTimeoutHandler.readTimeoutRunnable(ctx);
+        netty4ProgressAndTimeoutHandler.readTimeoutRunnable(ctx, true);
 
         assertTrue(ctx.getFireExceptionCaughtCallCount() >= 1);
     }
@@ -89,7 +89,7 @@ public class Netty4ProgressAndTimeoutHandlerTests {
         netty4ProgressAndTimeoutHandler.channelReadComplete(ctx);
 
         // Fake that the scheduled timer completed before after a read operation happened.
-        netty4ProgressAndTimeoutHandler.readTimeoutRunnable(ctx);
+        netty4ProgressAndTimeoutHandler.readTimeoutRunnable(ctx, true);
 
         netty4ProgressAndTimeoutHandler.handlerRemoved(ctx);
 
@@ -143,7 +143,7 @@ public class Netty4ProgressAndTimeoutHandlerTests {
         MockChannelHandlerContext ctx = new MockChannelHandlerContext(new DefaultEventExecutor());
 
         // Fake that the scheduled timer completed before any response is received.
-        netty4ProgressAndTimeoutHandler.responseTimedOut(ctx);
+        netty4ProgressAndTimeoutHandler.responseTimedOut(ctx, true);
 
         assertTrue(ctx.getFireExceptionCaughtCallCount() >= 1);
     }
@@ -197,7 +197,7 @@ public class Netty4ProgressAndTimeoutHandlerTests {
         MockChannelHandlerContext ctx = new MockChannelHandlerContext(channel, new MockEventExecutor());
 
         // Fake that the scheduled timer completed before any write operations happened.
-        netty4ProgressAndTimeoutHandler.writeTimeoutRunnable(ctx);
+        netty4ProgressAndTimeoutHandler.writeTimeoutRunnable(ctx, true);
 
         assertTrue(ctx.getFireExceptionCaughtCallCount() >= 1);
     }
@@ -235,7 +235,7 @@ public class Netty4ProgressAndTimeoutHandlerTests {
 
         // Fake that the scheduled timer completed before after a write operation happened.
         netty4ProgressAndTimeoutHandler.write(ctx, LastHttpContent.EMPTY_LAST_CONTENT, channelPromise);
-        netty4ProgressAndTimeoutHandler.writeTimeoutRunnable(ctx);
+        netty4ProgressAndTimeoutHandler.writeTimeoutRunnable(ctx, true);
 
         netty4ProgressAndTimeoutHandler.handlerRemoved(ctx);
 
