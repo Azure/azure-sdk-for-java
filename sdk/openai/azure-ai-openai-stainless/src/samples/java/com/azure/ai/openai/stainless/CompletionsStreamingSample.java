@@ -7,18 +7,16 @@ import com.azure.identity.AuthenticationUtil;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
+import com.openai.core.http.StreamResponse;
 import com.openai.credential.BearerTokenCredential;
-import com.openai.models.audio.AudioModel;
-import com.openai.models.audio.transcriptions.Transcription;
-import com.openai.models.audio.transcriptions.TranscriptionCreateParams;
+import com.openai.models.ChatModel;
+import com.openai.models.chat.completions.ChatCompletionChunk;
+import com.openai.models.chat.completions.ChatCompletionCreateParams;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
+public final class CompletionsStreamingSample {
+    private CompletionsStreamingSample() {}
 
-public final class AudioTranscriptionsExample {
-    private AudioTranscriptionsExample() {}
-
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         // Configures using one of:
         // - The `OPENAI_API_KEY` environment variable
         // - The `AZURE_OPENAI_ENDPOINT` and `AZURE_OPENAI_KEY` environment variables
@@ -36,16 +34,18 @@ public final class AudioTranscriptionsExample {
         // All code from this line down is general-purpose OpenAI code
         OpenAIClient client = clientBuilder.build();
 
-        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-        Path path = Paths.get(classloader.getResource("sports.wav").toURI());
-
-        TranscriptionCreateParams createParams = TranscriptionCreateParams.builder()
-                .file(path)
-                .model(AudioModel.of("whisper"))
+        ChatCompletionCreateParams createParams = ChatCompletionCreateParams.builder()
+                .model(ChatModel.GPT_4O)
+                .maxCompletionTokens(2048)
+                .addDeveloperMessage("Make sure you mention Stainless!")
+                .addUserMessage("Tell me a story about building the best SDK!")
                 .build();
 
-        Transcription transcription =
-                client.audio().transcriptions().create(createParams).asTranscription();
-        System.out.println(transcription.text());
+        try (StreamResponse<ChatCompletionChunk> streamResponse =
+                client.chat().completions().createStreaming(createParams)) {
+            streamResponse.stream()
+                    .flatMap(completion -> completion.choices().stream())
+                    .forEach(choice -> choice.delta().content().ifPresent(System.out::print));
+        }
     }
 }

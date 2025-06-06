@@ -8,13 +8,16 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClientAsync;
 import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
 import com.openai.credential.BearerTokenCredential;
-import com.openai.models.ChatModel;
-import com.openai.models.chat.completions.ChatCompletionCreateParams;
+import com.openai.models.audio.AudioModel;
+import com.openai.models.audio.transcriptions.TranscriptionCreateParams;
 
-public final class CompletionsStreamingAsyncExample {
-    private CompletionsStreamingAsyncExample() {}
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-    public static void main(String[] args) {
+public final class AudioTranscriptionsAsyncSample {
+    private AudioTranscriptionsAsyncSample() {}
+
+    public static void main(String[] args) throws Exception {
         // Configures using one of:
         // - The `OPENAI_API_KEY` environment variable
         // - The `AZURE_OPENAI_ENDPOINT` and `AZURE_OPENAI_KEY` environment variables
@@ -33,19 +36,19 @@ public final class CompletionsStreamingAsyncExample {
         OpenAIClientAsync client = clientBuilder.build();
 
 
-        ChatCompletionCreateParams createParams = ChatCompletionCreateParams.builder()
-                .model(ChatModel.GPT_4O)
-                .maxCompletionTokens(2048)
-                .addDeveloperMessage("Make sure you mention Stainless!")
-                .addUserMessage("Tell me a story about building the best SDK!")
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        Path path = Paths.get(classloader.getResource("sports.wav").toURI());
+
+        TranscriptionCreateParams createParams = TranscriptionCreateParams.builder()
+                .file(path)
+                .model(AudioModel.of("whisper"))
                 .build();
 
-        client.chat()
-                .completions()
-                .createStreaming(createParams)
-                .subscribe(completion -> completion.choices()
-                    .forEach(choice -> choice.delta().content().ifPresent(System.out::print)))
-                .onCompleteFuture()
+        client.audio()
+                .transcriptions()
+                .create(createParams)
+                .thenAccept(response ->
+                        System.out.println(response.asTranscription().text()))
                 .join();
     }
 }

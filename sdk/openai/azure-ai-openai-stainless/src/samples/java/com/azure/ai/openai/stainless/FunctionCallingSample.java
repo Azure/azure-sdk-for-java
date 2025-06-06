@@ -26,8 +26,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public final class FunctionCallingExample {
-    private FunctionCallingExample() {}
+public final class FunctionCallingSample {
+    private FunctionCallingSample() {}
 
     public static void main(String[] args) {
         // Configures using one of:

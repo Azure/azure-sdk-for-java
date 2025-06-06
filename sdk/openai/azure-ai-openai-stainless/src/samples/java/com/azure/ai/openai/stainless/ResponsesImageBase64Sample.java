@@ -14,14 +14,14 @@ import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseInputImage;
 import com.openai.models.responses.ResponseInputItem;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.Collections;
 
-public final class ResponsesImageUrlExample {
-    private ResponsesImageUrlExample() {}
+public final class ResponsesImageBase64Sample {
+    private ResponsesImageBase64Sample() {}
 
     public static void main(String[] args) throws IOException {
         // Configures using one of:
@@ -36,19 +36,17 @@ public final class ResponsesImageUrlExample {
                 new DefaultAzureCredentialBuilder().build(), "https://cognitiveservices.azure.com/.default")))
             .build();
 
-        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-
-        InputStream inputStream = classloader.getResource("logo.png").openStream();
-        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        byte[] data = new byte[1024];
-        int bytesRead;
-        while ((bytesRead = inputStream.read(data, 0, data.length)) != -1) {
-            buffer.write(data, 0, bytesRead);
+        String base64Image = null;
+        try {
+            String fileName = "logo.png";
+            byte[] imageBytes = Files.readAllBytes(Paths.get("src/samples/java/com/azure/ai/openai/stainless/resources/" + fileName));
+            base64Image = Base64.getEncoder().encodeToString(imageBytes);
+        } catch (IOException e) {
+            System.err.println("Failed to read image file: " + e.getMessage());
+            throw e;
         }
-        inputStream.close();
-        byte[] logoBytes = buffer.toByteArray();
 
-        String logoBase64Url = "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(logoBytes);
+        String logoBase64Url = "data:image/jpeg;base64," + base64Image;
 
         ResponseInputImage logoInputImage = ResponseInputImage.builder()
                 .detail(ResponseInputImage.Detail.AUTO)

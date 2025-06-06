@@ -7,12 +7,17 @@ import com.azure.identity.AuthenticationUtil;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClientAsync;
 import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
+import com.openai.core.JsonValue;
 import com.openai.credential.BearerTokenCredential;
 import com.openai.models.ChatModel;
+import com.openai.models.ResponseFormatJsonSchema;
+import com.openai.models.ResponseFormatJsonSchema.JsonSchema;
 import com.openai.models.chat.completions.ChatCompletionCreateParams;
 
-public final class CompletionsAsyncExample {
-    private CompletionsAsyncExample() {}
+import java.util.Collections;
+
+public final class StructuredOutputsAsyncSample {
+    private StructuredOutputsAsyncSample() {}
 
     public static void main(String[] args) {
         // Configures using one of:
@@ -32,19 +37,29 @@ public final class CompletionsAsyncExample {
         // All code from this line down is general-purpose OpenAI code
         OpenAIClientAsync client = clientBuilder.build();
 
-
+        // TODO: Update this once we support extracting JSON schemas from Java classes
+        JsonSchema.Schema schema = JsonSchema.Schema.builder()
+                .putAdditionalProperty("type", JsonValue.from("object"))
+                .putAdditionalProperty(
+                        "properties", JsonValue.from(Collections.singletonMap("employees", Collections.singletonMap("items", Collections.singletonMap("type", "string")))))
+                .build();
         ChatCompletionCreateParams createParams = ChatCompletionCreateParams.builder()
                 .model(ChatModel.GPT_4O)
                 .maxCompletionTokens(2048)
-                .addDeveloperMessage("Make sure you mention Stainless!")
-                .addUserMessage("Tell me a story about building the best SDK!")
+                .responseFormat(ResponseFormatJsonSchema.builder()
+                        .jsonSchema(JsonSchema.builder()
+                                .name("employee-list")
+                                .schema(schema)
+                                .build())
+                        .build())
+                .addUserMessage("Who works at OpenAI?")
                 .build();
 
         client.chat()
                 .completions()
                 .create(createParams)
-                .thenAccept(completion -> completion.choices()
-                    .forEach(choice -> choice.message().content().ifPresent(System.out::println)))
+                .thenAccept(completion -> completion.choices().forEach(
+                    choice -> choice.message().content().ifPresent(System.out::println)))
                 .join();
     }
 }
