@@ -12,18 +12,18 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Describes a resource type that has been onboarded to private link service and that's supported by search.
+ * Describes an resource type that has been onboarded to private link service, supported by Azure AI Search.
  */
 @Immutable
 public final class ShareablePrivateLinkResourceType implements JsonSerializable<ShareablePrivateLinkResourceType> {
     /*
-     * The name of the resource type that has been onboarded to private link service and that's supported by search.
+     * The name of the resource type that has been onboarded to private link service, supported by Azure AI Search.
      */
     private String name;
 
     /*
-     * Describes the properties of a resource type that has been onboarded to private link service and that's supported
-     * by search.
+     * Describes the properties of a resource type that has been onboarded to private link service, supported by Azure
+     * AI Search.
      */
     private ShareablePrivateLinkResourceProperties properties;
 
@@ -34,8 +34,8 @@ public final class ShareablePrivateLinkResourceType implements JsonSerializable<
     }
 
     /**
-     * Get the name property: The name of the resource type that has been onboarded to private link service and that's
-     * supported by search.
+     * Get the name property: The name of the resource type that has been onboarded to private link service, supported
+     * by Azure AI Search.
      * 
      * @return the name value.
      */
@@ -45,7 +45,7 @@ public final class ShareablePrivateLinkResourceType implements JsonSerializable<
 
     /**
      * Get the properties property: Describes the properties of a resource type that has been onboarded to private link
-     * service and that's supported by search.
+     * service, supported by Azure AI Search.
      * 
      * @return the properties value.
      */

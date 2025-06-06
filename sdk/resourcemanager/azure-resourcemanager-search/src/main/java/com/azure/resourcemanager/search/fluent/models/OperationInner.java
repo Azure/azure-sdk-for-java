@@ -4,28 +4,50 @@
 
 package com.azure.resourcemanager.search.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.search.models.ActionType;
 import com.azure.resourcemanager.search.models.OperationDisplay;
+import com.azure.resourcemanager.search.models.Origin;
 import java.io.IOException;
 
 /**
- * Describes a REST API operation.
+ * REST API Operation
+ * 
+ * Details of a REST API operation, returned from the Resource Provider Operations API.
  */
-@Immutable
+@Fluent
 public final class OperationInner implements JsonSerializable<OperationInner> {
     /*
-     * The name of the operation. This name is of the form {provider}/{resource}/{operation}.
+     * The name of the operation, as per Resource-Based Access Control (RBAC). Examples:
+     * "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action"
      */
     private String name;
 
     /*
-     * The object that describes the operation.
+     * Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for
+     * ARM/control-plane operations.
+     */
+    private Boolean isDataAction;
+
+    /*
+     * Localized display information for this particular operation.
      */
     private OperationDisplay display;
+
+    /*
+     * The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+     * value is "user,system"
+     */
+    private Origin origin;
+
+    /*
+     * Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+     */
+    private ActionType actionType;
 
     /**
      * Creates an instance of OperationInner class.
@@ -34,7 +56,8 @@ public final class OperationInner implements JsonSerializable<OperationInner> {
     }
 
     /**
-     * Get the name property: The name of the operation. This name is of the form {provider}/{resource}/{operation}.
+     * Get the name property: The name of the operation, as per Resource-Based Access Control (RBAC). Examples:
+     * "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action".
      * 
      * @return the name value.
      */
@@ -43,12 +66,53 @@ public final class OperationInner implements JsonSerializable<OperationInner> {
     }
 
     /**
-     * Get the display property: The object that describes the operation.
+     * Get the isDataAction property: Whether the operation applies to data-plane. This is "true" for data-plane
+     * operations and "false" for ARM/control-plane operations.
+     * 
+     * @return the isDataAction value.
+     */
+    public Boolean isDataAction() {
+        return this.isDataAction;
+    }
+
+    /**
+     * Get the display property: Localized display information for this particular operation.
      * 
      * @return the display value.
      */
     public OperationDisplay display() {
         return this.display;
+    }
+
+    /**
+     * Set the display property: Localized display information for this particular operation.
+     * 
+     * @param display the display value to set.
+     * @return the OperationInner object itself.
+     */
+    public OperationInner withDisplay(OperationDisplay display) {
+        this.display = display;
+        return this;
+    }
+
+    /**
+     * Get the origin property: The intended executor of the operation; as in Resource Based Access Control (RBAC) and
+     * audit logs UX. Default value is "user,system".
+     * 
+     * @return the origin value.
+     */
+    public Origin origin() {
+        return this.origin;
+    }
+
+    /**
+     * Get the actionType property: Enum. Indicates the action type. "Internal" refers to actions that are for internal
+     * only APIs.
+     * 
+     * @return the actionType value.
+     */
+    public ActionType actionType() {
+        return this.actionType;
     }
 
     /**
@@ -68,6 +132,7 @@ public final class OperationInner implements JsonSerializable<OperationInner> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("display", this.display);
         return jsonWriter.writeEndObject();
     }
 
@@ -88,8 +153,14 @@ public final class OperationInner implements JsonSerializable<OperationInner> {
 
                 if ("name".equals(fieldName)) {
                     deserializedOperationInner.name = reader.getString();
+                } else if ("isDataAction".equals(fieldName)) {
+                    deserializedOperationInner.isDataAction = reader.getNullable(JsonReader::getBoolean);
                 } else if ("display".equals(fieldName)) {
                     deserializedOperationInner.display = OperationDisplay.fromJson(reader);
+                } else if ("origin".equals(fieldName)) {
+                    deserializedOperationInner.origin = Origin.fromString(reader.getString());
+                } else if ("actionType".equals(fieldName)) {
+                    deserializedOperationInner.actionType = ActionType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

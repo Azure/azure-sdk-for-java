@@ -245,7 +245,7 @@
     "dir": "azure-resourcemanager-search",
     "source": "specification/search/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.search",
-    "args": "--tag=package-2023-11 --remove-inner=CheckNameAvailabilityOutput --enable-sync-stack=false"
+    "args": "--tag=package-2025-05-01 --remove-inner=CheckNameAvailabilityOutput --enable-sync-stack=false"
   },
   "servicebus": {
     "dir": "azure-resourcemanager-servicebus",
