@@ -20,9 +20,11 @@ import reactor.test.StepVerifier;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.azure.communication.common.EntraCredentialHelper.*;
+import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class EntraTokenCredentialTests {
@@ -69,12 +71,12 @@ public class EntraTokenCredentialTests {
     void entraTokenCredentialOptionsConstructWithoutScopesDefaultScopeIsSet() {
         EntraCommunicationTokenCredentialOptions options
             = new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT);
-        assertEquals(List.of(DEFAULT_SCOPE), options.getScopes());
+        assertEquals(asList(DEFAULT_SCOPE), options.getScopes());
     }
 
     @Test
     void entraTokenCredentialOptionsConstructWithExplicitScopesScopesAreSet() {
-        List<String> scopes = List.of(TEAMS_EXTENSION_SCOPE);
+        List<String> scopes = asList(TEAMS_EXTENSION_SCOPE);
         EntraCommunicationTokenCredentialOptions options
             = new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT);
         options.setScopes(scopes);
@@ -189,7 +191,7 @@ public class EntraTokenCredentialTests {
 
     @Test
     void entraTokenCredentialScopesChangedAfterCredentialConstructionNoImpactReturnsToken() {
-        List<String> scopes = new ArrayList<>() {
+        List<String> scopes = new ArrayList<String>() {
             {
                 add(COMMUNICATION_CLIENTS_SCOPE);
                 add(COMMUNICATION_CLIENTS_PREFIX + "Chat");

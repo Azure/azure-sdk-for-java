@@ -23,7 +23,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Stream;
 
-import static java.util.List.of;
+import static java.util.Arrays.asList;
 
 public final class EntraCredentialHelper {
 
@@ -48,13 +48,13 @@ public final class EntraCredentialHelper {
     public static final String DEFAULT_SCOPE = "https://communication.azure.com/clients/.default";
 
     static Stream<Arguments> validScopesProvider() {
-        return Stream.of(Arguments.of(of(COMMUNICATION_CLIENTS_SCOPE)), Arguments.of(of(TEAMS_EXTENSION_SCOPE)));
+        return Stream.of(Arguments.of(asList(COMMUNICATION_CLIENTS_SCOPE)), Arguments.of(asList(TEAMS_EXTENSION_SCOPE)));
     }
 
     static Stream<Arguments> invalidScopesProvider() {
-        return Stream.of(Arguments.of(of(COMMUNICATION_CLIENTS_SCOPE, TEAMS_EXTENSION_SCOPE)),
-            Arguments.of(of(TEAMS_EXTENSION_SCOPE, COMMUNICATION_CLIENTS_SCOPE)), Arguments.of(of("invalidScope")),
-            Arguments.of(of("")));
+        return Stream.of(Arguments.of(asList(COMMUNICATION_CLIENTS_SCOPE, TEAMS_EXTENSION_SCOPE)),
+            Arguments.of(asList(TEAMS_EXTENSION_SCOPE, COMMUNICATION_CLIENTS_SCOPE)), Arguments.of(asList("invalidScope")),
+            Arguments.of(asList("")));
     }
 
     static Stream<Arguments> nullOrEmptyScopesProvider() {
