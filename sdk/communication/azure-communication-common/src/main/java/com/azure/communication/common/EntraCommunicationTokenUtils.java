@@ -3,7 +3,7 @@
 
 package com.azure.communication.common;
 
-import java.util.Arrays;
+import java.util.List;
 
 /**
  * Constants for Entra Communication Token operations.
@@ -22,7 +22,7 @@ final class EntraCommunicationTokenUtils {
     /**
      * Checks if all scopes start with the given prefix.
      */
-    public static boolean allScopesStartWith(String[] scopes, String prefix) {
-        return Arrays.stream(scopes).allMatch(scope -> scope.startsWith(prefix));
+    public static boolean allScopesStartWith(List<String> scopes, String prefix) {
+        return scopes.stream().allMatch(scope -> scope.startsWith(prefix));
     }
 }

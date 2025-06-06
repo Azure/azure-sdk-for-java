@@ -130,7 +130,7 @@ public abstract class CommunicationIdentifier {
                 throw new IllegalArgumentException("Invalid prefix " + prefix + " for TeamsExtensionUserIdentifier");
         }
 
-        return new TeamsExtensionUserIdentifier(userId, tenantId, resourceId, cloud);
+        return new TeamsExtensionUserIdentifier(userId, tenantId, resourceId).setCloudEnvironment(cloud);
     }
 
     /**

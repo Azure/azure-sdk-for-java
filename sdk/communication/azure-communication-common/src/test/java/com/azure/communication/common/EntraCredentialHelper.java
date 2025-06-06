@@ -18,9 +18,12 @@ import reactor.core.publisher.Mono;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Stream;
+
+import static java.util.List.of;
 
 public final class EntraCredentialHelper {
 
@@ -45,18 +48,26 @@ public final class EntraCredentialHelper {
     public static final String DEFAULT_SCOPE = "https://communication.azure.com/clients/.default";
 
     static Stream<Arguments> validScopesProvider() {
-        return Stream.of(Arguments.of((Object) new String[] { COMMUNICATION_CLIENTS_SCOPE }),
-            Arguments.of((Object) new String[] { TEAMS_EXTENSION_SCOPE }));
+        return Stream.of(
+            Arguments.of(of(COMMUNICATION_CLIENTS_SCOPE)),
+            Arguments.of(of(TEAMS_EXTENSION_SCOPE))
+        );
     }
 
     static Stream<Arguments> invalidScopesProvider() {
-        return Stream.of(Arguments.of((Object) new String[] { COMMUNICATION_CLIENTS_SCOPE, TEAMS_EXTENSION_SCOPE }),
-            Arguments.of((Object) new String[] { TEAMS_EXTENSION_SCOPE, COMMUNICATION_CLIENTS_SCOPE }),
-            Arguments.of((Object) new String[] { "invalidScope" }), Arguments.of((Object) new String[] { "" }));
+        return Stream.of(
+            Arguments.of(of(COMMUNICATION_CLIENTS_SCOPE, TEAMS_EXTENSION_SCOPE)),
+            Arguments.of(of(TEAMS_EXTENSION_SCOPE, COMMUNICATION_CLIENTS_SCOPE)),
+            Arguments.of(of("invalidScope")),
+            Arguments.of(of(""))
+        );
     }
 
     static Stream<Arguments> nullOrEmptyScopesProvider() {
-        return Stream.of(Arguments.of((Object) new String[] { }), Arguments.of((Object) null));
+        return Stream.of(
+            Arguments.of(Collections.emptyList()),
+            Arguments.of((Object) null)
+        );
     }
 
     public static class MockTokenCredential implements TokenCredential {

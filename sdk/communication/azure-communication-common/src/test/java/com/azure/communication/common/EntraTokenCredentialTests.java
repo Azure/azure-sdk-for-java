@@ -19,10 +19,10 @@ import reactor.test.StepVerifier;
 
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.azure.communication.common.EntraCredentialHelper.*;
-import static java.lang.System.arraycopy;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class EntraTokenCredentialTests {
@@ -31,11 +31,11 @@ public class EntraTokenCredentialTests {
     private MockTokenCredential mockTokenCredential;
     private MockHttpClient mockHttpClient;
 
-    private void createEntraCredentialWithMocks(String[] scopes, HttpResponse... response) {
+    private void createEntraCredentialWithMocks(List<String> scopes, HttpResponse... response) {
         EntraCommunicationTokenCredentialOptions options
             = new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT);
-        if (scopes != null && scopes.length > 0) {
-            options = new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT, scopes);
+        if (scopes != null && !scopes.isEmpty()) {
+            options.setScopes(scopes);
         }
         mockHttpClient = new MockHttpClient(response);
         entraTokenCredential = new EntraTokenCredential(options, mockHttpClient);
@@ -69,30 +69,37 @@ public class EntraTokenCredentialTests {
     void entraTokenCredentialOptionsConstructWithoutScopesDefaultScopeIsSet() {
         EntraCommunicationTokenCredentialOptions options
             = new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT);
-        assertArrayEquals(new String[] { DEFAULT_SCOPE }, options.getScopes());
+        assertEquals(List.of(DEFAULT_SCOPE), options.getScopes());
     }
 
     @Test
     void entraTokenCredentialOptionsConstructWithExplicitScopesScopesAreSet() {
-        String[] scopes = new String[] { TEAMS_EXTENSION_SCOPE };
+        List<String> scopes = List.of(TEAMS_EXTENSION_SCOPE);
         EntraCommunicationTokenCredentialOptions options
-            = new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT, scopes);
-        assertArrayEquals(scopes, options.getScopes());
+            = new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT);
+        options.setScopes(scopes);
+        assertEquals(scopes, options.getScopes());
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.communication.common.EntraCredentialHelper#nullOrEmptyScopesProvider")
-    void entraTokenCredentialOptionsConstructWithNullOrEmptyScopesThrowsException(String[] scopes) {
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
-            () -> new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT, scopes));
+    void entraTokenCredentialOptionsConstructWithNullOrEmptyScopesThrowsException(List<String> scopes) {
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            EntraCommunicationTokenCredentialOptions options =
+                new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT);
+            options.setScopes(scopes);
+        });
         assertTrue(ex.getMessage().contains("Scopes must not be null or empty. Ensure all scopes start with either"));
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.communication.common.EntraCredentialHelper#invalidScopesProvider")
-    void entraTokenCredentialOptionsConstructWithInvalidScopesThrowsException(String[] scopes) {
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
-            () -> new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT, scopes));
+    void entraTokenCredentialOptionsConstructWithInvalidScopesThrowsException(List<String> scopes) {
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            EntraCommunicationTokenCredentialOptions options =
+                new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT);
+            options.setScopes(scopes);
+        });
         assertTrue(ex.getMessage().contains("Scopes validation failed. Ensure all scopes start with either"));
     }
 
@@ -123,7 +130,7 @@ public class EntraTokenCredentialTests {
 
     @ParameterizedTest
     @MethodSource("com.azure.communication.common.EntraCredentialHelper#validScopesProvider")
-    void entraTokenCredentialWithExplicitScopesExchangeEntraTokenReturnsAccessToken(String[] scopes) {
+    void entraTokenCredentialWithExplicitScopesExchangeEntraTokenReturnsAccessToken(List<String> scopes) {
         OffsetDateTime expiryTime = OffsetDateTime.parse(SAMPLE_TOKEN_EXPIRY).truncatedTo(ChronoUnit.SECONDS);
         HttpResponse resp = createHttpResponse(200, VALID_TOKEN_RESPONSE);
         createEntraCredentialWithMocks(scopes, resp);
@@ -133,7 +140,7 @@ public class EntraTokenCredentialTests {
             assertEquals(SAMPLE_TOKEN, accessToken.getToken());
             assertEquals(expiryTime.toInstant(),
                 accessToken.getExpiresAt().truncatedTo(ChronoUnit.SECONDS).toInstant());
-            assertEquals(Arrays.asList(scopes).contains(TEAMS_EXTENSION_SCOPE)
+            assertEquals(scopes.contains(TEAMS_EXTENSION_SCOPE)
                 ? TEAMS_EXTENSION_ENDPOINT
                 : COMMUNICATION_CLIENTS_ENDPOINT, mockHttpClient.getRequest().getUrl().getPath());
         }).verifyComplete();
@@ -141,7 +148,7 @@ public class EntraTokenCredentialTests {
 
     @ParameterizedTest
     @MethodSource("com.azure.communication.common.EntraCredentialHelper#validScopesProvider")
-    void entraTokenCredentialExchangeEntraTokenMultipleCallsReturnsCachedToken(String[] scopes) {
+    void entraTokenCredentialExchangeEntraTokenMultipleCallsReturnsCachedToken(List<String> scopes) {
         HttpResponse resp = createHttpResponse(200, VALID_TOKEN_RESPONSE);
         createEntraCredentialWithMocks(scopes, resp);
 
@@ -157,7 +164,7 @@ public class EntraTokenCredentialTests {
 
     @ParameterizedTest
     @MethodSource("com.azure.communication.common.EntraCredentialHelper#validScopesProvider")
-    void entraTokenCredentialExchangeEntraTokenInternalEntraTokenChangedInvalidatesCachedToken(String[] scopes) {
+    void entraTokenCredentialExchangeEntraTokenInternalEntraTokenChangedInvalidatesCachedToken(List<String> scopes) {
         mockTokenCredential = new MockTokenCredential(
             new AccessToken("Entra token for call from constructor", OffsetDateTime.now().minusMinutes(1)),
             new AccessToken("Entra token for the exchangeToken call", OffsetDateTime.parse(SAMPLE_TOKEN_EXPIRY)));
@@ -182,7 +189,7 @@ public class EntraTokenCredentialTests {
 
     @Test
     void entraTokenCredentialScopesChangedAfterCredentialConstructionNoImpactReturnsToken() {
-        String[] scopes = new String[] { COMMUNICATION_CLIENTS_SCOPE, COMMUNICATION_CLIENTS_PREFIX + "Chat" };
+        List<String> scopes = new ArrayList<>() {{ add(COMMUNICATION_CLIENTS_SCOPE); add(COMMUNICATION_CLIENTS_PREFIX + "Chat"); }};
 
         mockTokenCredential = new MockTokenCredential(
             new AccessToken("Entra token for call from constructor", OffsetDateTime.now().minusMinutes(1)),
@@ -196,16 +203,18 @@ public class EntraTokenCredentialTests {
         HttpResponse resp2 = createHttpResponse(200, VALID_TOKEN_RESPONSE);
 
         EntraCommunicationTokenCredentialOptions options
-            = new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT, scopes);
+            = new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT);
+        options.setScopes(scopes);
         mockHttpClient = new MockHttpClient(resp1, resp2);
         entraTokenCredential = new EntraTokenCredential(options, mockHttpClient);
 
-        // Mutate the array returned by getScopes(), which is a clone
-        arraycopy(new String[] { TEAMS_EXTENSION_SCOPE }, 0, options.getScopes(), 0, 1);
+        // Change scopes
+        options.getScopes().set(0, TEAMS_EXTENSION_SCOPE);
 
         StepVerifier.create(entraTokenCredential.exchangeEntraToken()).assertNext(token -> {
             AccessToken accessToken = (new TokenParser()).parseJWTToken(token);
             assertEquals(SAMPLE_TOKEN, accessToken.getToken());
+            assertEquals(COMMUNICATION_CLIENTS_ENDPOINT, mockHttpClient.getRequest().getUrl().getPath());
             assertEquals(2, mockTokenCredential.getCallCount(), "MockTokenCredential.getToken should be called twice");
             assertEquals(2, mockHttpClient.getSendCallCount(),
                 "HttpClient.send should be called twice due to token expiry");
@@ -213,13 +222,14 @@ public class EntraTokenCredentialTests {
     }
 
     @Test
-    void entraTokenCredentialScopesChangedAfterOptionsConstructionDoesNotAffectOriginalScopes() {
-        String[] validScopes = new String[] { COMMUNICATION_CLIENTS_SCOPE };
+    void entraTokenCredentialScopesChangedAfterOptionsConstructionDoesAffectOriginalScopes() {
+        List<String> validScopes = new ArrayList<>() {{ add(COMMUNICATION_CLIENTS_SCOPE); }};
         EntraCommunicationTokenCredentialOptions options
-            = new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT, validScopes);
+            = new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT);
+        options.setScopes(validScopes);
 
-        // Mutate the array returned by getScopes(), which is a clone
-        arraycopy(new String[] { "invalid_scope" }, 0, options.getScopes(), 0, 1);
+        // Change scopes
+        options.getScopes().set(0, TEAMS_EXTENSION_SCOPE);
 
         HttpResponse resp = createHttpResponse(200, VALID_TOKEN_RESPONSE);
         mockHttpClient = new MockHttpClient(resp);
@@ -228,6 +238,7 @@ public class EntraTokenCredentialTests {
         StepVerifier.create(entraTokenCredential.exchangeEntraToken()).assertNext(token -> {
             AccessToken accessToken = (new TokenParser()).parseJWTToken(token);
             assertEquals(SAMPLE_TOKEN, accessToken.getToken());
+            assertEquals(TEAMS_EXTENSION_ENDPOINT, mockHttpClient.getRequest().getUrl().getPath());
             assertEquals(1, mockTokenCredential.getCallCount(), "MockTokenCredential.getToken should be called");
             assertEquals(1, mockHttpClient.getSendCallCount(), "HttpClient.send should be called");
         }).verifyComplete();
@@ -235,7 +246,7 @@ public class EntraTokenCredentialTests {
 
     @ParameterizedTest
     @MethodSource("com.azure.communication.common.EntraCredentialHelper#validScopesProvider")
-    void entraTokenCredentialExchangeEntraTokenFailedResponseThrowsException(String[] scopes) {
+    void entraTokenCredentialExchangeEntraTokenFailedResponseThrowsException(List<String> scopes) {
         String errorMessage = "{\"error\":{\"code\":\"BadRequest\",\"message\":\"Invalid request.\"}}";
         HttpResponse resp1 = createHttpResponse(400, errorMessage);
         HttpResponse resp2 = createHttpResponse(400, errorMessage);
@@ -247,7 +258,7 @@ public class EntraTokenCredentialTests {
 
     @ParameterizedTest
     @MethodSource("com.azure.communication.common.EntraCredentialHelper#validScopesProvider")
-    void entraTokenCredentialExchangeEntraTokenInvalidJsonThrowsException(String[] scopes) {
+    void entraTokenCredentialExchangeEntraTokenInvalidJsonThrowsException(List<String> scopes) {
         String invalidJsonResponse = "{\"notAccessToken\":true}";
         HttpResponse resp1 = createHttpResponse(200, invalidJsonResponse);
         HttpResponse resp2 = createHttpResponse(200, invalidJsonResponse);
@@ -260,7 +271,7 @@ public class EntraTokenCredentialTests {
     @Execution(ExecutionMode.SAME_THREAD)
     @ParameterizedTest
     @MethodSource("com.azure.communication.common.EntraCredentialHelper#validScopesProvider")
-    void entraTokenCredentialExchangeEntraTokenRetriesThreeTimesOnTransientError(String[] scopes) {
+    void entraTokenCredentialExchangeEntraTokenRetriesThreeTimesOnTransientError(List<String> scopes) {
         String lastRetryErrorMessage = "Last Retry Error Message";
         HttpResponse[] mockResponses = new HttpResponse[] {
             createHttpResponse(500, "First Retry Error Message for the pre-warm fetch"),
@@ -277,7 +288,7 @@ public class EntraTokenCredentialTests {
         StepVerifier.create(entraTokenCredential.exchangeEntraToken()).expectErrorSatisfies(throwable -> {
             assertEquals(8, mockHttpClient.getSendCallCount(),
                 "HttpClient.send should be called 8 times (4 for pre-warm, 4 for exchange)");
-            assertTrue(throwable instanceof HttpResponseException);
+            assertInstanceOf(HttpResponseException.class, throwable);
         }).verify();
         entraTokenCredential.close();
     }

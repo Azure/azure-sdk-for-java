@@ -23,6 +23,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import static com.azure.communication.common.EntraCommunicationTokenUtils.allScopesStartWith;
 import static com.azure.communication.common.EntraCommunicationTokenUtils.COMMUNICATION_CLIENTS_SCOPE_PREFIX;
@@ -39,7 +40,7 @@ final class EntraTokenCredential implements AutoCloseable {
 
     private final ClientLogger logger = new ClientLogger(EntraTokenCredential.class);
     private final String resourceEndpoint;
-    private final String[] scopes;
+    private final List<String> scopes;
     private HttpPipeline pipeline;
 
     /**
@@ -61,7 +62,7 @@ final class EntraTokenCredential implements AutoCloseable {
      */
     EntraTokenCredential(EntraCommunicationTokenCredentialOptions entraTokenOptions, HttpClient httpClient) {
         this.resourceEndpoint = entraTokenOptions.getResourceEndpoint();
-        this.scopes = entraTokenOptions.getScopes();
+        this.scopes = List.copyOf(entraTokenOptions.getScopes());
         this.pipeline = createPipelineFromOptions(entraTokenOptions, httpClient);
 
         this.exchangeEntraToken().subscribe();
@@ -70,7 +71,7 @@ final class EntraTokenCredential implements AutoCloseable {
     private HttpPipeline createPipelineFromOptions(EntraCommunicationTokenCredentialOptions entraTokenOptions,
         HttpClient httpClient) {
         BearerTokenAuthenticationPolicy authPolicy
-            = new BearerTokenAuthenticationPolicy(entraTokenOptions.getTokenCredential(), scopes);
+            = new BearerTokenAuthenticationPolicy(entraTokenOptions.getTokenCredential(), scopes.toArray(new String[0]));
         HttpPipelinePolicy guardPolicy = new EntraTokenGuardPolicy();
         RetryPolicy retryPolicy = new RetryPolicy();
         HttpClient clientToUse = (httpClient != null) ? httpClient : HttpClient.createDefault();

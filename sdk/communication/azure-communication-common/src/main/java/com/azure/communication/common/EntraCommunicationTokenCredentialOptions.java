@@ -5,6 +5,7 @@ package com.azure.communication.common;
 
 import com.azure.core.credential.TokenCredential;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.azure.communication.common.EntraCommunicationTokenUtils.allScopesStartWith;
@@ -18,41 +19,27 @@ import static com.azure.core.util.CoreUtils.isNullOrEmpty;
  */
 public final class EntraCommunicationTokenCredentialOptions {
 
-    private static final String[] DEFAULT_SCOPES = { DEFAULT_SCOPE };
-
     private final TokenCredential tokenCredential;
     private final String resourceEndpoint;
-    private final String[] scopes;
+    private List<String> scopes;
 
     /**
-     * Initializes a new instance of EntraCommunicationTokenCredentialOptions.
+     * Initializes a new instance of EntraCommunicationTokenCredentialOptions with default scopes.
      *
      * @param tokenCredential The credential capable of fetching an Entra user token.
      * @param resourceEndpoint The URI of the Azure Communication Services resource. For example, https://myResource.communication.azure.com.
-     */
-    public EntraCommunicationTokenCredentialOptions(TokenCredential tokenCredential, String resourceEndpoint) {
-        this(tokenCredential, resourceEndpoint, DEFAULT_SCOPES);
-    }
-
-    /**
-     * Initializes a new instance of EntraCommunicationTokenCredentialOptions with custom scopes.
-     *
-     * @param tokenCredential The credential capable of fetching an Entra user token.
-     * @param resourceEndpoint The URI of the Azure Communication Services resource. For example, https://myResource.communication.azure.com.
-     * @param scopes The scopes required for the Entra user token. These scopes determine the permissions granted to the token. For example, ["https://communication.azure.com/clients/VoIP"].
      *
      * @throws NullPointerException if tokenCredential is null.
-     * @throws IllegalArgumentException if resourceEndpoint is null or empty, or if scopes are null, empty, or invalid.
+     * @throws IllegalArgumentException if resourceEndpoint is null or empty.
      */
-    public EntraCommunicationTokenCredentialOptions(TokenCredential tokenCredential, String resourceEndpoint,
-        String[] scopes) {
+    public EntraCommunicationTokenCredentialOptions(TokenCredential tokenCredential, String resourceEndpoint) {
         Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         if (isNullOrEmpty(resourceEndpoint)) {
             throw new IllegalArgumentException("'resourceEndpoint' cannot be null or empty.");
         }
         this.resourceEndpoint = resourceEndpoint;
         this.tokenCredential = tokenCredential;
-        this.scopes = validateScopes(scopes);
+        this.scopes = List.of(DEFAULT_SCOPE);
     }
 
     /**
@@ -78,12 +65,23 @@ public final class EntraCommunicationTokenCredentialOptions {
      *
      * @return the scopes.
      */
-    public String[] getScopes() {
-        return scopes.clone();
+    public List<String> getScopes() {
+        return scopes;
     }
 
-    private static String[] validateScopes(String[] scopes) {
-        if (scopes == null || scopes.length == 0) {
+    /**
+     * Sets the scopes required for the Entra user token. These scopes determine the permissions granted to the token.
+     * For example, ["https://communication.azure.com/clients/VoIP"].
+     *
+     * @param scopes The scopes to set.
+     * @throws IllegalArgumentException if scopes are null, empty, or invalid.
+     */
+    public void setScopes(List<String> scopes) {
+        this.scopes = validateScopes(scopes);
+    }
+
+    private static List<String> validateScopes(List<String> scopes) {
+        if (scopes == null || scopes.isEmpty()) {
             throw new IllegalArgumentException("Scopes must not be null or empty. Ensure all scopes start with either "
                 + TEAMS_EXTENSION_SCOPE_PREFIX + " or " + COMMUNICATION_CLIENTS_SCOPE_PREFIX + ".");
         }

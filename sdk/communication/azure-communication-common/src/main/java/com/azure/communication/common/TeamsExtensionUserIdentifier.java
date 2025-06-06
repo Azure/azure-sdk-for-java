@@ -14,19 +14,17 @@ public final class TeamsExtensionUserIdentifier extends CommunicationIdentifier 
     private final String userId;
     private final String tenantId;
     private final String resourceId;
-    private final CommunicationCloudEnvironment cloudEnvironment;
+    private CommunicationCloudEnvironment cloudEnvironment;
 
     /**
-     * Creates a TeamsExtensionUserIdentifier object
+     * Creates a TeamsExtensionUserIdentifier object with PUBLIC cloud environment.
      *
      * @param userId ID of the Microsoft Teams Extension user i.e. the Entra ID object id of the user.
      * @param tenantId Tenant ID of the Microsoft Teams Extension user.
      * @param resourceId The Communication Services resource id.
-     * @param cloudEnvironment The cloudEnvironment environment that the Microsoft Teams Extension user belongs to. Defaults to PUBLIC if null.
      * @throws IllegalArgumentException if any parameter fail the validation.
      */
-    public TeamsExtensionUserIdentifier(String userId, String tenantId, String resourceId,
-        CommunicationCloudEnvironment cloudEnvironment) {
+    public TeamsExtensionUserIdentifier(String userId, String tenantId, String resourceId) {
         if (CoreUtils.isNullOrEmpty(userId)) {
             throw new IllegalArgumentException("The initialization parameter [userId] cannot be null or empty.");
         }
@@ -40,20 +38,8 @@ public final class TeamsExtensionUserIdentifier extends CommunicationIdentifier 
         this.userId = userId;
         this.tenantId = tenantId;
         this.resourceId = resourceId;
-        this.cloudEnvironment = cloudEnvironment != null ? cloudEnvironment : CommunicationCloudEnvironment.PUBLIC;
+        this.cloudEnvironment = CommunicationCloudEnvironment.PUBLIC;
         generateRawId();
-    }
-
-    /**
-     * Creates a TeamsExtensionUserIdentifier object
-     *
-     * @param userId ID of the Microsoft Teams Extension user i.e. the Entra ID object id of the user.
-     * @param tenantId Tenant ID of the Microsoft Teams Extension user.
-     * @param resourceId The Communication Services resource id.
-     * @throws IllegalArgumentException if any parameter fail the validation.
-     */
-    public TeamsExtensionUserIdentifier(String userId, String tenantId, String resourceId) {
-        this(userId, tenantId, resourceId, CommunicationCloudEnvironment.PUBLIC);
     }
 
     /**
@@ -99,6 +85,18 @@ public final class TeamsExtensionUserIdentifier extends CommunicationIdentifier 
      */
     public CommunicationCloudEnvironment getCloudEnvironment() {
         return cloudEnvironment;
+    }
+
+    /**
+     * Set cloud environment of the Teams Extension User identifier
+     *
+     * @param cloudEnvironment the cloud environment in which this identifier is created
+     * @return this object
+     */
+    public TeamsExtensionUserIdentifier setCloudEnvironment(CommunicationCloudEnvironment cloudEnvironment) {
+        this.cloudEnvironment = cloudEnvironment != null ? cloudEnvironment : CommunicationCloudEnvironment.PUBLIC;
+        generateRawId();
+        return this;
     }
 
     /**
