@@ -3,7 +3,6 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.azure.messaging.eventgrid.systemevents.SystemEventNames;
 import com.azure.messaging.eventgrid.systemevents.models.StorageBlobCreatedEventData;
 import org.junit.jupiter.api.Test;
 
