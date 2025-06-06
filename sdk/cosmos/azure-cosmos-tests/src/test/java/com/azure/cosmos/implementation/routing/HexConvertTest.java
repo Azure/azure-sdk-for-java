@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
- * Tests for {@link LocationCache}
+ * Tests for {@link HexConvert}
  */
 public class HexConvertTest {
     @Test(groups = "unit")
