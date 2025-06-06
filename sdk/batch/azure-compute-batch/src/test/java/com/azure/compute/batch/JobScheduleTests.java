@@ -4,18 +4,21 @@ package com.azure.compute.batch;
 
 import com.azure.compute.batch.models.BatchJobSchedule;
 import com.azure.compute.batch.models.BatchJobScheduleConfiguration;
-import com.azure.compute.batch.models.BatchJobScheduleCreateContent;
+import com.azure.compute.batch.models.BatchJobScheduleCreateParameters;
 import com.azure.compute.batch.models.BatchJobScheduleState;
 import com.azure.compute.batch.models.BatchJobScheduleStatistics;
-import com.azure.compute.batch.models.BatchJobScheduleUpdateContent;
+import com.azure.compute.batch.models.BatchJobScheduleUpdateParameters;
 import com.azure.compute.batch.models.BatchJobSpecification;
+import com.azure.compute.batch.models.BatchMetadataItem;
 import com.azure.compute.batch.models.BatchPool;
 import com.azure.compute.batch.models.BatchPoolInfo;
-import com.azure.compute.batch.models.ListBatchJobSchedulesOptions;
-import com.azure.compute.batch.models.MetadataItem;
+import com.azure.compute.batch.models.BatchJobSchedulesListOptions;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import org.junit.jupiter.api.Assertions;
@@ -62,7 +65,7 @@ public class JobScheduleTests extends BatchClientTestBase {
             .setDoNotRunAfter(now().plusHours(5))
             .setStartWindow(Duration.ofDays(5));
         BatchJobSpecification spec = new BatchJobSpecification(poolInfo).setPriority(100);
-        batchClient.createJobSchedule(new BatchJobScheduleCreateContent(jobScheduleId, schedule, spec));
+        batchClient.createJobSchedule(new BatchJobScheduleCreateParameters(jobScheduleId, schedule, spec));
 
         try {
             // GET
@@ -79,7 +82,7 @@ public class JobScheduleTests extends BatchClientTestBase {
             }
 
             // LIST
-            ListBatchJobSchedulesOptions listOptions = new ListBatchJobSchedulesOptions();
+            BatchJobSchedulesListOptions listOptions = new BatchJobSchedulesListOptions();
             listOptions.setFilter(String.format("id eq '%s'", jobScheduleId));
             PagedIterable<BatchJobSchedule> jobSchedules = batchClient.listJobSchedules(listOptions);
             Assertions.assertNotNull(jobSchedules);
@@ -94,9 +97,9 @@ public class JobScheduleTests extends BatchClientTestBase {
             Assertions.assertTrue(found);
 
             // REPLACE
-            List<MetadataItem> metadataList = new ArrayList<>();
-            metadataList.add(new MetadataItem("name1", "value1"));
-            metadataList.add(new MetadataItem("name2", "value2"));
+            List<BatchMetadataItem> metadataList = new ArrayList<>();
+            metadataList.add(new BatchMetadataItem("name1", "value1"));
+            metadataList.add(new BatchMetadataItem("name2", "value2"));
 
             jobSchedule.setMetadata(metadataList);
             batchClient.replaceJobSchedule(jobScheduleId, jobSchedule);
@@ -106,26 +109,41 @@ public class JobScheduleTests extends BatchClientTestBase {
             Assertions.assertEquals("value2", jobSchedule.getMetadata().get(1).getValue());
 
             // UPDATE
-            LinkedList<MetadataItem> metadata = new LinkedList<MetadataItem>();
-            metadata.add((new MetadataItem("key1", "value1")));
-            BatchJobScheduleUpdateContent jobScheduleUpdateContent = new BatchJobScheduleUpdateContent();
-            jobScheduleUpdateContent.setMetadata(metadata);
-            batchClient.updateJobSchedule(jobScheduleId, jobScheduleUpdateContent);
+            LinkedList<BatchMetadataItem> metadata = new LinkedList<BatchMetadataItem>();
+            metadata.add((new BatchMetadataItem("key1", "value1")));
+            BatchJobScheduleUpdateParameters jobScheduleUpdateParameters = new BatchJobScheduleUpdateParameters();
+            jobScheduleUpdateParameters.setMetadata(metadata);
+            batchClient.updateJobSchedule(jobScheduleId, jobScheduleUpdateParameters);
 
             jobSchedule = batchClient.getJobSchedule(jobScheduleId);
             Assertions.assertEquals(1, jobSchedule.getMetadata().size());
             Assertions.assertEquals("key1", jobSchedule.getMetadata().get(0).getName());
             Assertions.assertEquals((Integer) 100, jobSchedule.getJobSpecification().getPriority());
 
-            // DELETE
-            batchClient.deleteJobSchedule(jobScheduleId);
+            // DELETE using LRO
+            SyncPoller<BatchJobSchedule, Void> poller
+                = setPlaybackSyncPollerPollInterval(batchClient.beginDeleteJobSchedule(jobScheduleId));
+
+            PollResponse<BatchJobSchedule> initialResponse = poller.poll();
+            if (initialResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+                BatchJobSchedule jobScheduleDuringPoll = initialResponse.getValue();
+                Assertions.assertNotNull(jobScheduleDuringPoll, "Expected job schedule data during polling");
+                Assertions.assertEquals(jobScheduleId, jobScheduleDuringPoll.getId());
+                Assertions.assertEquals(BatchJobScheduleState.DELETING, jobScheduleDuringPoll.getState());
+            }
+
+            poller.waitForCompletion();
+
+            PollResponse<BatchJobSchedule> finalResponse = poller.poll();
+            Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, finalResponse.getStatus());
+            Assertions.assertNull(finalResponse.getValue(),
+                "Expected final result to be null after successful deletion.");
+
             try {
                 jobSchedule = batchClient.getJobSchedule(jobScheduleId);
-                Assertions.assertTrue(true, "Shouldn't be here, the jobschedule should be deleted");
+                Assertions.fail("Expected job schedule to be deleted, but it was found.");
             } catch (HttpResponseException err) {
-                if (err.getResponse().getStatusCode() != 404) {
-                    throw err;
-                }
+                Assertions.assertEquals(404, err.getResponse().getStatusCode());
             }
 
             sleepIfRunningAgainstService(1 * 1000);
@@ -150,7 +168,7 @@ public class JobScheduleTests extends BatchClientTestBase {
         BatchJobScheduleConfiguration schedule = new BatchJobScheduleConfiguration().setDoNotRunUntil(now())
             .setDoNotRunAfter(now().plusHours(5))
             .setStartWindow(Duration.ofDays(5));
-        batchClient.createJobSchedule(new BatchJobScheduleCreateContent(jobScheduleId, schedule, spec));
+        batchClient.createJobSchedule(new BatchJobScheduleCreateParameters(jobScheduleId, schedule, spec));
 
         try {
             // GET
@@ -165,19 +183,20 @@ public class JobScheduleTests extends BatchClientTestBase {
             jobSchedule = batchClient.getJobSchedule(jobScheduleId);
             Assertions.assertEquals(BatchJobScheduleState.ACTIVE, jobSchedule.getState());
 
-            batchClient.terminateJobSchedule(jobScheduleId);
-            jobSchedule = batchClient.getJobSchedule(jobScheduleId);
-            Assertions.assertTrue(jobSchedule.getState() == BatchJobScheduleState.TERMINATING
-                || jobSchedule.getState() == BatchJobScheduleState.COMPLETED);
+            // Terminate using LRO
+            SyncPoller<BatchJobSchedule, BatchJobSchedule> terminatePoller
+                = batchClient.beginTerminateJobSchedule(jobScheduleId);
+            terminatePoller.waitForCompletion();
 
-            sleepIfRunningAgainstService(2 * 1000);
-            jobSchedule = batchClient.getJobSchedule(jobScheduleId);
+            jobSchedule = terminatePoller.getFinalResult();
+            Assertions.assertNotNull(jobSchedule);
             Assertions.assertEquals(BatchJobScheduleState.COMPLETED, jobSchedule.getState());
 
             batchClient.deleteJobSchedule(jobScheduleId);
+            sleepIfRunningAgainstService(2 * 1000);
             try {
                 jobSchedule = batchClient.getJobSchedule(jobScheduleId);
-                Assertions.assertTrue(true, "Shouldn't be here, the jobschedule should be deleted");
+                Assertions.fail("Shouldn't be here, the jobschedule should be deleted");
             } catch (HttpResponseException err) {
                 if (err.getResponse().getStatusCode() != 404) {
                     throw err;
@@ -214,13 +233,13 @@ public class JobScheduleTests extends BatchClientTestBase {
             Assertions.assertEquals(Duration.parse("PT1H"), stats.getUserCpuTime());
             Assertions.assertEquals(Duration.parse("PT30M"), stats.getKernelCpuTime());
             Assertions.assertEquals(Duration.parse("PT1H30M"), stats.getWallClockTime());
-            Assertions.assertEquals(1000, stats.getReadIOps());
-            Assertions.assertEquals(500, stats.getWriteIOps());
-            Assertions.assertEquals(0.5, stats.getReadIOGiB());
-            Assertions.assertEquals(0.25, stats.getWriteIOGiB());
-            Assertions.assertEquals(10, stats.getNumSucceededTasks());
-            Assertions.assertEquals(2, stats.getNumFailedTasks());
-            Assertions.assertEquals(3, stats.getNumTaskRetries());
+            Assertions.assertEquals(1000, stats.getReadIops());
+            Assertions.assertEquals(500, stats.getWriteIops());
+            Assertions.assertEquals(0.5, stats.getReadIoGiB());
+            Assertions.assertEquals(0.25, stats.getWriteIoGiB());
+            Assertions.assertEquals(10, stats.getSucceededTasksCount());
+            Assertions.assertEquals(2, stats.getFailedTasksCount());
+            Assertions.assertEquals(3, stats.getTaskRetriesCount());
             Assertions.assertEquals(Duration.parse("PT10M"), stats.getWaitTime());
         } catch (IOException e) {
             throw new RuntimeException(e);
