@@ -23,6 +23,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.azure.communication.common.EntraCommunicationTokenUtils.allScopesStartWith;
@@ -62,7 +63,7 @@ final class EntraTokenCredential implements AutoCloseable {
      */
     EntraTokenCredential(EntraCommunicationTokenCredentialOptions entraTokenOptions, HttpClient httpClient) {
         this.resourceEndpoint = entraTokenOptions.getResourceEndpoint();
-        this.scopes = List.copyOf(entraTokenOptions.getScopes());
+        this.scopes = new ArrayList<>(entraTokenOptions.getScopes());
         this.pipeline = createPipelineFromOptions(entraTokenOptions, httpClient);
 
         this.exchangeEntraToken().subscribe();

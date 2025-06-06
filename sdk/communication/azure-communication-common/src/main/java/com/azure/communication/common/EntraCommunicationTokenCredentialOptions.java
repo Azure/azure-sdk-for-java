@@ -5,6 +5,7 @@ package com.azure.communication.common;
 
 import com.azure.core.credential.TokenCredential;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,7 +40,7 @@ public final class EntraCommunicationTokenCredentialOptions {
         }
         this.resourceEndpoint = resourceEndpoint;
         this.tokenCredential = tokenCredential;
-        this.scopes = List.of(DEFAULT_SCOPE);
+        this.scopes = new ArrayList<>() {{ add(DEFAULT_SCOPE); }};
     }
 
     /**
