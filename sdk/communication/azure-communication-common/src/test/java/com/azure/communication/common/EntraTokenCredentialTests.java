@@ -20,7 +20,6 @@ import reactor.test.StepVerifier;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.azure.communication.common.EntraCredentialHelper.*;
