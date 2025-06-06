@@ -1122,42 +1122,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         StepVerifier.create(ccAsync.listBlobs()).verifyError(BlobStorageException.class);
     }
 
-    @Test
-    public void listBlobsFlatWithTimeoutStillBackedByPagedFlux() {
-        int numBlobs = 5;
-        int pageResults = 3;
-
-        Mono<List<BlockBlobItem>> createBlob = Flux.range(0, numBlobs).flatMap(i -> {
-            BlockBlobAsyncClient blob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-            return blob.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize());
-        }).collectList();
-
-        // when: "Consume results by page, then still have paging functionality"
-        StepVerifier
-            .create(createBlob
-                .thenMany(ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageResults)).byPage()))
-            .expectNextCount(2)
-            .verifyComplete();
-    }
-
-    @Test
-    public void listBlobsHierWithTimeoutStillBackedByPagedFlux() {
-        int numBlobs = 5;
-        int pageResults = 3;
-
-        Mono<List<BlockBlobItem>> createBlob = Flux.range(0, numBlobs).flatMap(i -> {
-            BlockBlobAsyncClient blob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-            return blob.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize());
-        }).collectList();
-
-        // when: "Consume results by page, then still have paging functionality"
-        StepVerifier
-            .create(createBlob.thenMany(
-                ccAsync.listBlobsByHierarchy("/", new ListBlobsOptions().setMaxResultsPerPage(pageResults)).byPage()))
-            .expectNextCount(2)
-            .verifyComplete();
-    }
-
     /*
     This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
@@ -1774,35 +1738,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @Test
     public void findBlobsError() {
         StepVerifier.create(ccAsync.findBlobsByTags("garbageTag").byPage()).verifyError(BlobStorageException.class);
-    }
-
-    @SuppressWarnings("deprecation")
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-04-10")
-    @Test
-    public void findBlobsWithTimeoutStillBackedByPagedFlux() {
-        int numBlobs = 5;
-        int pageResults = 3;
-        Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
-
-        Mono<List<Response<BlockBlobItem>>> uploadBlob = Flux.range(0, numBlobs)
-            .flatMap(i -> ccAsync.getBlobAsyncClient(generateBlobName())
-                .uploadWithResponse(
-                    new BlobParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSize())
-                        .setTags(tags)))
-            .collectList();
-
-        // when: "Consume results by page, still have paging functionality"
-        StepVerifier
-            .create(
-                uploadBlob
-                    .thenMany(
-                        ccAsync
-                            .findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue))
-                                .setMaxResultsPerPage(pageResults), Duration.ofSeconds(10), Context.NONE)
-                            .byPage()
-                            .count()))
-            .expectNextCount(1)
-            .verifyComplete();
     }
 
     @ParameterizedTest
