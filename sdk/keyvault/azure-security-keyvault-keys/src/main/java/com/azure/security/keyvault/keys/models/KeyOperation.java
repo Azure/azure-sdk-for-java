@@ -56,7 +56,7 @@ public final class KeyOperation extends ExpandableStringEnum<KeyOperation> {
 
     /**
      * Creates a new instance of KeyOperation value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
@@ -66,7 +66,7 @@ public final class KeyOperation extends ExpandableStringEnum<KeyOperation> {
 
     /**
      * Creates or finds a KeyOperation from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding KeyOperation.
      */
@@ -77,7 +77,7 @@ public final class KeyOperation extends ExpandableStringEnum<KeyOperation> {
 
     /**
      * Gets known KeyOperation values.
-     *
+     * 
      * @return known KeyOperation values.
      */
     @Generated

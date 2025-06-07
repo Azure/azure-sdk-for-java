@@ -17,7 +17,8 @@ public class KeysCustomizations extends Customization {
         customizeServiceVersion(libraryCustomization);
         customizeKeyAttestation(libraryCustomization);
         customizeKeyCurveName(libraryCustomization.getRawEditor());
-        customizeKeyRotationPolicyAction(libraryCustomization.getRawEditor());
+        customizeKeyOperation(libraryCustomization.getRawEditor());
+        customizeKeyRotationPolicyAction(libraryCustomization);
         customizeReleaseKeyResult(libraryCustomization);
         customizeModuleInfo(libraryCustomization.getRawEditor());
         customizePackageInfos(libraryCustomization.getRawEditor());
@@ -141,6 +142,20 @@ public class KeysCustomizations extends Customization {
         String classPath = "src/main/java/com/azure/security/keyvault/keys/models/KeyCurveName.java";
         String newFileContent = editor.getFileContent(classPath)
             .replace(" For valid values, see JsonWebKeyCurveName.", "");
+
+        editor.replaceFile(classPath, newFileContent);
+    }
+
+    private static void customizeKeyOperation(Editor editor) {
+        String classPath = "src/main/java/com/azure/security/keyvault/keys/models/KeyOperation.java";
+        String newFileContent = editor.getFileContent(classPath).replace(joinWithNewline(
+            "",
+            "    /**",
+            "     * Indicates that the private component of the key can be exported.",
+            "     */",
+            "    @Generated",
+            "    public static final KeyOperation EXPORT = fromString(\"export\");",
+            ""), "");
 
         editor.replaceFile(classPath, newFileContent);
     }
