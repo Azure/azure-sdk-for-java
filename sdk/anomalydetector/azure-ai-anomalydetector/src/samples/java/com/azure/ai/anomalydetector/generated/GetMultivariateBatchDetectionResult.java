@@ -16,9 +16,9 @@ public class GetMultivariateBatchDetectionResult {
             .credential(new KeyCredential(Configuration.getGlobalConfiguration().get("API_KEY")))
             .endpoint("{Endpoint}")
             .buildMultivariateClient();
-        // BEGIN:com.azure.ai.anomalydetector.generated.multivariategetmultivariatebatchdetectionresult.getmultivariatebatchdetectionresult
+        // BEGIN:com.azure.ai.anomalydetector.generated.multivariate-get-multivariate-batch-detection-result.get-multivariate-batch-detection-result
         MultivariateDetectionResult response
             = multivariateClient.getMultivariateBatchDetectionResult("663884e6-b117-11ea-b3de-0242ac130004");
-        // END:com.azure.ai.anomalydetector.generated.multivariategetmultivariatebatchdetectionresult.getmultivariatebatchdetectionresult
+        // END:com.azure.ai.anomalydetector.generated.multivariate-get-multivariate-batch-detection-result.get-multivariate-batch-detection-result
     }
 }
