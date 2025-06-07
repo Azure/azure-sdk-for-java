@@ -13,6 +13,7 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.utils.CoreUtils;
 
 import java.util.Objects;
 
@@ -46,7 +47,6 @@ public class OAuthBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
      * @param context the default OAuth metadata to use for the token request.
      */
     public OAuthBearerTokenAuthenticationPolicy(OAuthTokenCredential credential, OAuthTokenRequestContext context) {
-        Objects.requireNonNull(credential);
         Objects.requireNonNull(context);
         this.credential = credential;
         this.context = context;
@@ -77,9 +77,15 @@ public class OAuthBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
 
         HttpPipelineNextPolicy nextPolicy = next.copy();
 
-        // For now we don't support per-operation scopes. In the future when we do, we will need to retrieve the
-        // scope from the incoming httpRequest and merge it with the default context.
-        authorizeRequest(httpRequest, context);
+        AuthMetadata authScheme = (String) httpRequest.getContext().getMetadata(IO_CLIENTCORE_AUTH_SCHEME);
+
+        if ((!CoreUtils.isNullOrEmpty(authScheme) && authScheme.equalsIgnoreCase("oauth2"))) {
+            // For now we don't support per-operation scopes. In the future when we do, we will need to retrieve the
+            // scope from the incoming httpRequest and merge it with the default context.
+
+            authorizeRequest(httpRequest, context);
+        }
+
         Response<BinaryData> httpResponse = next.process();
         String authHeader = httpResponse.getHeaders().getValue(HttpHeaderName.WWW_AUTHENTICATE);
         if (httpResponse.getStatusCode() == 401 && authHeader != null) {
