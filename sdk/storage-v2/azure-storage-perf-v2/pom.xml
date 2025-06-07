@@ -1,0 +1,112 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.example</groupId>
+  <artifactId>azure-storage-perf-v2</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>azure-storage-perf-v2</name>
+  <url>http://maven.apache.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>perf-test-core</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:perf-test-core;current} -->
+    </dependency>
+
+<!--    <dependency>-->
+<!--      <groupId>com.azure.v2</groupId>-->
+<!--      <artifactId>azure-storage-blob</artifactId>-->
+<!--      <version>13.0.0-beta.1</version>-->
+<!--    </dependency>-->
+
+    <dependency>
+      <groupId>io.clientcore</groupId>
+      <artifactId>http-okhttp3</artifactId>
+      <version>1.0.0-beta.3</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.clientcore</groupId>
+      <artifactId>http-netty4</artifactId>
+      <version>1.0.0-beta.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.conscrypt</groupId>
+      <artifactId>conscrypt-openjdk</artifactId>
+      <version>2.5.2</version>
+      <classifier>${os.detected.classifier}</classifier>
+<!--      <classifier>linux-x86_64</classifier>-->
+<!--      <classifier>windows-x86_64</classifier>-->
+    </dependency>
+
+
+    <dependency>
+      <groupId>io.clientcore</groupId>
+      <artifactId>core</artifactId>
+      <version>1.0.0-beta.10</version> <!-- {x-version-update;unreleased_io.clientcore:core;dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure.v2</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure.v2:azure-core;dependency} -->
+    </dependency>
+  </dependencies>
+
+
+  <build>
+    <extensions>
+      <extension>
+        <groupId>kr.motd.maven</groupId>
+        <artifactId>os-maven-plugin</artifactId>
+        <version>1.4.1.Final</version>
+      </extension>
+    </extensions>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.7.1</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <archive>
+                <manifest>
+                  <mainClass>org.example.App</mainClass>
+                </manifest>
+                <manifestEntries>
+                  <Multi-Release>true</Multi-Release>
+                </manifestEntries>
+              </archive>
+              <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
