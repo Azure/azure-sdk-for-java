@@ -116,7 +116,7 @@ public final class FilesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> uploadFileWithResponse(BinaryData body, RequestOptions requestOptions) {
+    public Response<BinaryData> uploadFileWithResponse(BinaryData body, RequestOptions requestOptions) {
         // Operation 'uploadFile' is of content-type 'multipart/form-data'. Protocol API is not usable and hence not
         // generated.
         return this.serviceClient.uploadFileWithResponse(body, requestOptions);
@@ -262,7 +262,7 @@ public final class FilesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FileInfo uploadFile(UploadFileRequest body) {
+    public FileInfo uploadFile(UploadFileRequest body) {
         // Generated convenience method for uploadFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return uploadFileWithResponse(new MultipartFormDataHelper(requestOptions)
