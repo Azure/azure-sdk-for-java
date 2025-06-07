@@ -49,21 +49,21 @@ public final class StorageTaskAssignmentCompletedEventData
      * The summary report blob url for a storage task
      */
     @Generated
-    private final String summaryReportBlobUri;
+    private final String summaryReportBlobUrl;
 
     /**
      * Creates an instance of StorageTaskAssignmentCompletedEventData class.
      *
      * @param status the status value to set.
      * @param completedOn the completedOn value to set.
-     * @param summaryReportBlobUri the summaryReportBlobUri value to set.
+     * @param summaryReportBlobUrl the summaryReportBlobUrl value to set.
      */
     @Generated
     private StorageTaskAssignmentCompletedEventData(StorageTaskAssignmentCompletedStatus status,
-        OffsetDateTime completedOn, String summaryReportBlobUri) {
+        OffsetDateTime completedOn, String summaryReportBlobUrl) {
         this.status = status;
         this.completedOn = completedOn;
-        this.summaryReportBlobUri = summaryReportBlobUri;
+        this.summaryReportBlobUrl = summaryReportBlobUrl;
     }
 
     /**
@@ -107,13 +107,13 @@ public final class StorageTaskAssignmentCompletedEventData
     }
 
     /**
-     * Get the summaryReportBlobUri property: The summary report blob url for a storage task.
+     * Get the summaryReportBlobUrl property: The summary report blob url for a storage task.
      *
-     * @return the summaryReportBlobUri value.
+     * @return the summaryReportBlobUrl value.
      */
     @Generated
-    public String getSummaryReportBlobUri() {
-        return this.summaryReportBlobUri;
+    public String getSummaryReportBlobUrl() {
+        return this.summaryReportBlobUrl;
     }
 
     /**
@@ -126,7 +126,7 @@ public final class StorageTaskAssignmentCompletedEventData
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeStringField("completedDateTime",
             this.completedOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.completedOn));
-        jsonWriter.writeStringField("summaryReportBlobUrl", this.summaryReportBlobUri);
+        jsonWriter.writeStringField("summaryReportBlobUrl", this.summaryReportBlobUrl);
         jsonWriter.writeStringField("taskExecutionId", this.taskExecutionId);
         jsonWriter.writeStringField("taskName", this.taskName);
         return jsonWriter.writeEndObject();
@@ -146,7 +146,7 @@ public final class StorageTaskAssignmentCompletedEventData
         return jsonReader.readObject(reader -> {
             StorageTaskAssignmentCompletedStatus status = null;
             OffsetDateTime completedOn = null;
-            String summaryReportBlobUri = null;
+            String summaryReportBlobUrl = null;
             String taskExecutionId = null;
             String taskName = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -158,7 +158,7 @@ public final class StorageTaskAssignmentCompletedEventData
                     completedOn = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("summaryReportBlobUrl".equals(fieldName)) {
-                    summaryReportBlobUri = reader.getString();
+                    summaryReportBlobUrl = reader.getString();
                 } else if ("taskExecutionId".equals(fieldName)) {
                     taskExecutionId = reader.getString();
                 } else if ("taskName".equals(fieldName)) {
@@ -168,7 +168,7 @@ public final class StorageTaskAssignmentCompletedEventData
                 }
             }
             StorageTaskAssignmentCompletedEventData deserializedStorageTaskAssignmentCompletedEventData
-                = new StorageTaskAssignmentCompletedEventData(status, completedOn, summaryReportBlobUri);
+                = new StorageTaskAssignmentCompletedEventData(status, completedOn, summaryReportBlobUrl);
             deserializedStorageTaskAssignmentCompletedEventData.taskExecutionId = taskExecutionId;
             deserializedStorageTaskAssignmentCompletedEventData.taskName = taskName;
             return deserializedStorageTaskAssignmentCompletedEventData;

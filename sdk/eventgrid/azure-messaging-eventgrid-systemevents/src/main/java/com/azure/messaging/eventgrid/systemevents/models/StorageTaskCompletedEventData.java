@@ -48,21 +48,21 @@ public final class StorageTaskCompletedEventData implements JsonSerializable<Sto
      * The summary report blob url for a storage task
      */
     @Generated
-    private final String summaryReportBlobUri;
+    private final String summaryReportBlobUrl;
 
     /**
      * Creates an instance of StorageTaskCompletedEventData class.
      *
      * @param status the status value to set.
      * @param completedDateTime the completedDateTime value to set.
-     * @param summaryReportBlobUri the summaryReportBlobUri value to set.
+     * @param summaryReportBlobUrl the summaryReportBlobUrl value to set.
      */
     @Generated
     private StorageTaskCompletedEventData(StorageTaskCompletedStatus status, OffsetDateTime completedDateTime,
-        String summaryReportBlobUri) {
+        String summaryReportBlobUrl) {
         this.status = status;
         this.completedDateTime = completedDateTime;
-        this.summaryReportBlobUri = summaryReportBlobUri;
+        this.summaryReportBlobUrl = summaryReportBlobUrl;
     }
 
     /**
@@ -106,13 +106,13 @@ public final class StorageTaskCompletedEventData implements JsonSerializable<Sto
     }
 
     /**
-     * Get the summaryReportBlobUri property: The summary report blob url for a storage task.
+     * Get the summaryReportBlobUrl property: The summary report blob url for a storage task.
      *
-     * @return the summaryReportBlobUri value.
+     * @return the summaryReportBlobUrl value.
      */
     @Generated
-    public String getSummaryReportBlobUri() {
-        return this.summaryReportBlobUri;
+    public String getSummaryReportBlobUrl() {
+        return this.summaryReportBlobUrl;
     }
 
     /**
@@ -127,7 +127,7 @@ public final class StorageTaskCompletedEventData implements JsonSerializable<Sto
             this.completedDateTime == null
                 ? null
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.completedDateTime));
-        jsonWriter.writeStringField("summaryReportBlobUrl", this.summaryReportBlobUri);
+        jsonWriter.writeStringField("summaryReportBlobUrl", this.summaryReportBlobUrl);
         jsonWriter.writeStringField("taskExecutionId", this.taskExecutionId);
         jsonWriter.writeStringField("taskName", this.taskName);
         return jsonWriter.writeEndObject();
@@ -147,7 +147,7 @@ public final class StorageTaskCompletedEventData implements JsonSerializable<Sto
         return jsonReader.readObject(reader -> {
             StorageTaskCompletedStatus status = null;
             OffsetDateTime completedDateTime = null;
-            String summaryReportBlobUri = null;
+            String summaryReportBlobUrl = null;
             String taskExecutionId = null;
             String taskName = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -159,7 +159,7 @@ public final class StorageTaskCompletedEventData implements JsonSerializable<Sto
                     completedDateTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("summaryReportBlobUrl".equals(fieldName)) {
-                    summaryReportBlobUri = reader.getString();
+                    summaryReportBlobUrl = reader.getString();
                 } else if ("taskExecutionId".equals(fieldName)) {
                     taskExecutionId = reader.getString();
                 } else if ("taskName".equals(fieldName)) {
@@ -169,7 +169,7 @@ public final class StorageTaskCompletedEventData implements JsonSerializable<Sto
                 }
             }
             StorageTaskCompletedEventData deserializedStorageTaskCompletedEventData
-                = new StorageTaskCompletedEventData(status, completedDateTime, summaryReportBlobUri);
+                = new StorageTaskCompletedEventData(status, completedDateTime, summaryReportBlobUrl);
             deserializedStorageTaskCompletedEventData.taskExecutionId = taskExecutionId;
             deserializedStorageTaskCompletedEventData.taskName = taskName;
             return deserializedStorageTaskCompletedEventData;

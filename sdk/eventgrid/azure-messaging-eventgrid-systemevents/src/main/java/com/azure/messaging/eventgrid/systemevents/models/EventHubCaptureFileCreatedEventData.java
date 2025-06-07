@@ -25,7 +25,7 @@ public final class EventHubCaptureFileCreatedEventData
      * The path to the capture file.
      */
     @Generated
-    private final String fileurl;
+    private final String fileUrl;
 
     /*
      * The file type of the capture file.
@@ -78,7 +78,7 @@ public final class EventHubCaptureFileCreatedEventData
     /**
      * Creates an instance of EventHubCaptureFileCreatedEventData class.
      *
-     * @param fileurl the fileurl value to set.
+     * @param fileUrl the fileUrl value to set.
      * @param fileType the fileType value to set.
      * @param partitionId the partitionId value to set.
      * @param sizeInBytes the sizeInBytes value to set.
@@ -89,10 +89,10 @@ public final class EventHubCaptureFileCreatedEventData
      * @param lastEnqueueTime the lastEnqueueTime value to set.
      */
     @Generated
-    private EventHubCaptureFileCreatedEventData(String fileurl, String fileType, String partitionId, int sizeInBytes,
+    private EventHubCaptureFileCreatedEventData(String fileUrl, String fileType, String partitionId, int sizeInBytes,
         int eventCount, int firstSequenceNumber, int lastSequenceNumber, OffsetDateTime firstEnqueueTime,
         OffsetDateTime lastEnqueueTime) {
-        this.fileurl = fileurl;
+        this.fileUrl = fileUrl;
         this.fileType = fileType;
         this.partitionId = partitionId;
         this.sizeInBytes = sizeInBytes;
@@ -104,13 +104,13 @@ public final class EventHubCaptureFileCreatedEventData
     }
 
     /**
-     * Get the fileurl property: The path to the capture file.
+     * Get the fileUrl property: The path to the capture file.
      *
-     * @return the fileurl value.
+     * @return the fileUrl value.
      */
     @Generated
-    public String getFileurl() {
-        return this.fileurl;
+    public String getFileUrl() {
+        return this.fileUrl;
     }
 
     /**
@@ -200,7 +200,7 @@ public final class EventHubCaptureFileCreatedEventData
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("fileUrl", this.fileurl);
+        jsonWriter.writeStringField("fileUrl", this.fileUrl);
         jsonWriter.writeStringField("fileType", this.fileType);
         jsonWriter.writeStringField("partitionId", this.partitionId);
         jsonWriter.writeIntField("sizeInBytes", this.sizeInBytes);
@@ -228,7 +228,7 @@ public final class EventHubCaptureFileCreatedEventData
     @Generated
     public static EventHubCaptureFileCreatedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String fileurl = null;
+            String fileUrl = null;
             String fileType = null;
             String partitionId = null;
             int sizeInBytes = 0;
@@ -241,7 +241,7 @@ public final class EventHubCaptureFileCreatedEventData
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("fileUrl".equals(fieldName)) {
-                    fileurl = reader.getString();
+                    fileUrl = reader.getString();
                 } else if ("fileType".equals(fieldName)) {
                     fileType = reader.getString();
                 } else if ("partitionId".equals(fieldName)) {
@@ -264,7 +264,7 @@ public final class EventHubCaptureFileCreatedEventData
                     reader.skipChildren();
                 }
             }
-            return new EventHubCaptureFileCreatedEventData(fileurl, fileType, partitionId, sizeInBytes, eventCount,
+            return new EventHubCaptureFileCreatedEventData(fileUrl, fileType, partitionId, sizeInBytes, eventCount,
                 firstSequenceNumber, lastSequenceNumber, firstEnqueueTime, lastEnqueueTime);
         });
     }
