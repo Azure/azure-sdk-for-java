@@ -55,14 +55,8 @@ public final class KeyOperation extends ExpandableStringEnum<KeyOperation> {
     public static final KeyOperation IMPORT = fromString("import");
 
     /**
-     * Indicates that the private component of the key can be exported.
-     */
-    @Generated
-    public static final KeyOperation EXPORT = fromString("export");
-
-    /**
      * Creates a new instance of KeyOperation value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
@@ -72,7 +66,7 @@ public final class KeyOperation extends ExpandableStringEnum<KeyOperation> {
 
     /**
      * Creates or finds a KeyOperation from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding KeyOperation.
      */
@@ -83,7 +77,7 @@ public final class KeyOperation extends ExpandableStringEnum<KeyOperation> {
 
     /**
      * Gets known KeyOperation values.
-     * 
+     *
      * @return known KeyOperation values.
      */
     @Generated

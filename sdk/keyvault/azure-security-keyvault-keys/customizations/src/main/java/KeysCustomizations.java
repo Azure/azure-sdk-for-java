@@ -17,6 +17,7 @@ public class KeysCustomizations extends Customization {
         customizeServiceVersion(libraryCustomization);
         customizeKeyAttestation(libraryCustomization);
         customizeKeyCurveName(libraryCustomization.getRawEditor());
+        customizeKeyRotationPolicyAction(libraryCustomization.getRawEditor());
         customizeReleaseKeyResult(libraryCustomization);
         customizeModuleInfo(libraryCustomization.getRawEditor());
         customizePackageInfos(libraryCustomization.getRawEditor());
@@ -142,6 +143,18 @@ public class KeysCustomizations extends Customization {
             .replace(" For valid values, see JsonWebKeyCurveName.", "");
 
         editor.replaceFile(classPath, newFileContent);
+    }
+
+    private static void customizeKeyRotationPolicyAction(LibraryCustomization libraryCustomization) {
+        replaceInFile(
+            libraryCustomization.getPackage("com.azure.security.keyvault.keys.models").getClass("KeyRotationPolicyAction"),
+            "src/main/java/com/azure/security/keyvault/keys/models/KeyRotationPolicyAction.java",
+            new String[] {
+                "ROTATE(\"Rotate\")",
+                "NOTIFY(\"Notify\")" },
+            new String[] {
+                "ROTATE(\"rotate\")",
+                "NOTIFY(\"notify\")" });
     }
 
     private static void customizeReleaseKeyResult(LibraryCustomization libraryCustomization) {
