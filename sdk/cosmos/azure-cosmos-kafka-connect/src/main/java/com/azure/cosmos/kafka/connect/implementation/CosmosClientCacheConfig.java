@@ -3,8 +3,13 @@
 
 package com.azure.cosmos.kafka.connect.implementation;
 
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+
 import java.util.List;
 import java.util.Objects;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Configuration class for CosmosDB client cache entries.
@@ -23,6 +28,9 @@ public class CosmosClientCacheConfig {
                                 boolean useGatewayMode,
                                 List<String> preferredRegions,
                                 String context) {
+        checkArgument(StringUtils.isNotEmpty(endpoint), "Argument 'endpoint' must not be empty");
+        checkNotNull(authConfig,  "Argument 'authConfig' must not be null");
+
         this.endpoint = endpoint;
         this.authConfig = authConfig;
         this.applicationName = applicationName;

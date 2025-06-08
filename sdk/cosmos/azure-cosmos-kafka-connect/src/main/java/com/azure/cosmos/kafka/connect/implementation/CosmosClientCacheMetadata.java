@@ -8,6 +8,8 @@ import com.azure.cosmos.CosmosAsyncClient;
 import java.time.Instant;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 /**
  * Metadata for cached Cosmos client instances.
  */
@@ -18,6 +20,8 @@ public class CosmosClientCacheMetadata {
     private final Instant created;
 
     public CosmosClientCacheMetadata(CosmosAsyncClient client, Instant created) {
+        checkNotNull(client, "Argument 'client' must not be null");
+
         this.client = client;
         this.refCount = new AtomicLong(1);
         this.lastAccessed = created;

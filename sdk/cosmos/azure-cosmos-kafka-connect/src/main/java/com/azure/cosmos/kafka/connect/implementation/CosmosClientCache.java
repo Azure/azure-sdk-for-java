@@ -18,12 +18,12 @@ import org.slf4j.LoggerFactory;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
-import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -37,12 +37,12 @@ public class CosmosClientCache implements AutoCloseable {
     private static final long CLEANUP_INTERVAL_IN_SECONDS = 60; // 1 minute
 
     private final Map<CosmosClientCacheConfig, CosmosClientCacheMetadata> clientCache;
-    private final Queue<ClientCleanupItem> toBeCleanedQueue;
+    private final Map<CosmosClientCacheConfig, CosmosClientCacheMetadata> toBeCleanedMap;
     private final ScheduledExecutorService cleanupExecutor;
 
-    private CosmosClientCache() {
+    public CosmosClientCache() {
         this.clientCache = new ConcurrentHashMap<>();
-        this.toBeCleanedQueue = new ConcurrentLinkedQueue<>();
+        this.toBeCleanedMap = new ConcurrentHashMap<>();
         this.cleanupExecutor = Executors.newSingleThreadScheduledExecutor(r -> {
             Thread t = new Thread(r, "CosmosClientCache-Cleanup");
             t.setDaemon(true);
@@ -63,39 +63,34 @@ public class CosmosClientCache implements AutoCloseable {
     /**
      * Gets a Cosmos client with the given configuration.
      */
-    public static CosmosAsyncClient getCosmosClient(
+    public static CosmosClientCacheItem getCosmosClient(
         CosmosAccountConfig accountConfig,
         String sourceName) {
+        checkNotNull(accountConfig, "Argument 'accountConfig' must not be null");
+
         return getCosmosClient(accountConfig, sourceName, null);
     }
 
     /**
      * Gets a Cosmos client with the given configuration and metadata snapshot.
      */
-    public static CosmosAsyncClient getCosmosClient(
+    public static CosmosClientCacheItem getCosmosClient(
         CosmosAccountConfig accountConfig,
         String sourceName,
         CosmosClientMetadataCachesSnapshot snapshot) {
-        return getInstance().getOrCreateClient(accountConfig, sourceName, snapshot);
-    }
+        checkNotNull(accountConfig, "Argument 'accountConfig' must not be null");
 
-    /**
-     * Gets or creates a cached client for the given configuration.
-     */
-    public synchronized CosmosAsyncClient getOrCreateClient(
-        CosmosAccountConfig accountConfig, 
-        String context) {
-        return getOrCreateClient(accountConfig, context, null);
+        return getInstance().getOrCreateClient(accountConfig, sourceName, snapshot);
     }
 
     /**
      * Gets or creates a cached client for the given configuration and metadata snapshot.
      */
-    private synchronized CosmosAsyncClient getOrCreateClient(
+    synchronized CosmosClientCacheItem getOrCreateClient(
         CosmosAccountConfig accountConfig,
         String context,
         CosmosClientMetadataCachesSnapshot snapshot) {
-        
+
         checkNotNull(accountConfig, "Argument 'accountConfig' must not be null");
 
         CosmosClientCacheConfig cacheConfig = new CosmosClientCacheConfig(
@@ -111,13 +106,15 @@ public class CosmosClientCache implements AutoCloseable {
         if (metadata != null) {
             metadata.updateLastAccessed();
             metadata.incrementRefCount();
-            return metadata.getClient();
+
+            return new CosmosClientCacheItem(cacheConfig, metadata.getClient());
         }
 
         CosmosAsyncClient newClient = createCosmosClient(accountConfig, context, snapshot);
         metadata = new CosmosClientCacheMetadata(newClient, Instant.now());
         clientCache.put(cacheConfig, metadata);
-        return newClient;
+
+        return new CosmosClientCacheItem(cacheConfig, newClient);
     }
 
     /**
@@ -128,9 +125,7 @@ public class CosmosClientCache implements AutoCloseable {
         String sourceName,
         CosmosClientMetadataCachesSnapshot snapshot) {
 
-        if (accountConfig == null) {
-            return null;
-        }
+        checkNotNull(accountConfig, "Argument 'accountConfig' must not be null");
 
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(accountConfig.getEndpoint())
@@ -170,6 +165,8 @@ public class CosmosClientCache implements AutoCloseable {
     }
 
     private String getUserAgentSuffix(CosmosAccountConfig accountConfig, String sourceName) {
+        checkNotNull(accountConfig, "Argument 'accountConfig' must not be null");
+
         String userAgentSuffix = KafkaCosmosConstants.USER_AGENT_SUFFIX;
         if (StringUtils.isNotEmpty(sourceName)) {
             userAgentSuffix += "|" + sourceName;
@@ -185,70 +182,73 @@ public class CosmosClientCache implements AutoCloseable {
     /**
      * Releases a client from use. When reference count reaches 0, the client becomes eligible for cleanup.
      */
-    public synchronized void releaseClient(CosmosAccountConfig accountConfig, String context) {
-        if (accountConfig == null) {
-            return;
-        }
-
-        CosmosClientCacheConfig cacheConfig = new CosmosClientCacheConfig(
-            accountConfig.getEndpoint(),
-            accountConfig.getCosmosAuthConfig(),
-            accountConfig.getApplicationName(),
-            accountConfig.isUseGatewayMode(),
-            accountConfig.getPreferredRegionsList(),
-            context);
+    public synchronized void releaseClient(CosmosClientCacheConfig cacheConfig) {
+        checkNotNull(cacheConfig, "Argument 'cacheConfig' must not be null");
 
         CosmosClientCacheMetadata metadata = clientCache.get(cacheConfig);
 
         if (metadata != null) {
             metadata.decrementRefCount();
-            checkForCleanup(cacheConfig, metadata);
-        }
-    }
-
-    /**
-     * Check if a client should be added to cleanup queue.
-     */
-    private synchronized void checkForCleanup(CosmosClientCacheConfig config, CosmosClientCacheMetadata metadata) {
-        if (metadata.getRefCount() == 0) {
-            long now = Instant.now().toEpochMilli();
-            if (now - metadata.getLastAccessed().toEpochMilli() > UNUSED_CLIENT_TTL_IN_MS) {
-                toBeCleanedQueue.offer(new ClientCleanupItem(config, metadata));
-            }
         }
     }
 
     /**
      * Releases a client from the cache.
      */
-    public static void releaseCosmosClient(CosmosAccountConfig accountConfig, String sourceName) {
-        getInstance().releaseClient(accountConfig, sourceName);
+    public static void releaseCosmosClient(CosmosClientCacheConfig cacheConfig) {
+        checkNotNull(cacheConfig, "Argument 'cacheConfig' must not be null");
+
+        getInstance().releaseClient(cacheConfig);
     }
 
     private void cleanup() {
         try {
             LOGGER.debug("Starting cleanup of unused clients");
-            
-            while (!toBeCleanedQueue.isEmpty()) {
-                ClientCleanupItem item = toBeCleanedQueue.poll();
-                if (item != null) {
-                    synchronized (this) {
-                        // Double-check that the client is still unused and eligible for cleanup
-                        CosmosClientCacheMetadata currentMetadata = clientCache.get(item.config);
-                        if (currentMetadata == item.metadata && 
-                            currentMetadata.getRefCount() == 0 &&
-                            (Instant.now().toEpochMilli() - currentMetadata.getLastAccessed().toEpochMilli() > UNUSED_CLIENT_TTL_IN_MS)) {
-                            
-                            LOGGER.info("Closing unused client that has been idle for more than {} minutes",
-                                UNUSED_CLIENT_TTL_IN_MS / (60 * 1000));
-                            currentMetadata.close();
-                            clientCache.remove(item.config);
-                        }
-                    }
+
+            // First check clientCache for unused clients
+            synchronized (this) {
+                Set<CosmosClientCacheConfig> unusedConfigs = clientCache.entrySet().stream()
+                    .filter(entry -> {
+                        CosmosClientCacheMetadata metadata = entry.getValue();
+                        return shouldPurgeClient(metadata);
+                    })
+                    .map(Map.Entry::getKey)
+                    .collect(Collectors.toSet());
+
+                // Move unused clients to toBeCleanedMap
+                for (CosmosClientCacheConfig config : unusedConfigs) {
+                    purgeClient(config);
                 }
             }
+
+            // Clean up clients in toBeCleanedMap
+            toBeCleanedMap.entrySet().removeIf(entry -> {
+                CosmosClientCacheMetadata metadata = entry.getValue();
+                LOGGER.info("Closing client from cleanup queue");
+                // only close the client when the ref count is 0
+                if (metadata.getRefCount() == 0) {
+                    metadata.close();
+                    return true;
+                }
+
+                return false;
+            });
         } catch (Exception e) {
             LOGGER.error("Error during client cache cleanup", e);
+        }
+    }
+
+    private boolean shouldPurgeClient(CosmosClientCacheMetadata cacheClientMetadata) {
+        return cacheClientMetadata.getRefCount() <= 0 &&
+            (Instant.now().toEpochMilli() - cacheClientMetadata.getLastAccessed().toEpochMilli() > UNUSED_CLIENT_TTL_IN_MS);
+    }
+
+    void purgeClient(CosmosClientCacheConfig cacheClientConfig) {
+        CosmosClientCacheMetadata metadata = clientCache.remove(cacheClientConfig);
+        if (metadata != null) {
+            LOGGER.info("Moving unused client to cleanup queue after being idle for more than {} minutes",
+                UNUSED_CLIENT_TTL_IN_MS / (60 * 1000));
+            toBeCleanedMap.put(cacheClientConfig, metadata);
         }
     }
 
@@ -268,20 +268,10 @@ public class CosmosClientCache implements AutoCloseable {
         for (CosmosClientCacheMetadata metadata : clientCache.values()) {
             metadata.close();
         }
-        clientCache.clear();
-        toBeCleanedQueue.clear();
-    }
-
-    /**
-     * Represents a client that is queued for cleanup.
-     */
-    private static class ClientCleanupItem {
-        private final CosmosClientCacheConfig config;
-        private final CosmosClientCacheMetadata metadata;
-
-        ClientCleanupItem(CosmosClientCacheConfig config, CosmosClientCacheMetadata metadata) {
-            this.config = config;
-            this.metadata = metadata;
+        for (CosmosClientCacheMetadata metadata : toBeCleanedMap.values()) {
+            metadata.close();
         }
+        clientCache.clear();
+        toBeCleanedMap.clear();
     }
 }

@@ -5,46 +5,26 @@ package com.azure.cosmos.kafka.connect.implementation;
 
 import com.azure.cosmos.CosmosAsyncClient;
 
-import java.util.concurrent.atomic.AtomicLong;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-/**
- * A cached Cosmos client item with reference counting.
- */
-public class CosmosClientCacheItem implements AutoCloseable {
-    private final CosmosAsyncClient cosmosClient;
-    private final String context;
-    private final AtomicLong refCount;
+public class CosmosClientCacheItem {
+    private CosmosClientCacheConfig clientConfig;
+    private CosmosAsyncClient client;
 
-    public CosmosClientCacheItem(CosmosAsyncClient cosmosClient, String context) {
-        this.cosmosClient = cosmosClient;
-        this.context = context;
-        this.refCount = new AtomicLong(1);
+    public CosmosClientCacheItem(CosmosClientCacheConfig clientConfig, CosmosAsyncClient client) {
+        checkNotNull(clientConfig, "Argument 'clientConfig' cannot be null.");
+        checkNotNull(client, "Argument 'client' cannot be null.");
+
+        this.clientConfig = clientConfig;
+        this.client = client;
     }
 
-    public CosmosAsyncClient getCosmosClient() {
-        return cosmosClient;
+    public CosmosClientCacheConfig getClientConfig() {
+        return clientConfig;
     }
 
-    public String getContext() {
-        return context;
+    public CosmosAsyncClient getClient() {
+        return client;
     }
 
-    public long incrementAndGetRefCount() {
-        return refCount.incrementAndGet();
-    }
-
-    public long decrementAndGetRefCount() {
-        return refCount.decrementAndGet();
-    }
-
-    public long getRefCount() {
-        return refCount.get();
-    }
-
-    @Override
-    public void close() {
-        if (cosmosClient != null) {
-            cosmosClient.close();
-        }
-    }
 }

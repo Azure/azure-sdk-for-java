@@ -7683,6 +7683,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContext);
     }
 
+    public boolean isClosed() {
+        return this.closed.get();
+    }
+
     private static class NonTransientPointOperationResult {
         private final ResourceResponse<Document> response;
         private final CosmosException exception;
