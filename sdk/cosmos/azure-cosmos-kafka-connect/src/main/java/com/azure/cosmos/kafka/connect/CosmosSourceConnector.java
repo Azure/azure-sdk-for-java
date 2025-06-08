@@ -11,7 +11,7 @@ import com.azure.cosmos.implementation.UUIDs;
 import com.azure.cosmos.implementation.apachecommons.lang.RandomUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
-import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
+import com.azure.cosmos.kafka.connect.implementation.CosmosClientCache;
 import com.azure.cosmos.kafka.connect.implementation.CosmosMasterKeyAuthConfig;
 import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlConfig;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
@@ -90,7 +90,7 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
         LOGGER.info("Starting the kafka cosmos source connector");
         this.config = new CosmosSourceConfig(props);
         this.connectorName = props.containsKey(CONNECTOR_NAME) ? props.get(CONNECTOR_NAME).toString() : "EMPTY";
-        this.cosmosClient = CosmosClientStore.getCosmosClient(this.config.getAccountConfig(), connectorName);
+        this.cosmosClient = CosmosClientCache.getCosmosClient(this.config.getAccountConfig(), connectorName);
         CosmosSourceContainersConfig containersConfig = this.config.getContainersConfig();
         validateDatabaseAndContainers(
             containersConfig.getIncludedContainers(),
@@ -154,14 +154,16 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
     @Override
     public void stop() {
         LOGGER.info("Stopping Kafka CosmosDB source connector");
-        if (this.cosmosClient != null) {
-            LOGGER.debug("Closing cosmos client");
-            this.cosmosClient.close();
-        }
-
+        // Close monitor thread first since it uses the cosmos client
         if (this.monitorThread != null) {
             LOGGER.debug("Closing monitoring thread");
             this.monitorThread.close();
+        }
+
+        if (this.cosmosClient != null) {
+            LOGGER.debug("Releasing cosmos client");
+            CosmosClientCache.releaseCosmosClient(this.config.getAccountConfig(), this.connectorName);
+            this.cosmosClient = null;
         }
     }
 
@@ -577,7 +579,7 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
             CosmosThroughputControlConfig throughputControlConfig = this.config.getThroughputControlConfig();
             if (throughputControlConfig.isThroughputControlEnabled()
                 && throughputControlConfig.getThroughputControlAccountConfig() != null) {
-                throughputControlClient = CosmosClientStore.getCosmosClient(
+                throughputControlClient = CosmosClientCache.getCosmosClient(
                     this.config.getThroughputControlConfig().getThroughputControlAccountConfig(),
                     this.connectorName
                 );
@@ -594,7 +596,9 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
             return KafkaCosmosUtils.convertClientMetadataCacheSnapshotToString(throughputControlClient);
         } finally {
             if (throughputControlClient != null) {
-                throughputControlClient.close();
+                CosmosClientCache.releaseCosmosClient(
+                    this.config.getThroughputControlConfig().getThroughputControlAccountConfig(),
+                    this.connectorName);
             }
         }
     }

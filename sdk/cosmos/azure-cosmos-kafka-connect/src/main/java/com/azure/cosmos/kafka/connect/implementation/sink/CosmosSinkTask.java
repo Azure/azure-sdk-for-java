@@ -6,7 +6,7 @@ package com.azure.cosmos.kafka.connect.implementation.sink;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
+import com.azure.cosmos.kafka.connect.implementation.CosmosClientCache;
 import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlHelper;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
 import org.apache.kafka.connect.sink.SinkRecord;
@@ -37,7 +37,7 @@ public class CosmosSinkTask extends SinkTask {
         LOGGER.info("Starting the kafka cosmos sink task");
         this.sinkTaskConfig = new CosmosSinkTaskConfig(props);
         this.cosmosClient =
-            CosmosClientStore.getCosmosClient(
+            CosmosClientCache.getCosmosClient(
                 this.sinkTaskConfig.getAccountConfig(),
                 this.sinkTaskConfig.getTaskId(),
                 this.sinkTaskConfig.getClientMetadataCachesSnapshot());
@@ -64,7 +64,7 @@ public class CosmosSinkTask extends SinkTask {
         if (this.sinkTaskConfig.getThroughputControlConfig().isThroughputControlEnabled()
             && this.sinkTaskConfig.getThroughputControlConfig().getThroughputControlAccountConfig() != null) {
             // throughput control is using a different database account config
-            return CosmosClientStore.getCosmosClient(
+            return CosmosClientCache.getCosmosClient(
                 this.sinkTaskConfig.getThroughputControlConfig().getThroughputControlAccountConfig(),
                 this.sinkTaskConfig.getTaskId(),
                 this.sinkTaskConfig.getThroughputControlClientMetadataCachesSnapshot());
@@ -118,7 +118,17 @@ public class CosmosSinkTask extends SinkTask {
     public void stop() {
         LOGGER.info("Stopping Kafka CosmosDB sink task");
         if (this.cosmosClient != null) {
-            this.cosmosClient.close();
+            CosmosClientCache.releaseCosmosClient(
+                this.sinkTaskConfig.getAccountConfig(),
+                this.sinkTaskConfig.getTaskId());
+            this.cosmosClient = null;
+        }
+
+        if (this.throughputControlClient != null && this.throughputControlClient != this.cosmosClient) {
+            CosmosClientCache.releaseCosmosClient(
+                this.sinkTaskConfig.getThroughputControlConfig().getThroughputControlAccountConfig(),
+                this.sinkTaskConfig.getTaskId());
+            this.throughputControlClient = null;
         }
     }
 }

@@ -1,0 +1,56 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.cosmos.kafka.connect.implementation;
+
+import com.azure.cosmos.CosmosAsyncClient;
+
+import java.time.Instant;
+import java.util.concurrent.atomic.AtomicLong;
+
+/**
+ * Metadata for cached Cosmos client instances.
+ */
+public class CosmosClientCacheMetadata {
+    private final CosmosAsyncClient client;
+    private final AtomicLong refCount;
+    private volatile Instant lastAccessed;
+    private final Instant created;
+
+    public CosmosClientCacheMetadata(CosmosAsyncClient client, Instant created) {
+        this.client = client;
+        this.refCount = new AtomicLong(1);
+        this.lastAccessed = created;
+        this.created = created;
+    }
+
+    public CosmosAsyncClient getClient() {
+        return client;
+    }
+
+    public void updateLastAccessed() {
+        this.lastAccessed = Instant.now();
+    }
+
+    public Instant getLastAccessed() {
+        return lastAccessed;
+    }
+
+    public void incrementRefCount() {
+        refCount.incrementAndGet();
+    }
+
+    public void decrementRefCount() {
+        refCount.decrementAndGet();
+    }
+
+    public long getRefCount() {
+        return refCount.get();
+    }
+
+    public void close() {
+        if (client != null) {
+            client.close();
+        }
+    }
+}

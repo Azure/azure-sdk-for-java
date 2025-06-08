@@ -9,7 +9,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.implementation.UUIDs;
 import com.azure.cosmos.implementation.apachecommons.lang.RandomUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
+import com.azure.cosmos.kafka.connect.implementation.CosmosClientCache;
 import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlConfig;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
@@ -58,7 +58,7 @@ public final class CosmosSinkConnector extends SinkConnector implements AutoClos
         this.connectorName = props.containsKey(CONNECTOR_NAME) ? props.get(CONNECTOR_NAME).toString() : "EMPTY";
         CosmosSinkContainersConfig containersConfig = this.sinkConfig.getContainersConfig();
         this.cosmosClient =
-            CosmosClientStore.getCosmosClient(this.sinkConfig.getAccountConfig(), this.connectorName);
+            CosmosClientCache.getCosmosClient(this.sinkConfig.getAccountConfig(), this.connectorName);
         validateDatabaseAndContainers(
             new ArrayList<>(containersConfig.getTopicToContainerMap().values()),
             this.cosmosClient,
@@ -135,7 +135,7 @@ public final class CosmosSinkConnector extends SinkConnector implements AutoClos
         try {
             if (throughputControlConfig.isThroughputControlEnabled()
                 && throughputControlConfig.getThroughputControlAccountConfig() != null) {
-                throughputControlClient = CosmosClientStore.getCosmosClient(
+                throughputControlClient = CosmosClientCache.getCosmosClient(
                     throughputControlConfig.getThroughputControlAccountConfig(),
                     this.connectorName
                 );
@@ -151,7 +151,9 @@ public final class CosmosSinkConnector extends SinkConnector implements AutoClos
 
         } finally {
             if (throughputControlClient != null) {
-                throughputControlClient.close();
+                CosmosClientCache.releaseCosmosClient(
+                    throughputControlConfig.getThroughputControlAccountConfig(),
+                    this.connectorName);
             }
         }
     }
@@ -171,10 +173,12 @@ public final class CosmosSinkConnector extends SinkConnector implements AutoClos
 
     @Override
     public void stop() {
+        LOGGER.info("Stopping Kafka CosmosDB sink connector");
+
         if (this.cosmosClient != null) {
-            this.cosmosClient.close();
+            CosmosClientCache.releaseCosmosClient(this.sinkConfig.getAccountConfig(), this.connectorName);
+            this.cosmosClient = null;
         }
-        LOGGER.info("Kafka Cosmos sink connector {} is stopped.");
     }
 
     @Override

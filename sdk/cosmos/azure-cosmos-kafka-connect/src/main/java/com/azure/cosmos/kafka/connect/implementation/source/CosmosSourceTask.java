@@ -9,7 +9,7 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.guava25.base.Stopwatch;
-import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
+import com.azure.cosmos.kafka.connect.implementation.CosmosClientCache;
 import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlHelper;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
@@ -62,7 +62,7 @@ public class CosmosSourceTask extends SourceTask {
         LOGGER.info("Creating the cosmos client");
 
         this.cosmosClient =
-            CosmosClientStore.getCosmosClient(
+            CosmosClientCache.getCosmosClient(
                 this.taskConfig.getAccountConfig(),
                 this.taskConfig.getTaskId(),
                 this.taskConfig.getCosmosClientMetadataCachesSnapshot());
@@ -73,7 +73,7 @@ public class CosmosSourceTask extends SourceTask {
         if (this.taskConfig.getThroughputControlConfig().isThroughputControlEnabled()
             && this.taskConfig.getThroughputControlConfig().getThroughputControlAccountConfig() != null) {
             // throughput control is using a different database account config
-            return CosmosClientStore.getCosmosClient(
+            return CosmosClientCache.getCosmosClient(
                 this.taskConfig.getThroughputControlConfig().getThroughputControlAccountConfig(),
                 this.taskConfig.getTaskId(),
                 this.taskConfig.getThroughputControlCosmosClientMetadataCachesSnapshot());
@@ -389,7 +389,17 @@ public class CosmosSourceTask extends SourceTask {
     @Override
     public void stop() {
         if (this.cosmosClient != null) {
-            this.cosmosClient.close();
+            CosmosClientCache.releaseCosmosClient(
+                this.taskConfig.getAccountConfig(),
+                this.taskConfig.getTaskId());
+            this.cosmosClient = null;
+        }
+
+        if (this.throughputControlCosmosClient != null && this.throughputControlCosmosClient != this.cosmosClient) {
+            CosmosClientCache.releaseCosmosClient(
+                this.taskConfig.getThroughputControlConfig().getThroughputControlAccountConfig(),
+                this.taskConfig.getTaskId());
+            this.throughputControlCosmosClient = null;
         }
     }
 }
