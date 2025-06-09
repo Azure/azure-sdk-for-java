@@ -417,8 +417,8 @@ final class PartitionBasedLoadBalancer {
 
             final long nowInMillis = System.currentTimeMillis();
             final long lastModifiedTimeInMillis = entry.getValue().getLastModifiedTime();
-            long diffInMillis = (nowInMillis - lastModifiedTimeInMillis);
-            final boolean isActive = (diffInMillis < inactiveTimeLimitInMillis);
+            long modifiedMillisAgo = (nowInMillis - lastModifiedTimeInMillis);
+            final boolean isActive = (modifiedMillisAgo < inactiveTimeLimitInMillis);
             final LogLevel logLevel = isActive ? LogLevel.VERBOSE : LogLevel.INFORMATIONAL;
 
             LOGGER.atLevel(logLevel)
@@ -426,7 +426,7 @@ final class PartitionBasedLoadBalancer {
                 .addKeyValue(OWNER_ID_KEY, ownerId)
                 .addKeyValue("partitionOwnerId", entry.getValue().getOwnerId())
                 .addKeyValue("lastModifiedTime", lastModifiedTimeInMillis)
-                .addKeyValue("modifiedSecondsAgo", diffInMillis / 1000)
+                .addKeyValue("modifiedSecondsAgo", modifiedMillisAgo / 1000d)
                 .addKeyValue("isActive", isActive)
                 .log("Detecting inactive ownerships.");
 
