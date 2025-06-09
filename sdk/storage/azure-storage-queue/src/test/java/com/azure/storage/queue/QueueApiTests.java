@@ -25,7 +25,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.Mockito;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -954,19 +953,10 @@ public class QueueApiTests extends QueueTestBase {
     @SuppressWarnings("deprecation")
     @Test
     public void getPropertiesApproximateMessagesCountOverflow() {
-        QueueClient mockClient = Mockito.mock(QueueClient.class);
-        QueueProperties queueProperties = Mockito.mock(QueueProperties.class);
-        Mockito.when(queueProperties.getApproximateMessagesCountLong()).thenReturn(Long.MAX_VALUE);
-        Mockito.when(queueProperties.getApproximateMessagesCount())
-            .thenThrow(new ArithmeticException("integer overflow"));
-
-        Mockito.when(mockClient.getProperties()).thenReturn(queueProperties);
-
-        QueueProperties result = mockClient.getProperties();
-
-        assertNotNull(result);
-        assertEquals(Long.MAX_VALUE, result.getApproximateMessagesCountLong());
-        assertThrows(ArithmeticException.class, result::getApproximateMessagesCount);
+        QueueProperties properties = new QueueProperties(null, Long.MAX_VALUE);
+        assertEquals(Long.MAX_VALUE, properties.getApproximateMessagesCountLong());
+        int expectedOverflowValue = (int) Long.MAX_VALUE;
+        assertEquals(expectedOverflowValue, properties.getApproximateMessagesCount());
     }
 
 }
