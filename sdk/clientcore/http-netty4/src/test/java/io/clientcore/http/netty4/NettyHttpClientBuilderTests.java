@@ -62,7 +62,7 @@ public class NettyHttpClientBuilderTests {
     private static final String JAVA_HTTP_PROXY_USER = "http.proxyUser";
     private static final String JAVA_HTTP_PROXY_PASSWORD = "http.proxyPassword";
 
-    private static final String SERVER_HTTP_URI = NettyHttpClientLocalTestServer.getServer().getHttpUri();
+    private static final String SERVER_HTTP_URI = NettyHttpClientLocalTestServer.getServer().getUri();
     private static final String DEFAULT_URL = SERVER_HTTP_URI + DEFAULT_PATH;
 
     /**

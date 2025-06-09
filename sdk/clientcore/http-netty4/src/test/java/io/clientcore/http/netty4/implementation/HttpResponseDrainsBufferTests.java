@@ -53,7 +53,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Execution(ExecutionMode.SAME_THREAD)
 public class HttpResponseDrainsBufferTests {
     private static ResourceLeakDetector.Level originalLevel;
-    private static final String URL = NettyHttpClientLocalTestServer.getServer().getHttpUri() + LONG_BODY_PATH;
+    private static final String URL = NettyHttpClientLocalTestServer.getServer().getUri() + LONG_BODY_PATH;
 
     private ResourceLeakDetectorFactory originalLeakDetectorFactory;
     private final TestResourceLeakDetectorFactory testResourceLeakDetectorFactory

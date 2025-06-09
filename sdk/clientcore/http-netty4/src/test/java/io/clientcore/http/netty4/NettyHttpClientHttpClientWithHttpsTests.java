@@ -4,6 +4,7 @@
 package io.clientcore.http.netty4;
 
 import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.http.client.HttpProtocolVersion;
 import io.clientcore.core.shared.HttpClientTests;
 import io.clientcore.core.shared.HttpClientTestsServer;
 import io.clientcore.core.shared.LocalTestServer;
@@ -40,7 +41,7 @@ public class NettyHttpClientHttpClientWithHttpsTests extends HttpClientTests {
 
     @BeforeAll
     public static void startTestServer() {
-        server = HttpClientTestsServer.getHttpClientTestsServer();
+        server = HttpClientTestsServer.getHttpClientTestsServer(HttpProtocolVersion.HTTP_1_1, true);
         server.start();
     }
 
@@ -54,12 +55,12 @@ public class NettyHttpClientHttpClientWithHttpsTests extends HttpClientTests {
     @Override
     @Deprecated
     protected int getPort() {
-        return server.getHttpsPort();
+        return server.getPort();
     }
 
     @Override
     protected String getServerUri(boolean secure) {
-        return secure ? server.getHttpsUri() : server.getHttpUri();
+        return secure ? server.getHttpsUri() : server.getUri();
     }
 
     @Override
