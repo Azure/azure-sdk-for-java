@@ -81,7 +81,7 @@ foreach ($line in Get-Content "${PSScriptRoot}/../pipelines/patch_release_client
     if (($line) -and !($line.StartsWith("#"))) {
         $libraryId = $line.split(" ")[0]
         $groupId, $artifactId = $libraryId.split(":")
-        $ArtifactInfos[$artifactId] = GetVersionInfoForMavenArtifact -ArtifactId $artifactId
+        $ArtifactInfos[$artifactId] = GetVersionInfoForMavenArtifact -ArtifactId $artifactId -GroupId $groupId
     }
 }
 
@@ -101,7 +101,9 @@ $newAdditionalMods = @()
 # to compute the AdditionalBuildOptions
 $serviceDirsForProjectList = @()
 foreach ($artifactToPatch in $ArtifactsToPatch) {
-    $project = $ArtifactInfos[$artifactToPatch].GroupId + ":" + $artifactToPatch
+    $artifactInfo = $ArtifactInfos[$artifactToPatch]
+    $project = $artifactInfo.GroupId + ":" + $artifactToPatch
+    Write-Host "Checking for $project in artifacts dictionary"
 
     if ($artifactsDict.Contains($project)) {
         Write-Host "Found $project in dictionary"

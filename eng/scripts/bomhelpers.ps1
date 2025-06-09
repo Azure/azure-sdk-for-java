@@ -7,11 +7,11 @@ class MavenArtifactInfo {
   [String] $LatestGAOrPatchVersion
   [String] $LatestReleasedVersion
 
-  MavenArtifactInfo($ArtifactId, $LatestGAOrPatchVersion, $LatestReleasedVersion) {
+  MavenArtifactInfo($ArtifactId, $LatestGAOrPatchVersion, $LatestReleasedVersion, $GroupId = "com.azure") {
     $this.ArtifactId = $ArtifactId
     $this.LatestGAOrPatchVersion = $LatestGAOrPatchVersion
     $this.LatestReleasedVersion = $LatestReleasedVersion
-    $this.GroupId = 'com.azure'
+    $this.GroupId = $GroupId
   }
 }
 
@@ -42,15 +42,17 @@ function UpdateDependencyOfClientSDK() {
 }
 
 # Get all azure com client artifacts from Maven.
-function GetAllAzComClientArtifactsFromMaven() {
-  $webResponseObj = Invoke-WebRequest -Uri "https://repo1.maven.org/maven2/com/azure"
+function GetAllAzComClientArtifactsFromMaven($GroupId = "com.azure") {
+  $groupPath = $GroupId -replace '\.', '/'
+  $webResponseObj = Invoke-WebRequest -Uri "https://repo1.maven.org/maven2/$groupPath"
   $azureComArtifactIds = $webResponseObj.Links.HRef | Where-Object { ($_ -like 'azure-*') -and ($IgnoreList -notcontains $_) } |  ForEach-Object { $_.substring(0, $_.length - 1) }
   return $azureComArtifactIds | Where-Object { ($_ -like "azure-*") -and !($_ -like "azure-spring") }
 }
 
 # Get version info for an artifact.
-function GetVersionInfoForAnArtifactId([String]$ArtifactId) {
-  $mavenMetadataUrl = "https://repo1.maven.org/maven2/com/azure/$($ArtifactId)/maven-metadata.xml"
+function GetVersionInfoForAnArtifactId([String]$ArtifactId, [String]$GroupId = "com.azure") {
+  $groupPath = $GroupId -replace '\.', '/'
+  $mavenMetadataUrl = "https://repo1.maven.org/maven2/$groupPath/$($ArtifactId)/maven-metadata.xml"
   $webResponseObj = Invoke-WebRequest -Uri $mavenMetadataUrl
   $versions = ([xml]$webResponseObj.Content).metadata.versioning.versions.version
   $semVersions = $versions | ForEach-Object { [AzureEngSemanticVersion]::ParseVersionString($_) }
@@ -58,7 +60,7 @@ function GetVersionInfoForAnArtifactId([String]$ArtifactId) {
   $latestReleasedVersion = $sortedVersions[0].RawVersion
   $latestPatchOrGAVersion = $sortedVersions | Where-Object { !($_.IsPrerelease) } | ForEach-Object { $_.RawVersion } | Select-Object -First 1
 
-  $mavenArtifactInfo = [MavenArtifactInfo]::new($ArtifactId, $latestPatchOrGAVersion, $latestReleasedVersion)
+  $mavenArtifactInfo = [MavenArtifactInfo]::new($ArtifactId, $latestPatchOrGAVersion, $latestReleasedVersion, $GroupId)
 
   return $mavenArtifactInfo
 }
@@ -279,7 +281,7 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
 
   if (!$releaseVersion) {
     Write-Output "Computing the latest release version for each of the relevant artifacts from Maven Central."
-    $mavenArtifactInfo = [MavenArtifactInfo](GetVersionInfoForAnArtifactId -ArtifactId $artifactId)
+    $mavenArtifactInfo = [MavenArtifactInfo](GetVersionInfoForAnArtifactId -ArtifactId $artifactId -GroupId $GroupId)
 
     if ($null -eq $mavenArtifactInfo) {
       LogError "Could not find $artifactId on Maven Central."
