@@ -41,9 +41,10 @@ public class EventGridSystemEventsCustomization extends Customization {
     public void customize(LibraryCustomization customization, Logger logger) {
         customizeModuleInfo(customization);
 
-        PackageCustomization systemEvent = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+        PackageCustomization systemEvent = customization.getPackage("com.azure.messaging.eventgrid.systemevents" +
+            ".models");
         // Manual listing of classes in the package until a bug is fixed in TypeSpec Java.
-        String packagePath = "src/main/java/com/azure/messaging/eventgrid/systemevents/";
+        String packagePath = "src/main/java/com/azure/messaging/eventgrid/systemevents/models/";
         List<ClassCustomization> classCustomizations = customization.getRawEditor().getContents().keySet().stream()
             .filter(fileName -> fileName.startsWith(packagePath))
             .map(fileName -> fileName.substring(packagePath.length(), fileName.length() - 5))
@@ -99,16 +100,18 @@ public class EventGridSystemEventsCustomization extends Customization {
         compilationUnit.addOrphanComment(new LineComment(" Copyright (c) Microsoft Corporation. All rights reserved."));
         compilationUnit.addOrphanComment(new LineComment(" Licensed under the MIT License."));
 
-        compilationUnit.setPackageDeclaration("com.azure.messaging.eventgrid");
+        compilationUnit.setPackageDeclaration("com.azure.messaging.eventgrid.systemevents");
 
         compilationUnit.addImport("java.util.Collections");
         compilationUnit.addImport("java.util.HashMap");
         compilationUnit.addImport("java.util.Map");
         // these two imports are for deprecated events.
-        compilationUnit.addImport("com.azure.messaging.eventgrid.systemevents.AcsChatMemberAddedToThreadWithUserEventData");
-        compilationUnit.addImport("com.azure.messaging.eventgrid.systemevents.AcsChatMemberRemovedFromThreadWithUserEventData");
+        compilationUnit.addImport("com.azure.messaging.eventgrid.systemevents.models" +
+            ".AcsChatMemberAddedToThreadWithUserEventData");
+        compilationUnit.addImport("com.azure.messaging.eventgrid.systemevents.models." +
+            "AcsChatMemberRemovedFromThreadWithUserEventData");
         for (String className : imports) {
-            compilationUnit.addImport("com.azure.messaging.eventgrid.systemevents." + className);
+            compilationUnit.addImport("com.azure.messaging.eventgrid.systemevents.models." + className);
         }
 
         ClassOrInterfaceDeclaration clazz = compilationUnit.addClass("SystemEventNames", Modifier.Keyword.PUBLIC,
@@ -152,7 +155,8 @@ public class EventGridSystemEventsCustomization extends Customization {
         logger.info("Total number of events with proper description {}", validEventDescription.size());
 
         customization.getRawEditor()
-            .addFile("src/main/java/com/azure/messaging/eventgrid/SystemEventNames.java", compilationUnit.toString());
+            .addFile("src/main/java/com/azure/messaging/eventgrid/systemevents/SystemEventNames.java",
+                compilationUnit.toString());
 
         customizeAcsRouterEvents(systemEvent);
         customizeAcsRecordingFileStatusUpdatedEventDataDuration(systemEvent);
@@ -173,7 +177,7 @@ public class EventGridSystemEventsCustomization extends Customization {
         List<String> lines = editor.getFileLines("src/main/java/module-info.java");
         StringBuilder sb = new StringBuilder();
         lines.forEach(line -> {
-            if (!line.trim().equals("exports com.azure.messaging.eventgrid;")) {
+            if (!line.trim().equals("exports com.azure.messaging.eventgrid.systemevents;")) {
                 sb.append(line).append('\n');
             }
         });
