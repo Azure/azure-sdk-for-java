@@ -17,6 +17,12 @@ import java.util.Collections;
 import java.util.List;
 
 public class OnlineExperimentationClientTests extends OnlineExperimentationClientTestBase {
+    protected OnlineExperimentationClient onlineExperimentationClient;
+
+    @Override
+    protected void beforeTest() {
+        onlineExperimentationClient = getExperimentationClientBuilder().buildClient();
+    }
 
     private ExperimentMetric createTestMetric(String metricId, String displayName, String description) {
         ExperimentMetric metricDefinition = new ExperimentMetric().setLifecycle(LifecycleStage.ACTIVE)

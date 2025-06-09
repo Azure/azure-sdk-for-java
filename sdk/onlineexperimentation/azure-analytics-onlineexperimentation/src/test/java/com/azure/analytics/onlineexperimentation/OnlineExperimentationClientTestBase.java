@@ -17,10 +17,8 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 class OnlineExperimentationClientTestBase extends TestProxyTestBase {
-    protected OnlineExperimentationClient onlineExperimentationClient;
 
-    @Override
-    protected void beforeTest() {
+    protected OnlineExperimentationClientBuilder getExperimentationClientBuilder() {
         OnlineExperimentationClientBuilder onlineExperimentationClientbuilder = new OnlineExperimentationClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration()
                 .get("ONLINEEXPERIMENTATION_ENDPOINT", "https://testWorkspaceId.eastus2.exp.azure.net"))
@@ -38,7 +36,6 @@ class OnlineExperimentationClientTestBase extends TestProxyTestBase {
             onlineExperimentationClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
 
-        onlineExperimentationClient = onlineExperimentationClientbuilder.buildClient();
-
+        return onlineExperimentationClientbuilder;
     }
 }
