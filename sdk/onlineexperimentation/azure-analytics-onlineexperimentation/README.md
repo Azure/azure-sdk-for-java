@@ -133,7 +133,19 @@ Always ensure that the chosen API version is fully supported and operational for
 
 ## Troubleshooting
 
+If you encounter any bugs, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues).
+
+### Enable client logging
+
+Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
+
+### Default HTTP Client
+
+All client libraries by default use the Netty HTTP client. Add the above dependency to automatically configure the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the [HTTP clients wiki][http_clients_wiki].
+
 ## Next steps
+
+See the [samples][azure_exp_samples] page for common ways to setup metrics for evaluating experiment results.
 
 ## Contributing
 
@@ -155,3 +167,5 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_monitor]: https://learn.microsoft.com/azure/azure-monitor/overview
 [azure_exp_samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/onlineexperimentation/azure-resourcemanager-onlineexperimentation/SAMPLE.md
 [az_exp_workspace]: https://learn.microsoft.com/azure/templates/microsoft.onlineexperimentation/workspaces
+[http_clients_wiki]: https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK

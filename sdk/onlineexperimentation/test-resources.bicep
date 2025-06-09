@@ -13,7 +13,7 @@ param storageAccountName string = uniqueString(baseName, 'storage')
 
 var experimentationWorkspaceLocations = [
   'eastus2'
-  'sweedencentral'
+  'swedencentral'
 ]
 
 // The default location is typically westus, but Online Experimentation Workspaces are only available in a limited set of regions for now.
