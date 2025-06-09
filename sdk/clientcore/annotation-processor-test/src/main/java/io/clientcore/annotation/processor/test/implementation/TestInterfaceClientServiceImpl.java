@@ -89,7 +89,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
@@ -117,7 +117,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
@@ -134,7 +134,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
@@ -151,7 +151,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             }
             return null;
         }
@@ -177,7 +177,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             statusToExceptionTypeMap.put(400, CoreUtils.createParameterizedType(Object.class));
             statusToExceptionTypeMap.put(403, CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.OperationError.class));
             java.lang.reflect.ParameterizedType defaultErrorBodyType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.ServiceError.class);
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, statusToExceptionTypeMap, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, statusToExceptionTypeMap);
             networkResponse.close();
         }
         Foo deserializedResult;
@@ -188,7 +188,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
@@ -206,7 +206,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         FooListResult deserializedResult;
@@ -217,7 +217,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
@@ -235,7 +235,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         FooListResult deserializedResult;
@@ -246,7 +246,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
@@ -268,7 +268,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         List<Foo> deserializedResult;
@@ -279,7 +279,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
@@ -297,7 +297,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         List<Foo> deserializedResult;
@@ -308,7 +308,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
@@ -333,7 +333,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -343,7 +343,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
@@ -368,7 +368,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -378,7 +378,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
@@ -394,7 +394,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             }
             BinaryData responseBody = networkResponse.getValue();
             return responseBody != null ? responseBody.toBytes() : null;
@@ -412,7 +412,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         networkResponse.close();
@@ -429,7 +429,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -440,7 +440,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -456,7 +456,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -467,7 +467,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -483,7 +483,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -494,7 +494,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -510,7 +510,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -521,7 +521,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -541,7 +541,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -552,7 +552,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -572,7 +572,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -583,7 +583,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -603,7 +603,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -614,7 +614,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -634,7 +634,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -645,7 +645,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -665,7 +665,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -676,7 +676,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -701,7 +701,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -712,7 +712,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -737,7 +737,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -748,7 +748,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -768,7 +768,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -779,7 +779,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -799,7 +799,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -810,7 +810,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
@@ -830,7 +830,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -841,7 +841,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -866,7 +866,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -877,7 +877,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
@@ -897,7 +897,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -908,7 +908,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -933,7 +933,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -944,7 +944,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -964,7 +964,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -975,7 +975,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -995,7 +995,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1006,7 +1006,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1031,7 +1031,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1041,7 +1041,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1062,7 +1062,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1073,7 +1073,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1092,7 +1092,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1103,7 +1103,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1122,7 +1122,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1133,7 +1133,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1153,7 +1153,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1164,7 +1164,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1183,7 +1183,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1194,7 +1194,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1212,7 +1212,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1223,7 +1223,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1241,7 +1241,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1252,7 +1252,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1268,7 +1268,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
@@ -1289,7 +1289,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1300,7 +1300,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
@@ -1316,7 +1316,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 400;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), networkResponse.getValue().toStream());
@@ -1333,7 +1333,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             }
             BinaryData responseBody = networkResponse.getValue();
             return responseBody != null ? responseBody.toBytes() : null;
@@ -1360,7 +1360,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1371,7 +1371,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
@@ -1390,7 +1390,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1401,7 +1401,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1417,7 +1417,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         networkResponse.close();
@@ -1434,7 +1434,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             }
             return null;
         }
@@ -1451,7 +1451,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
@@ -1468,7 +1468,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
@@ -1485,7 +1485,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             }
             return expectedResponse;
         }
@@ -1502,7 +1502,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         networkResponse.close();
@@ -1526,7 +1526,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1536,7 +1536,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1557,7 +1557,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             java.lang.reflect.ParameterizedType defaultErrorBodyType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1568,7 +1568,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1588,7 +1588,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 201;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1599,7 +1599,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1619,7 +1619,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 201;
         if (!expectedResponse) {
             java.lang.reflect.ParameterizedType defaultErrorBodyType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.ServiceError.class);
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1630,7 +1630,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1651,7 +1651,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = new HashMap<>();
             statusToExceptionTypeMap.put(200, CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.ServiceError.class));
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, statusToExceptionTypeMap, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, statusToExceptionTypeMap);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1662,7 +1662,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1684,7 +1684,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = new HashMap<>();
             statusToExceptionTypeMap.put(400, CoreUtils.createParameterizedType(Object.class));
             statusToExceptionTypeMap.put(403, CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.ServiceError.class));
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, statusToExceptionTypeMap, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, statusToExceptionTypeMap);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1695,7 +1695,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1716,7 +1716,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = new HashMap<>();
             statusToExceptionTypeMap.put(400, CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.ServiceError.class));
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, statusToExceptionTypeMap, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, statusToExceptionTypeMap);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1727,7 +1727,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1749,7 +1749,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = new HashMap<>();
             statusToExceptionTypeMap.put(400, CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.ServiceError.class));
             statusToExceptionTypeMap.put(403, CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.OperationError.class));
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, statusToExceptionTypeMap, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, statusToExceptionTypeMap);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1760,7 +1760,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1780,7 +1780,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1791,7 +1791,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1814,7 +1814,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1824,7 +1824,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1844,7 +1844,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1855,7 +1855,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1873,7 +1873,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1884,7 +1884,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1904,7 +1904,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1915,7 +1915,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1931,7 +1931,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         networkResponse.close();
@@ -1948,7 +1948,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         networkResponse.close();
@@ -1965,7 +1965,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         networkResponse.close();
@@ -1982,7 +1982,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 300;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         networkResponse.close();
@@ -1999,7 +1999,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         networkResponse.close();
@@ -2016,7 +2016,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 400;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         networkResponse.close();
@@ -2033,7 +2033,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         networkResponse.close();
@@ -2050,7 +2050,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 500;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         networkResponse.close();
@@ -2075,7 +2075,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         return networkResponse;
@@ -2092,7 +2092,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         return networkResponse.getValue();
@@ -2117,7 +2117,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         return networkResponse;

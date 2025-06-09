@@ -54,7 +54,7 @@ public class HostEdgeCase1ServiceImpl implements HostEdgeCase1Service {
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             }
             BinaryData responseBody = networkResponse.getValue();
             return responseBody != null ? responseBody.toBytes() : null;
