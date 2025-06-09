@@ -160,9 +160,10 @@ public final class CosmosSinkConnector extends SinkConnector implements AutoClos
                         .getClient()
                         .getDatabase(throughputControlConfig.getGlobalThroughputControlDatabaseName())
                         .getContainer(throughputControlConfig.getGlobalThroughputControlContainerName()));
+                return KafkaCosmosUtils.convertClientMetadataCacheSnapshotToString(throughputControlClientItem.getClient());
             }
-            return KafkaCosmosUtils.convertClientMetadataCacheSnapshotToString(throughputControlClientItem.getClient());
 
+            return null;
         } finally {
             if (throughputControlClientItem != null) {
                 CosmosClientCache.releaseCosmosClient(throughputControlClientItem.getClientConfig());

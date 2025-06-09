@@ -610,9 +610,11 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
                         .getDatabase(throughputControlConfig.getGlobalThroughputControlDatabaseName())
                         .getContainer(throughputControlConfig.getGlobalThroughputControlContainerName())
                 );
+                return KafkaCosmosUtils.convertClientMetadataCacheSnapshotToString(throughputControlClientItem.getClient());
             }
 
-            return KafkaCosmosUtils.convertClientMetadataCacheSnapshotToString(throughputControlClientItem.getClient());
+            return null;
+
         } finally {
             if (throughputControlClientItem != null) {
                 CosmosClientCache.releaseCosmosClient(throughputControlClientItem.getClientConfig());

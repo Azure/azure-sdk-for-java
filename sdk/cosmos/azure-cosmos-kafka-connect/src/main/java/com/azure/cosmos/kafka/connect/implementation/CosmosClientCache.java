@@ -239,8 +239,8 @@ public class CosmosClientCache implements AutoCloseable {
     }
 
     private boolean shouldPurgeClient(CosmosClientCacheMetadata cacheClientMetadata) {
-        return cacheClientMetadata.getRefCount() <= 0 &&
-            (Instant.now().toEpochMilli() - cacheClientMetadata.getLastAccessed().toEpochMilli() > UNUSED_CLIENT_TTL_IN_MS);
+        return cacheClientMetadata.getRefCount() <= 0
+                && (Instant.now().toEpochMilli() - cacheClientMetadata.getLastAccessed().toEpochMilli() > UNUSED_CLIENT_TTL_IN_MS);
     }
 
     void purgeClient(CosmosClientCacheConfig cacheClientConfig) {
