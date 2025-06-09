@@ -8,6 +8,7 @@ import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.credentials.oauth.OAuthTokenCredential;
 import io.clientcore.core.credentials.oauth.OAuthTokenRequestContext;
+import io.clientcore.core.http.models.AuthMetadata;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.Response;
@@ -15,6 +16,9 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.CoreUtils;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -77,13 +81,14 @@ public class OAuthBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
 
         HttpPipelineNextPolicy nextPolicy = next.copy();
 
-        AuthMetadata authScheme = (String) httpRequest.getContext().getMetadata(IO_CLIENTCORE_AUTH_SCHEME);
+        AuthMetadata authMetadata = (AuthMetadata) httpRequest.getContext().getMetadata(IO_CLIENTCORE_AUTH_METADATA);
 
-        if ((!CoreUtils.isNullOrEmpty(authScheme) && authScheme.equalsIgnoreCase("oauth2"))) {
+        List<String> authScheme = authMetadata.getAuthScheme();
+        if ((!CoreUtils.isNullOrEmpty(authMetadata.getAuthScheme()) && authScheme.contains("oauth2"))) {
             // For now we don't support per-operation scopes. In the future when we do, we will need to retrieve the
             // scope from the incoming httpRequest and merge it with the default context.
-
-            authorizeRequest(httpRequest, context);
+            mergeTokenRequestContext(authMetadata.getoAuthTokenRequestContext());
+            authorizeRequest(httpRequest, mergeTokenRequestContext(authMetadata.getoAuthTokenRequestContext()));
         }
 
         Response<BinaryData> httpResponse = next.process();
@@ -115,5 +120,34 @@ public class OAuthBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
      */
     public boolean authorizeRequestOnChallenge(HttpRequest httpRequest, Response<BinaryData> response) {
         return false;
+    }
+
+    /**
+     * Helper method to have per operation TRC override service level TRC.
+     *
+     * @param oAuthTokenRequestContext the incoming TRC
+     * @return the merged TRC to use.
+     */
+    private OAuthTokenRequestContext mergeTokenRequestContext(OAuthTokenRequestContext oAuthTokenRequestContext) {
+        if (oAuthTokenRequestContext != null) {
+            // Merge scopes: Use incoming scopes if non-empty, else fallback to context's
+            List<String> mergedScopes = CoreUtils.isNullOrEmpty(oAuthTokenRequestContext.getScopes())
+                ? context.getScopes()
+                : oAuthTokenRequestContext.getScopes();
+
+            // Merge params: incoming overrides context's
+            Map<String, Object> mergedParams = new HashMap<>();
+            if (!CoreUtils.isNullOrEmpty(context.getParams())) {
+                mergedParams.putAll(context.getParams());
+            }
+            if (!CoreUtils.isNullOrEmpty(oAuthTokenRequestContext.getParams())) {
+                mergedParams.putAll(oAuthTokenRequestContext.getParams()); // incoming overrides existing
+            }
+
+            return new OAuthTokenRequestContext()
+                .setScopes(mergedScopes)
+                .setParams(mergedParams);
+        }
+        return context;
     }
 }

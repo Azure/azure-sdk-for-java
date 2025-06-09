@@ -7,7 +7,7 @@ package io.clientcore.core.http.pipeline;
  * credential policies and to differentiate them from other forms of {@link HttpPipelinePolicy}s.
  */
 public abstract class HttpCredentialPolicy implements HttpPipelinePolicy {
-    static String IO_CLIENTCORE_AUTH_SCHEME = "IO_CLIENTCORE_AUTH_SCHEME";
+    static String IO_CLIENTCORE_AUTH_METADATA = "IO_CLIENTCORE_AUTH_METADATA";
 
     /**
      * Creates an instance of {@link HttpCredentialPolicy}.
