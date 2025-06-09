@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package io.clientcore.core.http.models;
 
 import io.clientcore.core.credentials.oauth.OAuthTokenRequestContext;
@@ -11,6 +14,10 @@ public class AuthMetadata {
     private List<String> authScheme;
 
     private OAuthTokenRequestContext oAuthTokenRequestContext;
+
+    /** Creates an instance of the Auth Metadata.
+     */
+    public AuthMetadata() { }
 
     /**
      * Gets the supported auth schemes.
@@ -43,6 +50,7 @@ public class AuthMetadata {
      * Configures the OAuthTokenRequestContext to be used at request level.
      *
      * @param oAuthTokenRequestContext the OAuthTokenRequestContext to be configured.
+     * @return the updated Auth Metadata instance.
      */
     public AuthMetadata setoAuthTokenRequestContext(OAuthTokenRequestContext oAuthTokenRequestContext) {
         this.oAuthTokenRequestContext = oAuthTokenRequestContext;

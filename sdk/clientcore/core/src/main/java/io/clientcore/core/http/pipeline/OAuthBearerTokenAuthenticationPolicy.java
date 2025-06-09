@@ -144,9 +144,7 @@ public class OAuthBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
                 mergedParams.putAll(oAuthTokenRequestContext.getParams()); // incoming overrides existing
             }
 
-            return new OAuthTokenRequestContext()
-                .setScopes(mergedScopes)
-                .setParams(mergedParams);
+            return new OAuthTokenRequestContext().setScopes(mergedScopes).setParams(mergedParams);
         }
         return context;
     }
