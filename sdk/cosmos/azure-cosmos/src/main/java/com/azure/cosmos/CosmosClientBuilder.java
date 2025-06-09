@@ -1333,6 +1333,7 @@ public class CosmosClientBuilder implements
             }
 
             if (Configs.isEmulatorServerCertValidationDisabled() && isEmulatorHost(uri)) {
+                logger.info("Server certificate validation is disabled for emulator host: {}", uri.getHost());
                 this.serverCertValidationDisabled = true;
             }
         } catch (URISyntaxException e) {
