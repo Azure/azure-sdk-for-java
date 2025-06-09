@@ -65,7 +65,9 @@ public class CosmosAadAuthConfig implements CosmosAuthConfig {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         CosmosAadAuthConfig that = (CosmosAadAuthConfig) o;
         return Objects.equals(clientId, that.clientId)
             && Objects.equals(clientSecret, that.clientSecret)

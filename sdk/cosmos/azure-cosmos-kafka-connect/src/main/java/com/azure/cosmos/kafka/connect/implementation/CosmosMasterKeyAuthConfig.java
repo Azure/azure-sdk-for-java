@@ -24,7 +24,9 @@ public class CosmosMasterKeyAuthConfig implements CosmosAuthConfig {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         CosmosMasterKeyAuthConfig that = (CosmosMasterKeyAuthConfig) o;
         return Objects.equals(masterKey, that.masterKey);
     }

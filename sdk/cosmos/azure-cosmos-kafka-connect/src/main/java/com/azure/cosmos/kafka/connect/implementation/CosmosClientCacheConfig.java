@@ -52,15 +52,19 @@ public class CosmosClientCacheConfig {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         CosmosClientCacheConfig that = (CosmosClientCacheConfig) o;
-        return useGatewayMode == that.useGatewayMode &&
-               Objects.equals(endpoint, that.endpoint) &&
-               Objects.equals(authConfig, that.authConfig) &&
-               Objects.equals(applicationName, that.applicationName) &&
-               Objects.equals(preferredRegions, that.preferredRegions) &&
-               Objects.equals(context, that.context);
+        return useGatewayMode == that.useGatewayMode
+            && Objects.equals(endpoint, that.endpoint)
+            && Objects.equals(authConfig, that.authConfig)
+            && Objects.equals(applicationName, that.applicationName)
+            && Objects.equals(preferredRegions, that.preferredRegions)
+            && Objects.equals(context, that.context);
     }
 
     @Override
