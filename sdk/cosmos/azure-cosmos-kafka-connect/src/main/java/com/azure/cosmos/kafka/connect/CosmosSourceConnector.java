@@ -112,8 +112,7 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
 
             this.monitorThread.start();
         } catch (Exception e) {
-            // if the connector failed to start, the stop() method will not be called
-            // release cosmos client here
+            // if the connector failed to start, release initialized resources here
             this.stop();
             // re-throw the exception back to kafka
             throw e;

@@ -65,8 +65,7 @@ public final class CosmosSinkConnector extends SinkConnector implements AutoClos
                 this.cosmosClientItem.getClient(),
                 containersConfig.getDatabaseName());
         } catch (Exception e) {
-            // if connector failed to start, stop() method will not be called
-            // release initialized resources here
+            // if connector failed to start, release initialized resources here
             this.stop();
 
             // re-throw the exception back to kafka
