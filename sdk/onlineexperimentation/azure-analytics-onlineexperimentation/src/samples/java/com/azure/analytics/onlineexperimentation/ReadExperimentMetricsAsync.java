@@ -5,7 +5,8 @@ package com.azure.analytics.onlineexperimentation;
 
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import reactor.core.publisher.Mono;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Sample for retrieving and listing experiment metrics asynchronously
@@ -17,18 +18,6 @@ public class ReadExperimentMetricsAsync {
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
-        retrieveSingleMetricAsync()
-            .block();
-
-        listAllMetricsAsync()
-            .block();
-    }
-
-    /**
-     * Retrieves a single metric by ID asynchronously
-     * @return A Mono that completes when the operation is finished
-     */
-    public static Mono<Void> retrieveSingleMetricAsync() {
         // BEGIN: com.azure.analytics.onlineexperimentation.retrievemetricasync
         String endpoint = System.getenv("AZURE_ONLINEEXPERIMENTATION_ENDPOINT");
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
@@ -39,40 +28,36 @@ public class ReadExperimentMetricsAsync {
             .buildAsyncClient();
 
         // Get a specific metric by ID asynchronously
-        return client.getMetric("avg_revenue_per_purchase")
-            .doOnNext(metric -> {
+        System.out.println("Retrieving single metric:");
+        client.getMetric("avg_revenue_per_purchase")
+            .subscribe(metric -> {
                 // Access metric properties to view or use the metric definition
                 System.out.printf("Metric ID: %s%n", metric.getId());
                 System.out.printf("Display name: %s%n", metric.getDisplayName());
                 System.out.printf("Description: %s%n", metric.getDescription());
                 System.out.printf("Lifecycle stage: %s%n", metric.getLifecycle());
                 System.out.printf("Desired direction: %s%n", metric.getDesiredDirection());
-            })
-            .then();
+            },
+            error -> System.err.println("An error occurred while retrieving the metric: " + error));
         // END: com.azure.analytics.onlineexperimentation.retrievemetricasync
-    }
 
-    /**
-     * Lists all metrics in the workspace asynchronously
-     * @return A Mono that completes when the operation is finished
-     */
-    public static Mono<Void> listAllMetricsAsync() {
         // BEGIN: com.azure.analytics.onlineexperimentation.listmetricsasync
-        String endpoint = System.getenv("AZURE_ONLINEEXPERIMENTATION_ENDPOINT");
-        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-
-        OnlineExperimentationAsyncClient client = new OnlineExperimentationClientBuilder()
-            .endpoint(endpoint)
-            .credential(credential)
-            .buildAsyncClient();
-
         // List all metrics in the workspace asynchronously
         System.out.println("Listing all metrics:");
-        return client.listMetrics()
-            .doOnNext(item -> {
+        client.listMetrics()
+            .subscribe(item -> {
                 System.out.printf("- %s: %s%n", item.getId(), item.getDisplayName());
-            })
-            .then();
+            },
+            error -> System.err.println("An error occurred while listing metrics: " + error));
         // END: com.azure.analytics.onlineexperimentation.listmetricsasync
+
+        // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
+        // the thread so the program does not end before the send operation is complete. Using .block() instead of
+        // .subscribe() would turn this into a synchronous call.
+        try {
+            TimeUnit.MINUTES.sleep(5);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

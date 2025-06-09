@@ -10,9 +10,9 @@ import com.azure.analytics.onlineexperimentation.models.LifecycleStage;
 import com.azure.analytics.onlineexperimentation.models.SumMetricDefinition;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Sample for creating a sum metric asynchronously
@@ -24,15 +24,6 @@ public class CreateSumMetricSampleAsync {
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
-        createSumMetricAsync()
-            .block(); // Wait for the operation to complete
-    }
-
-    /**
-     * Creates a sum metric asynchronously
-     * @return A Mono containing the created metric
-     */
-    public static Mono<ExperimentMetric> createSumMetricAsync() {
         // BEGIN: com.azure.analytics.onlineexperimentation.createsummetricasync
         String endpoint = System.getenv("AZURE_ONLINEEXPERIMENTATION_ENDPOINT");
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
@@ -57,10 +48,20 @@ public class CreateSumMetricSampleAsync {
             .setDefinition(sumDefinition);
 
         // Create the metric asynchronously
-        return client.createOrUpdateMetric("total_revenue", revenueMetric)
-            .doOnNext(response -> {
+        client.createOrUpdateMetric("total_revenue", revenueMetric)
+            .subscribe(response -> {
                 System.out.printf("Created metric: %s%n", response.getId());
-            });
+            },
+            error -> System.err.println("An error occurred while creating the metric: " + error));
         // END: com.azure.analytics.onlineexperimentation.createsummetricasync
+
+        // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
+        // the thread so the program does not end before the send operation is complete. Using .block() instead of
+        // .subscribe() would turn this into a synchronous call.
+        try {
+            TimeUnit.MINUTES.sleep(5);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

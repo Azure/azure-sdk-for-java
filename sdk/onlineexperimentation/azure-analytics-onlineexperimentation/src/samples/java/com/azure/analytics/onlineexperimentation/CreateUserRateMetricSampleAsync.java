@@ -10,9 +10,9 @@ import com.azure.analytics.onlineexperimentation.models.ObservedEvent;
 import com.azure.analytics.onlineexperimentation.models.UserRateMetricDefinition;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Sample for creating a user rate metric asynchronously
@@ -24,15 +24,6 @@ public class CreateUserRateMetricSampleAsync {
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
-        createUserRateMetricAsync()
-            .block(); // Wait for the operation to complete
-    }
-
-    /**
-     * Creates a user rate metric asynchronously
-     * @return A Mono containing the created metric
-     */
-    public static Mono<ExperimentMetric> createUserRateMetricAsync() {
         // BEGIN: com.azure.analytics.onlineexperimentation.createuserratemetricasync
         String endpoint = System.getenv("AZURE_ONLINEEXPERIMENTATION_ENDPOINT");
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
@@ -58,10 +49,20 @@ public class CreateUserRateMetricSampleAsync {
             .setDefinition(userRateDefinition);
 
         // Create the metric asynchronously
-        return client.createOrUpdateMetric("pct_chat_to_high_value_purchase_conversion", conversionMetric)
-            .doOnNext(response -> {
+        client.createOrUpdateMetric("pct_chat_to_high_value_purchase_conversion", conversionMetric)
+            .subscribe(response -> {
                 System.out.printf("Created metric: %s%n", response.getId());
-            });
+            },
+            error -> System.err.println("An error occurred while creating the metric: " + error));
         // END: com.azure.analytics.onlineexperimentation.createuserratemetricasync
+
+        // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
+        // the thread so the program does not end before the send operation is complete. Using .block() instead of
+        // .subscribe() would turn this into a synchronous call.
+        try {
+            TimeUnit.MINUTES.sleep(5);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

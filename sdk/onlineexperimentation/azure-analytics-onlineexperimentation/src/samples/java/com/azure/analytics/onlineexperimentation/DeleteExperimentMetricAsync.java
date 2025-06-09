@@ -5,7 +5,8 @@ package com.azure.analytics.onlineexperimentation;
 
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import reactor.core.publisher.Mono;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Sample for deleting experiment metrics asynchronously
@@ -17,15 +18,6 @@ public class DeleteExperimentMetricAsync {
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
-        deleteMetricAsync()
-            .block(); // Wait for the operation to complete
-    }
-
-    /**
-     * Deletes a metric asynchronously
-     * @return A Mono representing the completion of the delete operation
-     */
-    public static Mono<Void> deleteMetricAsync() {
         // BEGIN: com.azure.analytics.onlineexperimentation.deletemetricasync
         String endpoint = System.getenv("AZURE_ONLINEEXPERIMENTATION_ENDPOINT");
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
@@ -36,10 +28,18 @@ public class DeleteExperimentMetricAsync {
             .buildAsyncClient();
 
         // Delete a metric by ID - removes it from the workspace
-        return client.deleteMetric("test_metric_id")
-            .doOnSuccess(unused -> {
-                System.out.println("Metric deleted successfully");
-            });
+        client.deleteMetric("test_metric_id")
+            .subscribe(result -> System.out.println("Metric deleted successfully"),
+                error -> System.err.println("An error occurred while deleting the metric: " + error));
         // END: com.azure.analytics.onlineexperimentation.deletemetricasync
+
+        // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
+        // the thread so the program does not end before the send operation is complete. Using .block() instead of
+        // .subscribe() would turn this into a synchronous call.
+        try {
+            TimeUnit.MINUTES.sleep(5);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
