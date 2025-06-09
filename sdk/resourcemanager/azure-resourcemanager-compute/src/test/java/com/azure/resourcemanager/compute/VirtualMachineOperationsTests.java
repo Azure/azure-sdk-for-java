@@ -110,13 +110,11 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     private final String availabilitySetName = "availset1";
     private final String availabilitySetName2 = "availset2";
     private final ProximityPlacementGroupType proxGroupType = ProximityPlacementGroupType.STANDARD;
-    private AzureProfile profile;
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         rgName = generateRandomResourceName("javacsmrg", 15);
         rgName2 = generateRandomResourceName("javacsmrg2", 15);
-        this.profile = profile;
         super.initializeClients(httpPipeline, profile);
     }
 
@@ -2311,23 +2309,30 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     }
 
     @Test
-    public void canBeginCreateWithContext() {
+    public void canBeginCreateAndDeleteWithContext() {
         final String vmName = generateRandomResourceName("jvm", 15);
         final String correlationId = UUID.randomUUID().toString();
         final String correlationKey = "x-ms-correlation-id";
         final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
         final AtomicInteger createCounter = new AtomicInteger(0);
+        final AtomicInteger deleteCounter = new AtomicInteger(0);
         HttpPipelinePolicy verificationPolicy = (context, next) -> {
             if (context.getHttpRequest().getHttpMethod() == HttpMethod.PUT) {
                 // verify that all co-related resource creation requests will have the Context information
                 Object correlationData = context.getContext().getData(correlationKey).get();
                 Assertions.assertEquals(correlationId, correlationData);
                 createCounter.incrementAndGet();
+            } else if (context.getHttpRequest().getHttpMethod() == HttpMethod.DELETE) {
+                // verify that all co-related resource deletion requests will have the Context information
+                Object correlationData = context.getContext().getData(correlationKey).get();
+                Assertions.assertEquals(correlationId, correlationData);
+                deleteCounter.incrementAndGet();
             }
             return next.process();
         };
-        ComputeManager localComputeManager = buildComputeManager(computeManager.httpPipeline(), verificationPolicy);
+        ComputeManager localComputeManager = buildManager(ComputeManager.class, computeManager.httpPipeline(), verificationPolicy);
 
+        Context context = new Context(correlationKey, correlationId);
         Accepted<VirtualMachine> accepted = localComputeManager.virtualMachines()
             .define(vmName)
             .withRegion(region)
@@ -2339,15 +2344,18 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
             .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
-            .beginCreate(new Context(correlationKey, correlationId));
-        accepted.getFinalResult();
+            .beginCreate(context);
+        VirtualMachine vm = accepted.getFinalResult();
 
         // resourceGroup + network + neworkInterface + publicIp + VM = 5
         Assertions.assertEquals(5, createCounter.get());
+
+        localComputeManager.virtualMachines().beginDeleteById(vm.id(), false, context);
+        Assertions.assertEquals(1, deleteCounter.get());
     }
 
     // *********************************** helper methods ***********************************
-    private ComputeManager buildComputeManager(HttpPipeline httpPipeline, HttpPipelinePolicy policy) {
+    private <T> T buildManager(Class<T> managerClazz, HttpPipeline httpPipeline, HttpPipelinePolicy policy) {
         List<HttpPipelinePolicy> pipelinePolicies = new ArrayList<>();
         for (int i = 0; i < httpPipeline.getPolicyCount(); i++) {
             pipelinePolicies.add(httpPipeline.getPolicy(i));
@@ -2359,7 +2367,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .policies(pipelinePolicies.toArray(new HttpPipelinePolicy[0]))
             .tracer(httpPipeline.getTracer())
             .build();
-        ComputeManager manager = ComputeManager.authenticate(newPipeline, profile);
+        T manager = buildManager(managerClazz, newPipeline, profile());
         ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
         internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         setInternalContext(internalContext, manager);

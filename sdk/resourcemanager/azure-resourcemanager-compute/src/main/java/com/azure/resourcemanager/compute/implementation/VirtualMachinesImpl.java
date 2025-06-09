@@ -7,6 +7,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.compute.ComputeManager;
@@ -242,15 +243,25 @@ public class VirtualMachinesImpl extends
 
     @Override
     public Accepted<Void> beginDeleteById(String id, boolean forceDeletion) {
+        return beginDeleteById(id, forceDeletion, Context.NONE);
+    }
+
+    @Override
+    public Accepted<Void> beginDeleteById(String id, boolean forceDeletion, Context context) {
         return beginDeleteByResourceGroup(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id),
-            forceDeletion);
+            forceDeletion, context);
     }
 
     @Override
     public Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, boolean forceDeletion) {
+        return beginDeleteByResourceGroup(resourceGroupName, name, forceDeletion, Context.NONE);
+    }
+
+    @Override
+    public Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, boolean forceDeletion, Context context) {
         return AcceptedImpl.newAccepted(logger, this.manager().serviceClient().getHttpPipeline(),
             this.manager().serviceClient().getDefaultPollInterval(),
-            () -> this.inner().deleteWithResponseAsync(resourceGroupName, name, forceDeletion).block(),
+            () -> this.inner().deleteWithResponseAsync(resourceGroupName, name, forceDeletion).contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly())).block(),
             Function.identity(), Void.class, null, Context.NONE);
     }
 
