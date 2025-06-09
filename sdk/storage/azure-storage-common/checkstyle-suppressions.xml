@@ -14,9 +14,8 @@
   <suppress files="com.azure.storage.common.implementation.FluxInputStream.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
   <suppress files="com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
   <suppress files="com.azure.storage.common.implementation.connectionstring.StorageConnectionString.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy.java" checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck" />
-  <suppress files="com.azure.storage.common.implementation.BufferAggregator.java" checks="com.azure.tools.checkstyle.checks.JavaDocFormatting" />
-  <suppress files="com.azure.storage.common.implementation.connectionstring.StorageConnectionString.java" checks="com.azure.tools.checkstyle.checks.JavaDocFormatting" />
+  <suppress files="com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy.java" checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck" />  <suppress files="com.azure.storage.common.implementation.BufferAggregator.java" checks="com.azure.tools.checkstyle.checks.JavadocFormatting" />
+  <suppress files="com.azure.storage.common.implementation.connectionstring.StorageConnectionString.java" checks="com.azure.tools.checkstyle.checks.JavadocFormatting" />
   <suppress files="com.azure.storage.common.implementation.BufferAggregator.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
   <suppress files="com.azure.storage.common.implementation.BuilderUtils.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
   <suppress files="com.azure.storage.common.implementation.StorageImplUtils.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />

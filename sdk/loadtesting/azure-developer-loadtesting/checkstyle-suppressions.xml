@@ -6,7 +6,6 @@
   <suppress files="com.azure.developer.loadtesting.implementation.JsonMergePatchHelper.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.developer.loadtesting.implementation.LoadTestAdministrationClientImpl.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.developer.loadtesting.implementation.LoadTestRunClientImpl.java" checks="MissingJavadocMethodCheck" />
-  <suppress files="com.azure.developer.loadtesting.implementation.JsonMergePatchHelper.java" checks="MissingJavadocTypeCheck" />
-  <suppress files="com.azure.developer.loadtesting.implementation.LoadTestAdministrationClientImpl.java" checks="com.azure.tools.checkstyle.checks.JavaDocFormatting" />
-  <suppress files="com.azure.developer.loadtesting.implementation.LoadTestRunClientImpl.java" checks="com.azure.tools.checkstyle.checks.JavaDocFormatting" />
+  <suppress files="com.azure.developer.loadtesting.implementation.JsonMergePatchHelper.java" checks="MissingJavadocTypeCheck" />  <suppress files="com.azure.developer.loadtesting.implementation.LoadTestAdministrationClientImpl.java" checks="com.azure.tools.checkstyle.checks.JavadocFormatting" />
+  <suppress files="com.azure.developer.loadtesting.implementation.LoadTestRunClientImpl.java" checks="com.azure.tools.checkstyle.checks.JavadocFormatting" />
 </suppressions>

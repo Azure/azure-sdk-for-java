@@ -13,7 +13,7 @@
   <suppress files="com.azure.ai.openai.implementation.MultipartFormDataHelper.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.ai.openai.implementation.OpenAIServerSentEvents.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.ai.openai.implementation.MultipartFormDataHelper.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl.java" checks="com.azure.tools.checkstyle.checks.JavaDocFormatting" />
+  <suppress files="com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl.java" checks="com.azure.tools.checkstyle.checks.JavadocFormatting" />
   <suppress files="com.azure.ai.openai.OpenAIAsyncClient.java" checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.ai.openai.OpenAIClient.java" checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.ai.openai.implementation.OpenAIServerSentEvents.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
@@ -23,9 +23,8 @@
   <suppress files="com.azure.ai.openai.responses.implementation.NonAzureResponsesClientImpl.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.ai.openai.responses.implementation.ResponsesClientImpl.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.ai.openai.responses.implementation.OpenAIServerSentEvents.java" checks="MissingJavadocMethodCheck" />
-  <suppress files="com.azure.ai.openai.responses.implementation.OpenAIServerSentEvents.java" checks="MissingJavadocTypeCheck" />
-  <suppress files="com.azure.ai.openai.responses.implementation.NonAzureResponsesClientImpl.java" checks="com.azure.tools.checkstyle.checks.JavaDocFormatting" />
-  <suppress files="com.azure.ai.openai.responses.implementation.ResponsesClientImpl.java" checks="com.azure.tools.checkstyle.checks.JavaDocFormatting" />
+  <suppress files="com.azure.ai.openai.responses.implementation.OpenAIServerSentEvents.java" checks="MissingJavadocTypeCheck" />  <suppress files="com.azure.ai.openai.responses.implementation.NonAzureResponsesClientImpl.java" checks="com.azure.tools.checkstyle.checks.JavadocFormatting" />
+  <suppress files="com.azure.ai.openai.responses.implementation.ResponsesClientImpl.java" checks="com.azure.tools.checkstyle.checks.JavadocFormatting" />
   <suppress files="com.azure.ai.openai.responses.ResponsesAsyncClient.java" checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.ai.openai.responses.ResponsesClient.java" checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.ai.openai.responses.implementation.OpenAIServerSentEvents.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />

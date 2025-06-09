@@ -4,7 +4,7 @@
 
 <suppressions>
   <suppress files="com.azure.security.keyvault.secrets.models.package-info.java" checks="HeaderCheck" />
-  <suppress files="com.azure.security.keyvault.secrets.implementation.SecretClientImpl.java" checks="JavaDocFormatting" />
+  <suppress files="com.azure.security.keyvault.secrets.implementation.SecretClientImpl.java" checks="JavadocFormatting" />
   <suppress files="com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy.java" checks="JavadocMethodCheck" />
   <suppress files="com.azure.security.keyvault.secrets.implementation.DeletedSecretHelper.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy.java" checks="MissingJavadocMethodCheck" />

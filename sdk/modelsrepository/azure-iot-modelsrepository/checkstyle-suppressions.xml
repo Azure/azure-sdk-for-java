@@ -13,7 +13,7 @@
   <suppress files="com.azure.iot.modelsrepository.implementation.StatusStrings.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.iot.modelsrepository.implementation.ModelsRepositoryAPIImpl.java" checks="com.azure.tools.checkstyle.checks.DenyListedWordsCheck" />
   <suppress files="com.azure.iot.modelsrepository.implementation.ModelsRepositoryAPIImplBuilder.java" checks="com.azure.tools.checkstyle.checks.DenyListedWordsCheck" />
-  <suppress files="com.azure.iot.modelsrepository.implementation.ModelsRepositoryImpl.java" checks="com.azure.tools.checkstyle.checks.JavaDocFormatting" />
+  <suppress files="com.azure.iot.modelsrepository.implementation.ModelsRepositoryImpl.java" checks="com.azure.tools.checkstyle.checks.JavadocFormatting" />
   <suppress files="com.azure.iot.modelsrepository.implementation.ModelsQuery.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
   <suppress files="com.azure.iot.modelsrepository.implementation.models.FetchMetadataResult.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
   <suppress files="com.azure.iot.modelsrepository.implementation.models.ModelsRepositoryMetadata.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />

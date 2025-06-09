@@ -12,9 +12,8 @@
   <suppress files="com.azure.maps.search.implementation.helpers.Utility.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.maps.search.implementation.helpers.ReverseSearchAddressResultPropertiesHelper.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.maps.search.implementation.helpers.SearchAddressResultPropertiesHelper.java" checks="MissingJavadocTypeCheck" />
-  <suppress files="com.azure.maps.search.implementation.models.ErrorDetail.java" checks="com.azure.tools.checkstyle.checks.ImmutableClassCheck" />
-  <suppress files="com.azure.maps.search.implementation.helpers.ReverseSearchAddressBatchItemPropertiesHelper.java" checks="com.azure.tools.checkstyle.checks.JavaDocFormatting" />
-  <suppress files="com.azure.maps.search.implementation.helpers.SearchAddressBatchItemPropertiesHelper.java" checks="com.azure.tools.checkstyle.checks.JavaDocFormatting" />
-  <suppress files="com.azure.maps.search.implementation.helpers.Utility.java" checks="com.azure.tools.checkstyle.checks.JavaDocFormatting" />
+  <suppress files="com.azure.maps.search.implementation.models.ErrorDetail.java" checks="com.azure.tools.checkstyle.checks.ImmutableClassCheck" />  <suppress files="com.azure.maps.search.implementation.helpers.ReverseSearchAddressBatchItemPropertiesHelper.java" checks="com.azure.tools.checkstyle.checks.JavadocFormatting" />
+  <suppress files="com.azure.maps.search.implementation.helpers.SearchAddressBatchItemPropertiesHelper.java" checks="com.azure.tools.checkstyle.checks.JavadocFormatting" />
+  <suppress files="com.azure.maps.search.implementation.helpers.Utility.java" checks="com.azure.tools.checkstyle.checks.JavadocFormatting" />
   <suppress files="com.azure.maps.search.implementation.SearchClientImplBuilder.java" checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" />
 </suppressions>

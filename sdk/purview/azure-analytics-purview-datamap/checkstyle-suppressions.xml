@@ -11,5 +11,5 @@
   <suppress files="com.azure.analytics.purview.datamap.implementation.TypeDefinitionsImpl.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.analytics.purview.datamap.implementation.MultipartFormDataHelper.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.analytics.purview.datamap.implementation.MultipartFormDataHelper.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="com.azure.analytics.purview.datamap.implementation.DataMapClientImpl.java" checks="com.azure.tools.checkstyle.checks.JavaDocFormatting" />
+  <suppress files="com.azure.analytics.purview.datamap.implementation.DataMapClientImpl.java" checks="com.azure.tools.checkstyle.checks.JavadocFormatting" />
 </suppressions>

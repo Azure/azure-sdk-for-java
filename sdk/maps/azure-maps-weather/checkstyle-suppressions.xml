@@ -7,6 +7,6 @@
   <suppress files="com.azure.maps.weather.implementation.helpers.Utility.java" checks="JavadocPackageCheck" />
   <suppress files="com.azure.maps.weather.implementation.WeathersImpl.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.maps.weather.implementation.helpers.Utility.java" checks="MissingJavadocTypeCheck" />
-  <suppress files="com.azure.maps.weather.implementation.helpers.Utility.java" checks="com.azure.tools.checkstyle.checks.JavaDocFormatting" />
+  <suppress files="com.azure.maps.weather.implementation.helpers.Utility.java" checks="com.azure.tools.checkstyle.checks.JavadocFormatting" />
   <suppress files="com.azure.maps.weather.implementation.WeatherClientImplBuilder.java" checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" />
 </suppressions>
