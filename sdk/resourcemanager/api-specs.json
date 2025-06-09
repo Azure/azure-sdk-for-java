@@ -58,7 +58,7 @@
     "dir": "azure-resourcemanager-containerregistry",
     "source": "specification/containerregistry/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.containerregistry",
-    "args": "--tag=package-2023-07 --modelerfour.lenient-model-deduplication=true --enable-sync-stack=false"
+    "args": "--tag=package-2025-04 --modelerfour.lenient-model-deduplication=true --enable-sync-stack=false"
   },
   "containerregistry-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-containerregistry",
@@ -83,12 +83,6 @@
     "source": "specification/cosmos-db/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.cosmos",
     "args": "--tag=package-2025-04-15 --modelerfour.lenient-model-deduplication --rename-model=DataTransferServiceResourceCreateUpdateProperties:DataTransferServiceResourceCreateUpdateParameters,GraphApiComputeServiceResourceCreateUpdateProperties:GraphApiComputeServiceResourceCreateUpdateParameters,MaterializedViewsBuilderServiceResourceCreateUpdateProperties:MaterializedViewsBuilderServiceResourceCreateUpdateParameters,SqlDedicatedGatewayServiceResourceCreateUpdateProperties:SqlDedicatedGatewayServiceResourceCreateUpdateParameters --enable-sync-stack=false"
-  },
-  "deploymentstacks": {
-    "dir": "azure-resourcemanager-resources",
-    "source": "specification/resources/resource-manager/readme.md",
-    "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-deploymentstacks-2024-03 --graalvm-config-suffix=deploymentstacks --enable-sync-stack=false"
   },
   "dns": {
     "dir": "azure-resourcemanager-dns",
@@ -181,7 +175,7 @@
     "dir": "azure-resourcemanager-network",
     "source": "specification/network/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.network",
-    "args": "--tag=package-2024-05 --add-inner=ApplicationGatewayIpConfiguration,ApplicationGatewayPathRule,ApplicationGatewayProbe,ApplicationGatewayRedirectConfiguration,ApplicationGatewayRequestRoutingRule,ApplicationGatewaySslCertificate,ApplicationGatewayUrlPathMap,ApplicationGatewayAuthenticationCertificate,VirtualNetworkGatewayIpConfiguration,ConnectionMonitor,PacketCapture,ApplicationGateway,ApplicationGatewayListener --enable-sync-stack=false",
+    "args": "--tag=package-2024-07-01 --add-inner=ApplicationGatewayIpConfiguration,ApplicationGatewayPathRule,ApplicationGatewayProbe,ApplicationGatewayRedirectConfiguration,ApplicationGatewayRequestRoutingRule,ApplicationGatewaySslCertificate,ApplicationGatewayUrlPathMap,ApplicationGatewayAuthenticationCertificate,VirtualNetworkGatewayIpConfiguration,ConnectionMonitor,PacketCapture,ApplicationGateway,ApplicationGatewayListener --enable-sync-stack=false",
     "note": "Run DeprecateApplicationGatewaySku to deprecate v1 sku/tier in ApplicationGatewaySku."
   },
   "network-hybrid": {
@@ -226,8 +220,20 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-resources-2025-03 --add-inner=Deployment --enable-sync-stack=false",
+    "args": "--tag=package-resources-2025-04 --enable-sync-stack=false",
     "note": "Remove `final` from `ResourceReference`, as it is used as superclass in deploymentstacks."
+  },
+  "deployments": {
+    "dir": "azure-resourcemanager-resources",
+    "source": "specification/resources/resource-manager/Microsoft.Resources/deployments/readme.md",
+    "package": "com.azure.resourcemanager.resources",
+    "args": "--tag=package-2025-04 --title=DeploymentsManagementClient --add-inner=Deployment,Provider --graalvm-config-suffix=deployments --enable-sync-stack=false"
+  },
+  "deploymentstacks": {
+    "dir": "azure-resourcemanager-resources",
+    "source": "specification/resources/resource-manager/Microsoft.Resources/deploymentStacks/readme.md",
+    "package": "com.azure.resourcemanager.resources",
+    "args": "--tag=package-2024-03 --graalvm-config-suffix=deploymentstacks --enable-sync-stack=false"
   },
   "resources-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-resources",

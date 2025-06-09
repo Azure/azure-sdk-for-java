@@ -4,6 +4,7 @@
 
 package com.azure.maps.traffic.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,16 +22,19 @@ public final class TrafficIncidentDetailTm implements JsonSerializable<TrafficIn
     /*
      * ID of the traffic model for this incident
      */
+    @Generated
     private String id;
 
     /*
      * A single traffic incident, or a cluster of traffic incidents
      */
+    @Generated
     private List<TrafficIncidentPointOfInterest> pointsOfInterest;
 
     /**
      * Creates an instance of TrafficIncidentDetailTm class.
      */
+    @Generated
     public TrafficIncidentDetailTm() {
     }
 
@@ -39,6 +43,7 @@ public final class TrafficIncidentDetailTm implements JsonSerializable<TrafficIn
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -48,6 +53,7 @@ public final class TrafficIncidentDetailTm implements JsonSerializable<TrafficIn
      * 
      * @return the pointsOfInterest value.
      */
+    @Generated
     public List<TrafficIncidentPointOfInterest> getPointsOfInterest() {
         return this.pointsOfInterest;
     }
@@ -55,6 +61,7 @@ public final class TrafficIncidentDetailTm implements JsonSerializable<TrafficIn
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -69,6 +76,7 @@ public final class TrafficIncidentDetailTm implements JsonSerializable<TrafficIn
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the TrafficIncidentDetailTm.
      */
+    @Generated
     public static TrafficIncidentDetailTm fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TrafficIncidentDetailTm deserializedTrafficIncidentDetailTm = new TrafficIncidentDetailTm();

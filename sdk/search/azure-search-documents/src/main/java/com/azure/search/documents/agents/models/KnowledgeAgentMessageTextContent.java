@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.agents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class KnowledgeAgentMessageTextContent extends KnowledgeAgentMessag
     /*
      * The type of the message
      */
+    @Generated
     private KnowledgeAgentMessageContentType type = KnowledgeAgentMessageContentType.TEXT;
 
     /*
      * The text property.
      */
+    @Generated
     private final String text;
 
     /**
@@ -32,6 +35,7 @@ public final class KnowledgeAgentMessageTextContent extends KnowledgeAgentMessag
      * 
      * @param text the text value to set.
      */
+    @Generated
     public KnowledgeAgentMessageTextContent(String text) {
         this.text = text;
     }
@@ -41,6 +45,7 @@ public final class KnowledgeAgentMessageTextContent extends KnowledgeAgentMessag
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public KnowledgeAgentMessageContentType getType() {
         return this.type;
@@ -51,6 +56,7 @@ public final class KnowledgeAgentMessageTextContent extends KnowledgeAgentMessag
      * 
      * @return the text value.
      */
+    @Generated
     public String getText() {
         return this.text;
     }
@@ -58,6 +64,7 @@ public final class KnowledgeAgentMessageTextContent extends KnowledgeAgentMessag
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -75,6 +82,7 @@ public final class KnowledgeAgentMessageTextContent extends KnowledgeAgentMessag
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KnowledgeAgentMessageTextContent.
      */
+    @Generated
     public static KnowledgeAgentMessageTextContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean textFound = false;

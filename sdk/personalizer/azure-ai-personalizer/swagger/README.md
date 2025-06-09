@@ -19,7 +19,7 @@ autorest
 ```yaml
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/Personalizer/preview/v1.1-preview.3/Personalizer.json
 java: true
-use: '@autorest/java@4.1.42'
+use: '@autorest/java@4.1.50'
 output-folder: ..\
 generate-client-as-impl: true
 namespace: com.azure.ai.personalizer
@@ -28,6 +28,7 @@ license-header: MICROSOFT_MIT_SMALL
 custom-types-subpackage: administration.models
 custom-types: PersonalizerDateRange,PersonalizerEvaluation,PersonalizerEvaluationOptions,PersonalizerEvaluationJobStatus,PersonalizerCreateEvaluationOperation,PersonalizerEvaluationType,PersonalizerLearningMode,PersonalizerLogProperties,PersonalizerLogPropertiesDateRange,PersonalizerModelProperties,PersonalizerPolicy,PersonalizerPolicyResult,PersonalizerPolicyResultSummary,PersonalizerPolicyResultTotalSummary,PersonalizerPolicySource,PersonalizerServiceProperties,EvaluationsCreateHeaders,PersonalizerPolicyReferenceOptions
 customization-class: src/main/java/PersonalizerCustomization.java
+use-eclipse-language-server: false
 directive:
 - rename-model:
     from: DateRange

@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -17,11 +18,13 @@ public final class DocumentIntelligenceLayoutSkillOutputFormat
     /**
      * Specify the format of the output as text.
      */
+    @Generated
     public static final DocumentIntelligenceLayoutSkillOutputFormat TEXT = fromString("text");
 
     /**
      * Specify the format of the output as markdown.
      */
+    @Generated
     public static final DocumentIntelligenceLayoutSkillOutputFormat MARKDOWN = fromString("markdown");
 
     /**
@@ -29,6 +32,7 @@ public final class DocumentIntelligenceLayoutSkillOutputFormat
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DocumentIntelligenceLayoutSkillOutputFormat() {
     }
@@ -39,6 +43,7 @@ public final class DocumentIntelligenceLayoutSkillOutputFormat
      * @param name a name to look for.
      * @return the corresponding DocumentIntelligenceLayoutSkillOutputFormat.
      */
+    @Generated
     public static DocumentIntelligenceLayoutSkillOutputFormat fromString(String name) {
         return fromString(name, DocumentIntelligenceLayoutSkillOutputFormat.class);
     }
@@ -48,6 +53,7 @@ public final class DocumentIntelligenceLayoutSkillOutputFormat
      * 
      * @return known DocumentIntelligenceLayoutSkillOutputFormat values.
      */
+    @Generated
     public static Collection<DocumentIntelligenceLayoutSkillOutputFormat> values() {
         return values(DocumentIntelligenceLayoutSkillOutputFormat.class);
     }

@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class WeatherAlongRouteSummary implements JsonSerializable<WeatherA
      * Numeric value representing an image that displays the `iconPhrase`. Please refer to [Weather services in Azure
      * Maps](/azure/azure-maps/weather-services-concepts#weather-icons) for details.
      */
+    @Generated
     private IconCode iconCode;
 
     /*
      * Description of the weather hazard affecting the trip.
      */
+    @Generated
     private WeatherHazards hazards;
 
     /**
      * Set default WeatherAlongRouteSummary constructor to private
      */
+    @Generated
     private WeatherAlongRouteSummary() {
     }
 
@@ -39,6 +43,7 @@ public final class WeatherAlongRouteSummary implements JsonSerializable<WeatherA
      *
      * @return the iconCode value.
      */
+    @Generated
     public IconCode getIconCode() {
         return this.iconCode;
     }
@@ -50,6 +55,7 @@ public final class WeatherAlongRouteSummary implements JsonSerializable<WeatherA
      * @param iconCode the iconCode value to set.
      * @return the WeatherAlongRouteSummary object itself.
      */
+    @Generated
     public WeatherAlongRouteSummary setIconCode(IconCode iconCode) {
         this.iconCode = iconCode;
         return this;
@@ -60,6 +66,7 @@ public final class WeatherAlongRouteSummary implements JsonSerializable<WeatherA
      *
      * @return the hazards value.
      */
+    @Generated
     public WeatherHazards getHazards() {
         return this.hazards;
     }
@@ -70,6 +77,7 @@ public final class WeatherAlongRouteSummary implements JsonSerializable<WeatherA
      * @param hazards the hazards value to set.
      * @return the WeatherAlongRouteSummary object itself.
      */
+    @Generated
     public WeatherAlongRouteSummary setHazards(WeatherHazards hazards) {
         this.hazards = hazards;
         return this;
@@ -78,6 +86,7 @@ public final class WeatherAlongRouteSummary implements JsonSerializable<WeatherA
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -94,6 +103,7 @@ public final class WeatherAlongRouteSummary implements JsonSerializable<WeatherA
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the WeatherAlongRouteSummary.
      */
+    @Generated
     public static WeatherAlongRouteSummary fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WeatherAlongRouteSummary deserializedWeatherAlongRouteSummary = new WeatherAlongRouteSummary();

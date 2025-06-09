@@ -90,8 +90,12 @@ public final class CopyActivityLogSettings implements JsonSerializable<CopyActiv
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("logLevel", this.logLevel);
-        jsonWriter.writeUntypedField("enableReliableLogging", this.enableReliableLogging);
+        if (this.logLevel != null) {
+            jsonWriter.writeUntypedField("logLevel", this.logLevel);
+        }
+        if (this.enableReliableLogging != null) {
+            jsonWriter.writeUntypedField("enableReliableLogging", this.enableReliableLogging);
+        }
         return jsonWriter.writeEndObject();
     }
 

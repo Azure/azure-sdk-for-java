@@ -3,12 +3,16 @@
 
 package com.azure.v2.security.keyvault.keys.cryptography.implementation;
 
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+
 import java.security.GeneralSecurityException;
 import java.security.KeyPair;
 import java.security.Provider;
 import java.security.Signature;
 
 abstract class Ecdsa extends AsymmetricSignatureAlgorithm {
+    private static final ClientLogger LOGGER = new ClientLogger(Ecdsa.class);
+
     protected Ecdsa() {
         super("NONEwithECDSA");
     }
@@ -59,7 +63,9 @@ abstract class Ecdsa extends AsymmetricSignatureAlgorithm {
 
         private void checkDigestLength(byte[] digest) {
             if (digest.length != getDigestLength()) {
-                throw new IllegalArgumentException("Invalid digest length.");
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("length", digest.length)
+                    .log("Invalid digest length.", IllegalArgumentException::new);
             }
         }
     }

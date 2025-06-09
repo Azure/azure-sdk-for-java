@@ -4,6 +4,7 @@
 
 package com.azure.maps.weather.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class WeatherDataUnit extends ExpandableStringEnum<WeatherDataUnit>
     /**
      * Return data in metric units. Some example units of metric system are Celsius and kilometer.
      */
+    @Generated
     public static final WeatherDataUnit METRIC = fromString("metric");
 
     /**
      * Return data in imperial units. Some example units of imperial system are Fahrenheit and mile.
      */
+    @Generated
     public static final WeatherDataUnit IMPERIAL = fromString("imperial");
 
     /**
@@ -26,6 +29,7 @@ public final class WeatherDataUnit extends ExpandableStringEnum<WeatherDataUnit>
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public WeatherDataUnit() {
     }
@@ -36,6 +40,7 @@ public final class WeatherDataUnit extends ExpandableStringEnum<WeatherDataUnit>
      * @param name a name to look for.
      * @return the corresponding WeatherDataUnit.
      */
+    @Generated
     public static WeatherDataUnit fromString(String name) {
         return fromString(name, WeatherDataUnit.class);
     }
@@ -45,6 +50,7 @@ public final class WeatherDataUnit extends ExpandableStringEnum<WeatherDataUnit>
      * 
      * @return known WeatherDataUnit values.
      */
+    @Generated
     public static Collection<WeatherDataUnit> values() {
         return values(WeatherDataUnit.class);
     }

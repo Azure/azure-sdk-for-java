@@ -5,6 +5,7 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,18 +20,23 @@ import java.util.List;
 @Fluent
 public final class RouteSectionTec implements JsonSerializable<RouteSectionTec> {
     /*
-     * The effect on the traffic flow. Contains a value in the tec001:EffectCode table, as defined in the [TPEG2-TEC](https://www.iso.org/standard/63116.html) standard. Can be used to color-code traffic events according to severity.
+     * The effect on the traffic flow. Contains a value in the tec001:EffectCode table, as defined in the
+     * [TPEG2-TEC](https://www.iso.org/standard/63116.html) standard. Can be used to color-code traffic events according
+     * to severity.
      */
+    @Generated
     private Integer effectCode;
 
     /*
      * Causes array
      */
+    @Generated
     private List<RouteSectionTecCause> causes;
 
     /**
      * Creates an instance of RouteSectionTec class.
      */
+    @Generated
     public RouteSectionTec() {
     }
 
@@ -41,6 +47,7 @@ public final class RouteSectionTec implements JsonSerializable<RouteSectionTec> 
      * 
      * @return the effectCode value.
      */
+    @Generated
     public Integer getEffectCode() {
         return this.effectCode;
     }
@@ -50,6 +57,7 @@ public final class RouteSectionTec implements JsonSerializable<RouteSectionTec> 
      * 
      * @return the causes value.
      */
+    @Generated
     public List<RouteSectionTecCause> getCauses() {
         return this.causes;
     }
@@ -60,6 +68,7 @@ public final class RouteSectionTec implements JsonSerializable<RouteSectionTec> 
      * @param causes the causes value to set.
      * @return the RouteSectionTec object itself.
      */
+    @Generated
     public RouteSectionTec setCauses(List<RouteSectionTecCause> causes) {
         this.causes = causes;
         return this;
@@ -68,6 +77,7 @@ public final class RouteSectionTec implements JsonSerializable<RouteSectionTec> 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -83,6 +93,7 @@ public final class RouteSectionTec implements JsonSerializable<RouteSectionTec> 
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the RouteSectionTec.
      */
+    @Generated
     public static RouteSectionTec fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RouteSectionTec deserializedRouteSectionTec = new RouteSectionTec();

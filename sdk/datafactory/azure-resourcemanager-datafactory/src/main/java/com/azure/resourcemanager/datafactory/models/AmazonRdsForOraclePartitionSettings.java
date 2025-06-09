@@ -146,10 +146,18 @@ public final class AmazonRdsForOraclePartitionSettings
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("partitionNames", this.partitionNames);
-        jsonWriter.writeUntypedField("partitionColumnName", this.partitionColumnName);
-        jsonWriter.writeUntypedField("partitionUpperBound", this.partitionUpperBound);
-        jsonWriter.writeUntypedField("partitionLowerBound", this.partitionLowerBound);
+        if (this.partitionNames != null) {
+            jsonWriter.writeUntypedField("partitionNames", this.partitionNames);
+        }
+        if (this.partitionColumnName != null) {
+            jsonWriter.writeUntypedField("partitionColumnName", this.partitionColumnName);
+        }
+        if (this.partitionUpperBound != null) {
+            jsonWriter.writeUntypedField("partitionUpperBound", this.partitionUpperBound);
+        }
+        if (this.partitionLowerBound != null) {
+            jsonWriter.writeUntypedField("partitionLowerBound", this.partitionLowerBound);
+        }
         return jsonWriter.writeEndObject();
     }
 

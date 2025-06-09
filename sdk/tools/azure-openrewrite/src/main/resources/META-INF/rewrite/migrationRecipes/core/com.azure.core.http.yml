@@ -1,0 +1,229 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+# --------------------------------------------------------------------
+# Migration Recipes for azure.core.http
+# --------------------------------------------------------------------
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.openrewrite.recipe.azure.core.http
+displayName: Migrate from azure.core.http to next generation stack
+description: This recipe migrates the azure.core.http package to the next generation stack.
+recipeList:
+
+  # --------------------------------------------------------------------
+  # HttpRequest
+  # --------------------------------------------------------------------
+
+  - com.azure.openrewrite.core.http.HttpRequestCustomRecipe
+
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: 'com.azure.core.http.HttpRequest getUrl()'
+      newMethodName: 'getUri'
+
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: 'com.azure.core.http.HttpRequest setUrl()'
+      newMethodName: 'setUri'
+
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: 'com.azure.core.http.HttpRequest setHttpMethod(..)'
+      newMethodName: 'setMethod'
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.HttpRequest
+      newFullyQualifiedTypeName: io.clientcore.core.http.models.HttpRequest
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # ContentType
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.ContentType
+      newFullyQualifiedTypeName: io.clientcore.core.implementation.http.ContentType
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # HttpAuthorization
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # HttpClient
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: com.azure.core.http.HttpClient#createDefault()
+      newMethodName: getSharedInstance
+
+  - org.openrewrite.java.DeleteMethodArgument:
+        methodPattern: com.azure.core.http.HttpClient sendSync(..)
+        argumentIndex: 1
+
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: com.azure.core.http.HttpClient#sendSync(..)
+      newMethodName: send
+
+
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.HttpClient
+      newFullyQualifiedTypeName: io.clientcore.core.http.client.HttpClient
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # HttpClientProvider
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.HttpClientProvider
+      newFullyQualifiedTypeName: io.clientcore.core.http.client.HttpClientProvider
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # HttpHeader
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.HttpHeader
+      newFullyQualifiedTypeName: io.clientcore.core.http.models.HttpHeader
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # HttpHeaderName
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.HttpHeaderName
+      newFullyQualifiedTypeName: io.clientcore.core.http.models.HttpHeaderName
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # HttpHeaders
+  # --------------------------------------------------------------------
+
+  - com.azure.openrewrite.core.http.HttpHeadersCustomRecipe
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.HttpHeaders
+      newFullyQualifiedTypeName: io.clientcore.core.http.models.HttpHeaders
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # HttpMethod
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.HttpMethod
+      newFullyQualifiedTypeName: io.clientcore.core.http.models.HttpMethod
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # HttpPipeline
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.HttpPipeline
+      newFullyQualifiedTypeName: io.clientcore.core.http.pipeline.HttpPipeline
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # HttpPipelineBuilder
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.HttpPipelineBuilder
+      newFullyQualifiedTypeName: io.clientcore.core.http.pipeline.HttpPipelineBuilder
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # HttpPipelineCallContext
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # HttpPipelineNextPolicy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # HttpPipelineNextSyncPolicy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # HttpPipelinePosition
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.HttpPipelinePosition
+      newFullyQualifiedTypeName: io.clientcore.core.http.pipeline.HttpPipelinePosition
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # HttpRange
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.HttpRange
+      newFullyQualifiedTypeName: io.clientcore.core.http.models.HttpRange
+
+  # TODO: Migrate Methods and Fields
+
+
+
+  # --------------------------------------------------------------------
+  # HttpResponse
+  # --------------------------------------------------------------------
+
+  - com.azure.openrewrite.core.http.HttpResponseCustomRecipe
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.HttpResponse
+      newFullyQualifiedTypeName: io.clientcore.core.http.models.Response
+
+  # --------------------------------------------------------------------
+  # MatchConditions
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.MatchConditions
+      newFullyQualifiedTypeName: io.clientcore.core.http.models.HttpMatchConditions
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # ProxyOptions
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.ProxyOptions
+      newFullyQualifiedTypeName: io.clientcore.core.http.models.ProxyOptions
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # RequestConditions
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.RequestConditions
+      newFullyQualifiedTypeName: io.clientcore.core.http.models.HttpRequestConditions
+
+  # TODO: Migrate Methods and Fields
+
+
+

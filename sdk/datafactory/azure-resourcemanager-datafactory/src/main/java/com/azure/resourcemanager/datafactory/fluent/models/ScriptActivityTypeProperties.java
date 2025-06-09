@@ -153,10 +153,14 @@ public final class ScriptActivityTypeProperties implements JsonSerializable<Scri
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("scriptBlockExecutionTimeout", this.scriptBlockExecutionTimeout);
+        if (this.scriptBlockExecutionTimeout != null) {
+            jsonWriter.writeUntypedField("scriptBlockExecutionTimeout", this.scriptBlockExecutionTimeout);
+        }
         jsonWriter.writeArrayField("scripts", this.scripts, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("logSettings", this.logSettings);
-        jsonWriter.writeUntypedField("returnMultistatementResult", this.returnMultistatementResult);
+        if (this.returnMultistatementResult != null) {
+            jsonWriter.writeUntypedField("returnMultistatementResult", this.returnMultistatementResult);
+        }
         return jsonWriter.writeEndObject();
     }
 

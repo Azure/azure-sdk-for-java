@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.{CosmosException, ReadConsistencyStrategy}
-import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, UUIDs}
 import com.azure.cosmos.models.{CosmosItemIdentity, PartitionKey}
 import com.azure.cosmos.spark.CosmosPredicates.assertOnSparkDriver
 import com.azure.cosmos.spark.diagnostics.{BasicLoggingTrait, DiagnosticsContext}
@@ -66,8 +66,8 @@ private[spark] class CosmosReadManyReader(
             clientCacheItems(1))
         try {
           container.readItem(
-            UUID.randomUUID().toString,
-            new PartitionKey(UUID.randomUUID().toString),
+            UUIDs.nonBlockingRandomUUID().toString,
+            new PartitionKey(UUIDs.nonBlockingRandomUUID().toString),
             classOf[ObjectNode])
             .block()
         } catch {
@@ -89,7 +89,7 @@ private[spark] class CosmosReadManyReader(
   }
 
   def readMany(inputRdd: RDD[Row], identityExtraction:  Row => CosmosItemIdentity): DataFrame = {
-    val correlationActivityId = UUID.randomUUID()
+    val correlationActivityId = UUIDs.nonBlockingRandomUUID()
     val calledFrom = s"CosmosReadManyReader.readMany($correlationActivityId)"
     val schema = Loan(
       List[Option[CosmosClientCacheItem]](

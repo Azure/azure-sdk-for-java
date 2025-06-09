@@ -4,13 +4,14 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.models.ResponseError;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.maps.route.implementation.models.ErrorDetail;
 import java.io.IOException;
 import java.util.List;
-import com.azure.core.models.ResponseError;
 
 /**
  * The result of the query. RouteDirections if the query completed successfully, ErrorResponse otherwise.
@@ -21,11 +22,43 @@ final class RouteDirectionsBatchItemResponse extends RouteDirections {
     /*
      * The error object.
      */
+    @Generated
     private ErrorDetail error;
+
+    /*
+     * Optimized sequence of waypoints. It shows the index from the user provided waypoint sequence for the original and
+     * optimized list. For instance, a response:
+     * 
+     * ```
+     * <optimizedWaypoints>
+     * <waypoint providedIndex="0" optimizedIndex="1"/>
+     * <waypoint providedIndex="1" optimizedIndex="2"/>
+     * <waypoint providedIndex="2" optimizedIndex="0"/>
+     * </optimizedWaypoints>
+     * ```
+     * 
+     * means that the original sequence is [0, 1, 2] and optimized sequence is [1, 2, 0]. Since the index starts by 0
+     * the original is "first, second, third" while the optimized is "second, third, first".
+     */
+    @Generated
+    private List<RouteOptimizedWaypoint> optimizedWaypoints;
+
+    /*
+     * Routes array
+     */
+    @Generated
+    private List<MapsSearchRoute> routes;
+
+    /*
+     * Format Version property
+     */
+    @Generated
+    private String formatVersion;
 
     /**
      * Creates an instance of RouteDirectionsBatchItemResponse class.
      */
+    @Generated
     RouteDirectionsBatchItemResponse() {
     }
 
@@ -34,6 +67,7 @@ final class RouteDirectionsBatchItemResponse extends RouteDirections {
      *
      * @return the error value.
      */
+    @Generated
     public ResponseError getError() {
         return new ResponseError(this.error.getCode(), this.error.getMessage());
     }
@@ -44,14 +78,61 @@ final class RouteDirectionsBatchItemResponse extends RouteDirections {
      * @param error the error value to set.
      * @return the RouteDirectionsBatchItemResponse object itself.
      */
+    @Generated
     public RouteDirectionsBatchItemResponse setError(ResponseError error) {
         this.error = new ErrorDetail().setCode(error.getCode()).setMessage(error.getMessage());
         return this;
     }
 
     /**
+     * Get the optimizedWaypoints property: Optimized sequence of waypoints. It shows the index from the user provided
+     * waypoint sequence for the original and optimized list. For instance, a response:
+     *
+     * ```
+     * &lt;optimizedWaypoints&gt;
+     * &lt;waypoint providedIndex="0" optimizedIndex="1"/&gt;
+     * &lt;waypoint providedIndex="1" optimizedIndex="2"/&gt;
+     * &lt;waypoint providedIndex="2" optimizedIndex="0"/&gt;
+     * &lt;/optimizedWaypoints&gt;
+     * ```
+     *
+     * means that the original sequence is [0, 1, 2] and optimized sequence is [1, 2, 0]. Since the index starts by 0
+     * the original is "first, second, third" while the optimized is "second, third, first".
+     *
+     * @return the optimizedWaypoints value.
+     */
+    @Generated
+    @Override
+    public List<RouteOptimizedWaypoint> getOptimizedWaypoints() {
+        return this.optimizedWaypoints;
+    }
+
+    /**
+     * Get the routes property: Routes array.
+     *
+     * @return the routes value.
+     */
+    @Generated
+    @Override
+    public List<MapsSearchRoute> getRoutes() {
+        return this.routes;
+    }
+
+    /**
+     * Get the formatVersion property: Format Version property.
+     *
+     * @return the formatVersion value.
+     */
+    @Generated
+    @Override
+    public String getFormatVersion() {
+        return this.formatVersion;
+    }
+
+    /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public RouteDirectionsBatchItemResponse setReport(RouteReport report) {
         super.setReport(report);
@@ -61,6 +142,7 @@ final class RouteDirectionsBatchItemResponse extends RouteDirections {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -77,6 +159,7 @@ final class RouteDirectionsBatchItemResponse extends RouteDirections {
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the RouteDirectionsBatchItemResponse.
      */
+    @Generated
     public static RouteDirectionsBatchItemResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RouteDirectionsBatchItemResponse deserializedRouteDirectionsBatchItemResponse
@@ -85,14 +168,14 @@ final class RouteDirectionsBatchItemResponse extends RouteDirections {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("formatVersion".equals(fieldName)) {
-                    deserializedRouteDirectionsBatchItemResponse.setFormatVersion(reader.getString());
+                    deserializedRouteDirectionsBatchItemResponse.formatVersion = reader.getString();
                 } else if ("routes".equals(fieldName)) {
                     List<MapsSearchRoute> routes = reader.readArray(reader1 -> MapsSearchRoute.fromJson(reader1));
-                    deserializedRouteDirectionsBatchItemResponse.setRoutes(routes);
+                    deserializedRouteDirectionsBatchItemResponse.routes = routes;
                 } else if ("optimizedWaypoints".equals(fieldName)) {
                     List<RouteOptimizedWaypoint> optimizedWaypoints
                         = reader.readArray(reader1 -> RouteOptimizedWaypoint.fromJson(reader1));
-                    deserializedRouteDirectionsBatchItemResponse.setOptimizedWaypoints(optimizedWaypoints);
+                    deserializedRouteDirectionsBatchItemResponse.optimizedWaypoints = optimizedWaypoints;
                 } else if ("report".equals(fieldName)) {
                     deserializedRouteDirectionsBatchItemResponse.setReport(RouteReport.fromJson(reader));
                 } else if ("error".equals(fieldName)) {

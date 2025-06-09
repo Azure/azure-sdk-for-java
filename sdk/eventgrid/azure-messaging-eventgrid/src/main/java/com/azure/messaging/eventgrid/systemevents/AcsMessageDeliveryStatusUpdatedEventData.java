@@ -4,6 +4,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
@@ -24,21 +25,25 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
     /*
      * The message id
      */
+    @Generated
     private String messageId;
 
     /*
      * The updated message status
      */
+    @Generated
     private AcsMessageDeliveryStatus status;
 
     /*
      * The updated message channel type
      */
+    @Generated
     private AcsMessageChannelKind channelKind;
 
     /**
      * Creates an instance of AcsMessageDeliveryStatusUpdatedEventData class.
      */
+    @Generated
     public AcsMessageDeliveryStatusUpdatedEventData() {
     }
 
@@ -47,6 +52,7 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
      *
      * @return the messageId value.
      */
+    @Generated
     public String getMessageId() {
         return this.messageId;
     }
@@ -57,6 +63,7 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
      * @param messageId the messageId value to set.
      * @return the AcsMessageDeliveryStatusUpdatedEventData object itself.
      */
+    @Generated
     public AcsMessageDeliveryStatusUpdatedEventData setMessageId(String messageId) {
         this.messageId = messageId;
         return this;
@@ -67,6 +74,7 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
      *
      * @return the status value.
      */
+    @Generated
     public AcsMessageDeliveryStatus getStatus() {
         return this.status;
     }
@@ -77,6 +85,7 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
      * @param status the status value to set.
      * @return the AcsMessageDeliveryStatusUpdatedEventData object itself.
      */
+    @Generated
     public AcsMessageDeliveryStatusUpdatedEventData setStatus(AcsMessageDeliveryStatus status) {
         this.status = status;
         return this;
@@ -87,6 +96,7 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
      *
      * @return the channelKind value.
      */
+    @Generated
     public AcsMessageChannelKind getChannelKind() {
         return this.channelKind;
     }
@@ -97,6 +107,7 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
      * @param channelKind the channelKind value to set.
      * @return the AcsMessageDeliveryStatusUpdatedEventData object itself.
      */
+    @Generated
     public AcsMessageDeliveryStatusUpdatedEventData setChannelKind(AcsMessageChannelKind channelKind) {
         this.channelKind = channelKind;
         return this;
@@ -105,6 +116,7 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AcsMessageDeliveryStatusUpdatedEventData setFrom(String from) {
         super.setFrom(from);
@@ -114,6 +126,7 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AcsMessageDeliveryStatusUpdatedEventData setTo(String to) {
         super.setTo(to);
@@ -123,6 +136,7 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AcsMessageDeliveryStatusUpdatedEventData setReceivedTimestamp(OffsetDateTime receivedTimestamp) {
         super.setReceivedTimestamp(receivedTimestamp);
@@ -132,6 +146,7 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -157,6 +172,7 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsMessageDeliveryStatusUpdatedEventData.
      */
+    @Generated
     public static AcsMessageDeliveryStatusUpdatedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsMessageDeliveryStatusUpdatedEventData deserializedAcsMessageDeliveryStatusUpdatedEventData
