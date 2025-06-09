@@ -318,6 +318,17 @@ public class ShareAsyncApiTests extends FileShareTestBase {
     }
 
     @Test
+    public void deleteIfExistsSnapshotNotFound() {
+        String snapshot = "2025-02-04T10:17:47.0000000Z";
+        ShareAsyncClient snapshotClient = shareBuilderHelper(shareName).snapshot(snapshot).buildAsyncClient();
+
+        StepVerifier.create(snapshotClient.deleteIfExistsWithResponse(null)).assertNext(response -> {
+            assertFalse(response.getValue());
+            FileShareTestHelper.assertResponseStatusCode(response, 404);
+        }).verifyComplete();
+    }
+
+    @Test
     public void getProperties() {
         StepVerifier.create(primaryShareAsyncClient.createWithResponse(testMetadata, 1)
             .then(primaryShareAsyncClient.getPropertiesWithResponse())).assertNext(it -> {

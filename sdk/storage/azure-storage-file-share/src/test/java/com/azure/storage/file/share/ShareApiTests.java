@@ -514,6 +514,17 @@ public class ShareApiTests extends FileShareTestBase {
     }
 
     @Test
+    public void deleteIfExistsSnapshotNotFound() {
+        String snapshot = "2025-02-04T10:17:47.0000000Z";
+        ShareClient snapshotClient = shareBuilderHelper(shareName).snapshot(snapshot).buildClient();
+
+        Response<Boolean> response = snapshotClient.deleteIfExistsWithResponse(null, null, null);
+
+        assertFalse(response.getValue());
+        FileShareTestHelper.assertResponseStatusCode(response, 404);
+    }
+
+    @Test
     public void getProperties() {
         primaryShareClient.createWithResponse(testMetadata, 1, null, null);
         Response<ShareProperties> getPropertiesResponse = primaryShareClient.getPropertiesWithResponse(null, null);
