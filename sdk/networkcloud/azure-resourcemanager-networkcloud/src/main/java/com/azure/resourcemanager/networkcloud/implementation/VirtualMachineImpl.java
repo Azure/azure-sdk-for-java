@@ -59,6 +59,10 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
         }
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public ExtendedLocation extendedLocation() {
         return this.innerModel().extendedLocation();
     }
@@ -211,6 +215,14 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
 
     private String virtualMachineName;
 
+    private String createIfMatch;
+
+    private String createIfNoneMatch;
+
+    private String updateIfMatch;
+
+    private String updateIfNoneMatch;
+
     private VirtualMachinePatchParameters updateVirtualMachineUpdateParameters;
 
     public VirtualMachineImpl withExistingResourceGroup(String resourceGroupName) {
@@ -221,14 +233,16 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
     public VirtualMachine create() {
         this.innerObject = serviceManager.serviceClient()
             .getVirtualMachines()
-            .createOrUpdate(resourceGroupName, virtualMachineName, this.innerModel(), Context.NONE);
+            .createOrUpdate(resourceGroupName, virtualMachineName, this.innerModel(), createIfMatch, createIfNoneMatch,
+                Context.NONE);
         return this;
     }
 
     public VirtualMachine create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getVirtualMachines()
-            .createOrUpdate(resourceGroupName, virtualMachineName, this.innerModel(), context);
+            .createOrUpdate(resourceGroupName, virtualMachineName, this.innerModel(), createIfMatch, createIfNoneMatch,
+                context);
         return this;
     }
 
@@ -236,9 +250,13 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
         this.innerObject = new VirtualMachineInner();
         this.serviceManager = serviceManager;
         this.virtualMachineName = name;
+        this.createIfMatch = null;
+        this.createIfNoneMatch = null;
     }
 
     public VirtualMachineImpl update() {
+        this.updateIfMatch = null;
+        this.updateIfNoneMatch = null;
         this.updateVirtualMachineUpdateParameters = new VirtualMachinePatchParameters();
         return this;
     }
@@ -246,14 +264,16 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
     public VirtualMachine apply() {
         this.innerObject = serviceManager.serviceClient()
             .getVirtualMachines()
-            .update(resourceGroupName, virtualMachineName, updateVirtualMachineUpdateParameters, Context.NONE);
+            .update(resourceGroupName, virtualMachineName, updateIfMatch, updateIfNoneMatch,
+                updateVirtualMachineUpdateParameters, Context.NONE);
         return this;
     }
 
     public VirtualMachine apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getVirtualMachines()
-            .update(resourceGroupName, virtualMachineName, updateVirtualMachineUpdateParameters, context);
+            .update(resourceGroupName, virtualMachineName, updateIfMatch, updateIfNoneMatch,
+                updateVirtualMachineUpdateParameters, context);
         return this;
     }
 
@@ -427,6 +447,26 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
             return this;
         } else {
             this.updateVirtualMachineUpdateParameters.withVmImageRepositoryCredentials(vmImageRepositoryCredentials);
+            return this;
+        }
+    }
+
+    public VirtualMachineImpl withIfMatch(String ifMatch) {
+        if (isInCreateMode()) {
+            this.createIfMatch = ifMatch;
+            return this;
+        } else {
+            this.updateIfMatch = ifMatch;
+            return this;
+        }
+    }
+
+    public VirtualMachineImpl withIfNoneMatch(String ifNoneMatch) {
+        if (isInCreateMode()) {
+            this.createIfNoneMatch = ifNoneMatch;
+            return this;
+        } else {
+            this.updateIfNoneMatch = ifNoneMatch;
             return this;
         }
     }
