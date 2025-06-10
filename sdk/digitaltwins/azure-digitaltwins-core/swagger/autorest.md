@@ -37,7 +37,7 @@ input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/764484f
 
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
-use: '@autorest/java@4.1.42'
+use: '@autorest/java@4.1.50'
 java: true
 namespace: com.azure.digitaltwins.core
 add-credentials: true
@@ -48,6 +48,7 @@ models-subpackage: implementation.models
 custom-types-subpackage: models
 required-fields-as-ctor-args: true
 customization-class: src/main/java/DigitalTwinsCustomization.java
+use-eclipse-language-server: false
 ```
 
 ## This directive removes the specified enum values from the swagger so the code generator will expose IfNonMatch header as an option instead of always attaching it to requests with its only default value.

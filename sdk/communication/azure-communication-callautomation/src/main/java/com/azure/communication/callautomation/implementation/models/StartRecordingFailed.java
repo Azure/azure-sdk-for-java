@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class StartRecordingFailed implements JsonSerializable<StartRecordi
     /*
      * Call connection ID.
      */
+    @Generated
     private String callConnectionId;
 
     /*
      * Correlation ID for event to call correlation.
      */
+    @Generated
     private String correlationId;
 
     /*
      * The call recording id
      */
+    @Generated
     private String recordingId;
 
     /**
      * Creates an instance of StartRecordingFailed class.
      */
+    @Generated
     public StartRecordingFailed() {
     }
 
@@ -42,6 +47,7 @@ public final class StartRecordingFailed implements JsonSerializable<StartRecordi
      * 
      * @return the callConnectionId value.
      */
+    @Generated
     public String getCallConnectionId() {
         return this.callConnectionId;
     }
@@ -52,6 +58,7 @@ public final class StartRecordingFailed implements JsonSerializable<StartRecordi
      * @param callConnectionId the callConnectionId value to set.
      * @return the StartRecordingFailed object itself.
      */
+    @Generated
     public StartRecordingFailed setCallConnectionId(String callConnectionId) {
         this.callConnectionId = callConnectionId;
         return this;
@@ -62,6 +69,7 @@ public final class StartRecordingFailed implements JsonSerializable<StartRecordi
      * 
      * @return the correlationId value.
      */
+    @Generated
     public String getCorrelationId() {
         return this.correlationId;
     }
@@ -72,6 +80,7 @@ public final class StartRecordingFailed implements JsonSerializable<StartRecordi
      * @param correlationId the correlationId value to set.
      * @return the StartRecordingFailed object itself.
      */
+    @Generated
     public StartRecordingFailed setCorrelationId(String correlationId) {
         this.correlationId = correlationId;
         return this;
@@ -82,6 +91,7 @@ public final class StartRecordingFailed implements JsonSerializable<StartRecordi
      * 
      * @return the recordingId value.
      */
+    @Generated
     public String getRecordingId() {
         return this.recordingId;
     }
@@ -89,6 +99,7 @@ public final class StartRecordingFailed implements JsonSerializable<StartRecordi
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -105,6 +116,7 @@ public final class StartRecordingFailed implements JsonSerializable<StartRecordi
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the StartRecordingFailed.
      */
+    @Generated
     public static StartRecordingFailed fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             StartRecordingFailed deserializedStartRecordingFailed = new StartRecordingFailed();

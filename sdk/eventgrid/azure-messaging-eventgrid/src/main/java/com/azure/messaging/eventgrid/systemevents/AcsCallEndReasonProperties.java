@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class AcsCallEndReasonProperties implements JsonSerializable<AcsCal
     /*
      * Reason code for ending the call.
      */
+    @Generated
     private Integer code;
 
     /*
      * Reason subcode for ending the call.
      */
+    @Generated
     private Integer subCode;
 
     /*
      * Reason for ending the call.
      */
+    @Generated
     private String phrase;
 
     /**
      * Creates an instance of AcsCallEndReasonProperties class.
      */
+    @Generated
     public AcsCallEndReasonProperties() {
     }
 
@@ -42,6 +47,7 @@ public final class AcsCallEndReasonProperties implements JsonSerializable<AcsCal
      * 
      * @return the code value.
      */
+    @Generated
     public Integer getCode() {
         return this.code;
     }
@@ -52,6 +58,7 @@ public final class AcsCallEndReasonProperties implements JsonSerializable<AcsCal
      * @param code the code value to set.
      * @return the AcsCallEndReasonProperties object itself.
      */
+    @Generated
     public AcsCallEndReasonProperties setCode(Integer code) {
         this.code = code;
         return this;
@@ -62,6 +69,7 @@ public final class AcsCallEndReasonProperties implements JsonSerializable<AcsCal
      * 
      * @return the subCode value.
      */
+    @Generated
     public Integer getSubCode() {
         return this.subCode;
     }
@@ -72,6 +80,7 @@ public final class AcsCallEndReasonProperties implements JsonSerializable<AcsCal
      * @param subCode the subCode value to set.
      * @return the AcsCallEndReasonProperties object itself.
      */
+    @Generated
     public AcsCallEndReasonProperties setSubCode(Integer subCode) {
         this.subCode = subCode;
         return this;
@@ -82,6 +91,7 @@ public final class AcsCallEndReasonProperties implements JsonSerializable<AcsCal
      * 
      * @return the phrase value.
      */
+    @Generated
     public String getPhrase() {
         return this.phrase;
     }
@@ -92,6 +102,7 @@ public final class AcsCallEndReasonProperties implements JsonSerializable<AcsCal
      * @param phrase the phrase value to set.
      * @return the AcsCallEndReasonProperties object itself.
      */
+    @Generated
     public AcsCallEndReasonProperties setPhrase(String phrase) {
         this.phrase = phrase;
         return this;
@@ -100,6 +111,7 @@ public final class AcsCallEndReasonProperties implements JsonSerializable<AcsCal
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -117,6 +129,7 @@ public final class AcsCallEndReasonProperties implements JsonSerializable<AcsCal
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AcsCallEndReasonProperties.
      */
+    @Generated
     public static AcsCallEndReasonProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsCallEndReasonProperties deserializedAcsCallEndReasonProperties = new AcsCallEndReasonProperties();

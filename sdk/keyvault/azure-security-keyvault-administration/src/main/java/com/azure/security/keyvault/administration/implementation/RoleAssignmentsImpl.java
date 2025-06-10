@@ -77,7 +77,7 @@ public final class RoleAssignmentsImpl {
      * service to perform REST calls.
      */
     @Host("{vaultBaseUrl}")
-    @ServiceInterface(name = "KeyVaultAdministrationClientRoleAs")
+    @ServiceInterface(name = "KeyVaultAdministrati")
     public interface RoleAssignmentsService {
         @Delete("/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}")
         @ExpectedResponses({ 200 })

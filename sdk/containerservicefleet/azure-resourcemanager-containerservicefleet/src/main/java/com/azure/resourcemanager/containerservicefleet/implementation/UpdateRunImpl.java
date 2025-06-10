@@ -227,6 +227,6 @@ public final class UpdateRunImpl implements UpdateRun, UpdateRun.Definition, Upd
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

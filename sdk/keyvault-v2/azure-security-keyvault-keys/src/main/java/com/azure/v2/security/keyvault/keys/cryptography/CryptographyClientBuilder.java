@@ -30,6 +30,7 @@ import io.clientcore.core.utils.configuration.Configuration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
@@ -148,25 +149,27 @@ public final class CryptographyClientBuilder implements ConfigurationTrait<Crypt
     public CryptographyClient buildClient() {
         if (jsonWebKey != null) {
             if (isKeyCachingDisabled) {
-                throw LOGGER.logThrowableAsError(
-                    new IllegalStateException("Key caching cannot be disabled when using a JSON Web Key."));
+                throw LOGGER.throwableAtError()
+                    .log("Key caching cannot be disabled when using a JSON Web Key.", IllegalStateException::new);
             }
 
             return new CryptographyClient(jsonWebKey);
         }
 
         if (isNullOrEmpty(keyId)) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException(
-                "An Azure Key Vault or Managed HSM key identifier is required to build the cryptography client if a"
-                    + " JSON Web Key is not provided."));
+            throw LOGGER.throwableAtError()
+                .log(
+                    "An Azure Key Vault or Managed HSM key identifier is required to build the cryptography client if a"
+                        + " JSON Web Key is not provided.",
+                    IllegalStateException::new);
         }
 
         CryptographyServiceVersion serviceVersion = version != null ? version : CryptographyServiceVersion.getLatest();
 
         if (credential == null) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalStateException("A credential object is required. You can set one by using the"
-                    + " CryptographyClientBuilder.credential() method."));
+            throw LOGGER.throwableAtError()
+                .log("A credential object is required. You can set one by using the"
+                    + " CryptographyClientBuilder.credential() method.", IllegalStateException::new);
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -225,7 +228,7 @@ public final class CryptographyClientBuilder implements ConfigurationTrait<Crypt
      */
     public CryptographyClientBuilder keyIdentifier(String keyId) {
         if (isNullOrEmpty(keyId)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'keyId' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'keyId' cannot be null or empty.", IllegalArgumentException::new);
         }
 
         this.keyId = keyId;
@@ -245,10 +248,7 @@ public final class CryptographyClientBuilder implements ConfigurationTrait<Crypt
      */
     @Override
     public CryptographyClientBuilder credential(TokenCredential credential) {
-        if (credential == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'credential' cannot be null."));
-        }
-
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.credential = credential;
 
         return this;
@@ -266,10 +266,7 @@ public final class CryptographyClientBuilder implements ConfigurationTrait<Crypt
      * @throws NullPointerException If {@code jsonWebKey} is {@code null}.
      */
     public CryptographyClientBuilder jsonWebKey(JsonWebKey jsonWebKey) {
-        if (jsonWebKey == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'jsonWebKey' must not be null."));
-        }
-
+        Objects.requireNonNull(jsonWebKey, "'jsonWebKey' cannot be null.");
         this.jsonWebKey = jsonWebKey;
 
         return this;
@@ -313,10 +310,7 @@ public final class CryptographyClientBuilder implements ConfigurationTrait<Crypt
      */
     @Override
     public CryptographyClientBuilder addHttpPipelinePolicy(HttpPipelinePolicy pipelinePolicy) {
-        if (pipelinePolicy == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'pipelinePolicy' cannot be null."));
-        }
-
+        Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null.");
         pipelinePolicies.add(pipelinePolicy);
 
         return this;

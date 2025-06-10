@@ -289,6 +289,8 @@ public class HttpConstants {
         public static final String THINCLIENT_PROXY_RESOURCE_TYPE = "x-ms-thinclient-proxy-resource-type";
         public static final String THINCLIENT_OPT_IN = "x-ms-cosmos-use-thinclient";
         public static final String GLOBAL_DATABASE_ACCOUNT_NAME = "GlobalDatabaseAccountName";
+        public static final String THINCLIENT_START_EPK = "x-ms-thinclient-range-min";
+        public static final String THINCLIENT_END_EPK = "x-ms-thinclient-range-max";
     }
 
     public static class A_IMHeaderValues {

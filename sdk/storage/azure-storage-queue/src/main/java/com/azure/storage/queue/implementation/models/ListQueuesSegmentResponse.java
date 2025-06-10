@@ -5,7 +5,7 @@
 package com.azure.storage.queue.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
@@ -24,36 +24,43 @@ public final class ListQueuesSegmentResponse implements XmlSerializable<ListQueu
     /*
      * The ServiceEndpoint property.
      */
+    @Generated
     private String serviceEndpoint;
 
     /*
      * The Prefix property.
      */
+    @Generated
     private String prefix;
 
     /*
      * The Marker property.
      */
+    @Generated
     private String marker;
 
     /*
      * The MaxResults property.
      */
+    @Generated
     private int maxResults;
 
     /*
      * The QueueItems property.
      */
+    @Generated
     private List<QueueItem> queueItems;
 
     /*
      * The NextMarker property.
      */
+    @Generated
     private String nextMarker;
 
     /**
      * Creates an instance of ListQueuesSegmentResponse class.
      */
+    @Generated
     public ListQueuesSegmentResponse() {
     }
 
@@ -62,6 +69,7 @@ public final class ListQueuesSegmentResponse implements XmlSerializable<ListQueu
      * 
      * @return the serviceEndpoint value.
      */
+    @Generated
     public String getServiceEndpoint() {
         return this.serviceEndpoint;
     }
@@ -72,6 +80,7 @@ public final class ListQueuesSegmentResponse implements XmlSerializable<ListQueu
      * @param serviceEndpoint the serviceEndpoint value to set.
      * @return the ListQueuesSegmentResponse object itself.
      */
+    @Generated
     public ListQueuesSegmentResponse setServiceEndpoint(String serviceEndpoint) {
         this.serviceEndpoint = serviceEndpoint;
         return this;
@@ -82,6 +91,7 @@ public final class ListQueuesSegmentResponse implements XmlSerializable<ListQueu
      * 
      * @return the prefix value.
      */
+    @Generated
     public String getPrefix() {
         return this.prefix;
     }
@@ -92,6 +102,7 @@ public final class ListQueuesSegmentResponse implements XmlSerializable<ListQueu
      * @param prefix the prefix value to set.
      * @return the ListQueuesSegmentResponse object itself.
      */
+    @Generated
     public ListQueuesSegmentResponse setPrefix(String prefix) {
         this.prefix = prefix;
         return this;
@@ -102,6 +113,7 @@ public final class ListQueuesSegmentResponse implements XmlSerializable<ListQueu
      * 
      * @return the marker value.
      */
+    @Generated
     public String getMarker() {
         return this.marker;
     }
@@ -112,6 +124,7 @@ public final class ListQueuesSegmentResponse implements XmlSerializable<ListQueu
      * @param marker the marker value to set.
      * @return the ListQueuesSegmentResponse object itself.
      */
+    @Generated
     public ListQueuesSegmentResponse setMarker(String marker) {
         this.marker = marker;
         return this;
@@ -122,6 +135,7 @@ public final class ListQueuesSegmentResponse implements XmlSerializable<ListQueu
      * 
      * @return the maxResults value.
      */
+    @Generated
     public int getMaxResults() {
         return this.maxResults;
     }
@@ -132,6 +146,7 @@ public final class ListQueuesSegmentResponse implements XmlSerializable<ListQueu
      * @param maxResults the maxResults value to set.
      * @return the ListQueuesSegmentResponse object itself.
      */
+    @Generated
     public ListQueuesSegmentResponse setMaxResults(int maxResults) {
         this.maxResults = maxResults;
         return this;
@@ -142,6 +157,7 @@ public final class ListQueuesSegmentResponse implements XmlSerializable<ListQueu
      * 
      * @return the queueItems value.
      */
+    @Generated
     public List<QueueItem> getQueueItems() {
         if (this.queueItems == null) {
             this.queueItems = new ArrayList<>();
@@ -155,6 +171,7 @@ public final class ListQueuesSegmentResponse implements XmlSerializable<ListQueu
      * @param queueItems the queueItems value to set.
      * @return the ListQueuesSegmentResponse object itself.
      */
+    @Generated
     public ListQueuesSegmentResponse setQueueItems(List<QueueItem> queueItems) {
         this.queueItems = queueItems;
         return this;
@@ -165,6 +182,7 @@ public final class ListQueuesSegmentResponse implements XmlSerializable<ListQueu
      * 
      * @return the nextMarker value.
      */
+    @Generated
     public String getNextMarker() {
         return this.nextMarker;
     }
@@ -175,19 +193,22 @@ public final class ListQueuesSegmentResponse implements XmlSerializable<ListQueu
      * @param nextMarker the nextMarker value to set.
      * @return the ListQueuesSegmentResponse object itself.
      */
+    @Generated
     public ListQueuesSegmentResponse setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "EnumerationResults" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "EnumerationResults" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringAttribute("ServiceEndpoint", this.serviceEndpoint);
         xmlWriter.writeStringElement("Prefix", this.prefix);
@@ -212,6 +233,7 @@ public final class ListQueuesSegmentResponse implements XmlSerializable<ListQueu
      * it was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ListQueuesSegmentResponse.
      */
+    @Generated
     public static ListQueuesSegmentResponse fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -226,9 +248,11 @@ public final class ListQueuesSegmentResponse implements XmlSerializable<ListQueu
      * it was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ListQueuesSegmentResponse.
      */
+    @Generated
     public static ListQueuesSegmentResponse fromXml(XmlReader xmlReader, String rootElementName)
         throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "EnumerationResults" : rootElementName;
+        String finalRootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "EnumerationResults" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             ListQueuesSegmentResponse deserializedListQueuesSegmentResponse = new ListQueuesSegmentResponse();
             deserializedListQueuesSegmentResponse.serviceEndpoint = reader.getStringAttribute(null, "ServiceEndpoint");

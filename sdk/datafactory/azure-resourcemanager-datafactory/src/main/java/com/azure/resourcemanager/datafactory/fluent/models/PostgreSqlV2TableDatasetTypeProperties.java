@@ -87,8 +87,12 @@ public final class PostgreSqlV2TableDatasetTypeProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("table", this.table);
-        jsonWriter.writeUntypedField("schema", this.schema);
+        if (this.table != null) {
+            jsonWriter.writeUntypedField("table", this.table);
+        }
+        if (this.schema != null) {
+            jsonWriter.writeUntypedField("schema", this.schema);
+        }
         return jsonWriter.writeEndObject();
     }
 

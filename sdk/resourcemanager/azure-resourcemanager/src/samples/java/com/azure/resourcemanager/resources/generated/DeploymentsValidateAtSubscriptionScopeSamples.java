@@ -16,7 +16,8 @@ import java.util.Map;
  */
 public final class DeploymentsValidateAtSubscriptionScopeSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2025-03-01/examples/
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/
      * PostDeploymentValidateOnSubscription.json
      */
     /**
@@ -27,7 +28,7 @@ public final class DeploymentsValidateAtSubscriptionScopeSamples {
     public static void validatesATemplateAtSubscriptionScope(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.genericResources()
             .manager()
-            .serviceClient()
+            .deploymentClient()
             .getDeployments()
             .validateAtSubscriptionScope("my-deployment",
                 new DeploymentInner().withLocation("eastus")

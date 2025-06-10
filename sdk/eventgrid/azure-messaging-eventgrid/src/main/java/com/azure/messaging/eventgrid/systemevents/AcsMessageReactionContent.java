@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class AcsMessageReactionContent implements JsonSerializable<AcsMess
     /*
      * WhatsApp message ID of message you want to apply the emoji to.
      */
+    @Generated
     private String messageId;
 
     /*
      * Unicode escape sequence of the emoji.
      */
+    @Generated
     private String emoji;
 
     /**
      * Creates an instance of AcsMessageReactionContent class.
      */
+    @Generated
     public AcsMessageReactionContent() {
     }
 
@@ -37,6 +41,7 @@ public final class AcsMessageReactionContent implements JsonSerializable<AcsMess
      * 
      * @return the messageId value.
      */
+    @Generated
     public String getMessageId() {
         return this.messageId;
     }
@@ -47,6 +52,7 @@ public final class AcsMessageReactionContent implements JsonSerializable<AcsMess
      * @param messageId the messageId value to set.
      * @return the AcsMessageReactionContent object itself.
      */
+    @Generated
     public AcsMessageReactionContent setMessageId(String messageId) {
         this.messageId = messageId;
         return this;
@@ -57,6 +63,7 @@ public final class AcsMessageReactionContent implements JsonSerializable<AcsMess
      * 
      * @return the emoji value.
      */
+    @Generated
     public String getEmoji() {
         return this.emoji;
     }
@@ -67,6 +74,7 @@ public final class AcsMessageReactionContent implements JsonSerializable<AcsMess
      * @param emoji the emoji value to set.
      * @return the AcsMessageReactionContent object itself.
      */
+    @Generated
     public AcsMessageReactionContent setEmoji(String emoji) {
         this.emoji = emoji;
         return this;
@@ -75,6 +83,7 @@ public final class AcsMessageReactionContent implements JsonSerializable<AcsMess
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class AcsMessageReactionContent implements JsonSerializable<AcsMess
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsMessageReactionContent.
      */
+    @Generated
     public static AcsMessageReactionContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsMessageReactionContent deserializedAcsMessageReactionContent = new AcsMessageReactionContent();

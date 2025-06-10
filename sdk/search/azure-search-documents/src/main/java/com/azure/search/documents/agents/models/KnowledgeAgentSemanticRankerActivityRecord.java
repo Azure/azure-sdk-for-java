@@ -7,6 +7,7 @@
 package com.azure.search.documents.agents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,16 +21,19 @@ public final class KnowledgeAgentSemanticRankerActivityRecord extends KnowledgeA
     /*
      * The type of the activity record.
      */
+    @Generated
     private String type = "AzureSearchSemanticRanker";
 
     /*
      * The number of input tokens for the semantic ranker activity.
      */
+    @Generated
     private Integer inputTokens;
 
     /*
      * The elapsed time in milliseconds for the model activity.
      */
+    @Generated
     private Integer elapsedMs;
 
     /**
@@ -37,6 +41,7 @@ public final class KnowledgeAgentSemanticRankerActivityRecord extends KnowledgeA
      * 
      * @param id the id value to set.
      */
+    @Generated
     public KnowledgeAgentSemanticRankerActivityRecord(int id) {
         super(id);
     }
@@ -46,6 +51,7 @@ public final class KnowledgeAgentSemanticRankerActivityRecord extends KnowledgeA
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -56,6 +62,7 @@ public final class KnowledgeAgentSemanticRankerActivityRecord extends KnowledgeA
      * 
      * @return the inputTokens value.
      */
+    @Generated
     public Integer getInputTokens() {
         return this.inputTokens;
     }
@@ -66,6 +73,7 @@ public final class KnowledgeAgentSemanticRankerActivityRecord extends KnowledgeA
      * @param inputTokens the inputTokens value to set.
      * @return the KnowledgeAgentSemanticRankerActivityRecord object itself.
      */
+    @Generated
     public KnowledgeAgentSemanticRankerActivityRecord setInputTokens(Integer inputTokens) {
         this.inputTokens = inputTokens;
         return this;
@@ -76,6 +84,7 @@ public final class KnowledgeAgentSemanticRankerActivityRecord extends KnowledgeA
      * 
      * @return the elapsedMs value.
      */
+    @Generated
     public Integer getElapsedMs() {
         return this.elapsedMs;
     }
@@ -86,6 +95,7 @@ public final class KnowledgeAgentSemanticRankerActivityRecord extends KnowledgeA
      * @param elapsedMs the elapsedMs value to set.
      * @return the KnowledgeAgentSemanticRankerActivityRecord object itself.
      */
+    @Generated
     public KnowledgeAgentSemanticRankerActivityRecord setElapsedMs(Integer elapsedMs) {
         this.elapsedMs = elapsedMs;
         return this;
@@ -94,6 +104,7 @@ public final class KnowledgeAgentSemanticRankerActivityRecord extends KnowledgeA
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -113,6 +124,7 @@ public final class KnowledgeAgentSemanticRankerActivityRecord extends KnowledgeA
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KnowledgeAgentSemanticRankerActivityRecord.
      */
+    @Generated
     public static KnowledgeAgentSemanticRankerActivityRecord fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean idFound = false;

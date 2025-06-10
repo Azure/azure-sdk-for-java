@@ -302,7 +302,9 @@ public final class PolicySetDefinitionProperties implements JsonSerializable<Pol
         jsonWriter.writeStringField("policyType", this.policyType == null ? null : this.policyType.toString());
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeUntypedField("metadata", this.metadata);
+        if (this.metadata != null) {
+            jsonWriter.writeUntypedField("metadata", this.metadata);
+        }
         jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("policyDefinitionGroups", this.policyDefinitionGroups,
             (writer, element) -> writer.writeJson(element));

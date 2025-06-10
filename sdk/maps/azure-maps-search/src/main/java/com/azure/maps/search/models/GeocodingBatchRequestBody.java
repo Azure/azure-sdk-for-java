@@ -5,6 +5,7 @@
 package com.azure.maps.search.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,11 +23,13 @@ public final class GeocodingBatchRequestBody implements JsonSerializable<Geocodi
     /*
      * The list of queries to process.
      */
+    @Generated
     private List<GeocodingBatchRequestItem> batchItems;
 
     /**
      * Creates an instance of GeocodingBatchRequestBody class.
      */
+    @Generated
     public GeocodingBatchRequestBody() {
     }
 
@@ -35,6 +38,7 @@ public final class GeocodingBatchRequestBody implements JsonSerializable<Geocodi
      * 
      * @return the batchItems value.
      */
+    @Generated
     public List<GeocodingBatchRequestItem> getBatchItems() {
         return this.batchItems;
     }
@@ -45,6 +49,7 @@ public final class GeocodingBatchRequestBody implements JsonSerializable<Geocodi
      * @param batchItems the batchItems value to set.
      * @return the GeocodingBatchRequestBody object itself.
      */
+    @Generated
     public GeocodingBatchRequestBody setBatchItems(List<GeocodingBatchRequestItem> batchItems) {
         this.batchItems = batchItems;
         return this;
@@ -53,6 +58,7 @@ public final class GeocodingBatchRequestBody implements JsonSerializable<Geocodi
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -68,6 +74,7 @@ public final class GeocodingBatchRequestBody implements JsonSerializable<Geocodi
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the GeocodingBatchRequestBody.
      */
+    @Generated
     public static GeocodingBatchRequestBody fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GeocodingBatchRequestBody deserializedGeocodingBatchRequestBody = new GeocodingBatchRequestBody();

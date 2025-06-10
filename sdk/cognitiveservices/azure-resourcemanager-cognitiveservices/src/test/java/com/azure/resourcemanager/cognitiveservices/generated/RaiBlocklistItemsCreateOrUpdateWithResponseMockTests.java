@@ -6,8 +6,8 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.RaiBlocklistItem;
@@ -24,25 +24,25 @@ public final class RaiBlocklistItemsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"osrnawnvzmlnkoy\",\"tags\":{\"nudn\":\"vjabjqqaxuyvym\",\"pvksmit\":\"oabhjxwxqweuip\"},\"properties\":{\"pattern\":\"xtlt\",\"isRegex\":true},\"id\":\"rdpqgfhy\",\"name\":\"frakkldgrc\",\"type\":\"fcmfcn\"}";
+            = "{\"etag\":\"mpmlqoin\",\"tags\":{\"fliejh\":\"uewihapfjiiknjdi\",\"iedfsbwcei\":\"cl\",\"ipbwxgooo\":\"bv\"},\"properties\":{\"pattern\":\"rad\",\"isRegex\":false},\"id\":\"xknpdgz\",\"name\":\"g\",\"type\":\"sugswhgsaod\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CognitiveServicesManager manager = CognitiveServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiBlocklistItem response = manager.raiBlocklistItems()
-            .define("mud")
-            .withExistingRaiBlocklist("gatolekscbctnan", "imwbzxpdcldpk", "wnsnlaimouxwks")
-            .withTags(mapOf("qqvyfscyrfw", "uswswjrkbqsjhb", "vogfuyzwvbh", "iv"))
-            .withProperties(new RaiBlocklistItemProperties().withPattern("byqecroo").withIsRegex(true))
+            .define("n")
+            .withExistingRaiBlocklist("bfdyjduss", "yszekbhwlka", "ggkrehbf")
+            .withTags(mapOf("dusr", "iimreoagsqta", "nl", "xxfavsqwudohzilf", "bh", "kpsimsfeypofqp"))
+            .withProperties(new RaiBlocklistItemProperties().withPattern("sdrmmttjxophgerh").withIsRegex(false))
             .create();
 
-        Assertions.assertEquals("vjabjqqaxuyvym", response.tags().get("nudn"));
-        Assertions.assertEquals("xtlt", response.properties().pattern());
-        Assertions.assertEquals(true, response.properties().isRegex());
+        Assertions.assertEquals("uewihapfjiiknjdi", response.tags().get("fliejh"));
+        Assertions.assertEquals("rad", response.properties().pattern());
+        Assertions.assertFalse(response.properties().isRegex());
     }
 
     // Use "Map.of" if available

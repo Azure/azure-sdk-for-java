@@ -16,4 +16,7 @@
 
   <!-- TODO (vcolin7): Remove after updating the CheckStyle tool to handle RequestContext and Poller instead of RequestOptions and SyncPoller, respectively -->
   <suppress checks="ServiceClient" files="com.azure.v2.security.keyvault.secrets.SecretClient.java" />
+
+  <!-- TODO (lmolkova): update codegen to log exceptions is throws -->
+  <suppress checks="RawExceptionThrow" files="com.azure.v2.security.keyvault.secrets.implementation.SecretClientImpl.java" />
 </suppressions>

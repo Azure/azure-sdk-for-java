@@ -279,7 +279,6 @@ public final class FileTaskRunRequest extends RunRequest {
      */
     @Override
     public void validate() {
-        super.validate();
         if (taskFilePath() == null) {
             throw LOGGER.atError()
                 .log(

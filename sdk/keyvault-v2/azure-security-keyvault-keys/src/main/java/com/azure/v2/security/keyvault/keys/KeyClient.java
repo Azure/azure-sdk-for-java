@@ -206,7 +206,7 @@ public final class KeyClient {
      */
     public CryptographyClient getCryptographyClient(String keyName, String keyVersion) {
         if (isNullOrEmpty(keyName)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'keyName' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'keyName' cannot be null or empty.", IllegalArgumentException::new);
         }
 
         return KeyVaultKeysUtils
@@ -243,7 +243,7 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultKey createKey(String name, KeyType keyType) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
         return createKey(new CreateKeyOptions(name, keyType));
@@ -287,26 +287,20 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultKey createKey(CreateKeyOptions createKeyOptions) {
-        if (createKeyOptions == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'createKeyOptions' cannot be null."));
-        }
+        Objects.requireNonNull(createKeyOptions, "'createKeyOptions' cannot be null.");
 
         if (isNullOrEmpty(createKeyOptions.getName())) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("'createKeyOptions.getName()' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'createKeyOptions.getName()' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            KeyCreateParameters keyCreateParameters = new KeyCreateParameters(createKeyOptions.getKeyType())
-                .setKeyAttributes(createKeyAttributes(createKeyOptions))
-                .setKeyOps(createKeyOptions.getKeyOperations())
-                .setTags(createKeyOptions.getTags())
-                .setReleasePolicy(mapKeyReleasePolicy(createKeyOptions.getReleasePolicy()));
+        KeyCreateParameters keyCreateParameters = new KeyCreateParameters(createKeyOptions.getKeyType())
+            .setKeyAttributes(createKeyAttributes(createKeyOptions))
+            .setKeyOps(createKeyOptions.getKeyOperations())
+            .setTags(createKeyOptions.getTags())
+            .setReleasePolicy(mapKeyReleasePolicy(createKeyOptions.getReleasePolicy()));
 
-            return createKeyVaultKey(clientImpl.createKey(createKeyOptions.getName(), keyCreateParameters));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createKeyVaultKey(clientImpl.createKey(createKeyOptions.getName(), keyCreateParameters));
     }
 
     /**
@@ -355,29 +349,22 @@ public final class KeyClient {
     public Response<KeyVaultKey> createKeyWithResponse(CreateKeyOptions createKeyOptions,
         RequestContext requestContext) {
 
-        if (createKeyOptions == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'createKeyOptions' cannot be null."));
-        }
+        Objects.requireNonNull(createKeyOptions, "'createKeyOptions' cannot be null.");
 
         if (isNullOrEmpty(createKeyOptions.getName())) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("'createKeyOptions.getName()' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'createKeyOptions.getName()' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
+        KeyCreateParameters keyCreateParameters = new KeyCreateParameters(createKeyOptions.getKeyType())
+            .setKeyAttributes(createKeyAttributes(createKeyOptions))
+            .setKeyOps(createKeyOptions.getKeyOperations())
+            .setTags(createKeyOptions.getTags())
+            .setReleasePolicy(mapKeyReleasePolicy(createKeyOptions.getReleasePolicy()));
 
-            KeyCreateParameters keyCreateParameters = new KeyCreateParameters(createKeyOptions.getKeyType())
-                .setKeyAttributes(createKeyAttributes(createKeyOptions))
-                .setKeyOps(createKeyOptions.getKeyOperations())
-                .setTags(createKeyOptions.getTags())
-                .setReleasePolicy(mapKeyReleasePolicy(createKeyOptions.getReleasePolicy()));
-
-            return mapResponse(
-                clientImpl.createKeyWithResponse(createKeyOptions.getName(), keyCreateParameters, requestContext),
-                KeyVaultKeysModelsUtils::createKeyVaultKey);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(
+            clientImpl.createKeyWithResponse(createKeyOptions.getName(), keyCreateParameters, requestContext),
+            KeyVaultKeysModelsUtils::createKeyVaultKey);
     }
 
     /**
@@ -419,28 +406,22 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultKey createRsaKey(CreateRsaKeyOptions createRsaKeyOptions) {
-        if (createRsaKeyOptions == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'createRsaKeyOptions' cannot be null."));
-        }
+        Objects.requireNonNull(createRsaKeyOptions, "'createRsaKeyOptions' cannot be null.");
 
         if (isNullOrEmpty(createRsaKeyOptions.getName())) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("'createRsaKeyOptions.getName()' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'createRsaKeyOptions.getName()' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            KeyCreateParameters keyCreateParameters
-                = new KeyCreateParameters(createRsaKeyOptions.getKeyType()).setKeySize(createRsaKeyOptions.getKeySize())
-                    .setPublicExponent(createRsaKeyOptions.getPublicExponent())
-                    .setKeyOps(createRsaKeyOptions.getKeyOperations())
-                    .setKeyAttributes(createKeyAttributes(createRsaKeyOptions))
-                    .setTags(createRsaKeyOptions.getTags())
-                    .setReleasePolicy(mapKeyReleasePolicy(createRsaKeyOptions.getReleasePolicy()));
+        KeyCreateParameters keyCreateParameters
+            = new KeyCreateParameters(createRsaKeyOptions.getKeyType()).setKeySize(createRsaKeyOptions.getKeySize())
+                .setPublicExponent(createRsaKeyOptions.getPublicExponent())
+                .setKeyOps(createRsaKeyOptions.getKeyOperations())
+                .setKeyAttributes(createKeyAttributes(createRsaKeyOptions))
+                .setTags(createRsaKeyOptions.getTags())
+                .setReleasePolicy(mapKeyReleasePolicy(createRsaKeyOptions.getReleasePolicy()));
 
-            return createKeyVaultKey(clientImpl.createKey(createRsaKeyOptions.getName(), keyCreateParameters));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createKeyVaultKey(clientImpl.createKey(createRsaKeyOptions.getName(), keyCreateParameters));
     }
 
     /**
@@ -490,31 +471,24 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> createRsaKeyWithResponse(CreateRsaKeyOptions createRsaKeyOptions,
         RequestContext requestContext) {
-
-        if (createRsaKeyOptions == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'createRsaKeyOptions' cannot be null."));
-        }
+        Objects.requireNonNull(createRsaKeyOptions, "'createRsaKeyOptions' cannot be null.");
 
         if (isNullOrEmpty(createRsaKeyOptions.getName())) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("'createRsaKeyOptions.getName()' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'createRsaKeyOptions.getName()' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            KeyCreateParameters keyCreateParameters
-                = new KeyCreateParameters(createRsaKeyOptions.getKeyType()).setKeySize(createRsaKeyOptions.getKeySize())
-                    .setPublicExponent(createRsaKeyOptions.getPublicExponent())
-                    .setKeyOps(createRsaKeyOptions.getKeyOperations())
-                    .setKeyAttributes(createKeyAttributes(createRsaKeyOptions))
-                    .setTags(createRsaKeyOptions.getTags())
-                    .setReleasePolicy(mapKeyReleasePolicy(createRsaKeyOptions.getReleasePolicy()));
+        KeyCreateParameters keyCreateParameters
+            = new KeyCreateParameters(createRsaKeyOptions.getKeyType()).setKeySize(createRsaKeyOptions.getKeySize())
+                .setPublicExponent(createRsaKeyOptions.getPublicExponent())
+                .setKeyOps(createRsaKeyOptions.getKeyOperations())
+                .setKeyAttributes(createKeyAttributes(createRsaKeyOptions))
+                .setTags(createRsaKeyOptions.getTags())
+                .setReleasePolicy(mapKeyReleasePolicy(createRsaKeyOptions.getReleasePolicy()));
 
-            return mapResponse(
-                clientImpl.createKeyWithResponse(createRsaKeyOptions.getName(), keyCreateParameters, requestContext),
-                KeyVaultKeysModelsUtils::createKeyVaultKey);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(
+            clientImpl.createKeyWithResponse(createRsaKeyOptions.getName(), keyCreateParameters, requestContext),
+            KeyVaultKeysModelsUtils::createKeyVaultKey);
     }
 
     /**
@@ -556,27 +530,21 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultKey createEcKey(CreateEcKeyOptions createEcKeyOptions) {
-        if (createEcKeyOptions == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'createEcKeyOptions' cannot be null."));
-        }
+        Objects.requireNonNull(createEcKeyOptions, "'createEcKeyOptions' cannot be null.");
 
         if (isNullOrEmpty(createEcKeyOptions.getName())) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("'createEcKeyOptions.getName()' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'createEcKeyOptions.getName()' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            KeyCreateParameters keyCreateParameters = new KeyCreateParameters(createEcKeyOptions.getKeyType())
-                .setKeyOps(createEcKeyOptions.getKeyOperations())
+        KeyCreateParameters keyCreateParameters
+            = new KeyCreateParameters(createEcKeyOptions.getKeyType()).setKeyOps(createEcKeyOptions.getKeyOperations())
                 .setKeyAttributes(createKeyAttributes(createEcKeyOptions))
                 .setTags(createEcKeyOptions.getTags())
                 .setCurve(createEcKeyOptions.getCurveName())
                 .setReleasePolicy(mapKeyReleasePolicy(createEcKeyOptions.getReleasePolicy()));
 
-            return createKeyVaultKey(clientImpl.createKey(createEcKeyOptions.getName(), keyCreateParameters));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createKeyVaultKey(clientImpl.createKey(createEcKeyOptions.getName(), keyCreateParameters));
     }
 
     /**
@@ -622,30 +590,23 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> createEcKeyWithResponse(CreateEcKeyOptions createEcKeyOptions,
         RequestContext requestContext) {
-
-        if (createEcKeyOptions == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'createEcKeyOptions' cannot be null."));
-        }
+        Objects.requireNonNull(createEcKeyOptions, "'createEcKeyOptions' cannot be null.");
 
         if (isNullOrEmpty(createEcKeyOptions.getName())) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("'createEcKeyOptions.getName()' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'createEcKeyOptions.getName()' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            KeyCreateParameters keyCreateParameters = new KeyCreateParameters(createEcKeyOptions.getKeyType())
-                .setKeyOps(createEcKeyOptions.getKeyOperations())
+        KeyCreateParameters keyCreateParameters
+            = new KeyCreateParameters(createEcKeyOptions.getKeyType()).setKeyOps(createEcKeyOptions.getKeyOperations())
                 .setKeyAttributes(createKeyAttributes(createEcKeyOptions))
                 .setTags(createEcKeyOptions.getTags())
                 .setCurve(createEcKeyOptions.getCurveName())
                 .setReleasePolicy(mapKeyReleasePolicy(createEcKeyOptions.getReleasePolicy()));
 
-            return mapResponse(
-                clientImpl.createKeyWithResponse(createEcKeyOptions.getName(), keyCreateParameters, requestContext),
-                KeyVaultKeysModelsUtils::createKeyVaultKey);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(
+            clientImpl.createKeyWithResponse(createEcKeyOptions.getName(), keyCreateParameters, requestContext),
+            KeyVaultKeysModelsUtils::createKeyVaultKey);
     }
 
     /**
@@ -684,27 +645,21 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultKey createOctKey(CreateOctKeyOptions createOctKeyOptions) {
-        if (createOctKeyOptions == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'createOctKeyOptions' cannot be null."));
-        }
+        Objects.requireNonNull(createOctKeyOptions, "'createOctKeyOptions' cannot be null.");
 
         if (isNullOrEmpty(createOctKeyOptions.getName())) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("'createOctKeyOptions.getName()' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'createOctKeyOptions.getName()' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            KeyCreateParameters keyCreateParameters
-                = new KeyCreateParameters(createOctKeyOptions.getKeyType()).setKeySize(createOctKeyOptions.getKeySize())
-                    .setKeyOps(createOctKeyOptions.getKeyOperations())
-                    .setKeyAttributes(createKeyAttributes(createOctKeyOptions))
-                    .setTags(createOctKeyOptions.getTags())
-                    .setReleasePolicy(mapKeyReleasePolicy(createOctKeyOptions.getReleasePolicy()));
+        KeyCreateParameters keyCreateParameters
+            = new KeyCreateParameters(createOctKeyOptions.getKeyType()).setKeySize(createOctKeyOptions.getKeySize())
+                .setKeyOps(createOctKeyOptions.getKeyOperations())
+                .setKeyAttributes(createKeyAttributes(createOctKeyOptions))
+                .setTags(createOctKeyOptions.getTags())
+                .setReleasePolicy(mapKeyReleasePolicy(createOctKeyOptions.getReleasePolicy()));
 
-            return createKeyVaultKey(clientImpl.createKey(createOctKeyOptions.getName(), keyCreateParameters));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createKeyVaultKey(clientImpl.createKey(createOctKeyOptions.getName(), keyCreateParameters));
     }
 
     /**
@@ -748,29 +703,23 @@ public final class KeyClient {
     public Response<KeyVaultKey> createOctKeyWithResponse(CreateOctKeyOptions createOctKeyOptions,
         RequestContext requestContext) {
 
-        if (createOctKeyOptions == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'createOctKeyOptions' cannot be null."));
-        }
+        Objects.requireNonNull(createOctKeyOptions, "'createOctKeyOptions' cannot be null.");
 
         if (isNullOrEmpty(createOctKeyOptions.getName())) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("'createOctKeyOptions.getName()' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'createOctKeyOptions.getName()' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            KeyCreateParameters keyCreateParameters
-                = new KeyCreateParameters(createOctKeyOptions.getKeyType()).setKeySize(createOctKeyOptions.getKeySize())
-                    .setKeyOps(createOctKeyOptions.getKeyOperations())
-                    .setKeyAttributes(createKeyAttributes(createOctKeyOptions))
-                    .setTags(createOctKeyOptions.getTags())
-                    .setReleasePolicy(mapKeyReleasePolicy(createOctKeyOptions.getReleasePolicy()));
+        KeyCreateParameters keyCreateParameters
+            = new KeyCreateParameters(createOctKeyOptions.getKeyType()).setKeySize(createOctKeyOptions.getKeySize())
+                .setKeyOps(createOctKeyOptions.getKeyOperations())
+                .setKeyAttributes(createKeyAttributes(createOctKeyOptions))
+                .setTags(createOctKeyOptions.getTags())
+                .setReleasePolicy(mapKeyReleasePolicy(createOctKeyOptions.getReleasePolicy()));
 
-            return mapResponse(
-                clientImpl.createKeyWithResponse(createOctKeyOptions.getName(), keyCreateParameters, requestContext),
-                KeyVaultKeysModelsUtils::createKeyVaultKey);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(
+            clientImpl.createKeyWithResponse(createOctKeyOptions.getName(), keyCreateParameters, requestContext),
+            KeyVaultKeysModelsUtils::createKeyVaultKey);
     }
 
     /**
@@ -798,16 +747,12 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultKey importKey(String name, JsonWebKey keyMaterial) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            Objects.requireNonNull(keyMaterial, "'keyMaterial' cannot be null.");
+        Objects.requireNonNull(keyMaterial, "'keyMaterial' cannot be null.");
 
-            return createKeyVaultKey(clientImpl.importKey(name, new KeyImportParameters(mapJsonWebKey(keyMaterial))));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createKeyVaultKey(clientImpl.importKey(name, new KeyImportParameters(mapJsonWebKey(keyMaterial))));
     }
 
     /**
@@ -847,28 +792,22 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultKey importKey(ImportKeyOptions importKeyOptions) {
-        if (importKeyOptions == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'importKeyOptions' cannot be null."));
-        }
+        Objects.requireNonNull(importKeyOptions, "'importKeyOptions' cannot be null.");
 
         if (isNullOrEmpty(importKeyOptions.getName())) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("'importKeyOptions.getName()' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'importKeyOptions.getName()' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            Objects.requireNonNull(importKeyOptions.getKey(), "'importKeyOptions.getKey()' cannot be null.");
+        Objects.requireNonNull(importKeyOptions.getKey(), "'importKeyOptions.getKey()' cannot be null.");
 
-            KeyImportParameters keyImportParameters = new KeyImportParameters(mapJsonWebKey(importKeyOptions.getKey()))
-                .setHsm(importKeyOptions.isHardwareProtected())
-                .setKeyAttributes(createKeyAttributes(importKeyOptions))
-                .setTags(importKeyOptions.getTags())
-                .setReleasePolicy(mapKeyReleasePolicy(importKeyOptions.getReleasePolicy()));
+        KeyImportParameters keyImportParameters = new KeyImportParameters(mapJsonWebKey(importKeyOptions.getKey()))
+            .setHsm(importKeyOptions.isHardwareProtected())
+            .setKeyAttributes(createKeyAttributes(importKeyOptions))
+            .setTags(importKeyOptions.getTags())
+            .setReleasePolicy(mapKeyReleasePolicy(importKeyOptions.getReleasePolicy()));
 
-            return createKeyVaultKey(clientImpl.importKey(importKeyOptions.getName(), keyImportParameters));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createKeyVaultKey(clientImpl.importKey(importKeyOptions.getName(), keyImportParameters));
     }
 
     /**
@@ -917,30 +856,24 @@ public final class KeyClient {
     public Response<KeyVaultKey> importKeyWithResponse(ImportKeyOptions importKeyOptions,
         RequestContext requestContext) {
 
-        if (importKeyOptions == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'importKeyOptions' cannot be null."));
-        }
+        Objects.requireNonNull(importKeyOptions, "'importKeyOptions' cannot be null.");
 
         if (isNullOrEmpty(importKeyOptions.getName())) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("'importKeyOptions.getName()' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'importKeyOptions.getName()' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            Objects.requireNonNull(importKeyOptions.getKey(), "'importKeyOptions.getKey()' cannot be null.");
+        Objects.requireNonNull(importKeyOptions.getKey(), "'importKeyOptions.getKey()' cannot be null.");
 
-            KeyImportParameters keyImportParameters = new KeyImportParameters(mapJsonWebKey(importKeyOptions.getKey()))
-                .setHsm(importKeyOptions.isHardwareProtected())
-                .setKeyAttributes(createKeyAttributes(importKeyOptions))
-                .setTags(importKeyOptions.getTags())
-                .setReleasePolicy(mapKeyReleasePolicy(importKeyOptions.getReleasePolicy()));
+        KeyImportParameters keyImportParameters = new KeyImportParameters(mapJsonWebKey(importKeyOptions.getKey()))
+            .setHsm(importKeyOptions.isHardwareProtected())
+            .setKeyAttributes(createKeyAttributes(importKeyOptions))
+            .setTags(importKeyOptions.getTags())
+            .setReleasePolicy(mapKeyReleasePolicy(importKeyOptions.getReleasePolicy()));
 
-            return mapResponse(
-                clientImpl.importKeyWithResponse(importKeyOptions.getName(), keyImportParameters, requestContext),
-                KeyVaultKeysModelsUtils::createKeyVaultKey);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(
+            clientImpl.importKeyWithResponse(importKeyOptions.getName(), keyImportParameters, requestContext),
+            KeyVaultKeysModelsUtils::createKeyVaultKey);
     }
 
     /**
@@ -997,14 +930,10 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultKey getKey(String name, String version) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return createKeyVaultKey(clientImpl.getKey(name, version));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createKeyVaultKey(clientImpl.getKey(name, version));
     }
 
     /**
@@ -1042,15 +971,11 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> getKeyWithResponse(String name, String version, RequestContext requestContext) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return mapResponse(clientImpl.getKeyWithResponse(name, version, requestContext),
-                KeyVaultKeysModelsUtils::createKeyVaultKey);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(clientImpl.getKeyWithResponse(name, version, requestContext),
+            KeyVaultKeysModelsUtils::createKeyVaultKey);
     }
 
     /**
@@ -1087,26 +1012,20 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultKey updateKeyProperties(KeyProperties keyProperties, List<KeyOperation> keyOperations) {
-        if (keyProperties == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'keyProperties' cannot be null."));
-        }
+        Objects.requireNonNull(keyProperties, "'keyProperties' cannot be null.");
 
         if (isNullOrEmpty(keyProperties.getName())) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("'keyProperties.getName()' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'keyProperties.getName()' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            KeyUpdateParameters keyUpdateParameters = new KeyUpdateParameters().setKeyOps(keyOperations)
-                .setKeyAttributes(createKeyAttributes(keyProperties))
-                .setTags(keyProperties.getTags())
-                .setReleasePolicy(mapKeyReleasePolicy(keyProperties.getReleasePolicy()));
+        KeyUpdateParameters keyUpdateParameters = new KeyUpdateParameters().setKeyOps(keyOperations)
+            .setKeyAttributes(createKeyAttributes(keyProperties))
+            .setTags(keyProperties.getTags())
+            .setReleasePolicy(mapKeyReleasePolicy(keyProperties.getReleasePolicy()));
 
-            return createKeyVaultKey(
-                clientImpl.updateKey(keyProperties.getName(), keyProperties.getVersion(), keyUpdateParameters));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createKeyVaultKey(
+            clientImpl.updateKey(keyProperties.getName(), keyProperties.getVersion(), keyUpdateParameters));
     }
 
     /**
@@ -1150,27 +1069,20 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> updateKeyPropertiesWithResponse(KeyProperties keyProperties,
         List<KeyOperation> keyOperations, RequestContext requestContext) {
-
-        if (keyProperties == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'keyProperties' cannot be null."));
-        }
+        Objects.requireNonNull(keyProperties, "'keyProperties' cannot be null.");
 
         if (isNullOrEmpty(keyProperties.getName())) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("'keyProperties.getName()' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'keyProperties.getName()' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            KeyUpdateParameters keyUpdateParameters = new KeyUpdateParameters().setKeyOps(keyOperations)
-                .setKeyAttributes(createKeyAttributes(keyProperties))
-                .setTags(keyProperties.getTags())
-                .setReleasePolicy(mapKeyReleasePolicy(keyProperties.getReleasePolicy()));
+        KeyUpdateParameters keyUpdateParameters = new KeyUpdateParameters().setKeyOps(keyOperations)
+            .setKeyAttributes(createKeyAttributes(keyProperties))
+            .setTags(keyProperties.getTags())
+            .setReleasePolicy(mapKeyReleasePolicy(keyProperties.getReleasePolicy()));
 
-            return mapResponse(clientImpl.updateKeyWithResponse(keyProperties.getName(), keyProperties.getVersion(),
-                keyUpdateParameters, requestContext), KeyVaultKeysModelsUtils::createKeyVaultKey);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(clientImpl.updateKeyWithResponse(keyProperties.getName(), keyProperties.getVersion(),
+            keyUpdateParameters, requestContext), KeyVaultKeysModelsUtils::createKeyVaultKey);
     }
 
     /**
@@ -1209,18 +1121,14 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<DeletedKey, Void> beginDeleteKey(String name) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return Poller.createPoller(Duration.ofSeconds(1),
-                pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-                    createDeletedKey(clientImpl.deleteKey(name))),
-                pollingContext -> deletePollOperation(name, pollingContext), (pollingContext, firstResponse) -> null,
-                pollingContext -> null);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return Poller.createPoller(Duration.ofSeconds(1),
+            pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                createDeletedKey(clientImpl.deleteKey(name))),
+            pollingContext -> deletePollOperation(name, pollingContext), (pollingContext, firstResponse) -> null,
+            pollingContext -> null);
     }
 
     private PollResponse<DeletedKey> deletePollOperation(String name, PollingContext<DeletedKey> pollingContext) {
@@ -1270,14 +1178,10 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeletedKey getDeletedKey(String name) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return createDeletedKey(clientImpl.getDeletedKey(name));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createDeletedKey(clientImpl.getDeletedKey(name));
     }
 
     /**
@@ -1309,15 +1213,11 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedKey> getDeletedKeyWithResponse(String name, RequestContext requestContext) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return mapResponse(clientImpl.getDeletedKeyWithResponse(name, requestContext),
-                KeyVaultKeysModelsUtils::createDeletedKey);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(clientImpl.getDeletedKeyWithResponse(name, requestContext),
+            KeyVaultKeysModelsUtils::createDeletedKey);
     }
 
     /**
@@ -1340,14 +1240,10 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purgeDeletedKey(String name) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            clientImpl.purgeDeletedKey(name);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        clientImpl.purgeDeletedKey(name);
     }
 
     /**
@@ -1380,14 +1276,10 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> purgeDeletedKeyWithResponse(String name, RequestContext requestContext) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return clientImpl.purgeDeletedKeyWithResponse(name, requestContext);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return clientImpl.purgeDeletedKeyWithResponse(name, requestContext);
     }
 
     /**
@@ -1423,18 +1315,14 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return Poller.createPoller(Duration.ofSeconds(1),
-                pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-                    createKeyVaultKey(clientImpl.recoverDeletedKey(name))),
-                pollingContext -> recoverPollOperation(name, pollingContext), (pollingContext, firstResponse) -> null,
-                pollingContext -> null);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return Poller.createPoller(Duration.ofSeconds(1),
+            pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                createKeyVaultKey(clientImpl.recoverDeletedKey(name))),
+            pollingContext -> recoverPollOperation(name, pollingContext), (pollingContext, firstResponse) -> null,
+            pollingContext -> null);
     }
 
     private PollResponse<KeyVaultKey> recoverPollOperation(String keyName, PollingContext<KeyVaultKey> pollingContext) {
@@ -1489,14 +1377,10 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public byte[] backupKey(String name) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return clientImpl.backupKey(name).getValue();
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return clientImpl.backupKey(name).getValue();
     }
 
     /**
@@ -1536,14 +1420,10 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<byte[]> backupKeyWithResponse(String name, RequestContext requestContext) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return mapResponse(clientImpl.backupKeyWithResponse(name, requestContext), BackupKeyResult::getValue);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(clientImpl.backupKeyWithResponse(name, requestContext), BackupKeyResult::getValue);
     }
 
     /**
@@ -1575,13 +1455,9 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultKey restoreKeyBackup(byte[] backup) {
-        try {
-            Objects.requireNonNull(backup, "'backup' cannot be null.");
+        Objects.requireNonNull(backup, "'backup' cannot be null.");
 
-            return createKeyVaultKey(clientImpl.restoreKey(new KeyRestoreParameters(backup)));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createKeyVaultKey(clientImpl.restoreKey(new KeyRestoreParameters(backup)));
     }
 
     /**
@@ -1620,14 +1496,10 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> restoreKeyBackupWithResponse(byte[] backup, RequestContext requestContext) {
-        try {
-            Objects.requireNonNull(backup, "'backup' cannot be null.");
+        Objects.requireNonNull(backup, "'backup' cannot be null.");
 
-            return mapResponse(clientImpl.restoreKeyWithResponse(new KeyRestoreParameters(backup), requestContext),
-                KeyVaultKeysModelsUtils::createKeyVaultKey);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(clientImpl.restoreKeyWithResponse(new KeyRestoreParameters(backup), requestContext),
+            KeyVaultKeysModelsUtils::createKeyVaultKey);
     }
 
     /**
@@ -1726,13 +1598,9 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyProperties> listPropertiesOfKeys(RequestContext requestContext) {
-        try {
-            return mapPages(pagingOptions -> clientImpl.getKeysSinglePage(null, requestContext),
-                (pagingOptions, nextLink) -> clientImpl.getKeysNextSinglePage(nextLink, requestContext),
-                KeyVaultKeysModelsUtils::createKeyProperties);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapPages(pagingOptions -> clientImpl.getKeysSinglePage(null, requestContext),
+            (pagingOptions, nextLink) -> clientImpl.getKeysNextSinglePage(nextLink, requestContext),
+            KeyVaultKeysModelsUtils::createKeyProperties);
     }
 
     /**
@@ -1811,13 +1679,9 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedKey> listDeletedKeys(RequestContext requestContext) {
-        try {
-            return mapPages(pagingOptions -> clientImpl.getDeletedKeysSinglePage(null, requestContext),
-                (pagingOptions, nextLink) -> clientImpl.getDeletedKeysNextSinglePage(nextLink, requestContext),
-                KeyVaultKeysModelsUtils::createDeletedKey);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapPages(pagingOptions -> clientImpl.getDeletedKeysSinglePage(null, requestContext),
+            (pagingOptions, nextLink) -> clientImpl.getDeletedKeysNextSinglePage(nextLink, requestContext),
+            KeyVaultKeysModelsUtils::createDeletedKey);
     }
 
     /**
@@ -1921,16 +1785,12 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyProperties> listPropertiesOfKeyVersions(String name, RequestContext requestContext) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return mapPages(pagingOptions -> clientImpl.getKeyVersionsSinglePage(name, null, requestContext),
-                (pagingOptions, nextLink) -> clientImpl.getKeyVersionsNextSinglePage(nextLink, requestContext),
-                KeyVaultKeysModelsUtils::createKeyProperties);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapPages(pagingOptions -> clientImpl.getKeyVersionsSinglePage(name, null, requestContext),
+            (pagingOptions, nextLink) -> clientImpl.getKeyVersionsNextSinglePage(nextLink, requestContext),
+            KeyVaultKeysModelsUtils::createKeyProperties);
     }
 
     /**
@@ -1953,20 +1813,16 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public byte[] getRandomBytes(int count) {
-        try {
-            return clientImpl.getRandomBytesWithResponse(new GetRandomBytesRequest(count), RequestContext.none())
-                .getValue()
-                .getValue();
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return clientImpl.getRandomBytesWithResponse(new GetRandomBytesRequest(count), RequestContext.none())
+            .getValue()
+            .getValue();
     }
 
     /**
      * Gets the requested number of bytes containing random values from a managed HSM.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Gets a number of bytes containing random values from a managed HSM. Prints out details of the response 
+     * <p>Gets a number of bytes containing random values from a managed HSM. Prints out details of the response
      * returned by the service and the retrieved bytes as a base64URL-encoded string.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.getRandomBytesWithResponse#int-RequestContext -->
      * <pre>
@@ -1989,12 +1845,8 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<byte[]> getRandomBytesWithResponse(int count, RequestContext requestContext) {
-        try {
-            return mapResponse(clientImpl.getRandomBytesWithResponse(new GetRandomBytesRequest(count), requestContext),
-                RandomBytes::getValue);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(clientImpl.getRandomBytesWithResponse(new GetRandomBytesRequest(count), requestContext),
+            RandomBytes::getValue);
     }
 
     /**
@@ -2023,14 +1875,10 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReleaseKeyResult releaseKey(String name, String targetAttestationToken) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return clientImpl.release(name, "", new KeyReleaseParameters(targetAttestationToken));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return clientImpl.release(name, "", new KeyReleaseParameters(targetAttestationToken));
     }
 
     /**
@@ -2063,14 +1911,10 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReleaseKeyResult releaseKey(String name, String version, String targetAttestationToken) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return clientImpl.release(name, version, new KeyReleaseParameters(targetAttestationToken));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return clientImpl.release(name, version, new KeyReleaseParameters(targetAttestationToken));
     }
 
     /**
@@ -2116,18 +1960,14 @@ public final class KeyClient {
         ReleaseKeyOptions releaseKeyOptions, RequestContext requestContext) {
 
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            KeyReleaseParameters keyReleaseParameters = new KeyReleaseParameters(targetAttestationToken)
-                .setEnc(releaseKeyOptions == null ? null : releaseKeyOptions.getAlgorithm())
-                .setNonce(releaseKeyOptions == null ? null : releaseKeyOptions.getNonce());
+        KeyReleaseParameters keyReleaseParameters = new KeyReleaseParameters(targetAttestationToken)
+            .setEnc(releaseKeyOptions == null ? null : releaseKeyOptions.getAlgorithm())
+            .setNonce(releaseKeyOptions == null ? null : releaseKeyOptions.getNonce());
 
-            return clientImpl.releaseWithResponse(name, version, keyReleaseParameters, requestContext);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return clientImpl.releaseWithResponse(name, version, keyReleaseParameters, requestContext);
     }
 
     /**
@@ -2154,14 +1994,10 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultKey rotateKey(String name) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return createKeyVaultKey(clientImpl.rotateKey(name));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createKeyVaultKey(clientImpl.rotateKey(name));
     }
 
     /**
@@ -2193,15 +2029,11 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> rotateKeyWithResponse(String name, RequestContext requestContext) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return mapResponse(clientImpl.rotateKeyWithResponse(name, requestContext),
-                KeyVaultKeysModelsUtils::createKeyVaultKey);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(clientImpl.rotateKeyWithResponse(name, requestContext),
+            KeyVaultKeysModelsUtils::createKeyVaultKey);
     }
 
     /**
@@ -2226,14 +2058,10 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyRotationPolicy getKeyRotationPolicy(String keyName) {
         if (isNullOrEmpty(keyName)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'keyName' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'keyName' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return mapKeyRotationPolicyImpl(clientImpl.getKeyRotationPolicy(keyName));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapKeyRotationPolicyImpl(clientImpl.getKeyRotationPolicy(keyName));
     }
 
     /**
@@ -2266,15 +2094,11 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyRotationPolicy> getKeyRotationPolicyWithResponse(String keyName, RequestContext requestContext) {
         if (isNullOrEmpty(keyName)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'keyName' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'keyName' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return mapResponse(clientImpl.getKeyRotationPolicyWithResponse(keyName, requestContext),
-                KeyVaultKeysModelsUtils::mapKeyRotationPolicyImpl);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(clientImpl.getKeyRotationPolicyWithResponse(keyName, requestContext),
+            KeyVaultKeysModelsUtils::mapKeyRotationPolicyImpl);
     }
 
     /**
@@ -2314,15 +2138,11 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyRotationPolicy updateKeyRotationPolicy(String keyName, KeyRotationPolicy keyRotationPolicy) {
         if (isNullOrEmpty(keyName)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'keyName' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'keyName' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return mapKeyRotationPolicyImpl(
-                clientImpl.updateKeyRotationPolicy(keyName, mapKeyRotationPolicy(keyRotationPolicy)));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapKeyRotationPolicyImpl(
+            clientImpl.updateKeyRotationPolicy(keyName, mapKeyRotationPolicy(keyRotationPolicy)));
     }
 
     /**
@@ -2370,16 +2190,12 @@ public final class KeyClient {
         KeyRotationPolicy keyRotationPolicy, RequestContext requestContext) {
 
         if (isNullOrEmpty(keyName)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'keyName' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'keyName' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return mapResponse(clientImpl.updateKeyRotationPolicyWithResponse(keyName,
-                mapKeyRotationPolicy(keyRotationPolicy), requestContext),
-                KeyVaultKeysModelsUtils::mapKeyRotationPolicyImpl);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(clientImpl.updateKeyRotationPolicyWithResponse(keyName,
+            mapKeyRotationPolicy(keyRotationPolicy), requestContext),
+            KeyVaultKeysModelsUtils::mapKeyRotationPolicyImpl);
     }
 
     private static <T, S> Response<S> mapResponse(Response<T> response, Function<T, S> mapper) {

@@ -7,6 +7,7 @@ import com.azure.v2.security.keyvault.keys.implementation.KeyVaultKeysUtils;
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
@@ -17,6 +18,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.GeneralSecurityException;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -527,7 +529,7 @@ public class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
             return factory.generatePublic(publicKeySpec);
         } catch (GeneralSecurityException e) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -547,7 +549,7 @@ public class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
             return factory.generatePrivate(privateKeySpec);
         } catch (GeneralSecurityException e) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -559,7 +561,7 @@ public class JsonWebKey implements JsonSerializable<JsonWebKey> {
                 = provider != null ? KeyFactory.getInstance("EC", provider) : KeyFactory.getInstance("EC", "SunEC");
             return (ECPublicKey) kf.generatePublic(pubSpec);
         } catch (GeneralSecurityException e) {
-            throw new IllegalStateException(e);
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -570,7 +572,7 @@ public class JsonWebKey implements JsonSerializable<JsonWebKey> {
                 = provider != null ? KeyFactory.getInstance("EC", provider) : KeyFactory.getInstance("EC", "SunEC");
             return (ECPrivateKey) kf.generatePrivate(priSpec);
         } catch (GeneralSecurityException e) {
-            throw new IllegalStateException(e);
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -579,7 +581,9 @@ public class JsonWebKey implements JsonSerializable<JsonWebKey> {
      */
     private void checkRsaCompatible() {
         if (!KeyType.RSA.equals(keyType) && !KeyType.RSA_HSM.equals(keyType)) {
-            throw LOGGER.logThrowableAsError(new UnsupportedOperationException("Not an RSA key"));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("keyType", keyType.getValue())
+                .log("Not an RSA key", UnsupportedOperationException::new);
         }
     }
 
@@ -736,7 +740,9 @@ public class JsonWebKey implements JsonSerializable<JsonWebKey> {
      */
     public KeyPair toEc(boolean includePrivateParameters, Provider provider) {
         if (!KeyType.EC.equals(keyType) && !KeyType.EC_HSM.equals(keyType)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("Not an EC key."));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("keyType", keyType.getValue())
+                .log("Not an EC key.", IllegalArgumentException::new);
         }
 
         if (provider == null) {
@@ -768,7 +774,7 @@ public class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
             return realKeyPair;
         } catch (GeneralSecurityException e) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -832,9 +838,9 @@ public class JsonWebKey implements JsonSerializable<JsonWebKey> {
             }
 
             // Did not find a supported curve.
-            throw new NoSuchAlgorithmException("Curve not supported.");
-        } catch (GeneralSecurityException e) {
-            throw new IllegalStateException(e);
+            throw LOGGER.throwableAtError().log("Unsupported curve.", IllegalArgumentException::new);
+        } catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException e) {
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
