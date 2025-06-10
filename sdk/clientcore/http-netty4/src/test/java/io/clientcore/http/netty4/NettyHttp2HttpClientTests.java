@@ -9,15 +9,10 @@ import io.clientcore.core.shared.HttpClientTests;
 import io.clientcore.core.shared.HttpClientTestsServer;
 import io.clientcore.core.shared.InsecureTrustManager;
 import io.clientcore.core.shared.LocalTestServer;
-import io.netty.handler.ssl.SslContext;
-import io.netty.handler.ssl.SslContextBuilder;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Timeout;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 
-import javax.net.ssl.SSLException;
 import java.security.SecureRandom;
 import java.util.concurrent.TimeUnit;
 
@@ -28,18 +23,11 @@ public class NettyHttp2HttpClientTests extends HttpClientTests {
     private static final HttpClient HTTP_CLIENT_INSTANCE;
 
     static {
-        try {
-            SslContext sslContext = SslContextBuilder.forClient()
-                .trustManager(new InsecureTrustManager())
-                .secureRandom(new SecureRandom())
-                .build();
-
-            HTTP_CLIENT_INSTANCE = new NettyHttpClientBuilder().sslContext(sslContext)
-                .setMaximumHttpVersion(HttpProtocolVersion.HTTP_2)
-                .build();
-        } catch (SSLException e) {
-            throw new RuntimeException(e);
-        }
+        HTTP_CLIENT_INSTANCE = new NettyHttpClientBuilder()
+            .sslContextModifier(
+                builder -> builder.trustManager(new InsecureTrustManager()).secureRandom(new SecureRandom()))
+            .maximumHttpVersion(HttpProtocolVersion.HTTP_2)
+            .build();
     }
 
     @BeforeAll

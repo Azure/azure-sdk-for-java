@@ -18,12 +18,14 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.ssl.SslContext;
+import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.util.concurrent.DefaultThreadFactory;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.time.Duration;
 import java.util.concurrent.ThreadFactory;
+import java.util.function.Consumer;
 
 /**
  * Builder for creating instances of NettyHttpClient.
@@ -124,7 +126,7 @@ public class NettyHttpClientBuilder {
 
     private EventLoopGroup eventLoopGroup;
     private Class<? extends SocketChannel> channelClass;
-    private SslContext sslContext;
+    private Consumer<SslContextBuilder> sslContextModifier;
 
     private Configuration configuration;
     private ProxyOptions proxyOptions;
@@ -175,15 +177,18 @@ public class NettyHttpClientBuilder {
     }
 
     /**
-     * Sets the {@link SslContext} that will be used to configure SSL/TLS when establishing secure connections.
+     * Sets a {@link Consumer} that modifies the {@link SslContextBuilder} creating the {@link SslContext} that will be
+     * used to establish SSL/TLS connections.
      * <p>
-     * If this is left unset a default {@link SslContext} will be used to establish secure connections.
+     * If this is left unset the Netty-based {@link HttpClient} will create an {@link SslContext} with default
+     * configurations.
      *
-     * @param sslContext The {@link SslContext} for SSL/TLS.
+     * @param sslContextModifier The {@link Consumer} that modifies the {@link SslContextBuilder} before the
+     * {@link SslContext} is created.
      * @return The updated builder.
      */
-    public NettyHttpClientBuilder sslContext(SslContext sslContext) {
-        this.sslContext = sslContext;
+    public NettyHttpClientBuilder sslContextModifier(Consumer<SslContextBuilder> sslContextModifier) {
+        this.sslContextModifier = sslContextModifier;
         return this;
     }
 
@@ -267,7 +272,7 @@ public class NettyHttpClientBuilder {
      * @param httpVersion The maximum HTTP protocol version that the HTTP client will support.
      * @return The updated {@link JdkHttpClientBuilder} object.
      */
-    public NettyHttpClientBuilder setMaximumHttpVersion(HttpProtocolVersion httpVersion) {
+    public NettyHttpClientBuilder maximumHttpVersion(HttpProtocolVersion httpVersion) {
         if (httpVersion != null) {
             this.maximumHttpVersion = httpVersion;
         } else {
@@ -308,7 +313,7 @@ public class NettyHttpClientBuilder {
         ProxyOptions buildProxyOptions
             = (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration, true) : proxyOptions;
 
-        return new NettyHttpClient(bootstrap, sslContext, maximumHttpVersion,
+        return new NettyHttpClient(bootstrap, sslContextModifier, maximumHttpVersion,
             new ChannelInitializationProxyHandler(buildProxyOptions), getTimeoutMillis(readTimeout),
             getTimeoutMillis(responseTimeout), getTimeoutMillis(writeTimeout));
     }

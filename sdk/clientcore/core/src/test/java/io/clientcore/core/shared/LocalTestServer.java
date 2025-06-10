@@ -60,17 +60,6 @@ public class LocalTestServer {
             httpConfig.addCustomizer(new SecureRequestCustomizer());
         }
 
-        Security.addProvider(new OpenSSLProvider());
-        SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
-        sslContextFactory.setProvider("Conscrypt");
-        String mockKeyStore = Objects.toString(LocalTestServer.class.getResource("/keystore.jks"), null);
-        sslContextFactory.setKeyStorePath(mockKeyStore);
-        sslContextFactory.setKeyStorePassword("password");
-        sslContextFactory.setKeyManagerPassword("password");
-        sslContextFactory.setKeyStorePath(mockKeyStore);
-        sslContextFactory.setTrustStorePassword("password");
-        sslContextFactory.setTrustAll(true);
-
         List<ConnectionFactory> connectionFactories = new ArrayList<>();
 
         // SSL/TLS connection factory
@@ -78,6 +67,18 @@ public class LocalTestServer {
             String nextProtocol = supportedProtocol == null
                 ? HttpVersion.HTTP_1_1.asString()
                 : (supportedProtocol == HttpProtocolVersion.HTTP_1_1) ? HttpVersion.HTTP_1_1.asString() : "alpn";
+
+            Security.addProvider(new OpenSSLProvider());
+            SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
+            sslContextFactory.setProvider("Conscrypt");
+            String mockKeyStore = Objects.toString(LocalTestServer.class.getResource("/keystore.jks"), null);
+            sslContextFactory.setKeyStorePath(mockKeyStore);
+            sslContextFactory.setKeyStorePassword("password");
+            sslContextFactory.setKeyManagerPassword("password");
+            sslContextFactory.setKeyStorePath(mockKeyStore);
+            sslContextFactory.setTrustStorePassword("password");
+            sslContextFactory.setTrustAll(true);
+
             connectionFactories.add(new SslConnectionFactory(sslContextFactory, nextProtocol));
         }
 

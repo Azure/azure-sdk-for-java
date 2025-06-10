@@ -200,8 +200,8 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
                 // We're ignoring the response content.
                 CountDownLatch latch = new CountDownLatch(1);
                 eagerContent = null;
-                ctx.pipeline().addLast(Netty4HandlerNames.EAGER_CONSUME, new Netty4EagerConsumeChannelHandler(latch,
-                    ignored -> {
+                ctx.pipeline()
+                    .addLast(Netty4HandlerNames.EAGER_CONSUME, new Netty4EagerConsumeChannelHandler(latch, ignored -> {
                     }));
                 awaitLatch(latch);
             } else if (bodyHandling == BodyHandling.STREAM) {
@@ -223,8 +223,9 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
             } else {
                 // All cases otherwise assume BUFFER.
                 CountDownLatch latch = new CountDownLatch(1);
-                ctx.pipeline().addLast(Netty4HandlerNames.EAGER_CONSUME, new Netty4EagerConsumeChannelHandler(latch,
-                    buf -> buf.readBytes(eagerContent, buf.readableBytes())));
+                ctx.pipeline()
+                    .addLast(Netty4HandlerNames.EAGER_CONSUME, new Netty4EagerConsumeChannelHandler(latch,
+                        buf -> buf.readBytes(eagerContent, buf.readableBytes())));
                 awaitLatch(latch);
 
                 body = BinaryData.fromBytes(eagerContent.toByteArray());

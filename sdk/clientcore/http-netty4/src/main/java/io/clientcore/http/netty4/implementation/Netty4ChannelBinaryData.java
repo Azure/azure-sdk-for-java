@@ -53,8 +53,9 @@ final class Netty4ChannelBinaryData extends BinaryData {
 
         if (bytes == null) {
             CountDownLatch latch = new CountDownLatch(1);
-            channel.pipeline().addLast(Netty4HandlerNames.EAGER_CONSUME, new Netty4EagerConsumeChannelHandler(latch,
-                buf -> buf.readBytes(eagerContent, buf.readableBytes())));
+            channel.pipeline()
+                .addLast(Netty4HandlerNames.EAGER_CONSUME, new Netty4EagerConsumeChannelHandler(latch,
+                    buf -> buf.readBytes(eagerContent, buf.readableBytes())));
 
             awaitLatch(latch);
             channelDone = true;
@@ -109,8 +110,9 @@ final class Netty4ChannelBinaryData extends BinaryData {
                 }
 
                 CountDownLatch latch = new CountDownLatch(1);
-                channel.pipeline().addLast(Netty4HandlerNames.EAGER_CONSUME, new Netty4EagerConsumeChannelHandler(latch,
-                    buf -> buf.readBytes(outputStream, buf.readableBytes())));
+                channel.pipeline()
+                    .addLast(Netty4HandlerNames.EAGER_CONSUME, new Netty4EagerConsumeChannelHandler(latch,
+                        buf -> buf.readBytes(outputStream, buf.readableBytes())));
 
                 awaitLatch(latch);
                 channelDone = true;

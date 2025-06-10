@@ -30,26 +30,24 @@ public final class Netty4H2OrHttp11Handler extends ChannelInboundHandlerAdapter 
             }
             if (ApplicationProtocolNames.HTTP_2.equals(protocol)) {
                 FlushConsolidationHandler flushConsolidationHandler = new FlushConsolidationHandler(1024, true);
-                Http2FrameCodec http2FrameCodec = Http2FrameCodecBuilder.forClient()
-                    .validateHeaders(true)
-                    .build();
+                Http2FrameCodec http2FrameCodec = Http2FrameCodecBuilder.forClient().validateHeaders(true).build();
                 Http2MultiplexHandler http2MultiplexHandler = new Http2MultiplexHandler(NoOpHandler.INSTANCE);
                 ChannelPipeline pipeline = ctx.channel().pipeline();
-                pipeline.addAfter(Netty4HandlerNames.HTTP_2_FLUSH, Netty4HandlerNames.SSL, flushConsolidationHandler);
-                pipeline.addAfter(Netty4HandlerNames.HTTP_2_CODEC, Netty4HandlerNames.HTTP_2_FLUSH, http2FrameCodec);
-                pipeline.addAfter(Netty4HandlerNames.HTTP_2_FLUSH, Netty4HandlerNames.HTTP_2_MULTIPLEX,
+                pipeline.addAfter(Netty4HandlerNames.SSL, Netty4HandlerNames.HTTP_2_FLUSH, flushConsolidationHandler);
+                pipeline.addAfter(Netty4HandlerNames.HTTP_2_FLUSH, Netty4HandlerNames.HTTP_2_CODEC, http2FrameCodec);
+                pipeline.addAfter(Netty4HandlerNames.HTTP_2_CODEC, Netty4HandlerNames.HTTP_2_MULTIPLEX,
                     http2MultiplexHandler);
             } else if (ApplicationProtocolNames.HTTP_1_1.equals(protocol)) {
-                ctx.channel().pipeline().addAfter(Netty4HandlerNames.HTTP_1_1_CODEC, Netty4HandlerNames.SSL,
-                    Netty4Utility.createCodec());
+                ctx.channel()
+                    .pipeline()
+                    .addAfter(Netty4HandlerNames.SSL, Netty4HandlerNames.HTTP_1_1_CODEC, Netty4Utility.createCodec());
             } else {
                 throw new IllegalStateException("unknown protocol: " + protocol);
             }
 
             ctx.fireChannelActive();
             ctx.channel().pipeline().remove(this);
-        }
-        else {
+        } else {
             throw new IllegalStateException("Cannot determine negotiated application-level protocol.");
         }
     }

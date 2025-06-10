@@ -43,6 +43,7 @@ import io.netty.handler.ssl.ApplicationProtocolConfig;
 import io.netty.handler.ssl.ApplicationProtocolNames;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.ssl.SslProvider;
 import io.netty.handler.ssl.SupportedCipherSuiteFilter;
 import io.netty.handler.stream.ChunkedInput;
@@ -58,6 +59,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 import static io.clientcore.core.utils.ServerSentEventUtils.attemptRetry;
 import static io.clientcore.core.utils.ServerSentEventUtils.processTextEventStream;
@@ -78,7 +80,7 @@ class NettyHttpClient implements HttpClient {
         = "No ServerSentEventListener attached to HttpRequest to handle the text/event-stream response";
 
     private final Bootstrap bootstrap;
-    private final SslContext sslContext;
+    private final Consumer<SslContextBuilder> sslContextModifier;
     private final ChannelInitializationProxyHandler channelInitializationProxyHandler;
     private final AtomicReference<List<AuthenticateChallenge>> proxyChallenges;
     private final long readTimeoutMillis;
@@ -86,11 +88,11 @@ class NettyHttpClient implements HttpClient {
     private final long writeTimeoutMillis;
     private final HttpProtocolVersion maximumHttpVersion;
 
-    NettyHttpClient(Bootstrap bootstrap, SslContext sslContext, HttpProtocolVersion maximumHttpVersion,
-        ChannelInitializationProxyHandler channelInitializationProxyHandler, long readTimeoutMillis,
-        long responseTimeoutMillis, long writeTimeoutMillis) {
+    NettyHttpClient(Bootstrap bootstrap, Consumer<SslContextBuilder> sslContextModifier,
+        HttpProtocolVersion maximumHttpVersion, ChannelInitializationProxyHandler channelInitializationProxyHandler,
+        long readTimeoutMillis, long responseTimeoutMillis, long writeTimeoutMillis) {
         this.bootstrap = bootstrap;
-        this.sslContext = sslContext;
+        this.sslContextModifier = sslContextModifier;
         this.maximumHttpVersion = maximumHttpVersion;
         this.channelInitializationProxyHandler = channelInitializationProxyHandler;
         this.proxyChallenges = new AtomicReference<>();
@@ -139,41 +141,40 @@ class NettyHttpClient implements HttpClient {
 
                 // Add SSL handling if the request is HTTPS.
                 if (isHttps) {
-                    SslContext ssl;
-                    if (sslContext != null) {
-                        ssl = sslContext;
-                    } else {
-                        SslContextBuilder sslContextBuilder = SslContextBuilder.forClient()
-                            .endpointIdentificationAlgorithm("HTTPS");
-                        if (maximumHttpVersion == HttpProtocolVersion.HTTP_2) {
-                            // If HTTP/2 is the maximum version, we need to ensure that ALPN is enabled.
-                            SslProvider sslProvider = SslContext.defaultClientProvider();
-                            ApplicationProtocolConfig.SelectorFailureBehavior selectorBehavior;
-                            ApplicationProtocolConfig.SelectedListenerFailureBehavior selectedBehavior;
-                            if (sslProvider == SslProvider.JDK) {
-                                selectorBehavior = ApplicationProtocolConfig.SelectorFailureBehavior.FATAL_ALERT;
-                                selectedBehavior
-                                    = ApplicationProtocolConfig.SelectedListenerFailureBehavior.FATAL_ALERT;
-                            } else {
-                                // Netty OpenSslContext doesn't support FATAL_ALERT, use NO_ADVERTISE and ACCEPT
-                                // instead.
-                                selectorBehavior = ApplicationProtocolConfig.SelectorFailureBehavior.NO_ADVERTISE;
-                                selectedBehavior = ApplicationProtocolConfig.SelectedListenerFailureBehavior.ACCEPT;
-                            }
-
-                            sslContextBuilder.ciphers(Http2SecurityUtil.CIPHERS, SupportedCipherSuiteFilter.INSTANCE)
-                                .applicationProtocolConfig(new ApplicationProtocolConfig(
-                                    ApplicationProtocolConfig.Protocol.ALPN, selectorBehavior, selectedBehavior,
-                                    ApplicationProtocolNames.HTTP_2, ApplicationProtocolNames.HTTP_1_1));
+                    SslContextBuilder sslContextBuilder
+                        = SslContextBuilder.forClient().endpointIdentificationAlgorithm("HTTPS");
+                    if (maximumHttpVersion == HttpProtocolVersion.HTTP_2) {
+                        // If HTTP/2 is the maximum version, we need to ensure that ALPN is enabled.
+                        SslProvider sslProvider = SslContext.defaultClientProvider();
+                        ApplicationProtocolConfig.SelectorFailureBehavior selectorBehavior;
+                        ApplicationProtocolConfig.SelectedListenerFailureBehavior selectedBehavior;
+                        if (sslProvider == SslProvider.JDK) {
+                            selectorBehavior = ApplicationProtocolConfig.SelectorFailureBehavior.FATAL_ALERT;
+                            selectedBehavior = ApplicationProtocolConfig.SelectedListenerFailureBehavior.FATAL_ALERT;
+                        } else {
+                            // Netty OpenSslContext doesn't support FATAL_ALERT, use NO_ADVERTISE and ACCEPT
+                            // instead.
+                            selectorBehavior = ApplicationProtocolConfig.SelectorFailureBehavior.NO_ADVERTISE;
+                            selectedBehavior = ApplicationProtocolConfig.SelectedListenerFailureBehavior.ACCEPT;
                         }
-                        ssl = sslContextBuilder.build();
+
+                        sslContextBuilder.ciphers(Http2SecurityUtil.CIPHERS, SupportedCipherSuiteFilter.INSTANCE)
+                            .applicationProtocolConfig(new ApplicationProtocolConfig(
+                                ApplicationProtocolConfig.Protocol.ALPN, selectorBehavior, selectedBehavior,
+                                ApplicationProtocolNames.HTTP_2, ApplicationProtocolNames.HTTP_1_1));
                     }
+                    if (sslContextModifier != null) {
+                        // Allow the caller to modify the SslContextBuilder before it is built.
+                        sslContextModifier.accept(sslContextBuilder);
+                    }
+
+                    SslContext ssl = sslContextBuilder.build();
                     // SSL handling is added last here. This is done as proxying could require SSL handling too.
                     ch.pipeline().addLast(Netty4HandlerNames.SSL, ssl.newHandler(ch.alloc(), host, port));
                     ch.pipeline().addLast(Netty4HandlerNames.SSL_INITIALIZER, new Netty4SslInitializationHandler());
                 }
 
-                if (maximumHttpVersion == HttpProtocolVersion.HTTP_1_1) {
+                if (maximumHttpVersion == HttpProtocolVersion.HTTP_1_1 || !isHttps) {
                     // Finally add the HttpClientCodec last as it will need to handle processing request and response
                     // writes and reads for not only the actual request but any proxy or SSL handling.
                     ch.pipeline().addLast(Netty4HandlerNames.HTTP_1_1_CODEC, createCodec());
@@ -223,6 +224,10 @@ class NettyHttpClient implements HttpClient {
                     // the request.
                     latch.countDown();
                     return;
+                }
+
+                if (maximumHttpVersion == HttpProtocolVersion.HTTP_2) {
+                    channel.pipeline().get(SslHandler.class).sta
                 }
 
                 sendRequest(request, channel, addProgressAndTimeoutHandler, errorReference)
@@ -338,8 +343,9 @@ class NettyHttpClient implements HttpClient {
             // Add the ChunkedWriteHandler which will handle sending the chunkedInput.
             ChunkedWriteHandler chunkedWriteHandler = new ChunkedWriteHandler();
             if (progressAndTimeoutHandlerAdded) {
-                channel.pipeline().addBefore(Netty4HandlerNames.PROGRESS_AND_TIMEOUT, Netty4HandlerNames.CHUNKED_WRITER,
-                    chunkedWriteHandler);
+                channel.pipeline()
+                    .addBefore(Netty4HandlerNames.PROGRESS_AND_TIMEOUT, Netty4HandlerNames.CHUNKED_WRITER,
+                        chunkedWriteHandler);
             } else {
                 channel.pipeline().addLast(Netty4HandlerNames.CHUNKED_WRITER, chunkedWriteHandler);
             }
