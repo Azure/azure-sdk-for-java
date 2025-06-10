@@ -4,6 +4,7 @@
 
 package com.azure.communication.phonenumbers.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class AvailablePhoneNumberError implements JsonSerializable<Availab
     /*
      * The error code indicating the reason why the operation performed on the phone number failed.
      */
+    @Generated
     private String code;
 
     /*
      * The error message describing the failure that occurred.
      */
+    @Generated
     private String message;
 
     /**
      * Creates an instance of AvailablePhoneNumberError class.
      */
+    @Generated
     public AvailablePhoneNumberError() {
     }
 
@@ -39,6 +43,7 @@ public final class AvailablePhoneNumberError implements JsonSerializable<Availab
      * 
      * @return the code value.
      */
+    @Generated
     public String getCode() {
         return this.code;
     }
@@ -48,6 +53,7 @@ public final class AvailablePhoneNumberError implements JsonSerializable<Availab
      * 
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -55,6 +61,7 @@ public final class AvailablePhoneNumberError implements JsonSerializable<Availab
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -69,6 +76,7 @@ public final class AvailablePhoneNumberError implements JsonSerializable<Availab
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AvailablePhoneNumberError.
      */
+    @Generated
     public static AvailablePhoneNumberError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AvailablePhoneNumberError deserializedAvailablePhoneNumberError = new AvailablePhoneNumberError();

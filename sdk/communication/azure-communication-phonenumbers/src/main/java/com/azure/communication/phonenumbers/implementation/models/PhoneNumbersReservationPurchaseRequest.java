@@ -5,6 +5,7 @@
 package com.azure.communication.phonenumbers.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class PhoneNumbersReservationPurchaseRequest
     /*
      * The agreement to not resell the phone numbers. Defaults to false if not provided.
      */
+    @Generated
     private Boolean agreeToNotResell;
 
     /**
      * Creates an instance of PhoneNumbersReservationPurchaseRequest class.
      */
+    @Generated
     public PhoneNumbersReservationPurchaseRequest() {
     }
 
@@ -34,6 +37,7 @@ public final class PhoneNumbersReservationPurchaseRequest
      * 
      * @return the agreeToNotResell value.
      */
+    @Generated
     public Boolean isAgreeToNotResell() {
         return this.agreeToNotResell;
     }
@@ -45,6 +49,7 @@ public final class PhoneNumbersReservationPurchaseRequest
      * @param agreeToNotResell the agreeToNotResell value to set.
      * @return the PhoneNumbersReservationPurchaseRequest object itself.
      */
+    @Generated
     public PhoneNumbersReservationPurchaseRequest setAgreeToNotResell(Boolean agreeToNotResell) {
         this.agreeToNotResell = agreeToNotResell;
         return this;
@@ -53,6 +58,7 @@ public final class PhoneNumbersReservationPurchaseRequest
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -68,6 +74,7 @@ public final class PhoneNumbersReservationPurchaseRequest
      * it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the PhoneNumbersReservationPurchaseRequest.
      */
+    @Generated
     public static PhoneNumbersReservationPurchaseRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PhoneNumbersReservationPurchaseRequest deserializedPhoneNumbersReservationPurchaseRequest

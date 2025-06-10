@@ -4,6 +4,7 @@
 
 package com.azure.communication.phonenumbers.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,11 +21,13 @@ public final class PhoneNumbersBrowseResult implements JsonSerializable<PhoneNum
     /*
      * The phone numbers that are available for purchase.
      */
+    @Generated
     private List<AvailablePhoneNumber> phoneNumbers;
 
     /**
      * Creates an instance of PhoneNumbersBrowseResult class.
      */
+    @Generated
     public PhoneNumbersBrowseResult() {
     }
 
@@ -33,6 +36,7 @@ public final class PhoneNumbersBrowseResult implements JsonSerializable<PhoneNum
      * 
      * @return the phoneNumbers value.
      */
+    @Generated
     public List<AvailablePhoneNumber> getPhoneNumbers() {
         return this.phoneNumbers;
     }
@@ -40,6 +44,7 @@ public final class PhoneNumbersBrowseResult implements JsonSerializable<PhoneNum
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -55,6 +60,7 @@ public final class PhoneNumbersBrowseResult implements JsonSerializable<PhoneNum
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PhoneNumbersBrowseResult.
      */
+    @Generated
     public static PhoneNumbersBrowseResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PhoneNumbersBrowseResult deserializedPhoneNumbersBrowseResult = new PhoneNumbersBrowseResult();
