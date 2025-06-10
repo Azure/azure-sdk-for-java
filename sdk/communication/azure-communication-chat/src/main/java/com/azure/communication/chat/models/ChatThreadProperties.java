@@ -15,6 +15,8 @@ import com.azure.json.JsonWriter;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The ChatThread model.
@@ -29,6 +31,12 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
     private OffsetDateTime createdOn;
 
     private CommunicationIdentifier createdBy;
+
+    // Property bag of chat thread metadata key-value pairs.
+    private Map<String, String> metadata = new HashMap<>();
+
+    // Thread retention policy.
+    private ChatRetentionPolicy retentionPolicy;
 
     /**
      * Creates a new instance of {@link ChatThreadProperties}.
@@ -123,6 +131,46 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
     }
 
     /**
+     * Property bag of chat thread metadata key-value pairs.
+     *
+     * @return the metadata map.
+     */
+    public Map<String, String> getMetadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Property bag of chat thread metadata key-value pairs.
+     *
+     * @param metadata the metadata map to set.
+     * @return the ChatThreadProperties object itself.
+     */
+    public ChatThreadProperties setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Thread retention policy.
+     *
+     * @return the retentionPolicy value.
+     */
+    public ChatRetentionPolicy getRetentionPolicy() {
+        return this.retentionPolicy;
+    }
+
+    /**
+     * Thread retention policy.
+     *
+     * @param retentionPolicy the retention policy to set.
+     * @return the ChatThreadProperties object itself.
+     */
+    public ChatThreadProperties setRetentionPolicy(ChatRetentionPolicy retentionPolicy) {
+        this.retentionPolicy = retentionPolicy;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -133,6 +181,17 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
         jsonWriter.writeStringField("createdOn", createdOn != null ? createdOn.toString() : null);
         final CommunicationIdentifierModel identifier = CommunicationIdentifierConverter.convert(createdBy);
         jsonWriter.writeJsonField("createdBy", identifier);
+
+        // Write metadata as a JSON object of string fields
+        jsonWriter.writeStartObject("metadata");
+        for (Map.Entry<String, String> entry : metadata.entrySet()) {
+            jsonWriter.writeStringField(entry.getKey(), entry.getValue());
+        }
+        jsonWriter.writeEndObject();
+
+        if (retentionPolicy != null) {
+            jsonWriter.writeJsonField("retentionPolicy", retentionPolicy);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -163,6 +222,11 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
                     final CommunicationIdentifierModel identifier
                         = reader.readObject(CommunicationIdentifierModel::fromJson);
                     properties.setCreatedBy(CommunicationIdentifierConverter.convert(identifier));
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    properties.metadata = metadata;
+                } else if ("retentionPolicy".equals(fieldName)) {
+                    properties.retentionPolicy = ChatRetentionPolicy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

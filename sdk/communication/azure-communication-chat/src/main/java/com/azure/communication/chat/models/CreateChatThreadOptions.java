@@ -6,7 +6,9 @@ package com.azure.communication.chat.models;
 import com.azure.core.annotation.Fluent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -24,10 +26,20 @@ public final class CreateChatThreadOptions {
      */
     private List<ChatParticipant> participants = new ArrayList<>();
 
+    /**
+    * Property bag of chat thread metadata key - value pairs.
+    */
+    private Map<String, String> metadata = new HashMap<>();
+
+    /**
+    * Thread retention policy
+    */
+    private ChatRetentionPolicy retentionPolicy;
+
     private String idempotencyToken;
 
     /**
-     * Get the topic property: The chat thread topic.
+     * The chat thread topic.
      *
      * @return the topic value.
      */
@@ -36,7 +48,7 @@ public final class CreateChatThreadOptions {
     }
 
     /**
-     * Get the participants property: Participants to be added to the chat thread.
+     * Participants to be added to the chat thread.
      *
      * @return the participants value.
      */
@@ -45,7 +57,7 @@ public final class CreateChatThreadOptions {
     }
 
     /**
-     * Set the participants property: Participants to be added to the chat thread.
+     * Participants to be added to the chat thread.
      *
      * @param participants the participants value to set.
      * @return the CreateChatThreadOptions object itself.
@@ -63,6 +75,46 @@ public final class CreateChatThreadOptions {
      */
     public CreateChatThreadOptions addParticipant(ChatParticipant participant) {
         this.participants.add(participant);
+        return this;
+    }
+
+    /**
+     * Property bag of chat thread metadata key-value pairs.
+     *
+     * @return the metadata map.
+     */
+    public Map<String, String> getMetadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Property bag of chat thread metadata key-value pairs.
+     *
+     * @param metadata the metadata map to set.
+     * @return the CreateChatThreadOptions object itself.
+     */
+    public CreateChatThreadOptions setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Thread retention policy.
+     *
+     * @return the retentionPolicy value.
+     */
+    public ChatRetentionPolicy getRetentionPolicy() {
+        return this.retentionPolicy;
+    }
+
+    /**
+     * Thread retention policy.
+     *
+     * @param retentionPolicy the retention policy to set.
+     * @return the CreateChatThreadOptions object itself.
+     */
+    public CreateChatThreadOptions setRetentionPolicy(ChatRetentionPolicy retentionPolicy) {
+        this.retentionPolicy = retentionPolicy;
         return this;
     }
 
@@ -92,7 +144,7 @@ public final class CreateChatThreadOptions {
     }
 
     /**
-     * Creates a new instance of CreateChatThreadOptions
+     * Creates a new instance of CreateChatThreadOptions.
      * @param topic the topic value to set.
      */
     public CreateChatThreadOptions(String topic) {
