@@ -449,3 +449,20 @@ directive:
     $.OcrSkillLineEnding["x-ms-client-name"] = "OcrLineEnding";
     $.OcrSkillLineEnding["x-ms-enum"].name = "OcrLineEnding";
 ```
+
+### Fix for 206 responses
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.paths
+    transform: >
+      let response206 = {
+        "description": "Response containing partial documents that match the search criteria.",
+        "schema": {
+          "$ref": "#/definitions/SearchDocumentsResult"
+        }
+      };
+      $["/docs"].get.responses["206"] = response206;
+      $["/docs/search.post.search"].post.responses["206"] = response206;
+```
