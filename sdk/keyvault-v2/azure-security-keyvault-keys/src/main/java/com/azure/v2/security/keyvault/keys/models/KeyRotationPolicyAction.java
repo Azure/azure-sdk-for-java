@@ -11,12 +11,12 @@ public enum KeyRotationPolicyAction {
     /**
      * Rotate the key based on the key policy.
      */
-    ROTATE("Rotate"),
+    ROTATE("rotate"),
 
     /**
      * Trigger Event Grid events. Defaults to 30 days before expiry. Key Vault only.
      */
-    NOTIFY("Notify");
+    NOTIFY("notify");
 
     /**
      * The actual serialized value for a KeyRotationPolicyAction instance.

@@ -24,16 +24,16 @@ public final class ReleaseKeyResult implements JsonSerializable<ReleaseKeyResult
     private String value;
 
     /**
-     * Creates an instance of ReleaseKeyResult class.
+     * Creates an instance of ReleaseKeyResult.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private ReleaseKeyResult() {
+    public ReleaseKeyResult() {
     }
 
     /**
-     * Get the value property: A signed object containing the released key.
+     * A signed object containing the released key.
      * 
-     * @return the value value.
+     * @return The released key.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     public String getValue() {

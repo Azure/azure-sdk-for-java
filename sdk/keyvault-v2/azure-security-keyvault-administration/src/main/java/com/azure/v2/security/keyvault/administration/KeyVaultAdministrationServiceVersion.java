@@ -7,11 +7,26 @@ package com.azure.v2.security.keyvault.administration;
 import io.clientcore.core.http.models.ServiceVersion;
 
 /**
- * Service version of KeyVaultClient.
+ * The versions of Azure Key Vault supported by this client library.
  */
 public enum KeyVaultAdministrationServiceVersion implements ServiceVersion {
     /**
-     * Enum value 7.5.
+     * Service version {@code 7.2}.
+     */
+    V7_2("7.2"),
+
+    /**
+     * Service version {@code 7.3}.
+     */
+    V7_3("7.3"),
+
+    /**
+     * Service version {@code 7.4}.
+     */
+    V7_4("7.4"),
+
+    /**
+     * Service version {@code 7.5}.
      */
     V7_5("7.5");
 
@@ -31,7 +46,7 @@ public enum KeyVaultAdministrationServiceVersion implements ServiceVersion {
 
     /**
      * Gets the latest service version supported by this client library.
-     * 
+     *
      * @return The latest {@link KeyVaultAdministrationServiceVersion}.
      */
     public static KeyVaultAdministrationServiceVersion getLatest() {

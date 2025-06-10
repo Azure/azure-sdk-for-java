@@ -16,7 +16,6 @@ public class KeysCustomizations extends Customization {
         removeFiles(libraryCustomization.getRawEditor());
         moveListResultFiles(libraryCustomization);
         customizeServiceVersion(libraryCustomization);
-        customizeKeyAttestation(libraryCustomization);
         customizeKeyCurveName(libraryCustomization.getRawEditor());
         customizeKeyOperation(libraryCustomization.getRawEditor());
         customizeKeyRotationPolicyAction(libraryCustomization);
@@ -76,7 +75,7 @@ public class KeysCustomizations extends Customization {
             .getClass("KeyVaultServiceVersion")
             .rename("KeyServiceVersion");
 
-            libraryCustomization.getRawEditor()
+        libraryCustomization.getRawEditor()
             .replaceFile("src/main/java/com/azure/v2/security/keyvault/keys/KeyServiceVersion.java",
                 joinWithNewline(
                     "// Copyright (c) Microsoft Corporation. All rights reserved.",
@@ -145,33 +144,6 @@ public class KeysCustomizations extends Customization {
                     "    }",
                     "}",
                     ""));
-    }
-
-    private static void customizeKeyAttestation(LibraryCustomization libraryCustomization) {
-        replaceInFile(
-            libraryCustomization.getPackage("com.azure.v2.security.keyvault.keys.models").getClass("KeyAttestation"),
-            "src/main/java/com/azure/v2/security/keyvault/keys/models/KeyAttestation.java",
-            new String[] {
-                "Creates an instance of KeyAttestation class.",
-                "Get the certificatePemFile property: A base64url-encoded string containing certificates in PEM format, used for attestation validation.",
-                "@return the certificatePemFile value.",
-                "Get the privateKeyAttestation property: The attestation blob bytes encoded as base64url string corresponding to a private key.",
-                "@return the privateKeyAttestation value.",
-                "Get the publicKeyAttestation property: The attestation blob bytes encoded as base64url string corresponding to a public key in case of asymmetric key.",
-                "@return the publicKeyAttestation value.",
-                "Get the version property: The version of the attestation.",
-                "@return the version value."
-            }, new String[] {
-                "Creates an instance of KeyAttestation.",
-                "Get a base64url-encoded string containing certificates in PEM format, used for attestation validation.",
-                "@return The certificate in PEM format.",
-                "Get the attestation blob bytes encoded as base64url string corresponding to a private key.",
-                "@return The attestation blob bytes for the private portion of the key.",
-                "Get the attestation blob bytes encoded as base64url string corresponding to a public key in case of asymmetric key.",
-                "@return The attestation blob bytes for the public portion of the key.",
-                "Get the version of the attestation.",
-                "@return The version of the attestation."
-            });
     }
 
     private static void customizeKeyCurveName(Editor editor) {

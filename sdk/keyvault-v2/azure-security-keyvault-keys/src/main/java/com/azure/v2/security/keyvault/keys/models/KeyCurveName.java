@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 /**
- * Elliptic curve name. For valid values, see JsonWebKeyCurveName.
+ * Elliptic curve name.
  */
 public final class KeyCurveName implements ExpandableEnum<String>, JsonSerializable<KeyCurveName> {
     private static final Map<String, KeyCurveName> VALUES = new ConcurrentHashMap<>();

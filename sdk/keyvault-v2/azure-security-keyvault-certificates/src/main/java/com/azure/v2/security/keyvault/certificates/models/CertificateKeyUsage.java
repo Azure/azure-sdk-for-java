@@ -68,7 +68,7 @@ public final class CertificateKeyUsage implements ExpandableEnum<String>, JsonSe
      * Indicates that the certificate key can be used to sign a certificate revocation list.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static final CertificateKeyUsage C_RLSIGN = fromValue("cRLSign");
+    public static final CertificateKeyUsage CRL_SIGN = fromValue("cRLSign");
 
     /**
      * Indicates that the certificate key can be used for encryption only.
