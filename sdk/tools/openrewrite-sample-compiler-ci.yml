@@ -48,20 +48,7 @@ extends:
                       "sdk/clientcore/pom.xml",
                       "sdk/core-v2/pom.xml"
                     )
-                    foreach ($modulePath in $modulePaths) {
-                      mvn install -pl com.azure.v2:azure-core -am
-                    }
-
-              - task: Maven@3
-                displayName: 'Build Necessary Dependencies'
-                inputs:
-                  mavenPomFile: 'sdk/core-v2/pom.xml'
-                  goals: 'clean install'
-                  options: '-B -am -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip'
-                  javaHomeOption: 'JDKVersion'
-                  jdkVersionOption: '1.8'
-                  mavenOptions: '-Xmx3072m'
-                  publishJUnitResults: false
+                    mvn clean install -pl io.clientcore:core,com.azure.v2:azure-core -am
 
               - task: Maven@3
                 displayName: 'Build and Install OpenRewrite Compiler Maven Plugin'
