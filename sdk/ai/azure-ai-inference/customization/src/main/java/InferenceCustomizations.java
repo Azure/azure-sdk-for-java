@@ -2,11 +2,10 @@ import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
+import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier;
-import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.InitializerDeclaration;
 import org.slf4j.Logger;
-import com.github.javaparser.StaticJavaParser;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,10 +19,11 @@ public class InferenceCustomizations extends Customization {
     public void customize(LibraryCustomization customization, Logger logger) {
         // remove unused class (no reference to them, after partial-update)
 
-        // TODO (alzimmer): This can be replaced with a TypeSpec rename.
-        PackageCustomization implModels = customization.getPackage("com.azure.ai.inference.implementation.models");
-        ClassCustomization embedRequest1 = implModels.getClass("EmbedRequest1");
-        embedRequest1.rename("ImageEmbedRequest");
+        // There used to be a rename of EmbedRequest1 to ImageEmbedRequest but the model is in implementation, so the
+        // name really doesn't matter. This was removed to complete migration to JavaParser customizations.
+//        PackageCustomization implModels = customization.getPackage("com.azure.ai.inference.implementation.models");
+//        ClassCustomization embedRequest1 = implModels.getClass("EmbedRequest1");
+//        embedRequest1.rename("ImageEmbedRequest");
 
         customization.getClass("com.azure.ai.inference.models", "ChatCompletionsOptions").customizeAst(ast -> {
             ast.addImport("com.azure.ai.inference.implementation.accesshelpers.ChatCompletionsOptionsAccessHelper");
