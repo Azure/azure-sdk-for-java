@@ -3,6 +3,7 @@
 ## 12.27.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added support for bearer token challenges.
 
 ### Breaking Changes
 

@@ -3,7 +3,10 @@
 
 package com.azure.resourcemanager.compute;
 
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -40,8 +43,8 @@ import com.azure.resourcemanager.compute.models.ProximityPlacementGroupType;
 import com.azure.resourcemanager.compute.models.RunCommandInputParameter;
 import com.azure.resourcemanager.compute.models.RunCommandResult;
 import com.azure.resourcemanager.compute.models.SecurityTypes;
-import com.azure.resourcemanager.compute.models.StorageAccountTypes;
 import com.azure.resourcemanager.compute.models.Sku;
+import com.azure.resourcemanager.compute.models.StorageAccountTypes;
 import com.azure.resourcemanager.compute.models.UpgradeMode;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineDiskOptions;
@@ -74,6 +77,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
+import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import com.azure.security.keyvault.keys.models.KeyType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -89,6 +93,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class VirtualMachineOperationsTests extends ComputeManagementTest {
@@ -105,11 +110,13 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     private final String availabilitySetName = "availset1";
     private final String availabilitySetName2 = "availset2";
     private final ProximityPlacementGroupType proxGroupType = ProximityPlacementGroupType.STANDARD;
+    private AzureProfile profile;
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         rgName = generateRandomResourceName("javacsmrg", 15);
         rgName2 = generateRandomResourceName("javacsmrg2", 15);
+        this.profile = profile;
         super.initializeClients(httpPipeline, profile);
     }
 
@@ -2303,7 +2310,61 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertEquals(2, disk.virtualMachineIds().size());
     }
 
+    @Test
+    public void canBeginCreateWithContext() {
+        final String vmName = generateRandomResourceName("jvm", 15);
+        final String correlationId = UUID.randomUUID().toString();
+        final String correlationKey = "x-ms-correlation-id";
+        final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
+        final AtomicInteger createCounter = new AtomicInteger(0);
+        HttpPipelinePolicy verificationPolicy = (context, next) -> {
+            if (context.getHttpRequest().getHttpMethod() == HttpMethod.PUT) {
+                // verify that all co-related resource creation requests will have the Context information
+                Object correlationData = context.getContext().getData(correlationKey).get();
+                Assertions.assertEquals(correlationId, correlationData);
+                createCounter.incrementAndGet();
+            }
+            return next.process();
+        };
+        ComputeManager localComputeManager = buildComputeManager(computeManager.httpPipeline(), verificationPolicy);
+
+        Accepted<VirtualMachine> accepted = localComputeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS)
+            .withRootUsername("Foo12")
+            .withSsh(sshPublicKey())
+            .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
+            .beginCreate(new Context(correlationKey, correlationId));
+        accepted.getFinalResult();
+
+        // resourceGroup + network + neworkInterface + publicIp + VM = 5
+        Assertions.assertEquals(5, createCounter.get());
+    }
+
     // *********************************** helper methods ***********************************
+    private ComputeManager buildComputeManager(HttpPipeline httpPipeline, HttpPipelinePolicy policy) {
+        List<HttpPipelinePolicy> pipelinePolicies = new ArrayList<>();
+        for (int i = 0; i < httpPipeline.getPolicyCount(); i++) {
+            pipelinePolicies.add(httpPipeline.getPolicy(i));
+        }
+
+        pipelinePolicies.add(policy);
+
+        HttpPipeline newPipeline = new HttpPipelineBuilder().httpClient(httpPipeline.getHttpClient())
+            .policies(pipelinePolicies.toArray(new HttpPipelinePolicy[0]))
+            .tracer(httpPipeline.getTracer())
+            .build();
+        ComputeManager manager = ComputeManager.authenticate(newPipeline, profile);
+        ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
+        internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
+        setInternalContext(internalContext, manager);
+        return manager;
+    }
 
     private CreatablesInfo prepareCreatableVirtualMachines(Region region, String vmNamePrefix, String networkNamePrefix,
         String publicIpNamePrefix, int vmCount) {

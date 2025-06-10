@@ -10,6 +10,7 @@ import com.azure.core.management.provider.IdentifierProvider;
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -2089,23 +2090,29 @@ class VirtualMachineImpl
     }
 
     public Accepted<VirtualMachine> beginCreate() {
+        return beginCreate(Context.NONE);
+    }
+
+    public Accepted<VirtualMachine> beginCreate(Context context) {
         return AcceptedImpl.<VirtualMachine, VirtualMachineInner>newAccepted(logger,
             this.manager().serviceClient().getHttpPipeline(), this.manager().serviceClient().getDefaultPollInterval(),
             () -> this.manager()
                 .serviceClient()
                 .getVirtualMachines()
                 .createOrUpdateWithResponseAsync(resourceGroupName(), vmName, innerModel(), null, null)
+                .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
                 .block(),
             inner -> new VirtualMachineImpl(inner.name(), inner, this.manager(), this.storageManager,
                 this.networkManager, this.authorizationManager),
             VirtualMachineInner.class, () -> {
                 Flux<Indexable> dependencyTasksAsync
-                    = taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
+                    = taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext())
+                        .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()));
                 dependencyTasksAsync.blockLast();
 
                 // same as createResourceAsync
                 prepareCreateResourceAsync().block();
-            }, this::reset, Context.NONE);
+            }, this::reset, context);
     }
 
     @Override

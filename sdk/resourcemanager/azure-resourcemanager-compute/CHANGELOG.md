@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Supported `beginCreate(Context)` in `VirtualMachine`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
