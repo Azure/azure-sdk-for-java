@@ -36,7 +36,21 @@ extends:
                     - /eng/
                     - /common/perf-test-core/
 
-              
+              - task: PowerShell@2
+                displayName: 'Install Required Dependencies from Source'
+                inputs:
+                  targetType: 'inline'
+                  script: |
+                    $modulePaths = @(
+                      "eng/code-quality-reports/pom.xml",
+                      "sdk/parents/pom.xml",
+                      "common/perf-test-core/pom.xml",
+                      "sdk/clientcore/pom.xml",
+                      "sdk/core-v2/pom.xml"
+                    )
+                    foreach ($modulePath in $modulePaths) {
+                      mvn install -pl com.azure.v2:azure-core -am
+                    }
 
               - task: Maven@3
                 displayName: 'Build Necessary Dependencies'
