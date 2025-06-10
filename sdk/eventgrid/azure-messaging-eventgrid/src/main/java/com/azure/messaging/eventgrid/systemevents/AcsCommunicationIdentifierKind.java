@@ -4,6 +4,7 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -12,54 +13,62 @@ import java.util.Collection;
  */
 public final class AcsCommunicationIdentifierKind extends ExpandableStringEnum<AcsCommunicationIdentifierKind> {
     /**
-     * Static value unknown for CommunicationIdentifierModelKind.
+     * Static value unknown for AcsCommunicationIdentifierKind.
      */
+    @Generated
     public static final AcsCommunicationIdentifierKind UNKNOWN = fromString("unknown");
 
     /**
-     * Static value communicationUser for CommunicationIdentifierModelKind.
+     * Static value communicationUser for AcsCommunicationIdentifierKind.
      */
+    @Generated
     public static final AcsCommunicationIdentifierKind COMMUNICATION_USER = fromString("communicationUser");
 
     /**
-     * Static value phoneNumber for CommunicationIdentifierModelKind.
+     * Static value phoneNumber for AcsCommunicationIdentifierKind.
      */
+    @Generated
     public static final AcsCommunicationIdentifierKind PHONE_NUMBER = fromString("phoneNumber");
 
     /**
-     * Static value microsoftTeamsUser for CommunicationIdentifierModelKind.
+     * Static value microsoftTeamsUser for AcsCommunicationIdentifierKind.
      */
+    @Generated
     public static final AcsCommunicationIdentifierKind MICROSOFT_TEAMS_USER = fromString("microsoftTeamsUser");
 
     /**
-     * Static value microsoftTeamsApp for CommunicationIdentifierModelKind.
+     * Static value microsoftTeamsApp for AcsCommunicationIdentifierKind.
      */
+    @Generated
     public static final AcsCommunicationIdentifierKind MICROSOFT_TEAMS_APP = fromString("microsoftTeamsApp");
 
     /**
-     * Creates a new instance of CommunicationIdentifierModelKind value.
+     * Creates a new instance of AcsCommunicationIdentifierKind value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AcsCommunicationIdentifierKind() {
     }
 
     /**
-     * Creates or finds a CommunicationIdentifierModelKind from its string representation.
+     * Creates or finds a AcsCommunicationIdentifierKind from its string representation.
      * 
      * @param name a name to look for.
-     * @return the corresponding CommunicationIdentifierModelKind.
+     * @return the corresponding AcsCommunicationIdentifierKind.
      */
+    @Generated
     public static AcsCommunicationIdentifierKind fromString(String name) {
         return fromString(name, AcsCommunicationIdentifierKind.class);
     }
 
     /**
-     * Gets known CommunicationIdentifierModelKind values.
+     * Gets known AcsCommunicationIdentifierKind values.
      * 
-     * @return known CommunicationIdentifierModelKind values.
+     * @return known AcsCommunicationIdentifierKind values.
      */
+    @Generated
     public static Collection<AcsCommunicationIdentifierKind> values() {
         return values(AcsCommunicationIdentifierKind.class);
     }

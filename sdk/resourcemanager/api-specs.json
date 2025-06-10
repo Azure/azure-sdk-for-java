@@ -84,12 +84,6 @@
     "package": "com.azure.resourcemanager.cosmos",
     "args": "--tag=package-2025-04-15 --modelerfour.lenient-model-deduplication --rename-model=DataTransferServiceResourceCreateUpdateProperties:DataTransferServiceResourceCreateUpdateParameters,GraphApiComputeServiceResourceCreateUpdateProperties:GraphApiComputeServiceResourceCreateUpdateParameters,MaterializedViewsBuilderServiceResourceCreateUpdateProperties:MaterializedViewsBuilderServiceResourceCreateUpdateParameters,SqlDedicatedGatewayServiceResourceCreateUpdateProperties:SqlDedicatedGatewayServiceResourceCreateUpdateParameters --enable-sync-stack=false"
   },
-  "deploymentstacks": {
-    "dir": "azure-resourcemanager-resources",
-    "source": "specification/resources/resource-manager/readme.md",
-    "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-deploymentstacks-2024-03 --graalvm-config-suffix=deploymentstacks --enable-sync-stack=false"
-  },
   "dns": {
     "dir": "azure-resourcemanager-dns",
     "source": "specification/dns/resource-manager/readme.md",
@@ -226,8 +220,20 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-resources-2025-03 --add-inner=Deployment --enable-sync-stack=false",
+    "args": "--tag=package-resources-2025-04 --enable-sync-stack=false",
     "note": "Remove `final` from `ResourceReference`, as it is used as superclass in deploymentstacks."
+  },
+  "deployments": {
+    "dir": "azure-resourcemanager-resources",
+    "source": "specification/resources/resource-manager/Microsoft.Resources/deployments/readme.md",
+    "package": "com.azure.resourcemanager.resources",
+    "args": "--tag=package-2025-04 --title=DeploymentsManagementClient --add-inner=Deployment,Provider --graalvm-config-suffix=deployments --enable-sync-stack=false"
+  },
+  "deploymentstacks": {
+    "dir": "azure-resourcemanager-resources",
+    "source": "specification/resources/resource-manager/Microsoft.Resources/deploymentStacks/readme.md",
+    "package": "com.azure.resourcemanager.resources",
+    "args": "--tag=package-2024-03 --graalvm-config-suffix=deploymentstacks --enable-sync-stack=false"
   },
   "resources-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-resources",

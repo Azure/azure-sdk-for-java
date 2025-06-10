@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.UUIDs;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
+import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -254,7 +255,12 @@ public final class CosmosDiagnosticsContext {
      * The effective read consistency strategy used for the operation
      * @return the effective read consistency strategy used for the operation
      */
+    @Beta(value = Beta.SinceVersion.V4_71_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ReadConsistencyStrategy getEffectiveReadConsistencyStrategy() {
+        if (this.requestOptions != null && this.requestOptions.getReadConsistencyStrategy() != null) {
+            return this.requestOptions.getReadConsistencyStrategy();
+        }
+
         return this.readConsistencyStrategy;
     }
 

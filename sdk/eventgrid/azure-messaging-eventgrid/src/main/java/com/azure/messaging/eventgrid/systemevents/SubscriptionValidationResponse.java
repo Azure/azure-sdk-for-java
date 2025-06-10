@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,11 +23,13 @@ public final class SubscriptionValidationResponse implements JsonSerializable<Su
      * The validation response sent by the subscriber to Azure Event Grid to complete the validation of an event
      * subscription.
      */
+    @Generated
     private String validationResponse;
 
     /**
      * Creates an instance of SubscriptionValidationResponse class.
      */
+    @Generated
     public SubscriptionValidationResponse() {
     }
 
@@ -36,6 +39,7 @@ public final class SubscriptionValidationResponse implements JsonSerializable<Su
      * 
      * @return the validationResponse value.
      */
+    @Generated
     public String getValidationResponse() {
         return this.validationResponse;
     }
@@ -47,6 +51,7 @@ public final class SubscriptionValidationResponse implements JsonSerializable<Su
      * @param validationResponse the validationResponse value to set.
      * @return the SubscriptionValidationResponse object itself.
      */
+    @Generated
     public SubscriptionValidationResponse setValidationResponse(String validationResponse) {
         this.validationResponse = validationResponse;
         return this;
@@ -55,6 +60,7 @@ public final class SubscriptionValidationResponse implements JsonSerializable<Su
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -70,6 +76,7 @@ public final class SubscriptionValidationResponse implements JsonSerializable<Su
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SubscriptionValidationResponse.
      */
+    @Generated
     public static SubscriptionValidationResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SubscriptionValidationResponse deserializedSubscriptionValidationResponse
