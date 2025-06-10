@@ -21,43 +21,39 @@ class HttpHeadersCustomRecipeTest implements RewriteTest {
     void testSetAllMapTransformation() {
         rewriteRun(
             java(
-                """
-                import com.azure.core.http.HttpHeaders;
-                import java.util.Map;
-                import java.util.List;
-                import java.util.HashMap;
-                import java.util.Arrays;
-                
-                public class Test {
-                    public void example() {
-                        HttpHeaders headers = new HttpHeaders();
-                        Map<String, List<String>> headerMap = new HashMap<>();
-                        headerMap.put("Content-Type", Arrays.asList("application/json"));
-                        headerMap.put("Authorization", Arrays.asList("Bearer token"));
-                        
-                        headers.setAll(headerMap);
-                    }
-                }
-                """,
-                """
-                import io.clientcore.core.http.models.HttpHeaders;
-                import io.clientcore.core.http.models.HttpHeaderName;
-                import java.util.Map;
-                import java.util.List;
-                import java.util.HashMap;
-                import java.util.Arrays;
-                
-                public class Test {
-                    public void example() {
-                        HttpHeaders headers = new HttpHeaders();
-                        Map<String, List<String>> headerMap = new HashMap<>();
-                        headerMap.put("Content-Type", Arrays.asList("application/json"));
-                        headerMap.put("Authorization", Arrays.asList("Bearer token"));
-                        
-                        headers.setAll(headerMap.entrySet().stream().collect(HttpHeaders::new, (newHeaders, entry) -> newHeaders.set(HttpHeaderName.fromString(entry.getKey()), entry.getValue() instanceof java.util.List ? (java.util.List<String>) entry.getValue() : java.util.Collections.singletonList(entry.getValue().toString())), HttpHeaders::setAll));
-                    }
-                }
-                """
+                "import com.azure.core.http.HttpHeaders;\n" +
+                "import java.util.Map;\n" +
+                "import java.util.List;\n" +
+                "import java.util.HashMap;\n" +
+                "import java.util.Arrays;\n" +
+                "\n" +
+                "public class Test {\n" +
+                "    public void example() {\n" +
+                "        HttpHeaders headers = new HttpHeaders();\n" +
+                "        Map<String, List<String>> headerMap = new HashMap<>();\n" +
+                "        headerMap.put(\"Content-Type\", Arrays.asList(\"application/json\"));\n" +
+                "        headerMap.put(\"Authorization\", Arrays.asList(\"Bearer token\"));\n" +
+                "        \n" +
+                "        headers.setAll(headerMap);\n" +
+                "    }\n" +
+                "}",
+                "import io.clientcore.core.http.models.HttpHeaders;\n" +
+                "import io.clientcore.core.http.models.HttpHeaderName;\n" +
+                "import java.util.Map;\n" +
+                "import java.util.List;\n" +
+                "import java.util.HashMap;\n" +
+                "import java.util.Arrays;\n" +
+                "\n" +
+                "public class Test {\n" +
+                "    public void example() {\n" +
+                "        HttpHeaders headers = new HttpHeaders();\n" +
+                "        Map<String, List<String>> headerMap = new HashMap<>();\n" +
+                "        headerMap.put(\"Content-Type\", Arrays.asList(\"application/json\"));\n" +
+                "        headerMap.put(\"Authorization\", Arrays.asList(\"Bearer token\"));\n" +
+                "        \n" +
+                "        headers.setAll(headerMap.entrySet().stream().collect(HttpHeaders::new, (newHeaders, entry) -> newHeaders.set(HttpHeaderName.fromString(entry.getKey()), entry.getValue() instanceof java.util.List ? (java.util.List<String>) entry.getValue() : java.util.Collections.singletonList(entry.getValue().toString())), HttpHeaders::setAll));\n" +
+                "    }\n" +
+                "}"
             )
         );
     }
