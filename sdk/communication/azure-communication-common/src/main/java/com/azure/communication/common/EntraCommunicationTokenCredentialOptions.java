@@ -80,9 +80,11 @@ public final class EntraCommunicationTokenCredentialOptions {
      *
      * @param scopes The scopes to set.
      * @throws IllegalArgumentException if scopes are null, empty, or invalid.
+     * @return this object
      */
-    public void setScopes(List<String> scopes) {
+    public EntraCommunicationTokenCredentialOptions setScopes(List<String> scopes) {
         this.scopes = validateScopes(scopes);
+        return this;
     }
 
     private static List<String> validateScopes(List<String> scopes) {
