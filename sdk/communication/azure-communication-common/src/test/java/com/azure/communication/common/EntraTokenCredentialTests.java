@@ -33,12 +33,11 @@ public class EntraTokenCredentialTests {
     private MockHttpClient mockHttpClient;
 
     private void createEntraCredentialWithMocks(List<String> scopes, HttpResponse... response) {
-        EntraCommunicationTokenCredentialOptions options
-            = new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT);
-        if (scopes != null && !scopes.isEmpty()) {
-            options.setScopes(scopes);
-        }
+        EntraCommunicationTokenCredentialOptions options = (scopes != null && !scopes.isEmpty())
+            ? new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT).setScopes(scopes)
+            : new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT);
         mockHttpClient = new MockHttpClient(response);
+
         entraTokenCredential = new EntraTokenCredential(options, mockHttpClient);
     }
 
@@ -77,8 +76,7 @@ public class EntraTokenCredentialTests {
     void entraTokenCredentialOptionsConstructWithExplicitScopesScopesAreSet() {
         List<String> scopes = asList(TEAMS_EXTENSION_SCOPE);
         EntraCommunicationTokenCredentialOptions options
-            = new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT);
-        options.setScopes(scopes);
+            = new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT).setScopes(scopes);
         assertEquals(scopes, options.getScopes());
     }
 
@@ -87,8 +85,8 @@ public class EntraTokenCredentialTests {
     void entraTokenCredentialOptionsConstructWithNullOrEmptyScopesThrowsException(List<String> scopes) {
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
             EntraCommunicationTokenCredentialOptions options
-                = new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT);
-            options.setScopes(scopes);
+                = new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT)
+                    .setScopes(scopes);
         });
         assertTrue(ex.getMessage().contains("Scopes must not be null or empty. Ensure all scopes start with either"));
     }
@@ -98,8 +96,8 @@ public class EntraTokenCredentialTests {
     void entraTokenCredentialOptionsConstructWithInvalidScopesThrowsException(List<String> scopes) {
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
             EntraCommunicationTokenCredentialOptions options
-                = new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT);
-            options.setScopes(scopes);
+                = new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT)
+                    .setScopes(scopes);
         });
         assertTrue(ex.getMessage().contains("Scopes validation failed. Ensure all scopes start with either"));
     }
@@ -209,8 +207,7 @@ public class EntraTokenCredentialTests {
         HttpResponse resp2 = createHttpResponse(200, VALID_TOKEN_RESPONSE);
 
         EntraCommunicationTokenCredentialOptions options
-            = new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT);
-        options.setScopes(scopes);
+            = new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT).setScopes(scopes);
         mockHttpClient = new MockHttpClient(resp1, resp2);
         entraTokenCredential = new EntraTokenCredential(options, mockHttpClient);
 
@@ -235,8 +232,8 @@ public class EntraTokenCredentialTests {
             }
         };
         EntraCommunicationTokenCredentialOptions options
-            = new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT);
-        options.setScopes(validScopes);
+            = new EntraCommunicationTokenCredentialOptions(mockTokenCredential, RESOURCE_ENDPOINT)
+                .setScopes(validScopes);
 
         // Change scopes
         options.getScopes().set(0, TEAMS_EXTENSION_SCOPE);
