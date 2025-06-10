@@ -28,14 +28,15 @@ extends:
               - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                 parameters:
                   Paths:
-                    - /sdk/tools/azure-openrewrite-compiler-maven-plugin/
-                    - /sdk/tools/azure-openrewrite/
+                    - /sdk/tools/
                     - /sdk/core-v2/
                     - /sdk/identity-v2/
                     - /sdk/clientcore/
                     - /sdk/parents/
                     - /eng/
                     - /common/perf-test-core/
+
+              
 
               - task: Maven@3
                 displayName: 'Build Necessary Dependencies'
