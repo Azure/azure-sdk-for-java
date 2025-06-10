@@ -2,6 +2,8 @@
 
 ## 2.52.0-beta.1 (Unreleased)
 
+- Supported `invoke` and `invoke(ctx)` in `TaskGroup`.
+
 ### Breaking Changes
 
 - `DeploymentsClient` and `DeploymentOperationsClient` is now accessed via `ResourceManager::deploymentClient()`.
