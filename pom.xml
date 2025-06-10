@@ -208,6 +208,7 @@
     <module>sdk/resourcehealth</module>
     <module>sdk/resourcemanager</module>
     <module>sdk/resourcemover</module>
+    <module>sdk/resources</module>
     <module>sdk/schemaregistry</module>
     <module>sdk/scvmm</module>
     <module>sdk/search</module>

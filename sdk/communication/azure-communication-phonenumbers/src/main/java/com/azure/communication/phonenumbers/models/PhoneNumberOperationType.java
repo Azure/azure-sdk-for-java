@@ -4,6 +4,7 @@
 
 package com.azure.communication.phonenumbers.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,27 +15,32 @@ public final class PhoneNumberOperationType extends ExpandableStringEnum<PhoneNu
     /**
      * Static value purchase for PhoneNumberOperationType.
      */
+    @Generated
     public static final PhoneNumberOperationType PURCHASE = fromString("purchase");
 
     /**
      * Static value releasePhoneNumber for PhoneNumberOperationType.
      */
+    @Generated
     public static final PhoneNumberOperationType RELEASE_PHONE_NUMBER = fromString("releasePhoneNumber");
 
     /**
      * Static value search for PhoneNumberOperationType.
      */
+    @Generated
     public static final PhoneNumberOperationType SEARCH = fromString("search");
 
     /**
      * Static value updatePhoneNumberCapabilities for PhoneNumberOperationType.
      */
+    @Generated
     public static final PhoneNumberOperationType UPDATE_PHONE_NUMBER_CAPABILITIES
         = fromString("updatePhoneNumberCapabilities");
 
     /**
      * Static value reservationPurchase for PhoneNumberOperationType.
      */
+    @Generated
     public static final PhoneNumberOperationType RESERVATION_PURCHASE = fromString("reservationPurchase");
 
     /**
@@ -42,6 +48,7 @@ public final class PhoneNumberOperationType extends ExpandableStringEnum<PhoneNu
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PhoneNumberOperationType() {
     }
@@ -52,6 +59,7 @@ public final class PhoneNumberOperationType extends ExpandableStringEnum<PhoneNu
      * @param name a name to look for.
      * @return the corresponding PhoneNumberOperationType.
      */
+    @Generated
     public static PhoneNumberOperationType fromString(String name) {
         return fromString(name, PhoneNumberOperationType.class);
     }
@@ -61,6 +69,7 @@ public final class PhoneNumberOperationType extends ExpandableStringEnum<PhoneNu
      * 
      * @return known PhoneNumberOperationType values.
      */
+    @Generated
     public static Collection<PhoneNumberOperationType> values() {
         return values(PhoneNumberOperationType.class);
     }

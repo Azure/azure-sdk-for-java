@@ -8,8 +8,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.resourcemanager.resources.fluent.DeploymentOperationsClient;
-import com.azure.resourcemanager.resources.fluent.DeploymentsClient;
 import com.azure.resourcemanager.resources.fluent.OperationsClient;
 import com.azure.resourcemanager.resources.fluent.ProviderResourceTypesClient;
 import com.azure.resourcemanager.resources.fluent.ProvidersClient;
@@ -124,20 +122,6 @@ public final class ResourceManagementClientImpl extends AzureServiceClient imple
     }
 
     /**
-     * The DeploymentsClient object to access its operations.
-     */
-    private final DeploymentsClient deployments;
-
-    /**
-     * Gets the DeploymentsClient object to access its operations.
-     * 
-     * @return the DeploymentsClient object.
-     */
-    public DeploymentsClient getDeployments() {
-        return this.deployments;
-    }
-
-    /**
      * The ProvidersClient object to access its operations.
      */
     private final ProvidersClient providers;
@@ -208,20 +192,6 @@ public final class ResourceManagementClientImpl extends AzureServiceClient imple
     }
 
     /**
-     * The DeploymentOperationsClient object to access its operations.
-     */
-    private final DeploymentOperationsClient deploymentOperations;
-
-    /**
-     * Gets the DeploymentOperationsClient object to access its operations.
-     * 
-     * @return the DeploymentOperationsClient object.
-     */
-    public DeploymentOperationsClient getDeploymentOperations() {
-        return this.deploymentOperations;
-    }
-
-    /**
      * Initializes an instance of ResourceManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -241,12 +211,10 @@ public final class ResourceManagementClientImpl extends AzureServiceClient imple
         this.endpoint = endpoint;
         this.apiVersion = "2025-04-01";
         this.operations = new OperationsClientImpl(this);
-        this.deployments = new DeploymentsClientImpl(this);
         this.providers = new ProvidersClientImpl(this);
         this.providerResourceTypes = new ProviderResourceTypesClientImpl(this);
         this.resources = new ResourcesClientImpl(this);
         this.resourceGroups = new ResourceGroupsClientImpl(this);
         this.tagOperations = new TagOperationsClientImpl(this);
-        this.deploymentOperations = new DeploymentOperationsClientImpl(this);
     }
 }

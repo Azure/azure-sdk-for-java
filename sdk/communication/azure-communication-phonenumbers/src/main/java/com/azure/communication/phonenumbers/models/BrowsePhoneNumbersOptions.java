@@ -4,6 +4,7 @@
 package com.azure.communication.phonenumbers.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,26 +21,32 @@ public final class BrowsePhoneNumbersOptions implements JsonSerializable<BrowseP
     /*
      * Represents the number type of the offering.
      */
+    @Generated
     private PhoneNumberType phoneNumberType;
 
     /*
      * Capabilities of a phone number.
      */
+    @Generated
     private PhoneNumberCapabilities capabilities;
 
     /*
      * Represents the assignment type of the offering. Also known as the use case.
      */
+    @Generated
     private PhoneNumberAssignmentType assignmentType;
 
     /*
-     * The phone number prefix to match. If specified, the search will be limited to phone numbers that start with the any of the given prefixes.
+     * The phone number prefix to match. If specified, the search will be limited to phone numbers that start with the
+     * any of the given prefixes.
      */
+    @Generated
     private List<String> phoneNumberPrefixes;
 
     /*
      * The ISO 3166-2 country code, e.g. US.
      */
+    @Generated
     private String countryCode;
 
     /**
@@ -47,6 +54,7 @@ public final class BrowsePhoneNumbersOptions implements JsonSerializable<BrowseP
      *
      * @return the phoneNumberType value.
      */
+    @Generated
     public PhoneNumberType getPhoneNumberType() {
         return this.phoneNumberType;
     }
@@ -56,6 +64,7 @@ public final class BrowsePhoneNumbersOptions implements JsonSerializable<BrowseP
      *
      * @return the capabilities value.
      */
+    @Generated
     public PhoneNumberCapabilities getCapabilities() {
         return this.capabilities;
     }
@@ -66,6 +75,7 @@ public final class BrowsePhoneNumbersOptions implements JsonSerializable<BrowseP
      * @param capabilities the capabilities value to set.
      * @return the BrowsePhoneNumbersOptions object itself.
      */
+    @Generated
     public BrowsePhoneNumbersOptions setCapabilities(PhoneNumberCapabilities capabilities) {
         this.capabilities = capabilities;
         return this;
@@ -76,6 +86,7 @@ public final class BrowsePhoneNumbersOptions implements JsonSerializable<BrowseP
      *
      * @return the assignmentType value.
      */
+    @Generated
     public PhoneNumberAssignmentType getAssignmentType() {
         return this.assignmentType;
     }
@@ -86,6 +97,7 @@ public final class BrowsePhoneNumbersOptions implements JsonSerializable<BrowseP
      * @param assignmentType the assignmentType value to set.
      * @return the BrowsePhoneNumbersOptions object itself.
      */
+    @Generated
     public BrowsePhoneNumbersOptions setAssignmentType(PhoneNumberAssignmentType assignmentType) {
         this.assignmentType = assignmentType;
         return this;
@@ -97,6 +109,7 @@ public final class BrowsePhoneNumbersOptions implements JsonSerializable<BrowseP
      *
      * @return the phoneNumberPrefixes value.
      */
+    @Generated
     public List<String> getPhoneNumberPrefixes() {
         return this.phoneNumberPrefixes;
     }
@@ -108,6 +121,7 @@ public final class BrowsePhoneNumbersOptions implements JsonSerializable<BrowseP
      * @param phoneNumberPrefixes the phoneNumberPrefixes value to set.
      * @return the BrowsePhoneNumbersOptions object itself.
      */
+    @Generated
     public BrowsePhoneNumbersOptions setPhoneNumberPrefixes(List<String> phoneNumberPrefixes) {
         this.phoneNumberPrefixes = phoneNumberPrefixes;
         return this;
@@ -118,6 +132,7 @@ public final class BrowsePhoneNumbersOptions implements JsonSerializable<BrowseP
      *
      * @return the countryCode value.
      */
+    @Generated
     public String getCountryCode() {
         return this.countryCode;
     }
@@ -125,6 +140,7 @@ public final class BrowsePhoneNumbersOptions implements JsonSerializable<BrowseP
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -148,6 +164,7 @@ public final class BrowsePhoneNumbersOptions implements JsonSerializable<BrowseP
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BrowsePhoneNumbersOptions.
      */
+    @Generated
     public static BrowsePhoneNumbersOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BrowsePhoneNumbersOptions deserializedBrowsePhoneNumbersOptions = new BrowsePhoneNumbersOptions();

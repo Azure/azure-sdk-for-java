@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,18 +21,20 @@ public class BaseDialog implements JsonSerializable<BaseDialog> {
     /*
      * Determines the type of the dialog.
      */
-    private DialogInputType kind;
+    @Generated
+    private DialogInputType kind = DialogInputType.fromString("BaseDialog");
 
     /*
      * Dialog context.
      */
+    @Generated
     private Map<String, Object> context;
 
     /**
      * Creates an instance of BaseDialog class.
      */
+    @Generated
     public BaseDialog() {
-        this.kind = DialogInputType.fromString("BaseDialog");
     }
 
     /**
@@ -39,6 +42,7 @@ public class BaseDialog implements JsonSerializable<BaseDialog> {
      * 
      * @return the kind value.
      */
+    @Generated
     public DialogInputType getKind() {
         return this.kind;
     }
@@ -48,6 +52,7 @@ public class BaseDialog implements JsonSerializable<BaseDialog> {
      * 
      * @return the context value.
      */
+    @Generated
     public Map<String, Object> getContext() {
         return this.context;
     }
@@ -58,6 +63,7 @@ public class BaseDialog implements JsonSerializable<BaseDialog> {
      * @param context the context value to set.
      * @return the BaseDialog object itself.
      */
+    @Generated
     public BaseDialog setContext(Map<String, Object> context) {
         this.context = context;
         return this;
@@ -66,6 +72,7 @@ public class BaseDialog implements JsonSerializable<BaseDialog> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -83,6 +90,7 @@ public class BaseDialog implements JsonSerializable<BaseDialog> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BaseDialog.
      */
+    @Generated
     public static BaseDialog fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -110,6 +118,7 @@ public class BaseDialog implements JsonSerializable<BaseDialog> {
         });
     }
 
+    @Generated
     static BaseDialog fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BaseDialog deserializedBaseDialog = new BaseDialog();

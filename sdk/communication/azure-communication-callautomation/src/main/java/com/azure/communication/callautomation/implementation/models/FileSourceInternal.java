@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class FileSourceInternal implements JsonSerializable<FileSourceInte
     /*
      * Uri for the audio file to be played
      */
+    @Generated
     private String uri;
 
     /**
      * Creates an instance of FileSourceInternal class.
      */
+    @Generated
     public FileSourceInternal() {
     }
 
@@ -32,6 +35,7 @@ public final class FileSourceInternal implements JsonSerializable<FileSourceInte
      * 
      * @return the uri value.
      */
+    @Generated
     public String getUri() {
         return this.uri;
     }
@@ -42,6 +46,7 @@ public final class FileSourceInternal implements JsonSerializable<FileSourceInte
      * @param uri the uri value to set.
      * @return the FileSourceInternal object itself.
      */
+    @Generated
     public FileSourceInternal setUri(String uri) {
         this.uri = uri;
         return this;
@@ -50,6 +55,7 @@ public final class FileSourceInternal implements JsonSerializable<FileSourceInte
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -66,6 +72,7 @@ public final class FileSourceInternal implements JsonSerializable<FileSourceInte
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the FileSourceInternal.
      */
+    @Generated
     public static FileSourceInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             FileSourceInternal deserializedFileSourceInternal = new FileSourceInternal();

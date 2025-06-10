@@ -16,7 +16,8 @@ import java.util.Map;
  */
 public final class DeploymentsValidateAtTenantScopeSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/
      * PostDeploymentValidateOnTenant.json
      */
     /**
@@ -27,7 +28,7 @@ public final class DeploymentsValidateAtTenantScopeSamples {
     public static void validatesATemplateAtTenantScope(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.genericResources()
             .manager()
-            .serviceClient()
+            .deploymentClient()
             .getDeployments()
             .validateAtTenantScope("my-deployment",
                 new ScopedDeployment().withLocation("eastus")
