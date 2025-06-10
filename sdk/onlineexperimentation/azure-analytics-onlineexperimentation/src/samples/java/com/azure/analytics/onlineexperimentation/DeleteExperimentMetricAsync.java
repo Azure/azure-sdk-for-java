@@ -15,6 +15,7 @@ public class DeleteExperimentMetricAsync {
 
     /**
      * Main method to demonstrate deleting a metric asynchronously.
+     *
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
@@ -23,14 +24,14 @@ public class DeleteExperimentMetricAsync {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
         OnlineExperimentationAsyncClient client = new OnlineExperimentationClientBuilder()
-            .endpoint(endpoint)
-            .credential(credential)
-            .buildAsyncClient();
+                .endpoint(endpoint)
+                .credential(credential)
+                .buildAsyncClient();
 
         // Delete a metric by ID - removes it from the workspace
         client.deleteMetric("test_metric_id")
-            .subscribe(result -> System.out.println("Metric deleted successfully"),
-                error -> System.err.println("An error occurred while deleting the metric: " + error));
+                .subscribe(result -> System.out.println("Metric deleted successfully"),
+                        error -> System.err.println("An error occurred while deleting the metric: " + error));
         // END: com.azure.analytics.onlineexperimentation.deletemetricasync
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep

@@ -21,6 +21,7 @@ public class CreateEventRateMetricSampleAsync {
 
     /**
      * Main method to demonstrate creating an event rate metric asynchronously.
+     *
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
@@ -29,25 +30,27 @@ public class CreateEventRateMetricSampleAsync {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
         OnlineExperimentationAsyncClient client = new OnlineExperimentationClientBuilder()
-            .endpoint(endpoint)
-            .credential(credential)
-            .buildAsyncClient();
+                .endpoint(endpoint)
+                .credential(credential)
+                .buildAsyncClient();
 
         // Define the Event Rate metric - measures a percentage of events meeting a condition
         ExperimentMetric relevanceMetric = new ExperimentMetric()
-            .setLifecycle(LifecycleStage.ACTIVE)
-            .setDisplayName("% evaluated conversations with good relevance")
-            .setDescription("Percentage of evaluated conversations where the LLM response has good relevance (score >= 4)")
-            .setCategories(Arrays.asList("Quality"))
-            .setDesiredDirection(DesiredDirection.INCREASE)
-            .setDefinition(new EventRateMetricDefinition().setEvent(new ObservedEvent("EvaluateLLM")).setRateCondition("Relevance > 4"));
+                .setLifecycle(LifecycleStage.ACTIVE)
+                .setDisplayName("% evaluated conversations with good relevance")
+                .setDescription(
+                        "Percentage of evaluated conversations where the LLM response has good relevance (score >= 4)")
+                .setCategories(Arrays.asList("Quality"))
+                .setDesiredDirection(DesiredDirection.INCREASE)
+                .setDefinition(new EventRateMetricDefinition().setEvent(new ObservedEvent("EvaluateLLM"))
+                        .setRateCondition("Relevance > 4"));
 
         // Create the metric asynchronously
         client.createOrUpdateMetric("momo_pct_relevance_good", relevanceMetric)
-            .subscribe(response -> {
-                System.out.printf("Created metric: %s%n", response.getId());
-            },
-            error -> System.err.println("An error occurred while creating the metric: " + error));
+                .subscribe(response -> {
+                    System.out.printf("Created metric: %s%n", response.getId());
+                },
+                        error -> System.err.println("An error occurred while creating the metric: " + error));
         // END: com.azure.analytics.onlineexperimentation.createeventratemetricasync
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep

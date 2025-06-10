@@ -20,6 +20,7 @@ public class CreateSumMetricSample {
 
     /**
      * Main method to demonstrate creating a sum metric.
+     *
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
@@ -28,23 +29,23 @@ public class CreateSumMetricSample {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
         OnlineExperimentationClient client = new OnlineExperimentationClientBuilder()
-            .endpoint(endpoint)
-            .credential(credential)
-            .buildClient();
+                .endpoint(endpoint)
+                .credential(credential)
+                .buildClient();
 
         // Define the Sum metric - sums a numeric value across all events of a type
         SumMetricDefinition sumDefinition = new SumMetricDefinition()
-            .setValue(new AggregatedValue().setEventName("Purchase").setEventProperty("Revenue"));
+                .setValue(new AggregatedValue().setEventName("Purchase").setEventProperty("Revenue"));
         // Add an optional filter
         sumDefinition.getValue().setFilter("Revenue > 0");
 
         ExperimentMetric revenueMetric = new ExperimentMetric()
-            .setLifecycle(LifecycleStage.ACTIVE)
-            .setDisplayName("Total revenue")
-            .setDescription("Sum of revenue from all purchase transactions")
-            .setCategories(Arrays.asList("Business"))
-            .setDesiredDirection(DesiredDirection.INCREASE)
-            .setDefinition(sumDefinition);
+                .setLifecycle(LifecycleStage.ACTIVE)
+                .setDisplayName("Total revenue")
+                .setDescription("Sum of revenue from all purchase transactions")
+                .setCategories(Arrays.asList("Business"))
+                .setDesiredDirection(DesiredDirection.INCREASE)
+                .setDefinition(sumDefinition);
 
         // Create the metric
         ExperimentMetric response = client.createOrUpdateMetric("total_revenue", revenueMetric);

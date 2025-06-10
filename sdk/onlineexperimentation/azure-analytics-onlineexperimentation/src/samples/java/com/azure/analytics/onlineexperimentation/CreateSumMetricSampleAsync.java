@@ -21,6 +21,7 @@ public class CreateSumMetricSampleAsync {
 
     /**
      * Main method to demonstrate creating a sum metric asynchronously.
+     *
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
@@ -29,30 +30,30 @@ public class CreateSumMetricSampleAsync {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
         OnlineExperimentationAsyncClient client = new OnlineExperimentationClientBuilder()
-            .endpoint(endpoint)
-            .credential(credential)
-            .buildAsyncClient();
+                .endpoint(endpoint)
+                .credential(credential)
+                .buildAsyncClient();
 
         // Define the Sum metric - sums a numeric value across all events of a type
         SumMetricDefinition sumDefinition = new SumMetricDefinition()
-            .setValue(new AggregatedValue().setEventName("Purchase").setEventProperty("Revenue"));
+                .setValue(new AggregatedValue().setEventName("Purchase").setEventProperty("Revenue"));
         // Add an optional filter
         sumDefinition.getValue().setFilter("Revenue > 0");
 
         ExperimentMetric revenueMetric = new ExperimentMetric()
-            .setLifecycle(LifecycleStage.ACTIVE)
-            .setDisplayName("Total revenue")
-            .setDescription("Sum of revenue from all purchase transactions")
-            .setCategories(Arrays.asList("Business"))
-            .setDesiredDirection(DesiredDirection.INCREASE)
-            .setDefinition(sumDefinition);
+                .setLifecycle(LifecycleStage.ACTIVE)
+                .setDisplayName("Total revenue")
+                .setDescription("Sum of revenue from all purchase transactions")
+                .setCategories(Arrays.asList("Business"))
+                .setDesiredDirection(DesiredDirection.INCREASE)
+                .setDefinition(sumDefinition);
 
         // Create the metric asynchronously
         client.createOrUpdateMetric("total_revenue", revenueMetric)
-            .subscribe(response -> {
-                System.out.printf("Created metric: %s%n", response.getId());
-            },
-            error -> System.err.println("An error occurred while creating the metric: " + error));
+                .subscribe(response -> {
+                    System.out.printf("Created metric: %s%n", response.getId());
+                },
+                        error -> System.err.println("An error occurred while creating the metric: " + error));
         // END: com.azure.analytics.onlineexperimentation.createsummetricasync
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep

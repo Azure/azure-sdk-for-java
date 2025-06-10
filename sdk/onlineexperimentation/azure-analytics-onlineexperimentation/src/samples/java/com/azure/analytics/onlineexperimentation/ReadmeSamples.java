@@ -26,20 +26,21 @@ public final class ReadmeSamples {
         System.out.printf("AZURE_ONLINEEXPERIMENTATION_ENDPOINT is %s%n", endpoint);
 
         OnlineExperimentationClient client = new OnlineExperimentationClientBuilder()
-            .endpoint(endpoint)
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .buildClient();
+                .endpoint(endpoint)
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .buildClient();
 
         // [Step 2] Define the experiment metric
         ExperimentMetric exampleMetric = new ExperimentMetric()
-            .setLifecycle(LifecycleStage.ACTIVE)
-            .setDisplayName("% users with LLM interaction who made a high-value purchase")
-            .setDescription("Percentage of users who received a response from the LLM and then made a purchase of $100 or more")
-            .setCategories(Arrays.asList("Business"))
-            .setDesiredDirection(DesiredDirection.INCREASE)
-            .setDefinition(new EventRateMetricDefinition()
-                .setEvent(new ObservedEvent().setEventName("ResponseReceived"))
-                .setRateCondition("Revenue > 100"));
+                .setLifecycle(LifecycleStage.ACTIVE)
+                .setDisplayName("% users with LLM interaction who made a high-value purchase")
+                .setDescription(
+                        "Percentage of users who received a response from the LLM and then made a purchase of $100 or more")
+                .setCategories(Arrays.asList("Business"))
+                .setDesiredDirection(DesiredDirection.INCREASE)
+                .setDefinition(new EventRateMetricDefinition()
+                        .setEvent(new ObservedEvent().setEventName("ResponseReceived"))
+                        .setRateCondition("Revenue > 100"));
 
         // [Optional][Step 2a] Validate the metric - checks for input errors without persisting anything.
         System.out.println("Checking if the experiment metric definition is valid...");
@@ -72,8 +73,8 @@ public final class ReadmeSamples {
 
         // [Step 4] Deactivate the experiment metric and update the description.
         ExperimentMetric updateRequest = new ExperimentMetric()
-            .setLifecycle(LifecycleStage.INACTIVE) // pauses computation of this metric
-            .setDescription("No longer need to compute this.");
+                .setLifecycle(LifecycleStage.INACTIVE) // pauses computation of this metric
+                .setDescription("No longer need to compute this.");
 
         // Update with If-Match to ensure no one else updated the metric in the meantime
         RequestConditions updateConditions = new RequestConditions().setIfMatch(createdMetric.getETag());

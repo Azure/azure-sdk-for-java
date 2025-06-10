@@ -22,6 +22,7 @@ public class ValidateExperimentMetrics {
 
     /**
      * Main method to demonstrate validating a metric definition.
+     *
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
@@ -37,19 +38,19 @@ public class ValidateExperimentMetrics {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
         OnlineExperimentationClient client = new OnlineExperimentationClientBuilder()
-            .endpoint(endpoint)
-            .credential(credential)
-            .buildClient();
+                .endpoint(endpoint)
+                .credential(credential)
+                .buildClient();
 
         // Define a metric to validate
         ExperimentMetric metricToValidate = new ExperimentMetric()
-            .setLifecycle(LifecycleStage.ACTIVE)
-            .setDisplayName("Test metric for validation")
-            .setDescription("This metric definition will be validated before creation")
-            .setCategories(Arrays.asList("Test"))
-            .setDesiredDirection(DesiredDirection.INCREASE)
-            .setDefinition(new EventCountMetricDefinition()
-                .setEvent(new ObservedEvent().setEventName("TestEvent")));
+                .setLifecycle(LifecycleStage.ACTIVE)
+                .setDisplayName("Test metric for validation")
+                .setDescription("This metric definition will be validated before creation")
+                .setCategories(Arrays.asList("Test"))
+                .setDesiredDirection(DesiredDirection.INCREASE)
+                .setDefinition(new EventCountMetricDefinition()
+                        .setEvent(new ObservedEvent().setEventName("TestEvent")));
 
         // Validate the metric - checks for errors in the definition
         ExperimentMetricValidationResult validationResult = client.validateMetric(metricToValidate);

@@ -21,6 +21,7 @@ public class CreateAverageMetricSampleAsync {
 
     /**
      * Main method to demonstrate creating an average metric asynchronously.
+     *
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
@@ -29,27 +30,27 @@ public class CreateAverageMetricSampleAsync {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
         OnlineExperimentationAsyncClient client = new OnlineExperimentationClientBuilder()
-            .endpoint(endpoint)
-            .credential(credential)
-            .buildAsyncClient();
+                .endpoint(endpoint)
+                .credential(credential)
+                .buildAsyncClient();
 
         // Define the Average metric - calculates the mean of a numeric value across events
         ExperimentMetric avgRevenueMetric = new ExperimentMetric()
-            .setLifecycle(LifecycleStage.ACTIVE)
-            .setDisplayName("Average revenue per purchase")
-            .setDescription("The average revenue per purchase transaction in USD")
-            .setCategories(Arrays.asList("Business"))
-            .setDesiredDirection(DesiredDirection.INCREASE)
-            .setDefinition(new AverageMetricDefinition()
-                .setValue(new AggregatedValue().setEventName("Purchase").setEventProperty("Revenue")));
+                .setLifecycle(LifecycleStage.ACTIVE)
+                .setDisplayName("Average revenue per purchase")
+                .setDescription("The average revenue per purchase transaction in USD")
+                .setCategories(Arrays.asList("Business"))
+                .setDesiredDirection(DesiredDirection.INCREASE)
+                .setDefinition(new AverageMetricDefinition()
+                        .setValue(new AggregatedValue().setEventName("Purchase").setEventProperty("Revenue")));
 
         // Create the metric asynchronously
         client.createOrUpdateMetric("avg_revenue_per_purchase", avgRevenueMetric)
-            .subscribe(response -> {
-                System.out.printf("Created metric: %s%n", response.getId());
-                System.out.printf("Display name: %s%n", response.getDisplayName());
-            },
-            error -> System.err.println("An error occurred while creating the metric: " + error));
+                .subscribe(response -> {
+                    System.out.printf("Created metric: %s%n", response.getId());
+                    System.out.printf("Display name: %s%n", response.getDisplayName());
+                },
+                        error -> System.err.println("An error occurred while creating the metric: " + error));
         // END: com.azure.analytics.onlineexperimentation.createaveragemetricasync
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep

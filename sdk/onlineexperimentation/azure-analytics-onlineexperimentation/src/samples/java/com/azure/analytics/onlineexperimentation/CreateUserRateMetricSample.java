@@ -20,6 +20,7 @@ public class CreateUserRateMetricSample {
 
     /**
      * Main method to demonstrate creating a user rate metric.
+     *
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
@@ -28,27 +29,29 @@ public class CreateUserRateMetricSample {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
         OnlineExperimentationClient client = new OnlineExperimentationClientBuilder()
-            .endpoint(endpoint)
-            .credential(credential)
-            .buildClient();
+                .endpoint(endpoint)
+                .credential(credential)
+                .buildClient();
 
         // Define the User Rate metric - measures percentage of users who performed action B after action A
         UserRateMetricDefinition userRateDefinition = new UserRateMetricDefinition()
-            .setStartEvent(new ObservedEvent().setEventName("ResponseReceived"))
-            .setEndEvent(new ObservedEvent().setEventName("Purchase"));
+                .setStartEvent(new ObservedEvent().setEventName("ResponseReceived"))
+                .setEndEvent(new ObservedEvent().setEventName("Purchase"));
         // Add an optional filter to the end event
         userRateDefinition.getEndEvent().setFilter("Revenue > 100");
 
         ExperimentMetric conversionMetric = new ExperimentMetric()
-            .setLifecycle(LifecycleStage.ACTIVE)
-            .setDisplayName("% users with LLM interaction who made a high-value purchase")
-            .setDescription("Percentage of users who received a response from the LLM and then made a purchase of $100 or more")
-            .setCategories(Arrays.asList("Business"))
-            .setDesiredDirection(DesiredDirection.INCREASE)
-            .setDefinition(userRateDefinition);
+                .setLifecycle(LifecycleStage.ACTIVE)
+                .setDisplayName("% users with LLM interaction who made a high-value purchase")
+                .setDescription(
+                        "Percentage of users who received a response from the LLM and then made a purchase of $100 or more")
+                .setCategories(Arrays.asList("Business"))
+                .setDesiredDirection(DesiredDirection.INCREASE)
+                .setDefinition(userRateDefinition);
 
         // Create the metric
-        ExperimentMetric response = client.createOrUpdateMetric("pct_chat_to_high_value_purchase_conversion", conversionMetric);
+        ExperimentMetric response = client.createOrUpdateMetric("pct_chat_to_high_value_purchase_conversion",
+                conversionMetric);
 
         System.out.printf("Created metric: %s%n", response.getId());
         // END: com.azure.analytics.onlineexperimentation.createuserratemetric

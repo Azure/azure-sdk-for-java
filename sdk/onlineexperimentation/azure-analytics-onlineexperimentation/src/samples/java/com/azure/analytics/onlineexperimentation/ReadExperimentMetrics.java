@@ -14,6 +14,7 @@ public class ReadExperimentMetrics {
 
     /**
      * Main method to demonstrate retrieving and listing metrics.
+     *
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
@@ -30,9 +31,9 @@ public class ReadExperimentMetrics {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
         OnlineExperimentationClient client = new OnlineExperimentationClientBuilder()
-            .endpoint(endpoint)
-            .credential(credential)
-            .buildClient();
+                .endpoint(endpoint)
+                .credential(credential)
+                .buildClient();
 
         // Get a specific metric by ID
         ExperimentMetric metric = client.getMetric("avg_revenue_per_purchase");
@@ -55,9 +56,9 @@ public class ReadExperimentMetrics {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
         OnlineExperimentationClient client = new OnlineExperimentationClientBuilder()
-            .endpoint(endpoint)
-            .credential(credential)
-            .buildClient();
+                .endpoint(endpoint)
+                .credential(credential)
+                .buildClient();
 
         // List all metrics in the workspace
         System.out.println("Listing all metrics:");

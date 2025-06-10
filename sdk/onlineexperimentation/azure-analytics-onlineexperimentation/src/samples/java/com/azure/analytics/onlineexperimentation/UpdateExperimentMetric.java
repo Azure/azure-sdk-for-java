@@ -30,19 +30,20 @@ public class UpdateExperimentMetric {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
         OnlineExperimentationClient client = new OnlineExperimentationClientBuilder()
-            .endpoint(endpoint)
-            .credential(credential)
-            .buildClient();
+                .endpoint(endpoint)
+                .credential(credential)
+                .buildClient();
 
         // First, get the existing metric
         ExperimentMetric existingMetric = client.getMetric("avg_revenue_per_purchase");
 
         // Update the display name and description of the metric, other fields remain unchanged.
         ExperimentMetric updatedMetric = client.updateMetric(existingMetric.getId(),
-            new ExperimentMetric()
-                .setDisplayName("Average revenue per purchase [USD]")
-                .setDescription("The average revenue per purchase transaction in USD. Refund transactions are excluded."),
-            existingMetric.getETag());
+                new ExperimentMetric()
+                        .setDisplayName("Average revenue per purchase [USD]")
+                        .setDescription(
+                                "The average revenue per purchase transaction in USD. Refund transactions are excluded."),
+                existingMetric.getETag());
 
         System.out.printf("Updated metric: %s%n", updatedMetric.getId());
         System.out.printf("New display name: %s%n", updatedMetric.getDisplayName());

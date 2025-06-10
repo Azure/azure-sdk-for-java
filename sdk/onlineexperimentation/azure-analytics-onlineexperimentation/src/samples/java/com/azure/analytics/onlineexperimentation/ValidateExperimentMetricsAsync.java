@@ -22,6 +22,7 @@ public class ValidateExperimentMetricsAsync {
 
     /**
      * Main method to demonstrate validating a metric definition asynchronously.
+     *
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
@@ -30,43 +31,43 @@ public class ValidateExperimentMetricsAsync {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
         OnlineExperimentationAsyncClient client = new OnlineExperimentationClientBuilder()
-            .endpoint(endpoint)
-            .credential(credential)
-            .buildAsyncClient();
+                .endpoint(endpoint)
+                .credential(credential)
+                .buildAsyncClient();
 
         // Define a metric to validate
         ExperimentMetric metricToValidate = new ExperimentMetric()
-            .setLifecycle(LifecycleStage.ACTIVE)
-            .setDisplayName("Test metric for validation")
-            .setDescription("This metric definition will be validated before creation")
-            .setCategories(Arrays.asList("Test"))
-            .setDesiredDirection(DesiredDirection.INCREASE)
-            .setDefinition(new EventCountMetricDefinition()
-                .setEvent(new ObservedEvent().setEventName("TestEvent")));
+                .setLifecycle(LifecycleStage.ACTIVE)
+                .setDisplayName("Test metric for validation")
+                .setDescription("This metric definition will be validated before creation")
+                .setCategories(Arrays.asList("Test"))
+                .setDesiredDirection(DesiredDirection.INCREASE)
+                .setDefinition(new EventCountMetricDefinition()
+                        .setEvent(new ObservedEvent().setEventName("TestEvent")));
 
         // Validate the metric - checks for errors in the definition
         client.validateMetric(metricToValidate)
-            .flatMap(validationResult -> {
-                // Check if the metric definition is valid
-                if (validationResult.isValid()) {
-                    System.out.println("Metric definition is valid");
+                .flatMap(validationResult -> {
+                    // Check if the metric definition is valid
+                    if (validationResult.isValid()) {
+                        System.out.println("Metric definition is valid");
 
-                    // Now create the validated metric
-                    return client.createOrUpdateMetric("test_metric_id", metricToValidate)
-                        .map(createdMetric -> {
-                            System.out.printf("Created metric: %s%n", createdMetric.getId());
-                            return createdMetric;
-                        });
-                } else {
-                    // Handle validation errors
-                    System.out.println("Metric definition has errors:");
-                    for (DiagnosticDetail error : validationResult.getDiagnostics()) {
-                        System.out.printf("- [%s] %s%n", error.getCode(), error.getMessage());
+                        // Now create the validated metric
+                        return client.createOrUpdateMetric("test_metric_id", metricToValidate)
+                                .map(createdMetric -> {
+                                    System.out.printf("Created metric: %s%n", createdMetric.getId());
+                                    return createdMetric;
+                                });
+                    } else {
+                        // Handle validation errors
+                        System.out.println("Metric definition has errors:");
+                        for (DiagnosticDetail error : validationResult.getDiagnostics()) {
+                            System.out.printf("- [%s] %s%n", error.getCode(), error.getMessage());
+                        }
+                        return null;
                     }
-                    return null;
-                }
-            })
-            .subscribe();
+                })
+                .subscribe();
         // END: com.azure.analytics.onlineexperimentation.validatemetricasync
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep

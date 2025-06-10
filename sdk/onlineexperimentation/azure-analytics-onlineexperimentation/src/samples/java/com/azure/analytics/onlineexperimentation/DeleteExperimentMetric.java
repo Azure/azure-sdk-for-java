@@ -13,6 +13,7 @@ public class DeleteExperimentMetric {
 
     /**
      * Main method to demonstrate deleting a metric.
+     *
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
@@ -28,9 +29,9 @@ public class DeleteExperimentMetric {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
         OnlineExperimentationClient client = new OnlineExperimentationClientBuilder()
-            .endpoint(endpoint)
-            .credential(credential)
-            .buildClient();
+                .endpoint(endpoint)
+                .credential(credential)
+                .buildClient();
 
         // Delete a metric by ID - removes it from the workspace
         client.deleteMetric("test_metric_id");

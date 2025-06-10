@@ -21,6 +21,7 @@ public class CreateUserCountMetricSampleAsync {
 
     /**
      * Main method to demonstrate creating a user count metric asynchronously.
+     *
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
@@ -29,30 +30,30 @@ public class CreateUserCountMetricSampleAsync {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
         OnlineExperimentationAsyncClient client = new OnlineExperimentationClientBuilder()
-            .endpoint(endpoint)
-            .credential(credential)
-            .buildAsyncClient();
+                .endpoint(endpoint)
+                .credential(credential)
+                .buildAsyncClient();
 
         // Define the User Count metric with a filter - counts unique users who performed a specific action
         UserCountMetricDefinition userCountDefinition = new UserCountMetricDefinition()
-            .setEvent(new ObservedEvent().setEventName("PromptSent"));
+                .setEvent(new ObservedEvent().setEventName("PromptSent"));
         // Add an optional filter
         userCountDefinition.getEvent().setFilter("Page == 'checkout.html'");
 
         ExperimentMetric usersPromptSentMetric = new ExperimentMetric()
-            .setLifecycle(LifecycleStage.ACTIVE)
-            .setDisplayName("Users with at least one prompt sent on checkout page")
-            .setDescription("Counts unique users who sent at least one prompt while on the checkout page")
-            .setCategories(Arrays.asList("Usage"))
-            .setDesiredDirection(DesiredDirection.INCREASE)
-            .setDefinition(userCountDefinition);
+                .setLifecycle(LifecycleStage.ACTIVE)
+                .setDisplayName("Users with at least one prompt sent on checkout page")
+                .setDescription("Counts unique users who sent at least one prompt while on the checkout page")
+                .setCategories(Arrays.asList("Usage"))
+                .setDesiredDirection(DesiredDirection.INCREASE)
+                .setDefinition(userCountDefinition);
 
         // Create the metric with ID "users_prompt_sent" asynchronously
         client.createOrUpdateMetric("users_prompt_sent", usersPromptSentMetric)
-            .subscribe(response -> {
-                System.out.printf("Created metric: %s%n", response.getId());
-            },
-            error -> System.err.println("An error occurred while creating the metric: " + error));
+                .subscribe(response -> {
+                    System.out.printf("Created metric: %s%n", response.getId());
+                },
+                        error -> System.err.println("An error occurred while creating the metric: " + error));
         // END: com.azure.analytics.onlineexperimentation.createusercountmetricasync
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep

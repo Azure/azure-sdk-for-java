@@ -20,6 +20,7 @@ public class CreateUserCountMetricSample {
 
     /**
      * Main method to demonstrate creating a user count metric.
+     *
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
@@ -28,23 +29,23 @@ public class CreateUserCountMetricSample {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
         OnlineExperimentationClient client = new OnlineExperimentationClientBuilder()
-            .endpoint(endpoint)
-            .credential(credential)
-            .buildClient();
+                .endpoint(endpoint)
+                .credential(credential)
+                .buildClient();
 
         // Define the User Count metric with a filter - counts unique users who performed a specific action
         UserCountMetricDefinition userCountDefinition = new UserCountMetricDefinition()
-            .setEvent(new ObservedEvent().setEventName("PromptSent"));
+                .setEvent(new ObservedEvent().setEventName("PromptSent"));
         // Add an optional filter
         userCountDefinition.getEvent().setFilter("Page == 'checkout.html'");
 
         ExperimentMetric usersPromptSentMetric = new ExperimentMetric()
-            .setLifecycle(LifecycleStage.ACTIVE)
-            .setDisplayName("Users with at least one prompt sent on checkout page")
-            .setDescription("Counts unique users who sent at least one prompt while on the checkout page")
-            .setCategories(Arrays.asList("Usage"))
-            .setDesiredDirection(DesiredDirection.INCREASE)
-            .setDefinition(userCountDefinition);
+                .setLifecycle(LifecycleStage.ACTIVE)
+                .setDisplayName("Users with at least one prompt sent on checkout page")
+                .setDescription("Counts unique users who sent at least one prompt while on the checkout page")
+                .setCategories(Arrays.asList("Usage"))
+                .setDesiredDirection(DesiredDirection.INCREASE)
+                .setDefinition(userCountDefinition);
 
         // Create the metric with ID "users_prompt_sent"
         ExperimentMetric response = client.createOrUpdateMetric("users_prompt_sent", usersPromptSentMetric);

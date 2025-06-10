@@ -20,6 +20,7 @@ public class CreateAverageMetricSample {
 
     /**
      * Main method to demonstrate creating an average metric.
+     *
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
@@ -28,19 +29,19 @@ public class CreateAverageMetricSample {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
         OnlineExperimentationClient client = new OnlineExperimentationClientBuilder()
-            .endpoint(endpoint)
-            .credential(credential)
-            .buildClient();
+                .endpoint(endpoint)
+                .credential(credential)
+                .buildClient();
 
         // Define the Average metric - calculates the mean of a numeric value across events
         ExperimentMetric avgRevenueMetric = new ExperimentMetric()
-            .setLifecycle(LifecycleStage.ACTIVE)
-            .setDisplayName("Average revenue per purchase")
-            .setDescription("The average revenue per purchase transaction in USD")
-            .setCategories(Arrays.asList("Business"))
-            .setDesiredDirection(DesiredDirection.INCREASE)
-            .setDefinition(new AverageMetricDefinition()
-                .setValue(new AggregatedValue().setEventName("Purchase").setEventProperty("Revenue")));
+                .setLifecycle(LifecycleStage.ACTIVE)
+                .setDisplayName("Average revenue per purchase")
+                .setDescription("The average revenue per purchase transaction in USD")
+                .setCategories(Arrays.asList("Business"))
+                .setDesiredDirection(DesiredDirection.INCREASE)
+                .setDefinition(new AverageMetricDefinition()
+                        .setValue(new AggregatedValue().setEventName("Purchase").setEventProperty("Revenue")));
 
         // Create the metric
         ExperimentMetric response = client.createOrUpdateMetric("avg_revenue_per_purchase", avgRevenueMetric);

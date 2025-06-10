@@ -20,6 +20,7 @@ public class CreatePercentileMetricSample {
 
     /**
      * Main method to demonstrate creating a percentile metric.
+     *
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
@@ -28,20 +29,21 @@ public class CreatePercentileMetricSample {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
         OnlineExperimentationClient client = new OnlineExperimentationClientBuilder()
-            .endpoint(endpoint)
-            .credential(credential)
-            .buildClient();
+                .endpoint(endpoint)
+                .credential(credential)
+                .buildClient();
 
         // Define the Percentile metric - calculates a specific percentile of a numeric value
         ExperimentMetric p95ResponseTimeMetric = new ExperimentMetric()
-            .setLifecycle(LifecycleStage.ACTIVE)
-            .setDisplayName("P95 LLM response time [seconds]")
-            .setDescription("The 95th percentile of response time in seconds for LLM responses")
-            .setCategories(Arrays.asList("Performance"))
-            .setDesiredDirection(DesiredDirection.DECREASE)
-            .setDefinition(new PercentileMetricDefinition()
-                .setValue(new AggregatedValue().setEventName("ResponseReceived").setEventProperty("ResponseTimeSeconds"))
-                .setPercentile(95));
+                .setLifecycle(LifecycleStage.ACTIVE)
+                .setDisplayName("P95 LLM response time [seconds]")
+                .setDescription("The 95th percentile of response time in seconds for LLM responses")
+                .setCategories(Arrays.asList("Performance"))
+                .setDesiredDirection(DesiredDirection.DECREASE)
+                .setDefinition(new PercentileMetricDefinition()
+                        .setValue(new AggregatedValue().setEventName("ResponseReceived")
+                                .setEventProperty("ResponseTimeSeconds"))
+                        .setPercentile(95));
 
         // Create the metric
         ExperimentMetric response = client.createOrUpdateMetric("p95_response_time_seconds", p95ResponseTimeMetric);

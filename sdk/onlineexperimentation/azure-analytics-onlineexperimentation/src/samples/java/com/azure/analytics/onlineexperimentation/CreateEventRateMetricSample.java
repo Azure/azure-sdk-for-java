@@ -20,6 +20,7 @@ public class CreateEventRateMetricSample {
 
     /**
      * Main method to demonstrate creating an event rate metric.
+     *
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
@@ -28,18 +29,20 @@ public class CreateEventRateMetricSample {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
         OnlineExperimentationClient client = new OnlineExperimentationClientBuilder()
-            .endpoint(endpoint)
-            .credential(credential)
-            .buildClient();
+                .endpoint(endpoint)
+                .credential(credential)
+                .buildClient();
 
         // Define the Event Rate metric - measures a percentage of events meeting a condition
         ExperimentMetric relevanceMetric = new ExperimentMetric()
-            .setLifecycle(LifecycleStage.ACTIVE)
-            .setDisplayName("% evaluated conversations with good relevance")
-            .setDescription("Percentage of evaluated conversations where the LLM response has good relevance (score >= 4)")
-            .setCategories(Arrays.asList("Quality"))
-            .setDesiredDirection(DesiredDirection.INCREASE)
-            .setDefinition(new EventRateMetricDefinition().setEvent(new ObservedEvent("EvaluateLLM")).setRateCondition("Relevance > 4"));
+                .setLifecycle(LifecycleStage.ACTIVE)
+                .setDisplayName("% evaluated conversations with good relevance")
+                .setDescription(
+                        "Percentage of evaluated conversations where the LLM response has good relevance (score >= 4)")
+                .setCategories(Arrays.asList("Quality"))
+                .setDesiredDirection(DesiredDirection.INCREASE)
+                .setDefinition(new EventRateMetricDefinition().setEvent(new ObservedEvent("EvaluateLLM"))
+                        .setRateCondition("Relevance > 4"));
 
         // Create the metric
         ExperimentMetric response = client.createOrUpdateMetric("momo_pct_relevance_good", relevanceMetric);

@@ -21,6 +21,7 @@ public class CreatePercentileMetricSampleAsync {
 
     /**
      * Main method to demonstrate creating a percentile metric asynchronously.
+     *
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
@@ -29,27 +30,28 @@ public class CreatePercentileMetricSampleAsync {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
         OnlineExperimentationAsyncClient client = new OnlineExperimentationClientBuilder()
-            .endpoint(endpoint)
-            .credential(credential)
-            .buildAsyncClient();
+                .endpoint(endpoint)
+                .credential(credential)
+                .buildAsyncClient();
 
         // Define the Percentile metric - calculates a specific percentile of a numeric value
         ExperimentMetric p95ResponseTimeMetric = new ExperimentMetric()
-            .setLifecycle(LifecycleStage.ACTIVE)
-            .setDisplayName("P95 LLM response time [seconds]")
-            .setDescription("The 95th percentile of response time in seconds for LLM responses")
-            .setCategories(Arrays.asList("Performance"))
-            .setDesiredDirection(DesiredDirection.DECREASE)
-            .setDefinition(new PercentileMetricDefinition()
-                .setValue(new AggregatedValue().setEventName("ResponseReceived").setEventProperty("ResponseTimeSeconds"))
-                .setPercentile(95));
+                .setLifecycle(LifecycleStage.ACTIVE)
+                .setDisplayName("P95 LLM response time [seconds]")
+                .setDescription("The 95th percentile of response time in seconds for LLM responses")
+                .setCategories(Arrays.asList("Performance"))
+                .setDesiredDirection(DesiredDirection.DECREASE)
+                .setDefinition(new PercentileMetricDefinition()
+                        .setValue(new AggregatedValue().setEventName("ResponseReceived")
+                                .setEventProperty("ResponseTimeSeconds"))
+                        .setPercentile(95));
 
         // Create the metric asynchronously
         client.createOrUpdateMetric("p95_response_time_seconds", p95ResponseTimeMetric)
-            .subscribe(response -> {
-                System.out.printf("Created metric: %s%n", response.getId());
-            },
-            error -> System.err.println("An error occurred while creating the metric: " + error));
+                .subscribe(response -> {
+                    System.out.printf("Created metric: %s%n", response.getId());
+                },
+                        error -> System.err.println("An error occurred while creating the metric: " + error));
         // END: com.azure.analytics.onlineexperimentation.createpercentilemetricasync
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep

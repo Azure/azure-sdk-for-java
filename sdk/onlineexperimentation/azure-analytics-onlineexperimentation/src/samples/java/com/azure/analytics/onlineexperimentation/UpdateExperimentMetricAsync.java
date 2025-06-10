@@ -16,6 +16,7 @@ public class UpdateExperimentMetricAsync {
 
     /**
      * Main method to demonstrate updating a metric asynchronously.
+     *
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
@@ -24,27 +25,28 @@ public class UpdateExperimentMetricAsync {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
         OnlineExperimentationAsyncClient client = new OnlineExperimentationClientBuilder()
-            .endpoint(endpoint)
-            .credential(credential)
-            .buildAsyncClient();
+                .endpoint(endpoint)
+                .credential(credential)
+                .buildAsyncClient();
 
         // First, get the existing metric
         client.getMetric("avg_revenue_per_purchase")
-            .flatMap(existingMetric -> {
-                // Update the metric - the createOrUpdate method is used for both creating and updating
-                return client.updateMetric(
-                    existingMetric.getId(),
-                    new ExperimentMetric()
-                        .setDisplayName("Average revenue per purchase [USD]")
-                        .setDescription("The average revenue per purchase transaction in USD. Refund transactions are excluded."),
-                    existingMetric.getETag());
-            })
-            .subscribe(updatedMetric -> {
-                System.out.printf("Updated metric: %s%n", updatedMetric.getId());
-                System.out.printf("New display name: %s%n", updatedMetric.getDisplayName());
-                System.out.printf("New description: %s%n", updatedMetric.getDescription());
-            },
-            error -> System.err.println("An error occurred while updating the metric: " + error));
+                .flatMap(existingMetric -> {
+                    // Update the metric - the createOrUpdate method is used for both creating and updating
+                    return client.updateMetric(
+                            existingMetric.getId(),
+                            new ExperimentMetric()
+                                    .setDisplayName("Average revenue per purchase [USD]")
+                                    .setDescription(
+                                            "The average revenue per purchase transaction in USD. Refund transactions are excluded."),
+                            existingMetric.getETag());
+                })
+                .subscribe(updatedMetric -> {
+                    System.out.printf("Updated metric: %s%n", updatedMetric.getId());
+                    System.out.printf("New display name: %s%n", updatedMetric.getDisplayName());
+                    System.out.printf("New description: %s%n", updatedMetric.getDescription());
+                },
+                        error -> System.err.println("An error occurred while updating the metric: " + error));
         // END: com.azure.analytics.onlineexperimentation.updatemetricasync
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep

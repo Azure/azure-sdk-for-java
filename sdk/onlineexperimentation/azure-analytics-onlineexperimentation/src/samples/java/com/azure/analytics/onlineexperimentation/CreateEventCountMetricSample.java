@@ -20,6 +20,7 @@ public class CreateEventCountMetricSample {
 
     /**
      * Main method to demonstrate creating an event count metric.
+     *
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
@@ -28,18 +29,18 @@ public class CreateEventCountMetricSample {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
         OnlineExperimentationClient client = new OnlineExperimentationClientBuilder()
-            .endpoint(endpoint)
-            .credential(credential)
-            .buildClient();
+                .endpoint(endpoint)
+                .credential(credential)
+                .buildClient();
 
         // Define the Event Count metric - counts all occurrences of a specific event type
         ExperimentMetric promptSentMetric = new ExperimentMetric()
-            .setLifecycle(LifecycleStage.ACTIVE)
-            .setDisplayName("Total number of prompts sent")
-            .setDescription("Counts the total number of prompts sent by users to the chatbot")
-            .setCategories(Arrays.asList("Usage"))
-            .setDesiredDirection(DesiredDirection.INCREASE)
-            .setDefinition(new EventCountMetricDefinition().setEvent(new ObservedEvent("PromptSent")));
+                .setLifecycle(LifecycleStage.ACTIVE)
+                .setDisplayName("Total number of prompts sent")
+                .setDescription("Counts the total number of prompts sent by users to the chatbot")
+                .setCategories(Arrays.asList("Usage"))
+                .setDesiredDirection(DesiredDirection.INCREASE)
+                .setDefinition(new EventCountMetricDefinition().setEvent(new ObservedEvent("PromptSent")));
 
         // Create the metric with ID "prompt_sent_count"
         ExperimentMetric response = client.createOrUpdateMetric("prompt_sent_count", promptSentMetric);
