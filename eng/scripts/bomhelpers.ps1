@@ -46,6 +46,10 @@ function GetAllAzComClientArtifactsFromMaven($GroupId = "com.azure") {
   $groupPath = $GroupId -replace '\.', '/'
   $webResponseObj = Invoke-WebRequest -Uri "https://repo1.maven.org/maven2/$groupPath"
   $azureComArtifactIds = $webResponseObj.Links.HRef | Where-Object { ($_ -like 'azure-*') -and ($IgnoreList -notcontains $_) } |  ForEach-Object { $_.substring(0, $_.length - 1) }
+  # for resourcemanager, only include handwritten libraries
+  if ("com.azure.resourcemanager" -eq $GroupId) {
+    return GetAllAzComResourceManagerArtifactIds
+  }
   return $azureComArtifactIds | Where-Object { ($_ -like "azure-*") -and !($_ -like "azure-spring") }
 }
 
@@ -236,6 +240,11 @@ function GeneratePatches($ArtifactPatchInfos, [string]$BranchName, [string]$Remo
 function GetCurrentBranchName() {
   Write-Host "git rev-parse --abbrev-ref HEAD"
   return git rev-parse --abbrev-ref HEAD
+}
+
+
+function GetAllAzComResourceManagerArtifactIds() {
+    return @("azure-resourcemanager", "azure-resourcemanager-appplatform", "azure-resourcemanager-appservice", "azure-resourcemanager-authorization", "azure-resourcemanager-cdn", "azure-resourcemanager-compute", "azure-resourcemanager-containerinstance", "azure-resourcemanager-containerregistry", "azure-resourcemanager-containerservice", "azure-resourcemanager-cosmos", "azure-resourcemanager-dns", "azure-resourcemanager-eventhubs", "azure-resourcemanager-keyvault", "azure-resourcemanager-monitor", "azure-resourcemanager-msi", "azure-resourcemanager-network", "azure-resourcemanager-privatedns", "azure-resourcemanager-redis", "azure-resourcemanager-resources", "azure-resourcemanager-search", "azure-resourcemanager-servicebus", "azure-resourcemanager-sql", "azure-resourcemanager-storage", "azure-resourcemanager-trafficmanager")
 }
 
 <# This method generates the patch for a given artifact by doing the following

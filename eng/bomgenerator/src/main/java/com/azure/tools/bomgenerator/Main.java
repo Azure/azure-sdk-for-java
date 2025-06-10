@@ -4,8 +4,12 @@
 package com.azure.tools.bomgenerator;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import static com.azure.tools.bomgenerator.Utils.ANALYZE_MODE;
+import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_GROUP_IDS;
 import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_INPUTDIRECTORY;
 import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_OUTPUTDIRECTORY;
 import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_MODE;
@@ -34,6 +38,7 @@ public class Main {
 
     private static BomGenerator parseCommandLine(String[] args) throws FileNotFoundException {
         String inputDir = null, outputDir = null, mode = null;
+        List<String> groupIds = null;
         for (String arg : args) {
             Matcher matcher = COMMANDLINE_REGEX.matcher(arg);
             if (matcher.matches()) {
@@ -57,6 +62,9 @@ public class Main {
                             validateValues(argName, argValue, GENERATE_MODE, ANALYZE_MODE);
                             mode = argValue;
                             break;
+
+                        case COMMANDLINE_GROUP_IDS:
+                            groupIds = Arrays.asList(argValue.split(","));
                     }
                 }
 
@@ -65,7 +73,7 @@ public class Main {
 
         validateNotNullOrEmpty(inputDir, "inputDir");
         validateNotNullOrEmpty(outputDir, "outputDir");
-        BomGenerator generator = new BomGenerator(inputDir, outputDir, mode);
+        BomGenerator generator = new BomGenerator(inputDir, outputDir, mode, groupIds);
         return generator;
     }
 }

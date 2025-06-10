@@ -38,9 +38,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.azure.tools.bomgenerator.Utils.ANALYZE_MODE;
@@ -69,16 +72,26 @@ public class BomGenerator {
     private String mode;
     private String outputDirectory;
     private String inputDirectory;
+    private final Pattern sdkDependencyPattern;
+    private final Set<String> groupIds;
 
     private static Logger logger = LoggerFactory.getLogger(BomGenerator.class);
 
-    BomGenerator(String inputDirectory, String outputDirectory, String mode) throws FileNotFoundException {
+    BomGenerator(String inputDirectory, String outputDirectory, String mode, List<String> groupIds) throws FileNotFoundException {
         validateNotNullOrEmpty(inputDirectory, "inputDirectory");
         validateNotNullOrEmpty(outputDirectory, "outputDirectory");
 
         this.inputDirectory = inputDirectory;
         this.outputDirectory = outputDirectory;
         this.mode = (mode == null ? GENERATE_MODE : mode);
+        if (groupIds == null || groupIds.isEmpty()) {
+            logger.warn("groupIds null, will use com.azure");
+            this.groupIds = Set.of(BASE_AZURE_GROUPID);
+            this.sdkDependencyPattern = SDK_DEPENDENCY_PATTERN;
+        } else {
+            this.groupIds = new HashSet<>(groupIds);
+            this.sdkDependencyPattern = Pattern.compile(String.format("(%s):(.+);(.+);(.+)", String.join("|", this.groupIds)));
+        }
 
         parseInputs();
         validateInputs();
@@ -244,17 +257,18 @@ public class BomGenerator {
     }
 
     private BomDependency scanDependency(String line) {
-        Matcher matcher = SDK_DEPENDENCY_PATTERN.matcher(line);
+        Matcher matcher = sdkDependencyPattern.matcher(line);
         if (!matcher.matches()) {
             return null;
         }
 
-        if (matcher.groupCount() != 3) {
+        if (matcher.groupCount() != 4) {
             return null;
         }
 
-        String artifactId = matcher.group(1);
-        String version = matcher.group(2);
+        String groupId = matcher.group(1);
+        String artifactId = matcher.group(2);
+        String version = matcher.group(3);
 
         if(version.contains("-")) {
             // This is a non-GA library
@@ -264,11 +278,11 @@ public class BomGenerator {
         if (EXCLUSION_LIST.contains(artifactId)
             || artifactId.contains(AZURE_PERF_LIBRARY_IDENTIFIER)
             || (artifactId.contains(AZURE_TEST_LIBRARY_IDENTIFIER))) {
-            logger.trace("Skipping dependency {}:{}", BASE_AZURE_GROUPID, artifactId);
+            logger.trace("Skipping dependency {}:{}", groupId, artifactId);
             return null;
         }
 
-        return new BomDependency(BASE_AZURE_GROUPID, artifactId, version);
+        return new BomDependency(groupId, artifactId, version);
     }
 
     private Model readModel() {
@@ -338,7 +352,7 @@ public class BomGenerator {
         dependencies.sort(new DependencyComparator());
 
         // Remove external dependencies from the BOM.
-        dependencies = dependencies.stream().filter(dependency -> BASE_AZURE_GROUPID.equals(dependency.getGroupId())).collect(Collectors.toList());
+        dependencies = dependencies.stream().filter(dependency -> groupIds.contains(dependency.getGroupId())).collect(Collectors.toList());
         management.setDependencies(dependencies);
         writeModel(this.pomFileName, this.outputFileName, model);
     }
