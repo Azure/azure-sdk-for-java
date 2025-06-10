@@ -320,6 +320,10 @@ public class KubernetesClusterAgentPoolImpl
         agentPoolInner.withSecurityProfile(innerModel().securityProfile());
         agentPoolInner.withMessageOfTheDay(innerModel().messageOfTheDay());
         agentPoolInner.withPodIpAllocationMode(innerModel().podIpAllocationMode());
+        agentPoolInner.withGatewayProfile(innerModel().gatewayProfile());
+        agentPoolInner.withVirtualMachinesProfile(innerModel().virtualMachinesProfile());
+        agentPoolInner.withVirtualMachineNodesStatus(innerModel().virtualMachineNodesStatus());
+        agentPoolInner.withStatus(innerModel().status());
         return agentPoolInner;
     }
 
