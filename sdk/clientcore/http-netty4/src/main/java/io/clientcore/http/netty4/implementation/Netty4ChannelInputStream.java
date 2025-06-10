@@ -211,7 +211,7 @@ public final class Netty4ChannelInputStream extends InputStream {
 
                 additionalBuffers.add(buffer);
             });
-            channel.pipeline().addLast(handler);
+            channel.pipeline().addLast(Netty4HandlerNames.READ_ONE, handler);
             channel.read();
 
             Netty4Utility.awaitLatch(latch);

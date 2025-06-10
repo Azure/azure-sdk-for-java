@@ -7,7 +7,6 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.ServerSentEventUtils;
@@ -23,7 +22,6 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.LastHttpContent;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
@@ -202,8 +200,9 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
                 // We're ignoring the response content.
                 CountDownLatch latch = new CountDownLatch(1);
                 eagerContent = null;
-                ctx.pipeline().addLast(new Netty4EagerConsumeChannelHandler(latch, ignored -> {
-                }));
+                ctx.pipeline().addLast(Netty4HandlerNames.EAGER_CONSUME, new Netty4EagerConsumeChannelHandler(latch,
+                    ignored -> {
+                    }));
                 awaitLatch(latch);
             } else if (bodyHandling == BodyHandling.STREAM) {
                 // Body streaming uses a special BinaryData that tracks the firstContent read and the Channel it came
@@ -224,13 +223,8 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
             } else {
                 // All cases otherwise assume BUFFER.
                 CountDownLatch latch = new CountDownLatch(1);
-                ctx.pipeline().addLast(new Netty4EagerConsumeChannelHandler(latch, buf -> {
-                    try {
-                        buf.readBytes(eagerContent, buf.readableBytes());
-                    } catch (IOException ex) {
-                        throw LOGGER.throwableAtError().log(ex, CoreException::from);
-                    }
-                }));
+                ctx.pipeline().addLast(Netty4HandlerNames.EAGER_CONSUME, new Netty4EagerConsumeChannelHandler(latch,
+                    buf -> buf.readBytes(eagerContent, buf.readableBytes())));
                 awaitLatch(latch);
 
                 body = BinaryData.fromBytes(eagerContent.toByteArray());
