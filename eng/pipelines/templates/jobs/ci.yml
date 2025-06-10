@@ -460,6 +460,7 @@ jobs:
       ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
         EnablePRGeneration: true
         PRMatrixSparseIndirect: true
+        PRJobBatchSize: 20
         # This key will use the PackageInfo.Name to populate the ArtifactPackageNames
         PRMatrixKey: 'Name'
         SparseCheckoutPaths:
