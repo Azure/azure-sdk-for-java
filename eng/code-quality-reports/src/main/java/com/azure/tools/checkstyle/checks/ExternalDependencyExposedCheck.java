@@ -3,7 +3,6 @@
 
 package com.azure.tools.checkstyle.checks;
 
-import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
@@ -16,7 +15,7 @@ import java.util.Map;
 /**
  *  No external dependency exposed in public API
  */
-public class ExternalDependencyExposedCheck extends AbstractCheck {
+public class ExternalDependencyExposedCheck extends ImplementationExcludingCheck {
     private static final String EXTERNAL_DEPENDENCY_ERROR =
         "Class ''%s'', is a class from external dependency. You should not use it as a %s type.";
 
@@ -25,54 +24,34 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
     private boolean isPublicClass;
 
     @Override
-    public void beginTree(DetailAST rootAST) {
+    public void beforeTree(DetailAST rootAST) {
         simpleClassNameToQualifiedNameMap.clear();
     }
 
     @Override
-    public int[] getDefaultTokens() {
-        return getRequiredTokens();
+    public int[] getTokensForCheck() {
+        return new int[] { TokenTypes.IMPORT, TokenTypes.CLASS_DEF, TokenTypes.METHOD_DEF };
     }
 
     @Override
-    public int[] getAcceptableTokens() {
-        return getRequiredTokens();
-    }
-
-    @Override
-    public int[] getRequiredTokens() {
-        return new int[] {
-            TokenTypes.IMPORT,
-            TokenTypes.CLASS_DEF,
-            TokenTypes.METHOD_DEF
-        };
-    }
-
-    @Override
-    public void visitToken(DetailAST token) {
-        switch (token.getType()) {
-            case TokenTypes.IMPORT:
-                // Add all imported classes into a map, key is the name of class and value is the full package
-                // path of class.
-                final String importClassPath = FullIdent.createFullIdentBelow(token).getText();
-                final String className = importClassPath.substring(importClassPath.lastIndexOf(".") + 1);
-                simpleClassNameToQualifiedNameMap.put(className, importClassPath);
-                break;
-            case TokenTypes.CLASS_DEF:
-                // CLASS_DEF always has MODIFIERS
-                final AccessModifierOption accessModifier = CheckUtil.getAccessModifierFromModifiersToken(token);
-                isPublicClass =
-                    accessModifier.equals(AccessModifierOption.PUBLIC) || accessModifier.equals(AccessModifierOption.PROTECTED);
-                break;
-            case TokenTypes.METHOD_DEF:
-                if (!isPublicClass) {
-                    return;
-                }
-                checkNoExternalDependencyExposed(token);
-                break;
-            default:
-                // Checkstyle complains if there's no default block in switch
-                break;
+    public void processToken(DetailAST token) {
+        int tokenType = token.getType();
+        if (tokenType == TokenTypes.IMPORT) {
+            // Add all imported classes into a map, key is the name of class and value is the full package
+            // path of class.
+            final String importClassPath = FullIdent.createFullIdentBelow(token).getText();
+            final String className = importClassPath.substring(importClassPath.lastIndexOf(".") + 1);
+            simpleClassNameToQualifiedNameMap.put(className, importClassPath);
+        } else if (tokenType == TokenTypes.CLASS_DEF) {
+            // CLASS_DEF always has MODIFIERS
+            final AccessModifierOption accessModifier = CheckUtil.getAccessModifierFromModifiersToken(token);
+            isPublicClass = accessModifier.equals(AccessModifierOption.PUBLIC) || accessModifier.equals(
+                AccessModifierOption.PROTECTED);
+        } else if (tokenType == TokenTypes.METHOD_DEF) {
+            if (!isPublicClass) {
+                return;
+            }
+            checkNoExternalDependencyExposed(token);
         }
     }
 
@@ -153,14 +132,13 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
     }
 
     /**
-     *  Get all invalid AST nodes from a given token. DFS tree traversal used to find all invalid nodes.
+     * Get all invalid AST nodes from a given token. DFS tree traversal used to find all invalid nodes.
      *
      * @param token TYPE_ARGUMENT, TYPE_ARGUMENTS or TYPE AST node
-     * @return a map that maps all the invalid node and the type name
      */
-    private Map<DetailAST, String> getInvalidParameterType(DetailAST token, Map<DetailAST, String> invalidTypesMap) {
+    private void getInvalidParameterType(DetailAST token, Map<DetailAST, String> invalidTypesMap) {
         if (token == null) {
-            return invalidTypesMap;
+            return;
         }
 
         for (DetailAST ast = token.getFirstChild(); ast != null; ast = ast.getNextSibling()) {
@@ -174,7 +152,6 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
                 getInvalidParameterType(ast, invalidTypesMap);
             }
         }
-        return invalidTypesMap;
     }
 
     /**
@@ -184,19 +161,18 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
      * @return true if the class is a suppression class, otherwise, return false.
      */
     private boolean isValidClassDependency(String typeName) {
+        String qualifiedName = simpleClassNameToQualifiedNameMap.get(typeName);
         // If the qualified class name does not exist in the map,
         // it implies the type is a primitive Java type (ie. int, long, etc).
-        if (!simpleClassNameToQualifiedNameMap.containsKey(typeName)) {
+        if (qualifiedName == null) {
             return true;
         }
 
-        final String qualifiedName = simpleClassNameToQualifiedNameMap.get(typeName);
-
-        return "com.azure.".regionMatches(0, qualifiedName, 0, 10)
-            || "io.clientcore.".regionMatches(0, qualifiedName, 0, 14)
-            || "java.".regionMatches(0, qualifiedName, 0, 5)
-            || "javax.".regionMatches(0, qualifiedName, 0, 6)
-            || "reactor.".regionMatches(0, qualifiedName, 0, 8)
-            || "org.reactivestreams.".regionMatches(0, qualifiedName, 0, 20);
+        return qualifiedName.startsWith("com.azure.")
+            || qualifiedName.startsWith("io.clientcore.")
+            || qualifiedName.startsWith("java.")
+            || qualifiedName.startsWith("javax.")
+            || qualifiedName.startsWith("reactor.")
+            || qualifiedName.startsWith("org.reactivestreams.");
     }
 }

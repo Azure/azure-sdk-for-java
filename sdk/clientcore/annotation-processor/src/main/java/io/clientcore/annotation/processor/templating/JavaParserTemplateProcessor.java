@@ -37,7 +37,6 @@ import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
@@ -49,6 +48,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.net.URI;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -256,28 +256,11 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         BlockStmt body = internalMethod.getBody().get();
 
         initializeHttpRequest(body, method);
-        setContentType(body, method);
-        boolean serializationFormatSet = RequestBodyHandler.configureRequestBody(body, method.getBody(), processingEnv);
+        boolean serializationFormatSet = RequestBodyHandler.configureRequestBody(body, method, processingEnv);
         addRequestContextToRequestIfPresent(body, method);
         finalizeHttpRequest(body, method.getMethodReturnType(), method, serializationFormatSet);
 
         internalMethod.setBody(body);
-    }
-
-    private void setContentType(BlockStmt body, HttpRequestContext method) {
-        final HttpRequestContext.Body requestBody = method.getBody();
-        if (requestBody == null || requestBody.getParameterType() == null) {
-            return;
-        }
-
-        boolean isContentTypeSetInHeaders
-            = method.getParameters().stream().anyMatch(p -> "contentType".equals(p.getName()));
-
-        // Header param to have precedence
-        if (!isContentTypeSetInHeaders) {
-            String contentType = requestBody.getContentType();
-            RequestBodyHandler.setContentTypeHeader(body, contentType);
-        }
     }
 
     private void writeFile(String packageName, String serviceInterfaceImplShortName,
@@ -353,8 +336,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                 .filter(param -> param.getVariableElement().getAnnotation(HostParam.class) != null)
                 .map(HttpRequestContext.MethodParameter::getName)
                 .collect(Collectors.joining(" + "));
-
-            if (CoreUtils.isNullOrEmpty(concatenatedHostParams)) {
+            if (method.isUriNextLink() || CoreUtils.isNullOrEmpty(concatenatedHostParams)) {
                 urlStatement = method.getHost();
             } else {
                 urlStatement = concatenatedHostParams + " + \"/\" + " + method.getHost();
@@ -436,17 +418,14 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
     }
 
     /**
-     * Adds headers to the HttpRequest using the provided HttpRequestContext.
-     * Handles both static and dynamic headers, and applies correct quoting logic for static values.
+     * Adds headers to the HttpRequest using the provided HttpRequestContext. Handles both static and dynamic headers,
+     * and applies correct quoting logic for static values.
      * <p>
-     * Quoting logic:
-     * - If value starts and ends with ", use as-is.
-     * - If starts with ", append trailing ".
-     * - If ends with ", prepend leading ".
-     * - Otherwise, wrap value in quotes.
+     * Quoting logic: - If value starts and ends with ", use as-is. - If starts with ", append trailing ". - If ends
+     * with ", prepend leading ". - Otherwise, wrap value in quotes.
      * <p>
-     * For dynamic headers (parameter-based), values are not quoted.
-     * For static headers (literal values), quoting is always applied.
+     * For dynamic headers (parameter-based), values are not quoted. For static headers (literal values), quoting is
+     * always applied.
      * <p>
      */
     private void addHeadersToRequest(BlockStmt body, HttpRequestContext method) {
@@ -462,6 +441,10 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             // Start building the header addition for the HttpRequest.
             StringBuilder addHeader = new StringBuilder();
 
+            String constantName = LOWERCASE_HEADER_TO_HTTPHEADENAME_CONSTANT.get(headerKey.toLowerCase(Locale.ROOT));
+            if ("CONTENT_TYPE".equals(constantName)) {
+                continue;
+            }
             if (headerValues.isEmpty()) {
                 // If headerValues is empty, skip adding this header.
                 continue;
@@ -490,6 +473,11 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                         // Dynamic header: use parameter name directly.
                         ifCheck = value + " != null";
                         valueExpression = value;
+                    } else if ("OffsetDateTime".equals(paramType)) {
+                        // Special case for OffsetDateTime, format it to ISO_INSTANT.
+                        body.tryAddImportToParentCompilationUnit(DateTimeFormatter.class);
+                        ifCheck = value + " != null";
+                        valueExpression = value + ".format(DateTimeFormatter.ISO_INSTANT)";
                     } else {
                         if (!paramOpt.get().getTypeMirror().getKind().isPrimitive()) {
                             ifCheck = value + " != null";
@@ -502,7 +490,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                 }
             }
 
-            String constantName = LOWERCASE_HEADER_TO_HTTPHEADENAME_CONSTANT.get(headerKey.toLowerCase(Locale.ROOT));
             if (constantName != null) {
                 addHeader.append("httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.")
                     .append(constantName)
@@ -531,7 +518,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
 
     private void finalizeHttpRequest(BlockStmt body, TypeMirror returnTypeName, HttpRequestContext method,
         boolean serializationFormatSet) {
-        body.tryAddImportToParentCompilationUnit(Response.class);
         generateResponseHandling(body, returnTypeName, method, serializationFormatSet);
     }
 }

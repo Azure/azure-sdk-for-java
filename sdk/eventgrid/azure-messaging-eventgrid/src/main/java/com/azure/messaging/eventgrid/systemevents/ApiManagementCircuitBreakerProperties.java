@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,11 +22,13 @@ public final class ApiManagementCircuitBreakerProperties
     /*
      * Overview of all configured rules and respective details.
      */
+    @Generated
     private Map<String, Object> rules;
 
     /**
      * Creates an instance of ApiManagementCircuitBreakerProperties class.
      */
+    @Generated
     public ApiManagementCircuitBreakerProperties() {
     }
 
@@ -34,6 +37,7 @@ public final class ApiManagementCircuitBreakerProperties
      * 
      * @return the rules value.
      */
+    @Generated
     public Map<String, Object> getRules() {
         return this.rules;
     }
@@ -44,6 +48,7 @@ public final class ApiManagementCircuitBreakerProperties
      * @param rules the rules value to set.
      * @return the ApiManagementCircuitBreakerProperties object itself.
      */
+    @Generated
     public ApiManagementCircuitBreakerProperties setRules(Map<String, Object> rules) {
         this.rules = rules;
         return this;
@@ -52,6 +57,7 @@ public final class ApiManagementCircuitBreakerProperties
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -67,6 +73,7 @@ public final class ApiManagementCircuitBreakerProperties
      * or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ApiManagementCircuitBreakerProperties.
      */
+    @Generated
     public static ApiManagementCircuitBreakerProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ApiManagementCircuitBreakerProperties deserializedApiManagementCircuitBreakerProperties

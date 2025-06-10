@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -17,41 +18,49 @@ public final class RegexFlags extends ExpandableStringEnum<RegexFlags> {
     /**
      * Enables canonical equivalence.
      */
+    @Generated
     public static final RegexFlags CANON_EQ = fromString("CANON_EQ");
 
     /**
      * Enables case-insensitive matching.
      */
+    @Generated
     public static final RegexFlags CASE_INSENSITIVE = fromString("CASE_INSENSITIVE");
 
     /**
      * Permits whitespace and comments in the pattern.
      */
+    @Generated
     public static final RegexFlags COMMENTS = fromString("COMMENTS");
 
     /**
      * Enables dotall mode.
      */
+    @Generated
     public static final RegexFlags DOT_ALL = fromString("DOTALL");
 
     /**
      * Enables literal parsing of the pattern.
      */
+    @Generated
     public static final RegexFlags LITERAL = fromString("LITERAL");
 
     /**
      * Enables multiline mode.
      */
+    @Generated
     public static final RegexFlags MULTILINE = fromString("MULTILINE");
 
     /**
      * Enables Unicode-aware case folding.
      */
+    @Generated
     public static final RegexFlags UNICODE_CASE = fromString("UNICODE_CASE");
 
     /**
      * Enables Unix lines mode.
      */
+    @Generated
     public static final RegexFlags UNIX_LINES = fromString("UNIX_LINES");
 
     /**
@@ -59,6 +68,7 @@ public final class RegexFlags extends ExpandableStringEnum<RegexFlags> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public RegexFlags() {
     }
@@ -69,6 +79,7 @@ public final class RegexFlags extends ExpandableStringEnum<RegexFlags> {
      * @param name a name to look for.
      * @return the corresponding RegexFlags.
      */
+    @Generated
     public static RegexFlags fromString(String name) {
         return fromString(name, RegexFlags.class);
     }
@@ -78,6 +89,7 @@ public final class RegexFlags extends ExpandableStringEnum<RegexFlags> {
      * 
      * @return known RegexFlags values.
      */
+    @Generated
     public static Collection<RegexFlags> values() {
         return values(RegexFlags.class);
     }

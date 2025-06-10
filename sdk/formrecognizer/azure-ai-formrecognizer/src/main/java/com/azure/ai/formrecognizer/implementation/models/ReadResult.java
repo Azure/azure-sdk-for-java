@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.ai.formrecognizer.models.LengthUnit;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,27 +22,32 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
     /*
      * The 1-based page number in the input document.
      */
+    @Generated
     private int page;
 
     /*
      * The general orientation of the text in clockwise direction, measured in degrees between (-180, 180].
      */
+    @Generated
     private float angle;
 
     /*
      * The width of the image/PDF in pixels/inches, respectively.
      */
+    @Generated
     private float width;
 
     /*
      * The height of the image/PDF in pixels/inches, respectively.
      */
+    @Generated
     private float height;
 
     /*
      * The unit used by the width, height and boundingBox properties. For images, the unit is "pixel". For PDF, the unit
      * is "inch".
      */
+    @Generated
     private LengthUnit unit;
 
     /*
@@ -50,16 +56,19 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
      * with higher priority. As the sorting order depends on the detected text, it may change across images and OCR
      * version updates. Thus, business logic should be built upon the actual line location instead of order.
      */
+    @Generated
     private List<TextLine> lines;
 
     /*
      * List of selection marks extracted from the page.
      */
+    @Generated
     private List<SelectionMark> selectionMarks;
 
     /**
      * Creates an instance of ReadResult class.
      */
+    @Generated
     public ReadResult() {
     }
 
@@ -68,6 +77,7 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
      * 
      * @return the page value.
      */
+    @Generated
     public int getPage() {
         return this.page;
     }
@@ -78,6 +88,7 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
      * @param page the page value to set.
      * @return the ReadResult object itself.
      */
+    @Generated
     public ReadResult setPage(int page) {
         this.page = page;
         return this;
@@ -89,6 +100,7 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
      * 
      * @return the angle value.
      */
+    @Generated
     public float getAngle() {
         return this.angle;
     }
@@ -100,6 +112,7 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
      * @param angle the angle value to set.
      * @return the ReadResult object itself.
      */
+    @Generated
     public ReadResult setAngle(float angle) {
         this.angle = angle;
         return this;
@@ -110,6 +123,7 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
      * 
      * @return the width value.
      */
+    @Generated
     public float getWidth() {
         return this.width;
     }
@@ -120,6 +134,7 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
      * @param width the width value to set.
      * @return the ReadResult object itself.
      */
+    @Generated
     public ReadResult setWidth(float width) {
         this.width = width;
         return this;
@@ -130,6 +145,7 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
      * 
      * @return the height value.
      */
+    @Generated
     public float getHeight() {
         return this.height;
     }
@@ -140,6 +156,7 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
      * @param height the height value to set.
      * @return the ReadResult object itself.
      */
+    @Generated
     public ReadResult setHeight(float height) {
         this.height = height;
         return this;
@@ -151,6 +168,7 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
      * 
      * @return the unit value.
      */
+    @Generated
     public LengthUnit getUnit() {
         return this.unit;
     }
@@ -162,6 +180,7 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
      * @param unit the unit value to set.
      * @return the ReadResult object itself.
      */
+    @Generated
     public ReadResult setUnit(LengthUnit unit) {
         this.unit = unit;
         return this;
@@ -176,6 +195,7 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
      * 
      * @return the lines value.
      */
+    @Generated
     public List<TextLine> getLines() {
         return this.lines;
     }
@@ -190,6 +210,7 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
      * @param lines the lines value to set.
      * @return the ReadResult object itself.
      */
+    @Generated
     public ReadResult setLines(List<TextLine> lines) {
         this.lines = lines;
         return this;
@@ -200,6 +221,7 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
      * 
      * @return the selectionMarks value.
      */
+    @Generated
     public List<SelectionMark> getSelectionMarks() {
         return this.selectionMarks;
     }
@@ -210,6 +232,7 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
      * @param selectionMarks the selectionMarks value to set.
      * @return the ReadResult object itself.
      */
+    @Generated
     public ReadResult setSelectionMarks(List<SelectionMark> selectionMarks) {
         this.selectionMarks = selectionMarks;
         return this;
@@ -218,6 +241,7 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -241,6 +265,7 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ReadResult.
      */
+    @Generated
     public static ReadResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ReadResult deserializedReadResult = new ReadResult();

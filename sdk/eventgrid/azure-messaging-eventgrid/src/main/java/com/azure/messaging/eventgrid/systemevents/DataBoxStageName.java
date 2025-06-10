@@ -4,6 +4,7 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class DataBoxStageName extends ExpandableStringEnum<DataBoxStageNam
     /**
      * Copy has started.
      */
+    @Generated
     public static final DataBoxStageName COPY_STARTED = fromString("CopyStarted");
 
     /**
      * Copy has completed.
      */
+    @Generated
     public static final DataBoxStageName COPY_COMPLETED = fromString("CopyCompleted");
 
     /**
      * Order has been completed.
      */
+    @Generated
     public static final DataBoxStageName ORDER_COMPLETED = fromString("OrderCompleted");
 
     /**
@@ -31,6 +35,7 @@ public final class DataBoxStageName extends ExpandableStringEnum<DataBoxStageNam
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DataBoxStageName() {
     }
@@ -41,6 +46,7 @@ public final class DataBoxStageName extends ExpandableStringEnum<DataBoxStageNam
      * @param name a name to look for.
      * @return the corresponding DataBoxStageName.
      */
+    @Generated
     public static DataBoxStageName fromString(String name) {
         return fromString(name, DataBoxStageName.class);
     }
@@ -50,6 +56,7 @@ public final class DataBoxStageName extends ExpandableStringEnum<DataBoxStageNam
      * 
      * @return known DataBoxStageName values.
      */
+    @Generated
     public static Collection<DataBoxStageName> values() {
         return values(DataBoxStageName.class);
     }

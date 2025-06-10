@@ -4,6 +4,7 @@
 
 package com.azure.maps.search.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,46 +15,55 @@ public final class BoundaryResultTypeEnum extends ExpandableStringEnum<BoundaryR
     /**
      * Country or region.
      */
+    @Generated
     public static final BoundaryResultTypeEnum COUNTRY_REGION = fromString("countryRegion");
 
     /**
      * First administrative level within the country/region level, such as a state or a province.
      */
+    @Generated
     public static final BoundaryResultTypeEnum ADMIN_DISTRICT = fromString("adminDistrict");
 
     /**
      * Second administrative level within the country/region level, such as a county.
      */
+    @Generated
     public static final BoundaryResultTypeEnum ADMIN_DISTRICT2 = fromString("adminDistrict2");
 
     /**
      * The smallest post code category, such as a zip code.
      */
+    @Generated
     public static final BoundaryResultTypeEnum POSTAL_CODE = fromString("postalCode");
 
     /**
      * The next largest post code category after postalCode that is created by aggregating postalCode areas.
      */
+    @Generated
     public static final BoundaryResultTypeEnum POSTAL_CODE2 = fromString("postalCode2");
 
     /**
      * The next largest post code category after postalCode2 that is created by aggregating postalCode2 areas.
      */
+    @Generated
     public static final BoundaryResultTypeEnum POSTAL_CODE3 = fromString("postalCode3");
 
     /**
      * The next largest post code category after postalCode3 that is created by aggregating postalCode3 areas.
      */
+    @Generated
     public static final BoundaryResultTypeEnum POSTAL_CODE4 = fromString("postalCode4");
 
     /**
      * A section of a populated place that is typically well-known, but often with indistinct boundaries.
      */
+    @Generated
     public static final BoundaryResultTypeEnum NEIGHBORHOOD = fromString("neighborhood");
 
     /**
      * A concentrated area of human settlement, such as a city, town or village.
      */
+    @Generated
     public static final BoundaryResultTypeEnum LOCALITY = fromString("locality");
 
     /**
@@ -61,6 +71,7 @@ public final class BoundaryResultTypeEnum extends ExpandableStringEnum<BoundaryR
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public BoundaryResultTypeEnum() {
     }
@@ -71,6 +82,7 @@ public final class BoundaryResultTypeEnum extends ExpandableStringEnum<BoundaryR
      * @param name a name to look for.
      * @return the corresponding BoundaryResultTypeEnum.
      */
+    @Generated
     public static BoundaryResultTypeEnum fromString(String name) {
         return fromString(name, BoundaryResultTypeEnum.class);
     }
@@ -80,6 +92,7 @@ public final class BoundaryResultTypeEnum extends ExpandableStringEnum<BoundaryR
      * 
      * @return known BoundaryResultTypeEnum values.
      */
+    @Generated
     public static Collection<BoundaryResultTypeEnum> values() {
         return values(BoundaryResultTypeEnum.class);
     }

@@ -10,14 +10,7 @@
   <suppress checks="MissingJavadocMethod" files="com.azure.v2.security.keyvault.keys.cryptography.implementation.CryptographyClientImpl.java" />
   <suppress checks="MissingJavadocType" files="com.azure.v2.security.keyvault.keys.implementation.KeyClientImpl.java" />
   <suppress checks="MissingJavadocType" files="com.azure.v2.security.keyvault.keys.cryptography.implementation.CryptographyClientImpl.java" />
-  <suppress checks="ThrowFromClientLogger" files="com.azure.v2.security.keyvault.keys.cryptography.implementation.AesCbc.java" />
-  <suppress checks="ThrowFromClientLogger" files="com.azure.v2.security.keyvault.keys.cryptography.implementation.AesCbcPad.java" />
-  <suppress checks="ThrowFromClientLogger" files="com.azure.v2.security.keyvault.keys.cryptography.implementation.AesCbcHmacSha2.java" />
-  <suppress checks="ThrowFromClientLogger" files="com.azure.v2.security.keyvault.keys.cryptography.implementation.AesKeyCryptographyClient.java" />
-  <suppress checks="ThrowFromClientLogger" files="com.azure.v2.security.keyvault.keys.cryptography.implementation.AesKw.java" />
-  <suppress checks="ThrowFromClientLogger" files="com.azure.v2.security.keyvault.keys.cryptography.implementation.Ecdsa.java" />
-  <suppress checks="ThrowFromClientLogger" files="com.azure.v2.security.keyvault.keys.cryptography.implementation.EcKeyCryptographyClient.java" />
-  <suppress checks="ThrowFromClientLogger" files="com.azure.v2.security.keyvault.keys.cryptography.implementation.RsaKeyCryptographyClient.java" />
+
   <!-- We need to use volatile instead of final for a couple of variables -->
   <suppress checks="ServiceClient" files="com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.java" />
 
@@ -27,9 +20,11 @@
   <suppress checks="GoodLogging" files="com.azure.v2.security.keyvault.keys.implementation.KeyClientServiceImpl.java" />
   <suppress checks="GoodLogging" files="com.azure.v2.security.keyvault.keys.implementation.SecretMinClientServiceImpl.java" />
   <suppress checks="JavadocPackage" files="com.azure.v2.security.keyvault.keys.implementation.KeyClientServiceImpl.java" />
-  <suppress checks="ThrowFromClientLogger" files="com.azure.v2.security.keyvault.keys.implementation.KeyClientServiceImpl.java" />
-  <suppress checks="ThrowFromClientLogger" files="com.azure.v2.security.keyvault.keys.implementation.SecretMinClientServiceImpl.java" />
 
   <!-- TODO (vcolin7): Remove after updating the CheckStyle tool to handle RequestContext and Poller instead of RequestOptions and SyncPoller, respectively -->
   <suppress checks="ServiceClient" files="com.azure.v2.security.keyvault.keys.KeyClient.java" />
+
+  <!-- TODO (lmolkova): update codegen to log exceptions -->
+  <suppress checks="RawExceptionThrow" files="com.azure.v2.security.keyvault.keys.implementation.*Impl.java" />
+
 </suppressions>

@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,16 +25,19 @@ public final class AIServicesVisionParameters implements JsonSerializable<AIServ
      * The version of the model to use when calling the AI Services Vision service. It will default to the latest
      * available when not specified.
      */
+    @Generated
     private final String modelVersion;
 
     /*
      * The resource URI of the AI Services resource.
      */
+    @Generated
     private final String resourceUri;
 
     /*
      * API key of the designated AI Services resource.
      */
+    @Generated
     private String apiKey;
 
     /*
@@ -41,6 +45,7 @@ public final class AIServicesVisionParameters implements JsonSerializable<AIServ
      * specified, the system-assigned managed identity is used. On updates to the index, if the identity is unspecified,
      * the value remains unchanged. If set to "none", the value of this property is cleared.
      */
+    @Generated
     private SearchIndexerDataIdentity authIdentity;
 
     /**
@@ -49,6 +54,7 @@ public final class AIServicesVisionParameters implements JsonSerializable<AIServ
      * @param modelVersion the modelVersion value to set.
      * @param resourceUri the resourceUri value to set.
      */
+    @Generated
     public AIServicesVisionParameters(String modelVersion, String resourceUri) {
         this.modelVersion = modelVersion;
         this.resourceUri = resourceUri;
@@ -60,6 +66,7 @@ public final class AIServicesVisionParameters implements JsonSerializable<AIServ
      * 
      * @return the modelVersion value.
      */
+    @Generated
     public String getModelVersion() {
         return this.modelVersion;
     }
@@ -69,6 +76,7 @@ public final class AIServicesVisionParameters implements JsonSerializable<AIServ
      * 
      * @return the resourceUri value.
      */
+    @Generated
     public String getResourceUri() {
         return this.resourceUri;
     }
@@ -78,6 +86,7 @@ public final class AIServicesVisionParameters implements JsonSerializable<AIServ
      * 
      * @return the apiKey value.
      */
+    @Generated
     public String getApiKey() {
         return this.apiKey;
     }
@@ -88,6 +97,7 @@ public final class AIServicesVisionParameters implements JsonSerializable<AIServ
      * @param apiKey the apiKey value to set.
      * @return the AIServicesVisionParameters object itself.
      */
+    @Generated
     public AIServicesVisionParameters setApiKey(String apiKey) {
         this.apiKey = apiKey;
         return this;
@@ -101,6 +111,7 @@ public final class AIServicesVisionParameters implements JsonSerializable<AIServ
      * 
      * @return the authIdentity value.
      */
+    @Generated
     public SearchIndexerDataIdentity getAuthIdentity() {
         return this.authIdentity;
     }
@@ -114,6 +125,7 @@ public final class AIServicesVisionParameters implements JsonSerializable<AIServ
      * @param authIdentity the authIdentity value to set.
      * @return the AIServicesVisionParameters object itself.
      */
+    @Generated
     public AIServicesVisionParameters setAuthIdentity(SearchIndexerDataIdentity authIdentity) {
         this.authIdentity = authIdentity;
         return this;
@@ -122,6 +134,7 @@ public final class AIServicesVisionParameters implements JsonSerializable<AIServ
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -141,6 +154,7 @@ public final class AIServicesVisionParameters implements JsonSerializable<AIServ
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AIServicesVisionParameters.
      */
+    @Generated
     public static AIServicesVisionParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean modelVersionFound = false;

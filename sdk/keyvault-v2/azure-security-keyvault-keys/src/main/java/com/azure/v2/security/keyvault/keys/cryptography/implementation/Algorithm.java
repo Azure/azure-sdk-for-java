@@ -3,6 +3,8 @@
 
 package com.azure.v2.security.keyvault.keys.cryptography.implementation;
 
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+
 import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
@@ -10,12 +12,15 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  *
  */
 abstract class Algorithm {
+    private static final ClientLogger LOGGER = new ClientLogger(Algorithm.class);
 
     private final String name;
 
     Algorithm(String name) {
         if (isNullOrEmpty(name) || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("name");
+            throw LOGGER.throwableAtError()
+                .addKeyValue("name", name)
+                .log("Algorithm name cannot be null or empty.", IllegalArgumentException::new);
         }
 
         this.name = name;

@@ -284,7 +284,9 @@ public final class TumblingWindowTriggerTypeProperties
         jsonWriter.writeIntField("maxConcurrency", this.maxConcurrency);
         jsonWriter.writeStringField("endTime",
             this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
-        jsonWriter.writeUntypedField("delay", this.delay);
+        if (this.delay != null) {
+            jsonWriter.writeUntypedField("delay", this.delay);
+        }
         jsonWriter.writeJsonField("retryPolicy", this.retryPolicy);
         jsonWriter.writeArrayField("dependsOn", this.dependsOn, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
