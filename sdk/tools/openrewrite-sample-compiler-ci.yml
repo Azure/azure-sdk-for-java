@@ -4,7 +4,8 @@ trigger:
       - main
   paths:
     include:
-      - /sdk/tools/
+      - /sdk/tools/azure-openrewrite/
+      - /sdk/tools/azure-openrewrite-compiler-maven-plugin/
 
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
@@ -30,33 +31,18 @@ extends:
                     - /sdk/tools/azure-openrewrite-compiler-maven-plugin/
                     - /sdk/tools/azure-openrewrite/
                     - /sdk/core-v2/
-                    - sdk/clientcore/
-                    - sdk/parents/
-                    - eng/
-                    - common/perf-test-core/
-
-              - task: PowerShell@2
-                displayName: 'Install Required Dependencies from Source'
-                inputs:
-                  targetType: 'inline'
-                  script: |
-                    $modulePaths = @(
-                      "eng/code-quality-reports/pom.xml",
-                      "sdk/parents/pom.xml",
-                      "common/perf-test-core/pom.xml",
-                      "sdk/clientcore/pom.xml",
-                      "sdk/core-v2/pom.xml"
-                    )
-                    foreach ($modulePath in $modulePaths) {
-                      mvn -f $modulePath clean install --% -B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip
-                    }
+                    - /sdk/identity-v2/
+                    - /sdk/clientcore/
+                    - /sdk/parents/
+                    - /eng/
+                    - /common/perf-test-core/
 
               - task: Maven@3
                 displayName: 'Build and Install OpenRewrite Compiler Maven Plugin'
                 inputs:
                   mavenPomFile: 'sdk/tools/azure-openrewrite-compiler-maven-plugin/pom.xml'
                   goals: 'clean install'
-                  options: '-B -DskipTests -Dgpg.skip'
+                  options: '-B -DskipTests -Dgpg.skip -am'
                   javaHomeOption: 'JDKVersion'
                   jdkVersionOption: '1.8'
                   mavenOptions: '-Xmx3072m'
