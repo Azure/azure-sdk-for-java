@@ -108,8 +108,7 @@ public final class KeyClientImpl {
         this.httpPipeline = httpPipeline;
         this.vaultBaseUrl = vaultBaseUrl;
         this.serviceVersion = serviceVersion;
-        this.service
-            = com.azure.v2.security.keyvault.keys.implementation.KeyClientServiceImpl.getNewInstance(this.httpPipeline);
+        this.service = KeyClientService.getNewInstance(this.httpPipeline);
     }
 
     /**

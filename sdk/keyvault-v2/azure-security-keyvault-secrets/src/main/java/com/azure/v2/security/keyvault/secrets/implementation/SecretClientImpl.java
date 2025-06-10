@@ -97,8 +97,7 @@ public final class SecretClientImpl {
         this.httpPipeline = httpPipeline;
         this.vaultBaseUrl = vaultBaseUrl;
         this.serviceVersion = serviceVersion;
-        this.service = com.azure.v2.security.keyvault.secrets.implementation.SecretClientServiceImpl
-            .getNewInstance(this.httpPipeline);
+        this.service = SecretClientService.getNewInstance(this.httpPipeline);
     }
 
     /**

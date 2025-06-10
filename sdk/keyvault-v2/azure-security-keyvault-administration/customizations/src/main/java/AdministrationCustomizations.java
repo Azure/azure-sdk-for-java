@@ -21,6 +21,7 @@ public class AdministrationCustomizations extends Customization {
         // Remove unnecessary files.
         removeFiles(libraryCustomization.getRawEditor());
         moveListResultFiles(libraryCustomization);
+        customizeClientImpl(libraryCustomization);
         customizeKeyVaultRoleScope(libraryCustomization);
         customizeServiceVersion(libraryCustomization);
         customizeModuleInfo(libraryCustomization.getRawEditor());
@@ -91,6 +92,88 @@ public class AdministrationCustomizations extends Customization {
 
         // Move file to the new path.
         editor.renameFile(oldClassPath, newClassPath);
+    }
+
+    private static void customizeClientImpl(LibraryCustomization libraryCustomization) {
+        libraryCustomization
+            .getPackage("com.azure.v2.security.keyvault.administration.implementation")
+            .getClass("KeyVaultAdministrationClientImpl")
+            .customizeAst(ast -> {
+                ClassOrInterfaceDeclaration clazz = ast.getClassByName("KeyVaultAdministrationClientImpl").get();
+
+                clazz.addMethod("fullBackupStatusWithResponse", Modifier.Keyword.PUBLIC)
+                    .setType("Response<FullBackupOperation>")
+                    .addParameter("SASTokenParameter", "azureStorageBlobContainerUri")
+                    .addParameter("RequestContext", "requestContext")
+                    .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
+                        "/**",
+                        " * Creates a full backup using a user-provided SAS token to an Azure blob storage container.",
+                        " *",
+                        " * @param azureStorageBlobContainerUri Azure blob shared access signature token pointing to a valid Azure blob",
+                        " * container where full backup needs to be stored. This token needs to be valid for at least next 24 hours from the",
+                        " * time of making this call.",
+                        " * @param requestContext The context to configure the HTTP request before HTTP client sends it.",
+                        " * @throws IllegalArgumentException thrown if parameters fail the validation.",
+                        " * @throws HttpResponseException thrown if the service returns an error.",
+                        " * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.",
+                        " * @return full backup operation.",
+                        " */")))
+                    .setBody(StaticJavaParser.parseBlock(joinWithNewline(
+                        "{",
+                        "final String contentType = \"application/json\";",
+                        "final String accept = \"application/json\";",
+                        "return service.fullBackup(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), contentType, accept, azureStorageBlobContainerUri, requestContext);",
+                        "}")));
+
+                clazz.addMethod("fullRestoreOperationWithResponse", Modifier.Keyword.PUBLIC)
+                    .setType("Response<RestoreOperation>")
+                    .addParameter("RestoreOperationParameters", "restoreBlobDetails")
+                    .addParameter("RequestContext", "requestContext")
+                    .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
+                        "/**",
+                        " * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.",
+                        " *",
+                        " * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup",
+                        " * was stored.",
+                        " * @param requestContext The context to configure the HTTP request before HTTP client sends it.",
+                        " * @throws IllegalArgumentException thrown if parameters fail the validation.",
+                        " * @throws HttpResponseException thrown if the service returns an error.",
+                        " * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.",
+                        " * @return restore operation.",
+                        " */")))
+                    .setBody(StaticJavaParser.parseBlock(joinWithNewline(
+                        "{",
+                        "final String contentType = \"application/json\";",
+                        "final String accept = \"application/json\";",
+                        "return service.fullRestoreOperation(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), contentType, accept, restoreBlobDetails, requestContext);",
+                        "}")));
+
+                clazz.addMethod("selectiveKeyRestoreOperationWithResponse", Modifier.Keyword.PUBLIC)
+                    .setType("Response<SelectiveKeyRestoreOperation>")
+                    .addParameter("String", "keyName")
+                    .addParameter("SelectiveKeyRestoreOperationParameters", "restoreBlobDetails")
+                    .addParameter("RequestContext", "requestContext")
+                    .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
+                        "/**",
+                        " * Restores all key versions of a given key using user supplied SAS token pointing to a previously stored Azure Blob",
+                        " * storage backup folder.",
+                        " *",
+                        " * @param keyName The name of the key to be restored from the user supplied backup.",
+                        " * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup",
+                        " * was stored.",
+                        " * @param requestContext The context to configure the HTTP request before HTTP client sends it.",
+                        " * @throws IllegalArgumentException thrown if parameters fail the validation.",
+                        " * @throws HttpResponseException thrown if the service returns an error.",
+                        " * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.",
+                        " * @return selective Key Restore operation.",
+                        " */")))
+                    .setBody(StaticJavaParser.parseBlock(joinWithNewline(
+                        "{",
+                        "final String contentType = \"application/json\";",
+                        "final String accept = \"application/json\";",
+                        "return service.selectiveKeyRestoreOperation(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, contentType, accept, restoreBlobDetails, requestContext);",
+                        "}")));
+            });
     }
 
     private static void customizeKeyVaultRoleScope(LibraryCustomization libraryCustomization) {

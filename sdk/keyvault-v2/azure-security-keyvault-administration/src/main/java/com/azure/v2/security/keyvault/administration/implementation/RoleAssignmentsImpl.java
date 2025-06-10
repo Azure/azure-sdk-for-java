@@ -49,8 +49,7 @@ public final class RoleAssignmentsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     RoleAssignmentsImpl(KeyVaultAdministrationClientImpl client) {
-        this.service = com.azure.v2.security.keyvault.administration.implementation.RoleAssignmentsServiceImpl
-            .getNewInstance(client.getHttpPipeline());
+        this.service = RoleAssignmentsService.getNewInstance(client.getHttpPipeline());
         this.client = client;
     }
 

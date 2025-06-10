@@ -109,8 +109,7 @@ public final class CertificateClientImpl {
         this.httpPipeline = httpPipeline;
         this.vaultBaseUrl = vaultBaseUrl;
         this.serviceVersion = serviceVersion;
-        this.service = com.azure.v2.security.keyvault.certificates.implementation.CertificateClientServiceImpl
-            .getNewInstance(this.httpPipeline);
+        this.service = CertificateClientService.getNewInstance(this.httpPipeline);
     }
 
     /**
