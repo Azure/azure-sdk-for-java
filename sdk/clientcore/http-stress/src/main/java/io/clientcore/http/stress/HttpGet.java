@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.http.stress;
+package com.azure.core.http.stress;
 
 import com.azure.perf.test.core.PerfStressOptions;
 import io.clientcore.core.http.client.JdkHttpClientBuilder;
@@ -17,7 +17,7 @@ import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
-import io.clientcore.http.stress.util.TelemetryHelper;
+import com.azure.core.http.stress.util.TelemetryHelper;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
