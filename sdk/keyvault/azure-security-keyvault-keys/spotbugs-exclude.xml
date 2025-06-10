@@ -27,73 +27,10 @@
     <Class name="com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy" />
   </Match>
   <Match>
-    <Bug pattern="EI_EXPOSE_REP" />
-    <Or>
-      <Class name="com.azure.security.keyvault.keys.cryptography.implementation.LocalKeyCryptographyClient" />
-      <Class name="com.azure.security.keyvault.keys.implementation.models.DeletedKeyListResult" />
-      <Class name="com.azure.security.keyvault.keys.implementation.models.JsonWebKey" />
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyBundle" />
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyCreateParameters" />
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyImportParameters" />
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyItem" />
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyListResult" />
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy" />
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyUpdateParameters" />
-      <Class name="com.azure.security.keyvault.keys.implementation.models.SecretProperties" />
-      <Class name="com.azure.security.keyvault.keys.implementation.models.SecretRequestParameters" />
-      <Class name="com.azure.security.keyvault.keys.models.CreateKeyOptions" />
-      <Class name="com.azure.security.keyvault.keys.models.ImportKeyOptions" />
-      <Class name="com.azure.security.keyvault.keys.models.KeyProperties" />
-      <Class name="com.azure.security.keyvault.keys.models.KeyReleasePolicy" />
-      <Class name="com.azure.security.keyvault.keys.models.KeyRotationPolicy" />
-      <Class name="com.azure.security.keyvault.keys.models.KeyVaultKey" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP2" />
-    <Or>
-      <Class name="com.azure.security.keyvault.keys.KeyClientBuilder" />
-      <Class name="com.azure.security.keyvault.keys.cryptography.CryptographyClientBuilder" />
-      <Class name="com.azure.security.keyvault.keys.implementation.models.JsonWebKey" />
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyBundle" />
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyCreateParameters" />
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyImportParameters" />
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyItem" />
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy" />
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyUpdateParameters" />
-      <Class name="com.azure.security.keyvault.keys.implementation.models.SecretProperties" />
-      <Class name="com.azure.security.keyvault.keys.implementation.models.SecretRequestParameters" />
-      <Class name="com.azure.security.keyvault.keys.models.CreateKeyOptions" />
-      <Class name="com.azure.security.keyvault.keys.models.ImportKeyOptions" />
-      <Class name="com.azure.security.keyvault.keys.models.JsonWebKey" />
-      <Class name="com.azure.security.keyvault.keys.models.KeyProperties" />
-      <Class name="com.azure.security.keyvault.keys.models.KeyReleasePolicy" />
-      <Class name="com.azure.security.keyvault.keys.models.KeyRotationPolicy" />
-    </Or>
-  </Match>
-  <Match>
     <Bug pattern="EI_EXPOSE_STATIC_REP2" />
     <Or>
       <Class name="com.azure.security.keyvault.keys.implementation.DeletedKeyHelper" />
       <Class name="com.azure.security.keyvault.keys.implementation.KeyPropertiesHelper" />
     </Or>
-  </Match>
-  <Match>
-    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS" />
-    <Or>
-      <Class name="com.azure.security.keyvault.keys.implementation.models.BackupKeyResult" />
-      <Class name="com.azure.security.keyvault.keys.implementation.models.JsonWebKey" />
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyOperationResult" />
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyOperationsParameters" />
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyReleasePolicy" />
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyRestoreParameters" />
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeySignParameters" />
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyVerifyParameters" />
-      <Class name="com.azure.security.keyvault.keys.implementation.models.RandomBytes" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />
-    <Class name="com.azure.security.keyvault.keys.models.JsonWebKey" />
   </Match>
 </FindBugsFilter>
