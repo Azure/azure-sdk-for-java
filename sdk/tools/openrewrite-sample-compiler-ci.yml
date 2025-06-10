@@ -40,7 +40,7 @@ extends:
               - task: Maven@3
                 displayName: 'Build Necessary Dependencies'
                 inputs:
-                  mavenPomFile: '/sdk/core-v2/pom.xml'
+                  mavenPomFile: 'sdk/core-v2/pom.xml'
                   goals: 'clean install'
                   options: '-B -DskipTests -Dgpg.skip -am'
                   javaHomeOption: 'JDKVersion'
