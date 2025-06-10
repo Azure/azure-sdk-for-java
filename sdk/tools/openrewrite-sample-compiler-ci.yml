@@ -38,6 +38,17 @@ extends:
                     - /common/perf-test-core/
 
               - task: Maven@3
+                displayName: 'Build Necessary Dependencies'
+                inputs:
+                  mavenPomFile: '/sdk/core-v2/pom.xml'
+                  goals: 'clean install'
+                  options: '-B -DskipTests -Dgpg.skip -am'
+                  javaHomeOption: 'JDKVersion'
+                  jdkVersionOption: '1.8'
+                  mavenOptions: '-Xmx3072m'
+                  publishJUnitResults: false
+
+              - task: Maven@3
                 displayName: 'Build and Install OpenRewrite Compiler Maven Plugin'
                 inputs:
                   mavenPomFile: 'sdk/tools/azure-openrewrite-compiler-maven-plugin/pom.xml'
