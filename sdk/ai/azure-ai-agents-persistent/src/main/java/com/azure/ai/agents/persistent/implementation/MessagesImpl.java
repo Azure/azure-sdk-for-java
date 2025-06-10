@@ -49,14 +49,14 @@ public final class MessagesImpl {
     /**
      * The service client containing this operation class.
      */
-    private final PersistentAgentsAdministrationClientImpl client;
+    private final PersistentAgentsClientImpl client;
 
     /**
      * Initializes an instance of MessagesImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    MessagesImpl(PersistentAgentsAdministrationClientImpl client) {
+    MessagesImpl(PersistentAgentsClientImpl client) {
         this.service = RestProxy.create(MessagesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -71,11 +71,11 @@ public final class MessagesImpl {
     }
 
     /**
-     * The interface defining all the services for PersistentAgentsAdministrationClientMessages to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for PersistentAgentsClientMessages to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PersistentAgentsAdministrationClientMessages")
+    @ServiceInterface(name = "PersistentAgentsClie")
     public interface MessagesService {
         @Post("/threads/{threadId}/messages")
         @ExpectedResponses({ 200 })

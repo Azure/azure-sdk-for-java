@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.ai.agents.persistent;
 
-import com.azure.ai.agents.persistent.models.AgentDeletionStatus;
 import com.azure.ai.agents.persistent.models.CreateAgentOptions;
 import com.azure.ai.agents.persistent.models.PersistentAgent;
 import com.azure.ai.agents.persistent.models.UpdateAgentOptions;
@@ -19,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AdministrationClientTest extends ClientTestBase {
 
-    private PersistentAgentsAdministrationClientBuilder clientBuilder;
+    private PersistentAgentsClientBuilder clientBuilder;
     private PersistentAgentsAdministrationClient agentsClient;
     private PersistentAgent agent;
 
@@ -33,7 +32,7 @@ public class AdministrationClientTest extends ClientTestBase {
 
     private void setup(HttpClient httpClient) {
         clientBuilder = getClientBuilder(httpClient);
-        agentsClient = clientBuilder.buildClient();
+        agentsClient = clientBuilder.buildPersistentAgentsAdministrationClient();
         agent = createAgent("TestAgent");
     }
 
@@ -85,9 +84,8 @@ public class AdministrationClientTest extends ClientTestBase {
     public void testDeleteAgent(HttpClient httpClient) {
         setup(httpClient);
 
-        AgentDeletionStatus deletionStatus = agentsClient.deleteAgent(agent.getId());
-        assertNotNull(deletionStatus, "Deletion status should not be null");
-        assertTrue(deletionStatus.isDeleted(), "Agent should be deleted");
+        boolean deletionStatus = agentsClient.deleteAgent(agent.getId());
+        assertTrue(deletionStatus, "Agent should be deleted");
         agent = null;
     }
 

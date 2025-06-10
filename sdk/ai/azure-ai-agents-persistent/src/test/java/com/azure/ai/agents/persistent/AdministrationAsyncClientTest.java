@@ -17,13 +17,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AdministrationAsyncClientTest extends ClientTestBase {
 
-    private PersistentAgentsAdministrationClientBuilder clientBuilder;
+    private PersistentAgentsClientBuilder clientBuilder;
     private PersistentAgentsAdministrationAsyncClient agentsAsyncClient;
     private PersistentAgent agent;
 
     private void setup(HttpClient httpClient) {
         clientBuilder = getClientBuilder(httpClient);
-        agentsAsyncClient = clientBuilder.buildAsyncClient();
+        agentsAsyncClient = clientBuilder.buildPersistentAgentsAdministrationAsyncClient();
     }
 
     private void createTestAgent() {
@@ -94,8 +94,7 @@ public class AdministrationAsyncClientTest extends ClientTestBase {
         createTestAgent();
 
         StepVerifier.create(agentsAsyncClient.deleteAgent(agent.getId())).assertNext(deletionStatus -> {
-            assertNotNull(deletionStatus, "Deletion status should not be null");
-            assertTrue(deletionStatus.isDeleted(), "Agent should be deleted");
+            assertTrue(deletionStatus, "Agent should be deleted");
             agent = null;
         }).verifyComplete();
     }

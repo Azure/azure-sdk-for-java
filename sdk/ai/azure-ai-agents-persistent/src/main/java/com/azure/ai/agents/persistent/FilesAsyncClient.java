@@ -5,11 +5,11 @@ package com.azure.ai.agents.persistent;
 
 import com.azure.ai.agents.persistent.implementation.FilesImpl;
 import com.azure.ai.agents.persistent.implementation.MultipartFormDataHelper;
-import com.azure.ai.agents.persistent.implementation.models.UploadFileRequest;
-import com.azure.ai.agents.persistent.models.FileDeletionStatus;
+import com.azure.ai.agents.persistent.implementation.models.FileDeletionStatus;
 import com.azure.ai.agents.persistent.models.FileInfo;
 import com.azure.ai.agents.persistent.models.FileListResponse;
 import com.azure.ai.agents.persistent.models.FilePurpose;
+import com.azure.ai.agents.persistent.models.UploadFileRequest;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -26,9 +26,9 @@ import java.util.Objects;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the asynchronous PersistentAgentsAdministrationClient type.
+ * Initializes a new instance of the asynchronous PersistentAgentsClient type.
  */
-@ServiceClient(builder = PersistentAgentsAdministrationClientBuilder.class, isAsync = true)
+@ServiceClient(builder = PersistentAgentsClientBuilder.class, isAsync = true)
 public final class FilesAsyncClient {
 
     @Generated
@@ -50,8 +50,8 @@ public final class FilesAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>purpose</td><td>String</td><td>No</td><td>The purpose of the file. Allowed values: "fine-tune",
-     * "fine-tune-results", "assistants", "assistants_output", "batch", "batch_output", "vision".</td></tr>
+     * <tr><td>purpose</td><td>String</td><td>No</td><td>The purpose of the file. Allowed values: "assistants",
+     * "assistants_output", "vision".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -67,7 +67,7 @@ public final class FilesAsyncClient {
      *             bytes: int (Required)
      *             filename: String (Required)
      *             created_at: long (Required)
-     *             purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *             purpose: String(assistants/assistants_output/vision) (Required)
      *             status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
      *             status_details: String (Optional)
      *         }
@@ -101,7 +101,7 @@ public final class FilesAsyncClient {
      *     bytes: int (Required)
      *     filename: String (Required)
      *     created_at: long (Required)
-     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *     purpose: String(assistants/assistants_output/vision) (Required)
      *     status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
      *     status_details: String (Optional)
      * }
@@ -126,35 +126,6 @@ public final class FilesAsyncClient {
     }
 
     /**
-     * Delete a previously uploaded file.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     deleted: boolean (Required)
-     *     object: String (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param fileId The ID of the file to delete.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a status response from a file deletion operation along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteFileWithResponse(String fileId, RequestOptions requestOptions) {
-        return this.serviceClient.deleteFileWithResponseAsync(fileId, requestOptions);
-    }
-
-    /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -166,7 +137,7 @@ public final class FilesAsyncClient {
      *     bytes: int (Required)
      *     filename: String (Required)
      *     created_at: long (Required)
-     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *     purpose: String(assistants/assistants_output/vision) (Required)
      *     status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
      *     status_details: String (Optional)
      * }
@@ -269,7 +240,7 @@ public final class FilesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<FileInfo> uploadFile(UploadFileRequest body) {
+    public Mono<FileInfo> uploadFile(UploadFileRequest body) {
         // Generated convenience method for uploadFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return uploadFileWithResponse(new MultipartFormDataHelper(requestOptions)
@@ -280,27 +251,6 @@ public final class FilesAsyncClient {
             .end()
             .getRequestBody(), requestOptions).flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(FileInfo.class));
-    }
-
-    /**
-     * Delete a previously uploaded file.
-     *
-     * @param fileId The ID of the file to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a status response from a file deletion operation on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FileDeletionStatus> deleteFile(String fileId) {
-        // Generated convenience method for deleteFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return deleteFileWithResponse(fileId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(FileDeletionStatus.class));
     }
 
     /**
@@ -342,5 +292,74 @@ public final class FilesAsyncClient {
         // Generated convenience method for getFileContentWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getFileContentWithResponse(fileId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Delete a previously uploaded file.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     deleted: boolean (Required)
+     *     object: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param fileId The ID of the file to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a status response from a file deletion operation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> deleteFileInternalWithResponse(String fileId, RequestOptions requestOptions) {
+        return this.serviceClient.deleteFileInternalWithResponseAsync(fileId, requestOptions);
+    }
+
+    /**
+     * Delete a previously uploaded file.
+     *
+     * @param fileId The ID of the file to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a status response from a file deletion operation on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<FileDeletionStatus> deleteFileInternal(String fileId) {
+        // Generated convenience method for deleteFileInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return deleteFileInternalWithResponse(fileId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(FileDeletionStatus.class));
+    }
+
+    /**
+     * Delete a previously uploaded file.
+     *
+     * @param fileId The ID of the file to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a status response from a file deletion operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Boolean> deleteFile(String fileId) {
+        // Generated convenience method for deleteFileInternalWithResponse
+        Mono<FileDeletionStatus> deletionStatusMono = deleteFileInternal(fileId);
+        return deletionStatusMono.map(status -> status != null && status.isDeleted());
     }
 }

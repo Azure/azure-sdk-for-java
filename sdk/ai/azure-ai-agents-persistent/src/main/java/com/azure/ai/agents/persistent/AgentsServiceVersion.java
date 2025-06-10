@@ -16,14 +16,14 @@ public enum AgentsServiceVersion implements ServiceVersion {
     V2025_05_01("2025-05-01"),
 
     /**
-     * Enum value 2025-05-15-preview.
-     */
-    V2025_05_15_PREVIEW("2025-05-15-preview"),
-
-    /**
      * Enum value v1.
      */
-    V1("v1");
+    V1("v1"),
+
+    /**
+     * Enum value 2025-05-15-preview.
+     */
+    V2025_05_15_PREVIEW("2025-05-15-preview");
 
     private final String version;
 
@@ -45,6 +45,6 @@ public enum AgentsServiceVersion implements ServiceVersion {
      * @return The latest {@link AgentsServiceVersion}.
      */
     public static AgentsServiceVersion getLatest() {
-        return V1;
+        return V2025_05_15_PREVIEW;
     }
 }

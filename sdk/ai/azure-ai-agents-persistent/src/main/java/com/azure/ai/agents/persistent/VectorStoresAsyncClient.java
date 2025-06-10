@@ -4,14 +4,21 @@
 package com.azure.ai.agents.persistent;
 
 import com.azure.ai.agents.persistent.implementation.VectorStoresImpl;
+import com.azure.ai.agents.persistent.implementation.models.CreateVectorStoreFileBatchRequest;
+import com.azure.ai.agents.persistent.implementation.models.CreateVectorStoreFileRequest;
 import com.azure.ai.agents.persistent.implementation.models.CreateVectorStoreRequest;
 import com.azure.ai.agents.persistent.implementation.models.ModifyVectorStoreRequest;
+import com.azure.ai.agents.persistent.implementation.models.VectorStoreDeletionStatus;
+import com.azure.ai.agents.persistent.implementation.models.VectorStoreFileDeletionStatus;
 import com.azure.ai.agents.persistent.models.ListSortOrder;
 import com.azure.ai.agents.persistent.models.VectorStore;
 import com.azure.ai.agents.persistent.models.VectorStoreChunkingStrategyRequest;
 import com.azure.ai.agents.persistent.models.VectorStoreConfiguration;
-import com.azure.ai.agents.persistent.models.VectorStoreDeletionStatus;
+import com.azure.ai.agents.persistent.models.VectorStoreDataSource;
 import com.azure.ai.agents.persistent.models.VectorStoreExpirationPolicy;
+import com.azure.ai.agents.persistent.models.VectorStoreFile;
+import com.azure.ai.agents.persistent.models.VectorStoreFileBatch;
+import com.azure.ai.agents.persistent.models.VectorStoreFileStatusFilter;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -34,9 +41,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the asynchronous PersistentAgentsAdministrationClient type.
+ * Initializes a new instance of the asynchronous PersistentAgentsClient type.
  */
-@ServiceClient(builder = PersistentAgentsAdministrationClientBuilder.class, isAsync = true)
+@ServiceClient(builder = PersistentAgentsClientBuilder.class, isAsync = true)
 public final class VectorStoresAsyncClient {
 
     @Generated
@@ -249,15 +256,207 @@ public final class VectorStoresAsyncClient {
     }
 
     /**
-     * Deletes the vector store object matching the specified ID.
+     * Returns a list of vector stores.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
      * {@code
      * {
      *     id: String (Required)
-     *     deleted: boolean (Required)
      *     object: String (Required)
+     *     created_at: long (Required)
+     *     name: String (Required)
+     *     usage_bytes: int (Required)
+     *     file_counts (Required): {
+     *         in_progress: int (Required)
+     *         completed: int (Required)
+     *         failed: int (Required)
+     *         cancelled: int (Required)
+     *         total: int (Required)
+     *     }
+     *     status: String(expired/in_progress/completed) (Required)
+     *     expires_after (Optional): {
+     *         anchor: String(last_active_at) (Required)
+     *         days: int (Required)
+     *     }
+     *     expires_at: Long (Optional)
+     *     last_active_at: Long (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listVectorStores(RequestOptions requestOptions) {
+        return this.serviceClient.listVectorStoresAsync(requestOptions);
+    }
+
+    /**
+     * Create a vector store file by attaching a file to a vector store.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     file_id: String (Optional)
+     *     data_source (Optional): {
+     *         uri: String (Required)
+     *         type: String(uri_asset/id_asset) (Required)
+     *     }
+     *     chunking_strategy (Optional): {
+     *         type: String(auto/static) (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     usage_bytes: int (Required)
+     *     created_at: long (Required)
+     *     vector_store_id: String (Required)
+     *     status: String(in_progress/completed/failed/cancelled) (Required)
+     *     last_error (Required): {
+     *         code: String(server_error/invalid_file/unsupported_file) (Required)
+     *         message: String (Required)
+     *     }
+     *     chunking_strategy (Required): {
+     *         type: String(other/static) (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param vectorStoreId Identifier of the vector store.
+     * @param createVectorStoreFileRequest The createVectorStoreFileRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return description of a file attached to a vector store along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createVectorStoreFileWithResponse(String vectorStoreId,
+        BinaryData createVectorStoreFileRequest, RequestOptions requestOptions) {
+        return this.serviceClient.createVectorStoreFileWithResponseAsync(vectorStoreId, createVectorStoreFileRequest,
+            requestOptions);
+    }
+
+    /**
+     * Retrieves a vector store file.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     usage_bytes: int (Required)
+     *     created_at: long (Required)
+     *     vector_store_id: String (Required)
+     *     status: String(in_progress/completed/failed/cancelled) (Required)
+     *     last_error (Required): {
+     *         code: String(server_error/invalid_file/unsupported_file) (Required)
+     *         message: String (Required)
+     *     }
+     *     chunking_strategy (Required): {
+     *         type: String(other/static) (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param vectorStoreId Identifier of the vector store.
+     * @param fileId Identifier of the file.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return description of a file attached to a vector store along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getVectorStoreFileWithResponse(String vectorStoreId, String fileId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getVectorStoreFileWithResponseAsync(vectorStoreId, fileId, requestOptions);
+    }
+
+    /**
+     * Returns a list of vector store files.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter by file status. Allowed values: "in_progress",
+     * "completed", "failed", "cancelled".</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     usage_bytes: int (Required)
+     *     created_at: long (Required)
+     *     vector_store_id: String (Required)
+     *     status: String(in_progress/completed/failed/cancelled) (Required)
+     *     last_error (Required): {
+     *         code: String(server_error/invalid_file/unsupported_file) (Required)
+     *         message: String (Required)
+     *     }
+     *     chunking_strategy (Required): {
+     *         type: String(other/static) (Required)
+     *     }
      * }
      * }
      * </pre>
@@ -268,97 +467,214 @@ public final class VectorStoresAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response object for deleting a vector store along with {@link Response} on successful completion of
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listVectorStoreFiles(String vectorStoreId, RequestOptions requestOptions) {
+        return this.serviceClient.listVectorStoreFilesAsync(vectorStoreId, requestOptions);
+    }
+
+    /**
+     * Create a vector store file batch.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     file_ids (Optional): [
+     *         String (Optional)
+     *     ]
+     *     data_sources (Optional): [
+     *          (Optional){
+     *             uri: String (Required)
+     *             type: String(uri_asset/id_asset) (Required)
+     *         }
+     *     ]
+     *     chunking_strategy (Optional): {
+     *         type: String(auto/static) (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     vector_store_id: String (Required)
+     *     status: String(in_progress/completed/cancelled/failed) (Required)
+     *     file_counts (Required): {
+     *         in_progress: int (Required)
+     *         completed: int (Required)
+     *         failed: int (Required)
+     *         cancelled: int (Required)
+     *         total: int (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param vectorStoreId Identifier of the vector store.
+     * @param createVectorStoreFileBatchRequest The createVectorStoreFileBatchRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a batch of files attached to a vector store along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteVectorStoreWithResponse(String vectorStoreId,
+    public Mono<Response<BinaryData>> createVectorStoreFileBatchWithResponse(String vectorStoreId,
+        BinaryData createVectorStoreFileBatchRequest, RequestOptions requestOptions) {
+        return this.serviceClient.createVectorStoreFileBatchWithResponseAsync(vectorStoreId,
+            createVectorStoreFileBatchRequest, requestOptions);
+    }
+
+    /**
+     * Retrieve a vector store file batch.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     vector_store_id: String (Required)
+     *     status: String(in_progress/completed/cancelled/failed) (Required)
+     *     file_counts (Required): {
+     *         in_progress: int (Required)
+     *         completed: int (Required)
+     *         failed: int (Required)
+     *         cancelled: int (Required)
+     *         total: int (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param vectorStoreId Identifier of the vector store.
+     * @param batchId Identifier of the file batch.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a batch of files attached to a vector store along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getVectorStoreFileBatchWithResponse(String vectorStoreId, String batchId,
         RequestOptions requestOptions) {
-        return this.serviceClient.deleteVectorStoreWithResponseAsync(vectorStoreId, requestOptions);
+        return this.serviceClient.getVectorStoreFileBatchWithResponseAsync(vectorStoreId, batchId, requestOptions);
     }
 
     /**
-     * Returns a list of vector stores.
+     * Cancel a vector store file batch. This attempts to cancel the processing of files in this batch as soon as
+     * possible.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     vector_store_id: String (Required)
+     *     status: String(in_progress/completed/cancelled/failed) (Required)
+     *     file_counts (Required): {
+     *         in_progress: int (Required)
+     *         completed: int (Required)
+     *         failed: int (Required)
+     *         cancelled: int (Required)
+     *         total: int (Required)
+     *     }
+     * }
+     * }
+     * </pre>
      *
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default
-     * is 20.
-     * @param order Sort order by the created_at timestamp of the objects. asc for ascending order and desc for
-     * descending order.
-     * @param after A cursor for use in pagination. after is an object ID that defines your place in the list. For
-     * instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can
-     * include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. before is an object ID that defines your place in the list. For
-     * instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can
-     * include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @param vectorStoreId Identifier of the vector store.
+     * @param batchId Identifier of the file batch.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     * @return a batch of files attached to a vector store along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<VectorStore> listVectorStores(Integer limit, ListSortOrder order, String after, String before) {
-        // Generated convenience method for listVectorStores
-        RequestOptions requestOptions = new RequestOptions();
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listVectorStores(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, VectorStore>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(VectorStore.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> cancelVectorStoreFileBatchWithResponse(String vectorStoreId, String batchId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.cancelVectorStoreFileBatchWithResponseAsync(vectorStoreId, batchId, requestOptions);
     }
 
     /**
-     * Returns a list of vector stores.
+     * Returns a list of vector store files in a batch.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter by file status. Allowed values: "in_progress",
+     * "completed", "failed", "cancelled".</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     usage_bytes: int (Required)
+     *     created_at: long (Required)
+     *     vector_store_id: String (Required)
+     *     status: String(in_progress/completed/failed/cancelled) (Required)
+     *     last_error (Required): {
+     *         code: String(server_error/invalid_file/unsupported_file) (Required)
+     *         message: String (Required)
+     *     }
+     *     chunking_strategy (Required): {
+     *         type: String(other/static) (Required)
+     *     }
+     * }
+     * }
+     * </pre>
      *
+     * @param vectorStoreId Identifier of the vector store.
+     * @param batchId Identifier of the file batch.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<VectorStore> listVectorStores() {
-        // Generated convenience method for listVectorStores
-        RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listVectorStores(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, VectorStore>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(VectorStore.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
+    public PagedFlux<BinaryData> listVectorStoreFileBatchFiles(String vectorStoreId, String batchId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.listVectorStoreFileBatchFilesAsync(vectorStoreId, batchId, requestOptions);
     }
 
     /**
@@ -504,6 +820,512 @@ public final class VectorStoresAsyncClient {
     }
 
     /**
+     * Returns a list of vector stores.
+     *
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default
+     * is 20.
+     * @param order Sort order by the created_at timestamp of the objects. asc for ascending order and desc for
+     * descending order.
+     * @param after A cursor for use in pagination. after is an object ID that defines your place in the list. For
+     * instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can
+     * include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. before is an object ID that defines your place in the list. For
+     * instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can
+     * include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<VectorStore> listVectorStores(Integer limit, ListSortOrder order, String after, String before) {
+        // Generated convenience method for listVectorStores
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listVectorStores(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, VectorStore>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(VectorStore.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Returns a list of vector stores.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<VectorStore> listVectorStores() {
+        // Generated convenience method for listVectorStores
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = listVectorStores(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, VectorStore>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(VectorStore.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Create a vector store file by attaching a file to a vector store.
+     *
+     * @param vectorStoreId Identifier of the vector store.
+     * @param fileId Identifier of the file.
+     * @param dataSource Azure asset ID.
+     * @param chunkingStrategy The chunking strategy used to chunk the file. If not set, uses the auto strategy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of a file attached to a vector store on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VectorStoreFile> createVectorStoreFile(String vectorStoreId, String fileId,
+        VectorStoreDataSource dataSource, VectorStoreChunkingStrategyRequest chunkingStrategy) {
+        // Generated convenience method for createVectorStoreFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateVectorStoreFileRequest createVectorStoreFileRequestObj
+            = new CreateVectorStoreFileRequest().setFileId(fileId)
+                .setDataSource(dataSource)
+                .setChunkingStrategy(chunkingStrategy);
+        BinaryData createVectorStoreFileRequest = BinaryData.fromObject(createVectorStoreFileRequestObj);
+        return createVectorStoreFileWithResponse(vectorStoreId, createVectorStoreFileRequest, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(VectorStoreFile.class));
+    }
+
+    /**
+     * Create a vector store file by attaching a file to a vector store.
+     *
+     * @param vectorStoreId Identifier of the vector store.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of a file attached to a vector store on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VectorStoreFile> createVectorStoreFile(String vectorStoreId) {
+        // Generated convenience method for createVectorStoreFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateVectorStoreFileRequest createVectorStoreFileRequestObj = new CreateVectorStoreFileRequest();
+        BinaryData createVectorStoreFileRequest = BinaryData.fromObject(createVectorStoreFileRequestObj);
+        return createVectorStoreFileWithResponse(vectorStoreId, createVectorStoreFileRequest, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(VectorStoreFile.class));
+    }
+
+    /**
+     * Retrieves a vector store file.
+     *
+     * @param vectorStoreId Identifier of the vector store.
+     * @param fileId Identifier of the file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of a file attached to a vector store on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VectorStoreFile> getVectorStoreFile(String vectorStoreId, String fileId) {
+        // Generated convenience method for getVectorStoreFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getVectorStoreFileWithResponse(vectorStoreId, fileId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(VectorStoreFile.class));
+    }
+
+    /**
+     * Returns a list of vector store files.
+     *
+     * @param vectorStoreId Identifier of the vector store.
+     * @param filter Filter by file status.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default
+     * is 20.
+     * @param order Sort order by the created_at timestamp of the objects. asc for ascending order and desc for
+     * descending order.
+     * @param after A cursor for use in pagination. after is an object ID that defines your place in the list. For
+     * instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can
+     * include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. before is an object ID that defines your place in the list. For
+     * instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can
+     * include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<VectorStoreFile> listVectorStoreFiles(String vectorStoreId, VectorStoreFileStatusFilter filter,
+        Integer limit, ListSortOrder order, String after, String before) {
+        // Generated convenience method for listVectorStoreFiles
+        RequestOptions requestOptions = new RequestOptions();
+        if (filter != null) {
+            requestOptions.addQueryParam("filter", filter.toString(), false);
+        }
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listVectorStoreFiles(vectorStoreId, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, VectorStoreFile>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(VectorStoreFile.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Returns a list of vector store files.
+     *
+     * @param vectorStoreId Identifier of the vector store.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<VectorStoreFile> listVectorStoreFiles(String vectorStoreId) {
+        // Generated convenience method for listVectorStoreFiles
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = listVectorStoreFiles(vectorStoreId, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, VectorStoreFile>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(VectorStoreFile.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Create a vector store file batch.
+     *
+     * @param vectorStoreId Identifier of the vector store.
+     * @param fileIds List of file identifiers.
+     * @param dataSources List of Azure assets.
+     * @param chunkingStrategy The chunking strategy used to chunk the file(s). If not set, will use the auto strategy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a batch of files attached to a vector store on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VectorStoreFileBatch> createVectorStoreFileBatch(String vectorStoreId, List<String> fileIds,
+        List<VectorStoreDataSource> dataSources, VectorStoreChunkingStrategyRequest chunkingStrategy) {
+        // Generated convenience method for createVectorStoreFileBatchWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateVectorStoreFileBatchRequest createVectorStoreFileBatchRequestObj
+            = new CreateVectorStoreFileBatchRequest().setFileIds(fileIds)
+                .setDataSources(dataSources)
+                .setChunkingStrategy(chunkingStrategy);
+        BinaryData createVectorStoreFileBatchRequest = BinaryData.fromObject(createVectorStoreFileBatchRequestObj);
+        return createVectorStoreFileBatchWithResponse(vectorStoreId, createVectorStoreFileBatchRequest, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(VectorStoreFileBatch.class));
+    }
+
+    /**
+     * Create a vector store file batch.
+     *
+     * @param vectorStoreId Identifier of the vector store.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a batch of files attached to a vector store on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VectorStoreFileBatch> createVectorStoreFileBatch(String vectorStoreId) {
+        // Generated convenience method for createVectorStoreFileBatchWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateVectorStoreFileBatchRequest createVectorStoreFileBatchRequestObj
+            = new CreateVectorStoreFileBatchRequest();
+        BinaryData createVectorStoreFileBatchRequest = BinaryData.fromObject(createVectorStoreFileBatchRequestObj);
+        return createVectorStoreFileBatchWithResponse(vectorStoreId, createVectorStoreFileBatchRequest, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(VectorStoreFileBatch.class));
+    }
+
+    /**
+     * Retrieve a vector store file batch.
+     *
+     * @param vectorStoreId Identifier of the vector store.
+     * @param batchId Identifier of the file batch.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a batch of files attached to a vector store on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VectorStoreFileBatch> getVectorStoreFileBatch(String vectorStoreId, String batchId) {
+        // Generated convenience method for getVectorStoreFileBatchWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getVectorStoreFileBatchWithResponse(vectorStoreId, batchId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(VectorStoreFileBatch.class));
+    }
+
+    /**
+     * Cancel a vector store file batch. This attempts to cancel the processing of files in this batch as soon as
+     * possible.
+     *
+     * @param vectorStoreId Identifier of the vector store.
+     * @param batchId Identifier of the file batch.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a batch of files attached to a vector store on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VectorStoreFileBatch> cancelVectorStoreFileBatch(String vectorStoreId, String batchId) {
+        // Generated convenience method for cancelVectorStoreFileBatchWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return cancelVectorStoreFileBatchWithResponse(vectorStoreId, batchId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(VectorStoreFileBatch.class));
+    }
+
+    /**
+     * Returns a list of vector store files in a batch.
+     *
+     * @param vectorStoreId Identifier of the vector store.
+     * @param batchId Identifier of the file batch.
+     * @param filter Filter by file status.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default
+     * is 20.
+     * @param order Sort order by the created_at timestamp of the objects. asc for ascending order and desc for
+     * descending order.
+     * @param after A cursor for use in pagination. after is an object ID that defines your place in the list. For
+     * instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can
+     * include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. before is an object ID that defines your place in the list. For
+     * instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can
+     * include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<VectorStoreFile> listVectorStoreFileBatchFiles(String vectorStoreId, String batchId,
+        VectorStoreFileStatusFilter filter, Integer limit, ListSortOrder order, String after, String before) {
+        // Generated convenience method for listVectorStoreFileBatchFiles
+        RequestOptions requestOptions = new RequestOptions();
+        if (filter != null) {
+            requestOptions.addQueryParam("filter", filter.toString(), false);
+        }
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listVectorStoreFileBatchFiles(vectorStoreId, batchId, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, VectorStoreFile>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(VectorStoreFile.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Returns a list of vector store files in a batch.
+     *
+     * @param vectorStoreId Identifier of the vector store.
+     * @param batchId Identifier of the file batch.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<VectorStoreFile> listVectorStoreFileBatchFiles(String vectorStoreId, String batchId) {
+        // Generated convenience method for listVectorStoreFileBatchFiles
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = listVectorStoreFileBatchFiles(vectorStoreId, batchId, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, VectorStoreFile>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(VectorStoreFile.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Deletes the vector store object matching the specified ID.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     deleted: boolean (Required)
+     *     object: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param vectorStoreId Identifier of the vector store.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response object for deleting a vector store along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> deleteVectorStoreInternalWithResponse(String vectorStoreId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.deleteVectorStoreInternalWithResponseAsync(vectorStoreId, requestOptions);
+    }
+
+    /**
+     * Deletes a vector store file. This removes the file‐to‐store link (does not delete the file itself).
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     deleted: boolean (Required)
+     *     object: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param vectorStoreId Identifier of the vector store.
+     * @param fileId Identifier of the file.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response object for deleting a vector store file relationship along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> deleteVectorStoreFileInternalWithResponse(String vectorStoreId, String fileId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.deleteVectorStoreFileInternalWithResponseAsync(vectorStoreId, fileId, requestOptions);
+    }
+
+    /**
      * Deletes the vector store object matching the specified ID.
      *
      * @param vectorStoreId Identifier of the vector store.
@@ -517,73 +1339,70 @@ public final class VectorStoresAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VectorStoreDeletionStatus> deleteVectorStore(String vectorStoreId) {
-        // Generated convenience method for deleteVectorStoreWithResponse
+    Mono<VectorStoreDeletionStatus> deleteVectorStoreInternal(String vectorStoreId) {
+        // Generated convenience method for deleteVectorStoreInternalWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteVectorStoreWithResponse(vectorStoreId, requestOptions).flatMap(FluxUtil::toMono)
+        return deleteVectorStoreInternalWithResponse(vectorStoreId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(VectorStoreDeletionStatus.class));
     }
 
     /**
-     * Returns a list of vector stores.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
-     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
-     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
-     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
-     * list.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     object: String (Required)
-     *     created_at: long (Required)
-     *     name: String (Required)
-     *     usage_bytes: int (Required)
-     *     file_counts (Required): {
-     *         in_progress: int (Required)
-     *         completed: int (Required)
-     *         failed: int (Required)
-     *         cancelled: int (Required)
-     *         total: int (Required)
-     *     }
-     *     status: String(expired/in_progress/completed) (Required)
-     *     expires_after (Optional): {
-     *         anchor: String(last_active_at) (Required)
-     *         days: int (Required)
-     *     }
-     *     expires_at: Long (Optional)
-     *     last_active_at: Long (Required)
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
+     * Deletes a vector store file. This removes the file‐to‐store link (does not delete the file itself).
      *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param vectorStoreId Identifier of the vector store.
+     * @param fileId Identifier of the file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response object for deleting a vector store file relationship on successful completion of {@link Mono}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listVectorStores(RequestOptions requestOptions) {
-        return this.serviceClient.listVectorStoresAsync(requestOptions);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<VectorStoreFileDeletionStatus> deleteVectorStoreFileInternal(String vectorStoreId, String fileId) {
+        // Generated convenience method for deleteVectorStoreFileInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return deleteVectorStoreFileInternalWithResponse(vectorStoreId, fileId, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(VectorStoreFileDeletionStatus.class));
+    }
+
+    /**
+     * Deletes a vector store file. This removes the file‐to‐store link (does not delete the file itself).
+     *
+     * @param vectorStoreId Identifier of the vector store.
+     * @param fileId Identifier of the file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response object for deleting a vector store file relationship on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Boolean> deleteVectorStoreFile(String vectorStoreId, String fileId) {
+        Mono<VectorStoreFileDeletionStatus> deletionStatusMono = deleteVectorStoreFileInternal(vectorStoreId, fileId);
+        return deletionStatusMono.map(status -> status != null && status.isDeleted());
+    }
+
+    /**
+     * Deletes the vector store object matching the specified ID.
+     *
+     * @param vectorStoreId Identifier of the vector store.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response object for deleting a vector store on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Boolean> deleteVectorStore(String vectorStoreId) {
+        Mono<VectorStoreDeletionStatus> deletionStatusMono = deleteVectorStoreInternal(vectorStoreId);
+        return deletionStatusMono.map(status -> status != null && status.isDeleted());
     }
 }

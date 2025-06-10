@@ -11,6 +11,7 @@ import com.azure.ai.agents.persistent.models.CreateRunOptions;
 import com.azure.ai.agents.persistent.models.ListSortOrder;
 import com.azure.ai.agents.persistent.models.PersistentAgentServerSentEvents;
 import com.azure.ai.agents.persistent.models.RunAdditionalFieldList;
+import com.azure.ai.agents.persistent.models.RunStep;
 import com.azure.ai.agents.persistent.models.StreamUpdate;
 import com.azure.ai.agents.persistent.models.ThreadRun;
 import com.azure.ai.agents.persistent.models.ToolOutput;
@@ -37,9 +38,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the asynchronous PersistentAgentsAdministrationClient type.
+ * Initializes a new instance of the asynchronous PersistentAgentsClient type.
  */
-@ServiceClient(builder = PersistentAgentsAdministrationClientBuilder.class, isAsync = true)
+@ServiceClient(builder = PersistentAgentsClientBuilder.class, isAsync = true)
 public final class RunsAsyncClient {
 
     @Generated
@@ -232,6 +233,135 @@ public final class RunsAsyncClient {
     public Mono<Response<BinaryData>> createRunWithResponse(String threadId, BinaryData createRunRequest,
         RequestOptions requestOptions) {
         return this.serviceClient.createRunWithResponseAsync(threadId, createRunRequest, requestOptions);
+    }
+
+    /**
+     * Gets a list of runs for a specified thread.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     thread_id: String (Required)
+     *     assistant_id: String (Required)
+     *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
+     *     required_action (Optional): {
+     *         type: String (Required)
+     *     }
+     *     last_error (Required): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     *     model: String (Required)
+     *     instructions: String (Required)
+     *     tools (Required): [
+     *          (Required){
+     *             type: String (Required)
+     *         }
+     *     ]
+     *     created_at: long (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
+     *     incomplete_details (Required): {
+     *         reason: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *     }
+     *     usage (Required): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     max_prompt_tokens: Integer (Required)
+     *     max_completion_tokens: Integer (Required)
+     *     truncation_strategy (Required): {
+     *         type: String(auto/last_messages) (Required)
+     *         last_messages: Integer (Optional)
+     *     }
+     *     tool_choice: BinaryData (Required)
+     *     response_format: BinaryData (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     *     tool_resources (Optional): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             data_sources (Optional): [
+     *                  (Optional){
+     *                     uri: String (Required)
+     *                     type: String(uri_asset/id_asset) (Required)
+     *                 }
+     *             ]
+     *         }
+     *         file_search (Optional): {
+     *             vector_store_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             vector_stores (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     configuration (Required): {
+     *                         data_sources (Required): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                 }
+     *             ]
+     *         }
+     *         azure_ai_search (Optional): {
+     *             indexes (Optional): [
+     *                  (Optional){
+     *                     index_connection_id: String (Optional)
+     *                     index_name: String (Optional)
+     *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
+     *                     top_k: Integer (Optional)
+     *                     filter: String (Optional)
+     *                     index_asset_id: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     }
+     *     parallel_tool_calls: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param threadId Identifier of the thread.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of runs for a specified thread as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listRuns(String threadId, RequestOptions requestOptions) {
+        return this.serviceClient.listRunsAsync(threadId, requestOptions);
     }
 
     /**
@@ -725,6 +855,146 @@ public final class RunsAsyncClient {
     }
 
     /**
+     * Retrieves a single run step from a thread run.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>include[]</td><td>List&lt;String&gt;</td><td>No</td><td>A list of additional fields to include in the
+     * response.
+     * Currently the only supported value is `step_details.tool_calls[*].file_search.results[*].content` to fetch the
+     * file search result content. In the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     type: String(message_creation/tool_calls) (Required)
+     *     assistant_id: String (Required)
+     *     thread_id: String (Required)
+     *     run_id: String (Required)
+     *     status: String(in_progress/cancelled/failed/completed/expired) (Required)
+     *     step_details (Required): {
+     *         type: String(message_creation/tool_calls) (Required)
+     *     }
+     *     last_error (Required): {
+     *         code: String(server_error/rate_limit_exceeded) (Required)
+     *         message: String (Required)
+     *     }
+     *     created_at: long (Required)
+     *     expired_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
+     *     usage (Optional): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param threadId Identifier of the thread.
+     * @param runId Identifier of the run.
+     * @param stepId Identifier of the run step.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return detailed information about a single step of an agent thread run along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getRunStepWithResponse(String threadId, String runId, String stepId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getRunStepWithResponseAsync(threadId, runId, stepId, requestOptions);
+    }
+
+    /**
+     * Gets a list of run steps from a thread run.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>include[]</td><td>List&lt;String&gt;</td><td>No</td><td>A list of additional fields to include in the
+     * response.
+     * Currently the only supported value is `step_details.tool_calls[*].file_search.results[*].content` to fetch the
+     * file search result content. In the form of "," separated string.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     type: String(message_creation/tool_calls) (Required)
+     *     assistant_id: String (Required)
+     *     thread_id: String (Required)
+     *     run_id: String (Required)
+     *     status: String(in_progress/cancelled/failed/completed/expired) (Required)
+     *     step_details (Required): {
+     *         type: String(message_creation/tool_calls) (Required)
+     *     }
+     *     last_error (Required): {
+     *         code: String(server_error/rate_limit_exceeded) (Required)
+     *         message: String (Required)
+     *     }
+     *     created_at: long (Required)
+     *     expired_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
+     *     usage (Optional): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param threadId Identifier of the thread.
+     * @param runId Identifier of the run.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of run steps from a thread run as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listRunSteps(String threadId, String runId, RequestOptions requestOptions) {
+        return this.serviceClient.listRunStepsAsync(threadId, runId, requestOptions);
+    }
+
+    /**
      * Creates a new run for an agent thread.
      *
      * @param options Options for createRun API.
@@ -769,55 +1039,6 @@ public final class RunsAsyncClient {
         }
         return createRunWithResponse(threadId, createRunRequest, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ThreadRun.class));
-    }
-
-    /**
-     * Creates a new streaming run for an agent thread.
-     *
-     * @param options Options for createRun API.
-     * @return A flux streaming updates from the run.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Flux<StreamUpdate>> createRunStreaming(CreateRunOptions options) {
-        // Generated convenience method for createRunWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String threadId = options.getThreadId();
-        List<RunAdditionalFieldList> include = options.getInclude();
-        CreateRunRequest createRunRequestObj
-            = new CreateRunRequest(options.getAssistantId()).setModel(options.getModel())
-                .setInstructions(options.getInstructions())
-                .setAdditionalInstructions(options.getAdditionalInstructions())
-                .setAdditionalMessages(options.getAdditionalMessages())
-                .setTools(options.getTools())
-                .setStream(true)
-                .setTemperature(options.getTemperature())
-                .setTopP(options.getTopP())
-                .setMaxPromptTokens(options.getMaxPromptTokens())
-                .setMaxCompletionTokens(options.getMaxCompletionTokens())
-                .setTruncationStrategy(options.getTruncationStrategy())
-                .setToolChoice(options.getToolChoice())
-                .setResponseFormat(options.getResponseFormat())
-                .setParallelToolCalls(options.isParallelToolCalls())
-                .setMetadata(options.getMetadata());
-        BinaryData createRunRequest = BinaryData.fromObject(createRunRequestObj);
-        if (include != null) {
-            requestOptions.addQueryParam("include[]",
-                include.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        return createRunWithResponse(threadId, createRunRequest, requestOptions).map(response -> {
-            PersistentAgentServerSentEvents eventStream
-                = new PersistentAgentServerSentEvents(response.getValue().toFluxByteBuffer());
-            return eventStream.getEvents();
-        });
     }
 
     /**
@@ -1036,6 +1257,233 @@ public final class RunsAsyncClient {
     }
 
     /**
+     * Cancels a run of an in‐progress thread.
+     *
+     * @param threadId Identifier of the thread.
+     * @param runId Identifier of the run.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data representing a single evaluation run of an agent thread on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ThreadRun> cancelRun(String threadId, String runId) {
+        // Generated convenience method for cancelRunWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return cancelRunWithResponse(threadId, runId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ThreadRun.class));
+    }
+
+    /**
+     * Retrieves a single run step from a thread run.
+     *
+     * @param threadId Identifier of the thread.
+     * @param runId Identifier of the run.
+     * @param stepId Identifier of the run step.
+     * @param include A list of additional fields to include in the response.
+     * Currently the only supported value is `step_details.tool_calls[*].file_search.results[*].content` to fetch the
+     * file search result content.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return detailed information about a single step of an agent thread run on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RunStep> getRunStep(String threadId, String runId, String stepId,
+        List<RunAdditionalFieldList> include) {
+        // Generated convenience method for getRunStepWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (include != null) {
+            requestOptions.addQueryParam("include[]",
+                include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        return getRunStepWithResponse(threadId, runId, stepId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(RunStep.class));
+    }
+
+    /**
+     * Retrieves a single run step from a thread run.
+     *
+     * @param threadId Identifier of the thread.
+     * @param runId Identifier of the run.
+     * @param stepId Identifier of the run step.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return detailed information about a single step of an agent thread run on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RunStep> getRunStep(String threadId, String runId, String stepId) {
+        // Generated convenience method for getRunStepWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getRunStepWithResponse(threadId, runId, stepId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(RunStep.class));
+    }
+
+    /**
+     * Gets a list of run steps from a thread run.
+     *
+     * @param threadId Identifier of the thread.
+     * @param runId Identifier of the run.
+     * @param include A list of additional fields to include in the response.
+     * Currently the only supported value is `step_details.tool_calls[*].file_search.results[*].content` to fetch the
+     * file search result content.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default
+     * is 20.
+     * @param order Sort order by the created_at timestamp of the objects. asc for ascending order and desc for
+     * descending order.
+     * @param after A cursor for use in pagination. after is an object ID that defines your place in the list. For
+     * instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can
+     * include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. before is an object ID that defines your place in the list. For
+     * instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can
+     * include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of run steps from a thread run as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<RunStep> listRunSteps(String threadId, String runId, List<RunAdditionalFieldList> include,
+        Integer limit, ListSortOrder order, String after, String before) {
+        // Generated convenience method for listRunSteps
+        RequestOptions requestOptions = new RequestOptions();
+        if (include != null) {
+            requestOptions.addQueryParam("include[]",
+                include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listRunSteps(threadId, runId, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, RunStep>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(RunStep.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Gets a list of run steps from a thread run.
+     *
+     * @param threadId Identifier of the thread.
+     * @param runId Identifier of the run.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of run steps from a thread run as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<RunStep> listRunSteps(String threadId, String runId) {
+        // Generated convenience method for listRunSteps
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = listRunSteps(threadId, runId, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, RunStep>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(RunStep.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Creates a new streaming run for an agent thread.
+     *
+     * @param options Options for createRun API.
+     * @return A flux streaming updates from the run.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Flux<StreamUpdate>> createRunStreaming(CreateRunOptions options) {
+        // Generated convenience method for createRunWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String threadId = options.getThreadId();
+        List<RunAdditionalFieldList> include = options.getInclude();
+        CreateRunRequest createRunRequestObj
+            = new CreateRunRequest(options.getAssistantId()).setModel(options.getModel())
+                .setInstructions(options.getInstructions())
+                .setAdditionalInstructions(options.getAdditionalInstructions())
+                .setAdditionalMessages(options.getAdditionalMessages())
+                .setTools(options.getTools())
+                .setStream(true)
+                .setTemperature(options.getTemperature())
+                .setTopP(options.getTopP())
+                .setMaxPromptTokens(options.getMaxPromptTokens())
+                .setMaxCompletionTokens(options.getMaxCompletionTokens())
+                .setTruncationStrategy(options.getTruncationStrategy())
+                .setToolChoice(options.getToolChoice())
+                .setResponseFormat(options.getResponseFormat())
+                .setParallelToolCalls(options.isParallelToolCalls())
+                .setMetadata(options.getMetadata());
+        BinaryData createRunRequest = BinaryData.fromObject(createRunRequestObj);
+        if (include != null) {
+            requestOptions.addQueryParam("include[]",
+                include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        return createRunWithResponse(threadId, createRunRequest, requestOptions).map(response -> {
+            PersistentAgentServerSentEvents eventStream
+                = new PersistentAgentServerSentEvents(response.getValue().toFluxByteBuffer());
+            return eventStream.getEvents();
+        });
+    }
+
+    /**
      * Submits outputs from tools as requested by tool calls in a run with streaming updates.
      * Runs that need submitted tool outputs will have a status of 'requires_action'
      * with a required_action.type of 'submit_tool_outputs'.
@@ -1064,156 +1512,5 @@ public final class RunsAsyncClient {
                     = new PersistentAgentServerSentEvents(response.getValue().toFluxByteBuffer());
                 return eventStream.getEvents();
             });
-    }
-
-    /**
-     * Cancels a run of an in‐progress thread.
-     *
-     * @param threadId Identifier of the thread.
-     * @param runId Identifier of the run.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data representing a single evaluation run of an agent thread on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ThreadRun> cancelRun(String threadId, String runId) {
-        // Generated convenience method for cancelRunWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return cancelRunWithResponse(threadId, runId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ThreadRun.class));
-    }
-
-    /**
-     * Gets a list of runs for a specified thread.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
-     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
-     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
-     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
-     * list.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     object: String (Required)
-     *     thread_id: String (Required)
-     *     assistant_id: String (Required)
-     *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
-     *     required_action (Optional): {
-     *         type: String (Required)
-     *     }
-     *     last_error (Required): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *     }
-     *     model: String (Required)
-     *     instructions: String (Required)
-     *     tools (Required): [
-     *          (Required){
-     *             type: String (Required)
-     *         }
-     *     ]
-     *     created_at: long (Required)
-     *     expires_at: Long (Required)
-     *     started_at: Long (Required)
-     *     completed_at: Long (Required)
-     *     cancelled_at: Long (Required)
-     *     failed_at: Long (Required)
-     *     incomplete_details (Required): {
-     *         reason: String(max_completion_tokens/max_prompt_tokens) (Required)
-     *     }
-     *     usage (Required): {
-     *         completion_tokens: long (Required)
-     *         prompt_tokens: long (Required)
-     *         total_tokens: long (Required)
-     *     }
-     *     temperature: Double (Optional)
-     *     top_p: Double (Optional)
-     *     max_prompt_tokens: Integer (Required)
-     *     max_completion_tokens: Integer (Required)
-     *     truncation_strategy (Required): {
-     *         type: String(auto/last_messages) (Required)
-     *         last_messages: Integer (Optional)
-     *     }
-     *     tool_choice: BinaryData (Required)
-     *     response_format: BinaryData (Required)
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
-     *     tool_resources (Optional): {
-     *         code_interpreter (Optional): {
-     *             file_ids (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             data_sources (Optional): [
-     *                  (Optional){
-     *                     uri: String (Required)
-     *                     type: String(uri_asset/id_asset) (Required)
-     *                 }
-     *             ]
-     *         }
-     *         file_search (Optional): {
-     *             vector_store_ids (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             vector_stores (Optional): [
-     *                  (Optional){
-     *                     name: String (Required)
-     *                     configuration (Required): {
-     *                         data_sources (Required): [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                     }
-     *                 }
-     *             ]
-     *         }
-     *         azure_ai_search (Optional): {
-     *             indexes (Optional): [
-     *                  (Optional){
-     *                     index_connection_id: String (Optional)
-     *                     index_name: String (Optional)
-     *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
-     *                     top_k: Integer (Optional)
-     *                     filter: String (Optional)
-     *                     index_asset_id: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     }
-     *     parallel_tool_calls: boolean (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param threadId Identifier of the thread.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of runs for a specified thread as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listRuns(String threadId, RequestOptions requestOptions) {
-        return this.serviceClient.listRunsAsync(threadId, requestOptions);
     }
 }

@@ -29,6 +29,16 @@ public final class BingGroundingToolDefinition extends ToolDefinition {
     private final BingGroundingSearchToolParameters bingGrounding;
 
     /**
+     * Creates an instance of BingGroundingToolDefinition class.
+     *
+     * @param bingGrounding the bingGrounding value to set.
+     */
+    @Generated
+    public BingGroundingToolDefinition(BingGroundingSearchToolParameters bingGrounding) {
+        this.bingGrounding = bingGrounding;
+    }
+
+    /**
      * Get the type property: The object type.
      *
      * @return the type value.
@@ -91,15 +101,5 @@ public final class BingGroundingToolDefinition extends ToolDefinition {
             deserializedBingGroundingToolDefinition.type = type;
             return deserializedBingGroundingToolDefinition;
         });
-    }
-
-    /**
-     * Creates an instance of BingGroundingToolDefinition class.
-     *
-     * @param bingGrounding the bingGrounding value to set.
-     */
-    @Generated
-    public BingGroundingToolDefinition(BingGroundingSearchToolParameters bingGrounding) {
-        this.bingGrounding = bingGrounding;
     }
 }

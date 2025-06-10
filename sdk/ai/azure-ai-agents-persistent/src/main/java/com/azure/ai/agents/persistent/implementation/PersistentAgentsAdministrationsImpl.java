@@ -23,10 +23,6 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
@@ -37,42 +33,35 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the PersistentAgentsAdministrationClient type.
+ * An instance of this class provides access to all the operations defined in PersistentAgentsAdministrations.
  */
-public final class PersistentAgentsAdministrationClientImpl {
+public final class PersistentAgentsAdministrationsImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final PersistentAgentsAdministrationClientService service;
+    private final PersistentAgentsAdministrationsService service;
 
     /**
-     * Project endpoint in the form of:
-     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
+     * The service client containing this operation class.
      */
-    private final String endpoint;
+    private final PersistentAgentsClientImpl client;
 
     /**
-     * Gets Project endpoint in the form of:
-     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
+     * Initializes an instance of PersistentAgentsAdministrationsImpl.
      * 
-     * @return the endpoint value.
+     * @param client the instance of the service client containing this operation class.
      */
-    public String getEndpoint() {
-        return this.endpoint;
+    PersistentAgentsAdministrationsImpl(PersistentAgentsClientImpl client) {
+        this.service = RestProxy.create(PersistentAgentsAdministrationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
+        this.client = client;
     }
-
-    /**
-     * Service version.
-     */
-    private final AgentsServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
@@ -80,208 +69,36 @@ public final class PersistentAgentsAdministrationClientImpl {
      * @return the serviceVersion value.
      */
     public AgentsServiceVersion getServiceVersion() {
-        return this.serviceVersion;
+        return client.getServiceVersion();
     }
 
     /**
-     * The HTTP pipeline to send requests through.
-     */
-    private final HttpPipeline httpPipeline;
-
-    /**
-     * Gets The HTTP pipeline to send requests through.
-     * 
-     * @return the httpPipeline value.
-     */
-    public HttpPipeline getHttpPipeline() {
-        return this.httpPipeline;
-    }
-
-    /**
-     * The serializer to serialize an object into a string.
-     */
-    private final SerializerAdapter serializerAdapter;
-
-    /**
-     * Gets The serializer to serialize an object into a string.
-     * 
-     * @return the serializerAdapter value.
-     */
-    public SerializerAdapter getSerializerAdapter() {
-        return this.serializerAdapter;
-    }
-
-    /**
-     * The ThreadsImpl object to access its operations.
-     */
-    private final ThreadsImpl threads;
-
-    /**
-     * Gets the ThreadsImpl object to access its operations.
-     * 
-     * @return the ThreadsImpl object.
-     */
-    public ThreadsImpl getThreads() {
-        return this.threads;
-    }
-
-    /**
-     * The MessagesImpl object to access its operations.
-     */
-    private final MessagesImpl messages;
-
-    /**
-     * Gets the MessagesImpl object to access its operations.
-     * 
-     * @return the MessagesImpl object.
-     */
-    public MessagesImpl getMessages() {
-        return this.messages;
-    }
-
-    /**
-     * The RunsImpl object to access its operations.
-     */
-    private final RunsImpl runs;
-
-    /**
-     * Gets the RunsImpl object to access its operations.
-     * 
-     * @return the RunsImpl object.
-     */
-    public RunsImpl getRuns() {
-        return this.runs;
-    }
-
-    /**
-     * The RunStepsImpl object to access its operations.
-     */
-    private final RunStepsImpl runSteps;
-
-    /**
-     * Gets the RunStepsImpl object to access its operations.
-     * 
-     * @return the RunStepsImpl object.
-     */
-    public RunStepsImpl getRunSteps() {
-        return this.runSteps;
-    }
-
-    /**
-     * The FilesImpl object to access its operations.
-     */
-    private final FilesImpl files;
-
-    /**
-     * Gets the FilesImpl object to access its operations.
-     * 
-     * @return the FilesImpl object.
-     */
-    public FilesImpl getFiles() {
-        return this.files;
-    }
-
-    /**
-     * The VectorStoresImpl object to access its operations.
-     */
-    private final VectorStoresImpl vectorStores;
-
-    /**
-     * Gets the VectorStoresImpl object to access its operations.
-     * 
-     * @return the VectorStoresImpl object.
-     */
-    public VectorStoresImpl getVectorStores() {
-        return this.vectorStores;
-    }
-
-    /**
-     * The VectorStoreFilesImpl object to access its operations.
-     */
-    private final VectorStoreFilesImpl vectorStoreFiles;
-
-    /**
-     * Gets the VectorStoreFilesImpl object to access its operations.
-     * 
-     * @return the VectorStoreFilesImpl object.
-     */
-    public VectorStoreFilesImpl getVectorStoreFiles() {
-        return this.vectorStoreFiles;
-    }
-
-    /**
-     * The VectorStoreFileBatchesImpl object to access its operations.
-     */
-    private final VectorStoreFileBatchesImpl vectorStoreFileBatches;
-
-    /**
-     * Gets the VectorStoreFileBatchesImpl object to access its operations.
-     * 
-     * @return the VectorStoreFileBatchesImpl object.
-     */
-    public VectorStoreFileBatchesImpl getVectorStoreFileBatches() {
-        return this.vectorStoreFileBatches;
-    }
-
-    /**
-     * Initializes an instance of PersistentAgentsAdministrationClient client.
-     * 
-     * @param endpoint Project endpoint in the form of:
-     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
-     * @param serviceVersion Service version.
-     */
-    public PersistentAgentsAdministrationClientImpl(String endpoint, AgentsServiceVersion serviceVersion) {
-        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
-            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
-    }
-
-    /**
-     * Initializes an instance of PersistentAgentsAdministrationClient client.
-     * 
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param endpoint Project endpoint in the form of:
-     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
-     * @param serviceVersion Service version.
-     */
-    public PersistentAgentsAdministrationClientImpl(HttpPipeline httpPipeline, String endpoint,
-        AgentsServiceVersion serviceVersion) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
-    }
-
-    /**
-     * Initializes an instance of PersistentAgentsAdministrationClient client.
-     * 
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param endpoint Project endpoint in the form of:
-     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
-     * @param serviceVersion Service version.
-     */
-    public PersistentAgentsAdministrationClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
-        String endpoint, AgentsServiceVersion serviceVersion) {
-        this.httpPipeline = httpPipeline;
-        this.serializerAdapter = serializerAdapter;
-        this.endpoint = endpoint;
-        this.serviceVersion = serviceVersion;
-        this.threads = new ThreadsImpl(this);
-        this.messages = new MessagesImpl(this);
-        this.runs = new RunsImpl(this);
-        this.runSteps = new RunStepsImpl(this);
-        this.files = new FilesImpl(this);
-        this.vectorStores = new VectorStoresImpl(this);
-        this.vectorStoreFiles = new VectorStoreFilesImpl(this);
-        this.vectorStoreFileBatches = new VectorStoreFileBatchesImpl(this);
-        this.service = RestProxy.create(PersistentAgentsAdministrationClientService.class, this.httpPipeline,
-            this.getSerializerAdapter());
-    }
-
-    /**
-     * The interface defining all the services for PersistentAgentsAdministrationClient to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for PersistentAgentsClientPersistentAgentsAdministrations to be used by
+     * the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PersistentAgentsAdministrationClient")
-    public interface PersistentAgentsAdministrationClientService {
+    @ServiceInterface(name = "PersistentAgentsClie")
+    public interface PersistentAgentsAdministrationsService {
+        @Get("/assistants/{assistantId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getAgent(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("assistantId") String assistantId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/assistants/{assistantId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getAgentSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("assistantId") String assistantId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
         @Post("/assistants")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -303,46 +120,6 @@ public final class PersistentAgentsAdministrationClientImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData createAgentRequest,
             RequestOptions requestOptions, Context context);
-
-        @Get("/assistants")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listAgents(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/assistants")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listAgentsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/assistants/{assistantId}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getAgent(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("assistantId") String assistantId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/assistants/{assistantId}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getAgentSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("assistantId") String assistantId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/assistants/{assistantId}")
         @ExpectedResponses({ 200 })
@@ -374,7 +151,7 @@ public final class PersistentAgentsAdministrationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> deleteAgent(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> deleteAgentInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("assistantId") String assistantId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -384,9 +161,29 @@ public final class PersistentAgentsAdministrationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> deleteAgentSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> deleteAgentInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("assistantId") String assistantId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/assistants")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listAgents(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/assistants")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listAgentsSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Post("/threads/runs")
         @ExpectedResponses({ 200 })
@@ -409,6 +206,175 @@ public final class PersistentAgentsAdministrationClientImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData createThreadAndRunRequest,
             RequestOptions requestOptions, Context context);
+    }
+
+    /**
+     * Retrieves an existing agent.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     name: String (Required)
+     *     description: String (Required)
+     *     model: String (Required)
+     *     instructions: String (Required)
+     *     tools (Required): [
+     *          (Required){
+     *             type: String (Required)
+     *         }
+     *     ]
+     *     tool_resources (Required): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             data_sources (Optional): [
+     *                  (Optional){
+     *                     uri: String (Required)
+     *                     type: String(uri_asset/id_asset) (Required)
+     *                 }
+     *             ]
+     *         }
+     *         file_search (Optional): {
+     *             vector_store_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             vector_stores (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     configuration (Required): {
+     *                         data_sources (Required): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                 }
+     *             ]
+     *         }
+     *         azure_ai_search (Optional): {
+     *             indexes (Optional): [
+     *                  (Optional){
+     *                     index_connection_id: String (Optional)
+     *                     index_name: String (Optional)
+     *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
+     *                     top_k: Integer (Optional)
+     *                     filter: String (Optional)
+     *                     index_asset_id: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     }
+     *     temperature: Double (Required)
+     *     top_p: Double (Required)
+     *     response_format: BinaryData (Optional)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param assistantId Identifier of the agent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an agent that can call the model and use tools along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getAgentWithResponseAsync(String assistantId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getAgent(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), assistantId, accept, requestOptions, context));
+    }
+
+    /**
+     * Retrieves an existing agent.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     name: String (Required)
+     *     description: String (Required)
+     *     model: String (Required)
+     *     instructions: String (Required)
+     *     tools (Required): [
+     *          (Required){
+     *             type: String (Required)
+     *         }
+     *     ]
+     *     tool_resources (Required): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             data_sources (Optional): [
+     *                  (Optional){
+     *                     uri: String (Required)
+     *                     type: String(uri_asset/id_asset) (Required)
+     *                 }
+     *             ]
+     *         }
+     *         file_search (Optional): {
+     *             vector_store_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             vector_stores (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     configuration (Required): {
+     *                         data_sources (Required): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                 }
+     *             ]
+     *         }
+     *         azure_ai_search (Optional): {
+     *             indexes (Optional): [
+     *                  (Optional){
+     *                     index_connection_id: String (Optional)
+     *                     index_name: String (Optional)
+     *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
+     *                     top_k: Integer (Optional)
+     *                     filter: String (Optional)
+     *                     index_asset_id: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     }
+     *     temperature: Double (Required)
+     *     top_p: Double (Required)
+     *     response_format: BinaryData (Optional)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param assistantId Identifier of the agent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an agent that can call the model and use tools along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getAgentWithResponse(String assistantId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getAgentSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            assistantId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -558,8 +524,9 @@ public final class PersistentAgentsAdministrationClientImpl {
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createAgent(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, accept, createAgentRequest, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.createAgent(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+                contentType, accept, createAgentRequest, requestOptions, context));
     }
 
     /**
@@ -707,8 +674,372 @@ public final class PersistentAgentsAdministrationClientImpl {
     public Response<BinaryData> createAgentWithResponse(BinaryData createAgentRequest, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createAgentSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
-            createAgentRequest, requestOptions, Context.NONE);
+        return service.createAgentSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            contentType, accept, createAgentRequest, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Modifies an existing agent.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     model: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     instructions: String (Optional)
+     *     tools (Optional): [
+     *          (Optional){
+     *             type: String (Required)
+     *         }
+     *     ]
+     *     tool_resources (Optional): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             data_sources (Optional): [
+     *                  (Optional){
+     *                     uri: String (Required)
+     *                     type: String(uri_asset/id_asset) (Required)
+     *                 }
+     *             ]
+     *         }
+     *         file_search (Optional): {
+     *             vector_store_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             vector_stores (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     configuration (Required): {
+     *                         data_sources (Required): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                 }
+     *             ]
+     *         }
+     *         azure_ai_search (Optional): {
+     *             indexes (Optional): [
+     *                  (Optional){
+     *                     index_connection_id: String (Optional)
+     *                     index_name: String (Optional)
+     *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
+     *                     top_k: Integer (Optional)
+     *                     filter: String (Optional)
+     *                     index_asset_id: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     }
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     response_format: BinaryData (Optional)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     name: String (Required)
+     *     description: String (Required)
+     *     model: String (Required)
+     *     instructions: String (Required)
+     *     tools (Required): [
+     *          (Required){
+     *             type: String (Required)
+     *         }
+     *     ]
+     *     tool_resources (Required): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             data_sources (Optional): [
+     *                  (Optional){
+     *                     uri: String (Required)
+     *                     type: String(uri_asset/id_asset) (Required)
+     *                 }
+     *             ]
+     *         }
+     *         file_search (Optional): {
+     *             vector_store_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             vector_stores (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     configuration (Required): {
+     *                         data_sources (Required): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                 }
+     *             ]
+     *         }
+     *         azure_ai_search (Optional): {
+     *             indexes (Optional): [
+     *                  (Optional){
+     *                     index_connection_id: String (Optional)
+     *                     index_name: String (Optional)
+     *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
+     *                     top_k: Integer (Optional)
+     *                     filter: String (Optional)
+     *                     index_asset_id: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     }
+     *     temperature: Double (Required)
+     *     top_p: Double (Required)
+     *     response_format: BinaryData (Optional)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param assistantId The ID of the agent to modify.
+     * @param updateAgentRequest The updateAgentRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an agent that can call the model and use tools along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> updateAgentWithResponseAsync(String assistantId, BinaryData updateAgentRequest,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.updateAgent(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+                assistantId, contentType, accept, updateAgentRequest, requestOptions, context));
+    }
+
+    /**
+     * Modifies an existing agent.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     model: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     instructions: String (Optional)
+     *     tools (Optional): [
+     *          (Optional){
+     *             type: String (Required)
+     *         }
+     *     ]
+     *     tool_resources (Optional): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             data_sources (Optional): [
+     *                  (Optional){
+     *                     uri: String (Required)
+     *                     type: String(uri_asset/id_asset) (Required)
+     *                 }
+     *             ]
+     *         }
+     *         file_search (Optional): {
+     *             vector_store_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             vector_stores (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     configuration (Required): {
+     *                         data_sources (Required): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                 }
+     *             ]
+     *         }
+     *         azure_ai_search (Optional): {
+     *             indexes (Optional): [
+     *                  (Optional){
+     *                     index_connection_id: String (Optional)
+     *                     index_name: String (Optional)
+     *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
+     *                     top_k: Integer (Optional)
+     *                     filter: String (Optional)
+     *                     index_asset_id: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     }
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     response_format: BinaryData (Optional)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     name: String (Required)
+     *     description: String (Required)
+     *     model: String (Required)
+     *     instructions: String (Required)
+     *     tools (Required): [
+     *          (Required){
+     *             type: String (Required)
+     *         }
+     *     ]
+     *     tool_resources (Required): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             data_sources (Optional): [
+     *                  (Optional){
+     *                     uri: String (Required)
+     *                     type: String(uri_asset/id_asset) (Required)
+     *                 }
+     *             ]
+     *         }
+     *         file_search (Optional): {
+     *             vector_store_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             vector_stores (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     configuration (Required): {
+     *                         data_sources (Required): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                 }
+     *             ]
+     *         }
+     *         azure_ai_search (Optional): {
+     *             indexes (Optional): [
+     *                  (Optional){
+     *                     index_connection_id: String (Optional)
+     *                     index_name: String (Optional)
+     *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
+     *                     top_k: Integer (Optional)
+     *                     filter: String (Optional)
+     *                     index_asset_id: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     }
+     *     temperature: Double (Required)
+     *     top_p: Double (Required)
+     *     response_format: BinaryData (Optional)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param assistantId The ID of the agent to modify.
+     * @param updateAgentRequest The updateAgentRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an agent that can call the model and use tools along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> updateAgentWithResponse(String assistantId, BinaryData updateAgentRequest,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.updateAgentSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            assistantId, contentType, accept, updateAgentRequest, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Deletes an agent.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     deleted: boolean (Required)
+     *     object: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param assistantId Identifier of the agent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the status of an agent deletion operation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> deleteAgentInternalWithResponseAsync(String assistantId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.deleteAgentInternal(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), assistantId, accept, requestOptions, context));
+    }
+
+    /**
+     * Deletes an agent.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     deleted: boolean (Required)
+     *     object: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param assistantId Identifier of the agent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the status of an agent deletion operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> deleteAgentInternalWithResponse(String assistantId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.deleteAgentInternalSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            assistantId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -809,8 +1140,8 @@ public final class PersistentAgentsAdministrationClientImpl {
     private Mono<PagedResponse<BinaryData>> listAgentsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listAgents(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                accept, requestOptions, context))
+            .withContext(context -> service.listAgents(this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
     }
@@ -1009,8 +1340,8 @@ public final class PersistentAgentsAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listAgentsSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listAgentsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listAgentsSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
     }
@@ -1111,538 +1442,6 @@ public final class PersistentAgentsAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listAgents(RequestOptions requestOptions) {
         return new PagedIterable<>(() -> listAgentsSinglePage(requestOptions));
-    }
-
-    /**
-     * Retrieves an existing agent.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     object: String (Required)
-     *     created_at: long (Required)
-     *     name: String (Required)
-     *     description: String (Required)
-     *     model: String (Required)
-     *     instructions: String (Required)
-     *     tools (Required): [
-     *          (Required){
-     *             type: String (Required)
-     *         }
-     *     ]
-     *     tool_resources (Required): {
-     *         code_interpreter (Optional): {
-     *             file_ids (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             data_sources (Optional): [
-     *                  (Optional){
-     *                     uri: String (Required)
-     *                     type: String(uri_asset/id_asset) (Required)
-     *                 }
-     *             ]
-     *         }
-     *         file_search (Optional): {
-     *             vector_store_ids (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             vector_stores (Optional): [
-     *                  (Optional){
-     *                     name: String (Required)
-     *                     configuration (Required): {
-     *                         data_sources (Required): [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                     }
-     *                 }
-     *             ]
-     *         }
-     *         azure_ai_search (Optional): {
-     *             indexes (Optional): [
-     *                  (Optional){
-     *                     index_connection_id: String (Optional)
-     *                     index_name: String (Optional)
-     *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
-     *                     top_k: Integer (Optional)
-     *                     filter: String (Optional)
-     *                     index_asset_id: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     }
-     *     temperature: Double (Required)
-     *     top_p: Double (Required)
-     *     response_format: BinaryData (Optional)
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * @param assistantId Identifier of the agent.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents an agent that can call the model and use tools along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAgentWithResponseAsync(String assistantId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getAgent(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), assistantId, accept, requestOptions, context));
-    }
-
-    /**
-     * Retrieves an existing agent.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     object: String (Required)
-     *     created_at: long (Required)
-     *     name: String (Required)
-     *     description: String (Required)
-     *     model: String (Required)
-     *     instructions: String (Required)
-     *     tools (Required): [
-     *          (Required){
-     *             type: String (Required)
-     *         }
-     *     ]
-     *     tool_resources (Required): {
-     *         code_interpreter (Optional): {
-     *             file_ids (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             data_sources (Optional): [
-     *                  (Optional){
-     *                     uri: String (Required)
-     *                     type: String(uri_asset/id_asset) (Required)
-     *                 }
-     *             ]
-     *         }
-     *         file_search (Optional): {
-     *             vector_store_ids (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             vector_stores (Optional): [
-     *                  (Optional){
-     *                     name: String (Required)
-     *                     configuration (Required): {
-     *                         data_sources (Required): [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                     }
-     *                 }
-     *             ]
-     *         }
-     *         azure_ai_search (Optional): {
-     *             indexes (Optional): [
-     *                  (Optional){
-     *                     index_connection_id: String (Optional)
-     *                     index_name: String (Optional)
-     *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
-     *                     top_k: Integer (Optional)
-     *                     filter: String (Optional)
-     *                     index_asset_id: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     }
-     *     temperature: Double (Required)
-     *     top_p: Double (Required)
-     *     response_format: BinaryData (Optional)
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * @param assistantId Identifier of the agent.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents an agent that can call the model and use tools along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAgentWithResponse(String assistantId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getAgentSync(this.getEndpoint(), this.getServiceVersion().getVersion(), assistantId, accept,
-            requestOptions, Context.NONE);
-    }
-
-    /**
-     * Modifies an existing agent.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     model: String (Optional)
-     *     name: String (Optional)
-     *     description: String (Optional)
-     *     instructions: String (Optional)
-     *     tools (Optional): [
-     *          (Optional){
-     *             type: String (Required)
-     *         }
-     *     ]
-     *     tool_resources (Optional): {
-     *         code_interpreter (Optional): {
-     *             file_ids (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             data_sources (Optional): [
-     *                  (Optional){
-     *                     uri: String (Required)
-     *                     type: String(uri_asset/id_asset) (Required)
-     *                 }
-     *             ]
-     *         }
-     *         file_search (Optional): {
-     *             vector_store_ids (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             vector_stores (Optional): [
-     *                  (Optional){
-     *                     name: String (Required)
-     *                     configuration (Required): {
-     *                         data_sources (Required): [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                     }
-     *                 }
-     *             ]
-     *         }
-     *         azure_ai_search (Optional): {
-     *             indexes (Optional): [
-     *                  (Optional){
-     *                     index_connection_id: String (Optional)
-     *                     index_name: String (Optional)
-     *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
-     *                     top_k: Integer (Optional)
-     *                     filter: String (Optional)
-     *                     index_asset_id: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     }
-     *     temperature: Double (Optional)
-     *     top_p: Double (Optional)
-     *     response_format: BinaryData (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     object: String (Required)
-     *     created_at: long (Required)
-     *     name: String (Required)
-     *     description: String (Required)
-     *     model: String (Required)
-     *     instructions: String (Required)
-     *     tools (Required): [
-     *          (Required){
-     *             type: String (Required)
-     *         }
-     *     ]
-     *     tool_resources (Required): {
-     *         code_interpreter (Optional): {
-     *             file_ids (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             data_sources (Optional): [
-     *                  (Optional){
-     *                     uri: String (Required)
-     *                     type: String(uri_asset/id_asset) (Required)
-     *                 }
-     *             ]
-     *         }
-     *         file_search (Optional): {
-     *             vector_store_ids (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             vector_stores (Optional): [
-     *                  (Optional){
-     *                     name: String (Required)
-     *                     configuration (Required): {
-     *                         data_sources (Required): [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                     }
-     *                 }
-     *             ]
-     *         }
-     *         azure_ai_search (Optional): {
-     *             indexes (Optional): [
-     *                  (Optional){
-     *                     index_connection_id: String (Optional)
-     *                     index_name: String (Optional)
-     *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
-     *                     top_k: Integer (Optional)
-     *                     filter: String (Optional)
-     *                     index_asset_id: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     }
-     *     temperature: Double (Required)
-     *     top_p: Double (Required)
-     *     response_format: BinaryData (Optional)
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * @param assistantId The ID of the agent to modify.
-     * @param updateAgentRequest The updateAgentRequest parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents an agent that can call the model and use tools along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateAgentWithResponseAsync(String assistantId, BinaryData updateAgentRequest,
-        RequestOptions requestOptions) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.updateAgent(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                assistantId, contentType, accept, updateAgentRequest, requestOptions, context));
-    }
-
-    /**
-     * Modifies an existing agent.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     model: String (Optional)
-     *     name: String (Optional)
-     *     description: String (Optional)
-     *     instructions: String (Optional)
-     *     tools (Optional): [
-     *          (Optional){
-     *             type: String (Required)
-     *         }
-     *     ]
-     *     tool_resources (Optional): {
-     *         code_interpreter (Optional): {
-     *             file_ids (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             data_sources (Optional): [
-     *                  (Optional){
-     *                     uri: String (Required)
-     *                     type: String(uri_asset/id_asset) (Required)
-     *                 }
-     *             ]
-     *         }
-     *         file_search (Optional): {
-     *             vector_store_ids (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             vector_stores (Optional): [
-     *                  (Optional){
-     *                     name: String (Required)
-     *                     configuration (Required): {
-     *                         data_sources (Required): [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                     }
-     *                 }
-     *             ]
-     *         }
-     *         azure_ai_search (Optional): {
-     *             indexes (Optional): [
-     *                  (Optional){
-     *                     index_connection_id: String (Optional)
-     *                     index_name: String (Optional)
-     *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
-     *                     top_k: Integer (Optional)
-     *                     filter: String (Optional)
-     *                     index_asset_id: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     }
-     *     temperature: Double (Optional)
-     *     top_p: Double (Optional)
-     *     response_format: BinaryData (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     object: String (Required)
-     *     created_at: long (Required)
-     *     name: String (Required)
-     *     description: String (Required)
-     *     model: String (Required)
-     *     instructions: String (Required)
-     *     tools (Required): [
-     *          (Required){
-     *             type: String (Required)
-     *         }
-     *     ]
-     *     tool_resources (Required): {
-     *         code_interpreter (Optional): {
-     *             file_ids (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             data_sources (Optional): [
-     *                  (Optional){
-     *                     uri: String (Required)
-     *                     type: String(uri_asset/id_asset) (Required)
-     *                 }
-     *             ]
-     *         }
-     *         file_search (Optional): {
-     *             vector_store_ids (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             vector_stores (Optional): [
-     *                  (Optional){
-     *                     name: String (Required)
-     *                     configuration (Required): {
-     *                         data_sources (Required): [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                     }
-     *                 }
-     *             ]
-     *         }
-     *         azure_ai_search (Optional): {
-     *             indexes (Optional): [
-     *                  (Optional){
-     *                     index_connection_id: String (Optional)
-     *                     index_name: String (Optional)
-     *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
-     *                     top_k: Integer (Optional)
-     *                     filter: String (Optional)
-     *                     index_asset_id: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     }
-     *     temperature: Double (Required)
-     *     top_p: Double (Required)
-     *     response_format: BinaryData (Optional)
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * @param assistantId The ID of the agent to modify.
-     * @param updateAgentRequest The updateAgentRequest parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents an agent that can call the model and use tools along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateAgentWithResponse(String assistantId, BinaryData updateAgentRequest,
-        RequestOptions requestOptions) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateAgentSync(this.getEndpoint(), this.getServiceVersion().getVersion(), assistantId,
-            contentType, accept, updateAgentRequest, requestOptions, Context.NONE);
-    }
-
-    /**
-     * Deletes an agent.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     deleted: boolean (Required)
-     *     object: String (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param assistantId Identifier of the agent.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the status of an agent deletion operation along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteAgentWithResponseAsync(String assistantId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteAgent(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), assistantId, accept, requestOptions, context));
-    }
-
-    /**
-     * Deletes an agent.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     deleted: boolean (Required)
-     *     object: String (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param assistantId Identifier of the agent.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the status of an agent deletion operation along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteAgentWithResponse(String assistantId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deleteAgentSync(this.getEndpoint(), this.getServiceVersion().getVersion(), assistantId, accept,
-            requestOptions, Context.NONE);
     }
 
     /**
@@ -1853,9 +1652,9 @@ public final class PersistentAgentsAdministrationClientImpl {
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.createThreadAndRun(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                contentType, accept, createThreadAndRunRequest, requestOptions, context));
+        return FluxUtil.withContext(context -> service.createThreadAndRun(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), contentType, accept, createThreadAndRunRequest,
+            requestOptions, context));
     }
 
     /**
@@ -2065,8 +1864,8 @@ public final class PersistentAgentsAdministrationClientImpl {
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createThreadAndRunSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            accept, createThreadAndRunRequest, requestOptions, Context.NONE);
+        return service.createThreadAndRunSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            contentType, accept, createThreadAndRunRequest, requestOptions, Context.NONE);
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {
