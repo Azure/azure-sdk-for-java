@@ -42,7 +42,7 @@ extends:
                 inputs:
                   mavenPomFile: 'sdk/core-v2/pom.xml'
                   goals: 'clean install'
-                  options: '-B -DskipTests -Dgpg.skip -am'
+                  options: '-B -am -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip'
                   javaHomeOption: 'JDKVersion'
                   jdkVersionOption: '1.8'
                   mavenOptions: '-Xmx3072m'
