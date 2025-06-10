@@ -23,25 +23,13 @@ public final class RenewLocksResult implements JsonSerializable<RenewLocksResult
      * related error information (namely, the error code and description).
      */
     @Generated
-    private final List<FailedLockToken> failedLockTokens;
+    private List<FailedLockToken> failedLockTokens;
 
     /*
      * Array of lock tokens for the successfully renewed locks.
      */
     @Generated
-    private final List<String> succeededLockTokens;
-
-    /**
-     * Creates an instance of RenewLocksResult class.
-     *
-     * @param failedLockTokens the failedLockTokens value to set.
-     * @param succeededLockTokens the succeededLockTokens value to set.
-     */
-    @Generated
-    private RenewLocksResult(List<FailedLockToken> failedLockTokens, List<String> succeededLockTokens) {
-        this.failedLockTokens = failedLockTokens;
-        this.succeededLockTokens = succeededLockTokens;
-    }
+    private List<String> succeededLockTokens;
 
     /**
      * Get the failedLockTokens property: Array of FailedLockToken for failed cloud events. Each FailedLockToken
@@ -71,10 +59,6 @@ public final class RenewLocksResult implements JsonSerializable<RenewLocksResult
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("failedLockTokens", this.failedLockTokens,
-            (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("succeededLockTokens", this.succeededLockTokens,
-            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -90,20 +74,29 @@ public final class RenewLocksResult implements JsonSerializable<RenewLocksResult
     @Generated
     public static RenewLocksResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            List<FailedLockToken> failedLockTokens = null;
-            List<String> succeededLockTokens = null;
+            RenewLocksResult deserializedRenewLocksResult = new RenewLocksResult();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("failedLockTokens".equals(fieldName)) {
-                    failedLockTokens = reader.readArray(reader1 -> FailedLockToken.fromJson(reader1));
+                    List<FailedLockToken> failedLockTokens
+                        = reader.readArray(reader1 -> FailedLockToken.fromJson(reader1));
+                    deserializedRenewLocksResult.failedLockTokens = failedLockTokens;
                 } else if ("succeededLockTokens".equals(fieldName)) {
-                    succeededLockTokens = reader.readArray(reader1 -> reader1.getString());
+                    List<String> succeededLockTokens = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRenewLocksResult.succeededLockTokens = succeededLockTokens;
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new RenewLocksResult(failedLockTokens, succeededLockTokens);
+            return deserializedRenewLocksResult;
         });
+    }
+
+    /**
+     * Creates an instance of RenewLocksResult class.
+     */
+    @Generated
+    private RenewLocksResult() {
     }
 }
