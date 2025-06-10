@@ -2021,15 +2021,15 @@ public class ContainerApiTests extends BlobTestBase {
 
         BlobContainerClient containerClient = serviceClient.getBlobContainerClient(generateContainerName());
 
-        BlobStorageException exception = assertThrows(BlobStorageException.class, containerClient::create);
+        BlobStorageException exception
+            = assertThrows(BlobStorageException.class, () -> containerClient.createIfNotExists());
 
         assertEquals(400, exception.getStatusCode());
         System.out.println("Response status: " + exception.getStatusCode());
-        System.out.println("Response status: " + exception.getErrorCode());
-        System.out.println("Response status: " + exception.getMessage());
+        System.out.println("Response error code: " + exception.getErrorCode());
+        System.out.println("Response message: " + exception.getMessage());
         assertTrue(exception.getMessage().contains(Constants.Errors.INVALID_VERSION_HEADER_MESSAGE));
         assertEquals(BlobErrorCode.INVALID_HEADER_VALUE, exception.getErrorCode());
-
     }
 
     // TODO: Reintroduce these tests once service starts supporting it.

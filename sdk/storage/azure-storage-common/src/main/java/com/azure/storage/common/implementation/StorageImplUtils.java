@@ -299,32 +299,55 @@ public class StorageImplUtils {
      * @return The converted storage exception message.
      */
     public static String convertStorageExceptionMessage(String message, HttpResponse response) {
-        if (response != null) {
-            String errorCode = response.getHeaders().getValue(ERROR_CODE_HEADER_NAME);
-            String headerName = response.getHeaders().getValue(HEADER_NAME);
+        if (response == null) {
+            return message;
+        }
 
-            if (Constants.HeaderConstants.INVALID_HEADER_VALUE.equals(errorCode)
-                && headerName != null
-                && Constants.HeaderConstants.VERSION.equalsIgnoreCase(headerName)) {
-                return Constants.Errors.INVALID_VERSION_HEADER_MESSAGE + message;
-            }
+        String errorCode = response.getHeaders().getValue(ERROR_CODE_HEADER_NAME);
+        String headerName = response.getHeaders().getValue(HEADER_NAME);
 
-            if (response.getStatusCode() == 403) {
-                return STORAGE_EXCEPTION_LOG_STRING_TO_SIGN_MESSAGE + message;
-            }
-            if (response.getRequest() != null
-                && response.getRequest().getHttpMethod() != null
-                && response.getRequest().getHttpMethod().equals(HttpMethod.HEAD)
-                && response.getHeaders().getValue(ERROR_CODE_HEADER_NAME) != null) {
-                int indexOfEmptyBody = message.indexOf("(empty body)");
-                if (indexOfEmptyBody >= 0) {
-                    return message.substring(0, indexOfEmptyBody)
-                        + response.getHeaders().getValue(ERROR_CODE_HEADER_NAME)
-                        + message.substring(indexOfEmptyBody + 12);
-                }
+        if (Constants.HeaderConstants.INVALID_HEADER_VALUE.equals(errorCode)
+            && headerName != null
+            && Constants.HeaderConstants.VERSION.equalsIgnoreCase(headerName)) {
+            return Constants.Errors.INVALID_VERSION_HEADER_MESSAGE + message;
+        }
+
+        String body = response.getBodyAsString().defaultIfEmpty("").block(); // Blocking call
+
+        String extractedErrorCode = errorCode != null ? errorCode : extractXmlTagValue(body, "Code");
+        String extractedHeaderName = headerName != null ? headerName : extractXmlTagValue(body, "HeaderName");
+
+        if (Constants.HeaderConstants.INVALID_HEADER_VALUE.equals(extractedErrorCode)
+            && Constants.HeaderConstants.VERSION.equalsIgnoreCase(extractedHeaderName)) {
+            return Constants.Errors.INVALID_VERSION_HEADER_MESSAGE + message;
+        }
+
+        if (response.getStatusCode() == 403) {
+            return STORAGE_EXCEPTION_LOG_STRING_TO_SIGN_MESSAGE + message;
+        }
+
+        if (response.getRequest() != null
+            && response.getRequest().getHttpMethod() == HttpMethod.HEAD
+            && extractedErrorCode != null) {
+            int indexOfEmptyBody = message.indexOf("(empty body)");
+            if (indexOfEmptyBody >= 0) {
+                return message.substring(0, indexOfEmptyBody) + extractedErrorCode
+                    + message.substring(indexOfEmptyBody + 12);
             }
         }
+
         return message;
+    }
+
+    private static String extractXmlTagValue(String xml, String tag) {
+        String openTag = "<" + tag + ">";
+        String closeTag = "</" + tag + ">";
+        int start = xml.indexOf(openTag);
+        int end = xml.indexOf(closeTag);
+        if (start >= 0 && end > start) {
+            return xml.substring(start + openTag.length(), end).trim();
+        }
+        return null;
     }
 
     /**
