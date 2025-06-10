@@ -319,6 +319,7 @@ public class KubernetesClusterAgentPoolImpl
         agentPoolInner.withWindowsProfile(innerModel().windowsProfile());
         agentPoolInner.withSecurityProfile(innerModel().securityProfile());
         agentPoolInner.withMessageOfTheDay(innerModel().messageOfTheDay());
+        agentPoolInner.withPodIpAllocationMode(innerModel().podIpAllocationMode());
         return agentPoolInner;
     }
 
