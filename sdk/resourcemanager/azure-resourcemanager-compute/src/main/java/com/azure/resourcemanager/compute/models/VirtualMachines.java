@@ -358,7 +358,8 @@ public interface VirtualMachines
      * @param context the {@link Context} of the request
      * @return the accepted deleting operation
      */
-    Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, boolean forceDeletion, Context context);
+    Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, boolean forceDeletion,
+        Context context);
 
     /**
      * Lists all the virtual machines by a certain virtual machine scale set with orchestration mode {@link OrchestrationMode#FLEXIBLE}.

@@ -2333,7 +2333,8 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             }
             return next.process();
         };
-        ComputeManager localComputeManager = buildManager(ComputeManager.class, computeManager.httpPipeline(), verificationPolicy);
+        ComputeManager localComputeManager
+            = buildManager(ComputeManager.class, computeManager.httpPipeline(), verificationPolicy);
         Context context = new Context(correlationKey, correlationId);
 
         Disk disk = localComputeManager.disks()
@@ -2363,7 +2364,8 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS)
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
-            .withExistingDataDisk(disk, disk.sizeInGB(), -1, new VirtualMachineDiskOptions().withDeleteOptions(DeleteOptions.DETACH))
+            .withExistingDataDisk(disk, disk.sizeInGB(), -1,
+                new VirtualMachineDiskOptions().withDeleteOptions(DeleteOptions.DETACH))
             .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
             .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DETACH)
             .beginCreate(context);

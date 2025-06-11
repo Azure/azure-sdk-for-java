@@ -8,7 +8,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.ComputeManager;
-import com.azure.resourcemanager.compute.fluent.models.DiskInner;
 import com.azure.resourcemanager.compute.fluent.models.SnapshotInner;
 import com.azure.resourcemanager.compute.models.AccessLevel;
 import com.azure.resourcemanager.compute.models.CopyCompletionError;
@@ -418,7 +417,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
             inner -> new SnapshotImpl(inner.name(), inner, this.manager()), SnapshotInner.class, () -> {
                 Flux<Indexable> dependencyTasksAsync
                     = taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext())
-                    .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()));
+                        .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()));
                 dependencyTasksAsync.blockLast();
             }, this::setInner, context);
     }

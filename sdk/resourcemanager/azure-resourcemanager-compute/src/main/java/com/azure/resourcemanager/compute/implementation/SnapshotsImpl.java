@@ -64,7 +64,8 @@ public class SnapshotsImpl
 
     @Override
     public Accepted<Void> beginDeleteById(String id, Context context) {
-        return beginDeleteByResourceGroup(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id), context);
+        return beginDeleteByResourceGroup(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id),
+            context);
     }
 
     @Override
@@ -76,10 +77,11 @@ public class SnapshotsImpl
     public Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, Context context) {
         return AcceptedImpl.newAccepted(logger, this.manager().serviceClient().getHttpPipeline(),
             this.manager().serviceClient().getDefaultPollInterval(),
-            () -> this.inner().deleteWithResponseAsync(resourceGroupName, name)
+            () -> this.inner()
+                .deleteWithResponseAsync(resourceGroupName, name)
                 .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
-                .block(), Function.identity(),
-            Void.class, null, context);
+                .block(),
+            Function.identity(), Void.class, null, context);
     }
 
     @Override

@@ -480,7 +480,7 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
             inner -> new DiskImpl(inner.name(), inner, this.manager()), DiskInner.class, () -> {
                 Flux<Indexable> dependencyTasksAsync
                     = taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext())
-                    .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()));
+                        .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()));
                 dependencyTasksAsync.blockLast();
             }, this::setInner, context);
     }

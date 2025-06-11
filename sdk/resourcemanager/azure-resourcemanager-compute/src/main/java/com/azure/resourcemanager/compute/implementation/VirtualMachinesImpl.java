@@ -258,10 +258,14 @@ public class VirtualMachinesImpl extends
     }
 
     @Override
-    public Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, boolean forceDeletion, Context context) {
+    public Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, boolean forceDeletion,
+        Context context) {
         return AcceptedImpl.newAccepted(logger, this.manager().serviceClient().getHttpPipeline(),
             this.manager().serviceClient().getDefaultPollInterval(),
-            () -> this.inner().deleteWithResponseAsync(resourceGroupName, name, forceDeletion).contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly())).block(),
+            () -> this.inner()
+                .deleteWithResponseAsync(resourceGroupName, name, forceDeletion)
+                .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
+                .block(),
             Function.identity(), Void.class, null, Context.NONE);
     }
 
