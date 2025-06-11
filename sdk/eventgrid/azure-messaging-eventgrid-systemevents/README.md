@@ -26,24 +26,24 @@ System events are published by Azure services when resources change state. For e
 
 ### Adding the package to your product
 
-[//]: # ({x-version-update-start;com.azure:azure-messaging-eventgrid-systemevents;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-messaging-eventgrid-systemevents;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventgrid-systemevents</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 **Note**: This package contains only the system event models and utilities. To send or receive events, you'll also need the main Event Grid SDK:
 
-[//]: # ({x-version-update-start;com.azure:azure-messaging-eventgrid;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-messaging-eventgrid;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventgrid</artifactId>
-    <version>4.30.0</version>
+    <version>4.31.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
