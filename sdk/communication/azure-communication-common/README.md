@@ -119,9 +119,13 @@ InteractiveBrowserCredential tokenCredential = new InteractiveBrowserCredentialB
     .redirectUrl("<your-redirect-uri>")
     .build();
 String resourceEndpoint = "https://<your-resource>.communication.azure.com";
-String[] scopes = new String[] { "https://auth.msft.communication.azure.com/TeamsExtension.ManageCalls" };
+List<String> scopes = new ArrayList<String>() {
+    {
+        add("https://auth.msft.communication.azure.com/TeamsExtension.ManageCalls");
+    }
+};
 
-EntraCommunicationTokenCredentialOptions entraTokenCredentialOptions = new EntraCommunicationTokenCredentialOptions(tokenCredential, resourceEndpoint, scopes);
+EntraCommunicationTokenCredentialOptions entraTokenCredentialOptions = new EntraCommunicationTokenCredentialOptions(tokenCredential, resourceEndpoint).setScopes(scopes);
 CommunicationTokenCredential credential = new CommunicationTokenCredential(entraTokenCredentialOptions);
 ```
 
@@ -136,9 +140,13 @@ InteractiveBrowserCredential tokenCredential = new InteractiveBrowserCredentialB
     .redirectUrl("<your-redirect-uri>")
     .build();
 String resourceEndpoint = "https://<your-resource>.communication.azure.com";
-String[] scopes = new String[] { "https://communication.azure.com/clients/VoIP" };
+List<String> scopes = new ArrayList<String>() {
+    {
+        add("https://communication.azure.com/clients/VoIP");
+    }
+};
 
-EntraCommunicationTokenCredentialOptions entraTokenCredentialOptions = new EntraCommunicationTokenCredentialOptions(tokenCredential, resourceEndpoint, scopes);
+EntraCommunicationTokenCredentialOptions entraTokenCredentialOptions = new EntraCommunicationTokenCredentialOptions(tokenCredential, resourceEndpoint).setScopes(scopes);
 CommunicationTokenCredential credential = new CommunicationTokenCredential(entraTokenCredentialOptions);
 ```
 

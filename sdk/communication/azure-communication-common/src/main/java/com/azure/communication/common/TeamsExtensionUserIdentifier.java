@@ -91,10 +91,14 @@ public final class TeamsExtensionUserIdentifier extends CommunicationIdentifier 
      * Set cloud environment of the Teams Extension User identifier
      *
      * @param cloudEnvironment the cloud environment in which this identifier is created
+     * @throws IllegalArgumentException if cloud environment is null
      * @return this object
      */
     public TeamsExtensionUserIdentifier setCloudEnvironment(CommunicationCloudEnvironment cloudEnvironment) {
-        this.cloudEnvironment = cloudEnvironment != null ? cloudEnvironment : CommunicationCloudEnvironment.PUBLIC;
+        if (cloudEnvironment == null) {
+            throw new IllegalArgumentException("The parameter [cloudEnvironment] cannot be null.");
+        }
+        this.cloudEnvironment = cloudEnvironment;
         generateRawId();
         return this;
     }

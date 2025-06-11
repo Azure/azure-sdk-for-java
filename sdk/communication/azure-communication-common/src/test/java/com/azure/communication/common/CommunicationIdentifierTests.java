@@ -23,6 +23,8 @@ public class CommunicationIdentifierTests {
         assertThrows(IllegalArgumentException.class, () -> new TeamsExtensionUserIdentifier(null, "b", "c"));
         assertThrows(IllegalArgumentException.class, () -> new TeamsExtensionUserIdentifier("a", null, "c"));
         assertThrows(IllegalArgumentException.class, () -> new TeamsExtensionUserIdentifier("a", "b", null));
+        assertThrows(IllegalArgumentException.class,
+            () -> new TeamsExtensionUserIdentifier("a", "b", "c").setCloudEnvironment(null));
     }
 
     @Test
@@ -125,12 +127,6 @@ public class CommunicationIdentifierTests {
                 "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd"),
             new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
                 "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd"));
-        assertEquals(
-            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
-                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd"),
-            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
-                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd")
-                    .setCloudEnvironment(null));
         assertEquals(
             new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
                 "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd"),
@@ -239,11 +235,6 @@ public class CommunicationIdentifierTests {
         assertRawId(
             new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
                 "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd")
-                    .setCloudEnvironment(null),
-            "8:acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130_207ffef6-9444-41fb-92ab-20eacaae2768");
-        assertRawId(
-            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
-                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd")
                     .setCloudEnvironment(CommunicationCloudEnvironment.PUBLIC),
             "8:acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130_207ffef6-9444-41fb-92ab-20eacaae2768");
         assertRawId(
@@ -317,11 +308,6 @@ public class CommunicationIdentifierTests {
             "8:acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130_207ffef6-9444-41fb-92ab-20eacaae2768",
             new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
                 "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd"));
-        assertIdentifier(
-            "8:acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130_207ffef6-9444-41fb-92ab-20eacaae2768",
-            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
-                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd")
-                    .setCloudEnvironment(null));
         assertIdentifier(
             "8:acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130_207ffef6-9444-41fb-92ab-20eacaae2768",
             new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",

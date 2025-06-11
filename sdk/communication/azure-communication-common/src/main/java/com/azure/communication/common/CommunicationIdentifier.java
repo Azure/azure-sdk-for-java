@@ -127,7 +127,7 @@ public abstract class CommunicationIdentifier {
                 break;
 
             default:
-                throw new IllegalArgumentException("Invalid prefix " + prefix + " for TeamsExtensionUserIdentifier");
+                throw new IllegalArgumentException("Invalid MRI");
         }
 
         return new TeamsExtensionUserIdentifier(userId, tenantId, resourceId).setCloudEnvironment(cloud);

@@ -12,7 +12,7 @@ final class EntraCommunicationTokenUtils {
 
     public static final String TEAMS_EXTENSION_SCOPE_PREFIX = "https://auth.msft.communication.azure.com/";
     public static final String COMMUNICATION_CLIENTS_SCOPE_PREFIX = "https://communication.azure.com/clients/";
-    public static final String DEFAULT_SCOPE = COMMUNICATION_CLIENTS_SCOPE_PREFIX + ".default";
+    public static final String COMMUNICATION_CLIENTS_DEFAULT_SCOPE = COMMUNICATION_CLIENTS_SCOPE_PREFIX + ".default";
 
     public static final String TEAMS_EXTENSION_ENDPOINT = "/access/teamsExtension/:exchangeAccessToken";
     public static final String TEAMS_EXTENSION_API_VERSION = "2025-06-30";

@@ -12,7 +12,7 @@ import java.util.Objects;
 import static com.azure.communication.common.EntraCommunicationTokenUtils.allScopesStartWith;
 import static com.azure.communication.common.EntraCommunicationTokenUtils.TEAMS_EXTENSION_SCOPE_PREFIX;
 import static com.azure.communication.common.EntraCommunicationTokenUtils.COMMUNICATION_CLIENTS_SCOPE_PREFIX;
-import static com.azure.communication.common.EntraCommunicationTokenUtils.DEFAULT_SCOPE;
+import static com.azure.communication.common.EntraCommunicationTokenUtils.COMMUNICATION_CLIENTS_DEFAULT_SCOPE;
 import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 
 /**
@@ -42,7 +42,7 @@ public final class EntraCommunicationTokenCredentialOptions {
         this.tokenCredential = tokenCredential;
         this.scopes = new ArrayList<String>() {
             {
-                add(DEFAULT_SCOPE);
+                add(COMMUNICATION_CLIENTS_DEFAULT_SCOPE);
             }
         };
     }

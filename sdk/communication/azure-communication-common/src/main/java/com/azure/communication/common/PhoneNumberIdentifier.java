@@ -13,6 +13,7 @@ public final class PhoneNumberIdentifier extends CommunicationIdentifier {
 
     private final String phoneNumber;
     private String assertedId;
+    private boolean isAnonymous;
 
     /**
      * Creates a PhoneNumberIdentifier object
@@ -44,7 +45,7 @@ public final class PhoneNumberIdentifier extends CommunicationIdentifier {
      * @return true if the phone number is anonymous, false otherwise.
      */
     public boolean isAnonymous() {
-        return getRawId().equals(PHONE_NUMBER_PREFIX + ANONYMOUS);
+        return isAnonymous;
     }
 
     /**
@@ -77,6 +78,7 @@ public final class PhoneNumberIdentifier extends CommunicationIdentifier {
     @Override
     public PhoneNumberIdentifier setRawId(String rawId) {
         super.setRawId(rawId);
+        this.isAnonymous = rawId.equals(PHONE_NUMBER_PREFIX + ANONYMOUS);
         return this;
     }
 
