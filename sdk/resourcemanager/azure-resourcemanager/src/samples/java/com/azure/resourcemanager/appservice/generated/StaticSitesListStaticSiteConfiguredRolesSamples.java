@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class StaticSitesListStaticSiteConfiguredRolesSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/ListStaticSiteConfiguredRoles.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/ListStaticSiteConfiguredRoles.json
      */
     /**
      * Sample code: Lists the configured roles for a static site.

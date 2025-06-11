@@ -31,9 +31,10 @@ public final class CommunicationTokenCredential implements AutoCloseable {
     private Supplier<Mono<String>> refresher;
     private FetchingTask fetchingTask;
     private boolean isClosed = false;
+    private boolean isEntra = false;
 
     /**
-     * Create with serialized JWT token
+     * Create an instance of CommunicationTokenCredential with serialized JWT token
      *
      * @param token serialized JWT token
      */
@@ -43,12 +44,11 @@ public final class CommunicationTokenCredential implements AutoCloseable {
     }
 
     /**
-     * Create with tokenRefreshOptions, which includes a token supplier and optional serialized JWT token.
+     * Create an instance of CommunicationTokenCredential with tokenRefreshOptions, which includes a token supplier and optional serialized JWT token.
      * If refresh proactively is true, callback function tokenRefresher will be called
-     * ahead of the token expiry by the number of minutes specified by
-     * CallbackOffsetMinutes defaulted to ten minutes.
+     * ahead of the token expiry by the number of minutes specified by CallbackOffsetMinutes defaulted to ten minutes.
      *
-     * @param tokenRefreshOptions implementation to supply fresh token when reqested
+     * @param tokenRefreshOptions implementation to supply fresh token when requested
      */
     public CommunicationTokenCredential(CommunicationTokenRefreshOptions tokenRefreshOptions) {
         Supplier<String> tokenRefresher = tokenRefreshOptions.getTokenRefresherSync();
@@ -62,6 +62,19 @@ public final class CommunicationTokenCredential implements AutoCloseable {
         if (tokenRefreshOptions.isRefreshProactively()) {
             scheduleRefresher();
         }
+    }
+
+    /**
+     * Create an instance of CommunicationTokenCredential with entraTokenOptions, which will use EntraTokenCredential
+     * that exchanges an Entra token for an Azure Communication Services (ACS) token.
+     *
+     * @param entraTokenOptions options to create EntraTokenCredential
+     */
+    public CommunicationTokenCredential(EntraCommunicationTokenCredentialOptions entraTokenOptions) {
+        Objects.requireNonNull(entraTokenOptions, "'entraTokenOptions' cannot be null.");
+        EntraTokenCredential entraTokenCredential = new EntraTokenCredential(entraTokenOptions);
+        this.refresher = entraTokenCredential::exchangeEntraToken;
+        this.isEntra = true;
     }
 
     private void scheduleRefresher() {
@@ -80,7 +93,7 @@ public final class CommunicationTokenCredential implements AutoCloseable {
     }
 
     private boolean isTokenExpired(AccessToken accessToken) {
-        return accessToken == null || accessToken.isExpired();
+        return isEntra || (accessToken == null || accessToken.isExpired());
     }
 
     private boolean isTokenExpiringSoon() {
@@ -124,6 +137,7 @@ public final class CommunicationTokenCredential implements AutoCloseable {
             fetchingTask = null;
         }
         refresher = null;
+        isEntra = false;
     }
 
     // For test verification usage only

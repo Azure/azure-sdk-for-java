@@ -77,7 +77,7 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "MongoClusterManageme")
+    @ServiceInterface(name = "MongoClusterManagementClientMongoClusters")
     public interface MongoClustersService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}")

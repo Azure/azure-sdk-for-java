@@ -69,7 +69,7 @@ public final class FilesImpl {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PersistentAgentsAdmi")
+    @ServiceInterface(name = "PersistentAgentsAdministrationClientFiles")
     public interface FilesService {
         @Get("/files")
         @ExpectedResponses({ 200 })
