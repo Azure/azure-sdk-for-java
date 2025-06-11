@@ -44,6 +44,7 @@ import com.azure.resourcemanager.compute.models.RunCommandInputParameter;
 import com.azure.resourcemanager.compute.models.RunCommandResult;
 import com.azure.resourcemanager.compute.models.SecurityTypes;
 import com.azure.resourcemanager.compute.models.Sku;
+import com.azure.resourcemanager.compute.models.Snapshot;
 import com.azure.resourcemanager.compute.models.StorageAccountTypes;
 import com.azure.resourcemanager.compute.models.UpgradeMode;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
@@ -2311,6 +2312,8 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     @Test
     public void canBeginCreateAndDeleteWithContext() {
         final String vmName = generateRandomResourceName("jvm", 15);
+        final String diskName = generateRandomResourceName("jvdsk", 15);
+        final String snapshotName = generateRandomResourceName("jvss", 15);
         final String correlationId = UUID.randomUUID().toString();
         final String correlationKey = "x-ms-correlation-id";
         final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
@@ -2331,27 +2334,52 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             return next.process();
         };
         ComputeManager localComputeManager = buildManager(ComputeManager.class, computeManager.httpPipeline(), verificationPolicy);
-
         Context context = new Context(correlationKey, correlationId);
+
+        Disk disk = localComputeManager.disks()
+            .define(diskName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withData()
+            .withSizeInGB(1)
+            .beginCreate(context)
+            .getFinalResult();
+
+        Snapshot snapshot = localComputeManager.snapshots()
+            .define(snapshotName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withDataFromDisk(disk)
+            .beginCreate(context)
+            .getFinalResult();
+
         Accepted<VirtualMachine> accepted = localComputeManager.virtualMachines()
             .define(vmName)
             .withRegion(region)
-            .withNewResourceGroup(rgName)
+            .withExistingResourceGroup(rgName)
             .withNewPrimaryNetwork("10.0.0.0/28")
             .withPrimaryPrivateIPAddressDynamic()
             .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS)
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
+            .withExistingDataDisk(disk, disk.sizeInGB(), -1, new VirtualMachineDiskOptions().withDeleteOptions(DeleteOptions.DETACH))
             .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
+            .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DETACH)
             .beginCreate(context);
         VirtualMachine vm = accepted.getFinalResult();
+        String nicId = vm.getPrimaryNetworkInterface().id();
 
-        // resourceGroup + network + neworkInterface + publicIp + VM = 5
-        Assertions.assertEquals(5, createCounter.get());
+        // resourceGroup + disk + snapshot + network + neworkInterface + publicIp + VM = 7
+        Assertions.assertEquals(7, createCounter.get());
 
-        localComputeManager.virtualMachines().beginDeleteById(vm.id(), false, context);
-        Assertions.assertEquals(1, deleteCounter.get());
+        localComputeManager.virtualMachines().beginDeleteById(vm.id(), false, context).getFinalResult();
+        localComputeManager.networkManager().networkInterfaces().beginDeleteById(nicId, context);
+        localComputeManager.snapshots().beginDeleteById(snapshot.id(), context).getFinalResult();
+        localComputeManager.disks().beginDeleteById(disk.id(), context).getFinalResult();
+
+        // vm + nic + snapshot + disk = 4
+        Assertions.assertEquals(4, deleteCounter.get());
     }
 
     // *********************************** helper methods ***********************************
