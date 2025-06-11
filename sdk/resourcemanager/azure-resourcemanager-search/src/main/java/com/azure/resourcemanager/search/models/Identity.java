@@ -11,9 +11,10 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
- * Identity for the resource.
+ * Details about the search service identity. A null value indicates that the search service has no identity assigned.
  */
 @Fluent
 public final class Identity implements JsonSerializable<Identity> {
@@ -28,9 +29,19 @@ public final class Identity implements JsonSerializable<Identity> {
     private String tenantId;
 
     /*
-     * The identity type.
+     * The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both an identity
+     * created by the system and a set of user assigned identities. The type 'None' will remove all identities from the
+     * service.
      */
     private IdentityType type;
+
+    /*
+     * The list of user identities associated with the resource. The user identity dictionary key references will be ARM
+     * resource IDs in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/
+     * userAssignedIdentities/{identityName}'.
+     */
+    private Map<String, UserAssignedIdentity> userAssignedIdentities;
 
     /**
      * Creates an instance of Identity class.
@@ -57,7 +68,9 @@ public final class Identity implements JsonSerializable<Identity> {
     }
 
     /**
-     * Get the type property: The identity type.
+     * Get the type property: The type of identity used for the resource. The type 'SystemAssigned, UserAssigned'
+     * includes both an identity created by the system and a set of user assigned identities. The type 'None' will
+     * remove all identities from the service.
      * 
      * @return the type value.
      */
@@ -66,13 +79,39 @@ public final class Identity implements JsonSerializable<Identity> {
     }
 
     /**
-     * Set the type property: The identity type.
+     * Set the type property: The type of identity used for the resource. The type 'SystemAssigned, UserAssigned'
+     * includes both an identity created by the system and a set of user assigned identities. The type 'None' will
+     * remove all identities from the service.
      * 
      * @param type the type value to set.
      * @return the Identity object itself.
      */
     public Identity withType(IdentityType type) {
         this.type = type;
+        return this;
+    }
+
+    /**
+     * Get the userAssignedIdentities property: The list of user identities associated with the resource. The user
+     * identity dictionary key references will be ARM resource IDs in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * 
+     * @return the userAssignedIdentities value.
+     */
+    public Map<String, UserAssignedIdentity> userAssignedIdentities() {
+        return this.userAssignedIdentities;
+    }
+
+    /**
+     * Set the userAssignedIdentities property: The list of user identities associated with the resource. The user
+     * identity dictionary key references will be ARM resource IDs in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * 
+     * @param userAssignedIdentities the userAssignedIdentities value to set.
+     * @return the Identity object itself.
+     */
+    public Identity withUserAssignedIdentities(Map<String, UserAssignedIdentity> userAssignedIdentities) {
+        this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }
 
@@ -86,6 +125,13 @@ public final class Identity implements JsonSerializable<Identity> {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property type in model Identity"));
         }
+        if (userAssignedIdentities() != null) {
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Identity.class);
@@ -97,6 +143,8 @@ public final class Identity implements JsonSerializable<Identity> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeMapField("userAssignedIdentities", this.userAssignedIdentities,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -122,6 +170,10 @@ public final class Identity implements JsonSerializable<Identity> {
                     deserializedIdentity.principalId = reader.getString();
                 } else if ("tenantId".equals(fieldName)) {
                     deserializedIdentity.tenantId = reader.getString();
+                } else if ("userAssignedIdentities".equals(fieldName)) {
+                    Map<String, UserAssignedIdentity> userAssignedIdentities
+                        = reader.readMap(reader1 -> UserAssignedIdentity.fromJson(reader1));
+                    deserializedIdentity.userAssignedIdentities = userAssignedIdentities;
                 } else {
                     reader.skipChildren();
                 }

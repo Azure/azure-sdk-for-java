@@ -12,7 +12,7 @@ import com.azure.resourcemanager.search.models.AdminKeyKind;
 public final class AdminKeysRegenerateSamples {
     /*
      * x-ms-original-file:
-     * specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchRegenerateAdminKey.json
+     * specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchRegenerateAdminKey.json
      */
     /**
      * Sample code: SearchRegenerateAdminKey.
