@@ -61,7 +61,7 @@ public final class ScriptCmdletsClientImpl implements ScriptCmdletsClient {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AvsClientScriptCmdle")
+    @ServiceInterface(name = "AvsClientScriptCmdlets")
     public interface ScriptCmdletsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptPackages/{scriptPackageName}/scriptCmdlets")

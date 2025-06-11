@@ -61,7 +61,7 @@ public final class OperationsClientImpl implements OperationsClient {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "MongoDBAtlasManageme")
+    @ServiceInterface(name = "MongoDBAtlasManagementClientOperations")
     public interface OperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/MongoDB.Atlas/operations")

@@ -61,7 +61,7 @@ public final class CryptoCertificatesClientImpl implements CryptoCertificatesCli
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "IoTFirmwareDefenseMg")
+    @ServiceInterface(name = "IoTFirmwareDefenseMgmtClientCryptoCertificates")
     public interface CryptoCertificatesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTFirmwareDefense/workspaces/{workspaceName}/firmwares/{firmwareId}/cryptoCertificates")

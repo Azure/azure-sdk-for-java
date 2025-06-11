@@ -73,7 +73,7 @@ public final class FleetsClientImpl implements FleetsClient {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ComputeFleetManageme")
+    @ServiceInterface(name = "ComputeFleetManagementClientFleets")
     public interface FleetsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureFleet/fleets/{fleetName}")
