@@ -101,7 +101,7 @@ $newAdditionalMods = @()
 # to compute the AdditionalBuildOptions
 $serviceDirsForProjectList = @()
 foreach ($artifactToPatch in $ArtifactsToPatch) {
-    $artifactInfo = $ArtifactInfos[$artifactToPatch].GroupId + ":" + $artifactToPatch
+    $project = $ArtifactInfos[$artifactToPatch].GroupId + ":" + $artifactToPatch
 
     if ($artifactsDict.Contains($project)) {
         Write-Host "Found $project in dictionary"
