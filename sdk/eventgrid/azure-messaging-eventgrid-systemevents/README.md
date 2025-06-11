@@ -1,78 +1,203 @@
-# Azure SystemEvents client library for Java
+# Azure Event Grid System Events for Java
 
-Azure SystemEvents client library for Java.
+This package contains strongly-typed model classes for Azure Event Grid System Events and utilities for deserializing system event data.
 
-This package contains Microsoft Azure SystemEvents client library.
+## Overview
+
+This library provides:
+- **System Event Data Models**: Strongly-typed classes for all Azure Event Grid system events (e.g., `StorageBlobCreatedEventData`, `AppConfigurationKeyValueDeletedEventData`)
+- **Event Type Constants**: Pre-defined constants for all system event types via `SystemEventNames`
+- **Event Mappings**: Automatic mapping between event type strings and their corresponding data model classes
+
+System events are published by Azure services when resources change state. For example, when a blob is created in Azure Storage, a `Microsoft.Storage.BlobCreated` event is published with `StorageBlobCreatedEventData` as the event data.
 
 ## Documentation
 
-Various documentation is available to help you get started
-
 - [API reference documentation][docs]
-- [Product documentation][product_documentation]
+- [Azure Event Grid documentation][product_documentation]
+- [System Event documentation](https://learn.microsoft.com/azure/event-grid/system-topics)
+- [System Event Schemas](https://learn.microsoft.com/azure/event-grid/event-schema)
 
 ## Getting started
 
 ### Prerequisites
 
 - [Java Development Kit (JDK)][jdk] with version 8 or above
-- [Azure Subscription][azure_subscription]
 
 ### Adding the package to your product
 
-[//]: # ({x-version-update-start;com.azure:azure-messaging-eventgrid-systemevents;current})
+[//]: # ({x-version-update-start;com.azure:azure-messaging-eventgrid-systemevents;dependency})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventgrid-systemevents</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
-### Authentication
+**Note**: This package contains only the system event models and utilities. To send or receive events, you'll also need the main Event Grid SDK:
 
-[Azure Identity][azure_identity] package provides the default implementation for authenticating the client.
+[//]: # ({x-version-update-start;com.azure:azure-messaging-eventgrid;dependency})
+```xml
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-messaging-eventgrid</artifactId>
+    <version>4.30.0</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
 
 ## Key concepts
 
-### Examples
+**System Events**: Events automatically published by Azure services when resource state changes occur.
 
--```java com.azure.messaging.eventgrid.readme
--```
+**Event Data Models**: Strongly-typed classes in the `com.azure.messaging.eventgrid.systemevents.models` package that represent the `data` payload of system events.
 
-### Service API versions
+**SystemEventNames**: Utility class containing constants for all system event types and mappings to their corresponding data model classes.
 
-The client library targets the latest service API version by default.
-The service client builder accepts an optional service API version parameter to specify which API version to communicate.
+## Examples
 
-#### Select a service API version
+### Available System Events
 
-You have the flexibility to explicitly select a supported service API version when initializing a service client via the service client builder.
-This ensures that the client can communicate with services using the specified API version.
+This package provides models for system events from many Azure services including:
 
-When selecting an API version, it is important to verify that there are no breaking changes compared to the latest API version.
-If there are significant differences, API calls may fail due to incompatibility.
+- **Azure App Configuration**: `AppConfigurationKeyValueDeletedEventData`, `AppConfigurationKeyValueModifiedEventData`
+- **Azure Blob Storage**: `StorageBlobCreatedEventData`, `StorageBlobDeletedEventData`
+- **Azure Communication Services**: `AcsCallStartedEventData`, `AcsChatMessageReceivedEventData`
+- **Azure Container Registry**: `ContainerRegistryImagePushedEventData`, `ContainerRegistryImageDeletedEventData`
+- **Azure Event Hubs**: `EventHubCaptureFileCreatedEventData`
+- **Azure IoT Hub**: `IotHubDeviceCreatedEventData`, `IotHubDeviceTelemetryEventData`
+- **Azure Service Bus**: `ServiceBusActiveMessagesAvailableWithNoListenersEventData`
+- See the [Azure services that support system events](https://learn.microsoft.com/azure/event-grid/system-topics#azure-services-that-support-system-topics) for additional supported services.
+For a complete list, see the `com.azure.messaging.eventgrid.systemevents.models` package.
 
-Always ensure that the chosen API version is fully supported and operational for your specific use case and that it aligns with the service's versioning policy.
+### Working with System Events
+
+#### 1. Get System Event Type Constants
+
+```java readme-sample-getSystemEventTypeConstants
+// Access predefined event type constants
+String blobCreatedEventType = SystemEventNames.STORAGE_BLOB_CREATED;
+String keyVaultSecretExpiredEventType = SystemEventNames.KEY_VAULT_SECRET_NEAR_EXPIRY;
+```
+
+#### 2. Look up Event Data Model Class
+
+```java readme-sample-lookupSystemEventClass
+// Find the appropriate model class for an event type
+Class<?> eventDataClass = SystemEventNames.getSystemEventMappings().get(eventType);
+if (eventDataClass != null) {
+    System.out.println("Event data should be deserialized to: " + eventDataClass.getSimpleName());
+}
+```
+
+#### 3. Deserialize System Event Data
+
+```java readme-sample-deserializeSystemEventData
+// Assuming you have an EventGridEvent from the main EventGrid SDK
+EventGridEvent event = EventGridEvent.fromString(eventJson).get(0);
+
+if (SystemEventNames.STORAGE_BLOB_CREATED.equals(event.getEventType())) {
+    BinaryData eventData = event.getData();
+    StorageBlobCreatedEventData blobData = eventData.toObject(StorageBlobCreatedEventData.class);
+
+    System.out.println("Blob URL: " + blobData.getUrl());
+    System.out.println("Blob size: " + blobData.getContentLength());
+    System.out.println("Content type: " + blobData.getContentType());
+}
+```
+
+#### 4. Handle Multiple Event Types
+
+```java readme-sample-handleMultipleEventTypes
+List<EventGridEvent> events = EventGridEvent.fromString(eventsJson);
+
+for (EventGridEvent event : events) {
+    BinaryData data = event.getData();
+
+    switch (event.getEventType()) {
+        case SystemEventNames.STORAGE_BLOB_CREATED:
+            StorageBlobCreatedEventData blobCreated = data.toObject(StorageBlobCreatedEventData.class);
+            System.out.println("New blob: " + blobCreated.getUrl());
+            break;
+
+        case SystemEventNames.APP_CONFIGURATION_KEY_VALUE_MODIFIED:
+            AppConfigurationKeyValueModifiedEventData configModified =
+                data.toObject(AppConfigurationKeyValueModifiedEventData.class);
+            System.out.println("Config key modified: " + configModified.getKey());
+            break;
+
+        case SystemEventNames.ACS_CHAT_MESSAGE_RECEIVED:
+            AcsChatMessageReceivedEventData chatMessage =
+                data.toObject(AcsChatMessageReceivedEventData.class);
+            System.out.println("Chat message: " + chatMessage.getMessageBody());
+            break;
+
+        default:
+            System.out.println("Unhandled event type: " + event.getEventType());
+            break;
+    }
+}
+```
+
+#### 5. Generic System Event Processing
+
+```java readme-sample-processSystemEventGenerically
+// Process any system event generically
+String eventType = event.getEventType();
+Class<?> dataClass = SystemEventNames.getSystemEventMappings().get(eventType);
+
+if (dataClass != null) {
+    // This is a known system event
+    Object eventData = event.getData().toObject(dataClass);
+    System.out.println("Processing " + eventType + " with data: " + eventData);
+} else {
+    // Custom event or unknown system event
+    System.out.println("Unknown event type: " + eventType);
+}
+```
+
+## Important Notes
+
+- **Models Only**: This package contains only the system event data models and utilities. To send or receive events, use the main [`azure-messaging-eventgrid`](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventgrid/azure-messaging-eventgrid) package.
+- **System Events Only**: You cannot publish system events using any SDK - they are automatically generated by Azure services.
+- **Package Structure**: All event data models are in the `com.azure.messaging.eventgrid.systemevents.models` package.
 
 ## Troubleshooting
 
+### Common Issues
+
+- **Missing Event Type**: If `SystemEventNames.getSystemEventMappings().get(eventType)` returns null, the event type might be:
+  - A custom event (not a system event)
+  - A new system event not yet supported in this version
+  - Misspelled event type string
+
+- **Deserialization Errors**: Ensure you're using the correct model class for the event type. Use `SystemEventNames` mappings to get the right class.
+
+### Enable Logging
+
+Add the following dependency for logging:
+```xml
+<dependency>
+    <groupId>org.slf4j</groupId>
+    <artifactId>slf4j-simple</artifactId>
+    <version>1.7.36</version>
+</dependency>
+```
+
 ## Next steps
+
+- Explore the [`azure-messaging-eventgrid`](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventgrid/azure-messaging-eventgrid) package for sending and receiving events
+- Learn about [Azure Event Grid System Topics](https://learn.microsoft.com/azure/event-grid/system-topics)
+- Review [Event Grid event schemas](https://learn.microsoft.com/azure/event-grid/event-schema) for different Azure services
+- Check out [Event Grid samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventgrid/azure-messaging-eventgrid/src/samples) for complete examples
 
 ## Contributing
 
 For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
 
-1. Fork it
-1. Create your feature branch (`git checkout -b my-new-feature`)
-1. Commit your changes (`git commit -am 'Add some feature'`)
-1. Push to the branch (`git push origin my-new-feature`)
-1. Create new Pull Request
-
 <!-- LINKS -->
-[product_documentation]: https://azure.microsoft.com/services/
+[product_documentation]: https://learn.microsoft.com/azure/event-grid/
 [docs]: https://azure.github.io/azure-sdk-for-java/
 [jdk]: https://learn.microsoft.com/azure/developer/java/fundamentals/
-[azure_subscription]: https://azure.microsoft.com/free/
-[azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity

@@ -1,14 +1,9 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0 (2025-06-30)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- First stable release of the azure-messaging-eventgrid-systemevents client library for Java, providing strongly-typed models for Azure Event Grid system events.
 
 ## 1.0.0-beta.2 (2025-05-16)
 
