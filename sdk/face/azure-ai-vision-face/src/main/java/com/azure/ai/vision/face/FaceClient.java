@@ -4,6 +4,12 @@
 
 package com.azure.ai.vision.face;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import static com.azure.ai.vision.face.implementation.ClientUtils.addOptionalQueryParameterForDetection;
+import static com.azure.ai.vision.face.implementation.ClientUtils.addRequiredQueryParameterForDetection;
 import com.azure.ai.vision.face.implementation.FaceClientImpl;
 import com.azure.ai.vision.face.implementation.models.DetectFromUrlImplOptions;
 import com.azure.ai.vision.face.implementation.models.DetectFromUrlRequest;
@@ -13,6 +19,7 @@ import com.azure.ai.vision.face.implementation.models.GroupRequest;
 import com.azure.ai.vision.face.implementation.models.IdentifyFromLargePersonGroupRequest;
 import com.azure.ai.vision.face.implementation.models.VerifyFaceToFaceRequest;
 import com.azure.ai.vision.face.implementation.models.VerifyFromLargePersonGroupRequest;
+import com.azure.ai.vision.face.models.DetectOptions;
 import com.azure.ai.vision.face.models.FaceAttributeType;
 import com.azure.ai.vision.face.models.FaceDetectionModel;
 import com.azure.ai.vision.face.models.FaceDetectionResult;
@@ -34,9 +41,6 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Initializes a new instance of the synchronous FaceClient type.
@@ -658,6 +662,255 @@ public final class FaceClient {
         RequestOptions requestOptions) {
         return this.serviceClient.verifyFromLargePersonGroupWithResponse(verifyFromLargePersonGroupRequest,
             requestOptions);
+    }
+
+    /**
+     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
+     *
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-detection-operations/detect for more
+     * details.
+     *
+     * @param imageContent The input image binary.
+     * @param options Options for detect API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<FaceDetectionResult> detect(BinaryData imageContent, DetectOptions options) {
+        return this.detectImpl(imageContent, options.getDetectionModel(), options.getRecognitionModel(),
+            options.isReturnFaceId(), options.getReturnFaceAttributes(), options.isReturnFaceLandmarks(),
+            options.isReturnRecognitionModel(), options.getFaceIdTimeToLive());
+    }
+
+    /**
+     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
+     *
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-detection-operations/detect for more
+     * details.
+     *
+     * @param imageContent The input image binary.
+     * @param detectionModel The 'detectionModel' associated with the detected faceIds. Supported 'detectionModel'
+     * values include 'detection_01', 'detection_02' and 'detection_03'.
+     * @param recognitionModel The 'recognitionModel' associated with the detected faceIds. Supported 'recognitionModel'
+     * values include 'recognition_01', 'recognition_02', 'recognition_03' or 'recognition_04'.
+     * 'recognition_04' is recommended since its accuracy is improved on faces wearing masks compared with
+     * 'recognition_03', and its overall accuracy is improved compared with 'recognition_01' and 'recognition_02'.
+     * @param returnFaceId Return faceIds of the detected faces or not. The default value is true.
+     * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated
+     * string like 'returnFaceAttributes=headPose,glasses'. Face attribute analysis has additional computational and
+     * time cost.
+     * @param returnFaceLandmarks Return face landmarks of the detected faces or not. The default value is false.
+     * @param returnRecognitionModel Return 'recognitionModel' or not. The default value is false.
+     * @param faceIdTimeToLive The number of seconds for the face ID being cached. Supported range from 60 seconds up to
+     * 86400 seconds. The default value is 86400 (24 hours).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<FaceDetectionResult> detect(BinaryData imageContent, FaceDetectionModel detectionModel,
+        FaceRecognitionModel recognitionModel, boolean returnFaceId, List<FaceAttributeType> returnFaceAttributes,
+        Boolean returnFaceLandmarks, Boolean returnRecognitionModel, Integer faceIdTimeToLive) {
+        return this.detectImpl(imageContent, detectionModel, recognitionModel, returnFaceId, returnFaceAttributes,
+            returnFaceLandmarks, returnRecognitionModel, faceIdTimeToLive);
+    }
+
+    /**
+     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
+     *
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-detection-operations/detect for more
+     * details.
+     *
+     * @param imageContent The input image binary.
+     * @param detectionModel The 'detectionModel' associated with the detected faceIds. Supported 'detectionModel'
+     * values include 'detection_01', 'detection_02' and 'detection_03'.
+     * @param recognitionModel The 'recognitionModel' associated with the detected faceIds. Supported 'recognitionModel'
+     * values include 'recognition_01', 'recognition_02', 'recognition_03' or 'recognition_04'.
+     * 'recognition_04' is recommended since its accuracy is improved on faces wearing masks compared with
+     * 'recognition_03', and its overall accuracy is improved compared with 'recognition_01' and 'recognition_02'.
+     * @param returnFaceId Return faceIds of the detected faces or not. The default value is true.
+     * string like 'returnFaceAttributes=headPose,glasses'. Face attribute analysis has additional computational and
+     * time cost.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<FaceDetectionResult> detect(BinaryData imageContent, FaceDetectionModel detectionModel,
+        FaceRecognitionModel recognitionModel, boolean returnFaceId) {
+        return this.detectImpl(imageContent, detectionModel, recognitionModel, returnFaceId, null, null, null, null);
+    }
+
+    /**
+     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
+     *
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-detection-operations/detect for more
+     * details.
+     *
+     * @param imageContent The input image binary.
+     * @param detectionModel The 'detectionModel' associated with the detected faceIds. Supported 'detectionModel'
+     * values include 'detection_01', 'detection_02' and 'detection_03'.
+     * @param recognitionModel The 'recognitionModel' associated with the detected faceIds. Supported 'recognitionModel'
+     * values include 'recognition_01', 'recognition_02', 'recognition_03' or 'recognition_04'.
+     * 'recognition_04' is recommended since its accuracy is improved on faces wearing masks compared with
+     * 'recognition_03', and its overall accuracy is improved compared with 'recognition_01' and 'recognition_02'.
+     * @param returnFaceId Return faceIds of the detected faces or not. The default value is true.
+     * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated
+     * string like 'returnFaceAttributes=headPose,glasses'. Face attribute analysis has additional computational and
+     * time cost.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<FaceDetectionResult> detect(BinaryData imageContent, FaceDetectionModel detectionModel,
+        FaceRecognitionModel recognitionModel, Boolean returnFaceId, List<FaceAttributeType> returnFaceAttributes) {
+        return this.detectImpl(imageContent, detectionModel, recognitionModel, returnFaceId, returnFaceAttributes, null,
+            null, null);
+    }
+
+    /**
+     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
+     *
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-detection-operations/detect-from-url for more
+     * details.
+     *
+     * @param url the URL of input image.
+     * @param options Options for detectFromUrl API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<FaceDetectionResult> detect(String url, DetectOptions options) {
+        return this.detect(url, options.getDetectionModel(), options.getRecognitionModel(), options.isReturnFaceId(),
+            options.getReturnFaceAttributes(), options.isReturnFaceLandmarks(), options.isReturnRecognitionModel(),
+            options.getFaceIdTimeToLive());
+    }
+
+    /**
+     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
+     *
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-detection-operations/detect-from-url for more
+     * details.
+     *
+     * @param url the URL of input image.
+     * @param detectionModel The 'detectionModel' associated with the detected faceIds. Supported 'detectionModel'
+     * values include 'detection_01', 'detection_02' and 'detection_03'.
+     * @param recognitionModel The 'recognitionModel' associated with the detected faceIds. Supported 'recognitionModel'
+     * values include 'recognition_01', 'recognition_02', 'recognition_03' or 'recognition_04'.
+     * 'recognition_04' is recommended since its accuracy is improved on faces wearing masks compared with
+     * 'recognition_03', and its overall accuracy is improved compared with 'recognition_01' and 'recognition_02'.
+     * @param returnFaceId Return faceIds of the detected faces or not. The default value is true.
+     * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated
+     * string like 'returnFaceAttributes=headPose,glasses'. Face attribute analysis has additional computational and
+     * time cost.
+     * @param returnFaceLandmarks Return face landmarks of the detected faces or not. The default value is false.
+     * @param returnRecognitionModel Return 'recognitionModel' or not. The default value is false.
+     * @param faceIdTimeToLive The number of seconds for the face ID being cached. Supported range from 60 seconds up to
+     * 86400 seconds. The default value is 86400 (24 hours).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<FaceDetectionResult> detect(String url, FaceDetectionModel detectionModel,
+        FaceRecognitionModel recognitionModel, boolean returnFaceId, List<FaceAttributeType> returnFaceAttributes,
+        Boolean returnFaceLandmarks, Boolean returnRecognitionModel, Integer faceIdTimeToLive) {
+        RequestOptions requestOptions = new RequestOptions();
+        addRequiredQueryParameterForDetection(requestOptions, detectionModel, recognitionModel, returnFaceId);
+        addOptionalQueryParameterForDetection(requestOptions, returnFaceAttributes, returnFaceLandmarks,
+            returnRecognitionModel, faceIdTimeToLive);
+        DetectFromUrlRequest requestObj = new DetectFromUrlRequest(url);
+        BinaryData request = BinaryData.fromObject(requestObj);
+        return detectFromUrlImplWithResponse(request, requestOptions).getValue()
+            .toObject(TYPE_REFERENCE_LIST_FACE_DETECTION_RESULT);
+    }
+
+    /**
+     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
+     *
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-detection-operations/detect-from-url for more
+     * details.
+     *
+     * @param url the URL of input image.
+     * @param detectionModel The 'detectionModel' associated with the detected faceIds. Supported 'detectionModel'
+     * values include 'detection_01', 'detection_02' and 'detection_03'.
+     * @param recognitionModel The 'recognitionModel' associated with the detected faceIds. Supported 'recognitionModel'
+     * values include 'recognition_01', 'recognition_02', 'recognition_03' or 'recognition_04'.
+     * 'recognition_04' is recommended since its accuracy is improved on faces wearing masks compared with
+     * 'recognition_03', and its overall accuracy is improved compared with 'recognition_01' and 'recognition_02'.
+     * 86400 seconds. The default value is 86400 (24 hours).
+     * @param returnFaceId Return faceIds of the detected faces or not. The default value is true.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<FaceDetectionResult> detect(String url, FaceDetectionModel detectionModel,
+        FaceRecognitionModel recognitionModel, boolean returnFaceId) {
+        return this.detect(url, detectionModel, recognitionModel, returnFaceId, null, null, null, null);
+    }
+
+    /**
+     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
+     *
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-detection-operations/detect-from-url for more
+     * details.
+     *
+     * @param url the URL of input image.
+     * @param detectionModel The 'detectionModel' associated with the detected faceIds. Supported 'detectionModel'
+     * values include 'detection_01', 'detection_02' and 'detection_03'.
+     * @param recognitionModel The 'recognitionModel' associated with the detected faceIds. Supported 'recognitionModel'
+     * values include 'recognition_01', 'recognition_02', 'recognition_03' or 'recognition_04'.
+     * 'recognition_04' is recommended since its accuracy is improved on faces wearing masks compared with
+     * 'recognition_03', and its overall accuracy is improved compared with 'recognition_01' and 'recognition_02'.
+     * @param returnFaceId Return faceIds of the detected faces or not. The default value is true.
+     * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated
+     * string like 'returnFaceAttributes=headPose,glasses'. Face attribute analysis has additional computational and
+     * time cost.
+     * 86400 seconds. The default value is 86400 (24 hours).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<FaceDetectionResult> detect(String url, FaceDetectionModel detectionModel,
+        FaceRecognitionModel recognitionModel, boolean returnFaceId, List<FaceAttributeType> returnFaceAttributes) {
+        return this.detect(url, detectionModel, recognitionModel, returnFaceId, returnFaceAttributes, null, null, null);
     }
 
     /**
