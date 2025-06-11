@@ -24,7 +24,7 @@
   <suppress files="com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil.java" checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" />
   <suppress files="com.azure.security.keyvault.jca.implementation.utils.HttpUtil.java" checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" />
   <suppress files="com.azure.security.keyvault.jca.implementation.utils.JsonConverterUtil.java" checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" />
-  <suppress files="com.azure.security.keyvault.jca.implementation.certificates.SpecificPathCertificates.java" checks="com.azure.tools.checkstyle.checks.JavaDocFormatting" />
+  <suppress files="com.azure.security.keyvault.jca.implementation.certificates.SpecificPathCertificates.java" checks="com.azure.tools.checkstyle.checks.JavadocFormatting" />
   <suppress files="com.azure.security.keyvault.jca.implementation.KeyVaultClient.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
   <suppress files="com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
   <suppress files="com.azure.security.keyvault.jca.implementation.utils.CertificateUtil.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
