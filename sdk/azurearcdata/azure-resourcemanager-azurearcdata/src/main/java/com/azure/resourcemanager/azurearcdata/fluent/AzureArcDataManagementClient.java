@@ -61,6 +61,13 @@ public interface AzureArcDataManagementClient {
     SqlManagedInstancesClient getSqlManagedInstances();
 
     /**
+     * Gets the FailoverGroupsClient object to access its operations.
+     * 
+     * @return the FailoverGroupsClient object.
+     */
+    FailoverGroupsClient getFailoverGroups();
+
+    /**
      * Gets the SqlServerInstancesClient object to access its operations.
      * 
      * @return the SqlServerInstancesClient object.
@@ -68,9 +75,51 @@ public interface AzureArcDataManagementClient {
     SqlServerInstancesClient getSqlServerInstances();
 
     /**
+     * Gets the SqlServerLicensesClient object to access its operations.
+     * 
+     * @return the SqlServerLicensesClient object.
+     */
+    SqlServerLicensesClient getSqlServerLicenses();
+
+    /**
      * Gets the DataControllersClient object to access its operations.
      * 
      * @return the DataControllersClient object.
      */
     DataControllersClient getDataControllers();
+
+    /**
+     * Gets the ActiveDirectoryConnectorsClient object to access its operations.
+     * 
+     * @return the ActiveDirectoryConnectorsClient object.
+     */
+    ActiveDirectoryConnectorsClient getActiveDirectoryConnectors();
+
+    /**
+     * Gets the PostgresInstancesClient object to access its operations.
+     * 
+     * @return the PostgresInstancesClient object.
+     */
+    PostgresInstancesClient getPostgresInstances();
+
+    /**
+     * Gets the SqlServerAvailabilityGroupsClient object to access its operations.
+     * 
+     * @return the SqlServerAvailabilityGroupsClient object.
+     */
+    SqlServerAvailabilityGroupsClient getSqlServerAvailabilityGroups();
+
+    /**
+     * Gets the SqlServerDatabasesClient object to access its operations.
+     * 
+     * @return the SqlServerDatabasesClient object.
+     */
+    SqlServerDatabasesClient getSqlServerDatabases();
+
+    /**
+     * Gets the SqlServerEsuLicensesClient object to access its operations.
+     * 
+     * @return the SqlServerEsuLicensesClient object.
+     */
+    SqlServerEsuLicensesClient getSqlServerEsuLicenses();
 }

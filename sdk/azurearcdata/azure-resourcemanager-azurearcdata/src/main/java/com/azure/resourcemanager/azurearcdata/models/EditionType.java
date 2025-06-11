@@ -42,6 +42,11 @@ public final class EditionType extends ExpandableStringEnum<EditionType> {
     public static final EditionType EXPRESS = fromString("Express");
 
     /**
+     * Static value Business Intelligence for EditionType.
+     */
+    public static final EditionType BUSINESS_INTELLIGENCE = fromString("Business Intelligence");
+
+    /**
      * Creates a new instance of EditionType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

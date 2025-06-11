@@ -22,21 +22,37 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurearcdata.fluent.AzureArcDataManagementClient;
+import com.azure.resourcemanager.azurearcdata.implementation.ActiveDirectoryConnectorsImpl;
 import com.azure.resourcemanager.azurearcdata.implementation.AzureArcDataManagementClientBuilder;
 import com.azure.resourcemanager.azurearcdata.implementation.DataControllersImpl;
+import com.azure.resourcemanager.azurearcdata.implementation.FailoverGroupsImpl;
 import com.azure.resourcemanager.azurearcdata.implementation.OperationsImpl;
+import com.azure.resourcemanager.azurearcdata.implementation.PostgresInstancesImpl;
 import com.azure.resourcemanager.azurearcdata.implementation.SqlManagedInstancesImpl;
+import com.azure.resourcemanager.azurearcdata.implementation.SqlServerAvailabilityGroupsImpl;
+import com.azure.resourcemanager.azurearcdata.implementation.SqlServerDatabasesImpl;
+import com.azure.resourcemanager.azurearcdata.implementation.SqlServerEsuLicensesImpl;
 import com.azure.resourcemanager.azurearcdata.implementation.SqlServerInstancesImpl;
+import com.azure.resourcemanager.azurearcdata.implementation.SqlServerLicensesImpl;
+import com.azure.resourcemanager.azurearcdata.models.ActiveDirectoryConnectors;
 import com.azure.resourcemanager.azurearcdata.models.DataControllers;
+import com.azure.resourcemanager.azurearcdata.models.FailoverGroups;
 import com.azure.resourcemanager.azurearcdata.models.Operations;
+import com.azure.resourcemanager.azurearcdata.models.PostgresInstances;
 import com.azure.resourcemanager.azurearcdata.models.SqlManagedInstances;
+import com.azure.resourcemanager.azurearcdata.models.SqlServerAvailabilityGroups;
+import com.azure.resourcemanager.azurearcdata.models.SqlServerDatabases;
+import com.azure.resourcemanager.azurearcdata.models.SqlServerEsuLicenses;
 import com.azure.resourcemanager.azurearcdata.models.SqlServerInstances;
+import com.azure.resourcemanager.azurearcdata.models.SqlServerLicenses;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -50,9 +66,23 @@ public final class AzureArcDataManager {
 
     private SqlManagedInstances sqlManagedInstances;
 
+    private FailoverGroups failoverGroups;
+
     private SqlServerInstances sqlServerInstances;
 
+    private SqlServerLicenses sqlServerLicenses;
+
     private DataControllers dataControllers;
+
+    private ActiveDirectoryConnectors activeDirectoryConnectors;
+
+    private PostgresInstances postgresInstances;
+
+    private SqlServerAvailabilityGroups sqlServerAvailabilityGroups;
+
+    private SqlServerDatabases sqlServerDatabases;
+
+    private SqlServerEsuLicenses sqlServerEsuLicenses;
 
     private final AzureArcDataManagementClient clientObject;
 
@@ -106,6 +136,9 @@ public final class AzureArcDataManager {
      */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
+        private static final String SDK_VERSION = "version";
+        private static final Map<String, String> PROPERTIES
+            = CoreUtils.getProperties("azure-resourcemanager-azurearcdata.properties");
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -213,12 +246,14 @@ public final class AzureArcDataManager {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
+            String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+
             StringBuilder userAgentBuilder = new StringBuilder();
             userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.azurearcdata")
                 .append("/")
-                .append("1.0.0");
+                .append(clientVersion);
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -289,6 +324,18 @@ public final class AzureArcDataManager {
     }
 
     /**
+     * Gets the resource collection API of FailoverGroups. It manages FailoverGroupResource.
+     * 
+     * @return Resource collection API of FailoverGroups.
+     */
+    public FailoverGroups failoverGroups() {
+        if (this.failoverGroups == null) {
+            this.failoverGroups = new FailoverGroupsImpl(clientObject.getFailoverGroups(), this);
+        }
+        return failoverGroups;
+    }
+
+    /**
      * Gets the resource collection API of SqlServerInstances. It manages SqlServerInstance.
      * 
      * @return Resource collection API of SqlServerInstances.
@@ -301,6 +348,18 @@ public final class AzureArcDataManager {
     }
 
     /**
+     * Gets the resource collection API of SqlServerLicenses. It manages SqlServerLicense.
+     * 
+     * @return Resource collection API of SqlServerLicenses.
+     */
+    public SqlServerLicenses sqlServerLicenses() {
+        if (this.sqlServerLicenses == null) {
+            this.sqlServerLicenses = new SqlServerLicensesImpl(clientObject.getSqlServerLicenses(), this);
+        }
+        return sqlServerLicenses;
+    }
+
+    /**
      * Gets the resource collection API of DataControllers. It manages DataControllerResource.
      * 
      * @return Resource collection API of DataControllers.
@@ -310,6 +369,68 @@ public final class AzureArcDataManager {
             this.dataControllers = new DataControllersImpl(clientObject.getDataControllers(), this);
         }
         return dataControllers;
+    }
+
+    /**
+     * Gets the resource collection API of ActiveDirectoryConnectors. It manages ActiveDirectoryConnectorResource.
+     * 
+     * @return Resource collection API of ActiveDirectoryConnectors.
+     */
+    public ActiveDirectoryConnectors activeDirectoryConnectors() {
+        if (this.activeDirectoryConnectors == null) {
+            this.activeDirectoryConnectors
+                = new ActiveDirectoryConnectorsImpl(clientObject.getActiveDirectoryConnectors(), this);
+        }
+        return activeDirectoryConnectors;
+    }
+
+    /**
+     * Gets the resource collection API of PostgresInstances. It manages PostgresInstance.
+     * 
+     * @return Resource collection API of PostgresInstances.
+     */
+    public PostgresInstances postgresInstances() {
+        if (this.postgresInstances == null) {
+            this.postgresInstances = new PostgresInstancesImpl(clientObject.getPostgresInstances(), this);
+        }
+        return postgresInstances;
+    }
+
+    /**
+     * Gets the resource collection API of SqlServerAvailabilityGroups. It manages SqlServerAvailabilityGroupResource.
+     * 
+     * @return Resource collection API of SqlServerAvailabilityGroups.
+     */
+    public SqlServerAvailabilityGroups sqlServerAvailabilityGroups() {
+        if (this.sqlServerAvailabilityGroups == null) {
+            this.sqlServerAvailabilityGroups
+                = new SqlServerAvailabilityGroupsImpl(clientObject.getSqlServerAvailabilityGroups(), this);
+        }
+        return sqlServerAvailabilityGroups;
+    }
+
+    /**
+     * Gets the resource collection API of SqlServerDatabases. It manages SqlServerDatabaseResource.
+     * 
+     * @return Resource collection API of SqlServerDatabases.
+     */
+    public SqlServerDatabases sqlServerDatabases() {
+        if (this.sqlServerDatabases == null) {
+            this.sqlServerDatabases = new SqlServerDatabasesImpl(clientObject.getSqlServerDatabases(), this);
+        }
+        return sqlServerDatabases;
+    }
+
+    /**
+     * Gets the resource collection API of SqlServerEsuLicenses. It manages SqlServerEsuLicense.
+     * 
+     * @return Resource collection API of SqlServerEsuLicenses.
+     */
+    public SqlServerEsuLicenses sqlServerEsuLicenses() {
+        if (this.sqlServerEsuLicenses == null) {
+            this.sqlServerEsuLicenses = new SqlServerEsuLicensesImpl(clientObject.getSqlServerEsuLicenses(), this);
+        }
+        return sqlServerEsuLicenses;
     }
 
     /**

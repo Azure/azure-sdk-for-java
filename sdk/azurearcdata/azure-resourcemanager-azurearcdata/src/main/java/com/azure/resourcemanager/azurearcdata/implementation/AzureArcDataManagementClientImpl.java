@@ -15,19 +15,29 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.SyncPollerFactory;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.azurearcdata.fluent.ActiveDirectoryConnectorsClient;
 import com.azure.resourcemanager.azurearcdata.fluent.AzureArcDataManagementClient;
 import com.azure.resourcemanager.azurearcdata.fluent.DataControllersClient;
+import com.azure.resourcemanager.azurearcdata.fluent.FailoverGroupsClient;
 import com.azure.resourcemanager.azurearcdata.fluent.OperationsClient;
+import com.azure.resourcemanager.azurearcdata.fluent.PostgresInstancesClient;
 import com.azure.resourcemanager.azurearcdata.fluent.SqlManagedInstancesClient;
+import com.azure.resourcemanager.azurearcdata.fluent.SqlServerAvailabilityGroupsClient;
+import com.azure.resourcemanager.azurearcdata.fluent.SqlServerDatabasesClient;
+import com.azure.resourcemanager.azurearcdata.fluent.SqlServerEsuLicensesClient;
 import com.azure.resourcemanager.azurearcdata.fluent.SqlServerInstancesClient;
+import com.azure.resourcemanager.azurearcdata.fluent.SqlServerLicensesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -155,6 +165,20 @@ public final class AzureArcDataManagementClientImpl implements AzureArcDataManag
     }
 
     /**
+     * The FailoverGroupsClient object to access its operations.
+     */
+    private final FailoverGroupsClient failoverGroups;
+
+    /**
+     * Gets the FailoverGroupsClient object to access its operations.
+     * 
+     * @return the FailoverGroupsClient object.
+     */
+    public FailoverGroupsClient getFailoverGroups() {
+        return this.failoverGroups;
+    }
+
+    /**
      * The SqlServerInstancesClient object to access its operations.
      */
     private final SqlServerInstancesClient sqlServerInstances;
@@ -169,6 +193,20 @@ public final class AzureArcDataManagementClientImpl implements AzureArcDataManag
     }
 
     /**
+     * The SqlServerLicensesClient object to access its operations.
+     */
+    private final SqlServerLicensesClient sqlServerLicenses;
+
+    /**
+     * Gets the SqlServerLicensesClient object to access its operations.
+     * 
+     * @return the SqlServerLicensesClient object.
+     */
+    public SqlServerLicensesClient getSqlServerLicenses() {
+        return this.sqlServerLicenses;
+    }
+
+    /**
      * The DataControllersClient object to access its operations.
      */
     private final DataControllersClient dataControllers;
@@ -180,6 +218,76 @@ public final class AzureArcDataManagementClientImpl implements AzureArcDataManag
      */
     public DataControllersClient getDataControllers() {
         return this.dataControllers;
+    }
+
+    /**
+     * The ActiveDirectoryConnectorsClient object to access its operations.
+     */
+    private final ActiveDirectoryConnectorsClient activeDirectoryConnectors;
+
+    /**
+     * Gets the ActiveDirectoryConnectorsClient object to access its operations.
+     * 
+     * @return the ActiveDirectoryConnectorsClient object.
+     */
+    public ActiveDirectoryConnectorsClient getActiveDirectoryConnectors() {
+        return this.activeDirectoryConnectors;
+    }
+
+    /**
+     * The PostgresInstancesClient object to access its operations.
+     */
+    private final PostgresInstancesClient postgresInstances;
+
+    /**
+     * Gets the PostgresInstancesClient object to access its operations.
+     * 
+     * @return the PostgresInstancesClient object.
+     */
+    public PostgresInstancesClient getPostgresInstances() {
+        return this.postgresInstances;
+    }
+
+    /**
+     * The SqlServerAvailabilityGroupsClient object to access its operations.
+     */
+    private final SqlServerAvailabilityGroupsClient sqlServerAvailabilityGroups;
+
+    /**
+     * Gets the SqlServerAvailabilityGroupsClient object to access its operations.
+     * 
+     * @return the SqlServerAvailabilityGroupsClient object.
+     */
+    public SqlServerAvailabilityGroupsClient getSqlServerAvailabilityGroups() {
+        return this.sqlServerAvailabilityGroups;
+    }
+
+    /**
+     * The SqlServerDatabasesClient object to access its operations.
+     */
+    private final SqlServerDatabasesClient sqlServerDatabases;
+
+    /**
+     * Gets the SqlServerDatabasesClient object to access its operations.
+     * 
+     * @return the SqlServerDatabasesClient object.
+     */
+    public SqlServerDatabasesClient getSqlServerDatabases() {
+        return this.sqlServerDatabases;
+    }
+
+    /**
+     * The SqlServerEsuLicensesClient object to access its operations.
+     */
+    private final SqlServerEsuLicensesClient sqlServerEsuLicenses;
+
+    /**
+     * Gets the SqlServerEsuLicensesClient object to access its operations.
+     * 
+     * @return the SqlServerEsuLicensesClient object.
+     */
+    public SqlServerEsuLicensesClient getSqlServerEsuLicenses() {
+        return this.sqlServerEsuLicenses;
     }
 
     /**
@@ -199,11 +307,18 @@ public final class AzureArcDataManagementClientImpl implements AzureArcDataManag
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-08-01";
+        this.apiVersion = "2025-03-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.sqlManagedInstances = new SqlManagedInstancesClientImpl(this);
+        this.failoverGroups = new FailoverGroupsClientImpl(this);
         this.sqlServerInstances = new SqlServerInstancesClientImpl(this);
+        this.sqlServerLicenses = new SqlServerLicensesClientImpl(this);
         this.dataControllers = new DataControllersClientImpl(this);
+        this.activeDirectoryConnectors = new ActiveDirectoryConnectorsClientImpl(this);
+        this.postgresInstances = new PostgresInstancesClientImpl(this);
+        this.sqlServerAvailabilityGroups = new SqlServerAvailabilityGroupsClientImpl(this);
+        this.sqlServerDatabases = new SqlServerDatabasesClientImpl(this);
+        this.sqlServerEsuLicenses = new SqlServerEsuLicensesClientImpl(this);
     }
 
     /**
@@ -241,6 +356,23 @@ public final class AzureArcDataManagementClientImpl implements AzureArcDataManag
         HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
         return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
             defaultPollInterval, activationResponse, context);
+    }
+
+    /**
+     * Gets long running operation result.
+     * 
+     * @param activationResponse the response of activation operation.
+     * @param pollResultType type of poll result.
+     * @param finalResultType type of final result.
+     * @param context the context shared by all requests.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return SyncPoller for poll result and final result.
+     */
+    public <T, U> SyncPoller<PollResult<T>, U> getLroResult(Response<BinaryData> activationResponse,
+        Type pollResultType, Type finalResultType, Context context) {
+        return SyncPollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, () -> activationResponse, context);
     }
 
     /**

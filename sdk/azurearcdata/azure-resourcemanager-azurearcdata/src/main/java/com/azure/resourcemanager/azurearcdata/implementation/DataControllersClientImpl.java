@@ -28,8 +28,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.azurearcdata.fluent.DataControllersClient;
@@ -70,13 +72,21 @@ public final class DataControllersClientImpl implements DataControllersClient {
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureArcDataManageme")
+    @ServiceInterface(name = "AzureArcDataManagementClientDataControllers")
     public interface DataControllersService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/dataControllers")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PageOfDataControllerResource>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/dataControllers")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<PageOfDataControllerResource> listSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -90,10 +100,30 @@ public final class DataControllersClientImpl implements DataControllersClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/dataControllers")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<PageOfDataControllerResource> listByResourceGroupSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/dataControllers/{dataControllerName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> putDataController(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("dataControllerName") String dataControllerName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") DataControllerResourceInner dataControllerResource,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/dataControllers/{dataControllerName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> putDataControllerSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("dataControllerName") String dataControllerName, @QueryParam("api-version") String apiVersion,
@@ -111,6 +141,16 @@ public final class DataControllersClientImpl implements DataControllersClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/dataControllers/{dataControllerName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("dataControllerName") String dataControllerName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/dataControllers/{dataControllerName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -121,10 +161,31 @@ public final class DataControllersClientImpl implements DataControllersClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/dataControllers/{dataControllerName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/dataControllers/{dataControllerName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DataControllerResourceInner>> patchDataController(@HostParam("$host") String endpoint,
+        Response<DataControllerResourceInner> getByResourceGroupSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("dataControllerName") String dataControllerName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/dataControllers/{dataControllerName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> patchDataController(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("dataControllerName") String dataControllerName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") DataControllerUpdate dataControllerResource,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/dataControllers/{dataControllerName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> patchDataControllerSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("dataControllerName") String dataControllerName, @QueryParam("api-version") String apiVersion,
@@ -143,7 +204,23 @@ public final class DataControllersClientImpl implements DataControllersClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<PageOfDataControllerResource> listInSubscriptionNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PageOfDataControllerResource>> listInGroupNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<PageOfDataControllerResource> listInGroupNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -153,7 +230,7 @@ public final class DataControllersClientImpl implements DataControllersClient {
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of data controllers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataControllerResourceInner>> listSinglePageAsync() {
@@ -177,37 +254,9 @@ public final class DataControllersClientImpl implements DataControllersClient {
     /**
      * List dataController resources in the subscription.
      * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataControllerResourceInner>> listSinglePageAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
-                context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List dataController resources in the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return a list of data controllers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataControllerResourceInner> listAsync() {
@@ -218,16 +267,55 @@ public final class DataControllersClientImpl implements DataControllersClient {
     /**
      * List dataController resources in the subscription.
      * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of data controllers along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DataControllerResourceInner> listSinglePage() {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<PageOfDataControllerResource> res = service.listSync(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List dataController resources in the subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return a list of data controllers along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DataControllerResourceInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context),
-            nextLink -> listInSubscriptionNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DataControllerResourceInner> listSinglePage(Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<PageOfDataControllerResource> res = service.listSync(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -235,11 +323,11 @@ public final class DataControllersClientImpl implements DataControllersClient {
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return a list of data controllers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataControllerResourceInner> list() {
-        return new PagedIterable<>(listAsync());
+        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listInSubscriptionNextSinglePage(nextLink));
     }
 
     /**
@@ -249,11 +337,12 @@ public final class DataControllersClientImpl implements DataControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return a list of data controllers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataControllerResourceInner> list(Context context) {
-        return new PagedIterable<>(listAsync(context));
+        return new PagedIterable<>(() -> listSinglePage(context),
+            nextLink -> listInSubscriptionNextSinglePage(nextLink, context));
     }
 
     /**
@@ -263,7 +352,7 @@ public final class DataControllersClientImpl implements DataControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of data controllers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataControllerResourceInner>>
@@ -293,44 +382,10 @@ public final class DataControllersClientImpl implements DataControllersClient {
      * List dataController resources in the resource group.
      * 
      * @param resourceGroupName The name of the Azure resource group.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataControllerResourceInner>>
-        listByResourceGroupSinglePageAsync(String resourceGroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List dataController resources in the resource group.
-     * 
-     * @param resourceGroupName The name of the Azure resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return a list of data controllers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataControllerResourceInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -342,16 +397,66 @@ public final class DataControllersClientImpl implements DataControllersClient {
      * List dataController resources in the resource group.
      * 
      * @param resourceGroupName The name of the Azure resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of data controllers along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DataControllerResourceInner> listByResourceGroupSinglePage(String resourceGroupName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<PageOfDataControllerResource> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List dataController resources in the resource group.
+     * 
+     * @param resourceGroupName The name of the Azure resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return a list of data controllers along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DataControllerResourceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listInGroupNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DataControllerResourceInner> listByResourceGroupSinglePage(String resourceGroupName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<PageOfDataControllerResource> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -361,11 +466,12 @@ public final class DataControllersClientImpl implements DataControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return a list of data controllers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataControllerResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
+            nextLink -> listInGroupNextSinglePage(nextLink));
     }
 
     /**
@@ -376,18 +482,19 @@ public final class DataControllersClientImpl implements DataControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return a list of data controllers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataControllerResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
+            nextLink -> listInGroupNextSinglePage(nextLink, context));
     }
 
     /**
      * Creates or replaces a dataController resource.
      * 
      * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
+     * @param dataControllerName The name of the data controller.
      * @param dataControllerResource desc.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -431,50 +538,96 @@ public final class DataControllersClientImpl implements DataControllersClient {
      * Creates or replaces a dataController resource.
      * 
      * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
+     * @param dataControllerName The name of the data controller.
      * @param dataControllerResource desc.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data controller resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return data controller resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> putDataControllerWithResponseAsync(String resourceGroupName,
-        String dataControllerName, DataControllerResourceInner dataControllerResource, Context context) {
+    private Response<BinaryData> putDataControllerWithResponse(String resourceGroupName, String dataControllerName,
+        DataControllerResourceInner dataControllerResource) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dataControllerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter dataControllerName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter dataControllerName is required and cannot be null."));
         }
         if (dataControllerResource == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter dataControllerResource is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter dataControllerResource is required and cannot be null."));
         } else {
             dataControllerResource.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.putDataController(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            dataControllerName, this.client.getApiVersion(), dataControllerResource, accept, context);
+        return service.putDataControllerSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, dataControllerName, this.client.getApiVersion(), dataControllerResource, accept,
+            Context.NONE);
     }
 
     /**
      * Creates or replaces a dataController resource.
      * 
      * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
+     * @param dataControllerName The name of the data controller.
+     * @param dataControllerResource desc.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data controller resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> putDataControllerWithResponse(String resourceGroupName, String dataControllerName,
+        DataControllerResourceInner dataControllerResource, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (dataControllerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter dataControllerName is required and cannot be null."));
+        }
+        if (dataControllerResource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter dataControllerResource is required and cannot be null."));
+        } else {
+            dataControllerResource.validate();
+        }
+        final String accept = "application/json";
+        return service.putDataControllerSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, dataControllerName, this.client.getApiVersion(), dataControllerResource, accept,
+            context);
+    }
+
+    /**
+     * Creates or replaces a dataController resource.
+     * 
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param dataControllerName The name of the data controller.
      * @param dataControllerResource desc.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -496,31 +649,7 @@ public final class DataControllersClientImpl implements DataControllersClient {
      * Creates or replaces a dataController resource.
      * 
      * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
-     * @param dataControllerResource desc.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of data controller resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DataControllerResourceInner>, DataControllerResourceInner>
-        beginPutDataControllerAsync(String resourceGroupName, String dataControllerName,
-            DataControllerResourceInner dataControllerResource, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = putDataControllerWithResponseAsync(resourceGroupName,
-            dataControllerName, dataControllerResource, context);
-        return this.client.<DataControllerResourceInner, DataControllerResourceInner>getLroResult(mono,
-            this.client.getHttpPipeline(), DataControllerResourceInner.class, DataControllerResourceInner.class,
-            context);
-    }
-
-    /**
-     * Creates or replaces a dataController resource.
-     * 
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
+     * @param dataControllerName The name of the data controller.
      * @param dataControllerResource desc.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -530,15 +659,17 @@ public final class DataControllersClientImpl implements DataControllersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataControllerResourceInner>, DataControllerResourceInner> beginPutDataController(
         String resourceGroupName, String dataControllerName, DataControllerResourceInner dataControllerResource) {
-        return this.beginPutDataControllerAsync(resourceGroupName, dataControllerName, dataControllerResource)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = putDataControllerWithResponse(resourceGroupName, dataControllerName, dataControllerResource);
+        return this.client.<DataControllerResourceInner, DataControllerResourceInner>getLroResult(response,
+            DataControllerResourceInner.class, DataControllerResourceInner.class, Context.NONE);
     }
 
     /**
      * Creates or replaces a dataController resource.
      * 
      * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
+     * @param dataControllerName The name of the data controller.
      * @param dataControllerResource desc.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -550,15 +681,17 @@ public final class DataControllersClientImpl implements DataControllersClient {
     public SyncPoller<PollResult<DataControllerResourceInner>, DataControllerResourceInner> beginPutDataController(
         String resourceGroupName, String dataControllerName, DataControllerResourceInner dataControllerResource,
         Context context) {
-        return this.beginPutDataControllerAsync(resourceGroupName, dataControllerName, dataControllerResource, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = putDataControllerWithResponse(resourceGroupName, dataControllerName, dataControllerResource, context);
+        return this.client.<DataControllerResourceInner, DataControllerResourceInner>getLroResult(response,
+            DataControllerResourceInner.class, DataControllerResourceInner.class, context);
     }
 
     /**
      * Creates or replaces a dataController resource.
      * 
      * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
+     * @param dataControllerName The name of the data controller.
      * @param dataControllerResource desc.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -576,27 +709,7 @@ public final class DataControllersClientImpl implements DataControllersClient {
      * Creates or replaces a dataController resource.
      * 
      * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
-     * @param dataControllerResource desc.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data controller resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DataControllerResourceInner> putDataControllerAsync(String resourceGroupName,
-        String dataControllerName, DataControllerResourceInner dataControllerResource, Context context) {
-        return beginPutDataControllerAsync(resourceGroupName, dataControllerName, dataControllerResource, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates or replaces a dataController resource.
-     * 
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
+     * @param dataControllerName The name of the data controller.
      * @param dataControllerResource desc.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -606,14 +719,14 @@ public final class DataControllersClientImpl implements DataControllersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataControllerResourceInner putDataController(String resourceGroupName, String dataControllerName,
         DataControllerResourceInner dataControllerResource) {
-        return putDataControllerAsync(resourceGroupName, dataControllerName, dataControllerResource).block();
+        return beginPutDataController(resourceGroupName, dataControllerName, dataControllerResource).getFinalResult();
     }
 
     /**
      * Creates or replaces a dataController resource.
      * 
      * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
+     * @param dataControllerName The name of the data controller.
      * @param dataControllerResource desc.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -624,14 +737,15 @@ public final class DataControllersClientImpl implements DataControllersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataControllerResourceInner putDataController(String resourceGroupName, String dataControllerName,
         DataControllerResourceInner dataControllerResource, Context context) {
-        return putDataControllerAsync(resourceGroupName, dataControllerName, dataControllerResource, context).block();
+        return beginPutDataController(resourceGroupName, dataControllerName, dataControllerResource, context)
+            .getFinalResult();
     }
 
     /**
      * Deletes a dataController resource.
      * 
      * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
+     * @param dataControllerName The name of the data controller.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -667,35 +781,71 @@ public final class DataControllersClientImpl implements DataControllersClient {
      * Deletes a dataController resource.
      * 
      * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
+     * @param dataControllerName The name of the data controller.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String dataControllerName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (dataControllerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter dataControllerName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            dataControllerName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Deletes a dataController resource.
+     * 
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param dataControllerName The name of the data controller.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
-        String dataControllerName, Context context) {
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String dataControllerName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dataControllerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter dataControllerName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter dataControllerName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             dataControllerName, this.client.getApiVersion(), accept, context);
     }
 
@@ -703,7 +853,7 @@ public final class DataControllersClientImpl implements DataControllersClient {
      * Deletes a dataController resource.
      * 
      * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
+     * @param dataControllerName The name of the data controller.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -720,27 +870,7 @@ public final class DataControllersClientImpl implements DataControllersClient {
      * Deletes a dataController resource.
      * 
      * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String dataControllerName,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, dataControllerName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Deletes a dataController resource.
-     * 
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
+     * @param dataControllerName The name of the data controller.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -748,14 +878,15 @@ public final class DataControllersClientImpl implements DataControllersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dataControllerName) {
-        return this.beginDeleteAsync(resourceGroupName, dataControllerName).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, dataControllerName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
      * Deletes a dataController resource.
      * 
      * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
+     * @param dataControllerName The name of the data controller.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -765,14 +896,15 @@ public final class DataControllersClientImpl implements DataControllersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dataControllerName,
         Context context) {
-        return this.beginDeleteAsync(resourceGroupName, dataControllerName, context).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, dataControllerName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
      * Deletes a dataController resource.
      * 
      * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
+     * @param dataControllerName The name of the data controller.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -788,38 +920,21 @@ public final class DataControllersClientImpl implements DataControllersClient {
      * Deletes a dataController resource.
      * 
      * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String dataControllerName, Context context) {
-        return beginDeleteAsync(resourceGroupName, dataControllerName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes a dataController resource.
-     * 
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
+     * @param dataControllerName The name of the data controller.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String dataControllerName) {
-        deleteAsync(resourceGroupName, dataControllerName).block();
+        beginDelete(resourceGroupName, dataControllerName).getFinalResult();
     }
 
     /**
      * Deletes a dataController resource.
      * 
      * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
+     * @param dataControllerName The name of the data controller.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -827,14 +942,14 @@ public final class DataControllersClientImpl implements DataControllersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String dataControllerName, Context context) {
-        deleteAsync(resourceGroupName, dataControllerName, context).block();
+        beginDelete(resourceGroupName, dataControllerName, context).getFinalResult();
     }
 
     /**
      * Retrieves a dataController resource.
      * 
      * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
+     * @param dataControllerName The name of the data controller.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -871,43 +986,7 @@ public final class DataControllersClientImpl implements DataControllersClient {
      * Retrieves a dataController resource.
      * 
      * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data controller resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataControllerResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
-        String dataControllerName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (dataControllerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter dataControllerName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            dataControllerName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Retrieves a dataController resource.
-     * 
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
+     * @param dataControllerName The name of the data controller.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -924,7 +1003,7 @@ public final class DataControllersClientImpl implements DataControllersClient {
      * Retrieves a dataController resource.
      * 
      * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
+     * @param dataControllerName The name of the data controller.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -934,14 +1013,34 @@ public final class DataControllersClientImpl implements DataControllersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataControllerResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String dataControllerName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, dataControllerName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (dataControllerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter dataControllerName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getByResourceGroupSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, dataControllerName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Retrieves a dataController resource.
      * 
      * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
+     * @param dataControllerName The name of the data controller.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -956,7 +1055,7 @@ public final class DataControllersClientImpl implements DataControllersClient {
      * Updates a dataController resource.
      * 
      * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
+     * @param dataControllerName The name of the data controller.
      * @param dataControllerResource The update data controller resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -964,7 +1063,7 @@ public final class DataControllersClientImpl implements DataControllersClient {
      * @return data controller resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataControllerResourceInner>> patchDataControllerWithResponseAsync(String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> patchDataControllerWithResponseAsync(String resourceGroupName,
         String dataControllerName, DataControllerUpdate dataControllerResource) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -1000,42 +1099,87 @@ public final class DataControllersClientImpl implements DataControllersClient {
      * Updates a dataController resource.
      * 
      * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
+     * @param dataControllerName The name of the data controller.
+     * @param dataControllerResource The update data controller resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data controller resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> patchDataControllerWithResponse(String resourceGroupName, String dataControllerName,
+        DataControllerUpdate dataControllerResource) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (dataControllerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter dataControllerName is required and cannot be null."));
+        }
+        if (dataControllerResource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter dataControllerResource is required and cannot be null."));
+        } else {
+            dataControllerResource.validate();
+        }
+        final String accept = "application/json";
+        return service.patchDataControllerSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, dataControllerName, this.client.getApiVersion(), dataControllerResource, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Updates a dataController resource.
+     * 
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param dataControllerName The name of the data controller.
      * @param dataControllerResource The update data controller resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data controller resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return data controller resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataControllerResourceInner>> patchDataControllerWithResponseAsync(String resourceGroupName,
-        String dataControllerName, DataControllerUpdate dataControllerResource, Context context) {
+    private Response<BinaryData> patchDataControllerWithResponse(String resourceGroupName, String dataControllerName,
+        DataControllerUpdate dataControllerResource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dataControllerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter dataControllerName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter dataControllerName is required and cannot be null."));
         }
         if (dataControllerResource == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter dataControllerResource is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter dataControllerResource is required and cannot be null."));
         } else {
             dataControllerResource.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.patchDataController(this.client.getEndpoint(), this.client.getSubscriptionId(),
+        return service.patchDataControllerSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
             resourceGroupName, dataControllerName, this.client.getApiVersion(), dataControllerResource, accept,
             context);
     }
@@ -1044,7 +1188,71 @@ public final class DataControllersClientImpl implements DataControllersClient {
      * Updates a dataController resource.
      * 
      * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
+     * @param dataControllerName The name of the data controller.
+     * @param dataControllerResource The update data controller resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of data controller resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<DataControllerResourceInner>, DataControllerResourceInner>
+        beginPatchDataControllerAsync(String resourceGroupName, String dataControllerName,
+            DataControllerUpdate dataControllerResource) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = patchDataControllerWithResponseAsync(resourceGroupName, dataControllerName, dataControllerResource);
+        return this.client.<DataControllerResourceInner, DataControllerResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DataControllerResourceInner.class, DataControllerResourceInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Updates a dataController resource.
+     * 
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param dataControllerName The name of the data controller.
+     * @param dataControllerResource The update data controller resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of data controller resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<DataControllerResourceInner>, DataControllerResourceInner> beginPatchDataController(
+        String resourceGroupName, String dataControllerName, DataControllerUpdate dataControllerResource) {
+        Response<BinaryData> response
+            = patchDataControllerWithResponse(resourceGroupName, dataControllerName, dataControllerResource);
+        return this.client.<DataControllerResourceInner, DataControllerResourceInner>getLroResult(response,
+            DataControllerResourceInner.class, DataControllerResourceInner.class, Context.NONE);
+    }
+
+    /**
+     * Updates a dataController resource.
+     * 
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param dataControllerName The name of the data controller.
+     * @param dataControllerResource The update data controller resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of data controller resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<DataControllerResourceInner>, DataControllerResourceInner> beginPatchDataController(
+        String resourceGroupName, String dataControllerName, DataControllerUpdate dataControllerResource,
+        Context context) {
+        Response<BinaryData> response
+            = patchDataControllerWithResponse(resourceGroupName, dataControllerName, dataControllerResource, context);
+        return this.client.<DataControllerResourceInner, DataControllerResourceInner>getLroResult(response,
+            DataControllerResourceInner.class, DataControllerResourceInner.class, context);
+    }
+
+    /**
+     * Updates a dataController resource.
+     * 
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param dataControllerName The name of the data controller.
      * @param dataControllerResource The update data controller resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1054,34 +1262,15 @@ public final class DataControllersClientImpl implements DataControllersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DataControllerResourceInner> patchDataControllerAsync(String resourceGroupName,
         String dataControllerName, DataControllerUpdate dataControllerResource) {
-        return patchDataControllerWithResponseAsync(resourceGroupName, dataControllerName, dataControllerResource)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return beginPatchDataControllerAsync(resourceGroupName, dataControllerName, dataControllerResource).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates a dataController resource.
      * 
      * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
-     * @param dataControllerResource The update data controller resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data controller resource along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataControllerResourceInner> patchDataControllerWithResponse(String resourceGroupName,
-        String dataControllerName, DataControllerUpdate dataControllerResource, Context context) {
-        return patchDataControllerWithResponseAsync(resourceGroupName, dataControllerName, dataControllerResource,
-            context).block();
-    }
-
-    /**
-     * Updates a dataController resource.
-     * 
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
+     * @param dataControllerName The name of the data controller.
      * @param dataControllerResource The update data controller resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1091,8 +1280,26 @@ public final class DataControllersClientImpl implements DataControllersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataControllerResourceInner patchDataController(String resourceGroupName, String dataControllerName,
         DataControllerUpdate dataControllerResource) {
-        return patchDataControllerWithResponse(resourceGroupName, dataControllerName, dataControllerResource,
-            Context.NONE).getValue();
+        return beginPatchDataController(resourceGroupName, dataControllerName, dataControllerResource).getFinalResult();
+    }
+
+    /**
+     * Updates a dataController resource.
+     * 
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param dataControllerName The name of the data controller.
+     * @param dataControllerResource The update data controller resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data controller resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DataControllerResourceInner patchDataController(String resourceGroupName, String dataControllerName,
+        DataControllerUpdate dataControllerResource, Context context) {
+        return beginPatchDataController(resourceGroupName, dataControllerName, dataControllerResource, context)
+            .getFinalResult();
     }
 
     /**
@@ -1102,7 +1309,7 @@ public final class DataControllersClientImpl implements DataControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of data controllers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataControllerResourceInner>> listInSubscriptionNextSinglePageAsync(String nextLink) {
@@ -1126,27 +1333,56 @@ public final class DataControllersClientImpl implements DataControllersClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of data controllers along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DataControllerResourceInner> listInSubscriptionNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<PageOfDataControllerResource> res
+            = service.listInSubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of data controllers along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataControllerResourceInner>> listInSubscriptionNextSinglePageAsync(String nextLink,
+    private PagedResponse<DataControllerResourceInner> listInSubscriptionNextSinglePage(String nextLink,
         Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listInSubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<PageOfDataControllerResource> res
+            = service.listInSubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1156,7 +1392,7 @@ public final class DataControllersClientImpl implements DataControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of data controllers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataControllerResourceInner>> listInGroupNextSinglePageAsync(String nextLink) {
@@ -1179,26 +1415,56 @@ public final class DataControllersClientImpl implements DataControllersClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of data controllers along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DataControllerResourceInner> listInGroupNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<PageOfDataControllerResource> res
+            = service.listInGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of data controllers along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataControllerResourceInner>> listInGroupNextSinglePageAsync(String nextLink,
-        Context context) {
+    private PagedResponse<DataControllerResourceInner> listInGroupNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listInGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<PageOfDataControllerResource> res
+            = service.listInGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataControllersClientImpl.class);
 }

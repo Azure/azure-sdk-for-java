@@ -32,7 +32,7 @@ public final class DataControllerResourceInner extends Resource {
     private DataControllerProperties properties;
 
     /*
-     * Read only system data
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     private SystemData systemData;
 
@@ -98,7 +98,7 @@ public final class DataControllerResourceInner extends Resource {
     }
 
     /**
-     * Get the systemData property: Read only system data.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
      */

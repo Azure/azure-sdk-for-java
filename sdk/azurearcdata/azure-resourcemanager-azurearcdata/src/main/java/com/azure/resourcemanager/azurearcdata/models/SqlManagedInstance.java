@@ -71,7 +71,7 @@ public interface SqlManagedInstance {
     SqlManagedInstanceSku sku();
 
     /**
-     * Gets the systemData property: Read only system data.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
      */

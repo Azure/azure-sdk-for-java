@@ -14,7 +14,7 @@ import java.util.Map;
 public final class SqlManagedInstancesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/
+     * specification/azurearcdata/resource-manager/Microsoft.AzureArcData/preview/2025-03-01-preview/examples/
      * UpdateSqlManagedInstance.json
      */
     /**

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,6 +13,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 /**
  * Properties of SqlServerInstance.
@@ -36,6 +36,11 @@ public final class SqlServerInstanceProperties implements JsonSerializable<SqlSe
     private String containerResourceId;
 
     /*
+     * The unique ID of the hybrid machine that this resource belongs to.
+     */
+    private String vmId;
+
+    /*
      * The time when the resource was created.
      */
     private String createTime;
@@ -44,6 +49,11 @@ public final class SqlServerInstanceProperties implements JsonSerializable<SqlSe
      * The number of logical processors used by the SQL Server instance.
      */
     private String vCore;
+
+    /*
+     * The number of total cores of the Operating System Environment (OSE) hosting the SQL Server instance.
+     */
+    private String cores;
 
     /*
      * The cloud connectivity status.
@@ -59,6 +69,21 @@ public final class SqlServerInstanceProperties implements JsonSerializable<SqlSe
      * SQL Server collation.
      */
     private String collation;
+
+    /*
+     * Indicates whether database master key exists in SQL Server.
+     */
+    private Boolean dbMasterKeyExists;
+
+    /*
+     * Indicates whether always On availability groups is enabled in SQL Server.
+     */
+    private Boolean isHadrEnabled;
+
+    /*
+     * An array of integers, where each value represents the enabled trace flags in SQL Server.
+     */
+    private List<Integer> traceFlags;
 
     /*
      * SQL Server current version.
@@ -101,9 +126,92 @@ public final class SqlServerInstanceProperties implements JsonSerializable<SqlSe
     private DefenderStatus azureDefenderStatus;
 
     /*
-     * The provisioningState property.
+     * The provisioning state of the Arc-enabled SQL Server resource.
      */
     private String provisioningState;
+
+    /*
+     * The time when last successful inventory upload was performed.
+     */
+    private OffsetDateTime lastInventoryUploadTime;
+
+    /*
+     * The time when last successful usage upload was performed.
+     */
+    private OffsetDateTime lastUsageUploadTime;
+
+    /*
+     * Type of host for Azure Arc SQL Server
+     */
+    private HostType hostType;
+
+    /*
+     * The role of the SQL Server, based on availability.
+     */
+    private AlwaysOnRole alwaysOnRole;
+
+    /*
+     * Database mirroring endpoint related properties.
+     */
+    private DbmEndpoint databaseMirroringEndpoint;
+
+    /*
+     * Failover Cluster Instance properties.
+     */
+    private FailoverCluster failoverCluster;
+
+    /*
+     * The backup profile for the SQL server.
+     */
+    private BackupPolicy backupPolicy;
+
+    /*
+     * Upgrade Action for this resource is locked until it expires. The Expiration time indicated by this value. It is
+     * not locked when it is empty.
+     */
+    private OffsetDateTime upgradeLockedUntil;
+
+    /*
+     * The monitoring configuration.
+     */
+    private Monitoring monitoring;
+
+    /*
+     * Migration related configuration.
+     */
+    private Migration migration;
+
+    /*
+     * Client connection related configuration.
+     */
+    private ClientConnection clientConnection;
+
+    /*
+     * Indicates if the resource represents a SQL Server engine or a SQL Server component service installed on the host.
+     */
+    private ServiceType serviceType;
+
+    /*
+     * max server memory (MB) value configured for this instance.
+     */
+    private Long maxServerMemoryMB;
+
+    /*
+     * Indicates whether Microsoft PKI root-authority certificate (trusted by Azure) exists in SQL Server and trusted
+     * for Azure database.windows.net domains.
+     */
+    private Boolean isMicrosoftPkiCertTrustConfigured;
+
+    /*
+     * Indicates whether DigiCert PKI root-authority certificate (trusted by Azure) exists in SQL Server and trusted for
+     * Azure database.windows.net domains.
+     */
+    private Boolean isDigiCertPkiCertTrustConfigured;
+
+    /*
+     * Authentication related configuration for the SQL Server Instance.
+     */
+    private Authentication authentication;
 
     /**
      * Creates an instance of SqlServerInstanceProperties class.
@@ -161,14 +269,12 @@ public final class SqlServerInstanceProperties implements JsonSerializable<SqlSe
     }
 
     /**
-     * Set the containerResourceId property: ARM Resource id of the container resource (Azure Arc for Servers).
+     * Get the vmId property: The unique ID of the hybrid machine that this resource belongs to.
      * 
-     * @param containerResourceId the containerResourceId value to set.
-     * @return the SqlServerInstanceProperties object itself.
+     * @return the vmId value.
      */
-    public SqlServerInstanceProperties withContainerResourceId(String containerResourceId) {
-        this.containerResourceId = containerResourceId;
-        return this;
+    public String vmId() {
+        return this.vmId;
     }
 
     /**
@@ -190,13 +296,24 @@ public final class SqlServerInstanceProperties implements JsonSerializable<SqlSe
     }
 
     /**
-     * Set the vCore property: The number of logical processors used by the SQL Server instance.
+     * Get the cores property: The number of total cores of the Operating System Environment (OSE) hosting the SQL
+     * Server instance.
      * 
-     * @param vCore the vCore value to set.
+     * @return the cores value.
+     */
+    public String cores() {
+        return this.cores;
+    }
+
+    /**
+     * Set the cores property: The number of total cores of the Operating System Environment (OSE) hosting the SQL
+     * Server instance.
+     * 
+     * @param cores the cores value to set.
      * @return the SqlServerInstanceProperties object itself.
      */
-    public SqlServerInstanceProperties withVCore(String vCore) {
-        this.vCore = vCore;
+    public SqlServerInstanceProperties withCores(String cores) {
+        this.cores = cores;
         return this;
     }
 
@@ -210,34 +327,12 @@ public final class SqlServerInstanceProperties implements JsonSerializable<SqlSe
     }
 
     /**
-     * Set the status property: The cloud connectivity status.
-     * 
-     * @param status the status value to set.
-     * @return the SqlServerInstanceProperties object itself.
-     */
-    public SqlServerInstanceProperties withStatus(ConnectionStatus status) {
-        this.status = status;
-        return this;
-    }
-
-    /**
      * Get the patchLevel property: SQL Server update level.
      * 
      * @return the patchLevel value.
      */
     public String patchLevel() {
         return this.patchLevel;
-    }
-
-    /**
-     * Set the patchLevel property: SQL Server update level.
-     * 
-     * @param patchLevel the patchLevel value to set.
-     * @return the SqlServerInstanceProperties object itself.
-     */
-    public SqlServerInstanceProperties withPatchLevel(String patchLevel) {
-        this.patchLevel = patchLevel;
-        return this;
     }
 
     /**
@@ -250,14 +345,31 @@ public final class SqlServerInstanceProperties implements JsonSerializable<SqlSe
     }
 
     /**
-     * Set the collation property: SQL Server collation.
+     * Get the dbMasterKeyExists property: Indicates whether database master key exists in SQL Server.
      * 
-     * @param collation the collation value to set.
-     * @return the SqlServerInstanceProperties object itself.
+     * @return the dbMasterKeyExists value.
      */
-    public SqlServerInstanceProperties withCollation(String collation) {
-        this.collation = collation;
-        return this;
+    public Boolean dbMasterKeyExists() {
+        return this.dbMasterKeyExists;
+    }
+
+    /**
+     * Get the isHadrEnabled property: Indicates whether always On availability groups is enabled in SQL Server.
+     * 
+     * @return the isHadrEnabled value.
+     */
+    public Boolean isHadrEnabled() {
+        return this.isHadrEnabled;
+    }
+
+    /**
+     * Get the traceFlags property: An array of integers, where each value represents the enabled trace flags in SQL
+     * Server.
+     * 
+     * @return the traceFlags value.
+     */
+    public List<Integer> traceFlags() {
+        return this.traceFlags;
     }
 
     /**
@@ -267,17 +379,6 @@ public final class SqlServerInstanceProperties implements JsonSerializable<SqlSe
      */
     public String currentVersion() {
         return this.currentVersion;
-    }
-
-    /**
-     * Set the currentVersion property: SQL Server current version.
-     * 
-     * @param currentVersion the currentVersion value to set.
-     * @return the SqlServerInstanceProperties object itself.
-     */
-    public SqlServerInstanceProperties withCurrentVersion(String currentVersion) {
-        this.currentVersion = currentVersion;
-        return this;
     }
 
     /**
@@ -310,34 +411,12 @@ public final class SqlServerInstanceProperties implements JsonSerializable<SqlSe
     }
 
     /**
-     * Set the tcpDynamicPorts property: Dynamic TCP ports used by SQL Server.
-     * 
-     * @param tcpDynamicPorts the tcpDynamicPorts value to set.
-     * @return the SqlServerInstanceProperties object itself.
-     */
-    public SqlServerInstanceProperties withTcpDynamicPorts(String tcpDynamicPorts) {
-        this.tcpDynamicPorts = tcpDynamicPorts;
-        return this;
-    }
-
-    /**
      * Get the tcpStaticPorts property: Static TCP ports used by SQL Server.
      * 
      * @return the tcpStaticPorts value.
      */
     public String tcpStaticPorts() {
         return this.tcpStaticPorts;
-    }
-
-    /**
-     * Set the tcpStaticPorts property: Static TCP ports used by SQL Server.
-     * 
-     * @param tcpStaticPorts the tcpStaticPorts value to set.
-     * @return the SqlServerInstanceProperties object itself.
-     */
-    public SqlServerInstanceProperties withTcpStaticPorts(String tcpStaticPorts) {
-        this.tcpStaticPorts = tcpStaticPorts;
-        return this;
     }
 
     /**
@@ -350,34 +429,12 @@ public final class SqlServerInstanceProperties implements JsonSerializable<SqlSe
     }
 
     /**
-     * Set the productId property: SQL Server product ID.
-     * 
-     * @param productId the productId value to set.
-     * @return the SqlServerInstanceProperties object itself.
-     */
-    public SqlServerInstanceProperties withProductId(String productId) {
-        this.productId = productId;
-        return this;
-    }
-
-    /**
      * Get the licenseType property: SQL Server license type.
      * 
      * @return the licenseType value.
      */
     public ArcSqlServerLicenseType licenseType() {
         return this.licenseType;
-    }
-
-    /**
-     * Set the licenseType property: SQL Server license type.
-     * 
-     * @param licenseType the licenseType value to set.
-     * @return the SqlServerInstanceProperties object itself.
-     */
-    public SqlServerInstanceProperties withLicenseType(ArcSqlServerLicenseType licenseType) {
-        this.licenseType = licenseType;
-        return this;
     }
 
     /**
@@ -390,18 +447,6 @@ public final class SqlServerInstanceProperties implements JsonSerializable<SqlSe
     }
 
     /**
-     * Set the azureDefenderStatusLastUpdated property: Timestamp of last Azure Defender status update.
-     * 
-     * @param azureDefenderStatusLastUpdated the azureDefenderStatusLastUpdated value to set.
-     * @return the SqlServerInstanceProperties object itself.
-     */
-    public SqlServerInstanceProperties
-        withAzureDefenderStatusLastUpdated(OffsetDateTime azureDefenderStatusLastUpdated) {
-        this.azureDefenderStatusLastUpdated = azureDefenderStatusLastUpdated;
-        return this;
-    }
-
-    /**
      * Get the azureDefenderStatus property: Status of Azure Defender.
      * 
      * @return the azureDefenderStatus value.
@@ -411,18 +456,7 @@ public final class SqlServerInstanceProperties implements JsonSerializable<SqlSe
     }
 
     /**
-     * Set the azureDefenderStatus property: Status of Azure Defender.
-     * 
-     * @param azureDefenderStatus the azureDefenderStatus value to set.
-     * @return the SqlServerInstanceProperties object itself.
-     */
-    public SqlServerInstanceProperties withAzureDefenderStatus(DefenderStatus azureDefenderStatus) {
-        this.azureDefenderStatus = azureDefenderStatus;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioningState property.
+     * Get the provisioningState property: The provisioning state of the Arc-enabled SQL Server resource.
      * 
      * @return the provisioningState value.
      */
@@ -431,24 +465,293 @@ public final class SqlServerInstanceProperties implements JsonSerializable<SqlSe
     }
 
     /**
+     * Get the lastInventoryUploadTime property: The time when last successful inventory upload was performed.
+     * 
+     * @return the lastInventoryUploadTime value.
+     */
+    public OffsetDateTime lastInventoryUploadTime() {
+        return this.lastInventoryUploadTime;
+    }
+
+    /**
+     * Get the lastUsageUploadTime property: The time when last successful usage upload was performed.
+     * 
+     * @return the lastUsageUploadTime value.
+     */
+    public OffsetDateTime lastUsageUploadTime() {
+        return this.lastUsageUploadTime;
+    }
+
+    /**
+     * Get the hostType property: Type of host for Azure Arc SQL Server.
+     * 
+     * @return the hostType value.
+     */
+    public HostType hostType() {
+        return this.hostType;
+    }
+
+    /**
+     * Set the hostType property: Type of host for Azure Arc SQL Server.
+     * 
+     * @param hostType the hostType value to set.
+     * @return the SqlServerInstanceProperties object itself.
+     */
+    public SqlServerInstanceProperties withHostType(HostType hostType) {
+        this.hostType = hostType;
+        return this;
+    }
+
+    /**
+     * Get the alwaysOnRole property: The role of the SQL Server, based on availability.
+     * 
+     * @return the alwaysOnRole value.
+     */
+    public AlwaysOnRole alwaysOnRole() {
+        return this.alwaysOnRole;
+    }
+
+    /**
+     * Get the databaseMirroringEndpoint property: Database mirroring endpoint related properties.
+     * 
+     * @return the databaseMirroringEndpoint value.
+     */
+    public DbmEndpoint databaseMirroringEndpoint() {
+        return this.databaseMirroringEndpoint;
+    }
+
+    /**
+     * Set the databaseMirroringEndpoint property: Database mirroring endpoint related properties.
+     * 
+     * @param databaseMirroringEndpoint the databaseMirroringEndpoint value to set.
+     * @return the SqlServerInstanceProperties object itself.
+     */
+    public SqlServerInstanceProperties withDatabaseMirroringEndpoint(DbmEndpoint databaseMirroringEndpoint) {
+        this.databaseMirroringEndpoint = databaseMirroringEndpoint;
+        return this;
+    }
+
+    /**
+     * Get the failoverCluster property: Failover Cluster Instance properties.
+     * 
+     * @return the failoverCluster value.
+     */
+    public FailoverCluster failoverCluster() {
+        return this.failoverCluster;
+    }
+
+    /**
+     * Set the failoverCluster property: Failover Cluster Instance properties.
+     * 
+     * @param failoverCluster the failoverCluster value to set.
+     * @return the SqlServerInstanceProperties object itself.
+     */
+    public SqlServerInstanceProperties withFailoverCluster(FailoverCluster failoverCluster) {
+        this.failoverCluster = failoverCluster;
+        return this;
+    }
+
+    /**
+     * Get the backupPolicy property: The backup profile for the SQL server.
+     * 
+     * @return the backupPolicy value.
+     */
+    public BackupPolicy backupPolicy() {
+        return this.backupPolicy;
+    }
+
+    /**
+     * Set the backupPolicy property: The backup profile for the SQL server.
+     * 
+     * @param backupPolicy the backupPolicy value to set.
+     * @return the SqlServerInstanceProperties object itself.
+     */
+    public SqlServerInstanceProperties withBackupPolicy(BackupPolicy backupPolicy) {
+        this.backupPolicy = backupPolicy;
+        return this;
+    }
+
+    /**
+     * Get the upgradeLockedUntil property: Upgrade Action for this resource is locked until it expires. The Expiration
+     * time indicated by this value. It is not locked when it is empty.
+     * 
+     * @return the upgradeLockedUntil value.
+     */
+    public OffsetDateTime upgradeLockedUntil() {
+        return this.upgradeLockedUntil;
+    }
+
+    /**
+     * Set the upgradeLockedUntil property: Upgrade Action for this resource is locked until it expires. The Expiration
+     * time indicated by this value. It is not locked when it is empty.
+     * 
+     * @param upgradeLockedUntil the upgradeLockedUntil value to set.
+     * @return the SqlServerInstanceProperties object itself.
+     */
+    public SqlServerInstanceProperties withUpgradeLockedUntil(OffsetDateTime upgradeLockedUntil) {
+        this.upgradeLockedUntil = upgradeLockedUntil;
+        return this;
+    }
+
+    /**
+     * Get the monitoring property: The monitoring configuration.
+     * 
+     * @return the monitoring value.
+     */
+    public Monitoring monitoring() {
+        return this.monitoring;
+    }
+
+    /**
+     * Set the monitoring property: The monitoring configuration.
+     * 
+     * @param monitoring the monitoring value to set.
+     * @return the SqlServerInstanceProperties object itself.
+     */
+    public SqlServerInstanceProperties withMonitoring(Monitoring monitoring) {
+        this.monitoring = monitoring;
+        return this;
+    }
+
+    /**
+     * Get the migration property: Migration related configuration.
+     * 
+     * @return the migration value.
+     */
+    public Migration migration() {
+        return this.migration;
+    }
+
+    /**
+     * Set the migration property: Migration related configuration.
+     * 
+     * @param migration the migration value to set.
+     * @return the SqlServerInstanceProperties object itself.
+     */
+    public SqlServerInstanceProperties withMigration(Migration migration) {
+        this.migration = migration;
+        return this;
+    }
+
+    /**
+     * Get the clientConnection property: Client connection related configuration.
+     * 
+     * @return the clientConnection value.
+     */
+    public ClientConnection clientConnection() {
+        return this.clientConnection;
+    }
+
+    /**
+     * Set the clientConnection property: Client connection related configuration.
+     * 
+     * @param clientConnection the clientConnection value to set.
+     * @return the SqlServerInstanceProperties object itself.
+     */
+    public SqlServerInstanceProperties withClientConnection(ClientConnection clientConnection) {
+        this.clientConnection = clientConnection;
+        return this;
+    }
+
+    /**
+     * Get the serviceType property: Indicates if the resource represents a SQL Server engine or a SQL Server component
+     * service installed on the host.
+     * 
+     * @return the serviceType value.
+     */
+    public ServiceType serviceType() {
+        return this.serviceType;
+    }
+
+    /**
+     * Set the serviceType property: Indicates if the resource represents a SQL Server engine or a SQL Server component
+     * service installed on the host.
+     * 
+     * @param serviceType the serviceType value to set.
+     * @return the SqlServerInstanceProperties object itself.
+     */
+    public SqlServerInstanceProperties withServiceType(ServiceType serviceType) {
+        this.serviceType = serviceType;
+        return this;
+    }
+
+    /**
+     * Get the maxServerMemoryMB property: max server memory (MB) value configured for this instance.
+     * 
+     * @return the maxServerMemoryMB value.
+     */
+    public Long maxServerMemoryMB() {
+        return this.maxServerMemoryMB;
+    }
+
+    /**
+     * Get the isMicrosoftPkiCertTrustConfigured property: Indicates whether Microsoft PKI root-authority certificate
+     * (trusted by Azure) exists in SQL Server and trusted for Azure database.windows.net domains.
+     * 
+     * @return the isMicrosoftPkiCertTrustConfigured value.
+     */
+    public Boolean isMicrosoftPkiCertTrustConfigured() {
+        return this.isMicrosoftPkiCertTrustConfigured;
+    }
+
+    /**
+     * Get the isDigiCertPkiCertTrustConfigured property: Indicates whether DigiCert PKI root-authority certificate
+     * (trusted by Azure) exists in SQL Server and trusted for Azure database.windows.net domains.
+     * 
+     * @return the isDigiCertPkiCertTrustConfigured value.
+     */
+    public Boolean isDigiCertPkiCertTrustConfigured() {
+        return this.isDigiCertPkiCertTrustConfigured;
+    }
+
+    /**
+     * Get the authentication property: Authentication related configuration for the SQL Server Instance.
+     * 
+     * @return the authentication value.
+     */
+    public Authentication authentication() {
+        return this.authentication;
+    }
+
+    /**
+     * Set the authentication property: Authentication related configuration for the SQL Server Instance.
+     * 
+     * @param authentication the authentication value to set.
+     * @return the SqlServerInstanceProperties object itself.
+     */
+    public SqlServerInstanceProperties withAuthentication(Authentication authentication) {
+        this.authentication = authentication;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (containerResourceId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property containerResourceId in model SqlServerInstanceProperties"));
+        if (databaseMirroringEndpoint() != null) {
+            databaseMirroringEndpoint().validate();
         }
-        if (status() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property status in model SqlServerInstanceProperties"));
+        if (failoverCluster() != null) {
+            failoverCluster().validate();
+        }
+        if (backupPolicy() != null) {
+            backupPolicy().validate();
+        }
+        if (monitoring() != null) {
+            monitoring().validate();
+        }
+        if (migration() != null) {
+            migration().validate();
+        }
+        if (clientConnection() != null) {
+            clientConnection().validate();
+        }
+        if (authentication() != null) {
+            authentication().validate();
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SqlServerInstanceProperties.class);
 
     /**
      * {@inheritDoc}
@@ -456,25 +759,23 @@ public final class SqlServerInstanceProperties implements JsonSerializable<SqlSe
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("containerResourceId", this.containerResourceId);
-        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeStringField("version", this.version == null ? null : this.version.toString());
         jsonWriter.writeStringField("edition", this.edition == null ? null : this.edition.toString());
-        jsonWriter.writeStringField("vCore", this.vCore);
-        jsonWriter.writeStringField("patchLevel", this.patchLevel);
-        jsonWriter.writeStringField("collation", this.collation);
-        jsonWriter.writeStringField("currentVersion", this.currentVersion);
+        jsonWriter.writeStringField("cores", this.cores);
         jsonWriter.writeStringField("instanceName", this.instanceName);
-        jsonWriter.writeStringField("tcpDynamicPorts", this.tcpDynamicPorts);
-        jsonWriter.writeStringField("tcpStaticPorts", this.tcpStaticPorts);
-        jsonWriter.writeStringField("productId", this.productId);
-        jsonWriter.writeStringField("licenseType", this.licenseType == null ? null : this.licenseType.toString());
-        jsonWriter.writeStringField("azureDefenderStatusLastUpdated",
-            this.azureDefenderStatusLastUpdated == null
+        jsonWriter.writeStringField("hostType", this.hostType == null ? null : this.hostType.toString());
+        jsonWriter.writeJsonField("databaseMirroringEndpoint", this.databaseMirroringEndpoint);
+        jsonWriter.writeJsonField("failoverCluster", this.failoverCluster);
+        jsonWriter.writeJsonField("backupPolicy", this.backupPolicy);
+        jsonWriter.writeStringField("upgradeLockedUntil",
+            this.upgradeLockedUntil == null
                 ? null
-                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.azureDefenderStatusLastUpdated));
-        jsonWriter.writeStringField("azureDefenderStatus",
-            this.azureDefenderStatus == null ? null : this.azureDefenderStatus.toString());
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.upgradeLockedUntil));
+        jsonWriter.writeJsonField("monitoring", this.monitoring);
+        jsonWriter.writeJsonField("migration", this.migration);
+        jsonWriter.writeJsonField("clientConnection", this.clientConnection);
+        jsonWriter.writeStringField("serviceType", this.serviceType == null ? null : this.serviceType.toString());
+        jsonWriter.writeJsonField("authentication", this.authentication);
         return jsonWriter.writeEndObject();
     }
 
@@ -484,7 +785,6 @@ public final class SqlServerInstanceProperties implements JsonSerializable<SqlSe
      * @param jsonReader The JsonReader being read.
      * @return An instance of SqlServerInstanceProperties if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SqlServerInstanceProperties.
      */
     public static SqlServerInstanceProperties fromJson(JsonReader jsonReader) throws IOException {
@@ -494,22 +794,34 @@ public final class SqlServerInstanceProperties implements JsonSerializable<SqlSe
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("containerResourceId".equals(fieldName)) {
-                    deserializedSqlServerInstanceProperties.containerResourceId = reader.getString();
-                } else if ("status".equals(fieldName)) {
-                    deserializedSqlServerInstanceProperties.status = ConnectionStatus.fromString(reader.getString());
-                } else if ("version".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
                     deserializedSqlServerInstanceProperties.version = SqlVersion.fromString(reader.getString());
                 } else if ("edition".equals(fieldName)) {
                     deserializedSqlServerInstanceProperties.edition = EditionType.fromString(reader.getString());
+                } else if ("containerResourceId".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.containerResourceId = reader.getString();
+                } else if ("vmId".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.vmId = reader.getString();
                 } else if ("createTime".equals(fieldName)) {
                     deserializedSqlServerInstanceProperties.createTime = reader.getString();
                 } else if ("vCore".equals(fieldName)) {
                     deserializedSqlServerInstanceProperties.vCore = reader.getString();
+                } else if ("cores".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.cores = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.status = ConnectionStatus.fromString(reader.getString());
                 } else if ("patchLevel".equals(fieldName)) {
                     deserializedSqlServerInstanceProperties.patchLevel = reader.getString();
                 } else if ("collation".equals(fieldName)) {
                     deserializedSqlServerInstanceProperties.collation = reader.getString();
+                } else if ("dbMasterKeyExists".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.dbMasterKeyExists
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isHadrEnabled".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.isHadrEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("traceFlags".equals(fieldName)) {
+                    List<Integer> traceFlags = reader.readArray(reader1 -> reader1.getInt());
+                    deserializedSqlServerInstanceProperties.traceFlags = traceFlags;
                 } else if ("currentVersion".equals(fieldName)) {
                     deserializedSqlServerInstanceProperties.currentVersion = reader.getString();
                 } else if ("instanceName".equals(fieldName)) {
@@ -531,6 +843,43 @@ public final class SqlServerInstanceProperties implements JsonSerializable<SqlSe
                         = DefenderStatus.fromString(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedSqlServerInstanceProperties.provisioningState = reader.getString();
+                } else if ("lastInventoryUploadTime".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.lastInventoryUploadTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastUsageUploadTime".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.lastUsageUploadTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("hostType".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.hostType = HostType.fromString(reader.getString());
+                } else if ("alwaysOnRole".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.alwaysOnRole = AlwaysOnRole.fromString(reader.getString());
+                } else if ("databaseMirroringEndpoint".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.databaseMirroringEndpoint = DbmEndpoint.fromJson(reader);
+                } else if ("failoverCluster".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.failoverCluster = FailoverCluster.fromJson(reader);
+                } else if ("backupPolicy".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.backupPolicy = BackupPolicy.fromJson(reader);
+                } else if ("upgradeLockedUntil".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.upgradeLockedUntil = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("monitoring".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.monitoring = Monitoring.fromJson(reader);
+                } else if ("migration".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.migration = Migration.fromJson(reader);
+                } else if ("clientConnection".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.clientConnection = ClientConnection.fromJson(reader);
+                } else if ("serviceType".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.serviceType = ServiceType.fromString(reader.getString());
+                } else if ("maxServerMemoryMB".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.maxServerMemoryMB = reader.getNullable(JsonReader::getLong);
+                } else if ("isMicrosoftPkiCertTrustConfigured".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.isMicrosoftPkiCertTrustConfigured
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isDigiCertPkiCertTrustConfigured".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.isDigiCertPkiCertTrustConfigured
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("authentication".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.authentication = Authentication.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

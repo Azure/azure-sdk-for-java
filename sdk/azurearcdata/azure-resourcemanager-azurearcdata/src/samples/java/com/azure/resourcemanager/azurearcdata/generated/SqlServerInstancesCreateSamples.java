@@ -4,13 +4,22 @@
 
 package com.azure.resourcemanager.azurearcdata.generated;
 
-import com.azure.resourcemanager.azurearcdata.models.ArcSqlServerLicenseType;
-import com.azure.resourcemanager.azurearcdata.models.ConnectionStatus;
-import com.azure.resourcemanager.azurearcdata.models.DefenderStatus;
+import com.azure.resourcemanager.azurearcdata.models.Authentication;
+import com.azure.resourcemanager.azurearcdata.models.BackupPolicy;
+import com.azure.resourcemanager.azurearcdata.models.ClientConnection;
+import com.azure.resourcemanager.azurearcdata.models.DifferentialBackupHours;
 import com.azure.resourcemanager.azurearcdata.models.EditionType;
+import com.azure.resourcemanager.azurearcdata.models.EntraAuthentication;
+import com.azure.resourcemanager.azurearcdata.models.HostType;
+import com.azure.resourcemanager.azurearcdata.models.IdentityType;
+import com.azure.resourcemanager.azurearcdata.models.Migration;
+import com.azure.resourcemanager.azurearcdata.models.MigrationAssessment;
+import com.azure.resourcemanager.azurearcdata.models.Mode;
+import com.azure.resourcemanager.azurearcdata.models.Monitoring;
+import com.azure.resourcemanager.azurearcdata.models.ServiceType;
 import com.azure.resourcemanager.azurearcdata.models.SqlServerInstanceProperties;
 import com.azure.resourcemanager.azurearcdata.models.SqlVersion;
-import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +29,7 @@ import java.util.Map;
 public final class SqlServerInstancesCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/
+     * specification/azurearcdata/resource-manager/Microsoft.AzureArcData/preview/2025-03-01-preview/examples/
      * CreateOrUpdateSqlServerInstance.json
      */
     /**
@@ -35,21 +44,25 @@ public final class SqlServerInstancesCreateSamples {
             .withRegion("northeurope")
             .withExistingResourceGroup("testrg")
             .withTags(mapOf("mytag", "myval"))
-            .withProperties(new SqlServerInstanceProperties().withVersion(SqlVersion.SQL_SERVER_2017)
+            .withProperties(new SqlServerInstanceProperties().withVersion(SqlVersion.SQL_SERVER_2012)
                 .withEdition(EditionType.DEVELOPER)
-                .withContainerResourceId("Arc Machine Name")
-                .withVCore("4")
-                .withStatus(ConnectionStatus.CONNECTED)
-                .withPatchLevel("patchlevel")
-                .withCollation("collation")
-                .withCurrentVersion("2008 R2")
+                .withCores("4")
                 .withInstanceName("name of instance")
-                .withTcpDynamicPorts("1433")
-                .withTcpStaticPorts("1433")
-                .withProductId("sql id")
-                .withLicenseType(ArcSqlServerLicenseType.FREE)
-                .withAzureDefenderStatusLastUpdated(OffsetDateTime.parse("2020-01-02T17:18:19.1234567Z"))
-                .withAzureDefenderStatus(DefenderStatus.PROTECTED))
+                .withHostType(HostType.PHYSICAL_SERVER)
+                .withBackupPolicy(new BackupPolicy().withRetentionPeriodDays(1)
+                    .withFullBackupDays(1)
+                    .withDifferentialBackupHours(DifferentialBackupHours.ONE_TWO)
+                    .withTransactionLogBackupMinutes(30))
+                .withMonitoring(new Monitoring().withEnabled(false))
+                .withMigration(new Migration().withAssessment(new MigrationAssessment().withEnabled(false)))
+                .withClientConnection(new ClientConnection().withEnabled(false))
+                .withServiceType(ServiceType.ENGINE)
+                .withAuthentication(new Authentication().withMode(Mode.WINDOWS)
+                    .withSqlServerEntraIdentity(Arrays.asList(
+                        new EntraAuthentication().withIdentityType(IdentityType.USER_ASSIGNED_MANAGED_IDENTITY)
+                            .withClientId("00000000-1111-2222-3333-444444444444"),
+                        new EntraAuthentication().withIdentityType(IdentityType.SYSTEM_ASSIGNED_MANAGED_IDENTITY)
+                            .withClientId("")))))
             .create();
     }
 

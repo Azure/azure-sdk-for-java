@@ -14,12 +14,12 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The PageOfDataControllerResource model.
+ * A list of data controllers.
  */
 @Fluent
 public final class PageOfDataControllerResource implements JsonSerializable<PageOfDataControllerResource> {
     /*
-     * The value property.
+     * Array of results.
      */
     private List<DataControllerResourceInner> value;
 
@@ -35,7 +35,7 @@ public final class PageOfDataControllerResource implements JsonSerializable<Page
     }
 
     /**
-     * Get the value property: The value property.
+     * Get the value property: Array of results.
      * 
      * @return the value value.
      */
@@ -44,7 +44,7 @@ public final class PageOfDataControllerResource implements JsonSerializable<Page
     }
 
     /**
-     * Set the value property: The value property.
+     * Set the value property: Array of results.
      * 
      * @param value the value value to set.
      * @return the PageOfDataControllerResource object itself.

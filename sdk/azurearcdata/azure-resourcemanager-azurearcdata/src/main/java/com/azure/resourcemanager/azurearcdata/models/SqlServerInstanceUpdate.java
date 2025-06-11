@@ -22,6 +22,11 @@ public final class SqlServerInstanceUpdate implements JsonSerializable<SqlServer
      */
     private Map<String, String> tags;
 
+    /*
+     * null
+     */
+    private SqlServerInstanceUpdateProperties properties;
+
     /**
      * Creates an instance of SqlServerInstanceUpdate class.
      */
@@ -49,11 +54,34 @@ public final class SqlServerInstanceUpdate implements JsonSerializable<SqlServer
     }
 
     /**
+     * Get the properties property: null.
+     * 
+     * @return the properties value.
+     */
+    public SqlServerInstanceUpdateProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: null.
+     * 
+     * @param properties the properties value to set.
+     * @return the SqlServerInstanceUpdate object itself.
+     */
+    public SqlServerInstanceUpdate withProperties(SqlServerInstanceUpdateProperties properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (properties() != null) {
+            properties().validate();
+        }
     }
 
     /**
@@ -63,6 +91,7 @@ public final class SqlServerInstanceUpdate implements JsonSerializable<SqlServer
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }
 
@@ -84,6 +113,8 @@ public final class SqlServerInstanceUpdate implements JsonSerializable<SqlServer
                 if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedSqlServerInstanceUpdate.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSqlServerInstanceUpdate.properties = SqlServerInstanceUpdateProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -12,9 +12,19 @@ import java.util.Collection;
  */
 public final class SqlVersion extends ExpandableStringEnum<SqlVersion> {
     /**
-     * Static value SQL Server 2019 for SqlVersion.
+     * Static value SQL Server 2012 for SqlVersion.
      */
-    public static final SqlVersion SQL_SERVER_2019 = fromString("SQL Server 2019");
+    public static final SqlVersion SQL_SERVER_2012 = fromString("SQL Server 2012");
+
+    /**
+     * Static value SQL Server 2014 for SqlVersion.
+     */
+    public static final SqlVersion SQL_SERVER_2014 = fromString("SQL Server 2014");
+
+    /**
+     * Static value SQL Server 2016 for SqlVersion.
+     */
+    public static final SqlVersion SQL_SERVER_2016 = fromString("SQL Server 2016");
 
     /**
      * Static value SQL Server 2017 for SqlVersion.
@@ -22,9 +32,19 @@ public final class SqlVersion extends ExpandableStringEnum<SqlVersion> {
     public static final SqlVersion SQL_SERVER_2017 = fromString("SQL Server 2017");
 
     /**
-     * Static value SQL Server 2016 for SqlVersion.
+     * Static value SQL Server 2019 for SqlVersion.
      */
-    public static final SqlVersion SQL_SERVER_2016 = fromString("SQL Server 2016");
+    public static final SqlVersion SQL_SERVER_2019 = fromString("SQL Server 2019");
+
+    /**
+     * Static value SQL Server 2022 for SqlVersion.
+     */
+    public static final SqlVersion SQL_SERVER_2022 = fromString("SQL Server 2022");
+
+    /**
+     * Static value Unknown for SqlVersion.
+     */
+    public static final SqlVersion UNKNOWN = fromString("Unknown");
 
     /**
      * Creates a new instance of SqlVersion value.

@@ -10,7 +10,8 @@ package com.azure.resourcemanager.azurearcdata.generated;
 public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/ListOperation.json
+     * specification/azurearcdata/resource-manager/Microsoft.AzureArcData/preview/2025-03-01-preview/examples/
+     * ListOperation.json
      */
     /**
      * Sample code: Lists all of the available Azure Data Services on Azure Arc API operations.

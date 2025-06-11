@@ -11,8 +11,18 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurearcdata.fluent.SqlServerInstancesClient;
 import com.azure.resourcemanager.azurearcdata.fluent.models.SqlServerInstanceInner;
+import com.azure.resourcemanager.azurearcdata.fluent.models.SqlServerInstanceJobsStatusResponseInner;
+import com.azure.resourcemanager.azurearcdata.fluent.models.SqlServerInstanceManagedInstanceLinkAssessmentResponseInner;
+import com.azure.resourcemanager.azurearcdata.fluent.models.SqlServerInstanceRunMigrationAssessmentResponseInner;
 import com.azure.resourcemanager.azurearcdata.models.SqlServerInstance;
+import com.azure.resourcemanager.azurearcdata.models.SqlServerInstanceJobsStatusRequest;
+import com.azure.resourcemanager.azurearcdata.models.SqlServerInstanceJobsStatusResponse;
+import com.azure.resourcemanager.azurearcdata.models.SqlServerInstanceManagedInstanceLinkAssessmentRequest;
+import com.azure.resourcemanager.azurearcdata.models.SqlServerInstanceManagedInstanceLinkAssessmentResponse;
+import com.azure.resourcemanager.azurearcdata.models.SqlServerInstanceRunMigrationAssessmentResponse;
+import com.azure.resourcemanager.azurearcdata.models.SqlServerInstanceTelemetryRequest;
 import com.azure.resourcemanager.azurearcdata.models.SqlServerInstances;
+import java.util.List;
 
 public final class SqlServerInstancesImpl implements SqlServerInstances {
     private static final ClientLogger LOGGER = new ClientLogger(SqlServerInstancesImpl.class);
@@ -76,6 +86,134 @@ public final class SqlServerInstancesImpl implements SqlServerInstances {
 
     public void delete(String resourceGroupName, String sqlServerInstanceName, Context context) {
         this.serviceClient().delete(resourceGroupName, sqlServerInstanceName, context);
+    }
+
+    public PagedIterable<List<String>> getTelemetry(String resourceGroupName, String sqlServerInstanceName,
+        SqlServerInstanceTelemetryRequest sqlServerInstanceTelemetryRequest) {
+        return this.serviceClient()
+            .getTelemetry(resourceGroupName, sqlServerInstanceName, sqlServerInstanceTelemetryRequest);
+    }
+
+    public PagedIterable<List<String>> getTelemetry(String resourceGroupName, String sqlServerInstanceName,
+        SqlServerInstanceTelemetryRequest sqlServerInstanceTelemetryRequest, Context context) {
+        return this.serviceClient()
+            .getTelemetry(resourceGroupName, sqlServerInstanceName, sqlServerInstanceTelemetryRequest, context);
+    }
+
+    public Response<SqlServerInstanceRunMigrationAssessmentResponse>
+        runMigrationAssessmentWithResponse(String resourceGroupName, String sqlServerInstanceName, Context context) {
+        Response<SqlServerInstanceRunMigrationAssessmentResponseInner> inner = this.serviceClient()
+            .runMigrationAssessmentWithResponse(resourceGroupName, sqlServerInstanceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SqlServerInstanceRunMigrationAssessmentResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SqlServerInstanceRunMigrationAssessmentResponse runMigrationAssessment(String resourceGroupName,
+        String sqlServerInstanceName) {
+        SqlServerInstanceRunMigrationAssessmentResponseInner inner
+            = this.serviceClient().runMigrationAssessment(resourceGroupName, sqlServerInstanceName);
+        if (inner != null) {
+            return new SqlServerInstanceRunMigrationAssessmentResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<SqlServerInstanceJobsStatusResponse> getJobsStatusWithResponse(String resourceGroupName,
+        String sqlServerInstanceName, SqlServerInstanceJobsStatusRequest sqlServerInstanceJobsStatusRequest,
+        Context context) {
+        Response<SqlServerInstanceJobsStatusResponseInner> inner = this.serviceClient()
+            .getJobsStatusWithResponse(resourceGroupName, sqlServerInstanceName, sqlServerInstanceJobsStatusRequest,
+                context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SqlServerInstanceJobsStatusResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SqlServerInstanceJobsStatusResponse getJobsStatus(String resourceGroupName, String sqlServerInstanceName) {
+        SqlServerInstanceJobsStatusResponseInner inner
+            = this.serviceClient().getJobsStatus(resourceGroupName, sqlServerInstanceName);
+        if (inner != null) {
+            return new SqlServerInstanceJobsStatusResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<SqlServerInstance> preUpgradeWithResponse(String resourceGroupName, String sqlServerInstanceName,
+        Context context) {
+        Response<SqlServerInstanceInner> inner
+            = this.serviceClient().preUpgradeWithResponse(resourceGroupName, sqlServerInstanceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SqlServerInstanceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SqlServerInstance preUpgrade(String resourceGroupName, String sqlServerInstanceName) {
+        SqlServerInstanceInner inner = this.serviceClient().preUpgrade(resourceGroupName, sqlServerInstanceName);
+        if (inner != null) {
+            return new SqlServerInstanceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<SqlServerInstance> postUpgradeWithResponse(String resourceGroupName, String sqlServerInstanceName,
+        Context context) {
+        Response<SqlServerInstanceInner> inner
+            = this.serviceClient().postUpgradeWithResponse(resourceGroupName, sqlServerInstanceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SqlServerInstanceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SqlServerInstance postUpgrade(String resourceGroupName, String sqlServerInstanceName) {
+        SqlServerInstanceInner inner = this.serviceClient().postUpgrade(resourceGroupName, sqlServerInstanceName);
+        if (inner != null) {
+            return new SqlServerInstanceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public SqlServerInstanceManagedInstanceLinkAssessmentResponse runManagedInstanceLinkAssessment(
+        String resourceGroupName, String sqlServerInstanceName,
+        SqlServerInstanceManagedInstanceLinkAssessmentRequest sqlServerInstanceManagedInstanceLinkAssessmentRequest) {
+        SqlServerInstanceManagedInstanceLinkAssessmentResponseInner inner = this.serviceClient()
+            .runManagedInstanceLinkAssessment(resourceGroupName, sqlServerInstanceName,
+                sqlServerInstanceManagedInstanceLinkAssessmentRequest);
+        if (inner != null) {
+            return new SqlServerInstanceManagedInstanceLinkAssessmentResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public SqlServerInstanceManagedInstanceLinkAssessmentResponse runManagedInstanceLinkAssessment(
+        String resourceGroupName, String sqlServerInstanceName,
+        SqlServerInstanceManagedInstanceLinkAssessmentRequest sqlServerInstanceManagedInstanceLinkAssessmentRequest,
+        Context context) {
+        SqlServerInstanceManagedInstanceLinkAssessmentResponseInner inner = this.serviceClient()
+            .runManagedInstanceLinkAssessment(resourceGroupName, sqlServerInstanceName,
+                sqlServerInstanceManagedInstanceLinkAssessmentRequest, context);
+        if (inner != null) {
+            return new SqlServerInstanceManagedInstanceLinkAssessmentResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public SqlServerInstance getById(String id) {

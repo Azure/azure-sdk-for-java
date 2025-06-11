@@ -45,9 +45,20 @@ public final class DataControllerProperties implements JsonSerializable<DataCont
     private OffsetDateTime lastUploadedDate;
 
     /*
-     * Username and password for basic login authentication.
+     * Deprecated. Azure Arc Data Services data controller no longer expose any endpoint. All traffic are exposed
+     * through Kubernetes native API.
      */
     private BasicLoginInformation basicLoginInformation;
+
+    /*
+     * Login credential for metrics dashboard on the Kubernetes cluster.
+     */
+    private BasicLoginInformation metricsDashboardCredential;
+
+    /*
+     * Login credential for logs dashboard on the Kubernetes cluster.
+     */
+    private BasicLoginInformation logsDashboardCredential;
 
     /*
      * Log analytics workspace id and primary key
@@ -55,12 +66,12 @@ public final class DataControllerProperties implements JsonSerializable<DataCont
     private LogAnalyticsWorkspaceConfig logAnalyticsWorkspaceConfig;
 
     /*
-     * Service principal for uploading billing, metrics and logs.
+     * Deprecated. Service principal is deprecated in favor of Arc Kubernetes service extension managed identity.
      */
     private UploadServicePrincipal uploadServicePrincipal;
 
     /*
-     * The provisioningState property.
+     * The provisioning state of the Arc Data Controller resource.
      */
     private String provisioningState;
 
@@ -182,7 +193,8 @@ public final class DataControllerProperties implements JsonSerializable<DataCont
     }
 
     /**
-     * Get the basicLoginInformation property: Username and password for basic login authentication.
+     * Get the basicLoginInformation property: Deprecated. Azure Arc Data Services data controller no longer expose any
+     * endpoint. All traffic are exposed through Kubernetes native API.
      * 
      * @return the basicLoginInformation value.
      */
@@ -191,13 +203,54 @@ public final class DataControllerProperties implements JsonSerializable<DataCont
     }
 
     /**
-     * Set the basicLoginInformation property: Username and password for basic login authentication.
+     * Set the basicLoginInformation property: Deprecated. Azure Arc Data Services data controller no longer expose any
+     * endpoint. All traffic are exposed through Kubernetes native API.
      * 
      * @param basicLoginInformation the basicLoginInformation value to set.
      * @return the DataControllerProperties object itself.
      */
     public DataControllerProperties withBasicLoginInformation(BasicLoginInformation basicLoginInformation) {
         this.basicLoginInformation = basicLoginInformation;
+        return this;
+    }
+
+    /**
+     * Get the metricsDashboardCredential property: Login credential for metrics dashboard on the Kubernetes cluster.
+     * 
+     * @return the metricsDashboardCredential value.
+     */
+    public BasicLoginInformation metricsDashboardCredential() {
+        return this.metricsDashboardCredential;
+    }
+
+    /**
+     * Set the metricsDashboardCredential property: Login credential for metrics dashboard on the Kubernetes cluster.
+     * 
+     * @param metricsDashboardCredential the metricsDashboardCredential value to set.
+     * @return the DataControllerProperties object itself.
+     */
+    public DataControllerProperties withMetricsDashboardCredential(BasicLoginInformation metricsDashboardCredential) {
+        this.metricsDashboardCredential = metricsDashboardCredential;
+        return this;
+    }
+
+    /**
+     * Get the logsDashboardCredential property: Login credential for logs dashboard on the Kubernetes cluster.
+     * 
+     * @return the logsDashboardCredential value.
+     */
+    public BasicLoginInformation logsDashboardCredential() {
+        return this.logsDashboardCredential;
+    }
+
+    /**
+     * Set the logsDashboardCredential property: Login credential for logs dashboard on the Kubernetes cluster.
+     * 
+     * @param logsDashboardCredential the logsDashboardCredential value to set.
+     * @return the DataControllerProperties object itself.
+     */
+    public DataControllerProperties withLogsDashboardCredential(BasicLoginInformation logsDashboardCredential) {
+        this.logsDashboardCredential = logsDashboardCredential;
         return this;
     }
 
@@ -223,7 +276,8 @@ public final class DataControllerProperties implements JsonSerializable<DataCont
     }
 
     /**
-     * Get the uploadServicePrincipal property: Service principal for uploading billing, metrics and logs.
+     * Get the uploadServicePrincipal property: Deprecated. Service principal is deprecated in favor of Arc Kubernetes
+     * service extension managed identity.
      * 
      * @return the uploadServicePrincipal value.
      */
@@ -232,7 +286,8 @@ public final class DataControllerProperties implements JsonSerializable<DataCont
     }
 
     /**
-     * Set the uploadServicePrincipal property: Service principal for uploading billing, metrics and logs.
+     * Set the uploadServicePrincipal property: Deprecated. Service principal is deprecated in favor of Arc Kubernetes
+     * service extension managed identity.
      * 
      * @param uploadServicePrincipal the uploadServicePrincipal value to set.
      * @return the DataControllerProperties object itself.
@@ -243,7 +298,7 @@ public final class DataControllerProperties implements JsonSerializable<DataCont
     }
 
     /**
-     * Get the provisioningState property: The provisioningState property.
+     * Get the provisioningState property: The provisioning state of the Arc Data Controller resource.
      * 
      * @return the provisioningState value.
      */
@@ -310,6 +365,12 @@ public final class DataControllerProperties implements JsonSerializable<DataCont
         if (basicLoginInformation() != null) {
             basicLoginInformation().validate();
         }
+        if (metricsDashboardCredential() != null) {
+            metricsDashboardCredential().validate();
+        }
+        if (logsDashboardCredential() != null) {
+            logsDashboardCredential().validate();
+        }
         if (logAnalyticsWorkspaceConfig() != null) {
             logAnalyticsWorkspaceConfig().validate();
         }
@@ -327,13 +388,17 @@ public final class DataControllerProperties implements JsonSerializable<DataCont
         jsonWriter.writeStringField("infrastructure",
             this.infrastructure == null ? null : this.infrastructure.toString());
         jsonWriter.writeJsonField("onPremiseProperty", this.onPremiseProperty);
-        jsonWriter.writeUntypedField("k8sRaw", this.k8SRaw);
+        if (this.k8SRaw != null) {
+            jsonWriter.writeUntypedField("k8sRaw", this.k8SRaw);
+        }
         jsonWriter.writeJsonField("uploadWatermark", this.uploadWatermark);
         jsonWriter.writeStringField("lastUploadedDate",
             this.lastUploadedDate == null
                 ? null
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUploadedDate));
         jsonWriter.writeJsonField("basicLoginInformation", this.basicLoginInformation);
+        jsonWriter.writeJsonField("metricsDashboardCredential", this.metricsDashboardCredential);
+        jsonWriter.writeJsonField("logsDashboardCredential", this.logsDashboardCredential);
         jsonWriter.writeJsonField("logAnalyticsWorkspaceConfig", this.logAnalyticsWorkspaceConfig);
         jsonWriter.writeJsonField("uploadServicePrincipal", this.uploadServicePrincipal);
         jsonWriter.writeStringField("clusterId", this.clusterId);
@@ -369,6 +434,12 @@ public final class DataControllerProperties implements JsonSerializable<DataCont
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("basicLoginInformation".equals(fieldName)) {
                     deserializedDataControllerProperties.basicLoginInformation = BasicLoginInformation.fromJson(reader);
+                } else if ("metricsDashboardCredential".equals(fieldName)) {
+                    deserializedDataControllerProperties.metricsDashboardCredential
+                        = BasicLoginInformation.fromJson(reader);
+                } else if ("logsDashboardCredential".equals(fieldName)) {
+                    deserializedDataControllerProperties.logsDashboardCredential
+                        = BasicLoginInformation.fromJson(reader);
                 } else if ("logAnalyticsWorkspaceConfig".equals(fieldName)) {
                     deserializedDataControllerProperties.logAnalyticsWorkspaceConfig
                         = LogAnalyticsWorkspaceConfig.fromJson(reader);

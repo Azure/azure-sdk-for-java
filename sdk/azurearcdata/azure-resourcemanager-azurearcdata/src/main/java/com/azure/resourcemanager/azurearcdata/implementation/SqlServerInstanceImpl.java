@@ -4,14 +4,24 @@
 
 package com.azure.resourcemanager.azurearcdata.implementation;
 
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.azurearcdata.fluent.models.SqlServerInstanceInner;
 import com.azure.resourcemanager.azurearcdata.models.SqlServerInstance;
+import com.azure.resourcemanager.azurearcdata.models.SqlServerInstanceJobsStatusRequest;
+import com.azure.resourcemanager.azurearcdata.models.SqlServerInstanceJobsStatusResponse;
+import com.azure.resourcemanager.azurearcdata.models.SqlServerInstanceManagedInstanceLinkAssessmentRequest;
+import com.azure.resourcemanager.azurearcdata.models.SqlServerInstanceManagedInstanceLinkAssessmentResponse;
 import com.azure.resourcemanager.azurearcdata.models.SqlServerInstanceProperties;
+import com.azure.resourcemanager.azurearcdata.models.SqlServerInstanceRunMigrationAssessmentResponse;
+import com.azure.resourcemanager.azurearcdata.models.SqlServerInstanceTelemetryRequest;
 import com.azure.resourcemanager.azurearcdata.models.SqlServerInstanceUpdate;
+import com.azure.resourcemanager.azurearcdata.models.SqlServerInstanceUpdateProperties;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public final class SqlServerInstanceImpl
@@ -112,16 +122,14 @@ public final class SqlServerInstanceImpl
     public SqlServerInstance apply() {
         this.innerObject = serviceManager.serviceClient()
             .getSqlServerInstances()
-            .updateWithResponse(resourceGroupName, sqlServerInstanceName, updateParameters, Context.NONE)
-            .getValue();
+            .update(resourceGroupName, sqlServerInstanceName, updateParameters, Context.NONE);
         return this;
     }
 
     public SqlServerInstance apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getSqlServerInstances()
-            .updateWithResponse(resourceGroupName, sqlServerInstanceName, updateParameters, context)
-            .getValue();
+            .update(resourceGroupName, sqlServerInstanceName, updateParameters, context);
         return this;
     }
 
@@ -149,6 +157,72 @@ public final class SqlServerInstanceImpl
         return this;
     }
 
+    public PagedIterable<List<String>>
+        getTelemetry(SqlServerInstanceTelemetryRequest sqlServerInstanceTelemetryRequest) {
+        return serviceManager.sqlServerInstances()
+            .getTelemetry(resourceGroupName, sqlServerInstanceName, sqlServerInstanceTelemetryRequest);
+    }
+
+    public PagedIterable<List<String>> getTelemetry(SqlServerInstanceTelemetryRequest sqlServerInstanceTelemetryRequest,
+        Context context) {
+        return serviceManager.sqlServerInstances()
+            .getTelemetry(resourceGroupName, sqlServerInstanceName, sqlServerInstanceTelemetryRequest, context);
+    }
+
+    public Response<SqlServerInstanceRunMigrationAssessmentResponse>
+        runMigrationAssessmentWithResponse(Context context) {
+        return serviceManager.sqlServerInstances()
+            .runMigrationAssessmentWithResponse(resourceGroupName, sqlServerInstanceName, context);
+    }
+
+    public SqlServerInstanceRunMigrationAssessmentResponse runMigrationAssessment() {
+        return serviceManager.sqlServerInstances().runMigrationAssessment(resourceGroupName, sqlServerInstanceName);
+    }
+
+    public Response<SqlServerInstanceJobsStatusResponse> getJobsStatusWithResponse(
+        SqlServerInstanceJobsStatusRequest sqlServerInstanceJobsStatusRequest, Context context) {
+        return serviceManager.sqlServerInstances()
+            .getJobsStatusWithResponse(resourceGroupName, sqlServerInstanceName, sqlServerInstanceJobsStatusRequest,
+                context);
+    }
+
+    public SqlServerInstanceJobsStatusResponse getJobsStatus() {
+        return serviceManager.sqlServerInstances().getJobsStatus(resourceGroupName, sqlServerInstanceName);
+    }
+
+    public Response<SqlServerInstance> preUpgradeWithResponse(Context context) {
+        return serviceManager.sqlServerInstances()
+            .preUpgradeWithResponse(resourceGroupName, sqlServerInstanceName, context);
+    }
+
+    public SqlServerInstance preUpgrade() {
+        return serviceManager.sqlServerInstances().preUpgrade(resourceGroupName, sqlServerInstanceName);
+    }
+
+    public Response<SqlServerInstance> postUpgradeWithResponse(Context context) {
+        return serviceManager.sqlServerInstances()
+            .postUpgradeWithResponse(resourceGroupName, sqlServerInstanceName, context);
+    }
+
+    public SqlServerInstance postUpgrade() {
+        return serviceManager.sqlServerInstances().postUpgrade(resourceGroupName, sqlServerInstanceName);
+    }
+
+    public SqlServerInstanceManagedInstanceLinkAssessmentResponse runManagedInstanceLinkAssessment(
+        SqlServerInstanceManagedInstanceLinkAssessmentRequest sqlServerInstanceManagedInstanceLinkAssessmentRequest) {
+        return serviceManager.sqlServerInstances()
+            .runManagedInstanceLinkAssessment(resourceGroupName, sqlServerInstanceName,
+                sqlServerInstanceManagedInstanceLinkAssessmentRequest);
+    }
+
+    public SqlServerInstanceManagedInstanceLinkAssessmentResponse runManagedInstanceLinkAssessment(
+        SqlServerInstanceManagedInstanceLinkAssessmentRequest sqlServerInstanceManagedInstanceLinkAssessmentRequest,
+        Context context) {
+        return serviceManager.sqlServerInstances()
+            .runManagedInstanceLinkAssessment(resourceGroupName, sqlServerInstanceName,
+                sqlServerInstanceManagedInstanceLinkAssessmentRequest, context);
+    }
+
     public SqlServerInstanceImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;
@@ -174,7 +248,12 @@ public final class SqlServerInstanceImpl
         return this;
     }
 
+    public SqlServerInstanceImpl withProperties(SqlServerInstanceUpdateProperties properties) {
+        this.updateParameters.withProperties(properties);
+        return this;
+    }
+
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

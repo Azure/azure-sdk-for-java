@@ -117,18 +117,14 @@ public final class DataControllerResourceImpl
     public DataControllerResource apply() {
         this.innerObject = serviceManager.serviceClient()
             .getDataControllers()
-            .patchDataControllerWithResponse(resourceGroupName, dataControllerName, updateDataControllerResource,
-                Context.NONE)
-            .getValue();
+            .patchDataController(resourceGroupName, dataControllerName, updateDataControllerResource, Context.NONE);
         return this;
     }
 
     public DataControllerResource apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getDataControllers()
-            .patchDataControllerWithResponse(resourceGroupName, dataControllerName, updateDataControllerResource,
-                context)
-            .getValue();
+            .patchDataController(resourceGroupName, dataControllerName, updateDataControllerResource, context);
         return this;
     }
 
@@ -167,8 +163,13 @@ public final class DataControllerResourceImpl
     }
 
     public DataControllerResourceImpl withProperties(DataControllerProperties properties) {
-        this.innerModel().withProperties(properties);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withProperties(properties);
+            return this;
+        } else {
+            this.updateDataControllerResource.withProperties(properties);
+            return this;
+        }
     }
 
     public DataControllerResourceImpl withTags(Map<String, String> tags) {
@@ -187,6 +188,6 @@ public final class DataControllerResourceImpl
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

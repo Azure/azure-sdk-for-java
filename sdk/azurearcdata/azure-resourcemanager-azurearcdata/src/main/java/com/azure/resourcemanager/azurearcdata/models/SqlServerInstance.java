@@ -4,10 +4,13 @@
 
 package com.azure.resourcemanager.azurearcdata.models;
 
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.azurearcdata.fluent.models.SqlServerInstanceInner;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -57,7 +60,7 @@ public interface SqlServerInstance {
     SqlServerInstanceProperties properties();
 
     /**
-     * Gets the systemData property: Read only system data.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
      */
@@ -200,7 +203,7 @@ public interface SqlServerInstance {
     /**
      * The template for SqlServerInstance update.
      */
-    interface Update extends UpdateStages.WithTags {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties {
         /**
          * Executes the update request.
          * 
@@ -233,6 +236,19 @@ public interface SqlServerInstance {
              */
             Update withTags(Map<String, String> tags);
         }
+
+        /**
+         * The stage of the SqlServerInstance update allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: null.
+             * 
+             * @param properties null.
+             * @return the next definition stage.
+             */
+            Update withProperties(SqlServerInstanceUpdateProperties properties);
+        }
     }
 
     /**
@@ -249,4 +265,140 @@ public interface SqlServerInstance {
      * @return the refreshed resource.
      */
     SqlServerInstance refresh(Context context);
+
+    /**
+     * Retrieves SQL Server instance telemetry.
+     * 
+     * @param sqlServerInstanceTelemetryRequest Contains the parameters to get SQL Server instance telemetry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a section of the telemetry response for the SQL Server instance as paginated response with
+     * {@link PagedIterable}.
+     */
+    PagedIterable<List<String>> getTelemetry(SqlServerInstanceTelemetryRequest sqlServerInstanceTelemetryRequest);
+
+    /**
+     * Retrieves SQL Server instance telemetry.
+     * 
+     * @param sqlServerInstanceTelemetryRequest Contains the parameters to get SQL Server instance telemetry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a section of the telemetry response for the SQL Server instance as paginated response with
+     * {@link PagedIterable}.
+     */
+    PagedIterable<List<String>> getTelemetry(SqlServerInstanceTelemetryRequest sqlServerInstanceTelemetryRequest,
+        Context context);
+
+    /**
+     * Runs migration assessment for SQL Server instance.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response for running migration assessment on the SQL Server instance along with {@link Response}.
+     */
+    Response<SqlServerInstanceRunMigrationAssessmentResponse> runMigrationAssessmentWithResponse(Context context);
+
+    /**
+     * Runs migration assessment for SQL Server instance.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response for running migration assessment on the SQL Server instance.
+     */
+    SqlServerInstanceRunMigrationAssessmentResponse runMigrationAssessment();
+
+    /**
+     * Gets jobs status details for sql arc resource.
+     * 
+     * @param sqlServerInstanceJobsStatusRequest Contains the parameters to get SQL Server instance agent jobs status.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return jobs status details for sql arc resource along with {@link Response}.
+     */
+    Response<SqlServerInstanceJobsStatusResponse> getJobsStatusWithResponse(
+        SqlServerInstanceJobsStatusRequest sqlServerInstanceJobsStatusRequest, Context context);
+
+    /**
+     * Gets jobs status details for sql arc resource.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return jobs status details for sql arc resource.
+     */
+    SqlServerInstanceJobsStatusResponse getJobsStatus();
+
+    /**
+     * Request Upgrade Permission before upgrading.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a SqlServerInstance along with {@link Response}.
+     */
+    Response<SqlServerInstance> preUpgradeWithResponse(Context context);
+
+    /**
+     * Request Upgrade Permission before upgrading.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a SqlServerInstance.
+     */
+    SqlServerInstance preUpgrade();
+
+    /**
+     * Clean up after upgrading.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a SqlServerInstance along with {@link Response}.
+     */
+    Response<SqlServerInstance> postUpgradeWithResponse(Context context);
+
+    /**
+     * Clean up after upgrading.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a SqlServerInstance.
+     */
+    SqlServerInstance postUpgrade();
+
+    /**
+     * Runs Managed Instance Link assessment for SQL Server instance.
+     * 
+     * @param sqlServerInstanceManagedInstanceLinkAssessmentRequest Contains the parameters to run SQL Server instance
+     * MI link assessment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response containing the results of the MI Link assessment.
+     */
+    SqlServerInstanceManagedInstanceLinkAssessmentResponse runManagedInstanceLinkAssessment(
+        SqlServerInstanceManagedInstanceLinkAssessmentRequest sqlServerInstanceManagedInstanceLinkAssessmentRequest);
+
+    /**
+     * Runs Managed Instance Link assessment for SQL Server instance.
+     * 
+     * @param sqlServerInstanceManagedInstanceLinkAssessmentRequest Contains the parameters to run SQL Server instance
+     * MI link assessment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response containing the results of the MI Link assessment.
+     */
+    SqlServerInstanceManagedInstanceLinkAssessmentResponse runManagedInstanceLinkAssessment(
+        SqlServerInstanceManagedInstanceLinkAssessmentRequest sqlServerInstanceManagedInstanceLinkAssessmentRequest,
+        Context context);
 }

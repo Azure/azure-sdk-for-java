@@ -55,9 +55,14 @@ public final class SqlManagedInstanceProperties implements JsonSerializable<SqlM
     private OffsetDateTime lastUploadedDate;
 
     /*
-     * The provisioningState property.
+     * The provisioning state of the Arc-enabled SQL Managed Instance resource.
      */
     private String provisioningState;
+
+    /*
+     * Active Directory information related to this SQL Managed Instance.
+     */
+    private ActiveDirectoryInformation activeDirectoryInformation;
 
     /*
      * The license type to apply for this managed instance.
@@ -222,12 +227,33 @@ public final class SqlManagedInstanceProperties implements JsonSerializable<SqlM
     }
 
     /**
-     * Get the provisioningState property: The provisioningState property.
+     * Get the provisioningState property: The provisioning state of the Arc-enabled SQL Managed Instance resource.
      * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the activeDirectoryInformation property: Active Directory information related to this SQL Managed Instance.
+     * 
+     * @return the activeDirectoryInformation value.
+     */
+    public ActiveDirectoryInformation activeDirectoryInformation() {
+        return this.activeDirectoryInformation;
+    }
+
+    /**
+     * Set the activeDirectoryInformation property: Active Directory information related to this SQL Managed Instance.
+     * 
+     * @param activeDirectoryInformation the activeDirectoryInformation value to set.
+     * @return the SqlManagedInstanceProperties object itself.
+     */
+    public SqlManagedInstanceProperties
+        withActiveDirectoryInformation(ActiveDirectoryInformation activeDirectoryInformation) {
+        this.activeDirectoryInformation = activeDirectoryInformation;
+        return this;
     }
 
     /**
@@ -306,6 +332,9 @@ public final class SqlManagedInstanceProperties implements JsonSerializable<SqlM
         if (basicLoginInformation() != null) {
             basicLoginInformation().validate();
         }
+        if (activeDirectoryInformation() != null) {
+            activeDirectoryInformation().validate();
+        }
     }
 
     /**
@@ -324,6 +353,7 @@ public final class SqlManagedInstanceProperties implements JsonSerializable<SqlM
             this.lastUploadedDate == null
                 ? null
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUploadedDate));
+        jsonWriter.writeJsonField("activeDirectoryInformation", this.activeDirectoryInformation);
         jsonWriter.writeStringField("licenseType", this.licenseType == null ? null : this.licenseType.toString());
         jsonWriter.writeStringField("clusterId", this.clusterId);
         jsonWriter.writeStringField("extensionId", this.extensionId);
@@ -363,6 +393,9 @@ public final class SqlManagedInstanceProperties implements JsonSerializable<SqlM
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedSqlManagedInstanceProperties.provisioningState = reader.getString();
+                } else if ("activeDirectoryInformation".equals(fieldName)) {
+                    deserializedSqlManagedInstanceProperties.activeDirectoryInformation
+                        = ActiveDirectoryInformation.fromJson(reader);
                 } else if ("licenseType".equals(fieldName)) {
                     deserializedSqlManagedInstanceProperties.licenseType
                         = ArcSqlManagedInstanceLicenseType.fromString(reader.getString());

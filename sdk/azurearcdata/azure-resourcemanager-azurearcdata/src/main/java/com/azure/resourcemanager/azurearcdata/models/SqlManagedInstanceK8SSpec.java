@@ -31,6 +31,16 @@ public final class SqlManagedInstanceK8SSpec implements JsonSerializable<SqlMana
     private Integer replicas;
 
     /*
+     * The kubernetes security information.
+     */
+    private K8SSecurity security;
+
+    /*
+     * The kubernetes settings information.
+     */
+    private K8SSettings settings;
+
+    /*
      * The kubernetes spec information.
      */
     private Map<String, Object> additionalProperties;
@@ -86,6 +96,46 @@ public final class SqlManagedInstanceK8SSpec implements JsonSerializable<SqlMana
     }
 
     /**
+     * Get the security property: The kubernetes security information.
+     * 
+     * @return the security value.
+     */
+    public K8SSecurity security() {
+        return this.security;
+    }
+
+    /**
+     * Set the security property: The kubernetes security information.
+     * 
+     * @param security the security value to set.
+     * @return the SqlManagedInstanceK8SSpec object itself.
+     */
+    public SqlManagedInstanceK8SSpec withSecurity(K8SSecurity security) {
+        this.security = security;
+        return this;
+    }
+
+    /**
+     * Get the settings property: The kubernetes settings information.
+     * 
+     * @return the settings value.
+     */
+    public K8SSettings settings() {
+        return this.settings;
+    }
+
+    /**
+     * Set the settings property: The kubernetes settings information.
+     * 
+     * @param settings the settings value to set.
+     * @return the SqlManagedInstanceK8SSpec object itself.
+     */
+    public SqlManagedInstanceK8SSpec withSettings(K8SSettings settings) {
+        this.settings = settings;
+        return this;
+    }
+
+    /**
      * Get the additionalProperties property: The kubernetes spec information.
      * 
      * @return the additionalProperties value.
@@ -114,6 +164,12 @@ public final class SqlManagedInstanceK8SSpec implements JsonSerializable<SqlMana
         if (scheduling() != null) {
             scheduling().validate();
         }
+        if (security() != null) {
+            security().validate();
+        }
+        if (settings() != null) {
+            settings().validate();
+        }
     }
 
     /**
@@ -124,6 +180,8 @@ public final class SqlManagedInstanceK8SSpec implements JsonSerializable<SqlMana
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("scheduling", this.scheduling);
         jsonWriter.writeNumberField("replicas", this.replicas);
+        jsonWriter.writeJsonField("security", this.security);
+        jsonWriter.writeJsonField("settings", this.settings);
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -152,6 +210,10 @@ public final class SqlManagedInstanceK8SSpec implements JsonSerializable<SqlMana
                     deserializedSqlManagedInstanceK8SSpec.scheduling = K8SScheduling.fromJson(reader);
                 } else if ("replicas".equals(fieldName)) {
                     deserializedSqlManagedInstanceK8SSpec.replicas = reader.getNullable(JsonReader::getInt);
+                } else if ("security".equals(fieldName)) {
+                    deserializedSqlManagedInstanceK8SSpec.security = K8SSecurity.fromJson(reader);
+                } else if ("settings".equals(fieldName)) {
+                    deserializedSqlManagedInstanceK8SSpec.settings = K8SSettings.fromJson(reader);
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();

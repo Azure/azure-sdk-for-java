@@ -7,8 +7,8 @@ package com.azure.resourcemanager.azurearcdata.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.azurearcdata.AzureArcDataManager;
 import com.azure.resourcemanager.azurearcdata.models.Operation;
@@ -22,22 +22,22 @@ public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"wxqpsrknftguvri\",\"display\":{\"provider\":\"hprwmdyv\",\"resource\":\"qtayri\",\"operation\":\"wroyqbexrmcq\",\"description\":\"bycnojvkn\"},\"origin\":\"system\",\"isDataAction\":true,\"properties\":{\"hpvgqz\":\"datazvahapjy\"}}]}";
+            = "{\"value\":[{\"name\":\"tnbatzvi\",\"display\":{\"provider\":\"sowsaael\",\"resource\":\"attcju\",\"operation\":\"plrvkmjcwmjvlg\",\"description\":\"ggcvk\"},\"origin\":\"system\",\"isDataAction\":false,\"properties\":{\"sfxsf\":\"datazbj\",\"ukoveofi\":\"dataztlvtmvagbwidqlv\",\"z\":\"datarvjfnmjmvlw\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AzureArcDataManager manager = AzureArcDataManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wxqpsrknftguvri", response.iterator().next().name());
-        Assertions.assertEquals("hprwmdyv", response.iterator().next().display().provider());
-        Assertions.assertEquals("qtayri", response.iterator().next().display().resource());
-        Assertions.assertEquals("wroyqbexrmcq", response.iterator().next().display().operation());
-        Assertions.assertEquals("bycnojvkn", response.iterator().next().display().description());
-        Assertions.assertEquals(true, response.iterator().next().isDataAction());
+        Assertions.assertEquals("tnbatzvi", response.iterator().next().name());
+        Assertions.assertEquals("sowsaael", response.iterator().next().display().provider());
+        Assertions.assertEquals("attcju", response.iterator().next().display().resource());
+        Assertions.assertEquals("plrvkmjcwmjvlg", response.iterator().next().display().operation());
+        Assertions.assertEquals("ggcvk", response.iterator().next().display().description());
+        Assertions.assertFalse(response.iterator().next().isDataAction());
     }
 }
