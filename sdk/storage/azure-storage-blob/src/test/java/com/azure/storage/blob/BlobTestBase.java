@@ -87,6 +87,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
+import java.util.concurrent.Callable;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -1116,7 +1117,7 @@ public class BlobTestBase extends TestProxyTestBase {
                 try {
                     responses.add(buildXmlPage(maxResourcesPerPage, totalPagesExpected, numberOfElementsOnThisPage,
                         pageType, isHierarchical));
-                } catch (XMLStreamException e) {
+                } catch (Exception e) {
                     throw new RuntimeException("Failed to generate XML for paged response", e);
                 }
             }
@@ -1124,18 +1125,20 @@ public class BlobTestBase extends TestProxyTestBase {
         }
 
         private String buildXmlPage(int maxResourcesPerPage, int totalPagesExpected, int numberOfElementsOnThisPage,
-            PageType pageType, boolean isHierarchicalForBlobs) throws XMLStreamException {
+            PageType pageType, boolean isHierarchicalForBlobs) throws Exception {
             ByteArrayOutputStream output = new ByteArrayOutputStream();
             XmlWriter xmlWriter = XmlWriter.toStream(output);
 
             String elementType;
-            boolean includeDummyTagsInListElement;
+            Callable<Void> additionalElements = null;
 
             switch (pageType) {
                 case LIST_BLOBS:
                     elementType = "Blob";
-                    includeDummyTagsInListElement = false;
-                    startXml(xmlWriter, true);
+                    startXml(xmlWriter, () -> {
+                        xmlWriter.writeStringAttribute("ContainerName", "foo");
+                        return null;
+                    });
                     xmlWriter.writeStringElement("MaxResults", String.valueOf(maxResourcesPerPage));
                     if (isHierarchicalForBlobs) {
                         xmlWriter.writeStringElement("Delimiter", "/");
@@ -1144,16 +1147,28 @@ public class BlobTestBase extends TestProxyTestBase {
 
                 case FIND_BLOBS:
                     elementType = "Blob";
-                    includeDummyTagsInListElement = true;
-                    startXml(xmlWriter, false);
+                    additionalElements = () -> {
+                        xmlWriter.writeStringElement("ContainerName", "foo");
+
+                        // Write Tags
+                        xmlWriter.writeStartElement("Tags");
+                        xmlWriter.writeStartElement("TagSet");
+                        xmlWriter.writeStartElement("Tag");
+                        xmlWriter.writeStringElement("Key", "dummyKey");
+                        xmlWriter.writeStringElement("Value", "dummyValue");
+                        xmlWriter.writeEndElement(); // End Tag
+                        xmlWriter.writeEndElement(); // End TagSet
+                        xmlWriter.writeEndElement(); // End Tags
+                        return null;
+                    };
+                    startXml(xmlWriter, null);
                     xmlWriter.writeStringElement("Where", "\"dummyKey\"='dummyValue'");
                     xmlWriter.writeStringElement("MaxResults", String.valueOf(maxResourcesPerPage));
                     break;
 
                 case LIST_CONTAINERS:
                     elementType = "Container";
-                    includeDummyTagsInListElement = false;
-                    startXml(xmlWriter, false);
+                    startXml(xmlWriter, null);
                     xmlWriter.writeStringElement("MaxResults", String.valueOf(maxResourcesPerPage));
                     break;
 
@@ -1161,18 +1176,19 @@ public class BlobTestBase extends TestProxyTestBase {
                     throw new IllegalArgumentException("Unknown PageType: " + pageType);
             }
 
-            writeGenericListElement(xmlWriter, elementType, numberOfElementsOnThisPage, includeDummyTagsInListElement);
+            writeGenericListElement(xmlWriter, elementType, numberOfElementsOnThisPage, additionalElements);
             endXml(xmlWriter, totalPagesExpected); // This calls flush
 
             return output.toString();
         }
 
-        private void startXml(XmlWriter xmlWriter, Boolean hasContainerAttribute) throws XMLStreamException {
+        private void startXml(XmlWriter xmlWriter, Callable<Void> additionalAttributes) throws Exception {
             xmlWriter.writeStartDocument();
             xmlWriter.writeStartElement("EnumerationResults");
             xmlWriter.writeStringAttribute("ServiceEndpoint", "https://account.blob.core.windows.net/");
-            if (hasContainerAttribute) {
-                xmlWriter.writeStringAttribute("ContainerName", "foo");
+
+            if (additionalAttributes != null) {
+                additionalAttributes.call();
             }
 
             // Write marker if not first page
@@ -1194,7 +1210,7 @@ public class BlobTestBase extends TestProxyTestBase {
         }
 
         private void writeGenericListElement(XmlWriter xmlWriter, String elementType, int numberOfElementsOnThisPage,
-            Boolean includeDummyTags) throws XMLStreamException {
+            Callable<Void> additionalElements) throws Exception {
             // Start elementType + s
             xmlWriter.writeStartElement(elementType + "s");
 
@@ -1203,20 +1219,10 @@ public class BlobTestBase extends TestProxyTestBase {
                 xmlWriter.writeStartElement(elementType); // Start elementType
                 xmlWriter.writeStringElement("Name", elementType.toLowerCase() + resourceCounter++);
 
-                if (includeDummyTags) {
-                    xmlWriter.writeStringElement("ContainerName", "foo");
-
-                    // Write Tags
-                    xmlWriter.writeStartElement("Tags");
-                    xmlWriter.writeStartElement("TagSet");
-                    xmlWriter.writeStartElement("Tag");
-                    xmlWriter.writeStringElement("Key", "dummyKey");
-                    xmlWriter.writeStringElement("Value", "dummyValue");
-                    xmlWriter.writeEndElement(); // End Tag
-                    xmlWriter.writeEndElement(); // End TagSet
-                    xmlWriter.writeEndElement(); // End Tags
-
+                if (additionalElements != null) {
+                    additionalElements.call();
                 }
+
                 xmlWriter.writeEndElement(); // End elementType
             }
 

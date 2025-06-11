@@ -21,6 +21,10 @@ public class TimeoutTests {
     /*
      * This test class is marked as isolated to ensure that resource related issues do not interfere with the timeouts being tested.
      *
+     * In addition to isolating the tests, we are mocking the HTTP layer to return a fixed number of blobs in a paged manner.
+     * This allows us to control the number of pages returned and the time taken for each page to be returned, ensuring
+     * that the timeout is only on the page request and not the entire stream of pages.
+     *
      * The custom http clients return a generic xml list of 5 blobs total.
      * The api call should return 2 pages, one page of 3 blobs and one page of 2 blobs.
      * Although each page is set to take 4 seconds to return, the timeout being set to 6 seconds should not cause the test to fail,
