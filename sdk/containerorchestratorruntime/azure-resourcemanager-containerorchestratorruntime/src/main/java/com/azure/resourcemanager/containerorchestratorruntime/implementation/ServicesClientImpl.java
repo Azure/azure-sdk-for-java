@@ -63,7 +63,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ContainerOrchestrato")
+    @ServiceInterface(name = "ContainerOrchestratorRuntimeMgmtClientServices")
     public interface ServicesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.KubernetesRuntime/services/{serviceName}")

@@ -61,7 +61,7 @@ public final class OperatorApiPlansClientImpl implements OperatorApiPlansClient 
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ProgrammableConnecti")
+    @ServiceInterface(name = "ProgrammableConnectivityMgmtClientOperatorApiPlans")
     public interface OperatorApiPlansService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProgrammableConnectivity/operatorApiPlans/{operatorApiPlanName}")
