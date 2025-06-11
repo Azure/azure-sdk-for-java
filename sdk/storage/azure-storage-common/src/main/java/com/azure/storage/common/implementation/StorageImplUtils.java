@@ -303,6 +303,8 @@ public class StorageImplUtils {
             return message;
         }
 
+        LOGGER.info("Message" + message);
+
         String errorCode = response.getHeaders().getValue(ERROR_CODE_HEADER_NAME);
         String headerName = response.getHeaders().getValue(HEADER_NAME);
 
@@ -312,10 +314,8 @@ public class StorageImplUtils {
             return Constants.Errors.INVALID_VERSION_HEADER_MESSAGE + message;
         }
 
-        String body = response.getBodyAsString().defaultIfEmpty("").block(); // Blocking call
-
-        String extractedErrorCode = errorCode != null ? errorCode : extractXmlTagValue(body, "Code");
-        String extractedHeaderName = headerName != null ? headerName : extractXmlTagValue(body, "HeaderName");
+        String extractedErrorCode = errorCode != null ? errorCode : extractXmlTagValue(message, "Code");
+        String extractedHeaderName = headerName != null ? headerName : extractXmlTagValue(message, "HeaderName");
 
         if (Constants.HeaderConstants.INVALID_HEADER_VALUE.equals(extractedErrorCode)
             && Constants.HeaderConstants.VERSION.equalsIgnoreCase(extractedHeaderName)) {
@@ -339,16 +339,39 @@ public class StorageImplUtils {
         return message;
     }
 
-    private static String extractXmlTagValue(String xml, String tag) {
+    private static String extractXmlTagValue(String message, String tag) {
+        if (message == null || tag == null) {
+            return null;
+        }
+
+        int xmlStart = message.indexOf("<?xml");
+        if (xmlStart == -1) {
+            return null;
+        }
+
+        String xml = message.substring(xmlStart);
+
+        LOGGER.info("XML :" + xml);
+
         String openTag = "<" + tag + ">";
         String closeTag = "</" + tag + ">";
         int start = xml.indexOf(openTag);
         int end = xml.indexOf(closeTag);
+
         if (start >= 0 && end > start) {
             return xml.substring(start + openTag.length(), end).trim();
         }
+
         return null;
     }
+
+    //    private static String extractXmlFromErrorMessage(String errorMessage) {
+    //        int xmlStart = errorMessage.indexOf("<?xml");
+    //        if (xmlStart >= 0) {
+    //            return errorMessage.substring(xmlStart).replaceFirst("^\\?+", "");
+    //        }
+    //        return null;
+    //    }
 
     /**
      * Given a String representing a date in a form of the ISO8601 pattern, generates a Date representing it with up to
