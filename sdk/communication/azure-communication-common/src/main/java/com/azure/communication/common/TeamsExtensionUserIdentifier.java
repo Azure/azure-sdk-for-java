@@ -3,7 +3,6 @@
 
 package com.azure.communication.common;
 
-import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -12,7 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
  * to extend their Teams Phone set up.
  */
 public final class TeamsExtensionUserIdentifier extends CommunicationIdentifier {
-    private static final ClientLogger logger = new ClientLogger(TeamsExtensionUserIdentifier.class);
+    private final ClientLogger logger = new ClientLogger(TeamsExtensionUserIdentifier.class);
     private final String userId;
     private final String tenantId;
     private final String resourceId;
