@@ -432,7 +432,6 @@ public final class KeyVaultAdministrationClientImpl {
     }
 
     /**
-     * /**
      * Creates a full backup using a user-provided SAS token to an Azure blob storage container.
      *
      * @param azureStorageBlobContainerUri Azure blob shared access signature token pointing to a valid Azure blob
@@ -443,7 +442,6 @@ public final class KeyVaultAdministrationClientImpl {
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return full backup operation.
-     * /
      */
     public Response<FullBackupOperation> fullBackupStatusWithResponse(SASTokenParameter azureStorageBlobContainerUri,
         RequestContext requestContext) {
@@ -454,7 +452,6 @@ public final class KeyVaultAdministrationClientImpl {
     }
 
     /**
-     * /**
      * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
      *
      * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
@@ -464,7 +461,6 @@ public final class KeyVaultAdministrationClientImpl {
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return restore operation.
-     * /
      */
     public Response<RestoreOperation> fullRestoreOperationWithResponse(RestoreOperationParameters restoreBlobDetails,
         RequestContext requestContext) {
@@ -475,7 +471,6 @@ public final class KeyVaultAdministrationClientImpl {
     }
 
     /**
-     * /**
      * Restores all key versions of a given key using user supplied SAS token pointing to a previously stored Azure Blob
      * storage backup folder.
      *
@@ -487,7 +482,6 @@ public final class KeyVaultAdministrationClientImpl {
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return selective Key Restore operation.
-     * /
      */
     public Response<SelectiveKeyRestoreOperation> selectiveKeyRestoreOperationWithResponse(String keyName,
         SelectiveKeyRestoreOperationParameters restoreBlobDetails, RequestContext requestContext) {
