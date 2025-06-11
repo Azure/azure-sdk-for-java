@@ -60,7 +60,7 @@ public final class ComputesClientImpl implements ComputesClient {
      * to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "NeonPostgresManageme")
+    @ServiceInterface(name = "NeonPostgresManagementClientComputes")
     public interface ComputesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/computes")

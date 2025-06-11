@@ -76,7 +76,7 @@ public final class MapsClientImpl implements MapsClient {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DependencyMapManagem")
+    @ServiceInterface(name = "DependencyMapManagementClientMaps")
     public interface MapsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}")
