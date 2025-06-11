@@ -6,6 +6,7 @@ package com.azure.v2.security.keyvault.keys.cryptography;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.util.logging.ClientLogger;
 import com.azure.v2.security.keyvault.keys.KeyClient;
+import com.azure.v2.security.keyvault.keys.KeyServiceVersion;
 import com.azure.v2.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.v2.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.v2.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
@@ -48,13 +49,11 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     @Override
     protected void beforeTest() {
         beforeTestSetup();
-    }
-
-    private void initializeKeyClient(HttpClient httpClient) {
+    }    private void initializeKeyClient(HttpClient httpClient) {
         client = getKeyClientBuilder(
             buildSyncAssertingClient(
                 interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient),
-            getEndpoint(), null).buildClient();
+            getEndpoint(), KeyServiceVersion.getLatest()).buildClient();
     }
 
     CryptographyClient initializeCryptographyClient(String keyId, HttpClient httpClient,
@@ -97,26 +96,34 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
                 assertArrayEquals(decryptedText, plaintext);
             }
         });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    }    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.v2.security.keyvault.keys.cryptography.TestHelper#getTestParameters")
     public void signVerifyEc(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception {
         initializeKeyClient(httpClient);
 
-        signVerifyEcRunner(keyPair -> {
-            JsonWebKey key = JsonWebKey.fromEc(keyPair, Arrays.asList(KeyOperation.SIGN, KeyOperation.VERIFY));
-            String keyName = testResourceNamer.randomName("testEcKey", 20);
-            KeyVaultKey importedKey = client.importKey(keyName, key);
-            CryptographyClient cryptoClient
-                = initializeCryptographyClient(importedKey.getId(), httpClient, serviceVersion);
+        signVerifyEcRunner(signVerifyEcData -> {
+            try {
+                KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("EC");
+                ECGenParameterSpec ecGenParameterSpec = new ECGenParameterSpec(signVerifyEcData.getCurveToSpec().get(signVerifyEcData.getCurve()));
+                keyPairGenerator.initialize(ecGenParameterSpec);
+                KeyPair keyPair = keyPairGenerator.generateKeyPair();
 
-            byte[] plaintext = new byte[100];
-            new Random(0x1234567L).nextBytes(plaintext);
-            byte[] digest = MessageDigest.getInstance("SHA-256").digest(plaintext);
+                JsonWebKey key = JsonWebKey.fromEc(keyPair, Arrays.asList(KeyOperation.SIGN, KeyOperation.VERIFY));
+                String keyName = testResourceNamer.randomName("testEcKey", 20);
+                KeyVaultKey importedKey = client.importKey(keyName, key);
+                CryptographyClient cryptoClient
+                    = initializeCryptographyClient(importedKey.getId(), httpClient, serviceVersion);
 
-            SignResult signResult = cryptoClient.sign(SignatureAlgorithm.ES256, digest);
-            assertTrue(cryptoClient.verify(SignatureAlgorithm.ES256, digest, signResult.getSignature()).isValid());
+                byte[] plaintext = new byte[100];
+                new Random(0x1234567L).nextBytes(plaintext);
+                byte[] digest = MessageDigest.getInstance(signVerifyEcData.getMessageDigestAlgorithm().get(signVerifyEcData.getCurve())).digest(plaintext);
+
+                SignatureAlgorithm algorithm = signVerifyEcData.getCurveToSignature().get(signVerifyEcData.getCurve());
+                SignResult signResult = cryptoClient.sign(algorithm, digest);
+                assertTrue(cryptoClient.verify(algorithm, digest, signResult.getSignature()).isValid());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 
@@ -143,6 +150,136 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
                 byte[] decryptedKey = cryptoClient.unwrapKey(algorithm, encryptedKey).getKey();
 
                 assertArrayEquals(decryptedKey, plaintext);
+            }
+        });
+    }    @Test
+    public void encryptDecryptRsaLocal() throws Exception {
+        encryptDecryptRsaRunner(keyPair -> {
+            JsonWebKey key = JsonWebKey.fromRsa(keyPair);
+            CryptographyClient cryptoClient = initializeCryptographyClient(key);
+
+            List<EncryptionAlgorithm> algorithms = Arrays.asList(EncryptionAlgorithm.RSA1_5,
+                EncryptionAlgorithm.RSA_OAEP, EncryptionAlgorithm.RSA_OAEP_256);
+
+            for (EncryptionAlgorithm algorithm : algorithms) {
+                byte[] plaintext = new byte[100];
+                new Random(0x1234567L).nextBytes(plaintext);
+
+                byte[] ciphertext = cryptoClient.encrypt(algorithm, plaintext).getCipherText();
+                byte[] decryptedText = cryptoClient.decrypt(algorithm, ciphertext).getPlainText();
+
+                assertArrayEquals(decryptedText, plaintext);
+            }
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.v2.security.keyvault.keys.cryptography.TestHelper#getTestParameters")
+    public void encryptDecryptAes(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception {
+        // AES operations are typically local-only in Key Vault
+        encryptDecryptAesLocal();
+    }
+
+    @Test
+    public void encryptDecryptAesLocal() throws Exception {
+        encryptDecryptAesRunner(key -> {
+            CryptographyClient cryptoClient = initializeCryptographyClient(key);
+
+            List<EncryptionAlgorithm> algorithms = Arrays.asList(EncryptionAlgorithm.A128CBC,
+                EncryptionAlgorithm.A192CBC, EncryptionAlgorithm.A256CBC);
+
+            for (EncryptionAlgorithm algorithm : algorithms) {
+                encryptDecryptAesWithParametersRunner(k -> {}, algorithm);
+            }
+        });
+    }
+
+    @Test
+    public void signDataVerifyEcLocal() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
+        signVerifyEcRunner(signVerifyEcData -> {
+            try {
+                KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("EC");
+                ECGenParameterSpec ecGenParameterSpec = new ECGenParameterSpec(signVerifyEcData.getCurveToSpec().get(signVerifyEcData.getCurve()));
+                keyPairGenerator.initialize(ecGenParameterSpec);
+                KeyPair keyPair = keyPairGenerator.generateKeyPair();
+
+                JsonWebKey key = JsonWebKey.fromEc(keyPair, Arrays.asList(KeyOperation.SIGN, KeyOperation.VERIFY));
+                CryptographyClient cryptoClient = initializeCryptographyClient(key);
+
+                byte[] plaintext = new byte[100];
+                new Random(0x1234567L).nextBytes(plaintext);
+                byte[] digest = MessageDigest.getInstance(signVerifyEcData.getMessageDigestAlgorithm().get(signVerifyEcData.getCurve())).digest(plaintext);
+
+                SignatureAlgorithm algorithm = signVerifyEcData.getCurveToSignature().get(signVerifyEcData.getCurve());
+                SignResult signResult = cryptoClient.sign(algorithm, digest);
+                assertTrue(cryptoClient.verify(algorithm, digest, signResult.getSignature()).isValid());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    @Test
+    public void wrapUnwrapRsaLocal() throws Exception {
+        wrapUnwrapRsaRunner(keyPair -> {
+            JsonWebKey key = JsonWebKey.fromRsa(keyPair);
+            CryptographyClient cryptoClient = initializeCryptographyClient(key);
+
+            List<KeyWrapAlgorithm> algorithms = Arrays.asList(KeyWrapAlgorithm.RSA1_5, KeyWrapAlgorithm.RSA_OAEP,
+                KeyWrapAlgorithm.RSA_OAEP_256);
+
+            for (KeyWrapAlgorithm algorithm : algorithms) {
+                byte[] plaintext = new byte[100];
+                new Random(0x1234567L).nextBytes(plaintext);
+
+                byte[] encryptedKey = cryptoClient.wrapKey(algorithm, plaintext).getEncryptedKey();
+                byte[] decryptedKey = cryptoClient.unwrapKey(algorithm, encryptedKey).getKey();
+
+                assertArrayEquals(decryptedKey, plaintext);
+            }
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.v2.security.keyvault.keys.cryptography.TestHelper#getTestParameters")
+    public void signVerifyRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception {
+        initializeKeyClient(httpClient);
+
+        signVerifyRsaRunner(keyPair -> {
+            JsonWebKey key = JsonWebKey.fromRsa(keyPair);
+            String keyName = testResourceNamer.randomName("testRsaKey", 20);
+            KeyVaultKey importedKey = client.importKey(keyName, key);
+            CryptographyClient cryptoClient
+                = initializeCryptographyClient(importedKey.getId(), httpClient, serviceVersion);
+
+            List<SignatureAlgorithm> algorithms = Arrays.asList(SignatureAlgorithm.PS256, SignatureAlgorithm.RS256);
+
+            for (SignatureAlgorithm algorithm : algorithms) {
+                byte[] plaintext = new byte[100];
+                new Random(0x1234567L).nextBytes(plaintext);
+                byte[] digest = MessageDigest.getInstance("SHA-256").digest(plaintext);
+
+                SignResult signResult = cryptoClient.sign(algorithm, digest);
+                assertTrue(cryptoClient.verify(algorithm, digest, signResult.getSignature()).isValid());
+            }
+        });
+    }
+
+    @Test
+    public void signVerifyRsaLocal() throws Exception {
+        signVerifyRsaRunner(keyPair -> {
+            JsonWebKey key = JsonWebKey.fromRsa(keyPair);
+            CryptographyClient cryptoClient = initializeCryptographyClient(key);
+
+            List<SignatureAlgorithm> algorithms = Arrays.asList(SignatureAlgorithm.PS256, SignatureAlgorithm.RS256);
+
+            for (SignatureAlgorithm algorithm : algorithms) {
+                byte[] plaintext = new byte[100];
+                new Random(0x1234567L).nextBytes(plaintext);
+                byte[] digest = MessageDigest.getInstance("SHA-256").digest(plaintext);
+
+                SignResult signResult = cryptoClient.sign(algorithm, digest);
+                assertTrue(cryptoClient.verify(algorithm, digest, signResult.getSignature()).isValid());
             }
         });
     }
