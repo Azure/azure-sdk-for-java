@@ -65,6 +65,7 @@ public class Main {
 
                         case COMMANDLINE_GROUP_IDS:
                             groupIds = Arrays.asList(argValue.split(","));
+                            break;
                     }
                 }
 
