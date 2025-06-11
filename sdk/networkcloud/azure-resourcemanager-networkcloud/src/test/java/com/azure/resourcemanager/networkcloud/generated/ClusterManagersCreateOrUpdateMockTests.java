@@ -28,7 +28,7 @@ public final class ClusterManagersCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"identity\":{\"principalId\":\"f61de19e-14ca-45ef-bc26-b22c526547bb\",\"tenantId\":\"e575b69b-a5d6-4dbf-8617-bad845357163\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"orhtss\":{\"principalId\":\"f4b54a73-bf39-4f8a-ac00-e8821da7e566\",\"clientId\":\"e61ea6fe-1b46-4333-bda3-1ba666519b92\"},\"nmdvha\":{\"principalId\":\"e880928a-1ec5-4135-8b24-04642ecf7920\",\"clientId\":\"d383fa2c-33b1-4582-8e58-731a76f4c3bb\"}}},\"properties\":{\"analyticsWorkspaceId\":\"vjytiqswbq\",\"availabilityZones\":[\"w\",\"iytxt\"],\"clusterVersions\":[{\"supportExpiryDate\":\"vlbpktgdstyou\",\"targetClusterVersion\":\"bewreswmowegmmut\"},{\"supportExpiryDate\":\"xeyg\",\"targetClusterVersion\":\"igijiitnspxlz\"}],\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"grijwaiufanrayb\",\"fabricControllerId\":\"ueqfrojsyd\",\"managedResourceGroupConfiguration\":{\"location\":\"ydkygywezskieca\",\"name\":\"gzmxieqv\"},\"managerExtendedLocation\":{\"name\":\"makli\",\"type\":\"qcahyhxal\"},\"provisioningState\":\"Succeeded\",\"vmSize\":\"woijpodtbl\"},\"location\":\"kkwjdjodq\",\"tags\":{\"mehllizhceu\":\"incnr\",\"ibngqladyw\":\"oqodkadpp\",\"ds\":\"xwhydtluvv\"},\"id\":\"zsn\",\"name\":\"yemlowuowhlxln\",\"type\":\"y\"}";
+            = "{\"etag\":\"dm\",\"identity\":{\"principalId\":\"2e80319a-45d9-4565-90ec-d0f0212a3053\",\"tenantId\":\"917b21c1-ac83-48ee-86b3-0159c39b4c76\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"bnoit\":{\"principalId\":\"933f3fff-5efe-4bda-84ce-e8a00cfa57f3\",\"clientId\":\"4d7507e2-1adb-4a91-b354-8b8d0d9660f6\"},\"ztrgdgxvcoq\":{\"principalId\":\"798afd75-dd86-4be9-83e1-3553a9e64af9\",\"clientId\":\"948a2907-860e-49d5-94ef-6d272b208323\"},\"wugyx\":{\"principalId\":\"d3f355a9-45b5-4fba-b20e-a127f2e7cc5d\",\"clientId\":\"9c02239e-2eb1-4c35-a141-236a45a3279e\"}}},\"properties\":{\"analyticsWorkspaceId\":\"itweialwvskbuh\",\"availabilityZones\":[\"aq\"],\"clusterVersions\":[{\"supportExpiryDate\":\"co\",\"targetClusterVersion\":\"ujpdsxzak\"},{\"supportExpiryDate\":\"jkmvbi\",\"targetClusterVersion\":\"jofqcvovjufycs\"}],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"e\",\"fabricControllerId\":\"yeji\",\"managedResourceGroupConfiguration\":{\"location\":\"xeg\",\"name\":\"ortudawlpjfel\"},\"managerExtendedLocation\":{\"name\":\"rpptcbgqnzmnhiil\",\"type\":\"alwcjgckbb\"},\"provisioningState\":\"Succeeded\",\"vmSize\":\"zpraoxn\"},\"location\":\"ffatsgftipw\",\"tags\":{\"urnpnuhzafccnuh\":\"yubhiqdx\",\"byl\":\"i\",\"vxva\":\"ui\",\"lbnb\":\"vcrk\"},\"id\":\"xvhcs\",\"name\":\"hzlwxaea\",\"type\":\"vurex\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -39,32 +39,33 @@ public final class ClusterManagersCreateOrUpdateMockTests {
 
         ClusterManager response
             = manager.clusterManagers()
-                .define("alfihcjmobcancd")
-                .withRegion("cssbzhddu")
-                .withExistingResourceGroup("aomhjrmkuhmaxl")
-                .withFabricControllerId("qi")
-                .withTags(mapOf("awugiqjti", "qfblhkalehpa", "ygspnbonhpczykm", "gqgdminictteajoh", "wxqcsehchkhufmpq",
-                    "tp", "zulo", "mqyjgy"))
-                .withIdentity(
-                    new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
-                        .withUserAssignedIdentities(mapOf("fgvaknokzwj", new UserAssignedIdentity(), "ltixldzyyfytpq",
-                            new UserAssignedIdentity())))
-                .withAnalyticsWorkspaceId("x")
-                .withAvailabilityZones(Arrays.asList("puj"))
+                .define("iyoypsuhbrnnhj")
+                .withRegion("ve")
+                .withExistingResourceGroup("lbjazejww")
+                .withFabricControllerId("djkpdxph")
+                .withTags(mapOf("agk", "uquowtljvfwhr"))
+                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("etzlexbsfledynoj", new UserAssignedIdentity(), "uwfbzkkdtnhqsy",
+                        new UserAssignedIdentity(), "selpkpbaf", new UserAssignedIdentity(), "hlbylccbevxr",
+                        new UserAssignedIdentity())))
+                .withAnalyticsWorkspaceId("zdfwrsofpltdbm")
+                .withAvailabilityZones(Arrays.asList("rhvhfnracwnpqigt", "ujwouhdawsi", "rb", "bxsjybvitvqkj"))
                 .withManagedResourceGroupConfiguration(
-                    new ManagedResourceGroupConfiguration().withLocation("euy").withName("bmnwa"))
-                .withVmSize("fckdvez")
+                    new ManagedResourceGroupConfiguration().withLocation("snmgzvyfi").withName("kzuqnwsith"))
+                .withVmSize("fhyqezvqqugdrft")
+                .withIfMatch("fpgylkve")
+                .withIfNoneMatch("jujcngoad")
                 .create();
 
-        Assertions.assertEquals("kkwjdjodq", response.location());
-        Assertions.assertEquals("incnr", response.tags().get("mehllizhceu"));
+        Assertions.assertEquals("ffatsgftipw", response.location());
+        Assertions.assertEquals("yubhiqdx", response.tags().get("urnpnuhzafccnuh"));
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("vjytiqswbq", response.analyticsWorkspaceId());
-        Assertions.assertEquals("w", response.availabilityZones().get(0));
-        Assertions.assertEquals("ueqfrojsyd", response.fabricControllerId());
-        Assertions.assertEquals("ydkygywezskieca", response.managedResourceGroupConfiguration().location());
-        Assertions.assertEquals("gzmxieqv", response.managedResourceGroupConfiguration().name());
-        Assertions.assertEquals("woijpodtbl", response.vmSize());
+        Assertions.assertEquals("itweialwvskbuh", response.analyticsWorkspaceId());
+        Assertions.assertEquals("aq", response.availabilityZones().get(0));
+        Assertions.assertEquals("yeji", response.fabricControllerId());
+        Assertions.assertEquals("xeg", response.managedResourceGroupConfiguration().location());
+        Assertions.assertEquals("ortudawlpjfel", response.managedResourceGroupConfiguration().name());
+        Assertions.assertEquals("zpraoxn", response.vmSize());
     }
 
     // Use "Map.of" if available
