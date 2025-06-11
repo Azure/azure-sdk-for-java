@@ -62,5 +62,3 @@ request APIs. You should also verify that the correct set of documents have been
 service side. One tip would be to start with a 'broad' query (one that returns a superset of desired results, possibly 
 by giving a large value for or entirely removing, some [query parameters](https://docs.microsoft.com/rest/api/searchservice/search-documents#query-parameters)) 
 and then progressively refining the query till it expresses the desired intent.
-
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fsearch%2Fazure-search-documents%2FTROUBLESHOOTING.png)
