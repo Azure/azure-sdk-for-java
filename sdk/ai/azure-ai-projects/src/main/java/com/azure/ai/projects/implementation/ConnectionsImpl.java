@@ -75,7 +75,7 @@ public final class ConnectionsImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AIProjectClientConne")
+    @ServiceInterface(name = "AIProjectClientConnections")
     public interface ConnectionsService {
         @Get("/connections/{name}")
         @ExpectedResponses({ 200 })

@@ -61,7 +61,7 @@ public final class DnsPrivateZonesClientImpl implements DnsPrivateZonesClient {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "OracleDatabaseManage")
+    @ServiceInterface(name = "OracleDatabaseManagementClientDnsPrivateZones")
     public interface DnsPrivateZonesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/dnsPrivateZones/{dnsprivatezonename}")

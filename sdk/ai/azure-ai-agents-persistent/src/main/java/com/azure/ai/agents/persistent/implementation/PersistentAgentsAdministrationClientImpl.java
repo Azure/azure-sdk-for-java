@@ -280,7 +280,7 @@ public final class PersistentAgentsAdministrationClientImpl {
      * to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PersistentAgentsAdmi")
+    @ServiceInterface(name = "PersistentAgentsAdministrationClient")
     public interface PersistentAgentsAdministrationClientService {
         @Post("/assistants")
         @ExpectedResponses({ 200 })

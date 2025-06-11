@@ -64,7 +64,7 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ChaosManagementClien")
+    @ServiceInterface(name = "ChaosManagementClientCapabilities")
     public interface CapabilitiesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets/{targetName}/capabilities/{capabilityName}")

@@ -72,7 +72,7 @@ public final class AutonomousDatabaseBackupsClientImpl implements AutonomousData
      * the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "OracleDatabaseManage")
+    @ServiceInterface(name = "OracleDatabaseManagementClientAutonomousDatabaseBackups")
     public interface AutonomousDatabaseBackupsService {
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/autonomousDatabaseBackups/{adbbackupid}")
         @ExpectedResponses({ 200, 201 })

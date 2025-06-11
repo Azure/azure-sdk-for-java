@@ -61,7 +61,7 @@ public final class NeonRolesClientImpl implements NeonRolesClient {
      * to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "NeonPostgresManageme")
+    @ServiceInterface(name = "NeonPostgresManagementClientNeonRoles")
     public interface NeonRolesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/neonRoles")

@@ -77,7 +77,7 @@ public final class CloudVmClustersClientImpl implements CloudVmClustersClient {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "OracleDatabaseManage")
+    @ServiceInterface(name = "OracleDatabaseManagementClientCloudVmClusters")
     public interface CloudVmClustersService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Oracle.Database/cloudVmClusters")

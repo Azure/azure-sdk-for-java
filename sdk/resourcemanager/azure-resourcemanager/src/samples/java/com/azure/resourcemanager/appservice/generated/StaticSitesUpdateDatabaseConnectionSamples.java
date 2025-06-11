@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appservice.models.DatabaseConnectionPatchReques
 public final class StaticSitesUpdateDatabaseConnectionSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/PatchStaticSiteDatabaseConnection.
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/PatchStaticSiteDatabaseConnection.
      * json
      */
     /**

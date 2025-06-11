@@ -63,7 +63,7 @@ public final class StandbyContainerGroupPoolRuntimeViewsClientImpl
      * be used by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "StandbyPoolManagemen")
+    @ServiceInterface(name = "StandbyPoolManagementClientStandbyContainerGroupPoolRuntimeViews")
     public interface StandbyContainerGroupPoolRuntimeViewsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}/runtimeViews/{runtimeView}")

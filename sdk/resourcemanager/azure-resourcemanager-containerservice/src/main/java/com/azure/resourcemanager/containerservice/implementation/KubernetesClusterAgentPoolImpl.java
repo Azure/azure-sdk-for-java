@@ -319,6 +319,11 @@ public class KubernetesClusterAgentPoolImpl
         agentPoolInner.withWindowsProfile(innerModel().windowsProfile());
         agentPoolInner.withSecurityProfile(innerModel().securityProfile());
         agentPoolInner.withMessageOfTheDay(innerModel().messageOfTheDay());
+        agentPoolInner.withPodIpAllocationMode(innerModel().podIpAllocationMode());
+        agentPoolInner.withGatewayProfile(innerModel().gatewayProfile());
+        agentPoolInner.withVirtualMachinesProfile(innerModel().virtualMachinesProfile());
+        agentPoolInner.withVirtualMachineNodesStatus(innerModel().virtualMachineNodesStatus());
+        agentPoolInner.withStatus(innerModel().status());
         return agentPoolInner;
     }
 

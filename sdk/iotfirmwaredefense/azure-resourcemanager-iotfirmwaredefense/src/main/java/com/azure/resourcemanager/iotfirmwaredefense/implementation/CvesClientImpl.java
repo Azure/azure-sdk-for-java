@@ -60,7 +60,7 @@ public final class CvesClientImpl implements CvesClient {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "IoTFirmwareDefenseMg")
+    @ServiceInterface(name = "IoTFirmwareDefenseMgmtClientCves")
     public interface CvesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTFirmwareDefense/workspaces/{workspaceName}/firmwares/{firmwareId}/commonVulnerabilitiesAndExposures")

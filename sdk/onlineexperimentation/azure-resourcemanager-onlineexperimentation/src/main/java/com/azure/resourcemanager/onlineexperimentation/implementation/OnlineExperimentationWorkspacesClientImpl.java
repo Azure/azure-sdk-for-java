@@ -72,7 +72,7 @@ public final class OnlineExperimentationWorkspacesClientImpl implements OnlineEx
      * used by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "OnlineExperimentatio")
+    @ServiceInterface(name = "OnlineExperimentationMgmtClientOnlineExperimentationWorkspaces")
     public interface OnlineExperimentationWorkspacesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OnlineExperimentation/workspaces/{workspaceName}")

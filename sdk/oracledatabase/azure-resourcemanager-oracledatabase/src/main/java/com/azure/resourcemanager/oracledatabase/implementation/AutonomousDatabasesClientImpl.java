@@ -78,7 +78,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "OracleDatabaseManage")
+    @ServiceInterface(name = "OracleDatabaseManagementClientAutonomousDatabases")
     public interface AutonomousDatabasesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Oracle.Database/autonomousDatabases")

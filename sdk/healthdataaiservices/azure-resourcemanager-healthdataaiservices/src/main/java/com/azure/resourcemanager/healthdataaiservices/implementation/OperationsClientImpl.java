@@ -61,7 +61,7 @@ public final class OperationsClientImpl implements OperationsClient {
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "HealthDataAIServices")
+    @ServiceInterface(name = "HealthDataAIServicesManagementClientOperations")
     public interface OperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.HealthDataAIServices/operations")

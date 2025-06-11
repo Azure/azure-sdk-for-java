@@ -65,7 +65,7 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "CloudHealthManagemen")
+    @ServiceInterface(name = "CloudHealthManagementClientSignalDefinitions")
     public interface SignalDefinitionsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/signaldefinitions/{signalDefinitionName}")

@@ -64,30 +64,73 @@ public abstract class CommunicationIdentifier {
         final String prefix = segments[0] + ":" + segments[1] + ":";
         final String suffix = segments[2];
 
-        if (TEAMS_USER_ANONYMOUS_PREFIX.equals(prefix)) {
-            return new MicrosoftTeamsUserIdentifier(suffix, true);
-        } else if (TEAMS_USER_PUBLIC_CLOUD_PREFIX.equals(prefix)) {
-            return new MicrosoftTeamsUserIdentifier(suffix, false);
-        } else if (TEAMS_USER_DOD_CLOUD_PREFIX.equals(prefix)) {
-            return new MicrosoftTeamsUserIdentifier(suffix, false)
-                .setCloudEnvironment(CommunicationCloudEnvironment.DOD);
-        } else if (TEAMS_USER_GCCH_CLOUD_PREFIX.equals(prefix)) {
-            return new MicrosoftTeamsUserIdentifier(suffix, false)
-                .setCloudEnvironment(CommunicationCloudEnvironment.GCCH);
-        } else if (ACS_USER_PREFIX.equals(prefix)
-            || SPOOL_USER_PREFIX.equals(prefix)
-            || ACS_USER_DOD_CLOUD_PREFIX.equals(prefix)
-            || ACS_USER_GCCH_CLOUD_PREFIX.equals(prefix)) {
+        switch (prefix) {
+            case TEAMS_USER_ANONYMOUS_PREFIX:
+                return new MicrosoftTeamsUserIdentifier(suffix, true);
+
+            case TEAMS_USER_PUBLIC_CLOUD_PREFIX:
+                return new MicrosoftTeamsUserIdentifier(suffix, false);
+
+            case TEAMS_USER_DOD_CLOUD_PREFIX:
+                return new MicrosoftTeamsUserIdentifier(suffix, false)
+                    .setCloudEnvironment(CommunicationCloudEnvironment.DOD);
+
+            case TEAMS_USER_GCCH_CLOUD_PREFIX:
+                return new MicrosoftTeamsUserIdentifier(suffix, false)
+                    .setCloudEnvironment(CommunicationCloudEnvironment.GCCH);
+
+            case SPOOL_USER_PREFIX:
+                return new CommunicationUserIdentifier(rawId);
+
+            case ACS_USER_PREFIX:
+            case ACS_USER_DOD_CLOUD_PREFIX:
+            case ACS_USER_GCCH_CLOUD_PREFIX:
+                return tryCreateTeamsExtensionUserOrCommunicationUser(prefix, suffix, rawId);
+
+            case TEAMS_APP_PUBLIC_CLOUD_PREFIX:
+                return new MicrosoftTeamsAppIdentifier(suffix, CommunicationCloudEnvironment.PUBLIC);
+
+            case TEAMS_APP_GCCH_CLOUD_PREFIX:
+                return new MicrosoftTeamsAppIdentifier(suffix, CommunicationCloudEnvironment.GCCH);
+
+            case TEAMS_APP_DOD_CLOUD_PREFIX:
+                return new MicrosoftTeamsAppIdentifier(suffix, CommunicationCloudEnvironment.DOD);
+
+            default:
+                return new UnknownIdentifier(rawId);
+        }
+    }
+
+    private static CommunicationIdentifier tryCreateTeamsExtensionUserOrCommunicationUser(String prefix, String suffix,
+        String rawId) {
+        String[] segments = suffix.split("_");
+        if (segments.length != 3) {
             return new CommunicationUserIdentifier(rawId);
-        } else if (TEAMS_APP_PUBLIC_CLOUD_PREFIX.equals(prefix)) {
-            return new MicrosoftTeamsAppIdentifier(suffix, CommunicationCloudEnvironment.PUBLIC);
-        } else if (TEAMS_APP_GCCH_CLOUD_PREFIX.equals(prefix)) {
-            return new MicrosoftTeamsAppIdentifier(suffix, CommunicationCloudEnvironment.GCCH);
-        } else if (TEAMS_APP_DOD_CLOUD_PREFIX.equals(prefix)) {
-            return new MicrosoftTeamsAppIdentifier(suffix, CommunicationCloudEnvironment.DOD);
         }
 
-        return new UnknownIdentifier(rawId);
+        String resourceId = segments[0];
+        String tenantId = segments[1];
+        String userId = segments[2];
+
+        CommunicationCloudEnvironment cloud;
+        switch (prefix) {
+            case ACS_USER_PREFIX:
+                cloud = CommunicationCloudEnvironment.PUBLIC;
+                break;
+
+            case ACS_USER_DOD_CLOUD_PREFIX:
+                cloud = CommunicationCloudEnvironment.DOD;
+                break;
+
+            case ACS_USER_GCCH_CLOUD_PREFIX:
+                cloud = CommunicationCloudEnvironment.GCCH;
+                break;
+
+            default:
+                throw new IllegalArgumentException("Invalid MRI");
+        }
+
+        return new TeamsExtensionUserIdentifier(userId, tenantId, resourceId).setCloudEnvironment(cloud);
     }
 
     /**

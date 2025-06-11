@@ -74,7 +74,7 @@ public final class EntitiesImpl {
      * calls.
      */
     @Host("{endpoint}/datamap/api")
-    @ServiceInterface(name = "DataMapClientEntitie")
+    @ServiceInterface(name = "DataMapClientEntities")
     public interface EntitiesService {
         @Post("/atlas/v2/entity")
         @ExpectedResponses({ 200 })

@@ -81,7 +81,7 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "FabricManagementClie")
+    @ServiceInterface(name = "FabricManagementClientFabricCapacities")
     public interface FabricCapacitiesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Fabric/capacities/{capacityName}")

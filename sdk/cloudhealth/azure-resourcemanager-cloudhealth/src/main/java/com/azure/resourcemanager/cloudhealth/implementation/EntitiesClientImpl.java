@@ -64,7 +64,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
      * to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "CloudHealthManagemen")
+    @ServiceInterface(name = "CloudHealthManagementClientEntities")
     public interface EntitiesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}")

@@ -69,7 +69,7 @@ public final class UsersClientImpl implements UsersClient {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "MongoClusterManageme")
+    @ServiceInterface(name = "MongoClusterManagementClientUsers")
     public interface UsersService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/users/{userName}")

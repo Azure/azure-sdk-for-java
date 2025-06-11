@@ -1,0 +1,11 @@
+trigger: none
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  parameters:
+    ServiceDirectory: onlineexperimentation
+    Artifacts:
+      - name: azure-analytics-onlineexperimentation
+        groupId: com.azure
+        safeName: azureanalyticsonlineexperimentation
+    TimeoutInMinutes: 60

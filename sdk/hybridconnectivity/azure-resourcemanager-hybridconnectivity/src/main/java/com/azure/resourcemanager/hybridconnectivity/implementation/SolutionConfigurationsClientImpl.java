@@ -73,7 +73,7 @@ public final class SolutionConfigurationsClientImpl implements SolutionConfigura
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "HybridConnectivityMg")
+    @ServiceInterface(name = "HybridConnectivityMgmtClientSolutionConfigurations")
     public interface SolutionConfigurationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.HybridConnectivity/solutionConfigurations/{solutionConfiguration}")

@@ -68,7 +68,7 @@ public final class AvsStorageContainersClientImpl implements AvsStorageContainer
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PureStorageBlockMgmt")
+    @ServiceInterface(name = "PureStorageBlockMgmtClientAvsStorageContainers")
     public interface AvsStorageContainersService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/avsStorageContainers/{storageContainerName}")

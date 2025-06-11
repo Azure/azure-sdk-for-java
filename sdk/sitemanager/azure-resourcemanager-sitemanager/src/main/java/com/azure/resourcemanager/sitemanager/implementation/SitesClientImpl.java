@@ -71,7 +71,7 @@ public final class SitesClientImpl implements SitesClient {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "SiteManagerManagemen")
+    @ServiceInterface(name = "SiteManagerManagementClientSites")
     public interface SitesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/sites/{siteName}")

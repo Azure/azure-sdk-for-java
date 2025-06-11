@@ -65,7 +65,7 @@ public final class RelationshipsClientImpl implements RelationshipsClient {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "CloudHealthManagemen")
+    @ServiceInterface(name = "CloudHealthManagementClientRelationships")
     public interface RelationshipsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/relationships/{relationshipName}")

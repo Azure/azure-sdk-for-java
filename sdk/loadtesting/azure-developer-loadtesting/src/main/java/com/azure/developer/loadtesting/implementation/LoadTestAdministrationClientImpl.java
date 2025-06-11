@@ -156,7 +156,7 @@ public final class LoadTestAdministrationClientImpl {
      * perform REST calls.
      */
     @Host("https://{endpoint}")
-    @ServiceInterface(name = "LoadTestAdministrati")
+    @ServiceInterface(name = "LoadTestAdministrationClient")
     public interface LoadTestAdministrationClientService {
         @Patch("/tests/{testId}")
         @ExpectedResponses({ 200, 201 })

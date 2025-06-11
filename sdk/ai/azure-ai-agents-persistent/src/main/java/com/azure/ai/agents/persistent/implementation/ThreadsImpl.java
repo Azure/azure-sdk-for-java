@@ -76,7 +76,7 @@ public final class ThreadsImpl {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PersistentAgentsAdmi")
+    @ServiceInterface(name = "PersistentAgentsAdministrationClientThreads")
     public interface ThreadsService {
         @Post("/threads")
         @ExpectedResponses({ 200 })

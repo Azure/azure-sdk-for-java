@@ -72,7 +72,7 @@ public final class StorageClassClientImpl implements StorageClassClient {
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ContainerOrchestrato")
+    @ServiceInterface(name = "ContainerOrchestratorRuntimeMgmtClientStorageClass")
     public interface StorageClassService {
         @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.KubernetesRuntime/storageClasses/{storageClassName}")

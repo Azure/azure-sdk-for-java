@@ -10,6 +10,17 @@
 
 ### Other Changes
 
+## 1.16.2 (2025-06-09)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
+- Updated `msal4j` from `1.20.1` to version `1.21.0`.
+
+
 ## 1.16.1 (2025-05-14)
 
 ### Features Added

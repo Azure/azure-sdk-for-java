@@ -69,7 +69,7 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ContainerOrchestrato")
+    @ServiceInterface(name = "ContainerOrchestratorRuntimeMgmtClientBgpPeers")
     public interface BgpPeersService {
         @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.KubernetesRuntime/bgpPeers/{bgpPeerName}")

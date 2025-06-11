@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificateR
 public final class AppServiceCertificateOrdersCreateOrUpdateCertificateSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-04-01/examples/
+     * specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-11-01/examples/
      * CreateAppServiceCertificate.json
      */
     /**

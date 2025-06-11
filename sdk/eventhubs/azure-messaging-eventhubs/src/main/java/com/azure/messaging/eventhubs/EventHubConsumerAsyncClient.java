@@ -584,7 +584,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
         final MessageFluxWrapper linkMessageProcessor;
         if (connectionProcessor.isV2()) {
             MessageFlux messageFlux = new MessageFlux(receiveLinkFlux, prefetchCount, CreditFlowMode.EmissionDriven,
-                MessageFlux.RETRY_ONLY_COMPLETION);
+                MessageFlux.NULL_RETRY_POLICY);
             linkMessageProcessor
                 = new MessageFluxWrapper(InstrumentedMessageFlux.instrument(messageFlux, partitionId, instrumentation));
         } else {

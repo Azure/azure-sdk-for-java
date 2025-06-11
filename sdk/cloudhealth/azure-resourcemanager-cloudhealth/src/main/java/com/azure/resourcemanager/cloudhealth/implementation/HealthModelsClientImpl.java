@@ -72,7 +72,7 @@ public final class HealthModelsClientImpl implements HealthModelsClient {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "CloudHealthManagemen")
+    @ServiceInterface(name = "CloudHealthManagementClientHealthModels")
     public interface HealthModelsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}")

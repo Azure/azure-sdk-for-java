@@ -61,7 +61,7 @@ public final class OperationsClientImpl implements OperationsClient {
      * to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PlaywrightTestingMgm")
+    @ServiceInterface(name = "PlaywrightTestingMgmtClientOperations")
     public interface OperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.AzurePlaywrightService/operations")

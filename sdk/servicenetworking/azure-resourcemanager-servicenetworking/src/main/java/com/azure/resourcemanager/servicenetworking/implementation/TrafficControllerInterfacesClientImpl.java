@@ -72,7 +72,7 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
      * used by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "TrafficControllerMan")
+    @ServiceInterface(name = "TrafficControllerManagementClientTrafficControllerInterfaces")
     public interface TrafficControllerInterfacesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}")

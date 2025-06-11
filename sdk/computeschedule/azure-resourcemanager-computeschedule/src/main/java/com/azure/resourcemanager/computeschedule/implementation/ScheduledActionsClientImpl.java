@@ -74,7 +74,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ComputeScheduleMgmtC")
+    @ServiceInterface(name = "ComputeScheduleMgmtClientScheduledActions")
     public interface ScheduledActionsService {
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesSubmitDeallocate")
         @ExpectedResponses({ 200 })

@@ -32,7 +32,7 @@ import java.util.Arrays;
 public final class WebAppsUpdateAuthSettingsV2Samples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/UpdateAuthSettingsV2.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/UpdateAuthSettingsV2.json
      */
     /**
      * Sample code: Update Auth Settings V2.

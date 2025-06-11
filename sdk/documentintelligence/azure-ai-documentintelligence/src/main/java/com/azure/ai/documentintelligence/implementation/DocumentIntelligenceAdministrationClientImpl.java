@@ -168,7 +168,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * service to perform REST calls.
      */
     @Host("{endpoint}/documentintelligence")
-    @ServiceInterface(name = "DocumentIntelligence")
+    @ServiceInterface(name = "DocumentIntelligenceAdministrationClient")
     public interface DocumentIntelligenceAdministrationClientService {
         @Post("/documentModels:build")
         @ExpectedResponses({ 202 })

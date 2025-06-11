@@ -73,7 +73,7 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
      * by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "OracleDatabaseManage")
+    @ServiceInterface(name = "OracleDatabaseManagementClientCloudExadataInfrastructures")
     public interface CloudExadataInfrastructuresService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Oracle.Database/cloudExadataInfrastructures")

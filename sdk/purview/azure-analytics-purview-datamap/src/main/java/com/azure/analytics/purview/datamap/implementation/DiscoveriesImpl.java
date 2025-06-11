@@ -67,7 +67,7 @@ public final class DiscoveriesImpl {
      * REST calls.
      */
     @Host("{endpoint}/datamap/api")
-    @ServiceInterface(name = "DataMapClientDiscove")
+    @ServiceInterface(name = "DataMapClientDiscoveries")
     public interface DiscoveriesService {
         @Post("/search/query")
         @ExpectedResponses({ 200 })

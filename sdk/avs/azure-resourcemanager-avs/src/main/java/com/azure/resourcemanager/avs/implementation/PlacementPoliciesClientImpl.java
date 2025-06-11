@@ -72,7 +72,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AvsClientPlacementPo")
+    @ServiceInterface(name = "AvsClientPlacementPolicies")
     public interface PlacementPoliciesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/placementPolicies")

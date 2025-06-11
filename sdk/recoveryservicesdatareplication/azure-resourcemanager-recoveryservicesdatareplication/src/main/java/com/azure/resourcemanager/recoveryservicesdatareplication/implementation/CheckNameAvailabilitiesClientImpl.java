@@ -58,7 +58,7 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DataReplicationMgmtC")
+    @ServiceInterface(name = "DataReplicationMgmtClientCheckNameAvailabilities")
     public interface CheckNameAvailabilitiesService {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DataReplication/locations/{location}/checkNameAvailability")

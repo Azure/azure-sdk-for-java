@@ -74,7 +74,7 @@ public final class DeploymentsImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AIProjectClientDeplo")
+    @ServiceInterface(name = "AIProjectClientDeployments")
     public interface DeploymentsService {
         @Get("/deployments/{name}")
         @ExpectedResponses({ 200 })

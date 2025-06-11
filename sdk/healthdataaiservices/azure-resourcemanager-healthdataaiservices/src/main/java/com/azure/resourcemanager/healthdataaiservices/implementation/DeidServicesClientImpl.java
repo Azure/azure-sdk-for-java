@@ -72,7 +72,7 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "HealthDataAIServices")
+    @ServiceInterface(name = "HealthDataAIServicesManagementClientDeidServices")
     public interface DeidServicesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthDataAIServices/deidServices/{deidServiceName}")

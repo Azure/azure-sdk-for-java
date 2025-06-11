@@ -70,7 +70,7 @@ public final class AvsVmsClientImpl implements AvsVmsClient {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PureStorageBlockMgmt")
+    @ServiceInterface(name = "PureStorageBlockMgmtClientAvsVms")
     public interface AvsVmsService {
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/avsVms/{avsVmId}")
         @ExpectedResponses({ 200, 202 })

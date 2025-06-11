@@ -163,7 +163,7 @@ public final class DeidentificationClientImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DeidentificationClie")
+    @ServiceInterface(name = "DeidentificationClient")
     public interface DeidentificationClientService {
         @Get("/jobs/{name}")
         @ExpectedResponses({ 200 })

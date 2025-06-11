@@ -76,7 +76,7 @@ public final class EvaluationsImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AIProjectClientEvalu")
+    @ServiceInterface(name = "AIProjectClientEvaluations")
     public interface EvaluationsService {
         @Get("/evaluations/runs/{name}")
         @ExpectedResponses({ 200 })

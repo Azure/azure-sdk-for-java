@@ -56,7 +56,7 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ChaosManagementClien")
+    @ServiceInterface(name = "ChaosManagementClientOperationStatuses")
     public interface OperationStatusesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/locations/{location}/operationStatuses/{operationId}")

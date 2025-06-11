@@ -74,7 +74,7 @@ public final class ExadbVmClustersClientImpl implements ExadbVmClustersClient {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "OracleDatabaseManage")
+    @ServiceInterface(name = "OracleDatabaseManagementClientExadbVmClusters")
     public interface ExadbVmClustersService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Oracle.Database/exadbVmClusters")

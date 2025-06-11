@@ -76,7 +76,7 @@ public final class VectorStoreFileBatchesImpl {
      * by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PersistentAgentsAdmi")
+    @ServiceInterface(name = "PersistentAgentsAdministrationClientVectorStoreFileBatches")
     public interface VectorStoreFileBatchesService {
         @Post("/vector_stores/{vectorStoreId}/file_batches")
         @ExpectedResponses({ 200 })

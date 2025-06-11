@@ -316,7 +316,7 @@ public final class CertificateInner extends Resource {
     }
 
     /**
-     * Get the keyVaultId property: Key Vault Csm resource Id.
+     * Get the keyVaultId property: Azure Key Vault Csm resource Id.
      * 
      * @return the keyVaultId value.
      */
@@ -325,7 +325,7 @@ public final class CertificateInner extends Resource {
     }
 
     /**
-     * Set the keyVaultId property: Key Vault Csm resource Id.
+     * Set the keyVaultId property: Azure Key Vault Csm resource Id.
      * 
      * @param keyVaultId the keyVaultId value to set.
      * @return the CertificateInner object itself.
@@ -339,7 +339,7 @@ public final class CertificateInner extends Resource {
     }
 
     /**
-     * Get the keyVaultSecretName property: Key Vault secret name.
+     * Get the keyVaultSecretName property: Azure Key Vault secret name.
      * 
      * @return the keyVaultSecretName value.
      */
@@ -348,7 +348,7 @@ public final class CertificateInner extends Resource {
     }
 
     /**
-     * Set the keyVaultSecretName property: Key Vault secret name.
+     * Set the keyVaultSecretName property: Azure Key Vault secret name.
      * 
      * @param keyVaultSecretName the keyVaultSecretName value to set.
      * @return the CertificateInner object itself.
@@ -371,8 +371,7 @@ public final class CertificateInner extends Resource {
     }
 
     /**
-     * Get the serverFarmId property: Resource ID of the associated App Service plan, formatted as:
-     * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
+     * Get the serverFarmId property: Resource ID of the associated App Service plan.
      * 
      * @return the serverFarmId value.
      */
@@ -381,8 +380,7 @@ public final class CertificateInner extends Resource {
     }
 
     /**
-     * Set the serverFarmId property: Resource ID of the associated App Service plan, formatted as:
-     * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
+     * Set the serverFarmId property: Resource ID of the associated App Service plan.
      * 
      * @param serverFarmId the serverFarmId value to set.
      * @return the CertificateInner object itself.

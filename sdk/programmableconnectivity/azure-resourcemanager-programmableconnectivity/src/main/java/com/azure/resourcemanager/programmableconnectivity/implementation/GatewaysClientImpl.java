@@ -71,7 +71,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ProgrammableConnecti")
+    @ServiceInterface(name = "ProgrammableConnectivityMgmtClientGateways")
     public interface GatewaysService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProgrammableConnectivity/gateways/{gatewayName}")

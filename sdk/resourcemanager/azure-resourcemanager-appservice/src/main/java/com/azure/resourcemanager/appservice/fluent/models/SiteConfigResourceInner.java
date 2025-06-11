@@ -559,7 +559,8 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the appSettings property: Application settings.
+     * Get the appSettings property: Application settings. This property is not returned in response to normal create
+     * and read requests since it may contain sensitive information.
      * 
      * @return the appSettings value.
      */
@@ -568,7 +569,8 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the appSettings property: Application settings.
+     * Set the appSettings property: Application settings. This property is not returned in response to normal create
+     * and read requests since it may contain sensitive information.
      * 
      * @param appSettings the appSettings value to set.
      * @return the SiteConfigResourceInner object itself.
@@ -605,7 +607,8 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the connectionStrings property: Connection strings.
+     * Get the connectionStrings property: Connection strings. This property is not returned in response to normal
+     * create and read requests since it may contain sensitive information.
      * 
      * @return the connectionStrings value.
      */
@@ -614,7 +617,8 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the connectionStrings property: Connection strings.
+     * Set the connectionStrings property: Connection strings. This property is not returned in response to normal
+     * create and read requests since it may contain sensitive information.
      * 
      * @param connectionStrings the connectionStrings value to set.
      * @return the SiteConfigResourceInner object itself.
@@ -1482,6 +1486,31 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
             this.innerProperties = new SiteConfigInner();
         }
         this.innerProperties().withHttp20Enabled(http20Enabled);
+        return this;
+    }
+
+    /**
+     * Get the http20ProxyFlag property: Http20ProxyFlag: Configures a website to allow http2.0 to pass be proxied all
+     * the way to the app. 0 = disabled, 1 = pass through all http2 traffic, 2 = pass through gRPC only.
+     * 
+     * @return the http20ProxyFlag value.
+     */
+    public Integer http20ProxyFlag() {
+        return this.innerProperties() == null ? null : this.innerProperties().http20ProxyFlag();
+    }
+
+    /**
+     * Set the http20ProxyFlag property: Http20ProxyFlag: Configures a website to allow http2.0 to pass be proxied all
+     * the way to the app. 0 = disabled, 1 = pass through all http2 traffic, 2 = pass through gRPC only.
+     * 
+     * @param http20ProxyFlag the http20ProxyFlag value to set.
+     * @return the SiteConfigResourceInner object itself.
+     */
+    public SiteConfigResourceInner withHttp20ProxyFlag(Integer http20ProxyFlag) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withHttp20ProxyFlag(http20ProxyFlag);
         return this;
     }
 

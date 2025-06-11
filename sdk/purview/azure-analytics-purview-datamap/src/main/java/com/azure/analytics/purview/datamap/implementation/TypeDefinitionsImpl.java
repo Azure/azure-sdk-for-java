@@ -71,7 +71,7 @@ public final class TypeDefinitionsImpl {
      * perform REST calls.
      */
     @Host("{endpoint}/datamap/api")
-    @ServiceInterface(name = "DataMapClientTypeDef")
+    @ServiceInterface(name = "DataMapClientTypeDefinitions")
     public interface TypeDefinitionsService {
         @Get("/atlas/v2/types/businessmetadatadef/guid/{guid}")
         @ExpectedResponses({ 200 })

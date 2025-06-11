@@ -110,20 +110,6 @@ public interface WebSiteManagementClient {
     CertificatesClient getCertificates();
 
     /**
-     * Gets the ContainerAppsClient object to access its operations.
-     * 
-     * @return the ContainerAppsClient object.
-     */
-    ContainerAppsClient getContainerApps();
-
-    /**
-     * Gets the ContainerAppsRevisionsClient object to access its operations.
-     * 
-     * @return the ContainerAppsRevisionsClient object.
-     */
-    ContainerAppsRevisionsClient getContainerAppsRevisions();
-
-    /**
      * Gets the DeletedWebAppsClient object to access its operations.
      * 
      * @return the DeletedWebAppsClient object.
@@ -185,6 +171,13 @@ public interface WebSiteManagementClient {
      * @return the GetUsagesInLocationsClient object.
      */
     GetUsagesInLocationsClient getGetUsagesInLocations();
+
+    /**
+     * Gets the SiteCertificatesClient object to access its operations.
+     * 
+     * @return the SiteCertificatesClient object.
+     */
+    SiteCertificatesClient getSiteCertificates();
 
     /**
      * Gets the StaticSitesClient object to access its operations.

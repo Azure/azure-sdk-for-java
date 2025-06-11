@@ -211,6 +211,6 @@ public final class CloudExadataInfrastructureImpl
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

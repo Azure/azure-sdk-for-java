@@ -62,7 +62,7 @@ public final class AccountQuotasClientImpl implements AccountQuotasClient {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PlaywrightTestingMgm")
+    @ServiceInterface(name = "PlaywrightTestingMgmtClientAccountQuotas")
     public interface AccountQuotasService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzurePlaywrightService/accounts/{accountName}/quotas/{quotaName}")

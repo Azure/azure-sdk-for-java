@@ -72,7 +72,7 @@ public final class GeoCatalogsClientImpl implements GeoCatalogsClient {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PlanetaryComputerMgm")
+    @ServiceInterface(name = "PlanetaryComputerMgmtClientGeoCatalogs")
     public interface GeoCatalogsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/geoCatalogs/{catalogName}")

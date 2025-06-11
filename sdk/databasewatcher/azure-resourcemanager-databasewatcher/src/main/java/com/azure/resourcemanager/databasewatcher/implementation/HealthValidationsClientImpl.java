@@ -68,7 +68,7 @@ public final class HealthValidationsClientImpl implements HealthValidationsClien
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DatabaseWatcherManag")
+    @ServiceInterface(name = "DatabaseWatcherManagementClientHealthValidations")
     public interface HealthValidationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/healthValidations/{healthValidationName}")
