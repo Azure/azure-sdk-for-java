@@ -78,7 +78,7 @@ public final class PhoneNumberIdentifier extends CommunicationIdentifier {
     @Override
     public PhoneNumberIdentifier setRawId(String rawId) {
         super.setRawId(rawId);
-        this.isAnonymous = rawId.equals(PHONE_NUMBER_PREFIX + ANONYMOUS);
+        this.isAnonymous = (PHONE_NUMBER_PREFIX + ANONYMOUS).equals(rawId);
         return this;
     }
 

@@ -3,14 +3,16 @@
 
 package com.azure.communication.common;
 
+import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 
 /**
  * Communication identifier for a Microsoft Teams Phone user who is using a Communication Services resource
  * to extend their Teams Phone set up.
  */
 public final class TeamsExtensionUserIdentifier extends CommunicationIdentifier {
-
+    private static final ClientLogger logger = new ClientLogger(TeamsExtensionUserIdentifier.class);
     private final String userId;
     private final String tenantId;
     private final String resourceId;
@@ -96,7 +98,8 @@ public final class TeamsExtensionUserIdentifier extends CommunicationIdentifier 
      */
     public TeamsExtensionUserIdentifier setCloudEnvironment(CommunicationCloudEnvironment cloudEnvironment) {
         if (cloudEnvironment == null) {
-            throw new IllegalArgumentException("The parameter [cloudEnvironment] cannot be null.");
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("The parameter [cloudEnvironment] cannot be null."));
         }
         this.cloudEnvironment = cloudEnvironment;
         generateRawId();
