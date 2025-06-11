@@ -75,7 +75,7 @@ public final class BlockBlobsImpl {
      * The interface defining all the services for AzureBlobStorageBlockBlobs to be used by the proxy service to perform
      * REST calls.
      */
-    @ServiceInterface(name = "AzureBlobStorageBloc", host = "{url}")
+    @ServiceInterface(name = "AzureBlobStorageBlockBlobs", host = "{url}")
     public interface BlockBlobsService {
         static BlockBlobsService getNewInstance(HttpPipeline pipeline) {
             try {

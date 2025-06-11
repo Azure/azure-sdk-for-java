@@ -70,7 +70,7 @@ public final class AppendBlobsImpl {
      * The interface defining all the services for AzureBlobStorageAppendBlobs to be used by the proxy service to
      * perform REST calls.
      */
-    @ServiceInterface(name = "AzureBlobStorageAppe", host = "{url}")
+    @ServiceInterface(name = "AzureBlobStorageAppendBlobs", host = "{url}")
     public interface AppendBlobsService {
         static AppendBlobsService getNewInstance(HttpPipeline pipeline) {
             try {

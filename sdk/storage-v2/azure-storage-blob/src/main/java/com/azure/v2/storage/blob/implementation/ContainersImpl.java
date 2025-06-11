@@ -77,7 +77,7 @@ public final class ContainersImpl {
      * The interface defining all the services for AzureBlobStorageContainers to be used by the proxy service to perform
      * REST calls.
      */
-    @ServiceInterface(name = "AzureBlobStorageCont", host = "{url}")
+    @ServiceInterface(name = "AzureBlobStorageContainers", host = "{url}")
     public interface ContainersService {
         static ContainersService getNewInstance(HttpPipeline pipeline) {
             try {

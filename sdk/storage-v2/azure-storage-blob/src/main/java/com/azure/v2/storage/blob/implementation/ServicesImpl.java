@@ -77,7 +77,7 @@ public final class ServicesImpl {
      * The interface defining all the services for AzureBlobStorageServices to be used by the proxy service to perform
      * REST calls.
      */
-    @ServiceInterface(name = "AzureBlobStorageServ", host = "{url}")
+    @ServiceInterface(name = "AzureBlobStorageServices", host = "{url}")
     public interface ServicesService {
         static ServicesService getNewInstance(HttpPipeline pipeline) {
             try {
@@ -417,20 +417,28 @@ public final class ServicesImpl {
         List<ListBlobContainersIncludeType> listBlobContainersIncludeType, Integer timeout, String requestId) {
         return new PagedIterable<>((pagingOptions) -> {
             if (pagingOptions.getOffset() != null) {
-                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
-                    "'offset' in PagingOptions is not supported in API 'listBlobContainersSegment'."));
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "listBlobContainersSegment")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
             }
             if (pagingOptions.getPageSize() != null) {
-                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
-                    "'pageSize' in PagingOptions is not supported in API 'listBlobContainersSegment'."));
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "listBlobContainersSegment")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
             }
             if (pagingOptions.getPageIndex() != null) {
-                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
-                    "'pageIndex' in PagingOptions is not supported in API 'listBlobContainersSegment'."));
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "listBlobContainersSegment")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
             }
             if (pagingOptions.getContinuationToken() != null) {
-                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
-                    "'continuationToken' in PagingOptions is not supported in API 'listBlobContainersSegment'."));
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "listBlobContainersSegment")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
             }
             return listBlobContainersSegmentSinglePage(prefix, marker, maxresults, listBlobContainersIncludeType,
                 timeout, requestId);
@@ -471,20 +479,28 @@ public final class ServicesImpl {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
         return new PagedIterable<>((pagingOptions) -> {
             if (pagingOptions.getOffset() != null) {
-                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
-                    "'offset' in PagingOptions is not supported in API 'listBlobContainersSegment'."));
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "listBlobContainersSegment")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
             }
             if (pagingOptions.getPageSize() != null) {
-                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
-                    "'pageSize' in PagingOptions is not supported in API 'listBlobContainersSegment'."));
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "listBlobContainersSegment")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
             }
             if (pagingOptions.getPageIndex() != null) {
-                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
-                    "'pageIndex' in PagingOptions is not supported in API 'listBlobContainersSegment'."));
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "listBlobContainersSegment")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
             }
             if (pagingOptions.getContinuationToken() != null) {
-                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
-                    "'continuationToken' in PagingOptions is not supported in API 'listBlobContainersSegment'."));
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "listBlobContainersSegment")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
             }
             return listBlobContainersSegmentSinglePage(prefix, marker, maxresults, listBlobContainersIncludeType,
                 timeout, requestId, requestContext);

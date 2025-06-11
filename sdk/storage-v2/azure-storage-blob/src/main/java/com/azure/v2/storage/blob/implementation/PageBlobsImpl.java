@@ -73,7 +73,7 @@ public final class PageBlobsImpl {
      * The interface defining all the services for AzureBlobStoragePageBlobs to be used by the proxy service to perform
      * REST calls.
      */
-    @ServiceInterface(name = "AzureBlobStoragePage", host = "{url}")
+    @ServiceInterface(name = "AzureBlobStoragePageBlobs", host = "{url}")
     public interface PageBlobsService {
         static PageBlobsService getNewInstance(HttpPipeline pipeline) {
             try {
