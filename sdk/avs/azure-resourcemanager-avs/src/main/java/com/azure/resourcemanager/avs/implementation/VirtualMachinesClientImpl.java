@@ -70,7 +70,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AvsClientVirtualMach")
+    @ServiceInterface(name = "AvsClientVirtualMachines")
     public interface VirtualMachinesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/virtualMachines")

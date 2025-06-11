@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserArmResou
 public final class StaticSitesUpdateStaticSiteUserSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/UpdateStaticSiteUser.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/UpdateStaticSiteUser.json
      */
     /**
      * Sample code: Create or update a user for a static site.

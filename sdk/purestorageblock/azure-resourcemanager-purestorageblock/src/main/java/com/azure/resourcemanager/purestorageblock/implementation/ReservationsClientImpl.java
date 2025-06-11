@@ -76,7 +76,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PureStorageBlockMgmt")
+    @ServiceInterface(name = "PureStorageBlockMgmtClientReservations")
     public interface ReservationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/reservations/{reservationName}")

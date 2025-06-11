@@ -14,7 +14,7 @@ import java.util.Map;
 public final class StaticSitesCreateOrUpdateStaticSiteAppSettingsSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/CreateOrUpdateStaticSiteAppSettings.
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/CreateOrUpdateStaticSiteAppSettings.
      * json
      */
     /**

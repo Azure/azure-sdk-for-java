@@ -77,7 +77,7 @@ public final class VectorStoresImpl {
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PersistentAgentsAdmi")
+    @ServiceInterface(name = "PersistentAgentsAdministrationClientVectorStores")
     public interface VectorStoresService {
         @Get("/vector_stores")
         @ExpectedResponses({ 200 })

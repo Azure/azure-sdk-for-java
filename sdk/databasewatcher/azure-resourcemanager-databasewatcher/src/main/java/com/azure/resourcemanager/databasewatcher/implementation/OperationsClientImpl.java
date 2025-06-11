@@ -61,7 +61,7 @@ public final class OperationsClientImpl implements OperationsClient {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DatabaseWatcherManag")
+    @ServiceInterface(name = "DatabaseWatcherManagementClientOperations")
     public interface OperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.DatabaseWatcher/operations")

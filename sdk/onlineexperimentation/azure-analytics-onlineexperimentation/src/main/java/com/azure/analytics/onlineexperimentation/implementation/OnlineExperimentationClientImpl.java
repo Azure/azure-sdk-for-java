@@ -157,7 +157,7 @@ public final class OnlineExperimentationClientImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "OnlineExperimentatio")
+    @ServiceInterface(name = "OnlineExperimentationClient")
     public interface OnlineExperimentationClientService {
         @Get("/experiment-metrics/{experimentMetricId}")
         @ExpectedResponses({ 200 })
