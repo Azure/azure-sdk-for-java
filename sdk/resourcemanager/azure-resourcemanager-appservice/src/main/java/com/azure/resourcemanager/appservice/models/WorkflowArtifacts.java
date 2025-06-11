@@ -113,7 +113,9 @@ public final class WorkflowArtifacts implements JsonSerializable<WorkflowArtifac
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("appSettings", this.appSettings);
+        if (this.appSettings != null) {
+            jsonWriter.writeUntypedField("appSettings", this.appSettings);
+        }
         jsonWriter.writeMapField("files", this.files, (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeArrayField("filesToDelete", this.filesToDelete,
             (writer, element) -> writer.writeString(element));

@@ -79,6 +79,12 @@ public final class SiteContainerProperties implements JsonSerializable<SiteConta
     private List<VolumeMount> volumeMounts;
 
     /*
+     * <code>true</code> if all AppSettings and ConnectionStrings have to be passed to the container as environment
+     * variables; <code>false</code> otherwise.
+     */
+    private Boolean inheritAppSettingsAndConnectionStrings;
+
+    /*
      * List of environment variables
      */
     private List<EnvironmentVariable> environmentVariables;
@@ -290,6 +296,31 @@ public final class SiteContainerProperties implements JsonSerializable<SiteConta
     }
 
     /**
+     * Get the inheritAppSettingsAndConnectionStrings property: &lt;code&gt;true&lt;/code&gt; if all AppSettings and
+     * ConnectionStrings have to be passed to the container as environment variables; &lt;code&gt;false&lt;/code&gt;
+     * otherwise.
+     * 
+     * @return the inheritAppSettingsAndConnectionStrings value.
+     */
+    public Boolean inheritAppSettingsAndConnectionStrings() {
+        return this.inheritAppSettingsAndConnectionStrings;
+    }
+
+    /**
+     * Set the inheritAppSettingsAndConnectionStrings property: &lt;code&gt;true&lt;/code&gt; if all AppSettings and
+     * ConnectionStrings have to be passed to the container as environment variables; &lt;code&gt;false&lt;/code&gt;
+     * otherwise.
+     * 
+     * @param inheritAppSettingsAndConnectionStrings the inheritAppSettingsAndConnectionStrings value to set.
+     * @return the SiteContainerProperties object itself.
+     */
+    public SiteContainerProperties
+        withInheritAppSettingsAndConnectionStrings(Boolean inheritAppSettingsAndConnectionStrings) {
+        this.inheritAppSettingsAndConnectionStrings = inheritAppSettingsAndConnectionStrings;
+        return this;
+    }
+
+    /**
      * Get the environmentVariables property: List of environment variables.
      * 
      * @return the environmentVariables value.
@@ -344,6 +375,8 @@ public final class SiteContainerProperties implements JsonSerializable<SiteConta
         jsonWriter.writeStringField("passwordSecret", this.passwordSecret);
         jsonWriter.writeStringField("userManagedIdentityClientId", this.userManagedIdentityClientId);
         jsonWriter.writeArrayField("volumeMounts", this.volumeMounts, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("inheritAppSettingsAndConnectionStrings",
+            this.inheritAppSettingsAndConnectionStrings);
         jsonWriter.writeArrayField("environmentVariables", this.environmentVariables,
             (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -390,6 +423,9 @@ public final class SiteContainerProperties implements JsonSerializable<SiteConta
                 } else if ("volumeMounts".equals(fieldName)) {
                     List<VolumeMount> volumeMounts = reader.readArray(reader1 -> VolumeMount.fromJson(reader1));
                     deserializedSiteContainerProperties.volumeMounts = volumeMounts;
+                } else if ("inheritAppSettingsAndConnectionStrings".equals(fieldName)) {
+                    deserializedSiteContainerProperties.inheritAppSettingsAndConnectionStrings
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("environmentVariables".equals(fieldName)) {
                     List<EnvironmentVariable> environmentVariables
                         = reader.readArray(reader1 -> EnvironmentVariable.fromJson(reader1));
