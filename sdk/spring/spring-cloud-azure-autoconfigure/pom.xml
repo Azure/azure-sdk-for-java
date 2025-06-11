@@ -393,7 +393,7 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <version>2.18.3.1</version> <!-- {x-version-update;springboot3_com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+      <version>2.18.3</version> <!-- {x-version-update;springboot3_com.fasterxml.jackson.core:jackson-core;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
