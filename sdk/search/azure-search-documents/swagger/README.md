@@ -449,3 +449,19 @@ directive:
     $.OcrSkillLineEnding["x-ms-client-name"] = "OcrLineEnding";
     $.OcrSkillLineEnding["x-ms-enum"].name = "OcrLineEnding";
 ```
+
+### Fix for 206 response
+
+```yaml $(tag) == 'searchindex'
+directive:
+  - from: "searchindex.json"
+    where: $.paths
+    transform: >
+      let response206 = {
+        "description": "Response containing partial documents that match the search criteria.",
+        "schema": {
+          "$ref": "#/definitions/SearchDocumentsResult"
+        }
+      };
+      $["/docs/search.post.search"].post.responses["206"] = response206;
+```
