@@ -57,6 +57,7 @@ com.azure:azure-ai-translation-text;1.1.2;1.2.0-beta.1
 com.azure:azure-ai-translation-document;1.0.1;1.1.0-beta.1
 com.azure:azure-analytics-defender-easm;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-analytics-purview-datamap;1.0.0-beta.2;1.0.0-beta.3
+com.azure:azure-analytics-onlineexperimentation;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-analytics-purview-scanning;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-analytics-purview-sharing;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-analytics-purview-administration;1.0.0-beta.1;1.0.0-beta.2
@@ -126,9 +127,9 @@ com.azure:azure-health-deidentification;1.0.0;1.1.0-beta.1
 com.azure:azure-health-insights-clinicalmatching;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-health-insights-cancerprofiling;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-health-insights-radiologyinsights;1.1.0;1.2.0-beta.1
-com.azure:azure-identity;1.16.1;1.17.0-beta.1
+com.azure:azure-identity;1.16.2;1.17.0-beta.1
 com.azure:azure-identity-extensions;1.2.2;1.3.0-beta.1
-com.azure:azure-identity-broker;1.1.14;1.2.0-beta.1
+com.azure:azure-identity-broker;1.1.15;1.2.0-beta.1
 com.azure:azure-identity-broker-samples;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-iot-deviceupdate;1.0.26;1.1.0-beta.1
