@@ -68,6 +68,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.fail;
 
 @LiveOnly
 public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
@@ -594,7 +595,7 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
                 = Files.readAllBytes(Paths.get("src/samples/java/com/azure/ai/openai/stainless/resources/" + fileName));
             base64Image = Base64.getEncoder().encodeToString(imageBytes);
         } catch (IOException e) {
-            return;
+            fail("Failed to read the image file: " + e.getMessage(), e);
         }
 
         String logoBase64Url = "data:image/jpeg;base64," + base64Image;
