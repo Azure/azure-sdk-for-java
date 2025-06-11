@@ -61,7 +61,7 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "HealthDataAIServices")
+    @ServiceInterface(name = "HealthDataAIServicesManagementClientPrivateLinks")
     public interface PrivateLinksService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthDataAIServices/deidServices/{deidServiceName}/privateLinkResources")

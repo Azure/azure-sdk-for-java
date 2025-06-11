@@ -73,7 +73,7 @@ public final class RunStepsImpl {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PersistentAgentsAdmi")
+    @ServiceInterface(name = "PersistentAgentsAdministrationClientRunSteps")
     public interface RunStepsService {
         @Get("/threads/{threadId}/runs/{runId}/steps/{stepId}")
         @ExpectedResponses({ 200 })

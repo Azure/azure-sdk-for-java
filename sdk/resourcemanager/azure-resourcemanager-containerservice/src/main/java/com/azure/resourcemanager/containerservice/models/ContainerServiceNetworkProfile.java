@@ -87,6 +87,12 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     private ManagedClusterNatGatewayProfile natGatewayProfile;
 
     /*
+     * The profile for Static Egress Gateway addon. For more details about Static Egress Gateway, see
+     * https://aka.ms/aks/static-egress-gateway.
+     */
+    private ManagedClusterStaticEgressGatewayProfile staticEgressGatewayProfile;
+
+    /*
      * One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected
      * for dual-stack networking.
      */
@@ -384,6 +390,29 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     }
 
     /**
+     * Get the staticEgressGatewayProfile property: The profile for Static Egress Gateway addon. For more details about
+     * Static Egress Gateway, see https://aka.ms/aks/static-egress-gateway.
+     * 
+     * @return the staticEgressGatewayProfile value.
+     */
+    public ManagedClusterStaticEgressGatewayProfile staticEgressGatewayProfile() {
+        return this.staticEgressGatewayProfile;
+    }
+
+    /**
+     * Set the staticEgressGatewayProfile property: The profile for Static Egress Gateway addon. For more details about
+     * Static Egress Gateway, see https://aka.ms/aks/static-egress-gateway.
+     * 
+     * @param staticEgressGatewayProfile the staticEgressGatewayProfile value to set.
+     * @return the ContainerServiceNetworkProfile object itself.
+     */
+    public ContainerServiceNetworkProfile
+        withStaticEgressGatewayProfile(ManagedClusterStaticEgressGatewayProfile staticEgressGatewayProfile) {
+        this.staticEgressGatewayProfile = staticEgressGatewayProfile;
+        return this;
+    }
+
+    /**
      * Get the podCidrs property: One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP
      * family (IPv4/IPv6), is expected for dual-stack networking.
      * 
@@ -464,6 +493,9 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
         if (natGatewayProfile() != null) {
             natGatewayProfile().validate();
         }
+        if (staticEgressGatewayProfile() != null) {
+            staticEgressGatewayProfile().validate();
+        }
     }
 
     /**
@@ -488,6 +520,7 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
             this.loadBalancerSku == null ? null : this.loadBalancerSku.toString());
         jsonWriter.writeJsonField("loadBalancerProfile", this.loadBalancerProfile);
         jsonWriter.writeJsonField("natGatewayProfile", this.natGatewayProfile);
+        jsonWriter.writeJsonField("staticEgressGatewayProfile", this.staticEgressGatewayProfile);
         jsonWriter.writeArrayField("podCidrs", this.podCidrs, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("serviceCidrs", this.serviceCidrs, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("ipFamilies", this.ipFamilies,
@@ -545,6 +578,9 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
                 } else if ("natGatewayProfile".equals(fieldName)) {
                     deserializedContainerServiceNetworkProfile.natGatewayProfile
                         = ManagedClusterNatGatewayProfile.fromJson(reader);
+                } else if ("staticEgressGatewayProfile".equals(fieldName)) {
+                    deserializedContainerServiceNetworkProfile.staticEgressGatewayProfile
+                        = ManagedClusterStaticEgressGatewayProfile.fromJson(reader);
                 } else if ("podCidrs".equals(fieldName)) {
                     List<String> podCidrs = reader.readArray(reader1 -> reader1.getString());
                     deserializedContainerServiceNetworkProfile.podCidrs = podCidrs;

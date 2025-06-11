@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class WebAppsGetBackupStatusSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/GetWebAppBackup.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/GetWebAppBackup.json
      */
     /**
      * Sample code: Get web app backup.
