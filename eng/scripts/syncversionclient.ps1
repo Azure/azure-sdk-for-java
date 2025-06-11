@@ -69,7 +69,7 @@ function SyncVersionClientFile([String[]]$GroupIds) {
         $versionClientInfo = ParseVersionClientFile -GroupId $groupId
 
         foreach($artifactId in $artifactIds) {
-            $artifactInfo = GetVersionInfoForAnArtifactId -ArtifactId $artifactId -GroupId $groupId
+            $artifactInfo = GetVersionInfoForAnArtifactId -GroupId $groupId -ArtifactId $artifactId
             $latestPatchOrGaVersion = $ArtifactInfo.LatestGAOrPatchVersion
 
             if([String]::IsNullOrWhiteSpace($latestPatchOrGaVersion)) {

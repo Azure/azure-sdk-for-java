@@ -59,7 +59,7 @@ function GetVersionInfoForAllMavenArtifacts([string]$GroupId = "com.azure") {
 
 # Get version info for all a Maven artifact
 function GetVersionInfoForMavenArtifact($ArtifactId, $GroupId = "com.azure") {
-    $info = GetVersionInfoForAnArtifactId -ArtifactId $artifactId -GroupId $groupId
+    $info = GetVersionInfoForAnArtifactId -GroupId $groupId -ArtifactId $artifactId
     $artifactId = $info.ArtifactId
     $latestGAOrPatchVersion = $info.LatestGAOrPatchVersion
 

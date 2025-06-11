@@ -46,15 +46,11 @@ function GetAllAzComClientArtifactsFromMaven($GroupId = "com.azure") {
   $groupPath = $GroupId -replace '\.', '/'
   $webResponseObj = Invoke-WebRequest -Uri "https://repo1.maven.org/maven2/$groupPath"
   $azureComArtifactIds = $webResponseObj.Links.HRef | Where-Object { ($_ -like 'azure-*') -and ($IgnoreList -notcontains $_) } |  ForEach-Object { $_.substring(0, $_.length - 1) }
-  # for resourcemanager, only include handwritten libraries
-  if ("com.azure.resourcemanager" -eq $GroupId) {
-    return GetAllAzComResourceManagerArtifactIds
-  }
   return $azureComArtifactIds | Where-Object { ($_ -like "azure-*") -and !($_ -like "azure-spring") }
 }
 
 # Get version info for an artifact.
-function GetVersionInfoForAnArtifactId([String]$ArtifactId, [String]$GroupId = "com.azure") {
+function GetVersionInfoForAnArtifactId([String]$GroupId = "com.azure", [String]$ArtifactId) {
   $groupPath = $GroupId -replace '\.', '/'
   $mavenMetadataUrl = "https://repo1.maven.org/maven2/$groupPath/$($ArtifactId)/maven-metadata.xml"
   $webResponseObj = Invoke-WebRequest -Uri $mavenMetadataUrl
@@ -242,11 +238,6 @@ function GetCurrentBranchName() {
   return git rev-parse --abbrev-ref HEAD
 }
 
-
-function GetAllAzComResourceManagerArtifactIds() {
-    return @("azure-resourcemanager", "azure-resourcemanager-appplatform", "azure-resourcemanager-appservice", "azure-resourcemanager-authorization", "azure-resourcemanager-cdn", "azure-resourcemanager-compute", "azure-resourcemanager-containerinstance", "azure-resourcemanager-containerregistry", "azure-resourcemanager-containerservice", "azure-resourcemanager-cosmos", "azure-resourcemanager-dns", "azure-resourcemanager-eventhubs", "azure-resourcemanager-keyvault", "azure-resourcemanager-monitor", "azure-resourcemanager-msi", "azure-resourcemanager-network", "azure-resourcemanager-privatedns", "azure-resourcemanager-redis", "azure-resourcemanager-resources", "azure-resourcemanager-search", "azure-resourcemanager-servicebus", "azure-resourcemanager-sql", "azure-resourcemanager-storage", "azure-resourcemanager-trafficmanager")
-}
-
 <# This method generates the patch for a given artifact by doing the following
    1. Reset the sources to the last release version for the given artifact.
    2. Updating the dependencies of the artifact to what they should be in the current set.
@@ -290,7 +281,7 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
 
   if (!$releaseVersion) {
     Write-Output "Computing the latest release version for each of the relevant artifacts from Maven Central."
-    $mavenArtifactInfo = [MavenArtifactInfo](GetVersionInfoForAnArtifactId -ArtifactId $artifactId -GroupId $GroupId)
+    $mavenArtifactInfo = [MavenArtifactInfo](GetVersionInfoForAnArtifactId -GroupId $GroupId -ArtifactId $artifactId)
 
     if ($null -eq $mavenArtifactInfo) {
       LogError "Could not find $artifactId on Maven Central."
