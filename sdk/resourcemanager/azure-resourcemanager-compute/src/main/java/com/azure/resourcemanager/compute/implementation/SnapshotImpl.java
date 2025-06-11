@@ -4,8 +4,11 @@
 package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.ComputeManager;
+import com.azure.resourcemanager.compute.fluent.models.DiskInner;
 import com.azure.resourcemanager.compute.fluent.models.SnapshotInner;
 import com.azure.resourcemanager.compute.models.AccessLevel;
 import com.azure.resourcemanager.compute.models.CopyCompletionError;
@@ -21,6 +24,9 @@ import com.azure.resourcemanager.compute.models.SnapshotSku;
 import com.azure.resourcemanager.compute.models.SnapshotSkuType;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
+import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
+import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -392,5 +398,28 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
     public SnapshotImpl disablePublicNetworkAccess() {
         this.innerModel().withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
         return this;
+    }
+
+    @Override
+    public Accepted<Snapshot> beginCreate() {
+        return beginCreate(Context.NONE);
+    }
+
+    @Override
+    public Accepted<Snapshot> beginCreate(Context context) {
+        return AcceptedImpl.newAccepted(logger, this.manager().serviceClient().getHttpPipeline(),
+            this.manager().serviceClient().getDefaultPollInterval(),
+            () -> this.manager()
+                .serviceClient()
+                .getSnapshots()
+                .createOrUpdateWithResponseAsync(resourceGroupName(), name(), this.innerModel())
+                .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
+                .block(),
+            inner -> new SnapshotImpl(inner.name(), inner, this.manager()), SnapshotInner.class, () -> {
+                Flux<Indexable> dependencyTasksAsync
+                    = taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext())
+                    .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()));
+                dependencyTasksAsync.blockLast();
+            }, this::setInner, context);
     }
 }

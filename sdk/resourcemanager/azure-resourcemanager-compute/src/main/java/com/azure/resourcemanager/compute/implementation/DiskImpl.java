@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.AccessLevel;
@@ -463,18 +464,25 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
 
     @Override
     public Accepted<Disk> beginCreate() {
+        return beginCreate(Context.NONE);
+    }
+
+    @Override
+    public Accepted<Disk> beginCreate(Context context) {
         return AcceptedImpl.newAccepted(logger, this.manager().serviceClient().getHttpPipeline(),
             this.manager().serviceClient().getDefaultPollInterval(),
             () -> this.manager()
                 .serviceClient()
                 .getDisks()
                 .createOrUpdateWithResponseAsync(resourceGroupName(), name(), this.innerModel())
+                .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
                 .block(),
             inner -> new DiskImpl(inner.name(), inner, this.manager()), DiskInner.class, () -> {
                 Flux<Indexable> dependencyTasksAsync
-                    = taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
+                    = taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext())
+                    .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()));
                 dependencyTasksAsync.blockLast();
-            }, this::setInner, Context.NONE);
+            }, this::setInner, context);
     }
 
     private DiskSkuTypes fromSnapshotSkuType(SnapshotSkuType skuType) {
