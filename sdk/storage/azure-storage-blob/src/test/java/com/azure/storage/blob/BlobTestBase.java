@@ -1083,9 +1083,6 @@ public class BlobTestBase extends TestProxyTestBase {
     protected static final class PagingTimeoutTestClient implements HttpClient {
         private final Queue<String> responses = new java.util.LinkedList<>();
 
-        private int resourceCounter = 0;
-        private int pageCounter;
-
         private enum PageType {
             LIST_BLOBS, FIND_BLOBS, LIST_CONTAINERS
         }
@@ -1109,14 +1106,14 @@ public class BlobTestBase extends TestProxyTestBase {
         private PagingTimeoutTestClient addPagedResponses(int totalResourcesExpected, int maxResourcesPerPage,
             PageType pageType, boolean isHierarchical) {
             int totalPagesExpected = (int) Math.ceil((double) totalResourcesExpected / maxResourcesPerPage);
-
-            for (pageCounter = 0; pageCounter < totalPagesExpected; pageCounter++) {
-                int numberOfElementsOnThisPage
-                    = Math.min(maxResourcesPerPage, totalResourcesExpected - resourceCounter);
+            int resourcesAdded = 0;
+            for (int pageNum = 0; pageNum < totalPagesExpected; pageNum++) {
+                int numberOfElementsOnThisPage = Math.min(maxResourcesPerPage, totalResourcesExpected - resourcesAdded);
+                resourcesAdded += numberOfElementsOnThisPage;
 
                 try {
-                    responses.add(buildXmlPage(maxResourcesPerPage, totalPagesExpected, numberOfElementsOnThisPage,
-                        pageType, isHierarchical));
+                    responses.add(buildXmlPage(pageNum, maxResourcesPerPage, totalPagesExpected,
+                        numberOfElementsOnThisPage, pageType, isHierarchical));
                 } catch (Exception e) {
                     throw new RuntimeException("Failed to generate XML for paged response", e);
                 }
@@ -1124,8 +1121,8 @@ public class BlobTestBase extends TestProxyTestBase {
             return this;
         }
 
-        private String buildXmlPage(int maxResourcesPerPage, int totalPagesExpected, int numberOfElementsOnThisPage,
-            PageType pageType, boolean isHierarchicalForBlobs) throws Exception {
+        private String buildXmlPage(int pageNum, int maxResourcesPerPage, int totalPagesExpected,
+            int numberOfElementsOnThisPage, PageType pageType, boolean isHierarchicalForBlobs) throws Exception {
             ByteArrayOutputStream output = new ByteArrayOutputStream();
             XmlWriter xmlWriter = XmlWriter.toStream(output);
 
@@ -1135,7 +1132,7 @@ public class BlobTestBase extends TestProxyTestBase {
             switch (pageType) {
                 case LIST_BLOBS:
                     elementType = "Blob";
-                    startXml(xmlWriter, () -> {
+                    startXml(pageNum, xmlWriter, () -> {
                         xmlWriter.writeStringAttribute("ContainerName", "foo");
                         return null;
                     });
@@ -1161,14 +1158,14 @@ public class BlobTestBase extends TestProxyTestBase {
                         xmlWriter.writeEndElement(); // End Tags
                         return null;
                     };
-                    startXml(xmlWriter, null);
+                    startXml(pageNum, xmlWriter, null);
                     xmlWriter.writeStringElement("Where", "\"dummyKey\"='dummyValue'");
                     xmlWriter.writeStringElement("MaxResults", String.valueOf(maxResourcesPerPage));
                     break;
 
                 case LIST_CONTAINERS:
                     elementType = "Container";
-                    startXml(xmlWriter, null);
+                    startXml(pageNum, xmlWriter, null);
                     xmlWriter.writeStringElement("MaxResults", String.valueOf(maxResourcesPerPage));
                     break;
 
@@ -1177,12 +1174,12 @@ public class BlobTestBase extends TestProxyTestBase {
             }
 
             writeGenericListElement(xmlWriter, elementType, numberOfElementsOnThisPage, additionalElements);
-            endXml(xmlWriter, totalPagesExpected); // This calls flush
+            endXml(pageNum, xmlWriter, totalPagesExpected); // This calls flush
 
             return output.toString();
         }
 
-        private void startXml(XmlWriter xmlWriter, Callable<Void> additionalAttributes) throws Exception {
+        private void startXml(int pageNum, XmlWriter xmlWriter, Callable<Void> additionalAttributes) throws Exception {
             xmlWriter.writeStartDocument();
             xmlWriter.writeStartElement("EnumerationResults");
             xmlWriter.writeStringAttribute("ServiceEndpoint", "https://account.blob.core.windows.net/");
@@ -1192,14 +1189,14 @@ public class BlobTestBase extends TestProxyTestBase {
             }
 
             // Write marker if not first page
-            if (pageCounter != 0) {
+            if (pageNum != 0) {
                 xmlWriter.writeStringElement("Marker", "MARKER--");
             }
         }
 
-        private void endXml(XmlWriter xmlWriter, int totalPagesExpected) throws XMLStreamException {
+        private void endXml(int pageNum, XmlWriter xmlWriter, int totalPagesExpected) throws XMLStreamException {
             // Write NextMarker
-            if (pageCounter == totalPagesExpected - 1) {
+            if (pageNum == totalPagesExpected - 1) {
                 xmlWriter.writeStringElement("NextMarker", null);
             } else {
                 xmlWriter.writeStringElement("NextMarker", "MARKER--");
@@ -1217,7 +1214,7 @@ public class BlobTestBase extends TestProxyTestBase {
             // Write  entries
             for (int i = 0; i < numberOfElementsOnThisPage; i++) {
                 xmlWriter.writeStartElement(elementType); // Start elementType
-                xmlWriter.writeStringElement("Name", elementType.toLowerCase() + resourceCounter++);
+                xmlWriter.writeStringElement("Name", elementType.toLowerCase());
 
                 if (additionalElements != null) {
                     additionalElements.call();
