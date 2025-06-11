@@ -1,7 +1,6 @@
 {
   "displayNames": {
     "-Pthinclient": "ThinClient",
-    "-Pquery": "Query",
     "Session": "",
     "ubuntu": "",
     "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true }": ""},
@@ -16,7 +15,7 @@
         }
       },
       "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pthinclient", "-Pquery" ],
+      "ProfileFlag": [ "-Pthinclient" ],
       "Agent": {
         "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       }

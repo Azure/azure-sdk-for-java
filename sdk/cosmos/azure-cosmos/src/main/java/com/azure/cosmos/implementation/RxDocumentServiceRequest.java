@@ -1187,16 +1187,11 @@ public class RxDocumentServiceRequest implements Cloneable {
         this.effectivePartitionKey = effectivePartitionKey;
     }
 
-    public void setThinclientHeaders(OperationType operationType, ResourceType resourceType, String globalDatabaseAccountName, String resourceId) {
-        this.headers.put(HttpConstants.HttpHeaders.THINCLIENT_PROXY_OPERATION_TYPE, operationType.name());
-        this.headers.put(HttpConstants.HttpHeaders.THINCLIENT_PROXY_RESOURCE_TYPE, resourceType.name());
+    public void setThinclientHeaders(String operationType, String resourceType, String globalDatabaseAccountName, String resourceId) {
+        this.headers.put(HttpConstants.HttpHeaders.THINCLIENT_PROXY_OPERATION_TYPE, operationType);
+        this.headers.put(HttpConstants.HttpHeaders.THINCLIENT_PROXY_RESOURCE_TYPE, resourceType);
         this.headers.put(HttpConstants.HttpHeaders.GLOBAL_DATABASE_ACCOUNT_NAME, globalDatabaseAccountName);
         this.headers.put(WFConstants.BackendHeaders.COLLECTION_RID, resourceId);
-
-        if (operationType == OperationType.Query) {
-            this.headers.put(HttpConstants.HttpHeaders.THINCLIENT_START_EPK, "true");
-            this.headers.put(HttpConstants.HttpHeaders.THINCLIENT_END_EPK, "true");
-        }
     }
 
     public RxDocumentServiceRequest setHttpTransportSerializer(HttpTransportSerializer transportSerializer) {
