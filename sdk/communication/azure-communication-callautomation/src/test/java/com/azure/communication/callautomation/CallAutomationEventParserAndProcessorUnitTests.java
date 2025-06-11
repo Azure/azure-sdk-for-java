@@ -14,6 +14,8 @@ import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.communication.callautomation.models.events.CallTransferAccepted;
 import com.azure.communication.callautomation.models.events.CancelAddParticipantFailed;
 import com.azure.communication.callautomation.models.events.CancelAddParticipantSucceeded;
+import com.azure.communication.callautomation.models.events.MoveParticipantSucceeded;
+import com.azure.communication.callautomation.models.events.MoveParticipantFailed;
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionStopped;
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneFailed;
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneReceived;
@@ -55,6 +57,7 @@ import com.azure.communication.callautomation.models.events.TranscriptionStatusD
 import com.azure.communication.callautomation.models.events.TranscriptionStopped;
 import com.azure.communication.callautomation.models.events.TranscriptionUpdated;
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.communication.callautomation.models.events.MediaStreamingStarted;
 import com.azure.communication.callautomation.models.events.MediaStreamingStopped;
@@ -618,6 +621,72 @@ public class CallAutomationEventParserAndProcessorUnitTests {
         callAutomationEventProcessor.processEvents(receivedEvent);
         callAutomationEventProcessor.detachOngoingEventProcessor(cancelAddParticipantFailed.getCallConnectionId(),
             CancelAddParticipantFailed.class);
+    }
+
+    @Test
+    public void parseMoveParticipantSucceededEvent() {
+        String receivedEvent = "[{\n" + "\"id\": \"c3220fa3-79bd-473e-96a2-3ecb5be7d71f\",\n"
+            + "\"source\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\",\n"
+            + "\"type\": \"Microsoft.Communication.MoveParticipantSucceeded\",\n" + "\"data\": {\n"
+            + "\"operationContext\": \"context\",\n" + "\"callConnectionId\": \"callConnectionId\",\n"
+            + "\"serverCallId\": \"serverCallId\",\n"
+            + "\"participant\": {\"rawId\": \"targetId\", \"kind\": \"communicationUser\", \"communicationUser\": {\"id\": \"targetId\"}},\n"
+            + "\"fromCall\": \"fromCallConnectionId\",\n"
+            + "\"correlationId\": \"b880bd5a-1916-470a-b43d-aabf3caff91c\"\n" + "},\n"
+            + "\"time\": \"2023-03-22T16:57:09.287755+00:00\",\n" + "\"specversion\": \"1.0\",\n"
+            + "\"datacontenttype\": \"application/json\",\n"
+            + "\"subject\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\"\n" + "}]";
+
+        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+
+        assertNotNull(event);
+
+        MoveParticipantSucceeded moveParticipantSucceeded = (MoveParticipantSucceeded) event;
+
+        assertNotNull(moveParticipantSucceeded);
+        assertEquals("serverCallId", moveParticipantSucceeded.getServerCallId());
+        assertEquals("callConnectionId", moveParticipantSucceeded.getCallConnectionId());
+        assertEquals("fromCallConnectionId", moveParticipantSucceeded.getFromCall());
+        assertEquals("targetId", ((CommunicationUserIdentifier) moveParticipantSucceeded.getParticipant()).getId());
+    }
+
+    @Test
+    public void parseMoveParticipantFailedEvent() {
+        String receivedEvent = "[{\n" + "\"id\": \"c3220fa3-79bd-473e-96a2-3ecb5be7d71f\",\n"
+            + "\"source\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\",\n"
+            + "\"type\": \"Microsoft.Communication.MoveParticipantFailed\",\n" + "\"data\": {\n"
+            + "\"operationContext\": \"context\",\n" + "\"callConnectionId\": \"callConnectionId\",\n"
+            + "\"serverCallId\": \"serverCallId\",\n"
+            + "\"participant\": {\"rawId\": \"targetId\", \"kind\": \"communicationUser\", \"communicationUser\": {\"id\": \"targetId\"}},\n"
+            + "\"fromCall\": \"fromCallConnectionId\",\n"
+            + "\"correlationId\": \"b880bd5a-1916-470a-b43d-aabf3caff91c\"\n" + "},\n"
+            + "\"time\": \"2023-03-22T16:57:09.287755+00:00\",\n" + "\"specversion\": \"1.0\",\n"
+            + "\"datacontenttype\": \"application/json\",\n"
+            + "\"subject\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\"\n" + "}]";
+
+        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+
+        assertNotNull(event);
+
+        MoveParticipantFailed moveParticipantFailed = (MoveParticipantFailed) event;
+
+        assertNotNull(moveParticipantFailed);
+        assertEquals("serverCallId", moveParticipantFailed.getServerCallId());
+        assertEquals("callConnectionId", moveParticipantFailed.getCallConnectionId());
+        assertEquals("fromCallConnectionId", moveParticipantFailed.getFromCall());
+        assertEquals("targetId", ((CommunicationUserIdentifier) moveParticipantFailed.getParticipant()).getId());
+
+        CallAutomationEventProcessor callAutomationEventProcessor = new CallAutomationEventProcessor();
+        callAutomationEventProcessor.attachOngoingEventProcessor(moveParticipantFailed.getCallConnectionId(),
+            eventToHandle -> {
+                assertEquals("serverCallId", eventToHandle.getServerCallId());
+                assertEquals("callConnectionId", eventToHandle.getCallConnectionId());
+                assertEquals("fromCallConnectionId", eventToHandle.getFromCall());
+                assertEquals("targetId", ((CommunicationUserIdentifier) eventToHandle.getParticipant()).getId());
+            }, MoveParticipantFailed.class);
+        callAutomationEventProcessor.processEvents(receivedEvent);
+        callAutomationEventProcessor.detachOngoingEventProcessor(moveParticipantFailed.getCallConnectionId(),
+            MoveParticipantFailed.class);
     }
 
     @Test

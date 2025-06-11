@@ -39,7 +39,7 @@ public final class TranscriptionOptionsInternal implements JsonSerializable<Tran
      * Endpoint where the custom model was deployed.
      */
     @Generated
-    private String speechRecognitionModelEndpointId;
+    private String speechModelEndpointId;
 
     /*
      * Determines if the transcription should be started immediately after call is answered or not.
@@ -127,24 +127,24 @@ public final class TranscriptionOptionsInternal implements JsonSerializable<Tran
     }
 
     /**
-     * Get the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     * Get the speechModelEndpointId property: Endpoint where the custom model was deployed.
      * 
-     * @return the speechRecognitionModelEndpointId value.
+     * @return the speechModelEndpointId value.
      */
     @Generated
-    public String getSpeechRecognitionModelEndpointId() {
-        return this.speechRecognitionModelEndpointId;
+    public String getSpeechModelEndpointId() {
+        return this.speechModelEndpointId;
     }
 
     /**
-     * Set the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     * Set the speechModelEndpointId property: Endpoint where the custom model was deployed.
      * 
-     * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId value to set.
+     * @param speechModelEndpointId the speechModelEndpointId value to set.
      * @return the TranscriptionOptionsInternal object itself.
      */
     @Generated
-    public TranscriptionOptionsInternal setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
-        this.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
+    public TranscriptionOptionsInternal setSpeechModelEndpointId(String speechModelEndpointId) {
+        this.speechModelEndpointId = speechModelEndpointId;
         return this;
     }
 
@@ -205,7 +205,7 @@ public final class TranscriptionOptionsInternal implements JsonSerializable<Tran
         jsonWriter.writeStringField("transportType", this.transportType == null ? null : this.transportType.toString());
         jsonWriter.writeStringField("locale", this.locale);
         jsonWriter.writeBooleanField("startTranscription", this.startTranscription);
-        jsonWriter.writeStringField("speechRecognitionModelEndpointId", this.speechRecognitionModelEndpointId);
+        jsonWriter.writeStringField("speechModelEndpointId", this.speechModelEndpointId);
         jsonWriter.writeBooleanField("enableIntermediateResults", this.enableIntermediateResults);
         return jsonWriter.writeEndObject();
     }
@@ -236,8 +236,8 @@ public final class TranscriptionOptionsInternal implements JsonSerializable<Tran
                     deserializedTranscriptionOptionsInternal.locale = reader.getString();
                 } else if ("startTranscription".equals(fieldName)) {
                     deserializedTranscriptionOptionsInternal.startTranscription = reader.getBoolean();
-                } else if ("speechRecognitionModelEndpointId".equals(fieldName)) {
-                    deserializedTranscriptionOptionsInternal.speechRecognitionModelEndpointId = reader.getString();
+                } else if ("speechModelEndpointId".equals(fieldName)) {
+                    deserializedTranscriptionOptionsInternal.speechModelEndpointId = reader.getString();
                 } else if ("enableIntermediateResults".equals(fieldName)) {
                     deserializedTranscriptionOptionsInternal.enableIntermediateResults
                         = reader.getNullable(JsonReader::getBoolean);
