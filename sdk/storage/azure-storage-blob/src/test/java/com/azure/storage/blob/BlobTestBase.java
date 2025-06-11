@@ -1080,6 +1080,7 @@ public class BlobTestBase extends TestProxyTestBase {
         }
     }
 
+    // todo (isbr): https://github.com/Azure/azure-sdk-for-java/pull/45202#pullrequestreview-2915149773
     protected static final class PagingTimeoutTestClient implements HttpClient {
         private final Queue<String> responses = new java.util.LinkedList<>();
 
