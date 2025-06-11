@@ -55,31 +55,7 @@ public class SecretClientBuilderTest {
             .buildClient();
 
         assertNotNull(secretClient);
-        assertEquals(SecretClient.class.getSimpleName(), secretClient.getClass().getSimpleName());
-    }
-
-    @Test
-    public void buildAsyncClientTest() {
-        SecretAsyncClient secretAsyncClient = new SecretClientBuilder().vaultUrl(vaultUrl)
-            .serviceVersion(serviceVersion)
-            .credential(new TestUtils.TestCredential())
-            .httpClient(request -> CompletableFuture.completedFuture(new MockHttpResponse(request, 200)))
-            .buildAsyncClient();
-
-        assertNotNull(secretAsyncClient);
-        assertEquals(SecretAsyncClient.class.getSimpleName(), secretAsyncClient.getClass().getSimpleName());
-    }
-
-    @Test
-    public void buildAsyncClientUsingDefaultApiVersionTest() {
-        SecretAsyncClient secretAsyncClient = new SecretClientBuilder().vaultUrl(vaultUrl)
-            .credential(new TestUtils.TestCredential())
-            .httpClient(request -> CompletableFuture.completedFuture(new MockHttpResponse(request, 200)))
-            .buildAsyncClient();
-
-        assertNotNull(secretAsyncClient);
-        assertEquals(SecretAsyncClient.class.getSimpleName(), secretAsyncClient.getClass().getSimpleName());
-    }
+        assertEquals(SecretClient.class.getSimpleName(), secretClient.getClass().getSimpleName());    }
 
     @Test
     public void emptyVaultUrlThrowsIllegalArgumentException() {

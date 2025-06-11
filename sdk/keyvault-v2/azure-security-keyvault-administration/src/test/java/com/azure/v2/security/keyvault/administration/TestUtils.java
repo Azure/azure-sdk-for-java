@@ -52,15 +52,12 @@ public final class TestUtils {
         public CompletableFuture<AccessToken> getToken(TokenRequestContext request) {
             return CompletableFuture.completedFuture(new AccessToken("TestAccessToken", OffsetDateTime.now().plusHours(1)));
         }
-    }
-
-    /**
+    }    /**
      * HTTP Client builder for asserting HTTP operations.
      */
     public static class AssertingHttpClientBuilder {
         private final HttpClient httpClient;
         private boolean assertSync = false;
-        private boolean assertAsync = false;
 
         public AssertingHttpClientBuilder(HttpClient httpClient) {
             this.httpClient = httpClient;
@@ -71,36 +68,23 @@ public final class TestUtils {
             return this;
         }
 
-        public AssertingHttpClientBuilder assertAsync() {
-            this.assertAsync = true;
-            return this;
-        }
-
         public HttpClient build() {
-            return new AssertingHttpClient(httpClient, assertSync, assertAsync);
+            return new AssertingHttpClient(httpClient, assertSync);
         }
     }
 
     private static class AssertingHttpClient implements HttpClient {
         private final HttpClient httpClient;
         private final boolean assertSync;
-        private final boolean assertAsync;
 
-        AssertingHttpClient(HttpClient httpClient, boolean assertSync, boolean assertAsync) {
+        AssertingHttpClient(HttpClient httpClient, boolean assertSync) {
             this.httpClient = httpClient;
             this.assertSync = assertSync;
-            this.assertAsync = assertAsync;
         }
 
         @Override
         public CompletableFuture<HttpResponse> send(HttpRequest request) {
-            if (assertSync) {
-                // For sync clients, we expect blocking behavior
-                return httpClient.send(request);
-            } else if (assertAsync) {
-                // For async clients, we expect non-blocking behavior
-                return httpClient.send(request);
-            }
+            // For sync clients, we expect blocking behavior
             return httpClient.send(request);
         }
     }

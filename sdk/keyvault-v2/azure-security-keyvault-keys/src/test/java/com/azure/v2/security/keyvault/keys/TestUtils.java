@@ -54,12 +54,9 @@ public final class TestUtils {
         public CompletableFuture<AccessToken> getToken(TokenRequestContext request) {
             return CompletableFuture.completedFuture(new AccessToken("TestAccessToken", OffsetDateTime.now().plusHours(1)));
         }
-    }
-
-    public static class AssertingHttpClientBuilder {
+    }    public static class AssertingHttpClientBuilder {
         private final HttpClient httpClient;
         private boolean assertSync = false;
-        private boolean assertAsync = false;
 
         public AssertingHttpClientBuilder(HttpClient httpClient) {
             this.httpClient = httpClient;
@@ -67,11 +64,6 @@ public final class TestUtils {
 
         public AssertingHttpClientBuilder assertSync() {
             this.assertSync = true;
-            return this;
-        }
-
-        public AssertingHttpClientBuilder assertAsync() {
-            this.assertAsync = true;
             return this;
         }
 
