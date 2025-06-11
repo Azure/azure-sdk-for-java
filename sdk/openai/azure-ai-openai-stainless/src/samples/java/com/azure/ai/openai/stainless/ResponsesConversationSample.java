@@ -18,8 +18,8 @@ import com.openai.models.responses.ResponseOutputMessage;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class ResponsesConversationExample {
-    private ResponsesConversationExample() {}
+public final class ResponsesConversationSample {
+    private ResponsesConversationSample() {}
 
     public static void main(String[] args) {
         // Configures using one of:
