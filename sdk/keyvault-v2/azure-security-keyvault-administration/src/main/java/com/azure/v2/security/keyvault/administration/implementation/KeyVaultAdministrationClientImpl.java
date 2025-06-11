@@ -131,7 +131,7 @@ public final class KeyVaultAdministrationClientImpl {
      * The interface defining all the services for KeyVaultAdministrationClient to be used by the proxy service to
      * perform REST calls.
      */
-    @ServiceInterface(name = "KeyVaultAdministrati", host = "{vaultBaseUrl}")
+    @ServiceInterface(name = "KeyVaultAdministrationClient", host = "{vaultBaseUrl}")
     public interface KeyVaultAdministrationClientService {
 
         static KeyVaultAdministrationClientService getNewInstance(HttpPipeline pipeline) {
