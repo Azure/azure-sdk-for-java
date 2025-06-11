@@ -5,7 +5,6 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -17,81 +16,68 @@ public final class SearchFieldDataType extends ExpandableStringEnum<SearchFieldD
     /**
      * Indicates that a field contains a string.
      */
-    @Generated
     public static final SearchFieldDataType STRING = fromString("Edm.String");
 
     /**
      * Indicates that a field contains a 32-bit signed integer.
      */
-    @Generated
     public static final SearchFieldDataType INT32 = fromString("Edm.Int32");
 
     /**
      * Indicates that a field contains a 64-bit signed integer.
      */
-    @Generated
     public static final SearchFieldDataType INT64 = fromString("Edm.Int64");
 
     /**
      * Indicates that a field contains an IEEE double-precision floating point number.
      */
-    @Generated
     public static final SearchFieldDataType DOUBLE = fromString("Edm.Double");
 
     /**
      * Indicates that a field contains a Boolean value (true or false).
      */
-    @Generated
     public static final SearchFieldDataType BOOLEAN = fromString("Edm.Boolean");
 
     /**
      * Indicates that a field contains a date/time value, including timezone information.
      */
-    @Generated
     public static final SearchFieldDataType DATE_TIME_OFFSET = fromString("Edm.DateTimeOffset");
 
     /**
      * Indicates that a field contains a geo-location in terms of longitude and latitude.
      */
-    @Generated
     public static final SearchFieldDataType GEOGRAPHY_POINT = fromString("Edm.GeographyPoint");
 
     /**
      * Indicates that a field contains one or more complex objects that in turn have sub-fields of other types.
      */
-    @Generated
     public static final SearchFieldDataType COMPLEX = fromString("Edm.ComplexType");
 
     /**
      * Indicates that a field contains a single-precision floating point number. This is only valid when used with
      * Collection(Edm.Single).
      */
-    @Generated
     public static final SearchFieldDataType SINGLE = fromString("Edm.Single");
 
     /**
      * Indicates that a field contains a half-precision floating point number. This is only valid when used with
      * Collection(Edm.Half).
      */
-    @Generated
     public static final SearchFieldDataType HALF = fromString("Edm.Half");
 
     /**
      * Indicates that a field contains a 16-bit signed integer. This is only valid when used with Collection(Edm.Int16).
      */
-    @Generated
     public static final SearchFieldDataType INT16 = fromString("Edm.Int16");
 
     /**
      * Indicates that a field contains a 8-bit signed integer. This is only valid when used with Collection(Edm.SByte).
      */
-    @Generated
     public static final SearchFieldDataType SBYTE = fromString("Edm.SByte");
 
     /**
      * Indicates that a field contains a 8-bit unsigned integer. This is only valid when used with Collection(Edm.Byte).
      */
-    @Generated
     public static final SearchFieldDataType BYTE = fromString("Edm.Byte");
 
     /**
@@ -99,7 +85,6 @@ public final class SearchFieldDataType extends ExpandableStringEnum<SearchFieldD
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public SearchFieldDataType() {
     }
@@ -110,7 +95,6 @@ public final class SearchFieldDataType extends ExpandableStringEnum<SearchFieldD
      * @param name a name to look for.
      * @return the corresponding SearchFieldDataType.
      */
-    @Generated
     public static SearchFieldDataType fromString(String name) {
         return fromString(name, SearchFieldDataType.class);
     }
@@ -120,7 +104,6 @@ public final class SearchFieldDataType extends ExpandableStringEnum<SearchFieldD
      *
      * @return known SearchFieldDataType values.
      */
-    @Generated
     public static Collection<SearchFieldDataType> values() {
         return values(SearchFieldDataType.class);
     }

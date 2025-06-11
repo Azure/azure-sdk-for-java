@@ -6,13 +6,12 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Divides text at non-letters; Applies the lowercase and stopword token filters. This analyzer is implemented using
@@ -24,13 +23,11 @@ public final class StopAnalyzer extends LexicalAnalyzer {
     /*
      * A URI fragment specifying the type of analyzer.
      */
-    @Generated
     private String odataType = "#Microsoft.Azure.Search.StopAnalyzer";
 
     /*
      * A list of stopwords.
      */
-    @Generated
     private List<String> stopwords;
 
     /**
@@ -38,7 +35,6 @@ public final class StopAnalyzer extends LexicalAnalyzer {
      *
      * @param name the name value to set.
      */
-    @Generated
     public StopAnalyzer(String name) {
         super(name);
     }
@@ -48,7 +44,6 @@ public final class StopAnalyzer extends LexicalAnalyzer {
      *
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -59,7 +54,6 @@ public final class StopAnalyzer extends LexicalAnalyzer {
      *
      * @return the stopwords value.
      */
-    @Generated
     public List<String> getStopwords() {
         return this.stopwords;
     }
@@ -70,7 +64,6 @@ public final class StopAnalyzer extends LexicalAnalyzer {
      * @param stopwords the stopwords value to set.
      * @return the StopAnalyzer object itself.
      */
-    @Generated
     public StopAnalyzer setStopwords(List<String> stopwords) {
         this.stopwords = stopwords;
         return this;
@@ -79,7 +72,6 @@ public final class StopAnalyzer extends LexicalAnalyzer {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -98,7 +90,6 @@ public final class StopAnalyzer extends LexicalAnalyzer {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the StopAnalyzer.
      */
-    @Generated
     public static StopAnalyzer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

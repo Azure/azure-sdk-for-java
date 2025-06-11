@@ -6,7 +6,6 @@
 
 package com.azure.search.documents.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -18,19 +17,16 @@ public final class SemanticErrorReason extends ExpandableStringEnum<SemanticErro
      * If `semanticMaxWaitInMilliseconds` was set and the semantic processing duration exceeded that value. Only the
      * base results were returned.
      */
-    @Generated
     public static final SemanticErrorReason MAX_WAIT_EXCEEDED = fromString("maxWaitExceeded");
 
     /**
      * The request was throttled. Only the base results were returned.
      */
-    @Generated
     public static final SemanticErrorReason CAPACITY_OVERLOADED = fromString("capacityOverloaded");
 
     /**
      * At least one step of the semantic process failed.
      */
-    @Generated
     public static final SemanticErrorReason TRANSIENT = fromString("transient");
 
     /**
@@ -38,7 +34,6 @@ public final class SemanticErrorReason extends ExpandableStringEnum<SemanticErro
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public SemanticErrorReason() {
     }
@@ -49,7 +44,6 @@ public final class SemanticErrorReason extends ExpandableStringEnum<SemanticErro
      * @param name a name to look for.
      * @return the corresponding SemanticErrorReason.
      */
-    @Generated
     public static SemanticErrorReason fromString(String name) {
         return fromString(name, SemanticErrorReason.class);
     }
@@ -59,7 +53,6 @@ public final class SemanticErrorReason extends ExpandableStringEnum<SemanticErro
      * 
      * @return known SemanticErrorReason values.
      */
-    @Generated
     public static Collection<SemanticErrorReason> values() {
         return values(SemanticErrorReason.class);
     }

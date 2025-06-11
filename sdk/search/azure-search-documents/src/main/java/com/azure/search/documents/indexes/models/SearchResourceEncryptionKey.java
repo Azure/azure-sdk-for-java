@@ -6,7 +6,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -26,46 +25,35 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
     /*
      * The name of your Azure Key Vault key to be used to encrypt your data at rest.
      */
-    @Generated
     private final String keyName;
 
     /*
      * The version of your Azure Key Vault key to be used to encrypt your data at rest.
      */
-    @Generated
-    private String keyVersion;
+    private final String keyVersion;
 
     /*
      * The URI of your Azure Key Vault, also referred to as DNS name, that contains the key to be used to encrypt your
      * data at rest. An example URI might be `https://my-keyvault-name.vault.azure.net`.
      */
-    @Generated
     private final String vaultUrl;
 
     /*
      * Optional Azure Active Directory credentials used for accessing your Azure Key Vault. Not required if using
      * managed identity instead.
      */
-    @Generated
     private AzureActiveDirectoryApplicationCredentials accessCredentials;
-
-    /*
-     * An explicit managed identity to use for this encryption key. If not specified and the access credentials property
-     * is null, the system-assigned managed identity is used. On update to the resource, if the explicit identity is
-     * unspecified, it remains unchanged. If "none" is specified, the value of this property is cleared.
-     */
-    @Generated
-    private SearchIndexerDataIdentity identity;
 
     /**
      * Creates an instance of SearchResourceEncryptionKey class.
      *
      * @param keyName the keyName value to set.
+     * @param keyVersion the keyVersion value to set.
      * @param vaultUrl the vaultUrl value to set.
      */
-    @Generated
-    public SearchResourceEncryptionKey(String keyName, String vaultUrl) {
+    public SearchResourceEncryptionKey(String keyName, String keyVersion, String vaultUrl) {
         this.keyName = keyName;
+        this.keyVersion = keyVersion;
         this.vaultUrl = vaultUrl;
     }
 
@@ -74,7 +62,6 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
      *
      * @return the keyName value.
      */
-    @Generated
     public String getKeyName() {
         return this.keyName;
     }
@@ -84,21 +71,8 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
      *
      * @return the keyVersion value.
      */
-    @Generated
     public String getKeyVersion() {
         return this.keyVersion;
-    }
-
-    /**
-     * Set the keyVersion property: The version of your Azure Key Vault key to be used to encrypt your data at rest.
-     *
-     * @param keyVersion the keyVersion value to set.
-     * @return the SearchResourceEncryptionKey object itself.
-     */
-    @Generated
-    public SearchResourceEncryptionKey setKeyVersion(String keyVersion) {
-        this.keyVersion = keyVersion;
-        return this;
     }
 
     /**
@@ -107,51 +81,20 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
      *
      * @return the vaultUrl value.
      */
-    @Generated
     public String getVaultUrl() {
         return this.vaultUrl;
     }
 
     /**
-     * Get the identity property: An explicit managed identity to use for this encryption key. If not specified and the
-     * access credentials property is null, the system-assigned managed identity is used. On update to the resource, if
-     * the explicit identity is unspecified, it remains unchanged. If "none" is specified, the value of this property is
-     * cleared.
-     *
-     * @return the identity value.
-     */
-    @Generated
-    public SearchIndexerDataIdentity getIdentity() {
-        return this.identity;
-    }
-
-    /**
-     * Set the identity property: An explicit managed identity to use for this encryption key. If not specified and the
-     * access credentials property is null, the system-assigned managed identity is used. On update to the resource, if
-     * the explicit identity is unspecified, it remains unchanged. If "none" is specified, the value of this property is
-     * cleared.
-     *
-     * @param identity the identity value to set.
-     * @return the SearchResourceEncryptionKey object itself.
-     */
-    @Generated
-    public SearchResourceEncryptionKey setIdentity(SearchIndexerDataIdentity identity) {
-        this.identity = identity;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("keyVaultKeyName", this.keyName);
-        jsonWriter.writeStringField("keyVaultUri", this.vaultUrl);
         jsonWriter.writeStringField("keyVaultKeyVersion", this.keyVersion);
+        jsonWriter.writeStringField("keyVaultUri", this.vaultUrl);
         jsonWriter.writeJsonField("accessCredentials", this.accessCredentials);
-        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -164,46 +107,45 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchResourceEncryptionKey.
      */
-    @Generated
     public static SearchResourceEncryptionKey fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean keyNameFound = false;
             String keyName = null;
+            boolean keyVersionFound = false;
+            String keyVersion = null;
             boolean vaultUrlFound = false;
             String vaultUrl = null;
-            String keyVersion = null;
             AzureActiveDirectoryApplicationCredentials accessCredentials = null;
-            SearchIndexerDataIdentity identity = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("keyVaultKeyName".equals(fieldName)) {
                     keyName = reader.getString();
                     keyNameFound = true;
+                } else if ("keyVaultKeyVersion".equals(fieldName)) {
+                    keyVersion = reader.getString();
+                    keyVersionFound = true;
                 } else if ("keyVaultUri".equals(fieldName)) {
                     vaultUrl = reader.getString();
                     vaultUrlFound = true;
-                } else if ("keyVaultKeyVersion".equals(fieldName)) {
-                    keyVersion = reader.getString();
                 } else if ("accessCredentials".equals(fieldName)) {
                     accessCredentials = AzureActiveDirectoryApplicationCredentials.fromJson(reader);
-                } else if ("identity".equals(fieldName)) {
-                    identity = SearchIndexerDataIdentity.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            if (keyNameFound && vaultUrlFound) {
+            if (keyNameFound && keyVersionFound && vaultUrlFound) {
                 SearchResourceEncryptionKey deserializedSearchResourceEncryptionKey
-                    = new SearchResourceEncryptionKey(keyName, vaultUrl);
-                deserializedSearchResourceEncryptionKey.keyVersion = keyVersion;
+                    = new SearchResourceEncryptionKey(keyName, keyVersion, vaultUrl);
                 deserializedSearchResourceEncryptionKey.accessCredentials = accessCredentials;
-                deserializedSearchResourceEncryptionKey.identity = identity;
                 return deserializedSearchResourceEncryptionKey;
             }
             List<String> missingProperties = new ArrayList<>();
             if (!keyNameFound) {
                 missingProperties.add("keyVaultKeyName");
+            }
+            if (!keyVersionFound) {
+                missingProperties.add("keyVaultKeyVersion");
             }
             if (!vaultUrlFound) {
                 missingProperties.add("keyVaultUri");
