@@ -16,6 +16,7 @@ import com.azure.communication.callautomation.implementation.models.AddParticipa
 import com.azure.communication.callautomation.implementation.models.CallConnectionPropertiesInternal;
 import com.azure.communication.callautomation.implementation.models.CallConnectionStateModelInternal;
 import com.azure.communication.callautomation.implementation.models.CallParticipantInternal;
+import com.azure.communication.callautomation.implementation.models.MoveParticipantsResponse;
 import com.azure.communication.callautomation.implementation.models.CommunicationCloudEnvironmentModel;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModelKind;
@@ -61,6 +62,7 @@ public class CallAutomationUnitTestBase {
     static final String CALL_OPERATION_CONTEXT = "operationContext";
     static final String DIALOG_ID = "dialogId";
     static final String BOT_APP_ID = "botAppId";
+    static final String FROM_CALL_CONNECTION_ID = "fromCallConnectionId";
 
     static final MediaStreamingOptions MEDIA_STREAMING_CONFIGURATION
         = new MediaStreamingOptions("https://websocket.url.com", MediaStreamingTransport.WEBSOCKET,
@@ -132,6 +134,16 @@ public class CallAutomationUnitTestBase {
                 .setParticipant(ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, false, false));
 
         return serializeObject(addParticipantsResponseInternal);
+    }
+
+    public static String generateMoveParticipantsResponse() {
+        MoveParticipantsResponse moveParticipantsResponse
+            = new MoveParticipantsResponse().setOperationContext(CALL_OPERATION_CONTEXT)
+                .setFromCall(FROM_CALL_CONNECTION_ID)
+                .setParticipants(new ArrayList<>(Collections
+                    .singletonList(ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, false, false))));
+
+        return serializeObject(moveParticipantsResponse);
     }
 
     public static String generateDialogStateResponse() {

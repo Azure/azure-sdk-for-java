@@ -9,6 +9,7 @@ import com.azure.communication.callautomation.implementation.CallMediasImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.AddParticipantResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.CallConnectionPropertiesConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.CancelAddParticipantResponseConstructorProxy;
+import com.azure.communication.callautomation.implementation.accesshelpers.MoveParticipantsResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.MuteParticipantsResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.RemoveParticipantResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.TransferCallResponseConstructorProxy;
@@ -19,6 +20,7 @@ import com.azure.communication.callautomation.implementation.converters.PhoneNum
 import com.azure.communication.callautomation.implementation.models.AddParticipantRequestInternal;
 import com.azure.communication.callautomation.implementation.models.CancelAddParticipantRequest;
 import com.azure.communication.callautomation.implementation.models.CustomCallingContext;
+import com.azure.communication.callautomation.implementation.models.MoveParticipantsRequest;
 import com.azure.communication.callautomation.implementation.models.MuteParticipantsRequestInternal;
 import com.azure.communication.callautomation.implementation.models.RemoveParticipantRequestInternal;
 import com.azure.communication.callautomation.implementation.models.TransferToParticipantRequestInternal;
@@ -30,6 +32,8 @@ import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CallParticipant;
 import com.azure.communication.callautomation.models.CancelAddParticipantOperationOptions;
 import com.azure.communication.callautomation.models.CancelAddParticipantOperationResult;
+import com.azure.communication.callautomation.models.MoveParticipantsOptions;
+import com.azure.communication.callautomation.models.MoveParticipantsResult;
 import com.azure.communication.callautomation.models.MuteParticipantOptions;
 import com.azure.communication.callautomation.models.MuteParticipantResult;
 import com.azure.communication.callautomation.models.RemoveParticipantOptions;
@@ -59,6 +63,8 @@ import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -433,6 +439,74 @@ public final class CallConnectionAsync {
                 .map(response -> {
                     RemoveParticipantResult result
                         = RemoveParticipantResponseConstructorProxy.create(response.getValue());
+                    result.setEventProcessor(eventProcessor, callConnectionId, result.getOperationContext());
+                    return new SimpleResponse<>(response, result);
+                });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Move participants from one call to another.
+     *
+     * @param targetParticipants participants to move.
+     * @param fromCall The CallConnectionId for the call you want to move the participant from.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Result of moving participants to the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MoveParticipantsResult> moveParticipants(List<CommunicationIdentifier> targetParticipants,
+        String fromCall) {
+        return moveParticipants(new MoveParticipantsOptions(targetParticipants, fromCall));
+    }
+
+    /**
+     * Move participants from one call to another.
+     *
+     * @param moveParticipantsOptions Options bag for moveParticipants
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Result of moving participants to the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MoveParticipantsResult> moveParticipants(MoveParticipantsOptions moveParticipantsOptions) {
+        return moveParticipantsWithResponse(moveParticipantsOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Move participants from one call to another.
+     *
+     * @param moveParticipantsOptions Options bag for moveParticipants
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response with result of moving participants to the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<MoveParticipantsResult>>
+        moveParticipantsWithResponse(MoveParticipantsOptions moveParticipantsOptions) {
+        return withContext(context -> moveParticipantsWithResponseInternal(moveParticipantsOptions, context));
+    }
+
+    Mono<Response<MoveParticipantsResult>>
+        moveParticipantsWithResponseInternal(MoveParticipantsOptions moveParticipantsOptions, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+
+            MoveParticipantsRequest request = new MoveParticipantsRequest()
+                .setTargetParticipants(moveParticipantsOptions.getTargetParticipants()
+                    .stream()
+                    .map(CommunicationIdentifierConverter::convert)
+                    .collect(Collectors.toList()))
+                .setFromCall(moveParticipantsOptions.getFromCall())
+                .setOperationContext(moveParticipantsOptions.getOperationContext())
+                .setOperationCallbackUri(moveParticipantsOptions.getOperationCallbackUrl());
+
+            return callConnectionInternal.moveParticipantsWithResponseAsync(callConnectionId, request, context)
+                .map(response -> {
+                    MoveParticipantsResult result
+                        = MoveParticipantsResponseConstructorProxy.create(response.getValue());
                     result.setEventProcessor(eventProcessor, callConnectionId, result.getOperationContext());
                     return new SimpleResponse<>(response, result);
                 });
