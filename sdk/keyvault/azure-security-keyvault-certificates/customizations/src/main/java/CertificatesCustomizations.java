@@ -25,6 +25,7 @@ public class CertificatesCustomizations extends Customization {
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         removeFiles(libraryCustomization.getRawEditor());
         customizeError(libraryCustomization);
+        customizeCertificateKeyType(libraryCustomization);
         customizeCertificateKeyUsage(libraryCustomization);
         customizeServiceVersion(libraryCustomization);
         customizeModuleInfo(libraryCustomization.getRawEditor());
@@ -81,8 +82,10 @@ public class CertificatesCustomizations extends Customization {
         customization.getClass("com.azure.security.keyvault.certificates.models", "CertificateKeyType")
             .customizeAst(ast ->
                 ast.getClassByName("CertificateKeyType").ifPresent(clazz -> {
-                    clazz.getFieldByName("OCT").ifPresent(field -> field.setModifiers(Modifier.Keyword.PRIVATE));
-                    clazz.getFieldByName("OCT_HSM").ifPresent(field -> field.setModifiers(Modifier.Keyword.PRIVATE));
+                    clazz.getFieldByName("OCT").ifPresent(field ->
+                        field.setModifiers(Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL));
+                    clazz.getFieldByName("OCT_HSM").ifPresent(field ->
+                        field.setModifiers(Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL));
                 }));
     }
 
