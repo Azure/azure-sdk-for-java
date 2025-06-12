@@ -23,8 +23,9 @@ class ArtifactInfo {
     [string]$PipelineName
     [hashtable]$Dependencies
 
-    ArtifactInfo([string]$ArtifactId, [string]$LatestGAOrPatchVersion) {
+    ArtifactInfo([string]$ArtifactId, [string]$GroupId, [string]$LatestGAOrPatchVersion) {
         $this.ArtifactId = $ArtifactId
+        $this.GroupId = $GroupId
         $this.LatestGAOrPatchVersion = $LatestGAOrPatchVersion
     }
 }
@@ -50,19 +51,19 @@ function GetVersionInfoForAllMavenArtifacts([string]$GroupId = "com.azure") {
     $azComArtifactIds = GetAllAzComClientArtifactsFromMaven -GroupId $GroupId
 
     foreach ($artifactId in $azComArtifactIds) {
-        $artifactInfos[$artifactId] = GetVersionInfoForMavenArtifact -ArtifactId $artifactId
+        $artifactInfos[$artifactId] = GetVersionInfoForMavenArtifact -ArtifactId $artifactId -GroupId $GroupId
     }
 
     return $artifactInfos
 }
 
 # Get version info for all a Maven artifact
-function GetVersionInfoForMavenArtifact($ArtifactId) {
-    $info = GetVersionInfoForAnArtifactId -ArtifactId $artifactId
+function GetVersionInfoForMavenArtifact($ArtifactId, $GroupId = "com.azure") {
+    $info = GetVersionInfoForAnArtifactId -GroupId $groupId -ArtifactId $artifactId
     $artifactId = $info.ArtifactId
     $latestGAOrPatchVersion = $info.LatestGAOrPatchVersion
 
-    return [ArtifactInfo]::new($artifactId, $latestGAOrPatchVersion)
+    return [ArtifactInfo]::new($artifactId, $groupId, $latestGAOrPatchVersion)
 }
 
 # Parse the dependency information for each of the artifact from maven.
@@ -70,7 +71,8 @@ function UpdateDependencies($ArtifactInfos) {
     foreach ($artifactId in $ArtifactInfos.Keys) {
         $deps = @{}
         $sdkVersion = $ArtifactInfos[$artifactId].LatestGAOrPatchVersion
-        $pomFileUri = "https://repo1.maven.org/maven2/com/azure/$artifactId/$sdkVersion/$artifactId-$sdkVersion.pom"
+        $groupPath = $ArtifactInfos[$artifactId].GroupId -replace '\.', '/'
+        $pomFileUri = "https://repo1.maven.org/maven2/$groupPath/$artifactId/$sdkVersion/$artifactId-$sdkVersion.pom"
         $webResponseObj = Invoke-WebRequest -Uri $pomFileUri
         $dependencies = ([xml]$webResponseObj.Content).project.dependencies.dependency | Where-Object { (([String]::IsNullOrWhiteSpace($_.scope)) -or ($_.scope -eq 'compile')) }
         $dependencies | ForEach-Object { $deps[$_.artifactId] = $_.version }
@@ -131,9 +133,6 @@ function CreateForwardLookingVersions($ArtifactInfos) {
 function FindAllArtifactsThatNeedPatching($ArtifactInfos, $AllDependenciesWithVersion) {
     foreach($arId in $ArtifactInfos.Keys) {
         $arInfo = $ArtifactInfos[$arId]
-        if($arInfo.GroupId -ne 'com.azure') {
-            continue;
-        }
 
         foreach($depId in $arInfo.Dependencies.Keys) {
             $depVersion = $arInfo.Dependencies[$depId]
@@ -166,7 +165,7 @@ function ArtifactsToPatchUtil([String] $DependencyId, [hashtable]$ArtifactInfos,
 }
 
 # Update dependencies in the version client file.
-function UpdateDependenciesInVersionClient([hashtable]$ArtifactInfos, [string]$GroupId = "com.azure") {
+function UpdateDependenciesInVersionClient([hashtable]$ArtifactInfos) {
     ## We need to update the version_client.txt to have the correct versions in place.
     foreach ($artifactId in $ArtifactInfos.Keys) {
         $newDependencyVersion = $ArtifactInfos[$artifactId].FutureReleasePatchVersion
@@ -178,8 +177,8 @@ function UpdateDependenciesInVersionClient([hashtable]$ArtifactInfos, [string]$G
         $currentFileVersion = $ArtifactInfos[$artifactId].CurrentPomFileVersion
 
         if ($newDependencyVersion) {
-            $cmdOutput = SetDependencyVersion -GroupId $GroupId -ArtifactId $artifactId -Version $newDependencyVersion
-            $cmdOutput = SetCurrentVersion -GroupId $GroupId -ArtifactId $artifactId -Version $currentFileVersion
+            $cmdOutput = SetDependencyVersion -GroupId $ArtifactInfos[$artifactId].GroupId -ArtifactId $artifactId -Version $newDependencyVersion
+            $cmdOutput = SetCurrentVersion -GroupId $ArtifactInfos[$artifactId].GroupId -ArtifactId $artifactId -Version $currentFileVersion
         }
     }
 }
