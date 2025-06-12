@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package io.clientcore.http.netty4.implementation;
 
+import io.clientcore.core.http.models.HttpRequest;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
@@ -13,7 +14,12 @@ import io.netty.handler.flush.FlushConsolidationHandler;
 import io.netty.handler.ssl.ApplicationProtocolNames;
 import io.netty.handler.ssl.ApplicationProtocolNegotiationHandler;
 
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicReference;
+
 import static io.clientcore.http.netty4.implementation.Netty4Utility.createCodec;
+import static io.clientcore.http.netty4.implementation.Netty4Utility.sendHttp11Request;
+import static io.clientcore.http.netty4.implementation.Netty4Utility.sendHttp2Request;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.setOrSuppressError;
 
 /**
@@ -21,11 +27,31 @@ import static io.clientcore.http.netty4.implementation.Netty4Utility.setOrSuppre
  * either HTTP/1.1 or HTTP/2 based on the result of negotiation.
  */
 public final class Netty4AlpnHandler extends ApplicationProtocolNegotiationHandler {
+    private final HttpRequest request;
+    private final boolean addProgressAndTimeoutHandler;
+    private final AtomicReference<Throwable> errorReference;
+    private final CountDownLatch latch;
+
     /**
      * Creates a new instance of {@link Netty4AlpnHandler} with a fallback to using HTTP/1.1.
+     *
+     * @param request The request to send once ALPN negotiation completes.
+     * @param addProgressAndTimeoutHandler Whether the progress and timeout handler was added to the ChannelPipeline.
+     * @param errorReference An AtomicReference keeping track of errors during the request lifecycle.
+     * @param latch A CountDownLatch that will be released once the request completes.
      */
-    public Netty4AlpnHandler() {
+    public Netty4AlpnHandler(HttpRequest request, boolean addProgressAndTimeoutHandler,
+        AtomicReference<Throwable> errorReference, CountDownLatch latch) {
         super(ApplicationProtocolNames.HTTP_1_1);
+        this.request = request;
+        this.addProgressAndTimeoutHandler = addProgressAndTimeoutHandler;
+        this.errorReference = errorReference;
+        this.latch = latch;
+    }
+
+    @Override
+    public boolean isSharable() {
+        return false;
     }
 
     @Override
@@ -40,31 +66,29 @@ public final class Netty4AlpnHandler extends ApplicationProtocolNegotiationHandl
             pipeline.addAfter(Netty4HandlerNames.HTTP_2_CODEC, Netty4HandlerNames.HTTP_2_MULTIPLEX,
                 http2MultiplexHandler);
 
-            if (channel.pipeline().get(Netty4HandlerNames.HTTP_1_1_CODEC) != null) {
-                sendHttp11Request(request, channel, addProgressAndTimeoutHandler, errorReference)
-                    .addListener((ChannelFutureListener) sendListener -> {
-                        if (!sendListener.isSuccess()) {
-                            setOrSuppressError(errorReference, sendListener.cause());
-                            sendListener.channel().close();
-                            latch.countDown();
-                        } else {
-                            sendListener.channel().read();
-                        }
-                    });
-            } else if (channel.pipeline().get(Netty4HandlerNames.HTTP_2_CODEC) != null) {
-                sendHttp2Request(request, channel, addProgressAndTimeoutHandler, errorReference)
-                    .addListener((ChannelFutureListener) sendListener -> {
-                        if (!sendListener.isSuccess()) {
-                            setOrSuppressError(errorReference, sendListener.cause());
-                            sendListener.channel().close();
-                            latch.countDown();
-                        } else {
-                            sendListener.channel().read();
-                        }
-                    });
-            }
+            sendHttp2Request(request, ctx.channel(), addProgressAndTimeoutHandler, errorReference)
+                .addListener((ChannelFutureListener) sendListener -> {
+                    if (!sendListener.isSuccess()) {
+                        setOrSuppressError(errorReference, sendListener.cause());
+                        sendListener.channel().close();
+                        latch.countDown();
+                    } else {
+                        sendListener.channel().read();
+                    }
+                });
         } else if (ApplicationProtocolNames.HTTP_1_1.equals(protocol)) {
             ctx.pipeline().addAfter(Netty4HandlerNames.SSL, Netty4HandlerNames.HTTP_1_1_CODEC, createCodec());
+
+            sendHttp11Request(request, ctx.channel(), addProgressAndTimeoutHandler, errorReference)
+                .addListener((ChannelFutureListener) sendListener -> {
+                    if (!sendListener.isSuccess()) {
+                        setOrSuppressError(errorReference, sendListener.cause());
+                        sendListener.channel().close();
+                        latch.countDown();
+                    } else {
+                        sendListener.channel().read();
+                    }
+                });
         } else {
             throw new IllegalStateException("unknown protocol: " + protocol);
         }

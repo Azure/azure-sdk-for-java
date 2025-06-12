@@ -13,8 +13,6 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.ServerSentResult;
 import io.clientcore.core.models.binarydata.BinaryData;
-import io.clientcore.core.models.binarydata.FileBinaryData;
-import io.clientcore.core.models.binarydata.InputStreamBinaryData;
 import io.clientcore.core.utils.AuthenticateChallenge;
 import io.clientcore.core.utils.ProgressReporter;
 import io.clientcore.core.utils.ServerSentEventUtils;
@@ -24,26 +22,13 @@ import io.clientcore.http.netty4.implementation.Netty4HandlerNames;
 import io.clientcore.http.netty4.implementation.Netty4ProgressAndTimeoutHandler;
 import io.clientcore.http.netty4.implementation.Netty4ResponseHandler;
 import io.clientcore.http.netty4.implementation.Netty4SslInitializationHandler;
-import io.clientcore.http.netty4.implementation.WrappedHttpHeaders;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
-import io.netty.handler.codec.http.DefaultFullHttpRequest;
-import io.netty.handler.codec.http.DefaultHttpRequest;
 import io.netty.handler.codec.http.HttpClientCodec;
-import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http.HttpVersion;
-import io.netty.handler.codec.http2.DefaultHttp2DataFrame;
-import io.netty.handler.codec.http2.DefaultHttp2Headers;
-import io.netty.handler.codec.http2.DefaultHttp2HeadersFrame;
-import io.netty.handler.codec.http2.Http2DataChunkedInput;
-import io.netty.handler.codec.http2.Http2Headers;
-import io.netty.handler.codec.http2.Http2HeadersFrame;
 import io.netty.handler.codec.http2.Http2SecurityUtil;
 import io.netty.handler.proxy.ProxyHandler;
 import io.netty.handler.ssl.ApplicationProtocolConfig;
@@ -53,16 +38,10 @@ import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.ssl.SslProvider;
 import io.netty.handler.ssl.SupportedCipherSuiteFilter;
-import io.netty.handler.stream.ChunkedInput;
-import io.netty.handler.stream.ChunkedNioFile;
-import io.netty.handler.stream.ChunkedStream;
-import io.netty.handler.stream.ChunkedWriteHandler;
 
 import javax.net.ssl.SSLException;
 import java.io.IOException;
 import java.net.URI;
-import java.nio.channels.FileChannel;
-import java.nio.file.StandardOpenOption;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
@@ -71,8 +50,8 @@ import java.util.function.Consumer;
 import static io.clientcore.core.utils.ServerSentEventUtils.attemptRetry;
 import static io.clientcore.core.utils.ServerSentEventUtils.processTextEventStream;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.createCodec;
+import static io.clientcore.http.netty4.implementation.Netty4Utility.sendHttp11Request;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.setOrSuppressError;
-import static io.netty.handler.codec.http.DefaultHttpHeadersFactory.trailersFactory;
 
 /**
  * HttpClient implementation using synchronous Netty operations.
@@ -130,7 +109,64 @@ class NettyHttpClient implements HttpClient {
 
         // Configure an immutable ChannelInitializer in the builder with everything that can be added on a non-per
         // request basis.
-        bootstrap.handler(createChannelInitializer(errorReference, isHttps, host, port));
+        bootstrap.handler(new ChannelInitializer<Channel>() {
+            @Override
+            protected void initChannel(Channel channel) throws SSLException {
+                // Test whether proxying should be applied to this Channel. If so, add it.
+                boolean hasProxy = channelInitializationProxyHandler.test(channel.remoteAddress());
+                if (hasProxy) {
+                    ProxyHandler proxyHandler = channelInitializationProxyHandler.createProxy(proxyChallenges);
+                    proxyHandler.connectFuture().addListener(future -> {
+                        if (!future.isSuccess()) {
+                            setOrSuppressError(errorReference, future.cause());
+                        }
+                    });
+
+                    channel.pipeline().addFirst(Netty4HandlerNames.PROXY, proxyHandler);
+                }
+
+                // Add SSL handling if the request is HTTPS.
+                if (isHttps) {
+                    SslContextBuilder sslContextBuilder
+                        = SslContextBuilder.forClient().endpointIdentificationAlgorithm("HTTPS");
+                    if (maximumHttpVersion == HttpProtocolVersion.HTTP_2) {
+                        // If HTTP/2 is the maximum version, we need to ensure that ALPN is enabled.
+                        SslProvider sslProvider = SslContext.defaultClientProvider();
+                        ApplicationProtocolConfig.SelectorFailureBehavior selectorBehavior;
+                        ApplicationProtocolConfig.SelectedListenerFailureBehavior selectedBehavior;
+                        if (sslProvider == SslProvider.JDK) {
+                            selectorBehavior = ApplicationProtocolConfig.SelectorFailureBehavior.FATAL_ALERT;
+                            selectedBehavior = ApplicationProtocolConfig.SelectedListenerFailureBehavior.FATAL_ALERT;
+                        } else {
+                            // Netty OpenSslContext doesn't support FATAL_ALERT, use NO_ADVERTISE and ACCEPT
+                            // instead.
+                            selectorBehavior = ApplicationProtocolConfig.SelectorFailureBehavior.NO_ADVERTISE;
+                            selectedBehavior = ApplicationProtocolConfig.SelectedListenerFailureBehavior.ACCEPT;
+                        }
+
+                        sslContextBuilder.ciphers(Http2SecurityUtil.CIPHERS, SupportedCipherSuiteFilter.INSTANCE)
+                            .applicationProtocolConfig(new ApplicationProtocolConfig(
+                                ApplicationProtocolConfig.Protocol.ALPN, selectorBehavior, selectedBehavior,
+                                ApplicationProtocolNames.HTTP_2, ApplicationProtocolNames.HTTP_1_1));
+                    }
+                    if (sslContextModifier != null) {
+                        // Allow the caller to modify the SslContextBuilder before it is built.
+                        sslContextModifier.accept(sslContextBuilder);
+                    }
+
+                    SslContext ssl = sslContextBuilder.build();
+                    // SSL handling is added last here. This is done as proxying could require SSL handling too.
+                    channel.pipeline().addLast(Netty4HandlerNames.SSL, ssl.newHandler(channel.alloc(), host, port));
+                    channel.pipeline()
+                        .addLast(Netty4HandlerNames.SSL_INITIALIZER, new Netty4SslInitializationHandler());
+                }
+
+                if (isHttps) {
+                    channel.pipeline()
+                        .addLast(new Netty4AlpnHandler(request, addProgressAndTimeoutHandler, errorReference, latch));
+                }
+            }
+        });
 
         try {
             bootstrap.connect(host, port).addListener((ChannelFutureListener) connectListener -> {
@@ -260,223 +296,6 @@ class NettyHttpClient implements HttpClient {
         }
 
         return response;
-    }
-
-    private ChannelInitializer<Channel> createChannelInitializer(AtomicReference<Throwable> errorReference,
-        boolean isHttps, String host, int port) {
-        return new ChannelInitializer<Channel>() {
-            @Override
-            protected void initChannel(Channel channel) throws SSLException {
-                // Test whether proxying should be applied to this Channel. If so, add it.
-                boolean hasProxy = channelInitializationProxyHandler.test(channel.remoteAddress());
-                if (hasProxy) {
-                    ProxyHandler proxyHandler = channelInitializationProxyHandler.createProxy(proxyChallenges);
-                    proxyHandler.connectFuture().addListener(future -> {
-                        if (!future.isSuccess()) {
-                            setOrSuppressError(errorReference, future.cause());
-                        }
-                    });
-
-                    channel.pipeline().addFirst(Netty4HandlerNames.PROXY, proxyHandler);
-                }
-
-                // Add SSL handling if the request is HTTPS.
-                if (isHttps) {
-                    SslContextBuilder sslContextBuilder
-                        = SslContextBuilder.forClient().endpointIdentificationAlgorithm("HTTPS");
-                    if (maximumHttpVersion == HttpProtocolVersion.HTTP_2) {
-                        // If HTTP/2 is the maximum version, we need to ensure that ALPN is enabled.
-                        SslProvider sslProvider = SslContext.defaultClientProvider();
-                        ApplicationProtocolConfig.SelectorFailureBehavior selectorBehavior;
-                        ApplicationProtocolConfig.SelectedListenerFailureBehavior selectedBehavior;
-                        if (sslProvider == SslProvider.JDK) {
-                            selectorBehavior = ApplicationProtocolConfig.SelectorFailureBehavior.FATAL_ALERT;
-                            selectedBehavior = ApplicationProtocolConfig.SelectedListenerFailureBehavior.FATAL_ALERT;
-                        } else {
-                            // Netty OpenSslContext doesn't support FATAL_ALERT, use NO_ADVERTISE and ACCEPT
-                            // instead.
-                            selectorBehavior = ApplicationProtocolConfig.SelectorFailureBehavior.NO_ADVERTISE;
-                            selectedBehavior = ApplicationProtocolConfig.SelectedListenerFailureBehavior.ACCEPT;
-                        }
-
-                        sslContextBuilder.ciphers(Http2SecurityUtil.CIPHERS, SupportedCipherSuiteFilter.INSTANCE)
-                            .applicationProtocolConfig(new ApplicationProtocolConfig(
-                                ApplicationProtocolConfig.Protocol.ALPN, selectorBehavior, selectedBehavior,
-                                ApplicationProtocolNames.HTTP_2, ApplicationProtocolNames.HTTP_1_1));
-                    }
-                    if (sslContextModifier != null) {
-                        // Allow the caller to modify the SslContextBuilder before it is built.
-                        sslContextModifier.accept(sslContextBuilder);
-                    }
-
-                    SslContext ssl = sslContextBuilder.build();
-                    // SSL handling is added last here. This is done as proxying could require SSL handling too.
-                    channel.pipeline().addLast(Netty4HandlerNames.SSL, ssl.newHandler(channel.alloc(), host, port));
-                    channel.pipeline()
-                        .addLast(Netty4HandlerNames.SSL_INITIALIZER, new Netty4SslInitializationHandler());
-                }
-
-                if (isHttps && maximumHttpVersion == HttpProtocolVersion.HTTP_2) {
-                    channel.pipeline().addLast(new Netty4AlpnHandler());
-                }
-            }
-        };
-    }
-
-    private ChannelFuture sendHttp11Request(HttpRequest request, Channel channel,
-        boolean progressAndTimeoutHandlerAdded, AtomicReference<Throwable> errorReference) {
-        HttpMethod nettyMethod = HttpMethod.valueOf(request.getHttpMethod().toString());
-        String uri = request.getUri().toString();
-        WrappedHttpHeaders wrappedHttpHeaders = new WrappedHttpHeaders(request.getHeaders());
-
-        // TODO (alzimmer): This will mutate the underlying ClientCore HttpHeaders. Will need to think about this design
-        //  more once it's closer to completion.
-        wrappedHttpHeaders.getCoreHeaders().set(HttpHeaderName.HOST, request.getUri().getHost());
-
-        BinaryData requestBody = request.getBody();
-        if (requestBody instanceof FileBinaryData) {
-            FileBinaryData fileBinaryData = (FileBinaryData) requestBody;
-            try {
-                return sendChunkedHttp11(channel,
-                    new ChunkedNioFile(FileChannel.open(fileBinaryData.getFile(), StandardOpenOption.READ),
-                        fileBinaryData.getPosition(), fileBinaryData.getLength(), 8192),
-                    new DefaultHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, wrappedHttpHeaders),
-                    progressAndTimeoutHandlerAdded, errorReference);
-            } catch (IOException ex) {
-                return channel.newFailedFuture(ex);
-            }
-        } else if (requestBody instanceof InputStreamBinaryData) {
-            return sendChunkedHttp11(channel, new ChunkedStream(requestBody.toStream()),
-                new DefaultHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, wrappedHttpHeaders),
-                progressAndTimeoutHandlerAdded, errorReference);
-        } else {
-            ByteBuf body = Unpooled.EMPTY_BUFFER;
-            if (requestBody != null && requestBody != BinaryData.empty()) {
-                // Longer term, see if there is a way to have BinaryData act as the ByteBuf body to further eliminate
-                // copying of byte[]s.
-                body = Unpooled.wrappedBuffer(requestBody.toBytes());
-            }
-            if (body.readableBytes() > 0) {
-                // TODO (alzimmer): Should we be setting Content-Length here again? Shouldn't this be handled externally
-                //  by the creator of the HttpRequest?
-                wrappedHttpHeaders.getCoreHeaders()
-                    .set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(body.readableBytes()));
-            }
-
-            Throwable error = errorReference.get();
-            if (error != null) {
-                return channel.newFailedFuture(error);
-            }
-
-            return channel.writeAndFlush(new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, body,
-                wrappedHttpHeaders, trailersFactory().newHeaders()));
-        }
-    }
-
-    private <T> ChannelFuture sendChunkedHttp11(Channel channel, ChunkedInput<T> chunkedInput,
-        io.netty.handler.codec.http.HttpRequest initialLineAndHeaders, boolean progressAndTimeoutHandlerAdded,
-        AtomicReference<Throwable> errorReference) {
-        if (channel.pipeline().get(Netty4HandlerNames.CHUNKED_WRITER) == null) {
-            // Add the ChunkedWriteHandler which will handle sending the chunkedInput.
-            ChunkedWriteHandler chunkedWriteHandler = new ChunkedWriteHandler();
-            if (progressAndTimeoutHandlerAdded) {
-                channel.pipeline()
-                    .addBefore(Netty4HandlerNames.PROGRESS_AND_TIMEOUT, Netty4HandlerNames.CHUNKED_WRITER,
-                        chunkedWriteHandler);
-            } else {
-                channel.pipeline().addLast(Netty4HandlerNames.CHUNKED_WRITER, chunkedWriteHandler);
-            }
-        }
-
-        Throwable error = errorReference.get();
-        if (error != null) {
-            return channel.newFailedFuture(error);
-        }
-
-        channel.write(initialLineAndHeaders);
-        return channel.writeAndFlush(chunkedInput);
-    }
-
-    private ChannelFuture sendHttp2Request(HttpRequest request, Channel channel, boolean progressAndTimeoutHandlerAdded,
-        AtomicReference<Throwable> errorReference) {
-        // HTTP/2 requests are more complicated than HTTP/1.1 as they are a stream of frames with specific purposes.
-        // Additionally, since we're using multiplexing, we need to associate a stream ID with each frame.
-
-        // Send the headers frame(s).
-        // Unlike in HTTP/1.1, there isn't a status line on requests. Rather pseudo headers are used.
-        // TODO (alzimmer): Create an Http2Headers implementations similar to WrappedHttpHeaders.
-        Http2Headers headers = new DefaultHttp2Headers();
-        headers.method(request.getHttpMethod().toString());
-        headers.scheme(request.getUri().getScheme());
-        headers.authority(request.getUri().getAuthority());
-        if (request.getUri().getPath() != null) {
-            headers.path(request.getUri().getPath());
-        }
-
-        // If the request doesn't have a body or is a HEAD request, only a headers frame should be sent before the
-        // client indicates closure of its half of the stream.
-        BinaryData requestBody = request.getBody();
-        Long bodyLength = requestBody.getLength();
-        boolean headersOnly = (bodyLength != null && bodyLength == 0)
-            || request.getHttpMethod() == io.clientcore.core.http.models.HttpMethod.HEAD;
-
-        request.getHeaders()
-            .stream()
-            .forEach(httpHeader -> headers.add(httpHeader.getName().getCaseInsensitiveName(), httpHeader.getValues()));
-        Http2HeadersFrame headersFrame = new DefaultHttp2HeadersFrame(headers, headersOnly);
-
-        if (headersOnly) {
-            return channel.write(headersFrame);
-        }
-
-        channel.write(headersFrame);
-
-        // Now it's time to write the data frames.
-        if (requestBody instanceof FileBinaryData) {
-            FileBinaryData fileBinaryData = (FileBinaryData) requestBody;
-            try {
-                return sendChunkedHttp2(channel,
-                    new ChunkedNioFile(FileChannel.open(fileBinaryData.getFile(), StandardOpenOption.READ),
-                        fileBinaryData.getPosition(), fileBinaryData.getLength(), 8192),
-                    progressAndTimeoutHandlerAdded, errorReference);
-            } catch (IOException ex) {
-                return channel.newFailedFuture(ex);
-            }
-        } else if (requestBody instanceof InputStreamBinaryData) {
-            return sendChunkedHttp2(channel, new ChunkedStream(requestBody.toStream()), progressAndTimeoutHandlerAdded,
-                errorReference);
-        } else {
-            ByteBuf body = Unpooled.wrappedBuffer(requestBody.toBytes());
-
-            Throwable error = errorReference.get();
-            if (error != null) {
-                return channel.newFailedFuture(error);
-            }
-
-            return channel.writeAndFlush(new DefaultHttp2DataFrame(body, true));
-        }
-    }
-
-    private ChannelFuture sendChunkedHttp2(Channel channel, ChunkedInput<ByteBuf> chunkedInput,
-        boolean progressAndTimeoutHandlerAdded, AtomicReference<Throwable> errorReference) {
-        if (channel.pipeline().get(Netty4HandlerNames.CHUNKED_WRITER) == null) {
-            // Add the ChunkedWriteHandler which will handle sending the chunkedInput.
-            ChunkedWriteHandler chunkedWriteHandler = new ChunkedWriteHandler();
-            if (progressAndTimeoutHandlerAdded) {
-                channel.pipeline()
-                    .addBefore(Netty4HandlerNames.PROGRESS_AND_TIMEOUT, Netty4HandlerNames.CHUNKED_WRITER,
-                        chunkedWriteHandler);
-            } else {
-                channel.pipeline().addLast(Netty4HandlerNames.CHUNKED_WRITER, chunkedWriteHandler);
-            }
-        }
-
-        Throwable error = errorReference.get();
-        if (error != null) {
-            return channel.newFailedFuture(error);
-        }
-
-        return channel.writeAndFlush(new Http2DataChunkedInput(chunkedInput, null));
     }
 
     public void close() {
