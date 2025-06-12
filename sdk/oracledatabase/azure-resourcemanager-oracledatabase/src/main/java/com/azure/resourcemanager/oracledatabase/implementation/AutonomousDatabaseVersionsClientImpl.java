@@ -61,7 +61,7 @@ public final class AutonomousDatabaseVersionsClientImpl implements AutonomousDat
      * by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "OracleDatabaseManage")
+    @ServiceInterface(name = "OracleDatabaseManagementClientAutonomousDatabaseVersions")
     public interface AutonomousDatabaseVersionsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/autonomousDbVersions/{autonomousdbversionsname}")

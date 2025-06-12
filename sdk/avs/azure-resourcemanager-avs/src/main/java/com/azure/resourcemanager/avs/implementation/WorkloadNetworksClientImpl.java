@@ -89,7 +89,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AvsClientWorkloadNet")
+    @ServiceInterface(name = "AvsClientWorkloadNetworks")
     public interface WorkloadNetworksService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks")

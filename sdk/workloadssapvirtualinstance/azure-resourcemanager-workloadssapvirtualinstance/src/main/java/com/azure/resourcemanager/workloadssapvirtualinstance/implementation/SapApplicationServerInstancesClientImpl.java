@@ -76,7 +76,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
      * be used by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "WorkloadsSapVirtualI")
+    @ServiceInterface(name = "WorkloadsSapVirtualInstanceMgmtClientSapApplicationServerInstances")
     public interface SapApplicationServerInstancesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/applicationInstances/{applicationInstanceName}")

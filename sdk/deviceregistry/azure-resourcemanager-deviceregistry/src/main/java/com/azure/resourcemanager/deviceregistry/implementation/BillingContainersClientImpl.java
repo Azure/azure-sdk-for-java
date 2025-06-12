@@ -61,7 +61,7 @@ public final class BillingContainersClientImpl implements BillingContainersClien
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DeviceRegistryManage")
+    @ServiceInterface(name = "DeviceRegistryManagementClientBillingContainers")
     public interface BillingContainersService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DeviceRegistry/billingContainers/{billingContainerName}")
