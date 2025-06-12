@@ -8,6 +8,7 @@ import com.azure.ai.vision.face.FaceSessionClientBuilder;
 import com.azure.ai.vision.face.models.CreateLivenessSessionContent;
 import com.azure.ai.vision.face.models.LivenessOperationMode;
 import com.azure.ai.vision.face.models.LivenessSession;
+import com.azure.ai.vision.face.models.LivenessSessionAttempt;
 import com.azure.ai.vision.face.samples.utils.ConfigurationHelper;
 import com.azure.ai.vision.face.samples.utils.Resources;
 import com.azure.ai.vision.face.samples.utils.Utils;
@@ -17,8 +18,6 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.List;
 import java.util.UUID;
 
-import com.azure.ai.vision.face.models.LivenessSessionAttempt;
-import com.azure.ai.vision.face.models.LivenessSessionResults;
 import static com.azure.ai.vision.face.samples.utils.Utils.log;
 import static com.azure.ai.vision.face.samples.utils.Utils.logObject;
 
