@@ -473,9 +473,9 @@ public final class KeyVaultBackupClient {
     private static PollResponse<KeyVaultBackupOperation>
         processBackupOperationResponse(Response<KeyVaultBackupOperation> response) {
 
-        String operationStatus = response.getValue().getStatus().toLowerCase(Locale.US);
+        String operationStatus = response.getValue().getStatus().toLowerCase(Locale.ROOT);
 
-        return new PollResponse<>(toLongRunningOperationStatus(operationStatus.toLowerCase(Locale.US)),
+        return new PollResponse<>(toLongRunningOperationStatus(operationStatus.toLowerCase(Locale.ROOT)),
             response.getValue());
     }
 
@@ -739,9 +739,9 @@ public final class KeyVaultBackupClient {
     private static PollResponse<KeyVaultRestoreOperation>
         processRestoreOperationResponse(Response<KeyVaultRestoreOperation> response) {
 
-        String operationStatus = response.getValue().getStatus().toLowerCase(Locale.US);
+        String operationStatus = response.getValue().getStatus().toLowerCase(Locale.ROOT);
 
-        return new PollResponse<>(toLongRunningOperationStatus(operationStatus.toLowerCase(Locale.US)),
+        return new PollResponse<>(toLongRunningOperationStatus(operationStatus.toLowerCase(Locale.ROOT)),
             response.getValue());
     }
 
@@ -911,9 +911,9 @@ public final class KeyVaultBackupClient {
     private static PollResponse<KeyVaultSelectiveKeyRestoreOperation>
         processSelectiveKeyRestoreOperationResponse(Response<KeyVaultSelectiveKeyRestoreOperation> response) {
 
-        String operationStatus = response.getValue().getStatus().toLowerCase(Locale.US);
+        String operationStatus = response.getValue().getStatus().toLowerCase(Locale.ROOT);
 
-        return new PollResponse<>(toLongRunningOperationStatus(operationStatus.toLowerCase(Locale.US)),
+        return new PollResponse<>(toLongRunningOperationStatus(operationStatus.toLowerCase(Locale.ROOT)),
             response.getValue());
     }
 }
