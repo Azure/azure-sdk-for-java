@@ -5,7 +5,6 @@ package com.azure.ai.vision.face.tests.commands.liveness;
 
 import com.azure.ai.vision.face.FaceSessionClient;
 import com.azure.ai.vision.face.models.CreateLivenessSessionContent;
-import com.azure.ai.vision.face.models.CreateLivenessSessionResult;
 import com.azure.ai.vision.face.models.LivenessSession;
 
 class LivenessSessionSyncCommands implements ILivenessSessionSyncCommands {
@@ -15,7 +14,7 @@ class LivenessSessionSyncCommands implements ILivenessSessionSyncCommands {
         this.mSyncClient = faceSessionClient;
     }
 
-    public CreateLivenessSessionResult createLivenessSessionSync(CreateLivenessSessionContent content) {
+    public LivenessSession createLivenessSessionSync(CreateLivenessSessionContent content) {
         return mSyncClient.createLivenessSession(content);
     }
 

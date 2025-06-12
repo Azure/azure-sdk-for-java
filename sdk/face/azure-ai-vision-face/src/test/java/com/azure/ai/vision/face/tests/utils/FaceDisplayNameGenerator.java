@@ -3,9 +3,9 @@
 
 package com.azure.ai.vision.face.tests.utils;
 
-import org.junit.jupiter.api.DisplayNameGenerator;
-
 import java.lang.reflect.Method;
+
+import org.junit.jupiter.api.DisplayNameGenerator;
 
 public class FaceDisplayNameGenerator implements DisplayNameGenerator {
     private static final DisplayNameGenerator STANDARD_DISPLAY_NAME_GENERATOR

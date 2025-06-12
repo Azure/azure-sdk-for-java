@@ -3,12 +3,12 @@
 
 package com.azure.ai.vision.face.tests.commands.detection;
 
+import java.util.List;
+
 import com.azure.ai.vision.face.models.FaceAttributeType;
 import com.azure.ai.vision.face.models.FaceDetectionModel;
 import com.azure.ai.vision.face.models.FaceDetectionResult;
 import com.azure.ai.vision.face.models.FaceRecognitionModel;
-
-import java.util.List;
 
 public abstract class DetectSyncFunction {
     public abstract List<FaceDetectionResult> execute(FaceDetectionModel detectionModel,
