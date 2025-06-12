@@ -144,13 +144,9 @@ public class VectorStoresAsyncClientTest extends ClientTestBase {
         String vectorStoreName = "test_delete_vector_store_async";
 
         StepVerifier.create(createVectorStore(vectorStoreName).flatMap(createdStore -> {
-            return vectorStoresAsyncClient.deleteVectorStore(createdStore.getId()).doOnNext(status -> {
-                // Remove from cleanup list since it's already deleted
-                vectorStores.remove(createdStore);
-            });
-        })).assertNext(deletionStatus -> {
-            assertTrue(deletionStatus, "Vector store should be marked as deleted");
-        }).verifyComplete();
+            vectorStores.remove(createdStore);
+            return vectorStoresAsyncClient.deleteVectorStore(createdStore.getId());
+        })).verifyComplete();
     }
 
     // Test uploading a vector store file.
@@ -217,9 +213,6 @@ public class VectorStoresAsyncClientTest extends ClientTestBase {
                 .flatMap(uploadedFile -> createVectorStoreFile(store.getId(), uploadedFile.getId()))
                 .flatMap(vectorStoreFile -> vectorStoresAsyncClient.deleteVectorStoreFile(store.getId(),
                     vectorStoreFile.getId()))))
-            .assertNext(deletionStatus -> {
-                assertTrue(deletionStatus, "Vector store file should be marked as deleted");
-            })
             .verifyComplete();
     }
 

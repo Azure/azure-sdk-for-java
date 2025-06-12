@@ -77,7 +77,7 @@ public final class FilesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listFiles(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listFilesInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -87,7 +87,7 @@ public final class FilesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listFilesSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listFilesInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -216,9 +216,9 @@ public final class FilesImpl {
      * @return a list of previously uploaded files along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listFilesWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> listFilesInternalWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listFiles(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.listFilesInternal(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
@@ -262,10 +262,10 @@ public final class FilesImpl {
      * @return a list of previously uploaded files along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listFilesWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> listFilesInternalWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listFilesSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), accept,
-            requestOptions, Context.NONE);
+        return service.listFilesInternalSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            accept, requestOptions, Context.NONE);
     }
 
     /**

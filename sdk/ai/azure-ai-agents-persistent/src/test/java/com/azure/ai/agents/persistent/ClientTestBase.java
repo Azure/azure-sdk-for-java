@@ -66,8 +66,9 @@ public class ClientTestBase extends TestProxyTestBase {
         }
 
         String version = Configuration.getGlobalConfiguration().get("SERVICE_VERSION");
-        AgentsServiceVersion serviceVersion
-            = version != null ? AgentsServiceVersion.valueOf(version) : AgentsServiceVersion.V2025_05_15_PREVIEW;
+        PersistentAgentsServiceVersion serviceVersion = version != null
+            ? PersistentAgentsServiceVersion.valueOf(version)
+            : PersistentAgentsServiceVersion.V2025_05_15_PREVIEW;
         builder.serviceVersion(serviceVersion);
         return builder;
     }

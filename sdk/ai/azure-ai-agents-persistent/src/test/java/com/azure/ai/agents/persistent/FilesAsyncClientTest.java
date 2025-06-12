@@ -88,9 +88,7 @@ public class FilesAsyncClientTest extends ClientTestBase {
         StepVerifier.create(uploadFile(fileName).flatMap(uploadedFile -> {
             String fileId = uploadedFile.getId();
             return filesAsyncClient.deleteFile(fileId);
-        })).assertNext(deletionStatus -> {
-            assertTrue(deletionStatus, "File should be marked as deleted");
-        }).verifyComplete();
+        })).verifyComplete();
 
         // Remove the file from our tracking list since it's been deleted
         uploadedFiles.clear();
@@ -103,12 +101,12 @@ public class FilesAsyncClientTest extends ClientTestBase {
 
         // upload new file
         String fileName = "list_files_test.txt";
-        StepVerifier.create(uploadFile(fileName).then(filesAsyncClient.listFiles())).assertNext(listResponse -> {
-            assertNotNull(listResponse, "File list response should not be null");
-            List<FileInfo> fileInfos = listResponse.getData();
-            assertNotNull(fileInfos, "File list should not be null");
-            assertTrue(fileInfos.size() > 0, "File list should not be empty");
-        }).verifyComplete();
+        StepVerifier.create(uploadFile(fileName).then(filesAsyncClient.listFiles().collectList()))
+            .assertNext(fileInfos -> {
+                assertNotNull(fileInfos, "File list should not be null");
+                assertTrue(!fileInfos.isEmpty(), "File list should not be empty");
+            })
+            .verifyComplete();
     }
 
     @AfterEach

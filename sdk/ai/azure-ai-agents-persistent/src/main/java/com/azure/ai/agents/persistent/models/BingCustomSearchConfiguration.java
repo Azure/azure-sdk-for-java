@@ -36,12 +36,6 @@ public final class BingCustomSearchConfiguration implements JsonSerializable<Bin
     private String market;
 
     /*
-     * The language to use for user interface strings when calling Bing API.
-     */
-    @Generated
-    private String setLang;
-
-    /*
      * The number of search results to return in the bing api response
      */
     @Generated
@@ -109,28 +103,6 @@ public final class BingCustomSearchConfiguration implements JsonSerializable<Bin
     }
 
     /**
-     * Get the setLang property: The language to use for user interface strings when calling Bing API.
-     *
-     * @return the setLang value.
-     */
-    @Generated
-    public String getSetLang() {
-        return this.setLang;
-    }
-
-    /**
-     * Set the setLang property: The language to use for user interface strings when calling Bing API.
-     *
-     * @param setLang the setLang value to set.
-     * @return the BingCustomSearchConfiguration object itself.
-     */
-    @Generated
-    public BingCustomSearchConfiguration setSetLang(String setLang) {
-        this.setLang = setLang;
-        return this;
-    }
-
-    /**
      * Get the count property: The number of search results to return in the bing api response.
      *
      * @return the count value.
@@ -186,7 +158,7 @@ public final class BingCustomSearchConfiguration implements JsonSerializable<Bin
         jsonWriter.writeStringField("connection_id", this.connectionId);
         jsonWriter.writeStringField("instance_name", this.instanceName);
         jsonWriter.writeStringField("market", this.market);
-        jsonWriter.writeStringField("set_lang", this.setLang);
+        jsonWriter.writeStringField("set_lang", this.language);
         jsonWriter.writeNumberField("count", this.count);
         jsonWriter.writeStringField("freshness", this.freshness);
         return jsonWriter.writeEndObject();
@@ -207,7 +179,7 @@ public final class BingCustomSearchConfiguration implements JsonSerializable<Bin
             String connectionId = null;
             String instanceName = null;
             String market = null;
-            String setLang = null;
+            String language = null;
             Long count = null;
             String freshness = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -220,7 +192,7 @@ public final class BingCustomSearchConfiguration implements JsonSerializable<Bin
                 } else if ("market".equals(fieldName)) {
                     market = reader.getString();
                 } else if ("set_lang".equals(fieldName)) {
-                    setLang = reader.getString();
+                    language = reader.getString();
                 } else if ("count".equals(fieldName)) {
                     count = reader.getNullable(JsonReader::getLong);
                 } else if ("freshness".equals(fieldName)) {
@@ -232,10 +204,38 @@ public final class BingCustomSearchConfiguration implements JsonSerializable<Bin
             BingCustomSearchConfiguration deserializedBingCustomSearchConfiguration
                 = new BingCustomSearchConfiguration(connectionId, instanceName);
             deserializedBingCustomSearchConfiguration.market = market;
-            deserializedBingCustomSearchConfiguration.setLang = setLang;
+            deserializedBingCustomSearchConfiguration.language = language;
             deserializedBingCustomSearchConfiguration.count = count;
             deserializedBingCustomSearchConfiguration.freshness = freshness;
             return deserializedBingCustomSearchConfiguration;
         });
+    }
+
+    /*
+     * The language to use for user interface strings when calling Bing API.
+     */
+    @Generated
+    private String language;
+
+    /**
+     * Get the language property: The language to use for user interface strings when calling Bing API.
+     *
+     * @return the language value.
+     */
+    @Generated
+    public String getLanguage() {
+        return this.language;
+    }
+
+    /**
+     * Set the language property: The language to use for user interface strings when calling Bing API.
+     *
+     * @param language the language value to set.
+     * @return the BingCustomSearchConfiguration object itself.
+     */
+    @Generated
+    public BingCustomSearchConfiguration setLanguage(String language) {
+        this.language = language;
+        return this;
     }
 }

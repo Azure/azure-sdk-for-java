@@ -1446,8 +1446,8 @@ public final class RunsAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Flux<StreamUpdate>> createRunStreaming(CreateRunOptions options) {
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<StreamUpdate> createRunStreaming(CreateRunOptions options) {
         // Generated convenience method for createRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
         String threadId = options.getThreadId();
@@ -1476,7 +1476,7 @@ public final class RunsAsyncClient {
                     .collect(Collectors.joining(",")),
                 false);
         }
-        return createRunWithResponse(threadId, createRunRequest, requestOptions).map(response -> {
+        return createRunWithResponse(threadId, createRunRequest, requestOptions).flatMapMany(response -> {
             PersistentAgentServerSentEvents eventStream
                 = new PersistentAgentServerSentEvents(response.getValue().toFluxByteBuffer());
             return eventStream.getEvents();
@@ -1499,15 +1499,15 @@ public final class RunsAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Flux<StreamUpdate>> submitToolOutputsToRunStreaming(String threadId, String runId,
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<StreamUpdate> submitToolOutputsToRunStreaming(String threadId, String runId,
         List<ToolOutput> toolOutputs) {
         RequestOptions requestOptions = new RequestOptions();
         SubmitToolOutputsToRunRequest submitToolOutputsToRunRequestObj
             = new SubmitToolOutputsToRunRequest(toolOutputs).setStream(true);
         BinaryData submitToolOutputsToRunRequest = BinaryData.fromObject(submitToolOutputsToRunRequestObj);
         return submitToolOutputsToRunWithResponse(threadId, runId, submitToolOutputsToRunRequest, requestOptions)
-            .map(response -> {
+            .flatMapMany(response -> {
                 PersistentAgentServerSentEvents eventStream
                     = new PersistentAgentServerSentEvents(response.getValue().toFluxByteBuffer());
                 return eventStream.getEvents();

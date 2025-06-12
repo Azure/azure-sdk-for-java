@@ -756,12 +756,18 @@ public final class ThreadsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a thread deletion operation on successful completion of {@link Mono}.
+     * @return a {@link Mono} that completes when the thread is deleted successfully.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> deleteThread(String threadId) {
+    public Mono<Void> deleteThread(String threadId) {
         // Generated convenience method for deleteThreadInternalWithResponse
         Mono<ThreadDeletionStatus> deletionStatusMono = deleteThreadInternal(threadId);
-        return deletionStatusMono.map(status -> status != null && status.isDeleted());
+        return deletionStatusMono.flatMap(deletionStatus -> {
+            if (deletionStatus == null || !deletionStatus.isDeleted()) {
+                return Mono.error(new RuntimeException("Thread with ID '" + threadId + "' could not be deleted."));
+            } else {
+                return Mono.empty();
+            }
+        });
     }
 }

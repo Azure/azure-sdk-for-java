@@ -1010,11 +1010,18 @@ public final class PersistentAgentsAdministrationAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of an agent deletion operation on successful completion of {@link Mono}.
+     * @return a {@link Mono} that completes when the agent is deleted successfully.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> deleteAgent(String assistantId) {
-        Mono<AgentDeletionStatus> agentDeletionStatusMono = deleteAgentInternal(assistantId);
-        return agentDeletionStatusMono.map(status -> status != null && status.isDeleted());
+    public Mono<Void> deleteAgent(String assistantId) {
+        Mono<AgentDeletionStatus> deletionStatusMono = deleteAgentInternal(assistantId);
+        return deletionStatusMono.flatMap(deletionStatus -> {
+            if (deletionStatus == null || !deletionStatus.isDeleted()) {
+                return Mono.error(
+                    new RuntimeException("Persistent Agent with ID '" + assistantId + "' could not be deleted."));
+            } else {
+                return Mono.empty();
+            }
+        });
     }
 }

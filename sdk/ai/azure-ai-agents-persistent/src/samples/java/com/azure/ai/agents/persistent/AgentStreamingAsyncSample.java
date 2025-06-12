@@ -63,8 +63,7 @@ public final class AgentStreamingAsyncSample {
                                 
                                 System.out.println("----- Run started! -----");
                                 
-                                return runsAsyncClient.createRunStreaming(createRunOptions)
-                                    .map(su -> handleStreamingRun(su));
+                                return handleStreamingRun(runsAsyncClient.createRunStreaming(createRunOptions));
                             });
                     });
             })

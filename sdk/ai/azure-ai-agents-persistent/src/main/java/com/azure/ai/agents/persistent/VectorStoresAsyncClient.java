@@ -1380,12 +1380,19 @@ public final class VectorStoresAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response object for deleting a vector store file relationship on successful completion of {@link Mono}.
+     * @return a {@link Mono} that completes when the vector store file is deleted successfully.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> deleteVectorStoreFile(String vectorStoreId, String fileId) {
+    public Mono<Void> deleteVectorStoreFile(String vectorStoreId, String fileId) {
         Mono<VectorStoreFileDeletionStatus> deletionStatusMono = deleteVectorStoreFileInternal(vectorStoreId, fileId);
-        return deletionStatusMono.map(status -> status != null && status.isDeleted());
+        return deletionStatusMono.flatMap(deletionStatus -> {
+            if (deletionStatus == null || !deletionStatus.isDeleted()) {
+                return Mono
+                    .error(new RuntimeException("VectorStore file with ID '" + fileId + "' could not be deleted."));
+            } else {
+                return Mono.empty();
+            }
+        });
     }
 
     /**
@@ -1398,11 +1405,18 @@ public final class VectorStoresAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response object for deleting a vector store on successful completion of {@link Mono}.
+     * @return a {@link Mono} that completes when the vector store is deleted successfully.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> deleteVectorStore(String vectorStoreId) {
+    public Mono<Void> deleteVectorStore(String vectorStoreId) {
         Mono<VectorStoreDeletionStatus> deletionStatusMono = deleteVectorStoreInternal(vectorStoreId);
-        return deletionStatusMono.map(status -> status != null && status.isDeleted());
+        return deletionStatusMono.flatMap(deletionStatus -> {
+            if (deletionStatus == null || !deletionStatus.isDeleted()) {
+                return Mono
+                    .error(new RuntimeException("VectorStore with ID '" + vectorStoreId + "' could not be deleted."));
+            } else {
+                return Mono.empty();
+            }
+        });
     }
 }

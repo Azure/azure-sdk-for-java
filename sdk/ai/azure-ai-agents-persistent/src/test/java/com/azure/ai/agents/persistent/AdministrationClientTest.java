@@ -15,6 +15,7 @@ import static com.azure.ai.agents.persistent.TestUtils.DISPLAY_NAME_WITH_ARGUMEN
 import static com.azure.ai.agents.persistent.TestUtils.size;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class AdministrationClientTest extends ClientTestBase {
 
@@ -83,16 +84,23 @@ public class AdministrationClientTest extends ClientTestBase {
     @MethodSource("com.azure.ai.agents.persistent.TestUtils#getTestParameters")
     public void testDeleteAgent(HttpClient httpClient) {
         setup(httpClient);
-
-        boolean deletionStatus = agentsClient.deleteAgent(agent.getId());
-        assertTrue(deletionStatus, "Agent should be deleted");
+        try {
+            agentsClient.deleteAgent(agent.getId());
+        } catch (Exception e) {
+            // If deletion fails, we still want to assert that the agent was created
+            fail("Agent deletion failed: " + e.getMessage());
+        }
         agent = null;
     }
 
     @AfterEach
     public void cleanup() {
         if (agent != null) {
-            agentsClient.deleteAgent(agent.getId());
+            try {
+                agentsClient.deleteAgent(agent.getId());
+            } catch (Exception e) {
+                System.out.println("Failed to clean up agent: " + e.getMessage());
+            }
         }
     }
 }

@@ -141,12 +141,15 @@ public class RunsClientTest extends ClientTestBase {
 
     @AfterEach
     public void cleanup() {
-        if (thread != null) {
-            boolean deletionStatus = threadsClient.deleteThread(thread.getId());
-            assertTrue(deletionStatus, "Thread should be deleted");
-        }
-        if (agent != null) {
-            agentsClient.deleteAgent(agent.getId());
+        try {
+            if (thread != null) {
+                threadsClient.deleteThread(thread.getId());
+            }
+            if (agent != null) {
+                agentsClient.deleteAgent(agent.getId());
+            }
+        } catch (Exception e) {
+            System.out.println("Cleanup error: " + e.getMessage());
         }
     }
 }

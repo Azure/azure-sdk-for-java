@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.ai.projects;
 
-import com.azure.ai.agents.persistent.AgentsServiceVersion;
 import com.azure.ai.agents.persistent.PersistentAgentsAdministrationAsyncClient;
 import com.azure.ai.agents.persistent.PersistentAgentsClientBuilder;
 import com.azure.ai.agents.persistent.models.CreateAgentOptions;
@@ -16,7 +15,6 @@ public class AgentsAsyncSample {
     private static PersistentAgentsAdministrationAsyncClient agentsAsyncClient
         = new PersistentAgentsClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
         .credential(new DefaultAzureCredentialBuilder().build())
-        .serviceVersion(AgentsServiceVersion.V2025_05_15_PREVIEW)
         .buildPersistentAgentsAdministrationAsyncClient();
 
     public static void main(String[] args) {
@@ -39,14 +37,11 @@ public class AgentsAsyncSample {
         // END:com.azure.ai.projects.AgentsAsyncSample.createAgent
     }
 
-    public static Mono<Boolean> deleteAgent(String agentId) {
+    public static Mono<Void> deleteAgent(String agentId) {
         // BEGIN:com.azure.ai.projects.AgentsAsyncSample.deleteAgent
 
         return agentsAsyncClient.deleteAgent(agentId)
-            .doOnNext(deletionStatus -> {
-                System.out.println("Agent: " + agentId);
-                System.out.println("Delete confirmation: " + deletionStatus);
-            });
+            .doOnSuccess(aVoid -> System.out.println("Agent deleted: " + agentId));
 
         // END:com.azure.ai.projects.AgentsAsyncSample.deleteAgent
     }

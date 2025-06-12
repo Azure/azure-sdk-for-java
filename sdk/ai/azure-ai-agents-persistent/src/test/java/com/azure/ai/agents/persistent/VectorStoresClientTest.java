@@ -27,6 +27,7 @@ import static com.azure.ai.agents.persistent.TestUtils.size;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class VectorStoresClientTest extends ClientTestBase {
 
@@ -150,8 +151,12 @@ public class VectorStoresClientTest extends ClientTestBase {
         String vectorStoreName = "test_delete_vector_store";
         VectorStore vectorStore = createVectorStore(vectorStoreName);
 
-        boolean deletionStatus = vectorStoresClient.deleteVectorStore(vectorStore.getId());
-        assertTrue(deletionStatus, "Vector store should be marked as deleted");
+        try {
+            vectorStoresClient.deleteVectorStore(vectorStore.getId());
+            assertTrue(true, "Vector store should be marked as deleted");
+        } catch (Exception e) {
+            fail("Failed to delete vector store: " + e.getMessage());
+        }
     }
 
     // Test uploading a vector store file.
@@ -210,8 +215,12 @@ public class VectorStoresClientTest extends ClientTestBase {
         FileInfo uploadedFile = uploadFile("delete_vector_store_file.txt");
         VectorStoreFile vectorStoreFile = createVectorStoreFile(vectorStore.getId(), uploadedFile.getId());
 
-        boolean deletionStatus = vectorStoresClient.deleteVectorStoreFile(vectorStore.getId(), vectorStoreFile.getId());
-        assertTrue(deletionStatus, "Vector store file should be marked as deleted");
+        try {
+            vectorStoresClient.deleteVectorStoreFile(vectorStore.getId(), vectorStoreFile.getId());
+            assertTrue(true);
+        } catch (Exception e) {
+            fail("Failed to delete vector store file: " + e.getMessage());
+        }
     }
 
     // Test creation of a vector store file batch
@@ -274,7 +283,7 @@ public class VectorStoresClientTest extends ClientTestBase {
     public void cleanup() {
         for (VectorStore vectorStore : vectorStores) {
             try {
-                boolean deletionStatus = vectorStoresClient.deleteVectorStore(vectorStore.getId());
+                vectorStoresClient.deleteVectorStore(vectorStore.getId());
             } catch (Exception e) {
                 System.out.println("Failed to clean up vector store: " + vectorStore.getName());
                 System.out.println(e.getMessage());
@@ -283,7 +292,7 @@ public class VectorStoresClientTest extends ClientTestBase {
         // Clean up all uploaded files.
         for (FileInfo fileInfo : uploadedFiles) {
             try {
-                boolean deletionStatus = filesClient.deleteFile(fileInfo.getId());
+                filesClient.deleteFile(fileInfo.getId());
             } catch (Exception e) {
                 System.out.println("Failed to clean up file: " + fileInfo.getFilename());
                 System.out.println(e.getMessage());

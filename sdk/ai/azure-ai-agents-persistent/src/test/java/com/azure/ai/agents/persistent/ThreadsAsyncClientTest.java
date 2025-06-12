@@ -112,10 +112,7 @@ public class ThreadsAsyncClientTest extends ClientTestBase {
         thread = threadsAsyncClient.createThread().block();
         assertNotNull(thread, "Thread should not be null");
 
-        StepVerifier.create(threadsAsyncClient.deleteThread(thread.getId())).assertNext(deletionStatus -> {
-            assertTrue(deletionStatus, "Thread should be deleted");
-            thread = null; // Set to null since we've deleted it
-        }).verifyComplete();
+        StepVerifier.create(threadsAsyncClient.deleteThread(thread.getId())).verifyComplete();
     }
 
     @AfterEach
@@ -123,7 +120,7 @@ public class ThreadsAsyncClientTest extends ClientTestBase {
         if (thread != null) {
             try {
                 // Attempt to delete the thread
-                boolean deletionStatus = threadsAsyncClient.deleteThread(thread.getId()).block();
+                threadsAsyncClient.deleteThread(thread.getId()).block();
             } catch (Exception e) {
                 System.out.println("Failed to cleanup thread: " + thread.getId());
                 System.out.println(e.getMessage());

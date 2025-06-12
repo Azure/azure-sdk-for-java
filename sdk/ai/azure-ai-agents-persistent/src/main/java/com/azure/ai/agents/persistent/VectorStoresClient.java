@@ -31,6 +31,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +40,8 @@ import java.util.Map;
  */
 @ServiceClient(builder = PersistentAgentsClientBuilder.class)
 public final class VectorStoresClient {
+
+    private static final ClientLogger LOGGER = new ClientLogger(VectorStoresClient.class);
 
     @Generated
     private final VectorStoresImpl serviceClient;
@@ -1290,13 +1293,14 @@ public final class VectorStoresClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response object for deleting a vector store file relationship.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public boolean deleteVectorStoreFile(String vectorStoreId, String fileId) {
-        VectorStoreFileDeletionStatus vectorStoreFileDeletionStatus
-            = deleteVectorStoreFileInternal(vectorStoreId, fileId);
-        return vectorStoreFileDeletionStatus != null && vectorStoreFileDeletionStatus.isDeleted();
+    public void deleteVectorStoreFile(String vectorStoreId, String fileId) {
+        VectorStoreFileDeletionStatus deletionStatus = deleteVectorStoreFileInternal(vectorStoreId, fileId);
+        if (deletionStatus == null || !deletionStatus.isDeleted()) {
+            throw LOGGER.logExceptionAsWarning(
+                new RuntimeException("VectorStore file with ID '" + fileId + "' could not be deleted."));
+        }
     }
 
     /**
@@ -1309,11 +1313,13 @@ public final class VectorStoresClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response object for deleting a vector store.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public boolean deleteVectorStore(String vectorStoreId) {
-        VectorStoreDeletionStatus vectorStoreDeletionStatus = deleteVectorStoreInternal(vectorStoreId);
-        return vectorStoreDeletionStatus != null && vectorStoreDeletionStatus.isDeleted();
+    public void deleteVectorStore(String vectorStoreId) {
+        VectorStoreDeletionStatus deletionStatus = deleteVectorStoreInternal(vectorStoreId);
+        if (deletionStatus == null || !deletionStatus.isDeleted()) {
+            throw LOGGER.logExceptionAsWarning(
+                new RuntimeException("VectorStore with ID '" + vectorStoreId + "' could not be deleted."));
+        }
     }
 }

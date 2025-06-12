@@ -23,6 +23,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import java.util.Objects;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -42,51 +43,6 @@ public final class FilesAsyncClient {
     @Generated
     FilesAsyncClient(FilesImpl serviceClient) {
         this.serviceClient = serviceClient;
-    }
-
-    /**
-     * Gets a list of previously uploaded files.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>purpose</td><td>String</td><td>No</td><td>The purpose of the file. Allowed values: "assistants",
-     * "assistants_output", "vision".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     object: String (Required)
-     *     data (Required): [
-     *          (Required){
-     *             object: String (Required)
-     *             id: String (Required)
-     *             bytes: int (Required)
-     *             filename: String (Required)
-     *             created_at: long (Required)
-     *             purpose: String(assistants/assistants_output/vision) (Required)
-     *             status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
-     *             status_details: String (Optional)
-     *         }
-     *     ]
-     * }
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of previously uploaded files along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listFilesWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.listFilesWithResponseAsync(requestOptions);
     }
 
     /**
@@ -181,49 +137,6 @@ public final class FilesAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getFileContentWithResponse(String fileId, RequestOptions requestOptions) {
         return this.serviceClient.getFileContentWithResponseAsync(fileId, requestOptions);
-    }
-
-    /**
-     * Gets a list of previously uploaded files.
-     *
-     * @param purpose The purpose of the file.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of previously uploaded files on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FileListResponse> listFiles(FilePurpose purpose) {
-        // Generated convenience method for listFilesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (purpose != null) {
-            requestOptions.addQueryParam("purpose", purpose.toString(), false);
-        }
-        return listFilesWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(FileListResponse.class));
-    }
-
-    /**
-     * Gets a list of previously uploaded files.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of previously uploaded files on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FileListResponse> listFiles() {
-        // Generated convenience method for listFilesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return listFilesWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(FileListResponse.class));
     }
 
     /**
@@ -354,12 +267,138 @@ public final class FilesAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a status response from a file deletion operation on successful completion of {@link Mono}.
+     * @return a {@link Mono} that completes when the file is deleted successfully.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> deleteFile(String fileId) {
+    public Mono<Void> deleteFile(String fileId) {
         // Generated convenience method for deleteFileInternalWithResponse
         Mono<FileDeletionStatus> deletionStatusMono = deleteFileInternal(fileId);
-        return deletionStatusMono.map(status -> status != null && status.isDeleted());
+        return deletionStatusMono.flatMap(deletionStatus -> {
+            if (deletionStatus == null || !deletionStatus.isDeleted()) {
+                return Mono.error(new RuntimeException("File with ID '" + fileId + "' could not be deleted."));
+            } else {
+                return Mono.empty();
+            }
+        });
+    }
+
+    /**
+     * Gets a list of previously uploaded files.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>purpose</td><td>String</td><td>No</td><td>The purpose of the file. Allowed values: "assistants",
+     * "assistants_output", "vision".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             object: String (Required)
+     *             id: String (Required)
+     *             bytes: int (Required)
+     *             filename: String (Required)
+     *             created_at: long (Required)
+     *             purpose: String(assistants/assistants_output/vision) (Required)
+     *             status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
+     *             status_details: String (Optional)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of previously uploaded files along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> listFilesInternalWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.listFilesInternalWithResponseAsync(requestOptions);
+    }
+
+    /**
+     * Gets a list of previously uploaded files.
+     *
+     * @param purpose The purpose of the file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of previously uploaded files on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FileListResponse> listFilesInternal(FilePurpose purpose) {
+        // Generated convenience method for listFilesInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (purpose != null) {
+            requestOptions.addQueryParam("purpose", purpose.toString(), false);
+        }
+        return listFilesInternalWithResponse(requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(FileListResponse.class));
+    }
+
+    /**
+     * Gets a list of previously uploaded files.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of previously uploaded files on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FileListResponse> listFilesInternal() {
+        // Generated convenience method for listFilesInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return listFilesInternalWithResponse(requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(FileListResponse.class));
+    }
+
+    /**
+     * Gets a list of previously uploaded files.
+     *
+     * @param purpose The purpose of the file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of previously uploaded files on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<FileInfo> listFiles(FilePurpose purpose) {
+        return listFilesInternal(purpose).flatMapMany(response -> Flux.fromIterable(response.getData()));
+    }
+
+    /**
+     * Gets a list of previously uploaded files.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of previously uploaded files on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<FileInfo> listFiles() {
+        return listFilesInternal().flatMapMany(response -> Flux.fromIterable(response.getData()));
     }
 }

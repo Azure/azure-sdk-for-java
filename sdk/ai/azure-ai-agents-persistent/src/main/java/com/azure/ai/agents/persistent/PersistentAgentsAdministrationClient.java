@@ -26,12 +26,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
 
 /**
  * Initializes a new instance of the synchronous PersistentAgentsClient type.
  */
 @ServiceClient(builder = PersistentAgentsClientBuilder.class)
 public final class PersistentAgentsAdministrationClient {
+
+    private static final ClientLogger LOGGER = new ClientLogger(PersistentAgentsAdministrationClient.class);
 
     @Generated
     private final PersistentAgentsAdministrationsImpl serviceClient;
@@ -974,11 +977,13 @@ public final class PersistentAgentsAdministrationClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of an agent deletion operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public boolean deleteAgent(String assistantId) {
-        AgentDeletionStatus agentDeletionStatus = deleteAgentInternal(assistantId);
-        return agentDeletionStatus != null && agentDeletionStatus.isDeleted();
+    public void deleteAgent(String assistantId) {
+        AgentDeletionStatus deletionStatus = deleteAgentInternal(assistantId);
+        if (deletionStatus == null || !deletionStatus.isDeleted()) {
+            throw LOGGER.logExceptionAsWarning(
+                new RuntimeException("Agent with ID '" + assistantId + "' could not be deleted."));
+        }
     }
 }

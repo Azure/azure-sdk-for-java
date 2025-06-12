@@ -23,6 +23,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +32,8 @@ import java.util.Map;
  */
 @ServiceClient(builder = PersistentAgentsClientBuilder.class)
 public final class ThreadsClient {
+
+    private static final ClientLogger LOGGER = new ClientLogger(ThreadsClient.class);
 
     @Generated
     private final ThreadsImpl serviceClient;
@@ -721,12 +724,14 @@ public final class ThreadsClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a thread deletion operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public boolean deleteThread(String threadId) {
+    public void deleteThread(String threadId) {
         // Generated convenience method for deleteThreadInternalWithResponse
-        ThreadDeletionStatus threadDeletionStatus = deleteThreadInternal(threadId);
-        return threadDeletionStatus != null && threadDeletionStatus.isDeleted();
+        ThreadDeletionStatus deletionStatus = deleteThreadInternal(threadId);
+        if (deletionStatus == null || !deletionStatus.isDeleted()) {
+            throw LOGGER
+                .logExceptionAsWarning(new RuntimeException("Thread with ID '" + threadId + "' could not be deleted."));
+        }
     }
 }

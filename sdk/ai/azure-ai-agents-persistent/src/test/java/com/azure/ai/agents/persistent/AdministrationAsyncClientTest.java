@@ -93,16 +93,18 @@ public class AdministrationAsyncClientTest extends ClientTestBase {
         setup(httpClient);
         createTestAgent();
 
-        StepVerifier.create(agentsAsyncClient.deleteAgent(agent.getId())).assertNext(deletionStatus -> {
-            assertTrue(deletionStatus, "Agent should be deleted");
-            agent = null;
-        }).verifyComplete();
+        StepVerifier.create(agentsAsyncClient.deleteAgent(agent.getId())).verifyComplete();
     }
 
     @AfterEach
     public void cleanup() {
         if (agent != null) {
-            agentsAsyncClient.deleteAgent(agent.getId()).block();
+            try {
+                agentsAsyncClient.deleteAgent(agent.getId()).block();
+            } catch (Exception e) {
+                // Ignore exceptions during cleanup
+                System.out.println("Warning: Failed to delete test agent during cleanup: " + e.getMessage());
+            }
         }
     }
 }
