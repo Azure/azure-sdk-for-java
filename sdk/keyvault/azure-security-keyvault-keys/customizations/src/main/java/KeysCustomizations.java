@@ -122,28 +122,23 @@ public class KeysCustomizations extends Customization {
 
     private static void customizeKeyOperation(LibraryCustomization customization) {
         customization.getClass("com.azure.security.keyvault.keys.models", "KeyOperation")
-            .customizeAst(ast -> {
-                ast.getClassByName("KeyOperation").ifPresent(clazz -> {
-                    clazz.getFieldByName("EXPORT").ifPresent(field -> {
-                        field.setModifiers(Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL);
-                    });
-                });
-            });
+            .customizeAst(ast ->
+                ast.getClassByName("KeyOperation").ifPresent(clazz ->
+                    clazz.getFieldByName("EXPORT").ifPresent(field ->
+                        field.setModifiers(Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL))));
     }
 
     private static void customizeKeyRotationPolicyAction(LibraryCustomization customization) {
         customization.getClass("com.azure.security.keyvault.keys.models", "KeyRotationPolicyAction")
-            .customizeAst(ast -> {
-                ast.getEnumByName("KeyRotationPolicyAction").ifPresent(enumDecl -> {
+            .customizeAst(ast ->
+                ast.getEnumByName("KeyRotationPolicyAction").ifPresent(enumDecl ->
                     enumDecl.getEntries().forEach(entry -> {
                         if ("ROTATE".equals(entry.getNameAsString())) {
                             entry.setArgument(0, StaticJavaParser.parseExpression("\"rotate\""));
                         } else if ("NOTIFY".equals(entry.getNameAsString())) {
                             entry.setArgument(0, StaticJavaParser.parseExpression("\"notify\""));
                         }
-                    });
-                });
-            });
+                    })));
     }
 
     private static void customizeReleaseKeyResult(LibraryCustomization customization) {

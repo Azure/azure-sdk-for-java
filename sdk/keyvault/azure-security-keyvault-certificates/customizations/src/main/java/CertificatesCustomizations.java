@@ -71,9 +71,19 @@ public class CertificatesCustomizations extends Customization {
 
     private static void customizeCertificateKeyUsage(LibraryCustomization customization) {
         customization.getClass("com.azure.security.keyvault.certificates.models", "CertificateKeyUsage")
-            .customizeAst(ast -> ast.getClassByName("CertificateKeyUsage")
-                .flatMap(clazz -> clazz.getFieldByName("C_RLSIGN"))
-                .ifPresent(f -> f.getVariable(0).setName("CRL_SIGN")));
+            .customizeAst(ast ->
+                ast.getClassByName("CertificateKeyUsage").ifPresent(clazz ->
+                    clazz.getFieldByName("C_RLSIGN").ifPresent(field ->
+                        field.getVariable(0).setName("CRL_SIGN"))));
+    }
+
+    private static void customizeCertificateKeyType(LibraryCustomization customization) {
+        customization.getClass("com.azure.security.keyvault.certificates.models", "CertificateKeyType")
+            .customizeAst(ast ->
+                ast.getClassByName("CertificateKeyType").ifPresent(clazz -> {
+                    clazz.getFieldByName("OCT").ifPresent(field -> field.setModifiers(Modifier.Keyword.PRIVATE));
+                    clazz.getFieldByName("OCT_HSM").ifPresent(field -> field.setModifiers(Modifier.Keyword.PRIVATE));
+                }));
     }
 
     private static void customizeServiceVersion(LibraryCustomization customization) {

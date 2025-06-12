@@ -53,12 +53,12 @@ public class AdministrationCustomizations extends Customization {
         // Make some implementation methods public to facilitate calling LROs:
         // KeyVaultAdministrationClientImpl
         packageCustomization.getClass("KeyVaultAdministrationClientImpl").customizeAst(ast ->
-            ast.getClassByName("KeyVaultAdministrationClientImpl").ifPresent(clazz -> makeAllMethodsPublic(clazz,
-                "fullBackupWithResponseAsync", "fullBackupWithResponse", "preFullBackupWithResponseAsync",
-                "preFullBackupWithResponse", "preFullRestoreOperationWithResponseAsync",
-                "preFullRestoreOperationWithResponse", "fullRestoreOperationWithResponseAsync",
-                "fullRestoreOperationWithResponse", "selectiveKeyRestoreOperationWithResponseAsync",
-                "selectiveKeyRestoreOperationWithResponse")));
+            ast.getClassByName("KeyVaultAdministrationClientImpl").ifPresent(clazz ->
+                makeAllMethodsPublic(clazz, "fullBackupWithResponseAsync", "fullBackupWithResponse",
+                    "preFullBackupWithResponseAsync", "preFullBackupWithResponse",
+                    "preFullRestoreOperationWithResponseAsync", "preFullRestoreOperationWithResponse",
+                    "fullRestoreOperationWithResponseAsync", "fullRestoreOperationWithResponse",
+                    "selectiveKeyRestoreOperationWithResponseAsync", "selectiveKeyRestoreOperationWithResponse")));
 
         // RoleAssignmentsImpl
         packageCustomization.getClass("RoleAssignmentsImpl").customizeAst(ast ->
@@ -78,9 +78,8 @@ public class AdministrationCustomizations extends Customization {
     }
 
     private static void customizeKeyVaultRoleScope(LibraryCustomization customization) {
-        customization
-            .getClass("com.azure.security.keyvault.administration.models", "KeyVaultRoleScope")
-            .customizeAst(ast -> {
+        customization.getClass("com.azure.security.keyvault.administration.models", "KeyVaultRoleScope")
+            .customizeAst(ast ->
                 ast.addImport(IllegalArgumentException.class)
                     .addImport(URL.class)
                     .addImport(MalformedURLException.class)
@@ -105,8 +104,7 @@ public class AdministrationCustomizations extends Customization {
                                 .addBlockTag("param", "url", "A URL containing the name of the scope to look for.")
                                 .addBlockTag("return", "The corresponding {@link KeyVaultRoleScope}."))
                             .setBody(StaticJavaParser.parseBlock("{ return fromString(url.getPath()); }"));
-                    });
-            });
+                    }));
     }
 
     private static void customizeServiceVersion(LibraryCustomization customization) {

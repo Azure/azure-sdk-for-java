@@ -97,17 +97,29 @@ public final class EncryptionAlgorithm extends ExpandableStringEnum<EncryptionAl
 
     /**
      * 128-bit AES key wrap.
+     *
+     * @deprecated This value is not supported for encrypt/decrypt operations. For key wrapping/unwrapping, use
+     * {@link KeyWrapAlgorithm#A128KW} in {@link KeyWrapAlgorithm} instead.
      */
+    @Deprecated
     public static final EncryptionAlgorithm A128KW = fromString("A128KW");
 
     /**
      * 192-bit AES key wrap.
+     *
+     * @deprecated This value is not supported for encrypt/decrypt operations. For key wrapping/unwrapping, use
+     * {@link KeyWrapAlgorithm#A192KW} in {@link KeyWrapAlgorithm} instead.
      */
+    @Deprecated
     public static final EncryptionAlgorithm A192KW = fromString("A192KW");
 
     /**
      * 256-bit AES key wrap.
+     *
+     * @deprecated This value is not supported for encrypt/decrypt operations. For key wrapping/unwrapping, use
+     * {@link KeyWrapAlgorithm#A256KW} in {@link KeyWrapAlgorithm} instead.
      */
+    @Deprecated
     public static final EncryptionAlgorithm A256KW = fromString("A256KW");
 
     /**
