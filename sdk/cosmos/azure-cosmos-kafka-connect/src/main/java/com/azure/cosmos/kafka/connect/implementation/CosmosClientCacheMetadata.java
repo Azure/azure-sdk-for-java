@@ -40,12 +40,12 @@ public class CosmosClientCacheMetadata {
         return lastAccessed;
     }
 
-    public void incrementRefCount() {
-        refCount.incrementAndGet();
+    public long incrementRefCount() {
+        return refCount.incrementAndGet();
     }
 
-    public void decrementRefCount() {
-        refCount.decrementAndGet();
+    public long decrementRefCount() {
+        return refCount.decrementAndGet();
     }
 
     public long getRefCount() {

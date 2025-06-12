@@ -107,14 +107,14 @@ public class CosmosClientCache implements AutoCloseable {
             metadata.updateLastAccessed();
             metadata.incrementRefCount();
 
-            return new CosmosClientCacheItem(cacheConfig, metadata.getClient());
+            return new CosmosClientCacheItem(cacheConfig, metadata);
         }
 
         CosmosAsyncClient newClient = createCosmosClient(accountConfig, context, snapshot);
         metadata = new CosmosClientCacheMetadata(newClient, Instant.now());
         clientCache.put(cacheConfig, metadata);
 
-        return new CosmosClientCacheItem(cacheConfig, newClient);
+        return new CosmosClientCacheItem(cacheConfig, metadata);
     }
 
     /**

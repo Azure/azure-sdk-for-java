@@ -4,19 +4,25 @@
 package com.azure.cosmos.kafka.connect.implementation;
 
 import com.azure.cosmos.CosmosAsyncClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public class CosmosClientCacheItem {
-    private CosmosClientCacheConfig clientConfig;
-    private CosmosAsyncClient client;
+public class CosmosClientCacheItem implements AutoCloseable {
+    private static final Logger logger = LoggerFactory.getLogger(CosmosClientCacheItem.class);
 
-    public CosmosClientCacheItem(CosmosClientCacheConfig clientConfig, CosmosAsyncClient client) {
+    private CosmosClientCacheConfig clientConfig;
+    private CosmosClientCacheMetadata clientCacheMetadata;
+
+    public CosmosClientCacheItem(
+        CosmosClientCacheConfig clientConfig,
+        CosmosClientCacheMetadata clientCacheMetadata) {
         checkNotNull(clientConfig, "Argument 'clientConfig' cannot be null.");
-        checkNotNull(client, "Argument 'client' cannot be null.");
+        checkNotNull(clientCacheMetadata, "Argument 'clientCacheMetadata' cannot be null.");
 
         this.clientConfig = clientConfig;
-        this.client = client;
+        this.clientCacheMetadata = clientCacheMetadata;
     }
 
     public CosmosClientCacheConfig getClientConfig() {
@@ -24,7 +30,14 @@ public class CosmosClientCacheItem {
     }
 
     public CosmosAsyncClient getClient() {
-        return client;
+        return this.clientCacheMetadata.getClient();
     }
 
+    @Override
+    public void close() {
+        long refCnt = this.clientCacheMetadata.decrementRefCount();
+        if (refCnt < 0) {
+            logger.error("CosmosClient is released more than required.");
+        }
+    }
 }
