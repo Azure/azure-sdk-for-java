@@ -360,7 +360,7 @@ Check if an entire collection of keys can be backed up by using `beginPreBackup(
 String blobStorageUrl = "https://myaccount.blob.core.windows.net/myContainer";
 String sasToken = "<sas-token>";
 
-SyncPoller<KeyVaultBackupOperation, String> preBackupPoller =
+SyncPoller<KeyVaultBackupOperation, Void> preBackupPoller =
     keyVaultBackupClient.beginPreBackup(blobStorageUrl, sasToken);
 PollResponse<KeyVaultBackupOperation> pollResponse = preBackupPoller.poll();
 
@@ -369,8 +369,6 @@ System.out.printf("The current status of the operation is: %s.%n", pollResponse.
 PollResponse<KeyVaultBackupOperation> finalPollResponse = preBackupPoller.waitForCompletion();
 
 if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
-    String folderUrl = preBackupPoller.getFinalResult();
-
     System.out.printf("Pre-backup check completed successfully.%n");
 } else {
     KeyVaultBackupOperation operation = preBackupPoller.poll().getValue();
