@@ -208,7 +208,7 @@ public class AppendBlobsServiceImpl implements AppendBlobsService {
             boolean expectedResponse = responseCode == 201;
             if (!expectedResponse) {
                 java.lang.reflect.ParameterizedType defaultErrorBodyType = CoreUtils.createParameterizedType(StorageError.class);
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null, LOGGER);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
@@ -297,7 +297,7 @@ public class AppendBlobsServiceImpl implements AppendBlobsService {
             boolean expectedResponse = responseCode == 201;
             if (!expectedResponse) {
                 java.lang.reflect.ParameterizedType defaultErrorBodyType = CoreUtils.createParameterizedType(StorageError.class);
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null, LOGGER);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
@@ -396,7 +396,7 @@ public class AppendBlobsServiceImpl implements AppendBlobsService {
             boolean expectedResponse = responseCode == 201;
             if (!expectedResponse) {
                 java.lang.reflect.ParameterizedType defaultErrorBodyType = CoreUtils.createParameterizedType(StorageError.class);
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null, LOGGER);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
@@ -446,7 +446,7 @@ public class AppendBlobsServiceImpl implements AppendBlobsService {
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
                 java.lang.reflect.ParameterizedType defaultErrorBodyType = CoreUtils.createParameterizedType(StorageError.class);
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null, LOGGER);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }

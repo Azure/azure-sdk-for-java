@@ -87,7 +87,7 @@ public class ServicesServiceImpl implements ServicesService {
             boolean expectedResponse = responseCode == 202;
             if (!expectedResponse) {
                 ParameterizedType defaultErrorBodyType = CoreUtils.createParameterizedType(StorageError.class);
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null, LOGGER);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
@@ -120,7 +120,7 @@ public class ServicesServiceImpl implements ServicesService {
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             ParameterizedType defaultErrorBodyType = CoreUtils.createParameterizedType(StorageError.class);
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null, LOGGER);
             networkResponse.close();
         }
         BlobServiceProperties deserializedResult;
@@ -163,7 +163,7 @@ public class ServicesServiceImpl implements ServicesService {
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             ParameterizedType defaultErrorBodyType = CoreUtils.createParameterizedType(StorageError.class);
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null, LOGGER);
             networkResponse.close();
         }
         BlobServiceStatistics deserializedResult;
@@ -209,7 +209,7 @@ public class ServicesServiceImpl implements ServicesService {
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             ParameterizedType defaultErrorBodyType = CoreUtils.createParameterizedType(StorageError.class);
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null, LOGGER);
             networkResponse.close();
         }
         BlobContainersSegment deserializedResult;
@@ -261,7 +261,7 @@ public class ServicesServiceImpl implements ServicesService {
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             ParameterizedType defaultErrorBodyType = CoreUtils.createParameterizedType(StorageError.class);
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null, LOGGER);
             networkResponse.close();
         }
         UserDelegationKey deserializedResult;
@@ -304,7 +304,7 @@ public class ServicesServiceImpl implements ServicesService {
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
                 ParameterizedType defaultErrorBodyType = CoreUtils.createParameterizedType(StorageError.class);
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null, LOGGER);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
@@ -348,7 +348,7 @@ public class ServicesServiceImpl implements ServicesService {
         boolean expectedResponse = responseCode == 202;
         if (!expectedResponse) {
             ParameterizedType defaultErrorBodyType = CoreUtils.createParameterizedType(StorageError.class);
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null, LOGGER);
             networkResponse.close();
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), networkResponse.getValue().toStream());
@@ -384,7 +384,7 @@ public class ServicesServiceImpl implements ServicesService {
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             ParameterizedType defaultErrorBodyType = CoreUtils.createParameterizedType(StorageError.class);
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null, LOGGER);
             networkResponse.close();
         }
         FilterBlobSegment deserializedResult;
@@ -422,7 +422,7 @@ public class ServicesServiceImpl implements ServicesService {
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             ParameterizedType defaultErrorBodyType = CoreUtils.createParameterizedType(StorageError.class);
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null, LOGGER);
             networkResponse.close();
         }
         BlobContainersSegment deserializedResult;

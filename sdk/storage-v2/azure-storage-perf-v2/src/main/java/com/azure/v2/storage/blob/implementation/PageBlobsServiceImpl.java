@@ -232,7 +232,7 @@ public class PageBlobsServiceImpl implements PageBlobsService {
             boolean expectedResponse = responseCode == 201;
             if (!expectedResponse) {
                 ParameterizedType defaultErrorBodyType = CoreUtils.createParameterizedType(StorageError.class);
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null, LOGGER);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
@@ -330,7 +330,7 @@ public class PageBlobsServiceImpl implements PageBlobsService {
             boolean expectedResponse = responseCode == 201;
             if (!expectedResponse) {
                 ParameterizedType defaultErrorBodyType = CoreUtils.createParameterizedType(StorageError.class);
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null, LOGGER);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
@@ -408,7 +408,7 @@ public class PageBlobsServiceImpl implements PageBlobsService {
             boolean expectedResponse = responseCode == 201;
             if (!expectedResponse) {
                 ParameterizedType defaultErrorBodyType = CoreUtils.createParameterizedType(StorageError.class);
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null, LOGGER);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
@@ -513,7 +513,7 @@ public class PageBlobsServiceImpl implements PageBlobsService {
             boolean expectedResponse = responseCode == 201;
             if (!expectedResponse) {
                 ParameterizedType defaultErrorBodyType = CoreUtils.createParameterizedType(StorageError.class);
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null, LOGGER);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
@@ -569,7 +569,7 @@ public class PageBlobsServiceImpl implements PageBlobsService {
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             ParameterizedType defaultErrorBodyType = CoreUtils.createParameterizedType(StorageError.class);
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null, LOGGER);
             networkResponse.close();
         }
         PageList deserializedResult;
@@ -639,7 +639,7 @@ public class PageBlobsServiceImpl implements PageBlobsService {
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             ParameterizedType defaultErrorBodyType = CoreUtils.createParameterizedType(StorageError.class);
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null, LOGGER);
             networkResponse.close();
         }
         PageList deserializedResult;
@@ -712,7 +712,7 @@ public class PageBlobsServiceImpl implements PageBlobsService {
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
                 ParameterizedType defaultErrorBodyType = CoreUtils.createParameterizedType(StorageError.class);
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null, LOGGER);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
@@ -768,7 +768,7 @@ public class PageBlobsServiceImpl implements PageBlobsService {
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
                 ParameterizedType defaultErrorBodyType = CoreUtils.createParameterizedType(StorageError.class);
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null, LOGGER);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
@@ -818,7 +818,7 @@ public class PageBlobsServiceImpl implements PageBlobsService {
             boolean expectedResponse = responseCode == 202;
             if (!expectedResponse) {
                 ParameterizedType defaultErrorBodyType = CoreUtils.createParameterizedType(StorageError.class);
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null, LOGGER);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
