@@ -230,19 +230,7 @@ public final class PersistentAgentsClientBuilder
      * Service version
      */
     @Generated
-    private AgentsServiceVersion serviceVersion;
-
-    /**
-     * Sets Service version.
-     *
-     * @param serviceVersion the serviceVersion value.
-     * @return the PersistentAgentsClientBuilder.
-     */
-    @Generated
-    public PersistentAgentsClientBuilder serviceVersion(AgentsServiceVersion serviceVersion) {
-        this.serviceVersion = serviceVersion;
-        return this;
-    }
+    private PersistentAgentsServiceVersion serviceVersion;
 
     /*
      * The retry policy that will attempt to retry failed requests, if applicable.
@@ -271,8 +259,8 @@ public final class PersistentAgentsClientBuilder
     private PersistentAgentsClientImpl buildInnerClient() {
         this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        AgentsServiceVersion localServiceVersion
-            = (serviceVersion != null) ? serviceVersion : AgentsServiceVersion.getLatest();
+        PersistentAgentsServiceVersion localServiceVersion
+            = (serviceVersion != null) ? serviceVersion : PersistentAgentsServiceVersion.getLatest();
         PersistentAgentsClientImpl client = new PersistentAgentsClientImpl(localPipeline,
             JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
         return client;
@@ -444,4 +432,16 @@ public final class PersistentAgentsClientBuilder
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PersistentAgentsClientBuilder.class);
+
+    /**
+     * Sets Service version.
+     *
+     * @param serviceVersion the serviceVersion value.
+     * @return the PersistentAgentsClientBuilder.
+     */
+    @Generated
+    public PersistentAgentsClientBuilder serviceVersion(PersistentAgentsServiceVersion serviceVersion) {
+        this.serviceVersion = serviceVersion;
+        return this;
+    }
 }

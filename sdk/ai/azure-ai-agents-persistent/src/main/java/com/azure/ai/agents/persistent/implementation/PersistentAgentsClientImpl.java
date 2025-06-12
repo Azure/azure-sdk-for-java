@@ -4,7 +4,7 @@
 
 package com.azure.ai.agents.persistent.implementation;
 
-import com.azure.ai.agents.persistent.AgentsServiceVersion;
+import com.azure.ai.agents.persistent.PersistentAgentsServiceVersion;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.RetryPolicy;
@@ -35,14 +35,14 @@ public final class PersistentAgentsClientImpl {
     /**
      * Service version.
      */
-    private final AgentsServiceVersion serviceVersion;
+    private final PersistentAgentsServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
      * 
      * @return the serviceVersion value.
      */
-    public AgentsServiceVersion getServiceVersion() {
+    public PersistentAgentsServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
@@ -165,7 +165,7 @@ public final class PersistentAgentsClientImpl {
      * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
      * @param serviceVersion Service version.
      */
-    public PersistentAgentsClientImpl(String endpoint, AgentsServiceVersion serviceVersion) {
+    public PersistentAgentsClientImpl(String endpoint, PersistentAgentsServiceVersion serviceVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
             JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
@@ -178,7 +178,8 @@ public final class PersistentAgentsClientImpl {
      * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
      * @param serviceVersion Service version.
      */
-    public PersistentAgentsClientImpl(HttpPipeline httpPipeline, String endpoint, AgentsServiceVersion serviceVersion) {
+    public PersistentAgentsClientImpl(HttpPipeline httpPipeline, String endpoint,
+        PersistentAgentsServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
@@ -192,7 +193,7 @@ public final class PersistentAgentsClientImpl {
      * @param serviceVersion Service version.
      */
     public PersistentAgentsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
-        AgentsServiceVersion serviceVersion) {
+        PersistentAgentsServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;

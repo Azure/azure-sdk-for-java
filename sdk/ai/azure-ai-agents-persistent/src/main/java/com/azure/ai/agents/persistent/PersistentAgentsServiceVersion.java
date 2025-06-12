@@ -7,9 +7,9 @@ package com.azure.ai.agents.persistent;
 import com.azure.core.util.ServiceVersion;
 
 /**
- * Service version of AgentsClient.
+ * Service version of Persistent AgentsClient.
  */
-public enum AgentsServiceVersion implements ServiceVersion {
+public enum PersistentAgentsServiceVersion implements ServiceVersion {
     /**
      * Enum value 2025-05-01.
      */
@@ -27,7 +27,7 @@ public enum AgentsServiceVersion implements ServiceVersion {
 
     private final String version;
 
-    AgentsServiceVersion(String version) {
+    PersistentAgentsServiceVersion(String version) {
         this.version = version;
     }
 
@@ -42,9 +42,9 @@ public enum AgentsServiceVersion implements ServiceVersion {
     /**
      * Gets the latest service version supported by this client library.
      * 
-     * @return The latest {@link AgentsServiceVersion}.
+     * @return The latest {@link PersistentAgentsServiceVersion}.
      */
-    public static AgentsServiceVersion getLatest() {
+    public static PersistentAgentsServiceVersion getLatest() {
         return V2025_05_15_PREVIEW;
     }
 }
