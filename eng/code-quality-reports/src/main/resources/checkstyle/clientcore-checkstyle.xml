@@ -279,11 +279,11 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="ArrayTypeStyle"/>
 
     <!--Checks for package naming and name length limit. Package names have to starting with either-->
-    <!--'com.microsoft.azure', 'com.azure', or 'io.clientcore' and then the extension names start with-->
+    <!--'com.azure.v2', or 'io.clientcore' and then the extension names start with-->
     <!--characters 'a' to 'z' and only contains 'a' to 'z' or '0' to '9' with no more than 32 characters-->
     <!--and the package names should be no more than 80 characters.-->
     <module name="PackageName">
-      <property name="format" value="^(?=.{9,80}$)((io.clientcore)(\.[a-z][a-z0-9]{1,31})*)+$"/>
+      <property name="format" value="^(?=.{9,80}$)((io.clientcore|com.azure.v2)(\.[a-z][a-z0-9]{1,31})*)+$"/>
     </module>
 
     <!-- Javadoc checks                                   -->
@@ -357,8 +357,16 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="com.azure.tools.checkstyle.checks.JavadocFormatting"/>
 
     <!-- CUSTOM CHECKS -->
-    <!-- Must use 'logger.logAndThrow' but not directly calling 'throw exception' -->
-    <module name="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"/>
+    <!-- Don't format exception messages -->
+    <module name="com.azure.tools.checkstyle.checks.StringFormattedExceptionMessageCheck"/>
+
+    <!-- CUSTOM CHECKS -->
+    <!-- Log exceptions at creation time -->
+    <module name="com.azure.tools.checkstyle.checks.RawExceptionThrowCheck"/>
+
+    <!-- CUSTOM CHECKS -->
+    <!-- Throw created and logged exceptions -->
+    <module name="com.azure.tools.checkstyle.checks.ExceptionCreatedButNotThrownCheck"/>
 
     <!-- CUSTOM CHECKS -->
     <!-- Any class that implements the HttpPipelinePolicy interface should:

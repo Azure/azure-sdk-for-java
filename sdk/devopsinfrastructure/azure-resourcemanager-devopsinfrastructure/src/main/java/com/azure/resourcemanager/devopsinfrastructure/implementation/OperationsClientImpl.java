@@ -61,7 +61,7 @@ public final class OperationsClientImpl implements OperationsClient {
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DevOpsInfrastructure")
+    @ServiceInterface(name = "DevOpsInfrastructureManagementClientOperations")
     public interface OperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.DevOpsInfrastructure/operations")

@@ -188,6 +188,6 @@ public final class GeoCatalogImpl implements GeoCatalog, GeoCatalog.Definition, 
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

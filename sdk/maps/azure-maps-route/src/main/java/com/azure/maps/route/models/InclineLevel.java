@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class InclineLevel extends ExpandableStringEnum<InclineLevel> {
     /**
      * low.
      */
+    @Generated
     public static final InclineLevel LOW = fromString("low");
 
     /**
      * normal.
      */
+    @Generated
     public static final InclineLevel NORMAL = fromString("normal");
 
     /**
      * high.
      */
+    @Generated
     public static final InclineLevel HIGH = fromString("high");
 
     /**
@@ -31,6 +35,7 @@ public final class InclineLevel extends ExpandableStringEnum<InclineLevel> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public InclineLevel() {
     }
@@ -41,6 +46,7 @@ public final class InclineLevel extends ExpandableStringEnum<InclineLevel> {
      * @param name a name to look for.
      * @return the corresponding InclineLevel.
      */
+    @Generated
     public static InclineLevel fromString(String name) {
         return fromString(name, InclineLevel.class);
     }
@@ -50,6 +56,7 @@ public final class InclineLevel extends ExpandableStringEnum<InclineLevel> {
      * 
      * @return known InclineLevel values.
      */
+    @Generated
     public static Collection<InclineLevel> values() {
         return values(InclineLevel.class);
     }

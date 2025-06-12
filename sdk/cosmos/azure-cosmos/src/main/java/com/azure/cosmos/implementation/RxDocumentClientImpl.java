@@ -1710,7 +1710,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if (consistencyLevel != null) {
-            headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, consistencyLevel.toString());
+            // adding the "x-ms-consistency-level" header with consistency level stricter than the
+            // account's default consistency level in Compute Gateway will result in a 400 Bad Request
+            // even when it is done for resource types / operations where this header should simply be ignored
+            // making the change here to restrict adding the header to when it is relevant.
+            if ((operationType.isReadOnlyOperation() || operationType == OperationType.Batch) && (resourceType.isMasterResource() || resourceType == ResourceType.Document)) {
+                headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, consistencyLevel.toString());
+            }
         }
 
         if (readConsistencyStrategy != null
@@ -4378,6 +4384,21 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             @Override
             public <T> CosmosItemSerializer getEffectiveItemSerializer(CosmosQueryRequestOptions queryRequestOptions) {
                 return RxDocumentClientImpl.this.getEffectiveItemSerializer(queryRequestOptions);
+            }
+
+            @Override
+            public ReadConsistencyStrategy getReadConsistencyStrategy() {
+                return RxDocumentClientImpl.this.getReadConsistencyStrategy();
+            }
+
+            @Override
+            public ConsistencyLevel getConsistencyLevel() {
+                return RxDocumentClientImpl.this.getConsistencyLevel();
+            }
+
+            @Override
+            public void validateAndLogNonDefaultReadConsistencyStrategy(String readConsistencyStrategyName) {
+                RxDocumentClientImpl.this.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
             }
 
             @Override
@@ -7648,6 +7669,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private boolean useThinClientStoreModel(RxDocumentServiceRequest request) {
         return useThinClient()
+            && this.globalEndpointManager.hasThinClientReadLocations()
             && request.getResourceType() == ResourceType.Document
             && request.getOperationType().isPointOperation();
     }

@@ -4,6 +4,13 @@
 
 ### Features Added
 
+- Supported `beginCreate(Context)` in `VirtualMachine`.
+- Supported `beginDeleteByResourceGroup(Context)` and `beginDeleteById(Context)` in `VirtualMachines`.
+- Supported `beginCreate` in `Snapshot`.
+- Supported `beginDeleteByResourceGroup` and `beginDeleteById` in `Snapshots`.
+- Supported `beginCreate(Context)` in `Disk`.
+- Supported `beginDeleteByResourceGroup(Context)` and `beginDeleteById(Context)` in `Disks`.
+
 ### Breaking Changes
 
 ### Bugs Fixed

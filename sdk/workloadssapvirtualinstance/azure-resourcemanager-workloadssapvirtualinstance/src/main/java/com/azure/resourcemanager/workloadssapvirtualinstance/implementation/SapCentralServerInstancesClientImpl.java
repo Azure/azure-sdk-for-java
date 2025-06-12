@@ -76,7 +76,7 @@ public final class SapCentralServerInstancesClientImpl implements SapCentralServ
      * used by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "WorkloadsSapVirtualI")
+    @ServiceInterface(name = "WorkloadsSapVirtualInstanceMgmtClientSapCentralServerInstances")
     public interface SapCentralServerInstancesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/centralInstances/{centralInstanceName}")

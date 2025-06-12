@@ -4,6 +4,7 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class StampKind extends ExpandableStringEnum<StampKind> {
     /**
      * App Service Plan is running on a public stamp.
      */
+    @Generated
     public static final StampKind PUBLIC = fromString("Public");
 
     /**
      * App Service Plan is running on an App Service Environment V1.
      */
+    @Generated
     public static final StampKind ASE_V1 = fromString("AseV1");
 
     /**
      * App Service Plan is running on an App Service Environment V2.
      */
+    @Generated
     public static final StampKind ASE_V2 = fromString("AseV2");
 
     /**
@@ -31,6 +35,7 @@ public final class StampKind extends ExpandableStringEnum<StampKind> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public StampKind() {
     }
@@ -41,6 +46,7 @@ public final class StampKind extends ExpandableStringEnum<StampKind> {
      * @param name a name to look for.
      * @return the corresponding StampKind.
      */
+    @Generated
     public static StampKind fromString(String name) {
         return fromString(name, StampKind.class);
     }
@@ -50,6 +56,7 @@ public final class StampKind extends ExpandableStringEnum<StampKind> {
      * 
      * @return known StampKind values.
      */
+    @Generated
     public static Collection<StampKind> values() {
         return values(StampKind.class);
     }

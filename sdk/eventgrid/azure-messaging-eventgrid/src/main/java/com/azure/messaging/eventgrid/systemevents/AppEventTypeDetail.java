@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class AppEventTypeDetail implements JsonSerializable<AppEventTypeDe
     /*
      * Type of action of the operation.
      */
+    @Generated
     private AppAction action;
 
     /**
      * Creates an instance of AppEventTypeDetail class.
      */
+    @Generated
     public AppEventTypeDetail() {
     }
 
@@ -32,6 +35,7 @@ public final class AppEventTypeDetail implements JsonSerializable<AppEventTypeDe
      * 
      * @return the action value.
      */
+    @Generated
     public AppAction getAction() {
         return this.action;
     }
@@ -42,6 +46,7 @@ public final class AppEventTypeDetail implements JsonSerializable<AppEventTypeDe
      * @param action the action value to set.
      * @return the AppEventTypeDetail object itself.
      */
+    @Generated
     public AppEventTypeDetail setAction(AppAction action) {
         this.action = action;
         return this;
@@ -50,6 +55,7 @@ public final class AppEventTypeDetail implements JsonSerializable<AppEventTypeDe
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +71,7 @@ public final class AppEventTypeDetail implements JsonSerializable<AppEventTypeDe
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the AppEventTypeDetail.
      */
+    @Generated
     public static AppEventTypeDetail fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AppEventTypeDetail deserializedAppEventTypeDetail = new AppEventTypeDetail();

@@ -4,6 +4,7 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,31 +15,37 @@ public final class AcsRouterLabelOperator extends ExpandableStringEnum<AcsRouter
     /**
      * =.
      */
+    @Generated
     public static final AcsRouterLabelOperator EQUAL = fromString("Equal");
 
     /**
      * !=.
      */
+    @Generated
     public static final AcsRouterLabelOperator NOT_EQUAL = fromString("NotEqual");
 
     /**
      * &gt;.
      */
+    @Generated
     public static final AcsRouterLabelOperator GREATER = fromString("Greater");
 
     /**
      * &lt;.
      */
+    @Generated
     public static final AcsRouterLabelOperator LESS = fromString("Less");
 
     /**
      * &gt;=.
      */
+    @Generated
     public static final AcsRouterLabelOperator GREATER_THAN_OR_EQUAL = fromString("GreaterThanOrEqual");
 
     /**
      * &lt;=.
      */
+    @Generated
     public static final AcsRouterLabelOperator LESS_THAN_OR_EQUAL = fromString("LessThanOrEqual");
 
     /**
@@ -46,6 +53,7 @@ public final class AcsRouterLabelOperator extends ExpandableStringEnum<AcsRouter
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AcsRouterLabelOperator() {
     }
@@ -56,6 +64,7 @@ public final class AcsRouterLabelOperator extends ExpandableStringEnum<AcsRouter
      * @param name a name to look for.
      * @return the corresponding AcsRouterLabelOperator.
      */
+    @Generated
     public static AcsRouterLabelOperator fromString(String name) {
         return fromString(name, AcsRouterLabelOperator.class);
     }
@@ -65,6 +74,7 @@ public final class AcsRouterLabelOperator extends ExpandableStringEnum<AcsRouter
      * 
      * @return known AcsRouterLabelOperator values.
      */
+    @Generated
     public static Collection<AcsRouterLabelOperator> values() {
         return values(AcsRouterLabelOperator.class);
     }

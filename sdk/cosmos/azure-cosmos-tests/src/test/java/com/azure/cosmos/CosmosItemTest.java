@@ -45,7 +45,6 @@ import com.azure.cosmos.util.CosmosPagedIterable;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import net.bytebuddy.asm.MemberSubstitution;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -710,7 +709,9 @@ public class CosmosItemTest extends TestSuiteBase {
             }
 
         } finally {
-            readManyContainer.delete();
+            if (readManyContainer != null) {
+                readManyContainer.delete();
+            }
         }
     }
 
@@ -1161,8 +1162,14 @@ public class CosmosItemTest extends TestSuiteBase {
                 .setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL),
             ObjectNode.class);
 
+        assertThat(readResponse1.getDiagnostics()).isNotNull();
+        assertThat(readResponse1.getDiagnostics().getDiagnosticsContext()).isNotNull();
+
         logger.info("REQUEST DIAGNOSTICS: {}", readResponse1.getDiagnostics().toString());
         validateIdOfItemResponse(idAndPkValue, readResponse1);
+
+        assertThat(readResponse1.getDiagnostics().getDiagnosticsContext().getEffectiveReadConsistencyStrategy())
+            .isEqualTo(ReadConsistencyStrategy.EVENTUAL);
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
@@ -1293,37 +1300,46 @@ public class CosmosItemTest extends TestSuiteBase {
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void queryItemsWithEventualConsistency() throws Exception{
 
-        CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
-        container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
+        for (boolean useConsistencyLevel : Arrays.asList(true, false)) {
+            CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
+            container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
 
-        String idAndPkValue = UUID.randomUUID().toString();
-        ObjectNode properties = getDocumentDefinition(idAndPkValue, idAndPkValue);
-        CosmosItemResponse<ObjectNode> itemResponse = container.createItem(properties);
+            String idAndPkValue = UUID.randomUUID().toString();
+            ObjectNode properties = getDocumentDefinition(idAndPkValue, idAndPkValue);
+            CosmosItemResponse<ObjectNode> itemResponse = container.createItem(properties);
 
-        String query = String.format("SELECT * from c where c.id = '%s'", idAndPkValue);
-        CosmosQueryRequestOptions cosmosQueryRequestOptions =
-            new CosmosQueryRequestOptions()
-                // generate an invalid session token large enough to cause an error in Gateway
-                // due to header being too long
-                .setSessionToken(StringUtils.repeat("SomeManualInvalidSessionToken", 2000))
-                .setConsistencyLevel(ConsistencyLevel.EVENTUAL);
+            String query = String.format("SELECT * from c where c.id = '%s'", idAndPkValue);
+            CosmosQueryRequestOptions cosmosQueryRequestOptions =
+                new CosmosQueryRequestOptions()
+                    // generate an invalid session token large enough to cause an error in Gateway
+                    // due to header being too long
+                    .setSessionToken(StringUtils.repeat("SomeManualInvalidSessionToken", 2000));
 
-        CosmosPagedIterable<ObjectNode> feedResponseIterator1 =
-            container.queryItems(query, cosmosQueryRequestOptions, ObjectNode.class);
-        feedResponseIterator1.handle(
-            (r) -> logger.info("Query RequestDiagnostics: {}", r.getCosmosDiagnostics().toString()));
+            if (useConsistencyLevel) {
+                cosmosQueryRequestOptions = cosmosQueryRequestOptions
+                    .setConsistencyLevel(ConsistencyLevel.EVENTUAL);
+            } else {
+                cosmosQueryRequestOptions = cosmosQueryRequestOptions
+                    .setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL);
+            }
 
-        // Very basic validation
-        assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
-        assertThat(feedResponseIterator1.stream().count() == 1);
+            CosmosPagedIterable<ObjectNode> feedResponseIterator1 =
+                container.queryItems(query, cosmosQueryRequestOptions, ObjectNode.class);
+            feedResponseIterator1.handle(
+                (r) -> logger.info("Query RequestDiagnostics: {}", r.getCosmosDiagnostics().toString()));
 
-        SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        CosmosPagedIterable<ObjectNode> feedResponseIterator3 =
-            container.queryItems(querySpec, cosmosQueryRequestOptions, ObjectNode.class);
-        feedResponseIterator3.handle(
-            (r) -> logger.info("Query RequestDiagnostics: {}", r.getCosmosDiagnostics().toString()));
-        assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
-        assertThat(feedResponseIterator3.stream().count() == 1);
+            // Very basic validation
+            assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
+            assertThat(feedResponseIterator1.stream().count() == 1);
+
+            SqlQuerySpec querySpec = new SqlQuerySpec(query);
+            CosmosPagedIterable<ObjectNode> feedResponseIterator3 =
+                container.queryItems(querySpec, cosmosQueryRequestOptions, ObjectNode.class);
+            feedResponseIterator3.handle(
+                (r) -> logger.info("Query RequestDiagnostics: {}", r.getCosmosDiagnostics().toString()));
+            assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
+            assertThat(feedResponseIterator3.stream().count() == 1);
+        }
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT)

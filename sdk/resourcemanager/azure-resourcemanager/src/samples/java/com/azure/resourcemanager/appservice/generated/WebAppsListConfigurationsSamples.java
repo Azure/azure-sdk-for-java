@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class WebAppsListConfigurationsSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/ListWebAppConfigurations.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/ListWebAppConfigurations.json
      */
     /**
      * Sample code: List web app configurations.

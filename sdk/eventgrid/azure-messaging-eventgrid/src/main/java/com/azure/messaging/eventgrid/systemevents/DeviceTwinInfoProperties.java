@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class DeviceTwinInfoProperties implements JsonSerializable<DeviceTw
     /*
      * A portion of the properties that can be written only by the application back-end, and read by the device.
      */
+    @Generated
     private DeviceTwinProperties desired;
 
     /*
      * A portion of the properties that can be written only by the device, and read by the application back-end.
      */
+    @Generated
     private DeviceTwinProperties reported;
 
     /**
      * Creates an instance of DeviceTwinInfoProperties class.
      */
+    @Generated
     public DeviceTwinInfoProperties() {
     }
 
@@ -38,6 +42,7 @@ public final class DeviceTwinInfoProperties implements JsonSerializable<DeviceTw
      * 
      * @return the desired value.
      */
+    @Generated
     public DeviceTwinProperties getDesired() {
         return this.desired;
     }
@@ -49,6 +54,7 @@ public final class DeviceTwinInfoProperties implements JsonSerializable<DeviceTw
      * @param desired the desired value to set.
      * @return the DeviceTwinInfoProperties object itself.
      */
+    @Generated
     public DeviceTwinInfoProperties setDesired(DeviceTwinProperties desired) {
         this.desired = desired;
         return this;
@@ -60,6 +66,7 @@ public final class DeviceTwinInfoProperties implements JsonSerializable<DeviceTw
      * 
      * @return the reported value.
      */
+    @Generated
     public DeviceTwinProperties getReported() {
         return this.reported;
     }
@@ -71,6 +78,7 @@ public final class DeviceTwinInfoProperties implements JsonSerializable<DeviceTw
      * @param reported the reported value to set.
      * @return the DeviceTwinInfoProperties object itself.
      */
+    @Generated
     public DeviceTwinInfoProperties setReported(DeviceTwinProperties reported) {
         this.reported = reported;
         return this;
@@ -79,6 +87,7 @@ public final class DeviceTwinInfoProperties implements JsonSerializable<DeviceTw
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -95,6 +104,7 @@ public final class DeviceTwinInfoProperties implements JsonSerializable<DeviceTw
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DeviceTwinInfoProperties.
      */
+    @Generated
     public static DeviceTwinInfoProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DeviceTwinInfoProperties deserializedDeviceTwinInfoProperties = new DeviceTwinInfoProperties();

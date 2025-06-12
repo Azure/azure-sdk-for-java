@@ -42,6 +42,10 @@ parameters:
     displayName: azure-resourcemanager-kubernetesconfiguration-fluxconfigurations
     type: boolean
     default: false
+  - name: release_azureresourcemanagerkubernetesconfigurationextensiontypes
+    displayName: azure-resourcemanager-kubernetesconfiguration-extensiontypes
+    type: boolean
+    default: false
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -60,3 +64,7 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerkubernetesconfigurationfluxconfigurations
         releaseInBatch: ${{ parameters.release_azureresourcemanagerkubernetesconfigurationfluxconfigurations }}
+      - name: azure-resourcemanager-kubernetesconfiguration-extensiontypes
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerkubernetesconfigurationextensiontypes
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerkubernetesconfigurationextensiontypes }}

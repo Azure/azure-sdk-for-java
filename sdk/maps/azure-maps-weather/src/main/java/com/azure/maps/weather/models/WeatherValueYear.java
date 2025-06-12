@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class WeatherValueYear implements JsonSerializable<WeatherValueYear
     /*
      * Rounded value.
      */
+    @Generated
     private Float value;
 
     /*
      * Type of unit for the returned value.
      */
+    @Generated
     private String unit;
 
     /*
@@ -31,16 +34,19 @@ public final class WeatherValueYear implements JsonSerializable<WeatherValueYear
      * to [Weather services in Azure Maps](/azure/azure-maps/weather-services-concepts#daily-index-range-sets) for
      * details.
      */
+    @Generated
     private Integer unitType;
 
     /*
      * Year the value occurred.
      */
+    @Generated
     private Integer year;
 
     /**
      * Set default WeatherValueYear constructor to private
      */
+    @Generated
     private WeatherValueYear() {
     }
 
@@ -49,6 +55,7 @@ public final class WeatherValueYear implements JsonSerializable<WeatherValueYear
      *
      * @return the value value.
      */
+    @Generated
     public Float getValue() {
         return this.value;
     }
@@ -58,6 +65,7 @@ public final class WeatherValueYear implements JsonSerializable<WeatherValueYear
      *
      * @return the unit value.
      */
+    @Generated
     public String getUnit() {
         return this.unit;
     }
@@ -69,6 +77,7 @@ public final class WeatherValueYear implements JsonSerializable<WeatherValueYear
      *
      * @return the unitType value.
      */
+    @Generated
     public Integer getUnitType() {
         return this.unitType;
     }
@@ -78,6 +87,7 @@ public final class WeatherValueYear implements JsonSerializable<WeatherValueYear
      *
      * @return the year value.
      */
+    @Generated
     public Integer getYear() {
         return this.year;
     }
@@ -85,6 +95,7 @@ public final class WeatherValueYear implements JsonSerializable<WeatherValueYear
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -103,6 +114,7 @@ public final class WeatherValueYear implements JsonSerializable<WeatherValueYear
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the WeatherValueYear.
      */
+    @Generated
     public static WeatherValueYear fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WeatherValueYear deserializedWeatherValueYear = new WeatherValueYear();

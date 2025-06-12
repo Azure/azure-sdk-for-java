@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,16 +21,19 @@ public final class LengthTokenFilter extends TokenFilter {
     /*
      * A URI fragment specifying the type of token filter.
      */
+    @Generated
     private String odataType = "#Microsoft.Azure.Search.LengthTokenFilter";
 
     /*
      * The minimum length in characters. Default is 0. Maximum is 300. Must be less than the value of max.
      */
+    @Generated
     private Integer minLength;
 
     /*
      * The maximum length in characters. Default and maximum is 300.
      */
+    @Generated
     private Integer maxLength;
 
     /**
@@ -37,6 +41,7 @@ public final class LengthTokenFilter extends TokenFilter {
      * 
      * @param name the name value to set.
      */
+    @Generated
     public LengthTokenFilter(String name) {
         super(name);
     }
@@ -46,6 +51,7 @@ public final class LengthTokenFilter extends TokenFilter {
      * 
      * @return the odataType value.
      */
+    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -57,6 +63,7 @@ public final class LengthTokenFilter extends TokenFilter {
      * 
      * @return the minLength value.
      */
+    @Generated
     public Integer getMinLength() {
         return this.minLength;
     }
@@ -68,6 +75,7 @@ public final class LengthTokenFilter extends TokenFilter {
      * @param minLength the minLength value to set.
      * @return the LengthTokenFilter object itself.
      */
+    @Generated
     public LengthTokenFilter setMinLength(Integer minLength) {
         this.minLength = minLength;
         return this;
@@ -78,6 +86,7 @@ public final class LengthTokenFilter extends TokenFilter {
      * 
      * @return the maxLength value.
      */
+    @Generated
     public Integer getMaxLength() {
         return this.maxLength;
     }
@@ -88,6 +97,7 @@ public final class LengthTokenFilter extends TokenFilter {
      * @param maxLength the maxLength value to set.
      * @return the LengthTokenFilter object itself.
      */
+    @Generated
     public LengthTokenFilter setMaxLength(Integer maxLength) {
         this.maxLength = maxLength;
         return this;
@@ -96,6 +106,7 @@ public final class LengthTokenFilter extends TokenFilter {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -115,6 +126,7 @@ public final class LengthTokenFilter extends TokenFilter {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the LengthTokenFilter.
      */
+    @Generated
     public static LengthTokenFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

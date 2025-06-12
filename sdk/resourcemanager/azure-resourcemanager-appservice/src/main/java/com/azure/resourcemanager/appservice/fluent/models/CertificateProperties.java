@@ -97,12 +97,12 @@ public final class CertificateProperties implements JsonSerializable<Certificate
     private HostingEnvironmentProfile hostingEnvironmentProfile;
 
     /*
-     * Key Vault Csm resource Id.
+     * Azure Key Vault Csm resource Id.
      */
     private String keyVaultId;
 
     /*
-     * Key Vault secret name.
+     * Azure Key Vault secret name.
      */
     private String keyVaultSecretName;
 
@@ -112,8 +112,7 @@ public final class CertificateProperties implements JsonSerializable<Certificate
     private KeyVaultSecretStatus keyVaultSecretStatus;
 
     /*
-     * Resource ID of the associated App Service plan, formatted as:
-     * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
+     * Resource ID of the associated App Service plan.
      */
     private String serverFarmId;
 
@@ -303,7 +302,7 @@ public final class CertificateProperties implements JsonSerializable<Certificate
     }
 
     /**
-     * Get the keyVaultId property: Key Vault Csm resource Id.
+     * Get the keyVaultId property: Azure Key Vault Csm resource Id.
      * 
      * @return the keyVaultId value.
      */
@@ -312,7 +311,7 @@ public final class CertificateProperties implements JsonSerializable<Certificate
     }
 
     /**
-     * Set the keyVaultId property: Key Vault Csm resource Id.
+     * Set the keyVaultId property: Azure Key Vault Csm resource Id.
      * 
      * @param keyVaultId the keyVaultId value to set.
      * @return the CertificateProperties object itself.
@@ -323,7 +322,7 @@ public final class CertificateProperties implements JsonSerializable<Certificate
     }
 
     /**
-     * Get the keyVaultSecretName property: Key Vault secret name.
+     * Get the keyVaultSecretName property: Azure Key Vault secret name.
      * 
      * @return the keyVaultSecretName value.
      */
@@ -332,7 +331,7 @@ public final class CertificateProperties implements JsonSerializable<Certificate
     }
 
     /**
-     * Set the keyVaultSecretName property: Key Vault secret name.
+     * Set the keyVaultSecretName property: Azure Key Vault secret name.
      * 
      * @param keyVaultSecretName the keyVaultSecretName value to set.
      * @return the CertificateProperties object itself.
@@ -352,8 +351,7 @@ public final class CertificateProperties implements JsonSerializable<Certificate
     }
 
     /**
-     * Get the serverFarmId property: Resource ID of the associated App Service plan, formatted as:
-     * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
+     * Get the serverFarmId property: Resource ID of the associated App Service plan.
      * 
      * @return the serverFarmId value.
      */
@@ -362,8 +360,7 @@ public final class CertificateProperties implements JsonSerializable<Certificate
     }
 
     /**
-     * Set the serverFarmId property: Resource ID of the associated App Service plan, formatted as:
-     * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
+     * Set the serverFarmId property: Resource ID of the associated App Service plan.
      * 
      * @param serverFarmId the serverFarmId value to set.
      * @return the CertificateProperties object itself.

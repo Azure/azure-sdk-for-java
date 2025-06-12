@@ -5,6 +5,7 @@
 package com.azure.communication.phonenumbers.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -16,28 +17,30 @@ public final class PhoneNumbersUpdateCapabilitiesHeaders {
     /*
      * The capabilities-id property.
      */
+    @Generated
     private String capabilitiesId;
 
     /*
      * The operation-id property.
      */
+    @Generated
     private String operationId;
 
     /*
      * The Operation-Location property.
      */
+    @Generated
     private String operationLocation;
 
     /*
      * The Location property.
      */
+    @Generated
     private String location;
 
     private static final HttpHeaderName CAPABILITIES_ID = HttpHeaderName.fromString("capabilities-id");
 
     private static final HttpHeaderName OPERATION_ID = HttpHeaderName.fromString("operation-id");
-
-    private static final HttpHeaderName OPERATION_LOCATION = HttpHeaderName.fromString("Operation-Location");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -48,7 +51,7 @@ public final class PhoneNumbersUpdateCapabilitiesHeaders {
     public PhoneNumbersUpdateCapabilitiesHeaders(HttpHeaders rawHeaders) {
         this.capabilitiesId = rawHeaders.getValue(CAPABILITIES_ID);
         this.operationId = rawHeaders.getValue(OPERATION_ID);
-        this.operationLocation = rawHeaders.getValue(OPERATION_LOCATION);
+        this.operationLocation = rawHeaders.getValue(HttpHeaderName.OPERATION_LOCATION);
         this.location = rawHeaders.getValue(HttpHeaderName.LOCATION);
     }
 
@@ -57,6 +60,7 @@ public final class PhoneNumbersUpdateCapabilitiesHeaders {
      * 
      * @return the capabilitiesId value.
      */
+    @Generated
     public String getCapabilitiesId() {
         return this.capabilitiesId;
     }
@@ -67,6 +71,7 @@ public final class PhoneNumbersUpdateCapabilitiesHeaders {
      * @param capabilitiesId the capabilitiesId value to set.
      * @return the PhoneNumbersUpdateCapabilitiesHeaders object itself.
      */
+    @Generated
     public PhoneNumbersUpdateCapabilitiesHeaders setCapabilitiesId(String capabilitiesId) {
         this.capabilitiesId = capabilitiesId;
         return this;
@@ -77,6 +82,7 @@ public final class PhoneNumbersUpdateCapabilitiesHeaders {
      * 
      * @return the operationId value.
      */
+    @Generated
     public String getOperationId() {
         return this.operationId;
     }
@@ -87,6 +93,7 @@ public final class PhoneNumbersUpdateCapabilitiesHeaders {
      * @param operationId the operationId value to set.
      * @return the PhoneNumbersUpdateCapabilitiesHeaders object itself.
      */
+    @Generated
     public PhoneNumbersUpdateCapabilitiesHeaders setOperationId(String operationId) {
         this.operationId = operationId;
         return this;
@@ -97,6 +104,7 @@ public final class PhoneNumbersUpdateCapabilitiesHeaders {
      * 
      * @return the operationLocation value.
      */
+    @Generated
     public String getOperationLocation() {
         return this.operationLocation;
     }
@@ -107,6 +115,7 @@ public final class PhoneNumbersUpdateCapabilitiesHeaders {
      * @param operationLocation the operationLocation value to set.
      * @return the PhoneNumbersUpdateCapabilitiesHeaders object itself.
      */
+    @Generated
     public PhoneNumbersUpdateCapabilitiesHeaders setOperationLocation(String operationLocation) {
         this.operationLocation = operationLocation;
         return this;
@@ -117,6 +126,7 @@ public final class PhoneNumbersUpdateCapabilitiesHeaders {
      * 
      * @return the location value.
      */
+    @Generated
     public String getLocation() {
         return this.location;
     }
@@ -127,6 +137,7 @@ public final class PhoneNumbersUpdateCapabilitiesHeaders {
      * @param location the location value to set.
      * @return the PhoneNumbersUpdateCapabilitiesHeaders object itself.
      */
+    @Generated
     public PhoneNumbersUpdateCapabilitiesHeaders setLocation(String location) {
         this.location = location;
         return this;

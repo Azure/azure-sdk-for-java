@@ -74,7 +74,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PlaywrightTestingMgm")
+    @ServiceInterface(name = "PlaywrightTestingMgmtClientAccounts")
     public interface AccountsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzurePlaywrightService/accounts/{accountName}")

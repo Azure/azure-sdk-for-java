@@ -13,7 +13,7 @@ import java.util.Arrays;
 public final class CertificatesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/CreateOrUpdateCertificate.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/CreateOrUpdateCertificate.json
      */
     /**
      * Sample code: Create Or Update Certificate.

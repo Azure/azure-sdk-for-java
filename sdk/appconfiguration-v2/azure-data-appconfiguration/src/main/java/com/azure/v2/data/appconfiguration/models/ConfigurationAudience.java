@@ -4,6 +4,7 @@
 package com.azure.v2.data.appconfiguration.models;
 
 import com.azure.v2.data.appconfiguration.ConfigurationClientBuilder;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
@@ -23,6 +24,7 @@ import java.util.function.Function;
  * Microsoft Entra audience is configurable via the {@link ConfigurationClientBuilder#audience(ConfigurationAudience)} method.
  */
 public final class ConfigurationAudience implements ExpandableEnum<String>, JsonSerializable<ConfigurationAudience> {
+    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationAudience.class);
     private static final Map<String, ConfigurationAudience> VALUES = new ConcurrentHashMap<>();
     private static final Function<String, ConfigurationAudience> NEW_INSTANCE = ConfigurationAudience::new;
     private final String value;
@@ -54,12 +56,10 @@ public final class ConfigurationAudience implements ExpandableEnum<String>, Json
      *
      * @param name a name to look for.
      * @return the corresponding ConfigurationAudience.
-     * @throws IllegalArgumentException If the name is null.
+     * @throws NullPointerException If the name is null.
      */
     public static ConfigurationAudience fromString(String name) {
-        if (name == null) {
-            throw new IllegalArgumentException("'value' cannot be null.");
-        }
+        Objects.requireNonNull(name, "'name' cannot be null.");
         return VALUES.computeIfAbsent(name, NEW_INSTANCE);
     }
 
@@ -102,8 +102,10 @@ public final class ConfigurationAudience implements ExpandableEnum<String>, Json
             return null;
         }
         if (nextToken != JsonToken.STRING) {
-            throw new IllegalStateException(
-                String.format("Unexpected JSON token for %s deserialization: %s", JsonToken.STRING, nextToken));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("nextToken", nextToken.name())
+                .addKeyValue("expectedToken", JsonToken.STRING.name())
+                .log("Unexpected JSON token.", IllegalStateException::new);
         }
         return ConfigurationAudience.fromString(jsonReader.getString());
     }

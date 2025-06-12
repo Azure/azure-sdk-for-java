@@ -7,6 +7,7 @@
 package com.azure.search.documents.agents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,31 +22,37 @@ public final class KnowledgeAgentIndexParams implements JsonSerializable<Knowled
     /*
      * The name of the index the params apply to.
      */
+    @Generated
     private String indexName;
 
     /*
      * A filter condition applied to the index (e.g., 'State eq VA').
      */
+    @Generated
     private String filterAddOn;
 
     /*
      * Limits the number of documents considered for ranking.
      */
+    @Generated
     private Integer maxDocsForReranker;
 
     /*
      * A threshold for reranking results (range: 0-4).
      */
+    @Generated
     private Float rerankerThreshold;
 
     /*
      * Indicates whether reference source data should be included.
      */
+    @Generated
     private Boolean includeReferenceSourceData;
 
     /**
      * Creates an instance of KnowledgeAgentIndexParams class.
      */
+    @Generated
     public KnowledgeAgentIndexParams() {
     }
 
@@ -54,6 +61,7 @@ public final class KnowledgeAgentIndexParams implements JsonSerializable<Knowled
      * 
      * @return the indexName value.
      */
+    @Generated
     public String getIndexName() {
         return this.indexName;
     }
@@ -64,6 +72,7 @@ public final class KnowledgeAgentIndexParams implements JsonSerializable<Knowled
      * @param indexName the indexName value to set.
      * @return the KnowledgeAgentIndexParams object itself.
      */
+    @Generated
     public KnowledgeAgentIndexParams setIndexName(String indexName) {
         this.indexName = indexName;
         return this;
@@ -74,6 +83,7 @@ public final class KnowledgeAgentIndexParams implements JsonSerializable<Knowled
      * 
      * @return the filterAddOn value.
      */
+    @Generated
     public String getFilterAddOn() {
         return this.filterAddOn;
     }
@@ -84,6 +94,7 @@ public final class KnowledgeAgentIndexParams implements JsonSerializable<Knowled
      * @param filterAddOn the filterAddOn value to set.
      * @return the KnowledgeAgentIndexParams object itself.
      */
+    @Generated
     public KnowledgeAgentIndexParams setFilterAddOn(String filterAddOn) {
         this.filterAddOn = filterAddOn;
         return this;
@@ -94,6 +105,7 @@ public final class KnowledgeAgentIndexParams implements JsonSerializable<Knowled
      * 
      * @return the maxDocsForReranker value.
      */
+    @Generated
     public Integer getMaxDocsForReranker() {
         return this.maxDocsForReranker;
     }
@@ -104,6 +116,7 @@ public final class KnowledgeAgentIndexParams implements JsonSerializable<Knowled
      * @param maxDocsForReranker the maxDocsForReranker value to set.
      * @return the KnowledgeAgentIndexParams object itself.
      */
+    @Generated
     public KnowledgeAgentIndexParams setMaxDocsForReranker(Integer maxDocsForReranker) {
         this.maxDocsForReranker = maxDocsForReranker;
         return this;
@@ -114,6 +127,7 @@ public final class KnowledgeAgentIndexParams implements JsonSerializable<Knowled
      * 
      * @return the rerankerThreshold value.
      */
+    @Generated
     public Float getRerankerThreshold() {
         return this.rerankerThreshold;
     }
@@ -124,6 +138,7 @@ public final class KnowledgeAgentIndexParams implements JsonSerializable<Knowled
      * @param rerankerThreshold the rerankerThreshold value to set.
      * @return the KnowledgeAgentIndexParams object itself.
      */
+    @Generated
     public KnowledgeAgentIndexParams setRerankerThreshold(Float rerankerThreshold) {
         this.rerankerThreshold = rerankerThreshold;
         return this;
@@ -134,6 +149,7 @@ public final class KnowledgeAgentIndexParams implements JsonSerializable<Knowled
      * 
      * @return the includeReferenceSourceData value.
      */
+    @Generated
     public Boolean isIncludeReferenceSourceData() {
         return this.includeReferenceSourceData;
     }
@@ -144,6 +160,7 @@ public final class KnowledgeAgentIndexParams implements JsonSerializable<Knowled
      * @param includeReferenceSourceData the includeReferenceSourceData value to set.
      * @return the KnowledgeAgentIndexParams object itself.
      */
+    @Generated
     public KnowledgeAgentIndexParams setIncludeReferenceSourceData(Boolean includeReferenceSourceData) {
         this.includeReferenceSourceData = includeReferenceSourceData;
         return this;
@@ -152,6 +169,7 @@ public final class KnowledgeAgentIndexParams implements JsonSerializable<Knowled
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -171,6 +189,7 @@ public final class KnowledgeAgentIndexParams implements JsonSerializable<Knowled
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the KnowledgeAgentIndexParams.
      */
+    @Generated
     public static KnowledgeAgentIndexParams fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             KnowledgeAgentIndexParams deserializedKnowledgeAgentIndexParams = new KnowledgeAgentIndexParams();

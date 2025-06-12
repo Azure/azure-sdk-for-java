@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.agents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,12 +22,14 @@ public class KnowledgeAgentMessageContent implements JsonSerializable<KnowledgeA
     /*
      * The type of the message
      */
+    @Generated
     private KnowledgeAgentMessageContentType type
         = KnowledgeAgentMessageContentType.fromString("KnowledgeAgentMessageContent");
 
     /**
      * Creates an instance of KnowledgeAgentMessageContent class.
      */
+    @Generated
     public KnowledgeAgentMessageContent() {
     }
 
@@ -35,6 +38,7 @@ public class KnowledgeAgentMessageContent implements JsonSerializable<KnowledgeA
      * 
      * @return the type value.
      */
+    @Generated
     public KnowledgeAgentMessageContentType getType() {
         return this.type;
     }
@@ -42,6 +46,7 @@ public class KnowledgeAgentMessageContent implements JsonSerializable<KnowledgeA
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -57,6 +62,7 @@ public class KnowledgeAgentMessageContent implements JsonSerializable<KnowledgeA
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the KnowledgeAgentMessageContent.
      */
+    @Generated
     public static KnowledgeAgentMessageContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -84,6 +90,7 @@ public class KnowledgeAgentMessageContent implements JsonSerializable<KnowledgeA
         });
     }
 
+    @Generated
     static KnowledgeAgentMessageContent fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             KnowledgeAgentMessageContent deserializedKnowledgeAgentMessageContent = new KnowledgeAgentMessageContent();
