@@ -12,7 +12,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.monitor.query.implementation.logs.models.LogsQueryHelper;
 import com.azure.monitor.query.implementation.metrics.AzureMonitorMetricsDataAPI;
 import com.azure.monitor.query.implementation.metrics.models.ErrorResponseException;
 import com.azure.monitor.query.implementation.metrics.models.MetricsHelper;
@@ -194,7 +193,7 @@ public final class MetricsQueryAsyncClient {
                 = options.getAggregations().stream().map(type -> type.toString()).collect(Collectors.joining(","));
         }
         String timespan
-            = options.getTimeInterval() == null ? null : LogsQueryHelper.toIso8601Format(options.getTimeInterval());
+            = options.getTimeInterval() == null ? null : MetricsHelper.toMetricsTimespan(options.getTimeInterval());
         return metricsClient.getMetrics()
             .listWithResponseAsync(resourceUri, timespan, options.getGranularity(), String.join(",", metricsNames),
                 aggregation, options.getTop(), options.getOrderBy(), options.getFilter(), ResultType.DATA,
