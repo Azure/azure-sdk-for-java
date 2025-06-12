@@ -53,9 +53,7 @@ public final class RampUpRule implements JsonSerializable<RampUpRule> {
     private Double maxReroutePercentage;
 
     /*
-     * Custom decision algorithm can be provided in TiPCallback site extension which URL can be specified. See
-     * TiPCallback site extension for the scaffold and contracts.
-     * https://www.siteextensions.net/packages/TiPCallback/
+     * Custom decision algorithm can be provided in TiPCallback site extension which URL can be specified.
      */
     private String changeDecisionCallbackUrl;
 
@@ -207,8 +205,7 @@ public final class RampUpRule implements JsonSerializable<RampUpRule> {
 
     /**
      * Get the changeDecisionCallbackUrl property: Custom decision algorithm can be provided in TiPCallback site
-     * extension which URL can be specified. See TiPCallback site extension for the scaffold and contracts.
-     * https://www.siteextensions.net/packages/TiPCallback/.
+     * extension which URL can be specified.
      * 
      * @return the changeDecisionCallbackUrl value.
      */
@@ -218,8 +215,7 @@ public final class RampUpRule implements JsonSerializable<RampUpRule> {
 
     /**
      * Set the changeDecisionCallbackUrl property: Custom decision algorithm can be provided in TiPCallback site
-     * extension which URL can be specified. See TiPCallback site extension for the scaffold and contracts.
-     * https://www.siteextensions.net/packages/TiPCallback/.
+     * extension which URL can be specified.
      * 
      * @param changeDecisionCallbackUrl the changeDecisionCallbackUrl value to set.
      * @return the RampUpRule object itself.

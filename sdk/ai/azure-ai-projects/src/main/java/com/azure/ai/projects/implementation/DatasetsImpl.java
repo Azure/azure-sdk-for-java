@@ -77,7 +77,7 @@ public final class DatasetsImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AIProjectClientDatas")
+    @ServiceInterface(name = "AIProjectClientDatasets")
     public interface DatasetsService {
         @Get("/datasets/{name}/versions")
         @ExpectedResponses({ 200 })

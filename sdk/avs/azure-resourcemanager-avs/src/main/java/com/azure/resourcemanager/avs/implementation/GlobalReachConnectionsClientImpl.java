@@ -70,7 +70,7 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AvsClientGlobalReach")
+    @ServiceInterface(name = "AvsClientGlobalReachConnections")
     public interface GlobalReachConnectionsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/globalReachConnections")

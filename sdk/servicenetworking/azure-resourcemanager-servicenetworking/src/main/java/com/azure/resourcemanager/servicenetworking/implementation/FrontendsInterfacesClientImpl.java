@@ -72,7 +72,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "TrafficControllerMan")
+    @ServiceInterface(name = "TrafficControllerManagementClientFrontendsInterfaces")
     public interface FrontendsInterfacesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/frontends/{frontendName}")

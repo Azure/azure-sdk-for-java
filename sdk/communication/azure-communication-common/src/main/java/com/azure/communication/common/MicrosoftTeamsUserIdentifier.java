@@ -19,7 +19,7 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
     /**
      * Creates a MicrosoftTeamsUserIdentifier object
      *
-     * @param userId Id of the Microsoft Teams user. If the user isn't anonymous, the id is the Azure AD object id of the user.
+     * @param userId Id of the Microsoft Teams user. If the user isn't anonymous, the id is the Entra ID object id of the user.
      * @param isAnonymous set this to true if the user is anonymous,
      *                    for example when joining a meeting with a share link
      * @throws IllegalArgumentException thrown if userId parameter fail the validation.
@@ -36,7 +36,7 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
     /**
      * Creates a MicrosoftTeamsUserIdentifier object
      *
-     * @param userId Id of the Microsoft Teams user. If the user isn't anonymous, the id is the Azure AD object id of the user.
+     * @param userId Id of the Microsoft Teams user. If the user isn't anonymous, the id is the Entra ID object id of the user.
      * @throws IllegalArgumentException thrown if userId parameter fail the validation.
      */
     public MicrosoftTeamsUserIdentifier(String userId) {
@@ -45,7 +45,7 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
 
     /**
      * Get Teams User Id
-     * @return userId Id of the Microsoft Teams user. If the user isn't anonymous, the id is the Azure AD object id of the user.
+     * @return userId Id of the Microsoft Teams user. If the user isn't anonymous, the id is the Entra ID object id of the user.
      */
     public String getUserId() {
         return this.userId;
@@ -126,13 +126,13 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
     private void generateRawId() {
         if (!rawIdSet) {
             if (this.isAnonymous) {
-                super.setRawId("8:teamsvisitor:" + this.userId);
+                super.setRawId(TEAMS_USER_ANONYMOUS_PREFIX + this.userId);
             } else if (cloudEnvironment.equals(CommunicationCloudEnvironment.DOD)) {
-                super.setRawId("8:dod:" + this.userId);
+                super.setRawId(TEAMS_USER_DOD_CLOUD_PREFIX + this.userId);
             } else if (cloudEnvironment.equals(CommunicationCloudEnvironment.GCCH)) {
-                super.setRawId("8:gcch:" + this.userId);
+                super.setRawId(TEAMS_USER_GCCH_CLOUD_PREFIX + this.userId);
             } else {
-                super.setRawId("8:orgid:" + this.userId);
+                super.setRawId(TEAMS_USER_PUBLIC_CLOUD_PREFIX + this.userId);
             }
         }
     }

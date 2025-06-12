@@ -145,7 +145,7 @@ public final class ImageEmbeddingsClientImpl {
      * calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ImageEmbeddingsClien")
+    @ServiceInterface(name = "ImageEmbeddingsClient")
     public interface ImageEmbeddingsClientService {
         @Post("/images/embeddings")
         @ExpectedResponses({ 200 })

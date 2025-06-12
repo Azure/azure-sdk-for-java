@@ -4,10 +4,12 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.fluent.models.SnapshotInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
@@ -449,6 +451,20 @@ public interface Snapshot
         interface WithCreate
             extends Creatable<Snapshot>, Resource.DefinitionWithTags<Snapshot.DefinitionStages.WithCreate>, WithSize,
             WithSku, WithIncremental, WithCopyStart, WithPublicNetworkAccess {
+            /**
+             * Begins creating the snapshot resource.
+             *
+             * @return the accepted create operation
+             */
+            Accepted<Snapshot> beginCreate();
+
+            /**
+             * Begins creating the snapshot resource.
+             *
+             * @param context the {@link Context} of the request
+             * @return the accepted create operation
+             */
+            Accepted<Snapshot> beginCreate(Context context);
         }
     }
 
