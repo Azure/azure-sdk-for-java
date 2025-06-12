@@ -806,7 +806,7 @@ public final class PhoneNumbersClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PhoneNumberLocality> listAvailableLocalities(String countryCode,
         String administrativeDivision) {
-        return this.listAvailableLocalities(countryCode, administrativeDivision, null);
+        return this.listAvailableLocalities(countryCode, administrativeDivision, null, null);
     }
 
     /**
@@ -827,6 +827,25 @@ public final class PhoneNumbersClient {
         context = context == null ? Context.NONE : context;
         return client.listAvailableLocalities(countryCode, null, null, administrativeDivision, acceptLanguage, null,
             context);
+    }
+
+    /**
+     * Gets the list of the available localities. I.e. cities, towns.
+     *
+     * @param countryCode The ISO 3166-2 country code.
+     * @param administrativeDivision An optional parameter. The name or short name
+     *                               of the state/province within which to list the
+     *                               localities.
+     * @param phoneNumberType {@link PhoneNumberType} Optional parameter. Restrict
+     *                               the localities to the phone number type.
+     * @return A {@link PagedIterable} of {@link PhoneNumberLocality} instances
+     *         representing available localities with phone numbers.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PhoneNumberLocality> listAvailableLocalities(String countryCode, String administrativeDivision,
+        PhoneNumberType phoneNumberType) {
+        return client.listAvailableLocalities(countryCode, null, null, administrativeDivision, acceptLanguage,
+            phoneNumberType, Context.NONE);
     }
 
     /**
@@ -917,7 +936,7 @@ public final class PhoneNumbersClient {
     public PagedIterable<PhoneNumberAreaCode> listAvailableMobileAreaCodes(String countryCode,
         PhoneNumberAssignmentType assignmentType, String locality, Context context) {
         context = context == null ? Context.NONE : context;
-        return client.listAreaCodes(countryCode, PhoneNumberType.GEOGRAPHIC, null, null, assignmentType, locality, null,
+        return client.listAreaCodes(countryCode, PhoneNumberType.MOBILE, null, null, assignmentType, locality, null,
             acceptLanguage, context);
     }
 

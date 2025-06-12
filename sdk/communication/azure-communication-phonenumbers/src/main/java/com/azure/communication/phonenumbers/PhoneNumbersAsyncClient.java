@@ -919,8 +919,8 @@ public final class PhoneNumbersAsyncClient {
     public PagedFlux<PhoneNumberAreaCode> listAvailableMobileAreaCodes(String countryCode,
         PhoneNumberAssignmentType assignmentType, String locality) {
         try {
-            return client.listAreaCodesAsync(countryCode, PhoneNumberType.GEOGRAPHIC, null, null, assignmentType,
-                locality, null, acceptLanguage);
+            return client.listAreaCodesAsync(countryCode, PhoneNumberType.MOBILE, null, null, assignmentType, locality,
+                null, acceptLanguage);
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
