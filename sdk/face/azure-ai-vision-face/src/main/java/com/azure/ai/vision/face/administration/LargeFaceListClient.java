@@ -4,6 +4,8 @@
 
 package com.azure.ai.vision.face.administration;
 
+import java.util.List;
+
 import com.azure.ai.vision.face.implementation.LargeFaceListImpl;
 import com.azure.ai.vision.face.implementation.models.AddFaceFromUrlRequest2;
 import com.azure.ai.vision.face.implementation.models.CreateRequest;
@@ -30,7 +32,6 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.TypeReference;
-import java.util.List;
 
 /**
  * Initializes a new instance of the synchronous LargeFaceList type.
@@ -738,6 +739,98 @@ public final class LargeFaceListClient {
         // Generated convenience method for beginTrainWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginTrainWithModel(requestOptions);
+    }
+
+    /**
+     * Add a face to a specified Large Face List, up to 1,000,000 faces.
+     *
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-list-operations/add-large-face-list-face-from-url
+     * for more details.
+     *
+     * @param url URL of input image.
+     * @param targetFace A face rectangle to specify the target face to be added to a person, in the format of
+     * 'targetFace=left,top,width,height'.
+     * @param detectionModel The 'detectionModel' associated with the detected faceIds. Supported 'detectionModel'
+     * values include 'detection_01', 'detection_02' and 'detection_03'. The default value is 'detection_01'.
+     * @param userData User-provided data attached to the face. The size limit is 1K.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body for adding face.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AddFaceResult addFace(String url, List<Integer> targetFace, FaceDetectionModel detectionModel,
+        String userData) {
+        return addFaceFromUrlImpl(url, targetFace, detectionModel, userData);
+    }
+
+    /**
+     * Add a face to a specified Large Face List, up to 1,000,000 faces.
+     *
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-list-operations/add-large-face-list-face-from-url
+     * for more details.
+     *
+     * @param url URL of input image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body for adding face.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AddFaceResult addFace(String url) {
+        return addFaceFromUrlImpl(url);
+    }
+
+    /**
+     * Add a face to a specified Large Face List, up to 1,000,000 faces.
+     *
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-list-operations/add-large-face-list-face for more
+     * details.
+     *
+     * @param imageContent The image to be analyzed.
+     * @param targetFace A face rectangle to specify the target face to be added to a person, in the format of
+     * 'targetFace=left,top,width,height'.
+     * @param detectionModel The 'detectionModel' associated with the detected faceIds. Supported 'detectionModel'
+     * values include 'detection_01', 'detection_02' and 'detection_03'. The default value is 'detection_01'.
+     * @param userData User-provided data attached to the face. The size limit is 1K.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body for adding face.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AddFaceResult addFace(BinaryData imageContent, List<Integer> targetFace, FaceDetectionModel detectionModel,
+        String userData) {
+        return addFaceImpl(imageContent, targetFace, detectionModel, userData);
+    }
+
+    /**
+     * Add a face to a specified Large Face List, up to 1,000,000 faces.
+     *
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-list-operations/add-large-face-list-face for more
+     * details.
+     *
+     * @param imageContent The image to be analyzed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body for adding face.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AddFaceResult addFace(BinaryData imageContent) {
+        return addFaceImpl(imageContent);
     }
 
     /**

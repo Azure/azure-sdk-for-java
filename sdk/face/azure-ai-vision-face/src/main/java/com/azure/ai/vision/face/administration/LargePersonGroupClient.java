@@ -4,6 +4,8 @@
 
 package com.azure.ai.vision.face.administration;
 
+import java.util.List;
+
 import com.azure.ai.vision.face.implementation.LargePersonGroupImpl;
 import com.azure.ai.vision.face.implementation.models.AddFaceFromUrlRequest1;
 import com.azure.ai.vision.face.implementation.models.CreatePersonRequest;
@@ -34,7 +36,6 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.TypeReference;
-import java.util.List;
 
 /**
  * Initializes a new instance of the synchronous LargePersonGroup type.
@@ -1099,6 +1100,106 @@ public final class LargePersonGroupClient {
         RequestOptions requestOptions = new RequestOptions();
         return getPersonsWithResponse(requestOptions).getValue()
             .toObject(TYPE_REFERENCE_LIST_LARGE_PERSON_GROUP_PERSON);
+    }
+
+    /**
+     * Add a face to a person into a Large Person Group for face identification or verification.
+     *
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/person-group-operations/add-large-person-group-person-face-from-url for
+     * more details.
+     *
+     * @param personId ID of the person.
+     * @param url URL of input image.
+     * @param targetFace A face rectangle to specify the target face to be added to a person, in the format of
+     * 'targetFace=left,top,width,height'.
+     * @param detectionModel The 'detectionModel' associated with the detected faceIds. Supported 'detectionModel'
+     * values include 'detection_01', 'detection_02' and 'detection_03'. The default value is 'detection_01'.
+     * @param userData User-provided data attached to the face. The size limit is 1K.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body for adding face.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AddFaceResult addFace(String personId, String url, List<Integer> targetFace,
+        FaceDetectionModel detectionModel, String userData) {
+        return addFaceFromUrlImpl(personId, url, targetFace, detectionModel, userData);
+    }
+
+    /**
+     * Add a face to a person into a Large Person Group for face identification or verification.
+     *
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/person-group-operations/add-large-person-group-person-face-from-url for
+     * more details.
+     *
+     * @param personId ID of the person.
+     * @param url URL of input image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body for adding face.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AddFaceResult addFace(String personId, String url) {
+        return addFaceFromUrlImpl(personId, url);
+    }
+
+    /**
+     * Add a face to a person into a Large Person Group for face identification or verification.
+     *
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/person-group-operations/add-large-person-group-person-face for more
+     * details.
+     *
+     * @param personId ID of the person.
+     * @param imageContent The image to be analyzed.
+     * @param targetFace A face rectangle to specify the target face to be added to a person, in the format of
+     * 'targetFace=left,top,width,height'.
+     * @param detectionModel The 'detectionModel' associated with the detected faceIds. Supported 'detectionModel'
+     * values include 'detection_01', 'detection_02' and 'detection_03'. The default value is 'detection_01'.
+     * @param userData User-provided data attached to the face. The size limit is 1K.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body for adding face.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AddFaceResult addFace(String personId, BinaryData imageContent, List<Integer> targetFace,
+        FaceDetectionModel detectionModel, String userData) {
+        return addFaceImpl(personId, imageContent, targetFace, detectionModel, userData);
+    }
+
+    /**
+     * Add a face to a person into a Large Person Group for face identification or verification.
+     *
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/person-group-operations/add-large-person-group-person-face for more
+     * details.
+     *
+     * @param personId ID of the person.
+     * @param imageContent The image to be analyzed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body for adding face.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AddFaceResult addFace(String personId, BinaryData imageContent) {
+        return addFaceImpl(personId, imageContent);
     }
 
     /**
