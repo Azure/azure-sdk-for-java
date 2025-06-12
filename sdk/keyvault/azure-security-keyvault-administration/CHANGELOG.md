@@ -1,14 +1,25 @@
 # Release History
 
-## 4.7.0-beta.2 (Unreleased)
+## 4.7.0 (2025-06-12)
 
 ### Features Added
 
+> Compared to the last stable release - `4.6.4`
+- Added support for service version `7.6`.
+- Added support for pre-backup and pre-restore operations in `KeyVaultBackupClient` and `KeyVaultBackupAsyncClient`. These are long-running operations that check whether it is possible to perform a full key backup or a full key restore from a backup. ([#39878](https://github.com/Azure/azure-sdk-for-java/pull/39878))
+
 ### Breaking Changes
 
-### Bugs Fixed
+> Compared to the latest release - `4.7.0-beta.1`
+- Removed support for service version `7.6-preview.2`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+> Compared to the latest release - `4.7.0-beta.1`
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
 
 ## 4.7.0-beta.1 (2025-04-10)
 
