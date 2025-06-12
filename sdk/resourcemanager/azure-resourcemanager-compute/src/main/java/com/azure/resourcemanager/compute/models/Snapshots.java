@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
@@ -15,6 +16,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCr
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import reactor.core.publisher.Mono;
 
 /** Entry point to managed snapshot management API in Azure. */
@@ -62,4 +64,40 @@ public interface Snapshots extends SupportsCreating<Snapshot.DefinitionStages.Bl
      * @param snapName the snapshot name
      */
     void revokeAccess(String resourceGroupName, String snapName);
+
+    /**
+     * Begins deleting a snapshot from Azure, identifying it by its resource ID.
+     *
+     * @param id the resource ID of the snapshot to delete
+     * @return the accepted deleting operation
+     */
+    Accepted<Void> beginDeleteById(String id);
+
+    /**
+     * Begins deleting a snapshot from Azure, identifying it by its resource ID.
+     *
+     * @param id the resource ID of the snapshot to delete
+     * @param context the {@link Context} of the request
+     * @return the accepted deleting operation
+     */
+    Accepted<Void> beginDeleteById(String id, Context context);
+
+    /**
+     * Begins deleting a snapshot from Azure, identifying it by its name and its resource group.
+     *
+     * @param resourceGroupName the resource group the resource is part of
+     * @param name the snapshot name
+     * @return the accepted deleting operation
+     */
+    Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name);
+
+    /**
+     * Begins deleting a snapshot from Azure, identifying it by its name and its resource group.
+     *
+     * @param resourceGroupName the resource group the resource is part of
+     * @param name the snapshot name
+     * @param context the {@link Context} of the request
+     * @return the accepted deleting operation
+     */
+    Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, Context context);
 }
