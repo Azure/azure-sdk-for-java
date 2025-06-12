@@ -12,6 +12,7 @@
 
 > Compared to the latest release - `4.8.0-beta.1`
 - Removed support for service version `7.6-preview.2`.
+- Removed `OCT` and `OCT_HSM` from `CertificateKeyType`.
 
 ### Other Changes
 
