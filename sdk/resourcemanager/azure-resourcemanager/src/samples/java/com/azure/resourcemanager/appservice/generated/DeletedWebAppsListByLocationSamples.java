@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class DeletedWebAppsListByLocationSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/ListDeletedWebAppsByLocation.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/ListDeletedWebAppsByLocation.json
      */
     /**
      * Sample code: List Deleted Web App by Location.

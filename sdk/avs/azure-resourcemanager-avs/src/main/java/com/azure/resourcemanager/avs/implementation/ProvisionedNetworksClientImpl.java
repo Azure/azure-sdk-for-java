@@ -61,7 +61,7 @@ public final class ProvisionedNetworksClientImpl implements ProvisionedNetworksC
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AvsClientProvisioned")
+    @ServiceInterface(name = "AvsClientProvisionedNetworks")
     public interface ProvisionedNetworksService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/provisionedNetworks")

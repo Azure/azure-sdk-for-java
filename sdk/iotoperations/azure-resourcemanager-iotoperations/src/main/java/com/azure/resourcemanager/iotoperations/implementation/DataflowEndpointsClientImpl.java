@@ -70,7 +70,7 @@ public final class DataflowEndpointsClientImpl implements DataflowEndpointsClien
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "IoTOperationsManagem")
+    @ServiceInterface(name = "IoTOperationsManagementClientDataflowEndpoints")
     public interface DataflowEndpointsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowEndpoints/{dataflowEndpointName}")

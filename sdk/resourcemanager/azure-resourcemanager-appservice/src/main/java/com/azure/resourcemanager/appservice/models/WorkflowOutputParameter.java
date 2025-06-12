@@ -87,8 +87,12 @@ public final class WorkflowOutputParameter extends WorkflowParameter {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", type() == null ? null : type().toString());
-        jsonWriter.writeUntypedField("value", value());
-        jsonWriter.writeUntypedField("metadata", metadata());
+        if (value() != null) {
+            jsonWriter.writeUntypedField("value", value());
+        }
+        if (metadata() != null) {
+            jsonWriter.writeUntypedField("metadata", metadata());
+        }
         jsonWriter.writeStringField("description", description());
         return jsonWriter.writeEndObject();
     }

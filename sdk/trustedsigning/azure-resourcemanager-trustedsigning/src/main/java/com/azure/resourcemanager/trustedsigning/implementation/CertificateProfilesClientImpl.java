@@ -72,7 +72,7 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "TrustedSigningManage")
+    @ServiceInterface(name = "TrustedSigningManagementClientCertificateProfiles")
     public interface CertificateProfilesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles/{profileName}")
