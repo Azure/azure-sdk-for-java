@@ -22,6 +22,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
@@ -62,11 +63,14 @@ import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.TestEnvironment;
 import com.azure.storage.common.test.shared.policy.PerCallVersionPolicy;
+import com.azure.xml.XmlWriter;
 import org.junit.jupiter.params.provider.Arguments;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import javax.xml.stream.XMLStreamException;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -82,6 +86,8 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Queue;
+import java.util.concurrent.Callable;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -1071,6 +1077,164 @@ public class BlobTestBase extends TestProxyTestBase {
             return builder.build();
         } else { //playback or not set
             return new MockTokenCredential();
+        }
+    }
+
+    // todo (isbr): https://github.com/Azure/azure-sdk-for-java/pull/45202#pullrequestreview-2915149773
+    protected static final class PagingTimeoutTestClient implements HttpClient {
+        private final Queue<String> responses = new java.util.LinkedList<>();
+
+        private enum PageType {
+            LIST_BLOBS, FIND_BLOBS, LIST_CONTAINERS
+        }
+
+        public PagingTimeoutTestClient() {
+        }
+
+        public PagingTimeoutTestClient addListBlobsResponses(int totalResourcesExpected, int maxResourcesPerPage,
+            boolean isHierarchical) {
+            return addPagedResponses(totalResourcesExpected, maxResourcesPerPage, PageType.LIST_BLOBS, isHierarchical);
+        }
+
+        public PagingTimeoutTestClient addFindBlobsResponses(int totalResourcesExpected, int maxResourcesPerPage) {
+            return addPagedResponses(totalResourcesExpected, maxResourcesPerPage, PageType.FIND_BLOBS, false);
+        }
+
+        public PagingTimeoutTestClient addListContainersResponses(int totalResourcesExpected, int maxResourcesPerPage) {
+            return addPagedResponses(totalResourcesExpected, maxResourcesPerPage, PageType.LIST_CONTAINERS, false);
+        }
+
+        private PagingTimeoutTestClient addPagedResponses(int totalResourcesExpected, int maxResourcesPerPage,
+            PageType pageType, boolean isHierarchical) {
+            int totalPagesExpected = (int) Math.ceil((double) totalResourcesExpected / maxResourcesPerPage);
+            int resourcesAdded = 0;
+            for (int pageNum = 0; pageNum < totalPagesExpected; pageNum++) {
+                int numberOfElementsOnThisPage = Math.min(maxResourcesPerPage, totalResourcesExpected - resourcesAdded);
+                resourcesAdded += numberOfElementsOnThisPage;
+
+                try {
+                    responses.add(buildXmlPage(pageNum, maxResourcesPerPage, totalPagesExpected,
+                        numberOfElementsOnThisPage, pageType, isHierarchical));
+                } catch (Exception e) {
+                    throw new RuntimeException("Failed to generate XML for paged response", e);
+                }
+            }
+            return this;
+        }
+
+        private String buildXmlPage(int pageNum, int maxResourcesPerPage, int totalPagesExpected,
+            int numberOfElementsOnThisPage, PageType pageType, boolean isHierarchicalForBlobs) throws Exception {
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            XmlWriter xmlWriter = XmlWriter.toStream(output);
+
+            String elementType;
+            Callable<Void> additionalElements = null;
+
+            switch (pageType) {
+                case LIST_BLOBS:
+                    elementType = "Blob";
+                    startXml(pageNum, xmlWriter, () -> {
+                        xmlWriter.writeStringAttribute("ContainerName", "foo");
+                        return null;
+                    });
+                    xmlWriter.writeStringElement("MaxResults", String.valueOf(maxResourcesPerPage));
+                    if (isHierarchicalForBlobs) {
+                        xmlWriter.writeStringElement("Delimiter", "/");
+                    }
+                    break;
+
+                case FIND_BLOBS:
+                    elementType = "Blob";
+                    additionalElements = () -> {
+                        xmlWriter.writeStringElement("ContainerName", "foo");
+
+                        // Write Tags
+                        xmlWriter.writeStartElement("Tags");
+                        xmlWriter.writeStartElement("TagSet");
+                        xmlWriter.writeStartElement("Tag");
+                        xmlWriter.writeStringElement("Key", "dummyKey");
+                        xmlWriter.writeStringElement("Value", "dummyValue");
+                        xmlWriter.writeEndElement(); // End Tag
+                        xmlWriter.writeEndElement(); // End TagSet
+                        xmlWriter.writeEndElement(); // End Tags
+                        return null;
+                    };
+                    startXml(pageNum, xmlWriter, null);
+                    xmlWriter.writeStringElement("Where", "\"dummyKey\"='dummyValue'");
+                    xmlWriter.writeStringElement("MaxResults", String.valueOf(maxResourcesPerPage));
+                    break;
+
+                case LIST_CONTAINERS:
+                    elementType = "Container";
+                    startXml(pageNum, xmlWriter, null);
+                    xmlWriter.writeStringElement("MaxResults", String.valueOf(maxResourcesPerPage));
+                    break;
+
+                default:
+                    throw new IllegalArgumentException("Unknown PageType: " + pageType);
+            }
+
+            writeGenericListElement(xmlWriter, elementType, numberOfElementsOnThisPage, additionalElements);
+            endXml(pageNum, xmlWriter, totalPagesExpected); // This calls flush
+
+            return output.toString();
+        }
+
+        private void startXml(int pageNum, XmlWriter xmlWriter, Callable<Void> additionalAttributes) throws Exception {
+            xmlWriter.writeStartDocument();
+            xmlWriter.writeStartElement("EnumerationResults");
+            xmlWriter.writeStringAttribute("ServiceEndpoint", "https://account.blob.core.windows.net/");
+
+            if (additionalAttributes != null) {
+                additionalAttributes.call();
+            }
+
+            // Write marker if not first page
+            if (pageNum != 0) {
+                xmlWriter.writeStringElement("Marker", "MARKER--");
+            }
+        }
+
+        private void endXml(int pageNum, XmlWriter xmlWriter, int totalPagesExpected) throws XMLStreamException {
+            // Write NextMarker
+            if (pageNum == totalPagesExpected - 1) {
+                xmlWriter.writeStringElement("NextMarker", null);
+            } else {
+                xmlWriter.writeStringElement("NextMarker", "MARKER--");
+            }
+
+            xmlWriter.writeEndElement(); // End EnumerationResults
+            xmlWriter.flush();
+        }
+
+        private void writeGenericListElement(XmlWriter xmlWriter, String elementType, int numberOfElementsOnThisPage,
+            Callable<Void> additionalElements) throws Exception {
+            // Start elementType + s
+            xmlWriter.writeStartElement(elementType + "s");
+
+            // Write  entries
+            for (int i = 0; i < numberOfElementsOnThisPage; i++) {
+                xmlWriter.writeStartElement(elementType); // Start elementType
+                xmlWriter.writeStringElement("Name", elementType.toLowerCase());
+
+                if (additionalElements != null) {
+                    additionalElements.call();
+                }
+
+                xmlWriter.writeEndElement(); // End elementType
+            }
+
+            xmlWriter.writeEndElement(); // End elementType + s
+        }
+
+        @Override
+        public Mono<HttpResponse> send(HttpRequest request) {
+            HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml");
+            HttpResponse response
+                = new MockHttpResponse(request, 200, headers, responses.poll().getBytes(StandardCharsets.UTF_8));
+
+            int requestDelaySeconds = 4;
+            return Mono.delay(Duration.ofSeconds(requestDelaySeconds)).then(Mono.just(response));
         }
     }
 }
