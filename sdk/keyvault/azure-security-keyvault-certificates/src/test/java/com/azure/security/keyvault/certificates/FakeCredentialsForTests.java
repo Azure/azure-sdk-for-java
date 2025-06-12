@@ -68,9 +68,8 @@ public class FakeCredentialsForTests {
         + "mXOpFjk1ceWyMSUwIwYJKoZIhvcNAQkVMRYEFJMd2CGVhXUryRVoTKOWeXTEAN4o"
         + "MEEwMTANBglghkgBZQMEAgEFAAQg1EQomWjknI64pLio3D37yQaxHKo8PX8nSdUM" + "bdvs4UsECDr5fj7kfdj1AgIIAA==";
 
-    public static final String FAKE_PEM_CERTIFICATE =
-        "-----BEGIN PRIVATE KEY-----\n"
-            + "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCyW1hdMWUulg8R\n"
+    public static final String FAKE_PEM_CERTIFICATE
+        = "-----BEGIN PRIVATE KEY-----\n" + "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCyW1hdMWUulg8R\n"
             + "wUS1p+57WJJcSsk2AMyilM9cDoMtMgdM2thCC9zDce3fRJmukr+f8VmyNL6rwT2D\n"
             + "ZpQLFBowMRYVsuwbccmtPIYO/AdqbsN56S/tyx5B5G09cS/wBsFabj/9cZ/81BZi\n"
             + "xzNN4QAdkBz6oizidLEXJMgwzB1jAZhzb4etq31Rtenf4cp49ycrbL5MGPiCWIjr\n"
@@ -94,10 +93,8 @@ public class FakeCredentialsForTests {
             + "7vHm7N0cfewd4Sy73QA843WeHQJtjZu2mqzN/izYSR5k8SlEZipuIzp4fUnuT+2s\n"
             + "Y12+rIyDjwyRpMhf5Khq+4aJekp0wTCmQxomStNZAoGAG3ov1yTuQ/A+IpVzg4iS\n"
             + "yOq4SB5xMF1I+avPmL9FwWvhcMKbOUcjM/+M1DSUgJQqIJr9rKHYQ69nuTW0iuF8\n"
-            + "vvZNBCNnm1bHYG8trWCERTJXJNE8HRdc7JKTd4+jWsco4czJn++H+zwgKe4AaMur\n"
-            + "h4Sx8O2USnw3UupN0ceCalc=\n"
-            + "-----END PRIVATE KEY-----\n"
-            + "-----BEGIN CERTIFICATE-----\n"
+            + "vvZNBCNnm1bHYG8trWCERTJXJNE8HRdc7JKTd4+jWsco4czJn++H+zwgKe4AaMur\n" + "h4Sx8O2USnw3UupN0ceCalc=\n"
+            + "-----END PRIVATE KEY-----\n" + "-----BEGIN CERTIFICATE-----\n"
             + "MIID2zCCAsOgAwIBAgIUVNuBZm8tA827VE+/fC5NJa5imyowDQYJKoZIhvcNAQEL\n"
             + "BQAwfTELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAldBMRAwDgYDVQQHDAdSZWRtb25k\n"
             + "MRAwDgYDVQQKDAdDb250b3NvMQ0wCwYDVQQLDARUZXN0MQ0wCwYDVQQDDARUZXN0\n"
@@ -118,12 +115,10 @@ public class FakeCredentialsForTests {
             + "28peA3eSiHCnYhcNFCEK3vTaUDm1AKaNOsu8KPqh8vfjxNugXuWs+LJb18/ET2So\n"
             + "17V9N4UnLTrmCJqhvYbD489COQ57Ue6O2/yqlB6uW8iZjnUI5d/pqPpH/o6g4WwT\n"
             + "8p+6gWjo2rnR9niltrw+vrYkOnWIIjgtO2RzSWv9ORdLwcTFPYjT7WgmWSexh0Ap\n"
-            + "dCiGpXURJucrh23XgidhM8XcyCvx6RI22NQ20aIk2w==\n"
-            + "-----END CERTIFICATE-----\n";
+            + "dCiGpXURJucrh23XgidhM8XcyCvx6RI22NQ20aIk2w==\n" + "-----END CERTIFICATE-----\n";
 
-    public static final String FAKE_PEM_CERTIFICATE_FOR_MERGE =
-        "-----BEGIN CERTIFICATE-----\n"
-            + "MIIDtzCCAp+gAwIBAgIULgsYYWup9zLEMv8Jbf4Vx9SUCLgwDQYJKoZIhvcNAQEL\n"
+    public static final String FAKE_PEM_CERTIFICATE_FOR_MERGE
+        = "-----BEGIN CERTIFICATE-----\n" + "MIIDtzCCAp+gAwIBAgIULgsYYWup9zLEMv8Jbf4Vx9SUCLgwDQYJKoZIhvcNAQEL\n"
             + "BQAwgYMxCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJXQTEQMA4GA1UEBwwHUmVkbW9u\n"
             + "ZDEQMA4GA1UECgwHQ29udG9zbzENMAsGA1UECwwEVGVzdDENMAsGA1UEAwwEVGVz\n"
             + "dDElMCMGCSqGSIb3DQEJARYWdmljb2xpbmFAbWljcm9zb2Z0LmNvbTAeFw0yNTA2\n"
@@ -142,10 +137,8 @@ public class FakeCredentialsForTests {
             + "PDD/zLOkUQSz0aBC+LjqoLdj+8BODMGLWlVdu0tue3TJ6ILpsbfPcLY3ByBKeg1l\n"
             + "ZbpJ1TrKppWeiag8Dl6Jf1anBYVaUQ1lsuviBR3zjPQO0+0KaRqG9a0pLi+BEbyO\n"
             + "tNtgpcHsm3lcRGzbyUfofHu9OV1ifQcYnxSefYbEmcEwCsieOlNM126aJ8g9XKwX\n"
-            + "myqmv9OXhx4JN6e8hq3TwhGCOYbiBoXoFP9m3jpDeXYCNF6VsIf2/Bxlvg==\n"
-            + "-----END CERTIFICATE-----\n"
-            + "-----BEGIN RSA PRIVATE KEY-----\n"
-            + "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCWaYB7DsgLBEH3\n"
+            + "myqmv9OXhx4JN6e8hq3TwhGCOYbiBoXoFP9m3jpDeXYCNF6VsIf2/Bxlvg==\n" + "-----END CERTIFICATE-----\n"
+            + "-----BEGIN RSA PRIVATE KEY-----\n" + "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCWaYB7DsgLBEH3\n"
             + "/x3hPAuNZ6xvFaOTqOWUdKv1ucAGlnqFrQ39o0k4GS/cj3DfGjj6vlrqHnfsHcda\n"
             + "RXkgvP5n3uuanm+Q0dHsu2nCj2dp+AXZx8Cdmesa+eadGJddyqqtGmOS0ZqKP6xt\n"
             + "qQ1EehEXnDwlMr4vpXTwN+t1QVkRK/JTfAyWNTKVZHlXdyKk98Gqx0lhBy3C6Sar\n"
@@ -169,7 +162,6 @@ public class FakeCredentialsForTests {
             + "IZIZFgx9QkTiJT+lPenJYLK2d9C7mjc8EMiWapfSbEUL44YMc/mI6QmwfOUoBIGr\n"
             + "OmgKpLkg0lFHg6C+2/Jyy0LGZ3LZkA2y9mIJtCZGiQKBgAZp/j4HoruU1BG3pYqS\n"
             + "ZdUC8fmUcNriiu3UIr+YFC2N/3EZN4pLR3YlxBcbZ4vJ8oCaQUpxnqN5CjbspJ2w\n"
-            + "4j7wiScrHYcaPbvGnPAyrXkZeSikdNw3UJvquXtvWZd7i0+MErTL2fhyKK8IA8DI\n"
-            + "tqXg43Yxii/bBBAI/I6Z8lfa\n"
+            + "4j7wiScrHYcaPbvGnPAyrXkZeSikdNw3UJvquXtvWZd7i0+MErTL2fhyKK8IA8DI\n" + "tqXg43Yxii/bBBAI/I6Z8lfa\n"
             + "-----END RSA PRIVATE KEY-----\n";
 }
