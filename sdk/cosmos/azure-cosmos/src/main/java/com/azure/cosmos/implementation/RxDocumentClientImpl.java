@@ -7671,7 +7671,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return useThinClient()
             && this.globalEndpointManager.hasThinClientReadLocations()
             && request.getResourceType() == ResourceType.Document
-            && request.getOperationType().isPointOperation();
+            && (request.getOperationType().isPointOperation() || request.getOperationType() == OperationType.Query);
     }
 
     @FunctionalInterface

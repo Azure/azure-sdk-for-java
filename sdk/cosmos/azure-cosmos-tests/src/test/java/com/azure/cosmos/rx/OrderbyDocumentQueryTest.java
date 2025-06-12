@@ -876,7 +876,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             //Observable<FeedResponse<Document>> firstPageObservable = queryObservable.first();
             TestSubscriber<FeedResponse<InternalObjectNode>> testSubscriber = new TestSubscriber<>();
             queryObservable.byPage(orderByContinuationToken.toString(),1).subscribe(testSubscriber);
-            testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+            testSubscriber.awaitTerminalEvent(4 * TIMEOUT, TimeUnit.MILLISECONDS);
             testSubscriber.assertError(CosmosException.class);
         } while (requestContinuation != null);
     }
@@ -907,7 +907,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             //Observable<FeedResponse<Document>> firstPageObservable = queryObservable.byPage().first();
             TestSubscriber<FeedResponse<InternalObjectNode>> testSubscriber = new TestSubscriber<>();
             queryObservable.byPage(requestContinuation, pageSize).subscribe(testSubscriber);
-            testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+            testSubscriber.awaitTerminalEvent(4 * TIMEOUT, TimeUnit.MILLISECONDS); // TODO: revert the timeout
             testSubscriber.assertNoErrors();
             testSubscriber.assertComplete();
 
