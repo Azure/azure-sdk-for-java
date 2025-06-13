@@ -167,8 +167,8 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
     public void createCertificateNull(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateAsyncClient(httpClient, serviceVersion);
 
-        assertThrows(NullPointerException.class, () ->
-            certificateAsyncClient.beginCreateCertificate(null, CertificatePolicy.getDefault()));
+        assertThrows(NullPointerException.class,
+            () -> certificateAsyncClient.beginCreateCertificate(null, CertificatePolicy.getDefault()));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
