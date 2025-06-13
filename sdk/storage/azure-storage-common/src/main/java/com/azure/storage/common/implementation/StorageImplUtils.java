@@ -303,22 +303,18 @@ public class StorageImplUtils {
             return message;
         }
 
-        LOGGER.info("Message" + message);
-
         String errorCode = response.getHeaders().getValue(ERROR_CODE_HEADER_NAME);
         String headerName = response.getHeaders().getValue(HEADER_NAME);
 
-        if (Constants.HeaderConstants.INVALID_HEADER_VALUE.equals(errorCode)
-            && headerName != null
-            && Constants.HeaderConstants.VERSION.equalsIgnoreCase(headerName)) {
-            return Constants.Errors.INVALID_VERSION_HEADER_MESSAGE + message;
+        if (errorCode == null) {
+            errorCode = extractXmlTagValue(message, "Code");
+        }
+        if (headerName == null) {
+            headerName = extractXmlTagValue(message, "HeaderName");
         }
 
-        String extractedErrorCode = errorCode != null ? errorCode : extractXmlTagValue(message, "Code");
-        String extractedHeaderName = headerName != null ? headerName : extractXmlTagValue(message, "HeaderName");
-
-        if (Constants.HeaderConstants.INVALID_HEADER_VALUE.equals(extractedErrorCode)
-            && Constants.HeaderConstants.VERSION.equalsIgnoreCase(extractedHeaderName)) {
+        if (Constants.HeaderConstants.INVALID_HEADER_VALUE.equals(errorCode)
+            && Constants.HeaderConstants.VERSION.equalsIgnoreCase(headerName)) {
             return Constants.Errors.INVALID_VERSION_HEADER_MESSAGE + message;
         }
 
@@ -328,15 +324,37 @@ public class StorageImplUtils {
 
         if (response.getRequest() != null
             && response.getRequest().getHttpMethod() == HttpMethod.HEAD
-            && extractedErrorCode != null) {
+            && errorCode != null) {
             int indexOfEmptyBody = message.indexOf("(empty body)");
             if (indexOfEmptyBody >= 0) {
-                return message.substring(0, indexOfEmptyBody) + extractedErrorCode
-                    + message.substring(indexOfEmptyBody + 12);
+                return message.substring(0, indexOfEmptyBody) + errorCode + message.substring(indexOfEmptyBody + 12);
             }
         }
 
         return message;
+    }
+
+    public static HttpResponse convertStorageResponse(String message, HttpResponse response) {
+        if (response != null && response.getStatusCode() == 400) {
+            String errorCode = response.getHeaders().getValue(ERROR_CODE_HEADER_NAME);
+            String headerName = response.getHeaders().getValue(HEADER_NAME);
+
+            if (errorCode == null) {
+                errorCode = extractXmlTagValue(message, "Code");
+            }
+            if (headerName == null) {
+                headerName = extractXmlTagValue(message, "HeaderName");
+            }
+
+            if (Constants.HeaderConstants.INVALID_HEADER_VALUE.equals(errorCode)
+                && Constants.HeaderConstants.VERSION.equalsIgnoreCase(headerName)) {
+                if (response.getHeaders().getValue(ERROR_CODE_HEADER_NAME) == null && errorCode != null) {
+                    response.getHeaders().set(ERROR_CODE_HEADER_NAME, errorCode);
+                }
+            }
+        }
+
+        return response;
     }
 
     private static String extractXmlTagValue(String message, String tag) {
