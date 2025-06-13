@@ -75,7 +75,7 @@ public final class FilesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> uploadFileWithResponse(BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> uploadFileWithResponse(BinaryData body, RequestOptions requestOptions) {
         // Operation 'uploadFile' is of content-type 'multipart/form-data'. Protocol API is not usable and hence not
         // generated.
         return this.serviceClient.uploadFileWithResponseAsync(body, requestOptions);
