@@ -53,7 +53,7 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
     }
 
     /**
-     * Get the communicationIdentifier property: Identifies a participant in Azure Communication services. A participant
+     * Gets the communicationIdentifier property: Identifies a participant in Azure Communication services. A participant
      * is, for example, a phone number or an Azure communication user. This model must be interpreted as a union: Apart
      * from rawId, at most one further property may be set.
      *
@@ -64,7 +64,7 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
     }
 
     /**
-     * Set the communicationIdentifier property: Identifies a participant in Azure Communication services. A participant
+     * Sets the communicationIdentifier property: Identifies a participant in Azure Communication services. A participant
      * is, for example, a phone number or an Azure communication user. This model must be interpreted as a union: Apart
      * from rawId, at most one further property may be set.
      *
@@ -77,7 +77,7 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
     }
 
     /**
-     * Display name for the chat participant.
+     * Gets the display name for the chat participant.
      *
      * @return the displayName value.
      */
@@ -86,7 +86,7 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
     }
 
     /**
-     * Display name for the chat participant.
+     * Sets the display name for the chat participant.
      *
      * @param displayName the displayName value to set.
      * @return the ChatParticipant object itself.
@@ -97,7 +97,7 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
     }
 
     /**
-     * Time from which the chat history is shared with the chat participant.
+     * Gets the time from which the chat history is shared with the chat participant.
      * The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      *
      * @return the shareHistoryTime value.
@@ -107,7 +107,7 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
     }
 
     /**
-     * Time from which the chat history is shared with the chat participant.
+     * Sets the time from which the chat history is shared with the chat participant.
      * The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      *
      * @param shareHistoryTime the shareHistoryTime value to set.
@@ -119,7 +119,7 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
     }
 
     /**
-     * Contextual metadata for the chat participant. The metadata consists of name/value
+     * Gets the contextual metadata for the chat participant. The metadata consists of name/value
      * pairs. The total size of all metadata pairs can be up to 1KB in size.
      *
      * @return the metadata value.
@@ -129,7 +129,7 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
     }
 
     /**
-     * Contextual metadata for the chat participant. The metadata consists of name/value
+     * Sets the contextual metadata for the chat participant. The metadata consists of name/value
      * pairs. The total size of all metadata pairs can be up to 1KB in size.
      *
      * @param metadata the metadata value to set.
