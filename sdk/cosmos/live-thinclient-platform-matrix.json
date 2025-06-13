@@ -1,6 +1,6 @@
 {
   "displayNames": {
-    "-Pthinclientquery": "ThinClient",
+    "-Pthinclient": "ThinClient",
     "-Pquery": "Query",
     "Session": "",
     "ubuntu": "",
@@ -16,7 +16,7 @@
         }
       },
       "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": ["-Pthinclientquery" ],
+      "ProfileFlag": [ "-Pthinclient", "-Pquery" ],
       "Agent": {
         "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       }

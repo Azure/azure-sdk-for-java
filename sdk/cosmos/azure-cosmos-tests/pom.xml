@@ -705,26 +705,5 @@ Licensed under the MIT License.
         </plugins>
       </build>
     </profile>
-    <profile>
-      <!-- thin client integration tests, requires thin client endpoint and key -->
-      <id>thinclientquery</id>
-      <properties>
-        <test.groups>thinclientquery</test.groups>
-      </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
-            <configuration>
-              <suiteXmlFiles>
-                <suiteXmlFile>src/test/resources/thinclient-query-testng.xml</suiteXmlFile>
-              </suiteXmlFiles>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
   </profiles>
 </project>

@@ -75,12 +75,12 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
     private int numberOfPartitions;
 
-    @Factory(dataProvider = "clientBuildersWithGateway")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public OrderbyDocumentQueryTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
 
-    @Test(groups = { "thinclientquery" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void queryDocumentsValidateContent() throws Exception {
         // removes undefined
         InternalObjectNode expectedDocument = createdDocuments
@@ -115,7 +115,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(), validator);
     }
 
-    @Test(groups = { "thinclientquery" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void queryDocuments_NoResults() throws Exception {
         String query = "SELECT * from root r where r.id = '2' ORDER BY r.propInt";
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
@@ -138,7 +138,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         return new Object[][] { { "ASC" }, {"DESC"} };
     }
 
-    @Test(groups = { "thinclientquery" }, timeOut = TIMEOUT, dataProvider = "sortOrder")
+    @Test(groups = { "query" }, timeOut = TIMEOUT, dataProvider = "sortOrder")
     public void queryOrderBy(String sortOrder) throws Exception {
         String query = String.format("SELECT * FROM r where r.propInt != null ORDER BY r.propInt %s", sortOrder);
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
@@ -165,7 +165,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(pageSize), validator);
     }
 
-    @Test(groups = { "thinclientquery" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void queryOrderByRoundTrips() {
         String query = "SELECT c.v FROM c where c.type='testing' order by c.v asc";
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
@@ -190,7 +190,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"thinclientquery"}, timeOut = TIMEOUT, dataProvider = "sortOrder")
+    @Test(groups = {"query"}, timeOut = TIMEOUT, dataProvider = "sortOrder")
     public void queryOrderByWithValue(String sortOrder) throws Exception {
         String query = String.format("SELECT value r.propInt FROM r where r.propInt != null ORDER BY r.propInt %s", sortOrder);
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
@@ -221,7 +221,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(pageSize), validator);
     }
 
-    @Test(groups = {"thinclientquery"}, timeOut = TIMEOUT, dataProvider = "sortOrder")
+    @Test(groups = {"query"}, timeOut = TIMEOUT, dataProvider = "sortOrder")
     public void queryOrderByWithValueAndCustomFactoryMethod(String sortOrder) throws Exception {
         String query = String.format("SELECT value r.propInt FROM r where r.propInt != null ORDER BY r.propInt %s", sortOrder);
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
@@ -274,7 +274,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(pageSize), validator);
     }
 
-    @Test(groups = { "thinclientquery" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void queryOrderByInt() throws Exception {
         String query = "SELECT * FROM r where r.propInt != null ORDER BY r.propInt";
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
@@ -297,7 +297,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(pageSize), validator);
     }
 
-    @Test(groups = { "thinclientquery" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void queryOrderByString() throws Exception {
         String query = "SELECT * FROM r where r.propStr != null ORDER BY r.propStr";
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
@@ -320,7 +320,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(pageSize), validator);
     }
 
-    @Test(groups = {"thinclientquery"}, timeOut = TIMEOUT, dataProvider = "sortOrder")
+    @Test(groups = {"query"}, timeOut = TIMEOUT, dataProvider = "sortOrder")
     public void queryOrderByMixedTypes(String sortOrder) throws Exception {
         List<PartitionKeyRange> partitionKeyRanges = getPartitionKeyRanges(createdCollection.getId(),
                                                                            BridgeInternal
@@ -435,7 +435,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             { createdDocuments.size() + 1 }, { 2 * createdDocuments.size() } };
     }
 
-    @Test(groups = { "thinclientquery" }, timeOut = TIMEOUT, dataProvider =  "topValue")
+    @Test(groups = { "query" }, timeOut = TIMEOUT, dataProvider =  "topValue")
     public void queryOrderWithTop(int topValue) throws Exception {
         String query = String.format("SELECT TOP %d * FROM r where r.propInt != null ORDER BY r.propInt", topValue);
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
@@ -479,7 +479,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                    .collect(Collectors.toList());
     }
 
-    @Test(groups = { "thinclientquery" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void queryScopedToSinglePartition_StartWithContinuationToken() throws Exception {
         String query = "SELECT * FROM r ORDER BY r.propScopedPartitionInt ASC";
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
@@ -525,7 +525,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(page.getContinuationToken(), preferredPageSize), validator);
     }
 
-    @Test(groups = { "thinclientquery" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
 	public void orderByContinuationTokenRoundTrip() throws Exception {
         {
         	// Positive
@@ -568,7 +568,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         	assertThat(OrderByContinuationToken.tryParse("{\"property\" : \"Not a valid Order By Token\"}", outOrderByContinuationToken)).isFalse();
         }
 	}
-    @Test(groups = { "thinclientquery" }, timeOut = TIMEOUT * 10, dataProvider = "sortOrder")
+    @Test(groups = { "query" }, timeOut = TIMEOUT * 10, dataProvider = "sortOrder")
     public void queryDocumentsWithOrderByContinuationTokensInteger(String sortOrder) throws Exception {
         // Get Actual
         String query = String.format("SELECT * FROM r where r.propInt != null ORDER BY r.propInt %s", sortOrder);
@@ -581,7 +581,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         this.queryWithContinuationTokensAndPageSizes(query, new int[] { 1, 5, 10, 100}, expectedResourceIds);
     }
 
-    @Test(groups = { "thinclientquery" }, timeOut = TIMEOUT * 10, dataProvider = "sortOrder")
+    @Test(groups = { "query" }, timeOut = TIMEOUT * 10, dataProvider = "sortOrder")
     public void queryDocumentsWithOrderByContinuationTokensString(String sortOrder) throws Exception {
         // Get Actual
         String query = String.format("SELECT * FROM c ORDER BY c.id %s", sortOrder);
@@ -594,7 +594,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         this.queryWithContinuationTokensAndPageSizes(query, new int[] { 1, 5, 10, 100 }, expectedResourceIds);
     }
 
-    @Test(groups = { "thinclientquery" }, timeOut = TIMEOUT * 10, dataProvider = "sortOrder")
+    @Test(groups = { "query" }, timeOut = TIMEOUT * 10, dataProvider = "sortOrder")
     public void queryDocumentsWithInvalidOrderByContinuationTokensString(String sortOrder) throws Exception {
         // Get Actual
         String query = String.format("SELECT * FROM c ORDER BY c.id %s", sortOrder);
@@ -610,7 +610,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         this.assertInvalidContinuationToken(query, new int[] { 1, 5, 10, 100 }, expectedResourceIds);
     }
 
-    @Test(groups = {"thinclientquery"}, timeOut = TIMEOUT, dataProvider = "sortOrder")
+    @Test(groups = {"query"}, timeOut = TIMEOUT, dataProvider = "sortOrder")
     public void queryOrderByArray(String sortOrder) throws Exception {
         String query = String.format("SELECT * FROM r where r.propArray != null ORDER BY r.propArray %s", sortOrder);
 
@@ -624,7 +624,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             .containsExactlyElementsOf(results2.stream().limit(pageSize).map(r -> r.getResourceId()).collect(Collectors.toList()));
     }
 
-    @Test(groups = {"thinclientquery"}, timeOut = TIMEOUT, dataProvider = "sortOrder")
+    @Test(groups = {"query"}, timeOut = TIMEOUT, dataProvider = "sortOrder")
     public void queryOrderByObject(String sortOrder) throws Exception {
         String query = String.format("SELECT * FROM r where r.propObject != null ORDER BY r.propObject %s", sortOrder);
 
@@ -655,13 +655,13 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         return bulkInsertBlocking(cosmosContainer, result);
     }
 
-    @BeforeMethod(groups = { "thinclientquery" })
+    @BeforeMethod(groups = { "query" })
     public void beforeMethod() throws Exception {
         // add a cool off time
         TimeUnit.SECONDS.sleep(10);
     }
 
-    @BeforeClass(groups = { "thinclientquery" }, timeOut = 4 * SETUP_TIMEOUT)
+    @BeforeClass(groups = { "query" }, timeOut = 4 * SETUP_TIMEOUT)
     public void before_OrderbyDocumentQueryTest() throws Exception {
         client = getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
@@ -798,7 +798,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "thinclientquery" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void queryDocumentsValidateContentWithObjectNode() throws Exception {
         // removes undefined
         InternalObjectNode expectedDocument = createdDocuments
@@ -852,7 +852,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         }
     }
 
-    @AfterClass(groups = { "thinclientquery" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "query" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }
@@ -876,7 +876,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             //Observable<FeedResponse<Document>> firstPageObservable = queryObservable.first();
             TestSubscriber<FeedResponse<InternalObjectNode>> testSubscriber = new TestSubscriber<>();
             queryObservable.byPage(orderByContinuationToken.toString(),1).subscribe(testSubscriber);
-            testSubscriber.awaitTerminalEvent(4 * TIMEOUT, TimeUnit.MILLISECONDS);
+            testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
             testSubscriber.assertError(CosmosException.class);
         } while (requestContinuation != null);
     }
@@ -907,7 +907,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             //Observable<FeedResponse<Document>> firstPageObservable = queryObservable.byPage().first();
             TestSubscriber<FeedResponse<InternalObjectNode>> testSubscriber = new TestSubscriber<>();
             queryObservable.byPage(requestContinuation, pageSize).subscribe(testSubscriber);
-            testSubscriber.awaitTerminalEvent(10 * TIMEOUT, TimeUnit.MILLISECONDS); // TODO: revert the timeout
+            testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
             testSubscriber.assertNoErrors();
             testSubscriber.assertComplete();
 
