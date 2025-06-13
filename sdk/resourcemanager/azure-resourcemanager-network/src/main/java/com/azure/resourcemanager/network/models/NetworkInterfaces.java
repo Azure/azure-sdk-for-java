@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
@@ -101,6 +102,15 @@ public interface NetworkInterfaces
     Accepted<Void> beginDeleteById(String id);
 
     /**
+     * Begins deleting a virtual machine from Azure, identifying it by its resource ID.
+     *
+     * @param id the resource ID of the virtual machine to delete
+     * @param context the {@link Context} of the request
+     * @return the accepted deleting operation
+     */
+    Accepted<Void> beginDeleteById(String id, Context context);
+
+    /**
      * Begins deleting a virtual machine from Azure, identifying it by its name and its resource group.
      *
      * @param resourceGroupName the resource group the resource is part of
@@ -108,4 +118,14 @@ public interface NetworkInterfaces
      * @return the accepted deleting operation
      */
     Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name);
+
+    /**
+     * Begins deleting a virtual machine from Azure, identifying it by its name and its resource group.
+     *
+     * @param resourceGroupName the resource group the resource is part of
+     * @param name the virtual machine name
+     * @param context the {@link Context} of the request
+     * @return the accepted deleting operation
+     */
+    Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, Context context);
 }

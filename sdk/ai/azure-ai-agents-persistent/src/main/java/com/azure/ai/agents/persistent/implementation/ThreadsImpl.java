@@ -4,7 +4,7 @@
 
 package com.azure.ai.agents.persistent.implementation;
 
-import com.azure.ai.agents.persistent.AgentsServiceVersion;
+import com.azure.ai.agents.persistent.PersistentAgentsServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -50,14 +50,14 @@ public final class ThreadsImpl {
     /**
      * The service client containing this operation class.
      */
-    private final PersistentAgentsAdministrationClientImpl client;
+    private final PersistentAgentsClientImpl client;
 
     /**
      * Initializes an instance of ThreadsImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    ThreadsImpl(PersistentAgentsAdministrationClientImpl client) {
+    ThreadsImpl(PersistentAgentsClientImpl client) {
         this.service = RestProxy.create(ThreadsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -67,16 +67,16 @@ public final class ThreadsImpl {
      * 
      * @return the serviceVersion value.
      */
-    public AgentsServiceVersion getServiceVersion() {
+    public PersistentAgentsServiceVersion getServiceVersion() {
         return client.getServiceVersion();
     }
 
     /**
-     * The interface defining all the services for PersistentAgentsAdministrationClientThreads to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for PersistentAgentsClientThreads to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PersistentAgentsAdmi")
+    @ServiceInterface(name = "PersistentAgentsClientThreads")
     public interface ThreadsService {
         @Post("/threads")
         @ExpectedResponses({ 200 })
@@ -170,7 +170,7 @@ public final class ThreadsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> deleteThread(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> deleteThreadInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("threadId") String threadId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -180,7 +180,7 @@ public final class ThreadsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> deleteThreadSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> deleteThreadInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("threadId") String threadId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
@@ -1254,9 +1254,10 @@ public final class ThreadsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteThreadWithResponseAsync(String threadId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> deleteThreadInternalWithResponseAsync(String threadId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteThread(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.deleteThreadInternal(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), threadId, accept, requestOptions, context));
     }
 
@@ -1283,9 +1284,9 @@ public final class ThreadsImpl {
      * @return the status of a thread deletion operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteThreadWithResponse(String threadId, RequestOptions requestOptions) {
+    public Response<BinaryData> deleteThreadInternalWithResponse(String threadId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteThreadSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+        return service.deleteThreadInternalSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
             threadId, accept, requestOptions, Context.NONE);
     }
 

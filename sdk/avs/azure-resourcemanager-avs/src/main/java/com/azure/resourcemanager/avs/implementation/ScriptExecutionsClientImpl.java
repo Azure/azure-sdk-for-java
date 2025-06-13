@@ -73,7 +73,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AvsClientScriptExecu")
+    @ServiceInterface(name = "AvsClientScriptExecutions")
     public interface ScriptExecutionsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptExecutions")

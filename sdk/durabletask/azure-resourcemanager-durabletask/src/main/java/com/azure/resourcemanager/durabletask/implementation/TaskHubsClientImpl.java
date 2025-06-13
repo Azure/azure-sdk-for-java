@@ -69,7 +69,7 @@ public final class TaskHubsClientImpl implements TaskHubsClient {
      * to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DurableTaskManagemen")
+    @ServiceInterface(name = "DurableTaskManagementClientTaskHubs")
     public interface TaskHubsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/taskHubs/{taskHubName}")

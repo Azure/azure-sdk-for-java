@@ -69,7 +69,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DataReplicationMgmtC")
+    @ServiceInterface(name = "DataReplicationMgmtClientPolicies")
     public interface PoliciesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationPolicies/{policyName}")

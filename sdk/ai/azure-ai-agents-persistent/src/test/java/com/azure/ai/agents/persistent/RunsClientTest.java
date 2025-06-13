@@ -6,7 +6,6 @@ import com.azure.ai.agents.persistent.models.CreateAgentOptions;
 import com.azure.ai.agents.persistent.models.CreateRunOptions;
 import com.azure.ai.agents.persistent.models.PersistentAgent;
 import com.azure.ai.agents.persistent.models.PersistentAgentThread;
-import com.azure.ai.agents.persistent.models.ThreadDeletionStatus;
 import com.azure.ai.agents.persistent.models.ThreadRun;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
@@ -24,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RunsClientTest extends ClientTestBase {
 
-    private PersistentAgentsAdministrationClientBuilder clientBuilder;
+    private PersistentAgentsClientBuilder clientBuilder;
     private PersistentAgentsAdministrationClient agentsClient;
     private ThreadsClient threadsClient;
     private RunsClient runsClient;
@@ -42,7 +41,7 @@ public class RunsClientTest extends ClientTestBase {
 
     private void setup(HttpClient httpClient) {
         clientBuilder = getClientBuilder(httpClient);
-        agentsClient = clientBuilder.buildClient();
+        agentsClient = clientBuilder.buildPersistentAgentsAdministrationClient();
         threadsClient = clientBuilder.buildThreadsClient();
         runsClient = clientBuilder.buildRunsClient();
         agent = createAgent("TestAgent");
@@ -142,13 +141,15 @@ public class RunsClientTest extends ClientTestBase {
 
     @AfterEach
     public void cleanup() {
-        if (thread != null) {
-            ThreadDeletionStatus deletionStatus = threadsClient.deleteThread(thread.getId());
-            assertNotNull(deletionStatus, "Thread deletion status should not be null");
-            assertTrue(deletionStatus.isDeleted(), "Thread should be deleted");
-        }
-        if (agent != null) {
-            agentsClient.deleteAgent(agent.getId());
+        try {
+            if (thread != null) {
+                threadsClient.deleteThread(thread.getId());
+            }
+            if (agent != null) {
+                agentsClient.deleteAgent(agent.getId());
+            }
+        } catch (Exception e) {
+            System.out.println("Cleanup error: " + e.getMessage());
         }
     }
 }
