@@ -10,7 +10,7 @@ parameters:
   default: 'azsdk-pool-mms-ubuntu-2204-perf'
 - name: LinuxVmImage
   type: string
-  default: 'ubuntu-24.04'
+  default: 'ubuntu-22.04'
 - name: WindowsPool
   type: string
   default: 'azsdk-pool-mms-win-2022-perf'
