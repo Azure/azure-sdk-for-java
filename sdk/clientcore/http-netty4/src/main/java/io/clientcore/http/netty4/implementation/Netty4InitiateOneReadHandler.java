@@ -22,6 +22,7 @@ public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAda
     private final Consumer<ByteBuf> byteBufConsumer;
 
     private boolean lastRead;
+    private Throwable exception;
 
     /**
      * Creates a new instance of {@link Netty4InitiateOneReadHandler}.
@@ -57,15 +58,16 @@ public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAda
         }
 
         lastRead = msg instanceof LastHttpContent;
+        ctx.fireChannelRead(msg);
     }
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
         latch.countDown();
+        ctx.pipeline().remove(this);
         if (lastRead) {
             ctx.close();
         }
-        ctx.pipeline().remove(this);
     }
 
     boolean isChannelConsumed() {
@@ -74,9 +76,13 @@ public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAda
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        this.exception = cause;
         latch.countDown();
-        ctx.fireExceptionCaught(cause);
-        ctx.pipeline().remove(this);
+        ctx.close();
+    }
+
+    Throwable channelException() {
+        return exception;
     }
 
     // TODO (alzimmer): Are the latch countdowns needed for unregistering and inactivity?

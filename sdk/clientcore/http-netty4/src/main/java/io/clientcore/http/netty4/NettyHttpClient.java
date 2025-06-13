@@ -15,12 +15,17 @@ import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.models.binarydata.FileBinaryData;
 import io.clientcore.core.models.binarydata.InputStreamBinaryData;
 import io.clientcore.core.utils.AuthenticateChallenge;
+import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.ProgressReporter;
 import io.clientcore.core.utils.ServerSentEventUtils;
 import io.clientcore.http.netty4.implementation.ChannelInitializationProxyHandler;
+import io.clientcore.http.netty4.implementation.Netty4ChannelBinaryData;
+import io.clientcore.http.netty4.implementation.Netty4EagerConsumeChannelHandler;
 import io.clientcore.http.netty4.implementation.Netty4ProgressAndTimeoutHandler;
 import io.clientcore.http.netty4.implementation.Netty4ResponseHandler;
 import io.clientcore.http.netty4.implementation.Netty4SslInitializationHandler;
+import io.clientcore.http.netty4.implementation.ResponseBodyHandling;
+import io.clientcore.http.netty4.implementation.ResponseStateInfo;
 import io.clientcore.http.netty4.implementation.WrappedHttpHeaders;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
@@ -43,6 +48,7 @@ import io.netty.handler.stream.ChunkedStream;
 import io.netty.handler.stream.ChunkedWriteHandler;
 
 import javax.net.ssl.SSLException;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.channels.FileChannel;
@@ -54,6 +60,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static io.clientcore.core.utils.ServerSentEventUtils.attemptRetry;
 import static io.clientcore.core.utils.ServerSentEventUtils.processTextEventStream;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.PROGRESS_AND_TIMEOUT_HANDLER_NAME;
+import static io.clientcore.http.netty4.implementation.Netty4Utility.awaitLatch;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.createCodec;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.setOrSuppressError;
 import static io.netty.handler.codec.http.DefaultHttpHeadersFactory.trailersFactory;
@@ -106,7 +113,7 @@ class NettyHttpClient implements HttpClient {
         boolean addProgressAndTimeoutHandler
             = progressReporter != null || writeTimeoutMillis > 0 || responseTimeoutMillis > 0 || readTimeoutMillis > 0;
 
-        AtomicReference<Response<BinaryData>> responseReference = new AtomicReference<>();
+        AtomicReference<ResponseStateInfo> responseReference = new AtomicReference<>();
         AtomicReference<Throwable> errorReference = new AtomicReference<>();
         CountDownLatch latch = new CountDownLatch(1);
 
@@ -143,67 +150,123 @@ class NettyHttpClient implements HttpClient {
             }
         });
 
-        try {
-            bootstrap.connect(host, port).addListener((ChannelFutureListener) connectListener -> {
-                if (!connectListener.isSuccess()) {
-                    LOGGER.atError().setThrowable(connectListener.cause()).log("Failed to send request");
-                    errorReference.set(connectListener.cause());
-                    connectListener.channel().close();
-                    latch.countDown();
-                    return;
+        bootstrap.connect(host, port).addListener((ChannelFutureListener) connectListener -> {
+            if (!connectListener.isSuccess()) {
+                LOGGER.atError().setThrowable(connectListener.cause()).log("Failed to send request");
+                errorReference.set(connectListener.cause());
+                connectListener.channel().close();
+                latch.countDown();
+                return;
+            }
+
+            Channel channel = connectListener.channel();
+            channel.closeFuture().addListener(closeListener -> {
+                if (!closeListener.isSuccess()) {
+                    LOGGER.atError().setThrowable(closeListener.cause()).log("Channel closed with error");
+                    setOrSuppressError(errorReference, closeListener.cause());
                 }
-
-                Channel channel = connectListener.channel();
-                channel.closeFuture().addListener(closeListener -> {
-                    if (!closeListener.isSuccess()) {
-                        LOGGER.atError().setThrowable(closeListener.cause()).log("Channel closed with error");
-                        setOrSuppressError(errorReference, closeListener.cause());
-                    }
-                });
-
-                // Only add CoreProgressAndTimeoutHandler if it will do anything, ex it is reporting progress or is
-                // applying timeouts.
-                // This is done to keep the ChannelPipeline shorter, therefore more performant, if this would
-                // effectively be a no-op.
-                if (addProgressAndTimeoutHandler) {
-                    channel.pipeline()
-                        .addLast(PROGRESS_AND_TIMEOUT_HANDLER_NAME, new Netty4ProgressAndTimeoutHandler(
-                            progressReporter, writeTimeoutMillis, responseTimeoutMillis, readTimeoutMillis));
-                }
-
-                Netty4ResponseHandler responseHandler
-                    = new Netty4ResponseHandler(request, responseReference, errorReference, latch);
-                channel.pipeline().addLast(responseHandler);
-
-                Throwable earlyError = errorReference.get();
-                if (earlyError != null) {
-                    // If an error occurred between the connect and the request being sent, don't proceed with sending
-                    // the request.
-                    latch.countDown();
-                    return;
-                }
-
-                sendRequest(request, channel, addProgressAndTimeoutHandler, errorReference)
-                    .addListener((ChannelFutureListener) sendListener -> {
-                        if (!sendListener.isSuccess()) {
-                            setOrSuppressError(errorReference, sendListener.cause());
-                            sendListener.channel().close();
-                            latch.countDown();
-                        } else {
-                            sendListener.channel().read();
-                        }
-                    });
             });
 
-            latch.await();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw LOGGER.throwableAtError().log("Request interrupted.", e, CoreException::from);
+            // Only add CoreProgressAndTimeoutHandler if it will do anything, ex it is reporting progress or is
+            // applying timeouts.
+            // This is done to keep the ChannelPipeline shorter, therefore more performant, if this would
+            // effectively be a no-op.
+            if (addProgressAndTimeoutHandler) {
+                channel.pipeline()
+                    .addLast(PROGRESS_AND_TIMEOUT_HANDLER_NAME, new Netty4ProgressAndTimeoutHandler(progressReporter,
+                        writeTimeoutMillis, responseTimeoutMillis, readTimeoutMillis));
+            }
+
+            Netty4ResponseHandler responseHandler
+                = new Netty4ResponseHandler(request, responseReference, errorReference, latch);
+            channel.pipeline().addLast(responseHandler);
+
+            Throwable earlyError = errorReference.get();
+            if (earlyError != null) {
+                // If an error occurred between the connect and the request being sent, don't proceed with sending
+                // the request.
+                latch.countDown();
+                return;
+            }
+
+            sendRequest(request, channel, addProgressAndTimeoutHandler, errorReference)
+                .addListener((ChannelFutureListener) sendListener -> {
+                    if (!sendListener.isSuccess()) {
+                        setOrSuppressError(errorReference, sendListener.cause());
+                        sendListener.channel().close();
+                        latch.countDown();
+                    } else {
+                        sendListener.channel().read();
+                    }
+                });
+        });
+
+        awaitLatch(latch);
+
+        ResponseStateInfo info = responseReference.get();
+        if (info == null) {
+            throw LOGGER.throwableAtError().log(errorReference.get(), CoreException::from);
         }
 
-        Response<BinaryData> response = responseReference.get();
-        if (response == null) {
-            throw LOGGER.throwableAtError().log(errorReference.get(), CoreException::from);
+        Response<BinaryData> response;
+        if (info.isChannelConsumptionComplete()) {
+            // The network response is already complete, handle creating our Response based on the request method and
+            // response headers.
+            BinaryData body = BinaryData.empty();
+            ByteArrayOutputStream eagerContent = info.getEagerContent();
+            if (info.getResponseBodyHandling() != ResponseBodyHandling.IGNORE && eagerContent.size() > 0) {
+                // Set the response body as the first HttpContent received if the request wasn't a HEAD request and
+                // there was body content.
+                body = BinaryData.fromBytes(eagerContent.toByteArray());
+            }
+
+            response = new Response<>(request, info.getStatusCode(), info.getHeaders(), body);
+        } else {
+            // Otherwise we aren't finished, handle the remaining content according to the documentation in
+            // 'channelRead()'.
+            BinaryData body = BinaryData.empty();
+            ResponseBodyHandling bodyHandling = info.getResponseBodyHandling();
+            Channel channel = info.getResponseChannel();
+            if (bodyHandling == ResponseBodyHandling.IGNORE) {
+                // We're ignoring the response content.
+                CountDownLatch drainLatch = new CountDownLatch(1);
+                channel.pipeline().addLast(new Netty4EagerConsumeChannelHandler(latch, ignored -> {
+                }));
+                channel.config().setAutoRead(true);
+                awaitLatch(drainLatch);
+            } else if (bodyHandling == ResponseBodyHandling.STREAM) {
+                // Body streaming uses a special BinaryData that tracks the firstContent read and the Channel it came
+                // from so it can be consumed when the BinaryData is being used.
+                // autoRead should have been disabled already but lets make sure that it is.
+                channel.config().setAutoRead(false);
+                String contentLength = info.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
+                Long length = null;
+                if (!CoreUtils.isNullOrEmpty(contentLength)) {
+                    try {
+                        length = Long.parseLong(contentLength);
+                    } catch (NumberFormatException ignored) {
+                        // Ignore, we'll just read until the channel is closed.
+                    }
+                }
+
+                body = new Netty4ChannelBinaryData(info.getEagerContent(), channel, length);
+            } else {
+                // All cases otherwise assume BUFFER.
+                CountDownLatch drainLath = new CountDownLatch(1);
+                channel.pipeline().addLast(new Netty4EagerConsumeChannelHandler(latch, buf -> {
+                    try {
+                        buf.readBytes(info.getEagerContent(), buf.readableBytes());
+                    } catch (IOException ex) {
+                        throw LOGGER.throwableAtError().log(ex, CoreException::from);
+                    }
+                }));
+                channel.config().setAutoRead(true);
+                awaitLatch(drainLath);
+
+                body = BinaryData.fromBytes(info.getEagerContent().toByteArray());
+            }
+
+            response = new Response<>(request, info.getStatusCode(), info.getHeaders(), body);
         }
 
         if (response.getValue() != BinaryData.empty()
