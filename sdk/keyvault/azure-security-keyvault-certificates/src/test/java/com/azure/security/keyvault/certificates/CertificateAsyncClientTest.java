@@ -502,8 +502,8 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
                 .verifyComplete();
 
             StepVerifier.create(certPoller.last())
-                .assertNext(asyncPollResponse ->
-                    assertEquals("cancelled", asyncPollResponse.getStatus().toString().toLowerCase(Locale.ROOT)))
+                .assertNext(asyncPollResponse -> assertEquals("cancelled",
+                    asyncPollResponse.getStatus().toString().toLowerCase(Locale.ROOT)))
                 .verifyComplete();
         });
     }
