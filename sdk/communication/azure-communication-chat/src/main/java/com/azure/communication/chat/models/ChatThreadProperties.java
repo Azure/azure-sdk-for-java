@@ -151,16 +151,16 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
     }
 
     /**
-     * Thread retention policy.
+     * Gets the chat thread retention policy.
      *
-     * @return the retentionPolicy value.
+     * @return the retentionPolicy.
      */
     public ChatRetentionPolicy getRetentionPolicy() {
         return this.retentionPolicy;
     }
 
     /**
-     * Thread retention policy.
+     * Sets the chat thread retention policy.
      *
      * @param retentionPolicy the retention policy to set.
      * @return the ChatThreadProperties object itself.
