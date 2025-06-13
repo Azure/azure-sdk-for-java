@@ -53,15 +53,6 @@ public final class ConfigStore {
      */
     private List<AppConfigurationKeyValueSelector> selects = new ArrayList<>();
 
-    /**
-     * If true, the application will fail to start if the Config Store cannot be
-     * reached. If false, the application will start without the Config Store.
-     */
-    private boolean failFast = true;
-
-    /**
-     * Options for retrieving Feature Flags from the Azure Config Service.
-     */
     private FeatureFlagStore featureFlags = new FeatureFlagStore();
 
     /**
@@ -145,20 +136,6 @@ public final class ConfigStore {
      */
     public void setConnectionStrings(List<String> connectionStrings) {
         this.connectionStrings = connectionStrings;
-    }
-
-    /**
-     * @return the failFast
-     */
-    public boolean isFailFast() {
-        return failFast;
-    }
-
-    /**
-     * @param failFast the failFast to set
-     */
-    public void setFailFast(boolean failFast) {
-        this.failFast = failFast;
     }
 
     /**

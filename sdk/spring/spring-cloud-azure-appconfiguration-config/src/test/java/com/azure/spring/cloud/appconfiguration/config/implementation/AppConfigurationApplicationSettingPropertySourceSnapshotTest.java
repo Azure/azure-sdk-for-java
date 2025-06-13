@@ -39,11 +39,13 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
 
+import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+
 
 public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
 
@@ -70,7 +72,7 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
         createItem("/bar/", "test_key_4", "test_value_4", "test_label_4", EMPTY_CONTENT_TYPE);
 
     private static final FeatureFlagConfigurationSetting FEATURE_ITEM = createItemFeatureFlag(".appconfig.featureflag/",
-        "Alpha", FEATURE_VALUE, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
+        "Alpha", FEATURE_VALUE, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE, "fake-etag");
 
     private static final ConfigurationSetting ITEM_NULL =
         createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3, null);
@@ -89,6 +91,9 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
 
     @Mock
     private List<ConfigurationSetting> configurationListMock;
+    
+    @Mock
+    private Context contextMock;
     
     FeatureFlagClient featureFlagLoader = new FeatureFlagClient();
     
@@ -128,10 +133,10 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
     @Test
     public void testPropCanBeInitAndQueried() throws IOException {
         when(configurationListMock.iterator()).thenReturn(testItems.iterator()).thenReturn(testItems.iterator());
-        when(clientMock.listSettingSnapshot(Mockito.any())).thenReturn(configurationListMock)
+        when(clientMock.listSettingSnapshot(Mockito.any(), Mockito.any(Context.class))).thenReturn(configurationListMock)
             .thenReturn(configurationListMock);
 
-        propertySource.initProperties(TRIM);
+        propertySource.initProperties(TRIM, contextMock);
 
         String[] keyNames = propertySource.getPropertyNames();
         String[] expectedKeyNames = testItems.stream().map(t -> {
@@ -145,7 +150,7 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
         assertThat(propertySource.getProperty(TEST_KEY_2)).isEqualTo(TEST_VALUE_2);
         assertThat(propertySource.getProperty(TEST_KEY_3)).isEqualTo(TEST_VALUE_3);
         assertThat(propertySource.getProperty(".bar.test_key_4")).isEqualTo("test_value_4");
-        assertEquals(1, featureFlagLoader.getProperties().size());
+        assertEquals(1, featureFlagLoader.getFeatureFlags().size());
     }
 
     @Test
@@ -155,10 +160,10 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
         List<ConfigurationSetting> settings = new ArrayList<>();
         settings.add(slashedProp);
         when(configurationListMock.iterator()).thenReturn(settings.iterator()).thenReturn(Collections.emptyIterator());
-        when(clientMock.listSettingSnapshot(Mockito.any())).thenReturn(configurationListMock)
+        when(clientMock.listSettingSnapshot(Mockito.any(), Mockito.any(Context.class))).thenReturn(configurationListMock)
             .thenReturn(configurationListMock);
 
-        propertySource.initProperties(TRIM);
+        propertySource.initProperties(TRIM, contextMock);
 
         String expectedKeyName = TEST_SLASH_KEY.replace('/', '.');
         String[] actualKeyNames = propertySource.getPropertyNames();
@@ -174,9 +179,9 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
         List<ConfigurationSetting> items = new ArrayList<>();
         items.add(ITEM_NULL);
         when(configurationListMock.iterator()).thenReturn(items.iterator()).thenReturn(Collections.emptyIterator());
-        when(clientMock.listSettingSnapshot(Mockito.any())).thenReturn(configurationListMock);
+        when(clientMock.listSettingSnapshot(Mockito.any(), Mockito.any(Context.class))).thenReturn(configurationListMock);
 
-        propertySource.initProperties(TRIM);
+        propertySource.initProperties(TRIM, contextMock);
 
         String[] keyNames = propertySource.getPropertyNames();
         String[] expectedKeyNames =

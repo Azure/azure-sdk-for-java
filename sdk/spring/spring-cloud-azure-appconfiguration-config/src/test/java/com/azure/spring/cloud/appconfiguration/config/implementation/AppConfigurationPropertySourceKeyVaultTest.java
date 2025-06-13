@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.KEY_VAULT_CONTENT_TYPE;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.KEY_VAULT_CONTENT_TYPE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_CONN_STRING;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_KEY_VAULT_1;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_LABEL_VAULT_1;
@@ -30,6 +30,7 @@ import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
 import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 
+import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
@@ -70,6 +71,9 @@ public class AppConfigurationPropertySourceKeyVaultTest {
 
     @Mock
     private List<ConfigurationSetting> keyVaultSecretListMock;
+    
+    @Mock
+    private Context contextMock;
 
     private MockitoSession session;
 
@@ -98,7 +102,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         List<ConfigurationSetting> settings = List.of(KEY_VAULT_ITEM);
         when(keyVaultSecretListMock.iterator()).thenReturn(settings.iterator())
             .thenReturn(Collections.emptyIterator());
-        when(replicaClientMock.listSettings(Mockito.any(), Mockito.anyBoolean())).thenReturn(keyVaultSecretListMock)
+        when(replicaClientMock.listSettings(Mockito.any(), Mockito.any(Context.class))).thenReturn(keyVaultSecretListMock)
             .thenReturn(keyVaultSecretListMock);
 
         KeyVaultSecret secret = new KeyVaultSecret("mySecret", "mySecretValue");
@@ -107,7 +111,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         when(clientManagerMock.getSecret(Mockito.any(URI.class))).thenReturn(secret);
 
         try {
-            propertySource.initProperties(null, false);
+            propertySource.initProperties(null, contextMock);
         } catch (InvalidConfigurationPropertyValueException e) {
             fail("Failed Reading in Feature Flags");
         }
@@ -125,11 +129,11 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         List<ConfigurationSetting> settings = List.of(KEY_VAULT_ITEM_INVALID_URI);
         when(keyVaultSecretListMock.iterator()).thenReturn(settings.iterator())
             .thenReturn(Collections.emptyIterator());
-        when(replicaClientMock.listSettings(Mockito.any(), Mockito.anyBoolean())).thenReturn(keyVaultSecretListMock)
+        when(replicaClientMock.listSettings(Mockito.any(), Mockito.any(Context.class))).thenReturn(keyVaultSecretListMock)
             .thenReturn(keyVaultSecretListMock);
 
         InvalidConfigurationPropertyValueException exception = assertThrows(
-            InvalidConfigurationPropertyValueException.class, () -> propertySource.initProperties(null, false));
+            InvalidConfigurationPropertyValueException.class, () -> propertySource.initProperties(null, contextMock));
         assertEquals("test_key_vault_1", exception.getName());
         assertEquals("<Redacted>", exception.getValue());
         assertEquals("Invalid URI found in JSON property field 'uri' unable to parse.", exception.getReason());
@@ -140,14 +144,13 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         List<ConfigurationSetting> settings = List.of(KEY_VAULT_ITEM);
         when(keyVaultSecretListMock.iterator()).thenReturn(settings.iterator())
             .thenReturn(Collections.emptyIterator());
-        when(replicaClientMock.listSettings(Mockito.any(), Mockito.anyBoolean())).thenReturn(keyVaultSecretListMock)
+        when(replicaClientMock.listSettings(Mockito.any(), Mockito.any(Context.class))).thenReturn(keyVaultSecretListMock)
             .thenReturn(keyVaultSecretListMock);
         when(keyVaultClientFactoryMock.getClient(Mockito.eq("https://test.key.vault.com")))
             .thenReturn(clientManagerMock);
         when(clientManagerMock.getSecret(Mockito.any())).thenThrow(new RuntimeException("Parse Failed"));
 
-        RuntimeException exception = assertThrows(RuntimeException.class,
-            () -> propertySource.initProperties(null, false));
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> propertySource.initProperties(null, contextMock));
         assertEquals("Parse Failed", exception.getMessage());
     }
 }
