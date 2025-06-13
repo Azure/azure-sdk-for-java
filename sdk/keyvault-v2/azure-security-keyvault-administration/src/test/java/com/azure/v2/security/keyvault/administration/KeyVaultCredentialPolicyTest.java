@@ -3,35 +3,25 @@
 
 package com.azure.v2.security.keyvault.administration;
 
-import io.clientcore.core.credential.AccessToken;
-import io.clientcore.core.credential.TokenCredential;
-import io.clientcore.core.credential.TokenRequestContext;
+import com.azure.v2.core.credentials.TokenCredential;
+import com.azure.v2.core.credentials.TokenRequestContext;
+import com.azure.v2.security.keyvault.administration.implementation.KeyVaultCredentialPolicy;
+import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
-import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
-import io.clientcore.core.http.pipeline.HttpPipelineCallContext;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.util.BinaryData;
-import io.clientcore.core.util.Context;
-import com.azure.v2.security.keyvault.administration.implementation.KeyVaultCredentialPolicy;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static io.clientcore.core.http.models.HttpHeaderName.AUTHORIZATION;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -50,7 +40,7 @@ public class KeyVaultCredentialPolicyTest {
     @BeforeEach
     public void setUp() {
         credential = new MockTokenCredential();
-        policy = new KeyVaultCredentialPolicy(credential);
+        policy = new KeyVaultCredentialPolicy(credential, false);
         mockHttpClient = new MockHttpClient();
     }
 
@@ -64,22 +54,21 @@ public class KeyVaultCredentialPolicyTest {
     @Test
     public void onChallengeCredentialPolicy() {
         // Create a request
-        HttpRequest request = new HttpRequest(HttpMethod.GET, VAULT_URL + "/roles");
+        HttpRequest request = new HttpRequest()
+            .setMethod(HttpMethod.GET)
+            .setUri(VAULT_URL + "/roles");
 
         // Create an unauthorized response with challenge
         Response<?> challengeResponse = createChallengeResponse();
 
-        // Create context and pipeline call context
-        Context context = new Context("key", "value");
-        HttpPipelineCallContext callContext = new HttpPipelineCallContext(request, context);
-
         // Process the challenge
-        boolean result = policy.onChallenge(callContext, challengeResponse);
+        boolean result = policy.authorizeRequestOnChallenge(request, challengeResponse);
 
         assertTrue(result);
 
         // Verify the authorization header was added
         String authHeader = request.getHeaders().getValue(AUTHORIZATION);
+
         assertNotNull(authHeader);
         assertTrue(authHeader.startsWith(BEARER_TOKEN_PREFIX));
     }
@@ -87,17 +76,15 @@ public class KeyVaultCredentialPolicyTest {
     @Test
     public void onChallengeCredentialPolicyEmptyHeader() {
         // Create a request
-        HttpRequest request = new HttpRequest(HttpMethod.GET, VAULT_URL + "/roles");
+        HttpRequest request = new HttpRequest()
+            .setMethod(HttpMethod.GET)
+            .setUri(VAULT_URL + "/roles");
 
         // Create an unauthorized response without challenge header
         Response<?> challengeResponse = createEmptyChallengeResponse();
 
-        // Create context and pipeline call context
-        Context context = new Context("key", "value");
-        HttpPipelineCallContext callContext = new HttpPipelineCallContext(request, context);
-
         // Process the challenge
-        boolean result = policy.onChallenge(callContext, challengeResponse);
+        boolean result = policy.authorizeRequestOnChallenge(request, challengeResponse);
 
         assertFalse(result);
     }
@@ -105,20 +92,18 @@ public class KeyVaultCredentialPolicyTest {
     @Test
     public void testCredentialPolicyTokenRefresh() {
         // Create a request
-        HttpRequest request = new HttpRequest(HttpMethod.GET, VAULT_URL + "/backup");
+        HttpRequest request = new HttpRequest()
+            .setMethod(HttpMethod.GET)
+            .setUri(VAULT_URL + "/backup");
 
         // Create an unauthorized response with challenge
         Response<?> challengeResponse = createChallengeResponse();
-
-        // Create context and pipeline call context
-        Context context = new Context("key", "value");
-        HttpPipelineCallContext callContext = new HttpPipelineCallContext(request, context);
 
         // Set an expired token
         credential.setToken(new AccessToken("expired-token", OffsetDateTime.now().minusHours(1)));
 
         // Process the challenge
-        boolean result = policy.onChallenge(callContext, challengeResponse);
+        boolean result = policy.authorizeRequestOnChallenge(request, challengeResponse);
 
         assertTrue(result);
 
@@ -137,21 +122,20 @@ public class KeyVaultCredentialPolicyTest {
         AtomicInteger callCount = new AtomicInteger(0);
 
         // Create requests for multiple HSM operations
-        HttpRequest request1 = new HttpRequest(HttpMethod.GET, "https://hsm1.vault.azure.net/backup");
-        HttpRequest request2 = new HttpRequest(HttpMethod.GET, "https://hsm2.vault.azure.net/roles");
+        HttpRequest request1 = new HttpRequest()
+            .setMethod(HttpMethod.GET)
+            .setUri("https://hsm1.vault.azure.net/backup");
+        HttpRequest request2 = new HttpRequest()
+            .setMethod(HttpMethod.GET)
+            .setUri("https://hsm2.vault.azure.net/roles");
 
         // Create challenge responses
         Response<?> challengeResponse1 = createChallengeResponse();
         Response<?> challengeResponse2 = createChallengeResponse();
 
-        // Create contexts
-        Context context = new Context("key", "value");
-        HttpPipelineCallContext callContext1 = new HttpPipelineCallContext(request1, context);
-        HttpPipelineCallContext callContext2 = new HttpPipelineCallContext(request2, context);
-
         // Process challenges
-        boolean result1 = policy.onChallenge(callContext1, challengeResponse1);
-        boolean result2 = policy.onChallenge(callContext2, challengeResponse2);
+        boolean result1 = policy.authorizeRequestOnChallenge(request1, challengeResponse1);
+        boolean result2 = policy.authorizeRequestOnChallenge(request2, challengeResponse2);
 
         assertTrue(result1);
         assertTrue(result2);
@@ -164,28 +148,28 @@ public class KeyVaultCredentialPolicyTest {
     @Test
     public void testCredentialPolicyWithRoleAssignment() {
         // Create a request for role assignment
-        HttpRequest request = new HttpRequest(HttpMethod.PUT, VAULT_URL + "/providers/Microsoft.Authorization/roleAssignments/test-assignment");
+        HttpRequest request = new HttpRequest()
+            .setMethod(HttpMethod.PUT)
+            .setUri(VAULT_URL + "/providers/Microsoft.Authorization/roleAssignments/test-assignment");
 
         // Create an unauthorized response with challenge
         Response<?> challengeResponse = createChallengeResponse();
 
-        // Create context and pipeline call context
-        Context context = new Context("key", "value");
-        HttpPipelineCallContext callContext = new HttpPipelineCallContext(request, context);
-
         // Process the challenge
-        boolean result = policy.onChallenge(callContext, challengeResponse);
+        boolean result = policy.authorizeRequestOnChallenge(request, challengeResponse);
 
         assertTrue(result);
 
         // Verify the authorization header was added
         String authHeader = request.getHeaders().getValue(AUTHORIZATION);
+
         assertNotNull(authHeader);
         assertTrue(authHeader.startsWith(BEARER_TOKEN_PREFIX));
     }
 
     private Response<?> createChallengeResponse() {
         HttpHeaders headers = new HttpHeaders();
+
         headers.set(AUTHENTICATE_HEADER, AUTHENTICATE_HEADER_VALUE);
 
         return new MockResponse(401, headers);
@@ -196,8 +180,8 @@ public class KeyVaultCredentialPolicyTest {
     }
 
     private static class MockTokenCredential implements TokenCredential {
+        private final AtomicInteger tokenCallCount = new AtomicInteger(0);
         private AccessToken token;
-        private AtomicInteger tokenCallCount = new AtomicInteger(0);
 
         public void setToken(AccessToken token) {
             this.token = token;
@@ -208,57 +192,20 @@ public class KeyVaultCredentialPolicyTest {
         }
 
         @Override
-        public CompletableFuture<AccessToken> getToken(TokenRequestContext request) {
+        public AccessToken getToken(TokenRequestContext request) {
             tokenCallCount.incrementAndGet();
+
             if (token == null) {
                 token = new AccessToken("mock-token", OffsetDateTime.now().plusHours(1));
             }
-            return CompletableFuture.completedFuture(token);
+
+            return token;
         }
     }
 
-    private static class MockResponse implements Response<Void> {
-        private final int statusCode;
-        private final HttpHeaders headers;
-
+    private static class MockResponse extends Response<Void> {
         public MockResponse(int statusCode, HttpHeaders headers) {
-            this.statusCode = statusCode;
-            this.headers = headers;
-        }
-
-        @Override
-        public int getStatusCode() {
-            return statusCode;
-        }
-
-        @Override
-        public String getHeaderValue(String name) {
-            return headers.getValue(name);
-        }
-
-        @Override
-        public String getHeaderValue(HttpHeaderName headerName) {
-            return headers.getValue(headerName);
-        }
-
-        @Override
-        public HttpHeaders getHeaders() {
-            return headers;
-        }
-
-        @Override
-        public Void getValue() {
-            return null;
-        }
-
-        @Override
-        public BinaryData getBody() {
-            return null;
-        }
-
-        @Override
-        public HttpRequest getRequest() {
-            return null;
+            super(null, statusCode, headers, null);
         }
 
         @Override
@@ -268,8 +215,8 @@ public class KeyVaultCredentialPolicyTest {
     }
 
     private static class MockHttpClient {
-        private List<Response<?>> responses = new ArrayList<>();
-        private AtomicInteger callCount = new AtomicInteger(0);
+        private final List<Response<?>> responses = new ArrayList<>();
+        private final AtomicInteger callCount = new AtomicInteger(0);
 
         public void addResponse(Response<?> response) {
             responses.add(response);

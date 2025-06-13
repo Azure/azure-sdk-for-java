@@ -3,7 +3,7 @@
 
 package com.azure.v2.security.keyvault.administration;
 
-import io.clientcore.core.util.CoreUtils;
+import io.clientcore.core.utils.CoreUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
