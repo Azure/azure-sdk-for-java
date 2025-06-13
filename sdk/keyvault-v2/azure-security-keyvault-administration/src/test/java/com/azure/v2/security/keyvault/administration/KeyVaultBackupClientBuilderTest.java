@@ -2,23 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.v2.security.keyvault.administration;
 
-import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.HttpHeaderName;
-import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.http.policy.ExponentialBackoffOptions;
-import io.clientcore.core.http.policy.FixedDelayOptions;
-import io.clientcore.core.http.policy.HttpLogOptions;
-import io.clientcore.core.http.policy.HttpRetryOptions;
-import io.clientcore.core.http.policy.RetryPolicy;
+import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.util.ClientOptions;
-import io.clientcore.core.util.Header;
+import io.clientcore.core.http.pipeline.AddHeadersPolicy;
+import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
+import io.clientcore.core.http.pipeline.HttpRetryOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.util.Collections;
-import java.util.concurrent.CompletableFuture;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -26,26 +19,21 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class KeyVaultBackupClientBuilderTest {
     private String vaultUrl;
-    private String sasToken;
-    private String containerUrl;
     private KeyVaultAdministrationServiceVersion serviceVersion;
 
     @BeforeEach
     public void setUp() {
         vaultUrl = "https://key-vault-url.vault.azure.net/";
-        sasToken = "sasToken";
-        containerUrl = "https://storage.blob.core.windows.net/backup";
         serviceVersion = KeyVaultAdministrationServiceVersion.getLatest();
     }
 
     @Test
     public void buildSyncClientTest() {
         KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder()
-            .vaultUrl(vaultUrl)
+            .endpoint(vaultUrl)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
-            .httpClient(request -> CompletableFuture.completedFuture(
-                Response.fromValue(null, null, 200, null, null)))
+            .httpClient(request -> new Response<>(request, 200, null, null))
             .buildClient();
 
         assertNotNull(keyVaultBackupClient);
@@ -56,25 +44,23 @@ public class KeyVaultBackupClientBuilderTest {
     @Test
     public void buildSyncClientUsingDefaultApiVersionTest() {
         KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder()
-            .vaultUrl(vaultUrl)
+            .endpoint(vaultUrl)
             .credential(new TestUtils.TestCredential())
-            .httpClient(request -> CompletableFuture.completedFuture(
-                Response.fromValue(null, null, 200, null, null)))
+            .httpClient(request -> new Response<>(request, 200, null, null))
             .buildClient();
 
         assertNotNull(keyVaultBackupClient);
-        assertEquals(KeyVaultBackupClient.class.getSimpleName(),
-            keyVaultBackupClient.getClass().getSimpleName());
+        assertEquals(KeyVaultBackupClient.class.getSimpleName(), keyVaultBackupClient.getClass().getSimpleName());
     }
 
     @Test
     public void emptyVaultUrlThrowsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> new KeyVaultBackupClientBuilder().vaultUrl(""));
+        assertThrows(IllegalArgumentException.class, () -> new KeyVaultBackupClientBuilder().endpoint(""));
     }
 
     @Test
     public void nullVaultUrlThrowsIllegalArgumentException() {
-        assertThrows(NullPointerException.class, () -> new KeyVaultBackupClientBuilder().vaultUrl(null));
+        assertThrows(NullPointerException.class, () -> new KeyVaultBackupClientBuilder().endpoint(null));
     }
 
     @Test
@@ -90,13 +76,12 @@ public class KeyVaultBackupClientBuilderTest {
     @Test
     public void clientOptionsIsPreferredOverRequestOptions() {
         KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder()
-            .vaultUrl(vaultUrl)
+            .endpoint(vaultUrl)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
-            .httpClient(request -> CompletableFuture.completedFuture(
-                Response.fromValue(null, null, 200, null, null)))
-            .clientOptions(new ClientOptions()
-                .setHeaders(Collections.singletonList(new Header("MyCustomHeader", "MyCustomValue"))))
+            .httpClient(request -> new Response<>(request, 200, null, null))
+            .addHttpPipelinePolicy(new AddHeadersPolicy(
+                new HttpHeaders().set(HttpHeaderName.fromString("MyCustomHeader"), "MyCustomValue")))
             .buildClient();
 
         assertNotNull(keyVaultBackupClient);
@@ -105,87 +90,29 @@ public class KeyVaultBackupClientBuilderTest {
     }
 
     @Test
-    public void bothRetryOptionsAndRetryPolicySet() {
-        assertThrows(IllegalStateException.class, () -> new KeyVaultBackupClientBuilder()
-            .vaultUrl(vaultUrl)
-            .serviceVersion(serviceVersion)
-            .credential(new TestUtils.TestCredential())
-            .httpClient(request -> CompletableFuture.completedFuture(
-                Response.fromValue(null, null, 200, null, null)))
-            .retryOptions(new HttpRetryOptions(new ExponentialBackoffOptions().setMaxRetries(2)))
-            .retryPolicy(new RetryPolicy())
-            .buildClient());
-    }
-
-    @Test
     public void buildClientWithRetryOptions() {
         KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder()
-            .vaultUrl(vaultUrl)
+            .endpoint(vaultUrl)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
-            .httpClient(request -> CompletableFuture.completedFuture(
-                Response.fromValue(null, null, 200, null, null)))
-            .retryOptions(new HttpRetryOptions(new ExponentialBackoffOptions().setMaxRetries(2)))
+            .httpClient(request -> new Response<>(request, 200, null, null))
+            .httpRetryOptions(new HttpRetryOptions(0, Duration.ZERO))
             .buildClient();
 
         assertNotNull(keyVaultBackupClient);
     }
 
     @Test
-    public void buildClientWithRetryPolicy() {
+    public void buildClientWithHttpInstrumentationOptions() {
         KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder()
-            .vaultUrl(vaultUrl)
+            .endpoint(vaultUrl)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
-            .httpClient(request -> CompletableFuture.completedFuture(
-                Response.fromValue(null, null, 200, null, null)))
-            .retryPolicy(new RetryPolicy())
+            .httpClient(request -> new Response<>(request, 200, null, null))
+            .httpInstrumentationOptions(new HttpInstrumentationOptions()
+                .setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS))
             .buildClient();
 
         assertNotNull(keyVaultBackupClient);
-    }
-
-    @Test
-    public void buildClientWithHttpLogOptions() {
-        KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder()
-            .vaultUrl(vaultUrl)
-            .serviceVersion(serviceVersion)
-            .credential(new TestUtils.TestCredential())
-            .httpClient(request -> CompletableFuture.completedFuture(
-                Response.fromValue(null, null, 200, null, null)))
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BODY_AND_HEADERS))
-            .buildClient();
-
-        assertNotNull(keyVaultBackupClient);
-    }
-
-    @Test
-    public void buildClientWithHttpPipeline() {
-        KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder()
-            .vaultUrl(vaultUrl)
-            .serviceVersion(serviceVersion)
-            .pipeline(TestUtils.buildHttpPipeline())
-            .buildClient();
-
-        assertNotNull(keyVaultBackupClient);
-    }
-
-    @Test
-    public void buildClientWithNullPipelineThrowsException() {
-        assertThrows(NullPointerException.class, () -> new KeyVaultBackupClientBuilder()
-            .vaultUrl(vaultUrl)
-            .serviceVersion(serviceVersion)
-            .pipeline(null)
-            .buildClient());
-    }
-
-    @Test
-    public void buildClientWithCredentialAndPipelineThrowsException() {
-        assertThrows(IllegalStateException.class, () -> new KeyVaultBackupClientBuilder()
-            .vaultUrl(vaultUrl)
-            .serviceVersion(serviceVersion)
-            .credential(new TestUtils.TestCredential())
-            .pipeline(TestUtils.buildHttpPipeline())
-            .buildClient());
     }
 }

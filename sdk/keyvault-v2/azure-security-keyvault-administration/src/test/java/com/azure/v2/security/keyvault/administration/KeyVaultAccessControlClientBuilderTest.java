@@ -30,12 +30,12 @@ public class KeyVaultAccessControlClientBuilderTest {
 
     @Test
     public void buildSyncClientTest() {
-        KeyVaultAccessControlClient keyVaultAccessControlClient
-            = new KeyVaultAccessControlClientBuilder().endpoint(vaultUrl)
-                .serviceVersion(serviceVersion)
-                .credential(new TestUtils.TestCredential())
-                .httpClient(request -> new Response<>(request, 200, null, null))
-                .buildClient();
+        KeyVaultAccessControlClient keyVaultAccessControlClient = new KeyVaultAccessControlClientBuilder()
+            .endpoint(vaultUrl)
+            .serviceVersion(serviceVersion)
+            .credential(new TestUtils.TestCredential())
+            .httpClient(request -> new Response<>(request, 200, null, null))
+            .buildClient();
 
         assertNotNull(keyVaultAccessControlClient);
         assertEquals(KeyVaultAccessControlClient.class.getSimpleName(),
@@ -44,11 +44,11 @@ public class KeyVaultAccessControlClientBuilderTest {
 
     @Test
     public void buildSyncClientUsingDefaultApiVersionTest() {
-        KeyVaultAccessControlClient keyVaultAccessControlClient
-            = new KeyVaultAccessControlClientBuilder().endpoint(vaultUrl)
-                .credential(new TestUtils.TestCredential())
-                .httpClient(request -> new Response<>(request, 200, null, null))
-                .buildClient();
+        KeyVaultAccessControlClient keyVaultAccessControlClient = new KeyVaultAccessControlClientBuilder()
+            .endpoint(vaultUrl)
+            .credential(new TestUtils.TestCredential())
+            .httpClient(request -> new Response<>(request, 200, null, null))
+            .buildClient();
 
         assertNotNull(keyVaultAccessControlClient);
         assertEquals(KeyVaultAccessControlClient.class.getSimpleName(),
@@ -77,14 +77,14 @@ public class KeyVaultAccessControlClientBuilderTest {
 
     @Test
     public void clientOptionsIsPreferredOverRequestOptions() {
-        KeyVaultAccessControlClient keyVaultAccessControlClient
-            = new KeyVaultAccessControlClientBuilder().endpoint(vaultUrl)
-                .serviceVersion(serviceVersion)
-                .credential(new TestUtils.TestCredential())
-                .httpClient(request -> new Response<>(request, 200, null, null))
-                .addHttpPipelinePolicy(new AddHeadersPolicy(
-                    new HttpHeaders().set(HttpHeaderName.fromString("MyCustomHeader"), "MyCustomValue")))
-                .buildClient();
+        KeyVaultAccessControlClient keyVaultAccessControlClient = new KeyVaultAccessControlClientBuilder()
+            .endpoint(vaultUrl)
+            .serviceVersion(serviceVersion)
+            .credential(new TestUtils.TestCredential())
+            .httpClient(request -> new Response<>(request, 200, null, null))
+            .addHttpPipelinePolicy(new AddHeadersPolicy(
+                new HttpHeaders().set(HttpHeaderName.fromString("MyCustomHeader"), "MyCustomValue")))
+            .buildClient();
 
         assertNotNull(keyVaultAccessControlClient);
         assertEquals(KeyVaultAccessControlClient.class.getSimpleName(),
@@ -93,27 +93,27 @@ public class KeyVaultAccessControlClientBuilderTest {
 
     @Test
     public void buildClientWithRetryOptions() {
-        KeyVaultAccessControlClient keyVaultAccessControlClient
-            = new KeyVaultAccessControlClientBuilder().endpoint(vaultUrl)
-                .serviceVersion(serviceVersion)
-                .credential(new TestUtils.TestCredential())
-                .httpClient(request -> new Response<>(request, 200, null, null))
-                .httpRetryOptions(new HttpRetryOptions(0, Duration.ZERO))
-                .buildClient();
+        KeyVaultAccessControlClient keyVaultAccessControlClient = new KeyVaultAccessControlClientBuilder()
+            .endpoint(vaultUrl)
+            .serviceVersion(serviceVersion)
+            .credential(new TestUtils.TestCredential())
+            .httpClient(request -> new Response<>(request, 200, null, null))
+            .httpRetryOptions(new HttpRetryOptions(0, Duration.ZERO))
+            .buildClient();
 
         assertNotNull(keyVaultAccessControlClient);
     }
 
     @Test
     public void buildClientWithHttpInstrumentationOptions() {
-        KeyVaultAccessControlClient keyVaultAccessControlClient
-            = new KeyVaultAccessControlClientBuilder().endpoint(vaultUrl)
-                .serviceVersion(serviceVersion)
-                .credential(new TestUtils.TestCredential())
-                .httpClient(request -> new Response<>(request, 200, null, null))
-                .httpInstrumentationOptions(new HttpInstrumentationOptions()
-                    .setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS))
-                .buildClient();
+        KeyVaultAccessControlClient keyVaultAccessControlClient = new KeyVaultAccessControlClientBuilder()
+            .endpoint(vaultUrl)
+            .serviceVersion(serviceVersion)
+            .credential(new TestUtils.TestCredential())
+            .httpClient(request -> new Response<>(request, 200, null, null))
+            .httpInstrumentationOptions(new HttpInstrumentationOptions()
+                .setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS))
+            .buildClient();
 
         assertNotNull(keyVaultAccessControlClient);
     }

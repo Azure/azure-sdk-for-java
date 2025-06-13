@@ -2,11 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.v2.security.keyvault.administration;
 
-import io.clientcore.core.http.client.HttpClient;
 import com.azure.v2.security.keyvault.administration.models.KeyVaultGetSettingsResult;
 import com.azure.v2.security.keyvault.administration.models.KeyVaultSetting;
+import io.clientcore.core.http.client.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -14,8 +16,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class KeyVaultSettingsClientTest extends KeyVaultSettingsClientTestBase {
     private KeyVaultSettingsClient client;
 
-    private void getClient(HttpClient httpClient, boolean forCleanup) {
-        client = getClientBuilder(httpClient, forCleanup).buildClient();
+    private void getClient(HttpClient httpClient) throws IOException {
+        client = getClientBuilder(buildSyncAssertingClient(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)).buildClient();
 
         if (!interceptorManager.isLiveMode()) {
             // Remove `id` and `name` sanitizers from the list of common sanitizers.
@@ -23,10 +26,14 @@ public class KeyVaultSettingsClientTest extends KeyVaultSettingsClientTestBase {
         }
     }
 
+    private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
+        return new TestUtils.AssertingHttpClientBuilder(httpClient).assertSync().build();
+    }
+
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.v2.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
-    public void getSettings(HttpClient httpClient) {
-        getClient(httpClient, false);
+    public void getSettings(HttpClient httpClient) throws IOException {
+        getClient(httpClient);
 
         KeyVaultGetSettingsResult getSettingsResult = client.getSettings();
 
@@ -42,8 +49,8 @@ public class KeyVaultSettingsClientTest extends KeyVaultSettingsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.v2.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
-    public void getSetting(HttpClient httpClient) {
-        getClient(httpClient, false);
+    public void getSetting(HttpClient httpClient) throws IOException {
+        getClient(httpClient);
 
         String settingName = "AllowKeyManagementOperationsThroughARM";
         KeyVaultSetting setting = client.getSetting(settingName);
@@ -55,8 +62,8 @@ public class KeyVaultSettingsClientTest extends KeyVaultSettingsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.v2.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
-    public void updateSetting(HttpClient httpClient) {
-        getClient(httpClient, false);
+    public void updateSetting(HttpClient httpClient) throws IOException {
+        getClient(httpClient);
 
         String settingName = "AllowKeyManagementOperationsThroughARM";
         KeyVaultSetting setting = client.getSetting(settingName);

@@ -2,36 +2,53 @@
 // Licensed under the MIT License.
 package com.azure.v2.security.keyvault.administration;
 
-import io.clientcore.core.http.client.HttpClient;
-import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.util.polling.LongRunningOperationStatus;
-import io.clientcore.core.util.polling.PollResponse;
-import io.clientcore.core.util.polling.SyncPoller;
+import com.azure.v2.core.http.polling.LongRunningOperationStatus;
+import com.azure.v2.core.http.polling.PollResponse;
+import com.azure.v2.core.http.polling.Poller;
 import com.azure.v2.security.keyvault.administration.models.KeyVaultBackupOperation;
 import com.azure.v2.security.keyvault.administration.models.KeyVaultRestoreOperation;
 import com.azure.v2.security.keyvault.administration.models.KeyVaultRestoreResult;
 import com.azure.v2.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreOperation;
 import com.azure.v2.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreResult;
-import com.azure.v2.security.keyvault.keys.KeyClient;
-import com.azure.v2.security.keyvault.keys.KeyClientBuilder;
-import com.azure.v2.security.keyvault.keys.models.CreateRsaKeyOptions;
-import com.azure.v2.security.keyvault.keys.models.KeyVaultKey;
+import io.clientcore.core.http.client.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import java.io.IOException;
+import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
     private KeyVaultBackupClient client;
 
-    private void getClient(HttpClient httpClient, boolean forCleanup) {
-        client = getClientBuilder(httpClient, forCleanup).buildClient();
+    private void getClient(HttpClient httpClient) throws IOException {
+        client = getClientBuilder(buildSyncAssertingClient(
+                interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)).buildClient();
+        if (!interceptorManager.isLiveMode()) {
+            // Remove `id` and `name` sanitizers from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");
+        }
+    }
+
+    private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
+        return new TestUtils.AssertingHttpClientBuilder(httpClient).assertSync().build();
+    }
+
+    private <T, U> Poller<T, U> setPlaybackSyncPollerPollInterval(Poller<T, U> poller) {
+        return interceptorManager.isPlaybackMode() ? poller.setPollInterval(Duration.ofMillis(1)) : poller;
+    }
+
+    protected void sleepIfRunningAgainstService(long millis) {
+        if (!interceptorManager.isPlaybackMode()) {
+            try {
+                Thread.sleep(millis);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
     }
 
     /**
@@ -39,10 +56,10 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.v2.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
-    public void beginBackup(HttpClient httpClient) {
-        getClient(httpClient, false);
+    public void beginBackup(HttpClient httpClient) throws IOException {
+        getClient(httpClient);
 
-        SyncPoller<KeyVaultBackupOperation, String> backupPoller
+        Poller<KeyVaultBackupOperation, String> backupPoller
             = setPlaybackSyncPollerPollInterval(client.beginBackup(blobStorageUrl, sasToken));
         PollResponse<KeyVaultBackupOperation> pollResponse = backupPoller.waitForCompletion();
 
@@ -55,34 +72,15 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
     }
 
     /**
-     * Tests that a Key Vault can be pre-backed up.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME)
-    @MethodSource("com.azure.v2.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
-    public void beginPreBackup(HttpClient httpClient) {
-        getClient(httpClient, false);
-
-        SyncPoller<KeyVaultBackupOperation, String> backupPoller
-            = setPlaybackSyncPollerPollInterval(client.beginPreBackup(blobStorageUrl, sasToken));
-        PollResponse<KeyVaultBackupOperation> pollResponse = backupPoller.waitForCompletion();
-
-        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
-
-        String backupBlobUri = backupPoller.getFinalResult();
-
-        assertNull(backupBlobUri);
-    }
-
-    /**
      * Tests that a Key Vault can be restored from a backup.
      */
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.v2.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
-    public void beginRestore(HttpClient httpClient) {
-        getClient(httpClient, false);
+    public void beginRestore(HttpClient httpClient) throws IOException {
+        getClient(httpClient);
 
         // Create a backup
-        SyncPoller<KeyVaultBackupOperation, String> backupPoller
+        Poller<KeyVaultBackupOperation, String> backupPoller
             = setPlaybackSyncPollerPollInterval(client.beginBackup(blobStorageUrl, sasToken));
         PollResponse<KeyVaultBackupOperation> pollResponse = backupPoller.waitForCompletion();
 
@@ -90,7 +88,7 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
 
         // Restore the backup
         String backupFolderUrl = backupPoller.getFinalResult();
-        SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePoller
+        Poller<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePoller
             = setPlaybackSyncPollerPollInterval(client.beginRestore(backupFolderUrl, sasToken));
 
         restorePoller.waitForCompletion();
@@ -105,53 +103,17 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
     }
 
     /**
-     * Tests that a Key Vault can be pre-restored from a backup.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME)
-    @MethodSource("com.azure.v2.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
-    public void beginPreRestore(HttpClient httpClient) {
-        getClient(httpClient, false);
-
-        // Create a backup
-        SyncPoller<KeyVaultBackupOperation, String> backupPoller
-            = setPlaybackSyncPollerPollInterval(client.beginBackup(blobStorageUrl, sasToken));
-        PollResponse<KeyVaultBackupOperation> backupPollResponse = backupPoller.waitForCompletion();
-
-        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, backupPollResponse.getStatus());
-
-        // Restore the backup
-        String backupFolderUrl = backupPoller.getFinalResult();
-        SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePoller
-            = setPlaybackSyncPollerPollInterval(client.beginPreRestore(backupFolderUrl, sasToken));
-        PollResponse<KeyVaultRestoreOperation> restorePollResponse = restorePoller.waitForCompletion();
-
-        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, restorePollResponse.getStatus());
-
-        // For some reason, the service might still think a restore operation is running even after returning a success
-        // signal. This gives it some time to "clear" the operation.
-        sleepIfRunningAgainstService(30000);
-    }
-
-    /**
      * Tests that a key can be restored from a backup.
      */
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.v2.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
-    public void beginSelectiveKeyRestore(HttpClient httpClient) {
-        KeyClient keyClient
-            = new KeyClientBuilder().vaultUrl(getEndpoint()).pipeline(getPipeline(httpClient, false)).buildClient();
+    public void beginSelectiveKeyRestore(HttpClient httpClient) throws IOException {
+        getClient(httpClient);
 
         String keyName = testResourceNamer.randomName("backupKey", 20);
-        CreateRsaKeyOptions rsaKeyOptions
-            = new CreateRsaKeyOptions(keyName).setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
-                .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC));
-
-        KeyVaultKey createdKey = keyClient.createRsaKey(rsaKeyOptions);
-
-        getClient(httpClient, false);
 
         // Create a backup
-        SyncPoller<KeyVaultBackupOperation, String> backupPoller
+        Poller<KeyVaultBackupOperation, String> backupPoller
             = setPlaybackSyncPollerPollInterval(client.beginBackup(blobStorageUrl, sasToken));
         PollResponse<KeyVaultBackupOperation> backupPollResponse = backupPoller.waitForCompletion();
 
@@ -159,9 +121,9 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
 
         // Restore one key from said backup
         String backupFolderUrl = backupPoller.getFinalResult();
-        SyncPoller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> selectiveKeyRestorePoller
+        Poller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> selectiveKeyRestorePoller
             = setPlaybackSyncPollerPollInterval(
-                client.beginSelectiveKeyRestore(createdKey.getName(), backupFolderUrl, sasToken));
+                client.beginSelectiveKeyRestore(keyName, backupFolderUrl, sasToken));
         PollResponse<KeyVaultSelectiveKeyRestoreOperation> restorePollResponse
             = selectiveKeyRestorePoller.waitForCompletion();
 

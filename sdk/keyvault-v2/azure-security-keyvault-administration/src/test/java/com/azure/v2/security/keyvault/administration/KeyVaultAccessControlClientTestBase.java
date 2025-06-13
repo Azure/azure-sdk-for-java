@@ -36,8 +36,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public abstract class KeyVaultAccessControlClientTestBase extends KeyVaultAdministrationClientTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultAccessControlClientTestBase.class);
 
-    protected final String servicePrincipalId
-        = Configuration.getGlobalConfiguration().get("CLIENT_OBJECTID", "f84ae8f9-c979-4750-a2fe-b350a00bebff");
+    protected final String servicePrincipalId =
+        Configuration.getGlobalConfiguration().get("CLIENT_OBJECTID");
 
     KeyVaultAccessControlClientBuilder getClientBuilder(HttpClient httpClient, boolean forCleanup) throws IOException {
         TokenCredential credential;
@@ -165,6 +165,7 @@ public abstract class KeyVaultAccessControlClientTestBase extends KeyVaultAdmini
 
     static void cleanUpResources(KeyVaultAccessControlClient cleanupClient, String roleDefinitionName,
         String roleAssignmentName) {
+
         if (roleDefinitionName != null) {
             try {
                 cleanupClient.deleteRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName);
