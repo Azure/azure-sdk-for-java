@@ -27,7 +27,7 @@ public final class NoneRetentionPolicy extends ChatRetentionPolicy {
     }
 
     /**
-     * Retention Policy Type.
+     * Gets the retention policy type.
      *
      * @return the kind value.
      */

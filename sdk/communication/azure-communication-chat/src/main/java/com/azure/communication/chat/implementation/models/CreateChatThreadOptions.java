@@ -48,7 +48,7 @@ public final class CreateChatThreadOptions implements JsonSerializable<CreateCha
     /**
      * Get the topic property: The chat thread topic.
      * 
-     * @return the topic value.
+     * @return the topic.
      */
     public String getTopic() {
         return this.topic;
@@ -68,7 +68,7 @@ public final class CreateChatThreadOptions implements JsonSerializable<CreateCha
     /**
      * Get the participants property: Participants to be added to the chat thread.
      * 
-     * @return the participants value.
+     * @return the participants.
      */
     public List<ChatParticipant> getParticipants() {
         return this.participants;
@@ -77,7 +77,7 @@ public final class CreateChatThreadOptions implements JsonSerializable<CreateCha
     /**
      * Set the participants property: Participants to be added to the chat thread.
      * 
-     * @param participants the participants value to set.
+     * @param participants the participants to set.
      * @return the CreateChatThreadOptions object itself.
      */
     public CreateChatThreadOptions setParticipants(List<ChatParticipant> participants) {
@@ -89,7 +89,7 @@ public final class CreateChatThreadOptions implements JsonSerializable<CreateCha
      * Get the metadata property: Contextual metadata for the thread. The metadata consists of name/value pairs. The
      * total size of all metadata pairs can be up to 1KB in size.
      * 
-     * @return the metadata value.
+     * @return the metadata.
      */
     public Map<String, String> getMetadata() {
         return this.metadata;
@@ -110,7 +110,7 @@ public final class CreateChatThreadOptions implements JsonSerializable<CreateCha
     /**
      * Get the retentionPolicy property: Data retention policy for auto deletion.
      * 
-     * @return the retentionPolicy value.
+     * @return the retentionPolicy.
      */
     public ChatRetentionPolicy getRetentionPolicy() {
         return this.retentionPolicy;

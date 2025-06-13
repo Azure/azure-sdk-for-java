@@ -32,7 +32,7 @@ public final class ThreadCreationDateRetentionPolicy extends ChatRetentionPolicy
     }
 
     /**
-     * Retention Policy Type.
+     * Gets the retention policy type.
      *
      * @return the kind value.
      */
@@ -42,7 +42,7 @@ public final class ThreadCreationDateRetentionPolicy extends ChatRetentionPolicy
     }
 
     /**
-     * Indicates how many days after the thread creation the thread will be
+     * Gets how many days after the thread creation the thread will be
      * deleted.
      *
      * @return the deleteThreadAfterDays value.
@@ -52,7 +52,7 @@ public final class ThreadCreationDateRetentionPolicy extends ChatRetentionPolicy
     }
 
     /**
-     * Indicates how many days after the thread creation the thread will be
+     * Sets how many days after the thread creation the thread will be
      * deleted.
      *
      * @param deleteThreadAfterDays the deleteThreadAfterDays value to set.

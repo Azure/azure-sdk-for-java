@@ -45,7 +45,7 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
     }
 
     /**
-     * Get the id property: Chat thread id.
+     * Gets the id property: Chat thread id.
      *
      * @return the id value.
      */
@@ -54,7 +54,7 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
     }
 
     /**
-     * Set the id property: Chat thread id.
+     * Sets the id property: Chat thread id.
      *
      * @param id the id value to set.
      * @return the ChatThreadProperties object itself.
@@ -65,7 +65,7 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
     }
 
     /**
-     * Get the topic property: Chat thread topic.
+     * Gets the topic property: Chat thread topic.
      *
      * @return the topic value.
      */
@@ -74,7 +74,7 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
     }
 
     /**
-     * Set the topic property: Chat thread topic.
+     * Sets the topic property: Chat thread topic.
      *
      * @param topic the topic value to set.
      * @return the ChatThreadProperties object itself.
@@ -85,7 +85,7 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
     }
 
     /**
-     * Get the createdOn property: The timestamp when the chat thread was created. The timestamp is in RFC3339 format:
+     * Gets the createdOn property: The timestamp when the chat thread was created. The timestamp is in RFC3339 format:
      * `yyyy-MM-ddTHH:mm:ssZ`.
      *
      * @return the createdOn value.
@@ -95,7 +95,7 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
     }
 
     /**
-     * Set the createdOn property: The timestamp when the chat thread was created. The timestamp is in RFC3339 format:
+     * Sets the createdOn property: The timestamp when the chat thread was created. The timestamp is in RFC3339 format:
      * `yyyy-MM-ddTHH:mm:ssZ`.
      *
      * @param createdOn the createdOn value to set.
@@ -107,7 +107,7 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
     }
 
     /**
-     * Get the createdBy property: Identifies a participant in Azure Communication services. A
+     * Gets the createdBy property: Identifies a participant in Azure Communication services. A
      * participant is, for example, a phone number or an Azure communication user. This model must be interpreted as a
      * union: Apart from rawId, at most one further property may be set.
      *
@@ -118,7 +118,7 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
     }
 
     /**
-     * Set the createdBy property: Identifies a participant in Azure Communication services. A
+     * Sets the createdBy property: Identifies a participant in Azure Communication services. A
      * participant is, for example, a phone number or an Azure communication user. This model must be interpreted as a
      * union: Apart from rawId, at most one further property may be set.
      *
@@ -131,7 +131,7 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
     }
 
     /**
-     * Property bag of chat thread metadata key-value pairs.
+     * Gets the metadata key-value pairs associated with the chat thread.
      *
      * @return the metadata map.
      */
@@ -140,7 +140,7 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
     }
 
     /**
-     * Property bag of chat thread metadata key-value pairs.
+     * Sets the metadata key-value pairs associated with the chat thread.
      *
      * @param metadata the metadata map to set.
      * @return the ChatThreadProperties object itself.

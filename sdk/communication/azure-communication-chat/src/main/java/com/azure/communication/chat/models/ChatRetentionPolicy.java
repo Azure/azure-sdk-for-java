@@ -28,7 +28,7 @@ public class ChatRetentionPolicy implements JsonSerializable<ChatRetentionPolicy
     }
 
     /**
-     * Get the kind property: Retention Policy Type.
+     * Gets the kind property: Retention Policy Type.
      *
      * @return the kind value.
      */
