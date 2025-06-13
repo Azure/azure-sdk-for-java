@@ -189,6 +189,11 @@ extends:
         Selection: all
         PRBatching: false
         GenerateVMJobs: true
+      - Name: version_overrides_vertx_tests
+        Path: sdk/core/version-overrides-vertx-matrix.json
+        Selection: all
+        PRBatching: false
+        GenerateVMJobs: true
 
     LiveTestStages:
       - template: /sdk/storage/tests-template.yml
