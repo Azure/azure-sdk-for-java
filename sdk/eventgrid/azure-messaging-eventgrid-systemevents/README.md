@@ -5,7 +5,8 @@ This package contains strongly typed model classes for Azure Event Grid System E
 ## Overview
 
 This library provides:
-- **System Event Data Models**: Strongly-typed classes for all Azure Event Grid system events (e.g., `StorageBlobCreatedEventData`, `AppConfigurationKeyValueDeletedEventData`)
+- **System Event Data Models**: Strongly typed classes for all Azure Event Grid system events (e.g., 
+  `StorageBlobCreatedEventData`, `AppConfigurationKeyValueDeletedEventData`)
 - **Event Type Constants**: Pre-defined constants for all system event types via `SystemEventNames`
 - **Event Mappings**: Automatic mapping between event type strings and their corresponding data model classes
 
@@ -31,19 +32,33 @@ System events are published by Azure services when resources change state. For e
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventgrid-systemevents</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 **Note**: This package contains only the system event models and utilities. To send or receive events, you'll also need the main Event Grid SDK:
 
-[//]: # ({x-version-update-start;com.azure:azure-messaging-eventgrid;current})
+[//]: # ({x-version-update-start;com.azure:azure-messaging-eventgrid;dependency})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventgrid</artifactId>
-    <version>4.31.0-beta.1</version>
+    <version>4.30.0</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
+
+**For Event Grid namespaces**: If you're working with Event Grid namespaces, consider using the EventGrid namespaces 
+package for namespace specific functionality:
+
+[//]: # ({x-version-update-start;com.azure:azure-messaging-eventgrid-namespaces;dependency})
+
+```xml
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-messaging-eventgrid-namespaces</artifactId>
+    <version>1.1.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -52,7 +67,8 @@ System events are published by Azure services when resources change state. For e
 
 **System Events**: Events automatically published by Azure services when resource state changes occur.
 
-**Event Data Models**: Strongly-typed classes in the `com.azure.messaging.eventgrid.systemevents.models` package that represent the `data` payload of system events.
+**Event Data Models**: Strongly typed classes in the `com.azure.messaging.eventgrid.systemevents.models` package 
+that represent the `data` payload of system events.
 
 **SystemEventNames**: Utility class containing constants for all system event types and mappings to their corresponding data model classes.
 
