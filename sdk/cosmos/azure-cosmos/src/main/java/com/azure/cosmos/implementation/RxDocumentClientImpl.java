@@ -183,6 +183,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private static final ImplementationBridgeHelpers.CosmosOperationDetailsHelper.CosmosOperationDetailsAccessor operationDetailsAccessor =
         ImplementationBridgeHelpers.CosmosOperationDetailsHelper.getCosmosOperationDetailsAccessor();
 
+    private static final ImplementationBridgeHelpers.ReadConsistencyStrategyHelper.ReadConsistencyStrategyAccessor readConsistencyStrategyAccessor =
+        ImplementationBridgeHelpers.ReadConsistencyStrategyHelper.getReadConsistencyStrategyAccessor();
+
     private static final String tempMachineId = "uuid:" + UUIDs.nonBlockingRandomUUID();
     private static final AtomicInteger activeClientsCnt = new AtomicInteger(0);
     private static final Map<String, Integer> clientMap = new ConcurrentHashMap<>();
@@ -4520,7 +4523,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 throw(exception);
             }
         });
-        ctxAccessor.setRequestOptions(state.getDiagnosticsContextSnapshot(), optionsImpl);
+
+        ReadConsistencyStrategy requestLevelReadConsistencyStrategy = optionsImpl != null
+            ? optionsImpl.getReadConsistencyStrategy()
+            : null;
+
+        ReadConsistencyStrategy effectiveReadConsistencyStrategy = readConsistencyStrategyAccessor
+            .getEffectiveReadConsistencyStrategy(
+                ResourceType.Document,
+                OperationType.ReadFeed,
+                requestLevelReadConsistencyStrategy,
+                this.readConsistencyStrategy);
+
+        ctxAccessor.setRequestOptions(
+            state.getDiagnosticsContextSnapshot(),
+            optionsImpl,
+            effectiveReadConsistencyStrategy);
+
         return queryDocumentChangeFeed(collection, clonedOptions, classOfT);
     }
 
