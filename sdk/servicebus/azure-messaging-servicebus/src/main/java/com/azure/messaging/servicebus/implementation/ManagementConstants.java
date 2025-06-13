@@ -5,6 +5,8 @@ package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.implementation.AmqpConstants;
 
+import java.util.Date;
+
 /**
  * Constants which is used for management calls to support operations for example renewlock, schedule, defer etc.
  */
@@ -44,6 +46,9 @@ public class ManagementConstants {
     public static final String STATUS_CODE = "statusCode";
     public static final String LEGACY_STATUS_CODE = "status-code";
     public static final String RULES = "rules";
+    public static final String LAST_UPDATED_TIME = "last-updated-time";
+    public static final String SESSION_IDS = "sessions-ids";
+    public static final Date DATE_MAX_VALUE = new Date(253402300800000L);
 
     // Operation name key.
     static final String MANAGEMENT_OPERATION_KEY = "operation";
@@ -61,6 +66,7 @@ public class ManagementConstants {
     static final String OPERATION_ADD_RULE = AmqpConstants.VENDOR + ":add-rule";
     static final String OPERATION_REMOVE_RULE = AmqpConstants.VENDOR + ":remove-rule";
     static final String OPERATION_GET_RULES = AmqpConstants.VENDOR + ":enumerate-rules";
+    static final String OPERATION_GET_MESSAGE_SESSIONS = AmqpConstants.VENDOR + ":get-message-sessions";
 
     static final String SERVER_TIMEOUT = AmqpConstants.VENDOR + ":server-timeout";
 
