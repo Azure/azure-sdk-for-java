@@ -128,7 +128,7 @@ public class MyClass {
     public static void main(String[] args) {
         TokenCredential credential = new DefaultAzureCredentialBuilder().build();
         SecretClient client = new SecretClientBuilder()
-            .vaultUrl("https://my-key-vault.vault.azure.net/")
+            .endpoint("https://my-key-vault.vault.azure.net/")
             .credential(credential)
             .disableChallengeResourceVerification();
     }
