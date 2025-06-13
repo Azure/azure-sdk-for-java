@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
@@ -74,6 +75,15 @@ public interface Disks
     Accepted<Void> beginDeleteById(String id);
 
     /**
+     * Begins deleting a disk from Azure, identifying it by its resource ID.
+     *
+     * @param id the resource ID of the disk to delete
+     * @param context the {@link Context} of the request
+     * @return the accepted deleting operation
+     */
+    Accepted<Void> beginDeleteById(String id, Context context);
+
+    /**
      * Begins deleting a disk from Azure, identifying it by its name and its resource group.
      *
      * @param resourceGroupName the resource group the resource is part of
@@ -81,4 +91,14 @@ public interface Disks
      * @return the accepted deleting operation
      */
     Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name);
+
+    /**
+     * Begins deleting a disk from Azure, identifying it by its name and its resource group.
+     *
+     * @param resourceGroupName the resource group the resource is part of
+     * @param name the disk name
+     * @param context the {@link Context} of the request
+     * @return the accepted deleting operation
+     */
+    Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, Context context);
 }

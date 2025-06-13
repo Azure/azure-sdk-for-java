@@ -57,6 +57,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -64,6 +65,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -156,9 +158,8 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
     public void createCertificateNullPolicy(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateAsyncClient(httpClient, serviceVersion);
 
-        StepVerifier
-            .create(certificateAsyncClient.beginCreateCertificate(testResourceNamer.randomName("tempCert", 20), null))
-            .verifyError(NullPointerException.class);
+        assertThrows(NullPointerException.class,
+            () -> certificateAsyncClient.beginCreateCertificate(testResourceNamer.randomName("tempCert", 20), null));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -166,8 +167,8 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
     public void createCertificateNull(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateAsyncClient(httpClient, serviceVersion);
 
-        StepVerifier.create(certificateAsyncClient.beginCreateCertificate(null, null))
-            .verifyError(NullPointerException.class);
+        assertThrows(NullPointerException.class,
+            () -> certificateAsyncClient.beginCreateCertificate(null, CertificatePolicy.getDefault()));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -500,16 +501,10 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
                 .assertNext(certificateOperation -> assertTrue(certificateOperation.getCancellationRequested()))
                 .verifyComplete();
 
-            StepVerifier.create(certPoller
-                .takeUntil(asyncPollResponse -> "cancelled".equalsIgnoreCase(asyncPollResponse.getStatus().toString()))
-                .map(asyncPollResponse -> asyncPollResponse.getStatus().toString())
-                .zipWith(certPoller.last().flatMap(AsyncPollResponse::getFinalResult))).assertNext(tuple -> {
-                    if ("cancelled".equalsIgnoreCase(tuple.getT1())) {
-                        assertFalse(tuple.getT2().getPolicy().isEnabled());
-                    }
-                    // Else, the operation did not reach the expected status, either because it was completed before it
-                    // could be canceled or there was a service timing issue when attempting to cancel the operation.
-                }).verifyComplete();
+            StepVerifier.create(certPoller.last())
+                .assertNext(asyncPollResponse -> assertEquals("cancelled",
+                    asyncPollResponse.getStatus().toString().toLowerCase(Locale.ROOT)))
+                .verifyComplete();
         });
     }
 
@@ -902,7 +897,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
         importCertificateRunner((importCertificateOptions) -> StepVerifier
             .create(certificateAsyncClient.importCertificate(importCertificateOptions))
             .assertNext(importedCertificate -> {
-                assertTrue("73b4319cdf38e0797084535d9c02fd04d4b2b2e6"
+                assertTrue("931dd8219585752bc915684ca3967974c400de28"
                     .equalsIgnoreCase(importedCertificate.getProperties().getX509ThumbprintAsString()));
                 assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
 
