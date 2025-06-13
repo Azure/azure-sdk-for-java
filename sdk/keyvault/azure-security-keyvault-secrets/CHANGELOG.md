@@ -1,6 +1,6 @@
 # Release History
 
-## 4.10.0 (2025-06-12)
+## 4.10.0 (2025-06-13)
 
 ### Features Added
 
@@ -13,7 +13,6 @@
 - Removed support for service version `7.6-preview.2`.
 
 ### Other Changes
-
 #### Dependency Updates
 
 > Compared to the latest release - `4.10.0-beta.1`
