@@ -2,6 +2,10 @@
 
 ## 2.52.0-beta.1 (Unreleased)
 
+### Breaking Changes
+
+- Removed unused classes from ContainerApp.
+
 ### Other Changes
 
 #### Dependency Updates
