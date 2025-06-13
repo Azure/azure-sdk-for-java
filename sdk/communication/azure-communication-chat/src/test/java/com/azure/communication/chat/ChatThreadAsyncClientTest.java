@@ -17,6 +17,7 @@ import com.azure.communication.chat.models.SendChatMessageOptions;
 import com.azure.communication.chat.models.SendChatMessageResult;
 import com.azure.communication.chat.models.TypingNotificationOptions;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
+import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.communication.identity.models.CommunicationTokenScope;
@@ -34,11 +35,14 @@ import reactor.test.StepVerifier;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -316,6 +320,39 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                     .anyMatch(p -> ((CommunicationUserIdentifier) p.getCommunicationIdentifier()).getId()
                         .equals(participant.getId())));
             });
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canAddSingleParticipantWithMetadataAsync(HttpClient httpClient) throws InterruptedException {
+        // Arrange
+        setupTest(httpClient, "canAddSingleParticipantWithMetadataAsync");
+        CommunicationUserIdentifier participant = communicationClient.createUser();
+
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("key1", "val1");
+        metadata.put("key2", "val2");
+
+        ChatParticipant newParticipant
+            = new ChatParticipant().setCommunicationIdentifier(participant).setMetadata(metadata);
+
+        // Action
+        StepVerifier.create(chatThreadClient.addParticipant(newParticipant)).verifyComplete();
+
+        PagedIterable<ChatParticipant> participantsResponse = new PagedIterable<>(chatThreadClient.listParticipants());
+
+        ChatParticipant added = participantsResponse.stream().filter(p -> {
+            CommunicationIdentifier id = p.getCommunicationIdentifier();
+            return id instanceof CommunicationUserIdentifier
+                && ((CommunicationUserIdentifier) id).getId().equals(participant.getId());
+        }).findFirst().orElseThrow(() -> new AssertionError("Participant not found"));
+
+        // Verify metadata is present and correct
+        Map<String, String> resMetadata = added.getMetadata();
+        assertNotNull(resMetadata, "Metadata should not be null");
+        assertEquals(2, resMetadata.size(), "Metadata size should match");
+        assertEquals("val1", resMetadata.get("key1"), "key1 should round-trip correctly");
+        assertEquals("val2", resMetadata.get("key2"), "key2 should round-trip correctly");
     }
 
     @ParameterizedTest
