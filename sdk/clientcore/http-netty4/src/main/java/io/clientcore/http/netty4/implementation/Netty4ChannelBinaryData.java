@@ -196,6 +196,7 @@ public final class Netty4ChannelBinaryData extends BinaryData {
     @Override
     public void close() {
         eagerContent = null;
+        channel.disconnect();
         channel.close();
     }
 }

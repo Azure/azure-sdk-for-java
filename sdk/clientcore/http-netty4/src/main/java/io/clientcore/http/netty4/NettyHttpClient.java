@@ -230,7 +230,7 @@ class NettyHttpClient implements HttpClient {
             if (bodyHandling == ResponseBodyHandling.IGNORE) {
                 // We're ignoring the response content.
                 CountDownLatch drainLatch = new CountDownLatch(1);
-                channel.pipeline().addLast(new Netty4EagerConsumeChannelHandler(latch, ignored -> {
+                channel.pipeline().addLast(new Netty4EagerConsumeChannelHandler(drainLatch, ignored -> {
                 }));
                 channel.config().setAutoRead(true);
                 awaitLatch(drainLatch);
@@ -252,8 +252,8 @@ class NettyHttpClient implements HttpClient {
                 body = new Netty4ChannelBinaryData(info.getEagerContent(), channel, length);
             } else {
                 // All cases otherwise assume BUFFER.
-                CountDownLatch drainLath = new CountDownLatch(1);
-                channel.pipeline().addLast(new Netty4EagerConsumeChannelHandler(latch, buf -> {
+                CountDownLatch drainLatch = new CountDownLatch(1);
+                channel.pipeline().addLast(new Netty4EagerConsumeChannelHandler(drainLatch, buf -> {
                     try {
                         buf.readBytes(info.getEagerContent(), buf.readableBytes());
                     } catch (IOException ex) {
@@ -261,7 +261,7 @@ class NettyHttpClient implements HttpClient {
                     }
                 }));
                 channel.config().setAutoRead(true);
-                awaitLatch(drainLath);
+                awaitLatch(drainLatch);
 
                 body = BinaryData.fromBytes(info.getEagerContent().toByteArray());
             }

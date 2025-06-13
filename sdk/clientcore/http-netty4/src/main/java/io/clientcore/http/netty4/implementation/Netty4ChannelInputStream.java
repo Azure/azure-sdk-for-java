@@ -54,6 +54,9 @@ public final class Netty4ChannelInputStream extends InputStream {
         this.readIndex = 0;
         this.additionalBuffers = new LinkedList<>();
         this.channel = channel;
+        if (channel.pipeline().get(Netty4InitiateOneReadHandler.class) != null) {
+            channel.pipeline().remove(Netty4InitiateOneReadHandler.class);
+        }
     }
 
     byte[] getCurrentBuffer() {
@@ -165,6 +168,7 @@ public final class Netty4ChannelInputStream extends InputStream {
     public void close() {
         currentBuffer = null;
         additionalBuffers.clear();
+        channel.disconnect();
         channel.close();
     }
 
@@ -197,10 +201,9 @@ public final class Netty4ChannelInputStream extends InputStream {
             return false;
         }
 
-        // Run reading the Channel in a loop, just in case all reads return empty data but the Channel doesn't complete.
-        while (additionalBuffers.isEmpty() && !channelDone) {
-            CountDownLatch latch = new CountDownLatch(1);
-            Netty4InitiateOneReadHandler handler = new Netty4InitiateOneReadHandler(latch, byteBuf -> {
+        Netty4InitiateOneReadHandler handler = channel.pipeline().get(Netty4InitiateOneReadHandler.class);
+        if (handler == null) {
+            handler = new Netty4InitiateOneReadHandler(null, byteBuf -> {
                 // No need to check if the ByteBuf is readable as that is handled by Netty4InitiateOneReadHandler's
                 // channelRead method.
                 byte[] buffer = new byte[byteBuf.readableBytes()];
@@ -209,6 +212,12 @@ public final class Netty4ChannelInputStream extends InputStream {
                 additionalBuffers.add(buffer);
             });
             channel.pipeline().addLast(handler);
+        }
+
+        // Run reading the Channel in a loop, just in case all reads return empty data but the Channel doesn't complete.
+        while (additionalBuffers.isEmpty() && !channelDone) {
+            CountDownLatch latch = new CountDownLatch(1);
+            handler.setLatch(latch);
             channel.read();
 
             Netty4Utility.awaitLatch(latch);
