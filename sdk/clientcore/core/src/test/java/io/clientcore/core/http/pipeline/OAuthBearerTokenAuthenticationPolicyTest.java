@@ -53,7 +53,7 @@ public class OAuthBearerTokenAuthenticationPolicyTest {
 
         HttpPipelineNextPolicy next = new HttpPipelineNextMockPolicy(null);
 
-        Response<BinaryData> response = policy.process(request, next);
+        policy.process(request, next);
         assertNull(request.getHeaders().get(HttpHeaderName.AUTHORIZATION));
     }
 
@@ -65,7 +65,7 @@ public class OAuthBearerTokenAuthenticationPolicyTest {
 
         HttpPipelineNextPolicy next = new HttpPipelineNextMockPolicy(null);
 
-        Response<BinaryData> response = policy.process(request, next);
+        policy.process(request, next);
         assertNull(request.getHeaders().get(HttpHeaderName.AUTHORIZATION));
     }
 
@@ -77,7 +77,7 @@ public class OAuthBearerTokenAuthenticationPolicyTest {
 
         HttpPipelineNextPolicy next = new HttpPipelineNextMockPolicy(null);
 
-        Response<BinaryData> response = policy.process(request, next);
+        policy.process(request, next);
         assertEquals("Bearer dummy-token", request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
     }
 
@@ -88,7 +88,7 @@ public class OAuthBearerTokenAuthenticationPolicyTest {
 
         HttpPipelineNextPolicy next = new HttpPipelineNextMockPolicy(null);
 
-        Response<BinaryData> response = policy.process(request, next);
+        policy.process(request, next);
         assertEquals("Bearer dummy-token", request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
     }
 

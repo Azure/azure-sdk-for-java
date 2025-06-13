@@ -14,7 +14,6 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Represents auth schemes.
  */
-@SuppressWarnings("unused")
 @Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class AuthScheme implements ExpandableEnum<String> {
     private static final Map<String, AuthScheme> VALUES = new ConcurrentHashMap<>();

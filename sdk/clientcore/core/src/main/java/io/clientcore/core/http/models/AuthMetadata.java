@@ -15,7 +15,8 @@ public final class AuthMetadata {
 
     private OAuthTokenRequestContext oAuthTokenRequestContext;
 
-    /** Creates an instance of the Auth Metadata.
+    /**
+     * Creates an instance of the Auth Metadata.
      */
     public AuthMetadata() {
     }
