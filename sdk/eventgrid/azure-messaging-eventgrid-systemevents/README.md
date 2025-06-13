@@ -1,6 +1,6 @@
 # Azure Event Grid System Events for Java
 
-This package contains strongly-typed model classes for Azure Event Grid System Events and utilities for deserializing system event data.
+This package contains strongly typed model classes for Azure Event Grid System Events and utilities for deserializing system event data.
 
 ## Overview
 
@@ -95,67 +95,15 @@ if (eventDataClass != null) {
 #### 3. Deserialize System Event Data
 
 ```java readme-sample-deserializeSystemEventData
-// Assuming you have an EventGridEvent from the main EventGrid SDK
-EventGridEvent event = EventGridEvent.fromString(eventJson).get(0);
+// Assuming you have an EventGridEvent from the main EventGrid SDK and the event is Storage Blob Created event
+StorageBlobCreatedEventData storageBlobCreatedEventData
+    = StorageBlobCreatedEventData.fromJson(JsonProviders.createReader("payload"));
+BinaryData data = storageBlobCreatedEventData.getStorageDiagnostics().get("batchId");
 
-if (SystemEventNames.STORAGE_BLOB_CREATED.equals(event.getEventType())) {
-    BinaryData eventData = event.getData();
-    StorageBlobCreatedEventData blobData = eventData.toObject(StorageBlobCreatedEventData.class);
+System.out.println("Blob URL: " + storageBlobCreatedEventData.getUrl());
+System.out.println("Blob size: " + storageBlobCreatedEventData.getContentLength());
+System.out.println("Content type: " + storageBlobCreatedEventData.getContentType());
 
-    System.out.println("Blob URL: " + blobData.getUrl());
-    System.out.println("Blob size: " + blobData.getContentLength());
-    System.out.println("Content type: " + blobData.getContentType());
-}
-```
-
-#### 4. Handle Multiple Event Types
-
-```java readme-sample-handleMultipleEventTypes
-List<EventGridEvent> events = EventGridEvent.fromString(eventsJson);
-
-for (EventGridEvent event : events) {
-    BinaryData data = event.getData();
-
-    switch (event.getEventType()) {
-        case SystemEventNames.STORAGE_BLOB_CREATED:
-            StorageBlobCreatedEventData blobCreated = data.toObject(StorageBlobCreatedEventData.class);
-            System.out.println("New blob: " + blobCreated.getUrl());
-            break;
-
-        case SystemEventNames.APP_CONFIGURATION_KEY_VALUE_MODIFIED:
-            AppConfigurationKeyValueModifiedEventData configModified =
-                data.toObject(AppConfigurationKeyValueModifiedEventData.class);
-            System.out.println("Config key modified: " + configModified.getKey());
-            break;
-
-        case SystemEventNames.ACS_CHAT_MESSAGE_RECEIVED:
-            AcsChatMessageReceivedEventData chatMessage =
-                data.toObject(AcsChatMessageReceivedEventData.class);
-            System.out.println("Chat message: " + chatMessage.getMessageBody());
-            break;
-
-        default:
-            System.out.println("Unhandled event type: " + event.getEventType());
-            break;
-    }
-}
-```
-
-#### 5. Generic System Event Processing
-
-```java readme-sample-processSystemEventGenerically
-// Process any system event generically
-String eventType = event.getEventType();
-Class<?> dataClass = SystemEventNames.getSystemEventMappings().get(eventType);
-
-if (dataClass != null) {
-    // This is a known system event
-    Object eventData = event.getData().toObject(dataClass);
-    System.out.println("Processing " + eventType + " with data: " + eventData);
-} else {
-    // Custom event or unknown system event
-    System.out.println("Unknown event type: " + eventType);
-}
 ```
 
 ## Important Notes
@@ -175,16 +123,10 @@ if (dataClass != null) {
 
 - **Deserialization Errors**: Ensure you're using the correct model class for the event type. Use `SystemEventNames` mappings to get the right class.
 
-### Enable Logging
-
-Add the following dependency for logging:
-```xml
-<dependency>
-    <groupId>org.slf4j</groupId>
-    <artifactId>slf4j-simple</artifactId>
-    <version>1.7.36</version>
-</dependency>
-```
+### Enable client logging
+Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite
+their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
+locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
 ## Next steps
 
@@ -201,3 +143,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [product_documentation]: https://learn.microsoft.com/azure/event-grid/
 [docs]: https://azure.github.io/azure-sdk-for-java/
 [jdk]: https://learn.microsoft.com/azure/developer/java/fundamentals/
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
