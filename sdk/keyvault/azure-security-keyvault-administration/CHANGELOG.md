@@ -12,6 +12,9 @@
 
 > Compared to the latest release - `4.7.0-beta.1`
 - Removed support for service version `7.6-preview.2`.
+- Changed final result types in pollers returned by methods in `KeyVaultBackupClient` and `KeyVaultBackupAsyncClient`:
+  - `beginPreBackup()` now returns `Void` instead of `String`.
+  - `beginPreRestore()` now returns `Void` instead of `KeyVaultRestoreResult`.
 
 ### Other Changes
 
