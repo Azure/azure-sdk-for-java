@@ -31,7 +31,8 @@ public final class DataLakeStorageException extends HttpResponseException {
      * @param value the error code of the exception.
      */
     public DataLakeStorageException(String message, HttpResponse response, Object value) {
-        super(StorageImplUtils.convertStorageExceptionMessage(message, response), response, value);
+        super(StorageImplUtils.convertStorageExceptionMessage(message, response),
+            StorageImplUtils.convertStorageResponse(message, response), value);
     }
 
     /**

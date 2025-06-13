@@ -42,6 +42,7 @@ import java.util.function.Supplier;
 
 import static com.azure.storage.common.Utility.urlDecode;
 import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE_HEADER_NAME;
+import static com.azure.storage.common.implementation.Constants.HeaderConstants.HEADER_NAME;
 
 /**
  * Utility class which is used internally.
@@ -298,24 +299,97 @@ public class StorageImplUtils {
      * @return The converted storage exception message.
      */
     public static String convertStorageExceptionMessage(String message, HttpResponse response) {
-        if (response != null) {
-            if (response.getStatusCode() == 403) {
-                return STORAGE_EXCEPTION_LOG_STRING_TO_SIGN_MESSAGE + message;
+        if (response == null) {
+            return message;
+        }
+
+        String errorCode = response.getHeaders().getValue(ERROR_CODE_HEADER_NAME);
+        String headerName = response.getHeaders().getValue(HEADER_NAME);
+
+        if (errorCode == null) {
+            errorCode = extractXmlTagValue(message, "Code");
+        }
+        if (headerName == null) {
+            headerName = extractXmlTagValue(message, "HeaderName");
+        }
+
+        if (Constants.HeaderConstants.INVALID_HEADER_VALUE.equals(errorCode)
+            && Constants.HeaderConstants.VERSION.equalsIgnoreCase(headerName)) {
+            return Constants.Errors.INVALID_VERSION_HEADER_MESSAGE + message;
+        }
+
+        if (response.getStatusCode() == 403) {
+            return STORAGE_EXCEPTION_LOG_STRING_TO_SIGN_MESSAGE + message;
+        }
+
+        if (response.getRequest() != null
+            && response.getRequest().getHttpMethod() == HttpMethod.HEAD
+            && errorCode != null) {
+            int indexOfEmptyBody = message.indexOf("(empty body)");
+            if (indexOfEmptyBody >= 0) {
+                return message.substring(0, indexOfEmptyBody) + errorCode + message.substring(indexOfEmptyBody + 12);
             }
-            if (response.getRequest() != null
-                && response.getRequest().getHttpMethod() != null
-                && response.getRequest().getHttpMethod().equals(HttpMethod.HEAD)
-                && response.getHeaders().getValue(ERROR_CODE_HEADER_NAME) != null) {
-                int indexOfEmptyBody = message.indexOf("(empty body)");
-                if (indexOfEmptyBody >= 0) {
-                    return message.substring(0, indexOfEmptyBody)
-                        + response.getHeaders().getValue(ERROR_CODE_HEADER_NAME)
-                        + message.substring(indexOfEmptyBody + 12);
+        }
+
+        return message;
+    }
+
+    public static HttpResponse convertStorageResponse(String message, HttpResponse response) {
+        if (response != null && response.getStatusCode() == 400) {
+            String errorCode = response.getHeaders().getValue(ERROR_CODE_HEADER_NAME);
+            String headerName = response.getHeaders().getValue(HEADER_NAME);
+
+            if (errorCode == null) {
+                errorCode = extractXmlTagValue(message, "Code");
+            }
+            if (headerName == null) {
+                headerName = extractXmlTagValue(message, "HeaderName");
+            }
+
+            if (Constants.HeaderConstants.INVALID_HEADER_VALUE.equals(errorCode)
+                && Constants.HeaderConstants.VERSION.equalsIgnoreCase(headerName)) {
+                if (response.getHeaders().getValue(ERROR_CODE_HEADER_NAME) == null && errorCode != null) {
+                    response.getHeaders().set(ERROR_CODE_HEADER_NAME, errorCode);
                 }
             }
         }
-        return message;
+
+        return response;
     }
+
+    private static String extractXmlTagValue(String message, String tag) {
+        if (message == null || tag == null) {
+            return null;
+        }
+
+        int xmlStart = message.indexOf("<?xml");
+        if (xmlStart == -1) {
+            return null;
+        }
+
+        String xml = message.substring(xmlStart);
+
+        LOGGER.info("XML :" + xml);
+
+        String openTag = "<" + tag + ">";
+        String closeTag = "</" + tag + ">";
+        int start = xml.indexOf(openTag);
+        int end = xml.indexOf(closeTag);
+
+        if (start >= 0 && end > start) {
+            return xml.substring(start + openTag.length(), end).trim();
+        }
+
+        return null;
+    }
+
+    //    private static String extractXmlFromErrorMessage(String errorMessage) {
+    //        int xmlStart = errorMessage.indexOf("<?xml");
+    //        if (xmlStart >= 0) {
+    //            return errorMessage.substring(xmlStart).replaceFirst("^\\?+", "");
+    //        }
+    //        return null;
+    //    }
 
     /**
      * Given a String representing a date in a form of the ISO8601 pattern, generates a Date representing it with up to

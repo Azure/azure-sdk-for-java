@@ -3,7 +3,9 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -22,10 +24,12 @@ import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.PageBlobAsyncClient;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.TestHttpClientType;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.common.test.shared.policy.InvalidServiceVersionPipelinePolicy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -2134,6 +2138,27 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
         // Act & Assert
         StepVerifier.create(testMono).verifyComplete();
+    }
+
+    @Test
+    public void invalidServiceVersion() {
+        BlobServiceAsyncClient serviceAsyncClient
+            = instrument(new BlobServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+                .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+                .httpClient(HttpClient.createDefault())
+                .pipeline(new HttpPipelineBuilder().policies(new InvalidServiceVersionPipelinePolicy())
+                    .httpClient(HttpClient.createDefault())
+                    .build())).buildAsyncClient();
+
+        BlobContainerAsyncClient containerAsyncClient
+            = serviceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
+
+        StepVerifier.create(containerAsyncClient.createIfNotExists()).verifyErrorSatisfies(ex -> {
+            BlobStorageException exception = assertInstanceOf(BlobStorageException.class, ex);
+            assertEquals(400, exception.getStatusCode());
+            assertTrue(exception.getMessage().contains(Constants.Errors.INVALID_VERSION_HEADER_MESSAGE));
+            assertEquals(BlobErrorCode.INVALID_HEADER_VALUE, exception.getErrorCode());
+        });
     }
 
 }
