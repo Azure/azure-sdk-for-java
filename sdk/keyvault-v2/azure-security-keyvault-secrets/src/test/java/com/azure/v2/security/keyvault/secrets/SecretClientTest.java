@@ -9,11 +9,10 @@ import com.azure.v2.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.v2.security.keyvault.secrets.models.SecretProperties;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpResponseException;
-import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.CoreUtils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,20 +23,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SecretClientTest extends SecretClientTestBase {
-    private static final ClientLogger LOGGER = new ClientLogger(SecretClientTest.class);
-
     private SecretClient secretClient;
 
     @Override
     protected void beforeTest() {
         beforeTestSetup();
-    }
-
-    private void createClient(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+    }    private void createClient(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException {
         createClient(httpClient, serviceVersion, null);
     }
 
-    private void createClient(HttpClient httpClient, SecretServiceVersion serviceVersion, String testTenantId) {
+    private void createClient(HttpClient httpClient, SecretServiceVersion serviceVersion, String testTenantId) throws IOException {
         secretClient = getClientBuilder(httpClient, testTenantId, getEndpoint(), serviceVersion).buildClient();
 
         if (!interceptorManager.isLiveMode()) {
@@ -48,10 +43,9 @@ public class SecretClientTest extends SecretClientTestBase {
 
     /**
      * Tests that a secret can be created in the key vault.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+     */    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void setSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+    public void setSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException {
         createClient(httpClient, serviceVersion);
 
         setSecretRunner((secretToSet) -> assertSecretEquals(secretToSet, secretClient.setSecret(secretToSet)));
@@ -60,10 +54,9 @@ public class SecretClientTest extends SecretClientTestBase {
     /**
      * Tests that a secret can be created in the key vault while using a different tenant ID than the one that will be
      * provided in the authentication challenge.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+     */    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void setSecretWithMultipleTenants(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+    public void setSecretWithMultipleTenants(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException {
         createClient(httpClient, serviceVersion, testResourceNamer.randomUuid());
 
         setSecretRunner((secretToSet) -> assertSecretEquals(secretToSet, secretClient.setSecret(secretToSet)));
@@ -78,7 +71,7 @@ public class SecretClientTest extends SecretClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void setSecretEmptyName(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+    public void setSecretEmptyName(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException {
         createClient(httpClient, serviceVersion);
 
         assertRestException(() -> secretClient.setSecret("", "A value"), HttpResponseException.class,
@@ -90,7 +83,7 @@ public class SecretClientTest extends SecretClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void setSecretEmptyValue(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+    public void setSecretEmptyValue(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException {
         createClient(httpClient, serviceVersion);
 
         setSecretEmptyValueRunner((secretToSet) -> {
@@ -105,7 +98,7 @@ public class SecretClientTest extends SecretClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void setSecretNull(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+    public void setSecretNull(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException {
         createClient(httpClient, serviceVersion);
 
         assertThrows(NullPointerException.class, () -> secretClient.setSecret(null));
@@ -116,7 +109,7 @@ public class SecretClientTest extends SecretClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void updateSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+    public void updateSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException {
         createClient(httpClient, serviceVersion);
 
         updateSecretRunner((originalSecret, updatedSecret) -> {
@@ -132,7 +125,7 @@ public class SecretClientTest extends SecretClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void updateDisabledSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+    public void updateDisabledSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException {
         createClient(httpClient, serviceVersion);
 
         updateDisabledSecretRunner((originalSecret, updatedSecret) -> {
@@ -148,7 +141,7 @@ public class SecretClientTest extends SecretClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void getSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+    public void getSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException {
         createClient(httpClient, serviceVersion);
 
         getSecretRunner((original) -> {
@@ -162,7 +155,7 @@ public class SecretClientTest extends SecretClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void getSecretSpecificVersion(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+    public void getSecretSpecificVersion(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException {
         createClient(httpClient, serviceVersion);
 
         getSecretSpecificVersionRunner((secretWithOriginalValue, secretWithNewValue) -> {
@@ -178,7 +171,7 @@ public class SecretClientTest extends SecretClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void getSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+    public void getSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException {
         createClient(httpClient, serviceVersion);
 
         assertRestException(() -> secretClient.getSecret("non-existing"), HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND);
@@ -189,13 +182,13 @@ public class SecretClientTest extends SecretClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void deleteSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+    public void deleteSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException {
         createClient(httpClient, serviceVersion);
 
         deleteSecretRunner((secretToDelete) -> {
             assertSecretEquals(secretToDelete, secretClient.setSecret(secretToDelete));
 
-            DeletedSecret deletedSecret = secretClient.beginDeleteSecret(secretToDelete.getName()).getFinalResult();
+            DeletedSecret deletedSecret = secretClient.beginDeleteSecret(secretToDelete.getName()).poll().getValue();
             assertNotNull(deletedSecret.getDeletedOn());
             assertNotNull(deletedSecret.getRecoveryId());
             assertNotNull(deletedSecret.getScheduledPurgeDate());
@@ -208,7 +201,7 @@ public class SecretClientTest extends SecretClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void deleteSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+    public void deleteSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException {
         createClient(httpClient, serviceVersion);
 
         assertRestException(() -> secretClient.beginDeleteSecret("non-existing"), HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND);
@@ -219,13 +212,13 @@ public class SecretClientTest extends SecretClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void getDeletedSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+    public void getDeletedSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException {
         createClient(httpClient, serviceVersion);
 
         getDeletedSecretRunner((secretToDeleteAndGet) -> {
             assertSecretEquals(secretToDeleteAndGet, secretClient.setSecret(secretToDeleteAndGet));
 
-            DeletedSecret deletedSecret = secretClient.beginDeleteSecret(secretToDeleteAndGet.getName()).getFinalResult();
+            DeletedSecret deletedSecret = secretClient.beginDeleteSecret(secretToDeleteAndGet.getName()).poll().getValue();
             DeletedSecret retrievedDeletedSecret = secretClient.getDeletedSecret(secretToDeleteAndGet.getName());
             assertEquals(deletedSecret.getName(), retrievedDeletedSecret.getName());
             assertEquals(deletedSecret.getValue(), retrievedDeletedSecret.getValue());
@@ -240,7 +233,7 @@ public class SecretClientTest extends SecretClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void getDeletedSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+    public void getDeletedSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException {
         createClient(httpClient, serviceVersion);
 
         assertRestException(() -> secretClient.getDeletedSecret("non-existing"), HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND);
@@ -251,14 +244,11 @@ public class SecretClientTest extends SecretClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void recoverDeletedSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) {
-        createClient(httpClient, serviceVersion);
-
-        recoverDeletedSecretRunner((secretToDeleteAndRecover) -> {
+    public void recoverDeletedSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException {
+        createClient(httpClient, serviceVersion);        recoverDeletedSecretRunner((secretToDeleteAndRecover) -> {
             assertSecretEquals(secretToDeleteAndRecover, secretClient.setSecret(secretToDeleteAndRecover));
-
-            DeletedSecret deletedSecret = secretClient.beginDeleteSecret(secretToDeleteAndRecover.getName()).getFinalResult();
-            KeyVaultSecret recoveredSecret = secretClient.beginRecoverDeletedSecret(secretToDeleteAndRecover.getName()).getFinalResult();
+            secretClient.beginDeleteSecret(secretToDeleteAndRecover.getName()).poll().getValue();
+            KeyVaultSecret recoveredSecret = secretClient.beginRecoverDeletedSecret(secretToDeleteAndRecover.getName()).poll().getValue();
             assertEquals(secretToDeleteAndRecover.getName(), recoveredSecret.getName());
             assertEquals(secretToDeleteAndRecover.getValue(), recoveredSecret.getValue());
         });
@@ -269,7 +259,7 @@ public class SecretClientTest extends SecretClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void recoverDeletedSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+    public void recoverDeletedSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException {
         createClient(httpClient, serviceVersion);
 
         assertRestException(() -> secretClient.beginRecoverDeletedSecret("non-existing"), HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND);
@@ -280,7 +270,7 @@ public class SecretClientTest extends SecretClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void backupSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+    public void backupSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException {
         createClient(httpClient, serviceVersion);
 
         backupSecretRunner((secretToBackup) -> {
@@ -297,7 +287,7 @@ public class SecretClientTest extends SecretClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void backupSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+    public void backupSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException {
         createClient(httpClient, serviceVersion);
 
         assertRestException(() -> secretClient.backupSecret("non-existing"), HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND);
@@ -308,7 +298,7 @@ public class SecretClientTest extends SecretClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void restoreSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+    public void restoreSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException {
         createClient(httpClient, serviceVersion);
 
         restoreSecretRunner((secretToBackupAndRestore) -> {
@@ -331,7 +321,7 @@ public class SecretClientTest extends SecretClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void restoreSecretFromMalformedBackup(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+    public void restoreSecretFromMalformedBackup(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException {
         createClient(httpClient, serviceVersion);
 
         byte[] malformedBytes = "non-existing".getBytes();
@@ -343,7 +333,7 @@ public class SecretClientTest extends SecretClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void listSecrets(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+    public void listSecrets(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException {
         createClient(httpClient, serviceVersion);
 
         listSecretsRunner((secrets) -> {
@@ -367,7 +357,7 @@ public class SecretClientTest extends SecretClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void listDeletedSecrets(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+    public void listDeletedSecrets(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException {
         createClient(httpClient, serviceVersion);
 
         listDeletedSecretsRunner((secrets) -> {
@@ -397,7 +387,7 @@ public class SecretClientTest extends SecretClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void listSecretVersions(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+    public void listSecretVersions(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException {
         createClient(httpClient, serviceVersion);
 
         listSecretVersionsRunner((secrets) -> {

@@ -5,24 +5,20 @@ package com.azure.v2.security.keyvault.secrets;
 
 import com.azure.v2.core.credentials.TokenCredential;
 import com.azure.v2.core.test.TestBase;
-import com.azure.v2.core.test.models.BodilessMatcher;
 import com.azure.v2.core.test.models.CustomMatcher;
 import com.azure.v2.core.test.models.TestProxyRequestMatcher;
-import com.azure.v2.core.test.utils.MockTokenCredential;
+import com.azure.v2.identity.AzurePowerShellCredentialBuilder;
+import com.azure.v2.identity.DefaultAzureCredentialBuilder;
 import com.azure.v2.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy;
 import com.azure.v2.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.v2.security.keyvault.secrets.models.SecretProperties;
+import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.http.client.HttpClient;
-import io.clientcore.core.http.pipeline.HttpRetryOptions;
-import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 import io.clientcore.core.utils.configuration.Configuration;
-import io.clientcore.core.utils.CoreUtils;
-import com.azure.v2.identity.AzurePowerShellCredentialBuilder;
-import com.azure.v2.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.provider.Arguments;
 
-import java.time.Duration;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -37,35 +33,17 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public abstract class SecretClientTestBase extends TestBase {
-    static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
-    private static final String AZURE_TEST_KEYVAULT_SECRET_SERVICE_VERSIONS
-        = "AZURE_KEYVAULT_TEST_SECRETS_SERVICE_VERSIONS";
-    private static final String SERVICE_VERSION_FROM_ENV
-        = Configuration.getGlobalConfiguration().get(AZURE_TEST_KEYVAULT_SECRET_SERVICE_VERSIONS);
+public abstract class SecretClientTestBase extends TestBase {    static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
 
     private static final String SECRET_NAME = "javaSecretTemp";
     private static final String SECRET_VALUE = "Chocolate is hidden in the toothpaste cabinet";
 
-    private static final int MAX_RETRIES = 5;
-    private static final HttpRetryOptions LIVE_RETRY_OPTIONS
-        = new HttpRetryOptions().setMaxRetries(MAX_RETRIES)
-            .setDelay(Duration.ofSeconds(2))
-            .setMaxDelay(Duration.ofSeconds(16));
-
-    private static final HttpRetryOptions PLAYBACK_RETRY_OPTIONS
-        = new HttpRetryOptions().setMaxRetries(MAX_RETRIES).setDelay(Duration.ofMillis(1));
-
     void beforeTestSetup() {
         KeyVaultCredentialPolicy.clearCache();
-    }
-
-    SecretClientBuilder getClientBuilder(HttpClient httpClient, String testTenantId, String endpoint,
-        SecretServiceVersion serviceVersion) {
+    }    SecretClientBuilder getClientBuilder(HttpClient httpClient, String testTenantId, String endpoint,
+        SecretServiceVersion serviceVersion) throws IOException {
         TokenCredential credential;
 
         if (interceptorManager.isLiveMode()) {
@@ -73,31 +51,29 @@ public abstract class SecretClientTestBase extends TestBase {
         } else if (interceptorManager.isRecordMode()) {
             credential = new DefaultAzureCredentialBuilder().additionallyAllowedTenants("*").build();
         } else {
-            credential = new MockTokenCredential();
+            credential = request -> new AccessToken("mockToken", OffsetDateTime.now().plusHours(2));
+
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
-            customMatchers.add(new BodilessMatcher());
-            customMatchers.add(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Authorization")));
+            customMatchers.add(new CustomMatcher().setComparingBodies(false)
+                .setHeadersKeyOnlyMatch(Collections.singletonList("Accept"))
+                .setExcludedHeaders(Arrays.asList("Authorization", "Accept-Language")));
             interceptorManager.addMatchers(customMatchers);
         }
 
-        SecretClientBuilder builder = new SecretClientBuilder().vaultUrl(endpoint)
+        SecretClientBuilder builder = new SecretClientBuilder().endpoint(endpoint)
             .serviceVersion(serviceVersion)
             .credential(credential)
-            .httpClient(httpClient);
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
-        if (interceptorManager.isPlaybackMode()) {
-            return builder.retryOptions(PLAYBACK_RETRY_OPTIONS);
-        } else {
-            builder.retryOptions(LIVE_RETRY_OPTIONS);
-
-            return interceptorManager.isRecordMode()
-                ? builder.addPolicy(interceptorManager.getRecordPolicy())
-                : builder;
+        if (interceptorManager.isRecordMode()) {
+            return builder.addHttpPipelinePolicy(interceptorManager.getRecordPolicy());
         }
+
+        return builder;
     }
 
     @Test
-    public abstract void setSecret(HttpClient httpClient, SecretServiceVersion serviceVersion);
+    public abstract void setSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException;
 
     void setSecretRunner(Consumer<KeyVaultSecret> testRunner) {
         final Map<String, String> tags = Collections.singletonMap("foo", "baz");
@@ -111,26 +87,20 @@ public abstract class SecretClientTestBase extends TestBase {
                 .setContentType("text"));
 
         testRunner.accept(secretToSet);
-    }
-
-    @Test
-    public abstract void setSecretEmptyName(HttpClient httpClient, SecretServiceVersion serviceVersion);
-
-    @Test
-    public abstract void setSecretEmptyValue(HttpClient httpClient, SecretServiceVersion serviceVersion);
+    }    @Test
+    public abstract void setSecretEmptyName(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException;    @Test
+    public abstract void setSecretEmptyValue(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException;
 
     void setSecretEmptyValueRunner(Consumer<KeyVaultSecret> testRunner) {
         String resourceId = testResourceNamer.randomName(SECRET_NAME, 20);
         KeyVaultSecret secretToSet = new KeyVaultSecret(resourceId, "");
 
         testRunner.accept(secretToSet);
-    }
+    }    @Test
+    public abstract void setSecretNull(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException;
 
     @Test
-    public abstract void setSecretNull(HttpClient httpClient, SecretServiceVersion serviceVersion);
-
-    @Test
-    public abstract void updateSecret(HttpClient httpClient, SecretServiceVersion serviceVersion);
+    public abstract void updateSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException;
 
     void updateSecretRunner(BiConsumer<KeyVaultSecret, KeyVaultSecret> testRunner) {
         final Map<String, String> tags = new HashMap<>();
@@ -148,10 +118,8 @@ public abstract class SecretClientTestBase extends TestBase {
                 .setTags(tags));
 
         testRunner.accept(originalSecret, updatedSecret);
-    }
-
-    @Test
-    public abstract void updateDisabledSecret(HttpClient httpClient, SecretServiceVersion serviceVersion);
+    }    @Test
+    public abstract void updateDisabledSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException;
 
     void updateDisabledSecretRunner(BiConsumer<KeyVaultSecret, KeyVaultSecret> testRunner) {
         String resourceId = testResourceNamer.randomName("testSecretUpdate", 20);
@@ -162,10 +130,8 @@ public abstract class SecretClientTestBase extends TestBase {
             new SecretProperties().setExpiresOn(OffsetDateTime.of(2060, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
 
         testRunner.accept(originalSecret, updatedSecret);
-    }
-
-    @Test
-    public abstract void getSecret(HttpClient httpClient, SecretServiceVersion serviceVersion);
+    }    @Test
+    public abstract void getSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException;
 
     void getSecretRunner(Consumer<KeyVaultSecret> testRunner) {
         String resourceId = testResourceNamer.randomName("testSecretGet", 20);
@@ -173,10 +139,8 @@ public abstract class SecretClientTestBase extends TestBase {
             new SecretProperties().setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
 
         testRunner.accept(secretToGet);
-    }
-
-    @Test
-    public abstract void getSecretSpecificVersion(HttpClient httpClient, SecretServiceVersion serviceVersion);
+    }    @Test
+    public abstract void getSecretSpecificVersion(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException;
 
     void getSecretSpecificVersionRunner(BiConsumer<KeyVaultSecret, KeyVaultSecret> testRunner) {
         String resourceId = testResourceNamer.randomName("testSecretGetVersion", 30);
@@ -187,13 +151,11 @@ public abstract class SecretClientTestBase extends TestBase {
             new SecretProperties().setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
 
         testRunner.accept(secretWithOriginalValue, secretWithNewValue);
-    }
+    }    @Test
+    public abstract void getSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException;
 
     @Test
-    public abstract void getSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion);
-
-    @Test
-    public abstract void deleteSecret(HttpClient httpClient, SecretServiceVersion serviceVersion);
+    public abstract void deleteSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException;
 
     void deleteSecretRunner(Consumer<KeyVaultSecret> testRunner) {
         String resourceId = testResourceNamer.randomName("testSecretDelete", 20);
@@ -201,13 +163,11 @@ public abstract class SecretClientTestBase extends TestBase {
             new SecretProperties().setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
 
         testRunner.accept(secretToDelete);
-    }
+    }    @Test
+    public abstract void deleteSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException;
 
     @Test
-    public abstract void deleteSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion);
-
-    @Test
-    public abstract void getDeletedSecret(HttpClient httpClient, SecretServiceVersion serviceVersion);
+    public abstract void getDeletedSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException;
 
     void getDeletedSecretRunner(Consumer<KeyVaultSecret> testRunner) {
         String resourceId = testResourceNamer.randomName("testSecretGetDeleted", 25);
@@ -216,13 +176,11 @@ public abstract class SecretClientTestBase extends TestBase {
                 new SecretProperties().setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
 
         testRunner.accept(secretToDeleteAndGet);
-    }
+    }    @Test
+    public abstract void getDeletedSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException;
 
     @Test
-    public abstract void getDeletedSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion);
-
-    @Test
-    public abstract void recoverDeletedSecret(HttpClient httpClient, SecretServiceVersion serviceVersion);
+    public abstract void recoverDeletedSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException;
 
     void recoverDeletedSecretRunner(Consumer<KeyVaultSecret> testRunner) {
         String resourceId = testResourceNamer.randomName("testSecretRecover", 25);
@@ -231,13 +189,11 @@ public abstract class SecretClientTestBase extends TestBase {
                 new SecretProperties().setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
 
         testRunner.accept(secretToDeleteAndRecover);
-    }
+    }    @Test
+    public abstract void recoverDeletedSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException;
 
     @Test
-    public abstract void recoverDeletedSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion);
-
-    @Test
-    public abstract void backupSecret(HttpClient httpClient, SecretServiceVersion serviceVersion);
+    public abstract void backupSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException;
 
     void backupSecretRunner(Consumer<KeyVaultSecret> testRunner) {
         final KeyVaultSecret secretToBackup
@@ -246,13 +202,11 @@ public abstract class SecretClientTestBase extends TestBase {
                     new SecretProperties().setExpiresOn(OffsetDateTime.of(2060, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
 
         testRunner.accept(secretToBackup);
-    }
+    }    @Test
+    public abstract void backupSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException;
 
     @Test
-    public abstract void backupSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion);
-
-    @Test
-    public abstract void restoreSecret(HttpClient httpClient, SecretServiceVersion serviceVersion);
+    public abstract void restoreSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException;
 
     void restoreSecretRunner(Consumer<KeyVaultSecret> testRunner) {
         final KeyVaultSecret secretToBackupAndRestore
@@ -261,13 +215,11 @@ public abstract class SecretClientTestBase extends TestBase {
                     new SecretProperties().setExpiresOn(OffsetDateTime.of(2080, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
 
         testRunner.accept(secretToBackupAndRestore);
-    }
+    }    @Test
+    public abstract void restoreSecretFromMalformedBackup(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException;
 
     @Test
-    public abstract void restoreSecretFromMalformedBackup(HttpClient httpClient, SecretServiceVersion serviceVersion);
-
-    @Test
-    public abstract void listSecrets(HttpClient httpClient, SecretServiceVersion serviceVersion);
+    public abstract void listSecrets(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException;
 
     void listSecretsRunner(Consumer<HashMap<String, KeyVaultSecret>> testRunner) {
         HashMap<String, KeyVaultSecret> secretsToSetAndList = new HashMap<>();
@@ -282,10 +234,8 @@ public abstract class SecretClientTestBase extends TestBase {
         }
 
         testRunner.accept(secretsToSetAndList);
-    }
-
-    @Test
-    public abstract void listDeletedSecrets(HttpClient httpClient, SecretServiceVersion serviceVersion);
+    }    @Test
+    public abstract void listDeletedSecrets(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException;
 
     void listDeletedSecretsRunner(Consumer<HashMap<String, KeyVaultSecret>> testRunner) {
         HashMap<String, KeyVaultSecret> secretsToSetAndDelete = new HashMap<>();
@@ -300,10 +250,8 @@ public abstract class SecretClientTestBase extends TestBase {
         }
 
         testRunner.accept(secretsToSetAndDelete);
-    }
-
-    @Test
-    public abstract void listSecretVersions(HttpClient httpClient, SecretServiceVersion serviceVersion);
+    }    @Test
+    public abstract void listSecretVersions(HttpClient httpClient, SecretServiceVersion serviceVersion) throws IOException;
 
     void listSecretVersionsRunner(Consumer<List<KeyVaultSecret>> testRunner) {
         List<KeyVaultSecret> secretsToSetAndList = new ArrayList<>();
@@ -342,19 +290,13 @@ public abstract class SecretClientTestBase extends TestBase {
         assertEquals(expected.getValue(), actual.getValue());
         assertEquals(expected.getProperties().getExpiresOn(), actual.getProperties().getExpiresOn());
         assertEquals(expected.getProperties().getNotBefore(), actual.getProperties().getNotBefore());
-    }
-
-    public static Stream<Arguments> getTestParameters() {
-        // When this issues is closed, the newer version of junit will have better support for
-        // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
-        List<Arguments> argumentsList = new ArrayList<>();
-
-        for (HttpClient httpClient : getHttpClients()) {
-            for (SecretServiceVersion serviceVersion : SecretServiceVersion.values()) {
-                argumentsList.add(Arguments.of(httpClient, serviceVersion));
-            }
-        }
-        return argumentsList.stream();
+    }    /**
+     * Returns a stream of arguments that includes all eligible {@link HttpClient HttpClients}.
+     *
+     * @return A stream of {@link HttpClient HTTP clients} to test.
+     */
+    static Stream<Arguments> createHttpClients() {
+        return TestBase.getHttpClients().map(Arguments::of);
     }
 
     /**
