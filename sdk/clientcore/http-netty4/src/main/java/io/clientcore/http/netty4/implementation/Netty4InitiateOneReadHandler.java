@@ -18,10 +18,12 @@ import java.util.function.Consumer;
  * this handler need to support multiple channelRead, if this isn't done data may be lost.
  */
 public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAdapter {
-    private final CountDownLatch latch;
     private final Consumer<ByteBuf> byteBufConsumer;
 
+    private CountDownLatch latch;
+
     private boolean lastRead;
+    private Throwable exception;
 
     /**
      * Creates a new instance of {@link Netty4InitiateOneReadHandler}.
@@ -36,6 +38,18 @@ public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAda
     public Netty4InitiateOneReadHandler(CountDownLatch latch, Consumer<ByteBuf> byteBufConsumer) {
         this.latch = latch;
         this.byteBufConsumer = byteBufConsumer;
+    }
+
+    /**
+     * Sets the latch to count down when the channel read completes.
+     *
+     * @param latch The latch to count down when the channel read completes.
+     */
+    void setLatch(CountDownLatch latch) {
+        if (this.latch != null && this.latch.getCount() != 0) {
+            throw new IllegalStateException("Cannot set a new latch while the previous latch hasn't completed.");
+        }
+        this.latch = latch;
     }
 
     @Override
@@ -57,15 +71,16 @@ public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAda
         }
 
         lastRead = msg instanceof LastHttpContent;
+        ctx.fireChannelRead(msg);
     }
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
         latch.countDown();
         if (lastRead) {
+            ctx.pipeline().remove(this);
             ctx.close();
         }
-        ctx.pipeline().remove(this);
     }
 
     boolean isChannelConsumed() {
@@ -74,9 +89,13 @@ public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAda
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        this.exception = cause;
         latch.countDown();
-        ctx.fireExceptionCaught(cause);
-        ctx.pipeline().remove(this);
+        ctx.close();
+    }
+
+    Throwable channelException() {
+        return exception;
     }
 
     // TODO (alzimmer): Are the latch countdowns needed for unregistering and inactivity?

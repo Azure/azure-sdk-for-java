@@ -319,7 +319,7 @@ public class NettyHttpClientBuilder {
             return configuredGroup;
         }
 
-        ThreadFactory threadFactory = new DefaultThreadFactory("clientcore-netty-client");
+        ThreadFactory threadFactory = new DefaultThreadFactory("clientcore-netty-client", true);
 
         // Use EpollEventLoopGroup if Epoll is available and 'channelClass' wasn't configured or was configured to
         // EpollSocketChannel.
