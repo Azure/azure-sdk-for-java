@@ -4,7 +4,7 @@
 
 package com.azure.ai.agents.persistent.implementation;
 
-import com.azure.ai.agents.persistent.AgentsServiceVersion;
+import com.azure.ai.agents.persistent.PersistentAgentsServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -43,14 +43,14 @@ public final class FilesImpl {
     /**
      * The service client containing this operation class.
      */
-    private final PersistentAgentsAdministrationClientImpl client;
+    private final PersistentAgentsClientImpl client;
 
     /**
      * Initializes an instance of FilesImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    FilesImpl(PersistentAgentsAdministrationClientImpl client) {
+    FilesImpl(PersistentAgentsClientImpl client) {
         this.service = RestProxy.create(FilesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -60,16 +60,16 @@ public final class FilesImpl {
      * 
      * @return the serviceVersion value.
      */
-    public AgentsServiceVersion getServiceVersion() {
+    public PersistentAgentsServiceVersion getServiceVersion() {
         return client.getServiceVersion();
     }
 
     /**
-     * The interface defining all the services for PersistentAgentsAdministrationClientFiles to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for PersistentAgentsClientFiles to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PersistentAgentsAdministrationClientFiles")
+    @ServiceInterface(name = "PersistentAgentsClientFiles")
     public interface FilesService {
         @Get("/files")
         @ExpectedResponses({ 200 })
@@ -77,7 +77,7 @@ public final class FilesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listFiles(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listFilesInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -87,7 +87,7 @@ public final class FilesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listFilesSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listFilesInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -114,26 +114,6 @@ public final class FilesImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("multipart/form-data") BinaryData body,
             RequestOptions requestOptions, Context context);
-
-        @Delete("/files/{fileId}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> deleteFile(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("fileId") String fileId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Delete("/files/{fileId}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> deleteFileSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("fileId") String fileId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/files/{fileId}")
         @ExpectedResponses({ 200 })
@@ -174,6 +154,26 @@ public final class FilesImpl {
         Response<BinaryData> getFileContentSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("fileId") String fileId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Delete("/files/{fileId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> deleteFileInternal(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("fileId") String fileId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Delete("/files/{fileId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> deleteFileInternalSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("fileId") String fileId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -182,8 +182,8 @@ public final class FilesImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>purpose</td><td>String</td><td>No</td><td>The purpose of the file. Allowed values: "fine-tune",
-     * "fine-tune-results", "assistants", "assistants_output", "batch", "batch_output", "vision".</td></tr>
+     * <tr><td>purpose</td><td>String</td><td>No</td><td>The purpose of the file. Allowed values: "assistants",
+     * "assistants_output", "vision".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -199,7 +199,7 @@ public final class FilesImpl {
      *             bytes: int (Required)
      *             filename: String (Required)
      *             created_at: long (Required)
-     *             purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *             purpose: String(assistants/assistants_output/vision) (Required)
      *             status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
      *             status_details: String (Optional)
      *         }
@@ -216,9 +216,9 @@ public final class FilesImpl {
      * @return a list of previously uploaded files along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listFilesWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> listFilesInternalWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listFiles(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.listFilesInternal(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
@@ -228,8 +228,8 @@ public final class FilesImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>purpose</td><td>String</td><td>No</td><td>The purpose of the file. Allowed values: "fine-tune",
-     * "fine-tune-results", "assistants", "assistants_output", "batch", "batch_output", "vision".</td></tr>
+     * <tr><td>purpose</td><td>String</td><td>No</td><td>The purpose of the file. Allowed values: "assistants",
+     * "assistants_output", "vision".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -245,7 +245,7 @@ public final class FilesImpl {
      *             bytes: int (Required)
      *             filename: String (Required)
      *             created_at: long (Required)
-     *             purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *             purpose: String(assistants/assistants_output/vision) (Required)
      *             status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
      *             status_details: String (Optional)
      *         }
@@ -262,10 +262,10 @@ public final class FilesImpl {
      * @return a list of previously uploaded files along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listFilesWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> listFilesInternalWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listFilesSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), accept,
-            requestOptions, Context.NONE);
+        return service.listFilesInternalSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -280,7 +280,7 @@ public final class FilesImpl {
      *     bytes: int (Required)
      *     filename: String (Required)
      *     created_at: long (Required)
-     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *     purpose: String(assistants/assistants_output/vision) (Required)
      *     status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
      *     status_details: String (Optional)
      * }
@@ -316,7 +316,7 @@ public final class FilesImpl {
      *     bytes: int (Required)
      *     filename: String (Required)
      *     created_at: long (Required)
-     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *     purpose: String(assistants/assistants_output/vision) (Required)
      *     status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
      *     status_details: String (Optional)
      * }
@@ -340,65 +340,6 @@ public final class FilesImpl {
     }
 
     /**
-     * Delete a previously uploaded file.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     deleted: boolean (Required)
-     *     object: String (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param fileId The ID of the file to delete.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a status response from a file deletion operation along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteFileWithResponseAsync(String fileId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteFile(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), fileId, accept, requestOptions, context));
-    }
-
-    /**
-     * Delete a previously uploaded file.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     deleted: boolean (Required)
-     *     object: String (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param fileId The ID of the file to delete.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a status response from a file deletion operation along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteFileWithResponse(String fileId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deleteFileSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), fileId,
-            accept, requestOptions, Context.NONE);
-    }
-
-    /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -410,7 +351,7 @@ public final class FilesImpl {
      *     bytes: int (Required)
      *     filename: String (Required)
      *     created_at: long (Required)
-     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *     purpose: String(assistants/assistants_output/vision) (Required)
      *     status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
      *     status_details: String (Optional)
      * }
@@ -445,7 +386,7 @@ public final class FilesImpl {
      *     bytes: int (Required)
      *     filename: String (Required)
      *     created_at: long (Required)
-     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *     purpose: String(assistants/assistants_output/vision) (Required)
      *     status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
      *     status_details: String (Optional)
      * }
@@ -514,6 +455,66 @@ public final class FilesImpl {
     public Response<BinaryData> getFileContentWithResponse(String fileId, RequestOptions requestOptions) {
         final String accept = "application/octet-stream";
         return service.getFileContentSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            fileId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Delete a previously uploaded file.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     deleted: boolean (Required)
+     *     object: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param fileId The ID of the file to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a status response from a file deletion operation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> deleteFileInternalWithResponseAsync(String fileId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.deleteFileInternal(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), fileId, accept, requestOptions, context));
+    }
+
+    /**
+     * Delete a previously uploaded file.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     deleted: boolean (Required)
+     *     object: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param fileId The ID of the file to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a status response from a file deletion operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> deleteFileInternalWithResponse(String fileId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.deleteFileInternalSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
             fileId, accept, requestOptions, Context.NONE);
     }
 }

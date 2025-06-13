@@ -24,11 +24,11 @@ public final class AgentConnectedAgentAsyncSample {
 
     public static void main(String[] args) {
         // Initialize async clients
-        PersistentAgentsAdministrationClientBuilder clientBuilder = new PersistentAgentsAdministrationClientBuilder()
+        PersistentAgentsClientBuilder clientBuilder = new PersistentAgentsClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build());
         
-        PersistentAgentsAdministrationAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
+        PersistentAgentsAdministrationAsyncClient agentsAsyncClient = clientBuilder.buildPersistentAgentsAdministrationAsyncClient();
         ThreadsAsyncClient threadsAsyncClient = clientBuilder.buildThreadsAsyncClient();
         MessagesAsyncClient messagesAsyncClient = clientBuilder.buildMessagesAsyncClient();
         RunsAsyncClient runsAsyncClient = clientBuilder.buildRunsAsyncClient();

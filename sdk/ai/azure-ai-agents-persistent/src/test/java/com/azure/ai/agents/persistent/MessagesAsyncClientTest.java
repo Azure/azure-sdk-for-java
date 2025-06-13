@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MessagesAsyncClientTest extends ClientTestBase {
 
-    private PersistentAgentsAdministrationClientBuilder clientBuilder;
+    private PersistentAgentsClientBuilder clientBuilder;
     private PersistentAgentsAdministrationAsyncClient agentsAsyncClient;
     private ThreadsAsyncClient threadsAsyncClient;
     private MessagesAsyncClient messagesAsyncClient;
@@ -34,7 +34,7 @@ public class MessagesAsyncClientTest extends ClientTestBase {
 
     private void createTestAgent(HttpClient httpClient) {
         clientBuilder = getClientBuilder(httpClient);
-        agentsAsyncClient = clientBuilder.buildAsyncClient();
+        agentsAsyncClient = clientBuilder.buildPersistentAgentsAdministrationAsyncClient();
         threadsAsyncClient = clientBuilder.buildThreadsAsyncClient();
         messagesAsyncClient = clientBuilder.buildMessagesAsyncClient();
 
@@ -101,7 +101,6 @@ public class MessagesAsyncClientTest extends ClientTestBase {
             .verifyComplete();
     }
 
-    @Disabled
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.persistent.TestUtils#getTestParameters")
     public void testUpdateMessage(HttpClient httpClient) {
