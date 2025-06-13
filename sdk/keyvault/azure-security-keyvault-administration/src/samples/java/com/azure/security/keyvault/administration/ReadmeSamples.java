@@ -355,7 +355,7 @@ public class ReadmeSamples {
         String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
         String sasToken = "<sas-token>";
 
-        SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> preRestorePoller =
+        SyncPoller<KeyVaultRestoreOperation, Void> preRestorePoller =
             keyVaultBackupClient.beginPreRestore(folderUrl, sasToken);
         PollResponse<KeyVaultRestoreOperation> pollResponse = preRestorePoller.poll();
 
@@ -363,13 +363,7 @@ public class ReadmeSamples {
 
         PollResponse<KeyVaultRestoreOperation> finalPollResponse = preRestorePoller.waitForCompletion();
 
-        if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
-            System.out.printf("Pre-restore check completed successfully.%n");
-        } else {
-            KeyVaultRestoreOperation operation = preRestorePoller.poll().getValue();
-
-            System.out.printf("Pre-restore check failed with error: %s.%n", operation.getError().getMessage());
-        }
+        System.out.printf("Pre-restore check completed with status: %s.%n", finalPollResponse.getStatus());
         // END: readme-sample-beginPreRestore
     }
 

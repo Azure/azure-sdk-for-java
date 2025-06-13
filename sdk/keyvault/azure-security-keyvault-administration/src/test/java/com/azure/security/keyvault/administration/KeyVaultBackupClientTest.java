@@ -93,7 +93,7 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
 
         // Restore the backup
         String backupFolderUrl = backupPoller.getFinalResult();
-        SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePoller
+        SyncPoller<KeyVaultRestoreOperation, Void> restorePoller
             = setPlaybackSyncPollerPollInterval(client.beginPreRestore(backupFolderUrl, sasToken));
         PollResponse<KeyVaultRestoreOperation> restorePollResponse = restorePoller.waitForCompletion();
 

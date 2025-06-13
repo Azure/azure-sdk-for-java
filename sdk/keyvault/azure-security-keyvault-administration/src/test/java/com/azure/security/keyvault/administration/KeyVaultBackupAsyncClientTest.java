@@ -10,7 +10,6 @@ import com.azure.security.keyvault.keys.KeyClient;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -86,10 +85,11 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
 
                 return backupBlobUri;
             })
-            .map(backupBlobUri -> asyncClient.beginPreRestore(backupBlobUri, sasToken)
-                .last()
-                .map(AsyncPollResponse::getValue)))
-            .assertNext(Assertions::assertNotNull)
+            .flatMap(
+                backupBlobUri -> setPlaybackPollerFluxPollInterval(asyncClient.beginPreRestore(backupBlobUri, sasToken))
+                    .last()
+                    .map(AsyncPollResponse::getStatus)))
+            .assertNext(status -> assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, status))
             .verifyComplete();
 
         // For some reason, the service might still think a restore operation is running even after returning a success
@@ -114,10 +114,11 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
 
                 return backupBlobUri;
             })
-            .map(backupBlobUri -> asyncClient.beginRestore(backupBlobUri, sasToken)
-                .last()
-                .map(AsyncPollResponse::getValue)))
-            .assertNext(Assertions::assertNotNull)
+            .flatMap(
+                backupBlobUri -> setPlaybackPollerFluxPollInterval(asyncClient.beginRestore(backupBlobUri, sasToken))
+                    .last()
+                    .map(AsyncPollResponse::getStatus)))
+            .assertNext(status -> assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, status))
             .verifyComplete();
 
         // For some reason, the service might still think a restore operation is running even after returning a success
@@ -152,10 +153,10 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
 
                 return backupBlobUri;
             })
-            .map(backupBlobUri -> asyncClient.beginSelectiveKeyRestore(createdKey.getName(), backupBlobUri, sasToken)
-                .last()
-                .map(AsyncPollResponse::getValue)))
-            .assertNext(Assertions::assertNotNull)
+            .flatMap(backupBlobUri -> setPlaybackPollerFluxPollInterval(
+                asyncClient.beginSelectiveKeyRestore(createdKey.getName(), backupBlobUri, sasToken)).last()
+                    .map(AsyncPollResponse::getStatus)))
+            .assertNext(status -> assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, status))
             .verifyComplete();
 
         // For some reason, the service might still think a restore operation is running even after returning a success
