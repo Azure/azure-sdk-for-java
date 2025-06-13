@@ -45,7 +45,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
 /**
  * Set the AZURE_TEST_MODE environment variable to either PLAYBACK or RECORD to
  * determine if tests are playback or live. By default, tests are run in

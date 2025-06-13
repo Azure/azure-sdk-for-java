@@ -40,7 +40,7 @@ public final class UpdateChatThreadOptions implements JsonSerializable<UpdateCha
     }
 
     /**
-     * Get the topic property: Chat thread topic.
+     * Gets the topic property: Chat thread topic.
      *
      * @return the topic.
      */
@@ -49,7 +49,7 @@ public final class UpdateChatThreadOptions implements JsonSerializable<UpdateCha
     }
 
     /**
-     * Set the topic property: Chat thread topic.
+     * Sets the topic property: Chat thread topic.
      *
      * @param topic the topic value to set.
      * @return the UpdateChatThreadOptions object itself.
@@ -60,7 +60,7 @@ public final class UpdateChatThreadOptions implements JsonSerializable<UpdateCha
     }
 
     /**
-     * Get the metadata property: Contextual metadata for the thread. The metadata consists of name/value pairs. The
+     * Gets the metadata property: Contextual metadata for the thread. The metadata consists of name/value pairs. The
      * total size of all metadata pairs can be up to 1KB in size.
      *
      * @return the metadata.
@@ -70,7 +70,7 @@ public final class UpdateChatThreadOptions implements JsonSerializable<UpdateCha
     }
 
     /**
-     * Set the metadata property: Contextual metadata for the thread. The metadata consists of name/value pairs. The
+     * Sets the metadata property: Contextual metadata for the thread. The metadata consists of name/value pairs. The
      * total size of all metadata pairs can be up to 1KB in size.
      *
      * @param metadata the metadata value to set.
@@ -82,7 +82,7 @@ public final class UpdateChatThreadOptions implements JsonSerializable<UpdateCha
     }
 
     /**
-     * Get the retentionPolicy property: Data retention policy for auto deletion.
+     * Gets the retentionPolicy property: Data retention policy for auto deletion.
      *
      * @return the retentionPolicy.
      */
@@ -91,7 +91,7 @@ public final class UpdateChatThreadOptions implements JsonSerializable<UpdateCha
     }
 
     /**
-     * Set the retentionPolicy property: Data retention policy for auto deletion.
+     * Sets the retentionPolicy property: Data retention policy for auto deletion.
      *
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the UpdateChatThreadOptions object itself.
