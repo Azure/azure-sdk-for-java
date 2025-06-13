@@ -99,7 +99,9 @@ public final class DeploymentStackTemplateDefinitionInner
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("template", this.template);
+        if (this.template != null) {
+            jsonWriter.writeUntypedField("template", this.template);
+        }
         jsonWriter.writeJsonField("templateLink", this.templateLink);
         return jsonWriter.writeEndObject();
     }

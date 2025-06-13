@@ -5,6 +5,7 @@
 package com.azure.communication.phonenumbers.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -16,6 +17,7 @@ public final class PhoneNumbersGetOperationHeaders {
     /*
      * The Location property.
      */
+    @Generated
     private String location;
 
     // HttpHeaders containing the raw property values.
@@ -33,6 +35,7 @@ public final class PhoneNumbersGetOperationHeaders {
      * 
      * @return the location value.
      */
+    @Generated
     public String getLocation() {
         return this.location;
     }
@@ -43,6 +46,7 @@ public final class PhoneNumbersGetOperationHeaders {
      * @param location the location value to set.
      * @return the PhoneNumbersGetOperationHeaders object itself.
      */
+    @Generated
     public PhoneNumbersGetOperationHeaders setLocation(String location) {
         this.location = location;
         return this;

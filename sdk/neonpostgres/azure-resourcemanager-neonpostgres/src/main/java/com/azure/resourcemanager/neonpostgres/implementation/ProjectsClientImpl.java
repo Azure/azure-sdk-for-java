@@ -71,7 +71,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "NeonPostgresManageme")
+    @ServiceInterface(name = "NeonPostgresManagementClientProjects")
     public interface ProjectsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}")

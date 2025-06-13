@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Supported `beginDeleteByResourceGroup` and `beginDeleteById` in `NetworkInterfaces`.
+
 ### Breaking Changes
 
 ### Bugs Fixed

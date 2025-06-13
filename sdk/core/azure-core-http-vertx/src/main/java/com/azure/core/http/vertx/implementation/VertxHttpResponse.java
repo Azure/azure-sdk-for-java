@@ -53,7 +53,7 @@ public final class VertxHttpResponse extends VertxHttpResponseBase {
     public void close() {
         HttpClientResponse vertxHttpResponse = getVertxHttpResponse();
         if (vertxHttpResponse != null && !closed) {
-            vertxHttpResponse.netSocket().close(ignored -> closed = true);
+            vertxHttpResponse.netSocket().close().andThen(ignored -> closed = true);
         }
     }
 }

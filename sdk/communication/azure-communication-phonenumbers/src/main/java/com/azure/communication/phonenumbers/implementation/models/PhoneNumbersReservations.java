@@ -6,6 +6,7 @@ package com.azure.communication.phonenumbers.implementation.models;
 
 import com.azure.communication.phonenumbers.models.PhoneNumbersReservation;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,18 +20,22 @@ import java.util.List;
 @Fluent
 public final class PhoneNumbersReservations implements JsonSerializable<PhoneNumbersReservations> {
     /*
-     * Represents a list of phone numbers reservations. Note that the phone numbers from each reservation are not included.
+     * Represents a list of phone numbers reservations. Note that the phone numbers from each reservation are not
+     * included.
      */
+    @Generated
     private List<PhoneNumbersReservation> reservations;
 
     /*
      * Represents the URL link to the next page of phone number results.
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of PhoneNumbersReservations class.
      */
+    @Generated
     public PhoneNumbersReservations() {
     }
 
@@ -40,6 +45,7 @@ public final class PhoneNumbersReservations implements JsonSerializable<PhoneNum
      * 
      * @return the reservations value.
      */
+    @Generated
     public List<PhoneNumbersReservation> getReservations() {
         return this.reservations;
     }
@@ -51,6 +57,7 @@ public final class PhoneNumbersReservations implements JsonSerializable<PhoneNum
      * @param reservations the reservations value to set.
      * @return the PhoneNumbersReservations object itself.
      */
+    @Generated
     public PhoneNumbersReservations setReservations(List<PhoneNumbersReservation> reservations) {
         this.reservations = reservations;
         return this;
@@ -61,6 +68,7 @@ public final class PhoneNumbersReservations implements JsonSerializable<PhoneNum
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -71,6 +79,7 @@ public final class PhoneNumbersReservations implements JsonSerializable<PhoneNum
      * @param nextLink the nextLink value to set.
      * @return the PhoneNumbersReservations object itself.
      */
+    @Generated
     public PhoneNumbersReservations setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
@@ -79,6 +88,7 @@ public final class PhoneNumbersReservations implements JsonSerializable<PhoneNum
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -96,6 +106,7 @@ public final class PhoneNumbersReservations implements JsonSerializable<PhoneNum
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PhoneNumbersReservations.
      */
+    @Generated
     public static PhoneNumbersReservations fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PhoneNumbersReservations deserializedPhoneNumbersReservations = new PhoneNumbersReservations();
