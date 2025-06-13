@@ -3617,4 +3617,25 @@ public class FileApiTest extends DataLakeTestBase {
     public void pathGetSystemPropertiesFileMin() {
         assertNotNull(fc.getSystemProperties());
     }
+
+    @Test
+    public void invalidServiceVersion() {
+        DataLakeServiceClient serviceClient = instrument(
+            new DataLakeServiceClientBuilder().endpoint(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint())
+                .credential(ENVIRONMENT.getDataLakeAccount().getCredential())
+                .httpClient(HttpClient.createDefault())
+                .pipeline(new HttpPipelineBuilder().policies(new InvalidServiceVersionPipelinePolicy())
+                    .httpClient(HttpClient.createDefault())
+                    .build())).buildClient();
+
+        DataLakeFileSystemClient fileSystemClient = serviceClient.getFileSystemClient(generateFileSystemName());
+        DataLakeFileClient fileClient = fileSystemClient.getFileClient(generatePathName());
+
+        DataLakeStorageException exception
+            = assertThrows(DataLakeStorageException.class, () -> fileClient.createIfNotExists());
+
+        assertEquals(400, exception.getStatusCode());
+        assertTrue(exception.getMessage().contains(Constants.Errors.INVALID_VERSION_HEADER_MESSAGE));
+        assertEquals(DataLakeErrorCode.INVALID_HEADER_VALUE, exception.getErrorCode());
+    }
 }

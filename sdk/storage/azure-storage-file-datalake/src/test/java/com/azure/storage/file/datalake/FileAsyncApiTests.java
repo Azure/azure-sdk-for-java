@@ -4401,4 +4401,27 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         StepVerifier.create(fc.getSystemProperties()).expectNextCount(1).verifyComplete();
     }
 
+    @Test
+    public void invalidServiceVersion() {
+        DataLakeServiceAsyncClient serviceClient = instrument(
+            new DataLakeServiceClientBuilder().endpoint(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint())
+                .credential(ENVIRONMENT.getDataLakeAccount().getCredential())
+                .httpClient(HttpClient.createDefault())
+                .pipeline(new HttpPipelineBuilder().policies(new InvalidServiceVersionPipelinePolicy())
+                    .httpClient(HttpClient.createDefault())
+                    .build())
+                .buildAsyncClient());
+
+        DataLakeFileSystemAsyncClient fileSystemClient
+            = serviceClient.getFileSystemAsyncClient(generateFileSystemName());
+        DataLakeFileAsyncClient fileClient = fileSystemClient.getFileAsyncClient(generatePathName());
+
+        StepVerifier.create(fileClient.createIfNotExists()).verifyErrorSatisfies(ex -> {
+            DataLakeStorageException exception = assertInstanceOf(DataLakeStorageException.class, ex);
+            assertEquals(400, exception.getStatusCode());
+            assertTrue(exception.getMessage().contains(Constants.Errors.INVALID_VERSION_HEADER_MESSAGE));
+            assertEquals(DataLakeErrorCode.INVALID_HEADER_VALUE, exception.getErrorCode());
+        });
+    }
+
 }

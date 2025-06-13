@@ -31,7 +31,7 @@ public final class ShareStorageException extends HttpResponseException {
      * @param value the error code of the exception.
      */
     public ShareStorageException(String message, HttpResponse response, Object value) {
-        super(StorageImplUtils.convertStorageExceptionMessage(message, response), response, value);
+        super(StorageImplUtils.convertStorageExceptionMessage(message, response), StorageImplUtils.convertStorageResponse(message, response), value);
     }
 
     /**
