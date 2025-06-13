@@ -11,7 +11,7 @@ import java.util.List;
  * Auth Metadata represents the authentication related data provided at Http Request level to the pipeline policies.
  */
 public final class AuthMetadata {
-    private List<AuthScheme> authScheme;
+    private List<AuthScheme> authSchemes;
 
     private OAuthTokenRequestContext oAuthTokenRequestContext;
 
@@ -36,7 +36,7 @@ public final class AuthMetadata {
      * @param authScheme the list of supported auth schemes.
      * @return the updated Auth Metadata instance.
      */
-    public AuthMetadata setAuthSchemes(List<AuthScheme> authScheme) {
+    public AuthMetadata setAuthSchemes(List<AuthScheme> authSchemes) {
         this.authScheme = authScheme;
         return this;
     }
