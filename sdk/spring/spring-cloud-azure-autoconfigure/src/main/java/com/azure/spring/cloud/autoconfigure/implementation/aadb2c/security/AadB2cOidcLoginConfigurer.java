@@ -97,7 +97,7 @@ public class AadB2cOidcLoginConfigurer extends AbstractHttpConfigurer<AadB2cOidc
      *
      * @return the access token response client
      */
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings("removal")
     protected OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
         if (accessTokenResponseClient != null) {
             return accessTokenResponseClient;
