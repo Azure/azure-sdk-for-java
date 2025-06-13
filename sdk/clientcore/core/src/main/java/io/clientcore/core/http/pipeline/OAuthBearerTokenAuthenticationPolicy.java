@@ -9,8 +9,9 @@ import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.credentials.oauth.OAuthTokenCredential;
 import io.clientcore.core.credentials.oauth.OAuthTokenRequestContext;
 import io.clientcore.core.http.models.AuthMetadata;
-import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.AuthScheme;
 import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
@@ -83,13 +84,17 @@ public class OAuthBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
 
         AuthMetadata authMetadata = (AuthMetadata) httpRequest.getContext().getMetadata(IO_CLIENTCORE_AUTH_METADATA);
 
-        List<String> authScheme = authMetadata.getAuthScheme();
-        if ((!CoreUtils.isNullOrEmpty(authMetadata.getAuthScheme()) && authScheme.contains("oauth2"))) {
-            // For now we don't support per-operation scopes. In the future when we do, we will need to retrieve the
-            // scope from the incoming httpRequest and merge it with the default context.
-            mergeTokenRequestContext(authMetadata.getoAuthTokenRequestContext());
-            authorizeRequest(httpRequest, mergeTokenRequestContext(authMetadata.getoAuthTokenRequestContext()));
+        OAuthTokenRequestContext tokenRequestContext = context;
+        if (authMetadata != null) {
+            List<AuthScheme> authScheme = authMetadata.getAuthScheme();
+            if (CoreUtils.isNullOrEmpty(authMetadata.getAuthScheme()) || authScheme.contains(AuthScheme.NO_AUTH)) {
+                return next.process();
+            } else {
+                tokenRequestContext = mergeTokenRequestContext(authMetadata.getOAuthTokenRequestContext());
+            }
         }
+
+        authorizeRequest(httpRequest, mergeTokenRequestContext(tokenRequestContext));
 
         Response<BinaryData> httpResponse = next.process();
         String authHeader = httpResponse.getHeaders().getValue(HttpHeaderName.WWW_AUTHENTICATE);

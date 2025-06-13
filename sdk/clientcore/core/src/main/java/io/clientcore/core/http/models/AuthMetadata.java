@@ -10,8 +10,8 @@ import java.util.List;
 /**
  * Auth Metadata represents the authentication related data provided at Http Request level to the pipeline policies.
  */
-public class AuthMetadata {
-    private List<String> authScheme;
+public final class AuthMetadata {
+    private List<AuthScheme> authScheme;
 
     private OAuthTokenRequestContext oAuthTokenRequestContext;
 
@@ -24,7 +24,7 @@ public class AuthMetadata {
      *
      * @return the list containing supported auth schemes.
      */
-    public List<String> getAuthScheme() {
+    public List<AuthScheme> getAuthScheme() {
         return authScheme;
     }
 
@@ -32,9 +32,11 @@ public class AuthMetadata {
      * Configures the auth schemes to be used.
      *
      * @param authScheme the list of supported auth schemes.
+     * @return the updated Auth Metadata instance.
      */
-    public void setAuthScheme(List<String> authScheme) {
+    public AuthMetadata setAuthScheme(List<AuthScheme> authScheme) {
         this.authScheme = authScheme;
+        return this;
     }
 
     /**
@@ -42,7 +44,7 @@ public class AuthMetadata {
      *
      * @return the OAuthTokenRequestContext
      */
-    public OAuthTokenRequestContext getoAuthTokenRequestContext() {
+    public OAuthTokenRequestContext getOAuthTokenRequestContext() {
         return oAuthTokenRequestContext;
     }
 
@@ -52,7 +54,7 @@ public class AuthMetadata {
      * @param oAuthTokenRequestContext the OAuthTokenRequestContext to be configured.
      * @return the updated Auth Metadata instance.
      */
-    public AuthMetadata setoAuthTokenRequestContext(OAuthTokenRequestContext oAuthTokenRequestContext) {
+    public AuthMetadata setOAuthTokenRequestContext(OAuthTokenRequestContext oAuthTokenRequestContext) {
         this.oAuthTokenRequestContext = oAuthTokenRequestContext;
         return this;
     }
