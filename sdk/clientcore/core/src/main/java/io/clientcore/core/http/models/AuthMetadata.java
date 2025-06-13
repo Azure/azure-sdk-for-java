@@ -17,14 +17,15 @@ public final class AuthMetadata {
 
     /** Creates an instance of the Auth Metadata.
      */
-    public AuthMetadata() { }
+    public AuthMetadata() {
+    }
 
     /**
      * Gets the supported auth schemes.
      *
      * @return the list containing supported auth schemes.
      */
-    public List<AuthScheme> getAuthScheme() {
+    public List<AuthScheme> getAuthSchemes() {
         return authScheme;
     }
 
@@ -34,7 +35,7 @@ public final class AuthMetadata {
      * @param authScheme the list of supported auth schemes.
      * @return the updated Auth Metadata instance.
      */
-    public AuthMetadata setAuthScheme(List<AuthScheme> authScheme) {
+    public AuthMetadata setAuthSchemes(List<AuthScheme> authScheme) {
         this.authScheme = authScheme;
         return this;
     }

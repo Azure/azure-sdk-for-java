@@ -19,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class AuthScheme implements ExpandableEnum<String> {
     private static final Map<String, AuthScheme> VALUES = new ConcurrentHashMap<>();
     private final String name;
+
     private AuthScheme(String name) {
         this.name = name;
     }

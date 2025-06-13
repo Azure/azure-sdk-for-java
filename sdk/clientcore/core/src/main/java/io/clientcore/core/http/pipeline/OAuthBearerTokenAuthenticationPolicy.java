@@ -86,8 +86,8 @@ public class OAuthBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
 
         OAuthTokenRequestContext tokenRequestContext = context;
         if (authMetadata != null) {
-            List<AuthScheme> authScheme = authMetadata.getAuthScheme();
-            if (CoreUtils.isNullOrEmpty(authMetadata.getAuthScheme()) || authScheme.contains(AuthScheme.NO_AUTH)) {
+            List<AuthScheme> authScheme = authMetadata.getAuthSchemes();
+            if (CoreUtils.isNullOrEmpty(authMetadata.getAuthSchemes()) || authScheme.contains(AuthScheme.NO_AUTH)) {
                 return next.process();
             } else {
                 tokenRequestContext = mergeTokenRequestContext(authMetadata.getOAuthTokenRequestContext());
