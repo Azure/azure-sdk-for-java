@@ -65,6 +65,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -157,9 +158,8 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
     public void createCertificateNullPolicy(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateAsyncClient(httpClient, serviceVersion);
 
-        StepVerifier
-            .create(certificateAsyncClient.beginCreateCertificate(testResourceNamer.randomName("tempCert", 20), null))
-            .verifyError(NullPointerException.class);
+        assertThrows(NullPointerException.class,
+            () -> certificateAsyncClient.beginCreateCertificate(testResourceNamer.randomName("tempCert", 20), null));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -167,8 +167,8 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
     public void createCertificateNull(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateAsyncClient(httpClient, serviceVersion);
 
-        StepVerifier.create(certificateAsyncClient.beginCreateCertificate(null, null))
-            .verifyError(NullPointerException.class);
+        assertThrows(NullPointerException.class, () ->
+            certificateAsyncClient.beginCreateCertificate(null, CertificatePolicy.getDefault()));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
