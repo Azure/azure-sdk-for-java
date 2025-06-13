@@ -26,9 +26,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Initializes a new instance of the synchronous PersistentAgentsAdministrationClient type.
+ * Initializes a new instance of the synchronous PersistentAgentsClient type.
  */
-@ServiceClient(builder = PersistentAgentsAdministrationClientBuilder.class)
+@ServiceClient(builder = PersistentAgentsClientBuilder.class)
 public final class MessagesClient {
 
     @Generated
@@ -128,6 +128,82 @@ public final class MessagesClient {
     public Response<BinaryData> createMessageWithResponse(String threadId, BinaryData createMessageRequest,
         RequestOptions requestOptions) {
         return this.serviceClient.createMessageWithResponse(threadId, createMessageRequest, requestOptions);
+    }
+
+    /**
+     * Gets a list of messages that exist on a thread.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>run_id</td><td>String</td><td>No</td><td>Filter messages by the run ID that generated them.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     thread_id: String (Required)
+     *     status: String(in_progress/incomplete/completed) (Required)
+     *     incomplete_details (Required): {
+     *         reason: String(content_filter/max_tokens/run_cancelled/run_failed/run_expired) (Required)
+     *     }
+     *     completed_at: Long (Required)
+     *     incomplete_at: Long (Required)
+     *     role: String(user/assistant) (Required)
+     *     content (Required): [
+     *          (Required){
+     *             type: String (Required)
+     *         }
+     *     ]
+     *     assistant_id: String (Required)
+     *     run_id: String (Required)
+     *     attachments (Required): [
+     *          (Required){
+     *             file_id: String (Optional)
+     *             data_source (Optional): {
+     *                 uri: String (Required)
+     *                 type: String(uri_asset/id_asset) (Required)
+     *             }
+     *             tools (Required): [
+     *                 BinaryData (Required)
+     *             ]
+     *         }
+     *     ]
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param threadId Identifier of the thread.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of messages that exist on a thread as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listMessages(String threadId, RequestOptions requestOptions) {
+        return this.serviceClient.listMessages(threadId, requestOptions);
     }
 
     /**
@@ -499,7 +575,7 @@ public final class MessagesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThreadMessage createMessage(String threadId, MessageRole role, String content,
         List<MessageAttachment> attachments, Map<String, String> metadata) {
-        // Generated convenience method for createMessageWithResponse
+        // Generated convenience method for createMessage
         BinaryData binaryContent = BinaryData.fromString(content);
         return this.createMessage(threadId, role, binaryContent, attachments, metadata);
     }
@@ -526,84 +602,8 @@ public final class MessagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThreadMessage createMessage(String threadId, MessageRole role, String content) {
-        // Generated convenience method for createMessageWithResponse
+        // Generated convenience method for createMessage
         BinaryData binaryContent = BinaryData.fromString(content);
         return this.createMessage(threadId, role, binaryContent);
-    }
-
-    /**
-     * Gets a list of messages that exist on a thread.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>run_id</td><td>String</td><td>No</td><td>Filter messages by the run ID that generated them.</td></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
-     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
-     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
-     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
-     * list.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     object: String (Required)
-     *     created_at: long (Required)
-     *     thread_id: String (Required)
-     *     status: String(in_progress/incomplete/completed) (Required)
-     *     incomplete_details (Required): {
-     *         reason: String(content_filter/max_tokens/run_cancelled/run_failed/run_expired) (Required)
-     *     }
-     *     completed_at: Long (Required)
-     *     incomplete_at: Long (Required)
-     *     role: String(user/assistant) (Required)
-     *     content (Required): [
-     *          (Required){
-     *             type: String (Required)
-     *         }
-     *     ]
-     *     assistant_id: String (Required)
-     *     run_id: String (Required)
-     *     attachments (Required): [
-     *          (Required){
-     *             file_id: String (Optional)
-     *             data_source (Optional): {
-     *                 uri: String (Required)
-     *                 type: String(uri_asset/id_asset) (Required)
-     *             }
-     *             tools (Required): [
-     *                 BinaryData (Required)
-     *             ]
-     *         }
-     *     ]
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param threadId Identifier of the thread.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of messages that exist on a thread as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listMessages(String threadId, RequestOptions requestOptions) {
-        return this.serviceClient.listMessages(threadId, requestOptions);
     }
 }

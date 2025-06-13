@@ -32,6 +32,7 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.SerializationFormat;
+import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.shared.HttpClientTests;
 import io.clientcore.core.shared.HttpClientTestsServer;
 import io.clientcore.core.shared.LocalTestServer;
@@ -358,7 +359,7 @@ public class TestInterfaceServiceClientGenerationTests {
         final HttpBinJSON result
             = service.putWithHeaderApplicationJsonContentTypeAndByteArrayBody(getServerUri(false), new byte[0]);
 
-        assertEquals("", result.data());
+        assertEquals("\"\"", result.data());
     }
 
     @Test
@@ -441,7 +442,7 @@ public class TestInterfaceServiceClientGenerationTests {
         final HttpBinJSON result
             = service.putWithHeaderApplicationJsonContentTypeAndStringBody(getServerUri(false), "");
 
-        assertEquals("", result.data());
+        assertEquals("\"\"", result.data());
     }
 
     @Test
@@ -452,7 +453,7 @@ public class TestInterfaceServiceClientGenerationTests {
         final HttpBinJSON result = service
             .putWithHeaderApplicationJsonContentTypeAndStringBody(getServerUri(false), "soups and stuff");
 
-        assertEquals("soups and stuff", result.data());
+        assertEquals("\"soups and stuff\"", result.data());
     }
 
     @Test
@@ -474,8 +475,7 @@ public class TestInterfaceServiceClientGenerationTests {
 
         final HttpBinJSON result
             = service.putWithHeaderApplicationJsonContentTypeAndByteArrayBody(getServerUri(false), requestBody);
-        String expected = new String(requestBody, StandardCharsets.UTF_8);
-        assertEquals(expected, result.data());
+        assertEquals("\"AAECAwQ=\"", result.data());
     }
 
     @Test
@@ -519,8 +519,6 @@ public class TestInterfaceServiceClientGenerationTests {
         Response<HttpBinJSON> response
             = service.putWithHeaderApplicationOctetStreamContentTypeAndStringBody(getServerUri(false), null);
         assertNotNull(response);
-        assertEquals("application/octet-stream",
-            response.getRequest().getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
 
         assertEquals("", response.getValue().data());
     }
@@ -580,7 +578,6 @@ public class TestInterfaceServiceClientGenerationTests {
         final Response<HttpBinJSON> response
             = service.putWithBodyParamApplicationJsonContentTypeAndStringBody(getServerUri(false), null);
         assertNotNull(response);
-        assertEquals("application/json", response.getRequest().getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
         assertEquals("", response.getValue().data());
     }
 
@@ -593,7 +590,7 @@ public class TestInterfaceServiceClientGenerationTests {
             = service.putWithBodyParamApplicationJsonContentTypeAndStringBody(getServerUri(false), "");
         assertNotNull(response);
         assertEquals("application/json", response.getRequest().getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
-        assertEquals("", response.getValue().data());
+        assertEquals("\"\"", response.getValue().data());
     }
 
     @Test
@@ -605,7 +602,7 @@ public class TestInterfaceServiceClientGenerationTests {
             .putWithBodyParamApplicationJsonContentTypeAndStringBody(getServerUri(false), "soups and stuff");
         assertNotNull(response);
         assertEquals("application/json", response.getRequest().getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
-        assertEquals("soups and stuff", response.getValue().data());
+        assertEquals("\"soups and stuff\"", response.getValue().data());
     }
 
     @Test
@@ -660,7 +657,7 @@ public class TestInterfaceServiceClientGenerationTests {
         final HttpBinJSON result = service
             .putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(getServerUri(false), new byte[0]);
 
-        assertEquals("", result.data());
+        assertEquals("\"\"", result.data());
     }
 
     @Test
@@ -671,7 +668,7 @@ public class TestInterfaceServiceClientGenerationTests {
         final HttpBinJSON result = service.putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(
             getServerUri(false), new byte[] { 0, 1, 2, 3, 4 });
 
-        assertEquals(new String(new byte[] { 0, 1, 2, 3, 4 }), result.data());
+        assertEquals("\"AAECAwQ=\"", result.data());
     }
 
     @Test
@@ -1142,6 +1139,7 @@ public class TestInterfaceServiceClientGenerationTests {
 
         @SuppressWarnings("unchecked")
         final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.getValue();
+
         assertEquals("I'm the body!", expectedBody.get("data"));
     }
 
@@ -1440,11 +1438,16 @@ public class TestInterfaceServiceClientGenerationTests {
     }
 
     @Test
-    public void unexpectedHTTPOK() {
+    public void unexpectedHTTPOK() throws IOException {
         HttpResponseException e = assertThrows(HttpResponseException.class,
             () -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class).getBytes(getRequestUri()));
 
-        assertEquals("Status code 200, (1024-byte body)", e.getMessage());
+        Map<String, String> exContext = parseExceptionContext(e);
+
+        assertEquals("200", exContext.get("http.response.status_code"));
+        assertEquals("1024", exContext.get("http.response.header.content-length"));
+        assertEquals("application/octet-stream", exContext.get("http.response.header.content-type"));
+        assertNull(exContext.get("http.response.body.content"));
     }
 
     @Test
@@ -1930,5 +1933,13 @@ public class TestInterfaceServiceClientGenerationTests {
         }
 
         fail("'" + uri2 + "' does not match with '" + s1 + "' or '" + s2 + "'.");
+    }
+
+    private static Map<String, String> parseExceptionContext(Throwable ex) throws IOException {
+        int jsonPartStart = ex.getMessage().indexOf(";");
+        assertTrue(jsonPartStart > 0, "Expected JSON part in the exception message");
+        try (JsonReader reader = JsonReader.fromString(ex.getMessage().substring(jsonPartStart + 1))) {
+            return reader.readMap(JsonReader::getString);
+        }
     }
 }

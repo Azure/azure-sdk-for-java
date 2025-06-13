@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RunsAsyncClientTest extends ClientTestBase {
 
-    private PersistentAgentsAdministrationClientBuilder clientBuilder;
+    private PersistentAgentsClientBuilder clientBuilder;
     private PersistentAgentsAdministrationAsyncClient agentsAsyncClient;
     private ThreadsAsyncClient threadsAsyncClient;
     private RunsAsyncClient runsAsyncClient;
@@ -34,7 +34,7 @@ public class RunsAsyncClientTest extends ClientTestBase {
 
     private void createTestAgent(HttpClient httpClient) {
         clientBuilder = getClientBuilder(httpClient);
-        agentsAsyncClient = clientBuilder.buildAsyncClient();
+        agentsAsyncClient = clientBuilder.buildPersistentAgentsAdministrationAsyncClient();
         threadsAsyncClient = clientBuilder.buildThreadsAsyncClient();
         runsAsyncClient = clientBuilder.buildRunsAsyncClient();
 
@@ -55,19 +55,10 @@ public class RunsAsyncClientTest extends ClientTestBase {
     private Mono<ThreadRun> createRunAndWaitForCompletion() {
         CreateRunOptions createRunOptions = new CreateRunOptions(thread.getId(), agent.getId());
 
-        return runsAsyncClient.createRun(createRunOptions).flatMap(run -> waitForRunCompletionAsync(run));
-    }
+        Mono<ThreadRun> completedRun = runsAsyncClient.createRun(createRunOptions)
+            .flatMap(run -> waitForRunCompletionAsync(run, runsAsyncClient));
 
-    private Mono<ThreadRun> waitForRunCompletionAsync(ThreadRun run) {
-        // Poll run status until it completes or fails
-        return Mono.defer(() -> runsAsyncClient.getRun(thread.getId(), run.getId())).flatMap(updatedRun -> {
-            String status = updatedRun.getStatus().toString();
-            if ("completed".equals(status) || "failed".equals(status) || "cancelled".equals(status)) {
-                return Mono.just(updatedRun);
-            } else {
-                return Mono.delay(Duration.ofSeconds(2)).then(waitForRunCompletionAsync(updatedRun));
-            }
-        });
+        return completedRun;
     }
 
     @Disabled

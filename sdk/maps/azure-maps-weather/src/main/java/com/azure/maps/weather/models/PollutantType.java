@@ -4,6 +4,7 @@
 
 package com.azure.maps.weather.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,31 +15,37 @@ public final class PollutantType extends ExpandableStringEnum<PollutantType> {
     /**
      * Carbon monoxide ("CO").
      */
+    @Generated
     public static final PollutantType CO = fromString("CO");
 
     /**
      * Nitrogen dioxide ("NO2").
      */
+    @Generated
     public static final PollutantType NO2 = fromString("NO2");
 
     /**
      * Ozone ("O3").
      */
+    @Generated
     public static final PollutantType O3 = fromString("O3");
 
     /**
      * Particulate matter 2.5 ("PM2.5").
      */
+    @Generated
     public static final PollutantType PM25 = fromString("PM2.5");
 
     /**
      * Particulate matter 10 ("PM10").
      */
+    @Generated
     public static final PollutantType PM10 = fromString("PM10");
 
     /**
      * Sulfur dioxide ("SO2").
      */
+    @Generated
     public static final PollutantType SO2 = fromString("SO2");
 
     /**
@@ -46,6 +53,7 @@ public final class PollutantType extends ExpandableStringEnum<PollutantType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PollutantType() {
     }
@@ -56,6 +64,7 @@ public final class PollutantType extends ExpandableStringEnum<PollutantType> {
      * @param name a name to look for.
      * @return the corresponding PollutantType.
      */
+    @Generated
     public static PollutantType fromString(String name) {
         return fromString(name, PollutantType.class);
     }
@@ -65,6 +74,7 @@ public final class PollutantType extends ExpandableStringEnum<PollutantType> {
      * 
      * @return known PollutantType values.
      */
+    @Generated
     public static Collection<PollutantType> values() {
         return values(PollutantType.class);
     }

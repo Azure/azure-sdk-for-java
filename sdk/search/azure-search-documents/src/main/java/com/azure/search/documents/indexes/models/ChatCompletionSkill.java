@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -25,32 +26,38 @@ public final class ChatCompletionSkill extends WebApiSkill {
     /*
      * A URI fragment specifying the type of skill.
      */
+    @Generated
     private String odataType = "#Microsoft.Skills.Custom.ChatCompletionSkill";
 
     /*
      * API key for authenticating to the model. Both apiKey and authIdentity cannot be specified at the same time.
      */
+    @Generated
     private String apiKey;
 
     /*
      * Common language model parameters that customers can tweak. If omitted, reasonable defaults will be applied.
      */
+    @Generated
     private CommonModelParameters commonModelParameters;
 
     /*
      * Open-type dictionary for model-specific parameters that should be appended to the chat completions call. Follows
      * Azure AI Foundry’s extensibility pattern.
      */
+    @Generated
     private Map<String, Object> extraParameters;
 
     /*
      * How extra parameters are handled by Azure AI Foundry. Default is 'error'.
      */
+    @Generated
     private ChatCompletionExtraParametersBehavior extraParametersBehavior;
 
     /*
      * Determines how the LLM should format its response. Defaults to 'text' response type.
      */
+    @Generated
     private ChatCompletionResponseFormat responseFormat;
 
     /**
@@ -60,6 +67,7 @@ public final class ChatCompletionSkill extends WebApiSkill {
      * @param outputs the outputs value to set.
      * @param uri the uri value to set.
      */
+    @Generated
     public ChatCompletionSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs, String uri) {
         super(inputs, outputs, uri);
     }
@@ -69,6 +77,7 @@ public final class ChatCompletionSkill extends WebApiSkill {
      * 
      * @return the odataType value.
      */
+    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -80,6 +89,7 @@ public final class ChatCompletionSkill extends WebApiSkill {
      * 
      * @return the apiKey value.
      */
+    @Generated
     public String getApiKey() {
         return this.apiKey;
     }
@@ -91,6 +101,7 @@ public final class ChatCompletionSkill extends WebApiSkill {
      * @param apiKey the apiKey value to set.
      * @return the ChatCompletionSkill object itself.
      */
+    @Generated
     public ChatCompletionSkill setApiKey(String apiKey) {
         this.apiKey = apiKey;
         return this;
@@ -102,6 +113,7 @@ public final class ChatCompletionSkill extends WebApiSkill {
      * 
      * @return the commonModelParameters value.
      */
+    @Generated
     public CommonModelParameters getCommonModelParameters() {
         return this.commonModelParameters;
     }
@@ -113,6 +125,7 @@ public final class ChatCompletionSkill extends WebApiSkill {
      * @param commonModelParameters the commonModelParameters value to set.
      * @return the ChatCompletionSkill object itself.
      */
+    @Generated
     public ChatCompletionSkill setCommonModelParameters(CommonModelParameters commonModelParameters) {
         this.commonModelParameters = commonModelParameters;
         return this;
@@ -124,6 +137,7 @@ public final class ChatCompletionSkill extends WebApiSkill {
      * 
      * @return the extraParameters value.
      */
+    @Generated
     public Map<String, Object> getExtraParameters() {
         return this.extraParameters;
     }
@@ -135,6 +149,7 @@ public final class ChatCompletionSkill extends WebApiSkill {
      * @param extraParameters the extraParameters value to set.
      * @return the ChatCompletionSkill object itself.
      */
+    @Generated
     public ChatCompletionSkill setExtraParameters(Map<String, Object> extraParameters) {
         this.extraParameters = extraParameters;
         return this;
@@ -146,6 +161,7 @@ public final class ChatCompletionSkill extends WebApiSkill {
      * 
      * @return the extraParametersBehavior value.
      */
+    @Generated
     public ChatCompletionExtraParametersBehavior getExtraParametersBehavior() {
         return this.extraParametersBehavior;
     }
@@ -157,6 +173,7 @@ public final class ChatCompletionSkill extends WebApiSkill {
      * @param extraParametersBehavior the extraParametersBehavior value to set.
      * @return the ChatCompletionSkill object itself.
      */
+    @Generated
     public ChatCompletionSkill
         setExtraParametersBehavior(ChatCompletionExtraParametersBehavior extraParametersBehavior) {
         this.extraParametersBehavior = extraParametersBehavior;
@@ -169,6 +186,7 @@ public final class ChatCompletionSkill extends WebApiSkill {
      * 
      * @return the responseFormat value.
      */
+    @Generated
     public ChatCompletionResponseFormat getResponseFormat() {
         return this.responseFormat;
     }
@@ -180,6 +198,7 @@ public final class ChatCompletionSkill extends WebApiSkill {
      * @param responseFormat the responseFormat value to set.
      * @return the ChatCompletionSkill object itself.
      */
+    @Generated
     public ChatCompletionSkill setResponseFormat(ChatCompletionResponseFormat responseFormat) {
         this.responseFormat = responseFormat;
         return this;
@@ -188,6 +207,7 @@ public final class ChatCompletionSkill extends WebApiSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ChatCompletionSkill setHttpHeaders(Map<String, String> httpHeaders) {
         super.setHttpHeaders(httpHeaders);
@@ -197,6 +217,7 @@ public final class ChatCompletionSkill extends WebApiSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ChatCompletionSkill setHttpMethod(String httpMethod) {
         super.setHttpMethod(httpMethod);
@@ -206,6 +227,7 @@ public final class ChatCompletionSkill extends WebApiSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ChatCompletionSkill setTimeout(Duration timeout) {
         super.setTimeout(timeout);
@@ -215,6 +237,7 @@ public final class ChatCompletionSkill extends WebApiSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ChatCompletionSkill setBatchSize(Integer batchSize) {
         super.setBatchSize(batchSize);
@@ -224,6 +247,7 @@ public final class ChatCompletionSkill extends WebApiSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ChatCompletionSkill setDegreeOfParallelism(Integer degreeOfParallelism) {
         super.setDegreeOfParallelism(degreeOfParallelism);
@@ -233,6 +257,7 @@ public final class ChatCompletionSkill extends WebApiSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ChatCompletionSkill setAuthResourceId(String authResourceId) {
         super.setAuthResourceId(authResourceId);
@@ -242,6 +267,7 @@ public final class ChatCompletionSkill extends WebApiSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ChatCompletionSkill setAuthIdentity(SearchIndexerDataIdentity authIdentity) {
         super.setAuthIdentity(authIdentity);
@@ -251,6 +277,7 @@ public final class ChatCompletionSkill extends WebApiSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ChatCompletionSkill setName(String name) {
         super.setName(name);
@@ -260,6 +287,7 @@ public final class ChatCompletionSkill extends WebApiSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ChatCompletionSkill setDescription(String description) {
         super.setDescription(description);
@@ -269,6 +297,7 @@ public final class ChatCompletionSkill extends WebApiSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ChatCompletionSkill setContext(String context) {
         super.setContext(context);
@@ -278,6 +307,7 @@ public final class ChatCompletionSkill extends WebApiSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -314,6 +344,7 @@ public final class ChatCompletionSkill extends WebApiSkill {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ChatCompletionSkill.
      */
+    @Generated
     public static ChatCompletionSkill fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean inputsFound = false;

@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,21 +22,25 @@ public final class ResourceNotificationsResourceDeletedDetails
     /*
      * id of the resource for which the event is being emitted
      */
+    @Generated
     private String id;
 
     /*
      * name of the resource for which the event is being emitted
      */
+    @Generated
     private String name;
 
     /*
      * the type of the resource for which the event is being emitted
      */
+    @Generated
     private String type;
 
     /**
      * Creates an instance of ResourceNotificationsResourceDeletedDetails class.
      */
+    @Generated
     public ResourceNotificationsResourceDeletedDetails() {
     }
 
@@ -44,6 +49,7 @@ public final class ResourceNotificationsResourceDeletedDetails
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -54,6 +60,7 @@ public final class ResourceNotificationsResourceDeletedDetails
      * @param id the id value to set.
      * @return the ResourceNotificationsResourceDeletedDetails object itself.
      */
+    @Generated
     public ResourceNotificationsResourceDeletedDetails setId(String id) {
         this.id = id;
         return this;
@@ -64,6 +71,7 @@ public final class ResourceNotificationsResourceDeletedDetails
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -74,6 +82,7 @@ public final class ResourceNotificationsResourceDeletedDetails
      * @param name the name value to set.
      * @return the ResourceNotificationsResourceDeletedDetails object itself.
      */
+    @Generated
     public ResourceNotificationsResourceDeletedDetails setName(String name) {
         this.name = name;
         return this;
@@ -84,6 +93,7 @@ public final class ResourceNotificationsResourceDeletedDetails
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -94,6 +104,7 @@ public final class ResourceNotificationsResourceDeletedDetails
      * @param type the type value to set.
      * @return the ResourceNotificationsResourceDeletedDetails object itself.
      */
+    @Generated
     public ResourceNotificationsResourceDeletedDetails setType(String type) {
         this.type = type;
         return this;
@@ -102,6 +113,7 @@ public final class ResourceNotificationsResourceDeletedDetails
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -119,6 +131,7 @@ public final class ResourceNotificationsResourceDeletedDetails
      * of it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ResourceNotificationsResourceDeletedDetails.
      */
+    @Generated
     public static ResourceNotificationsResourceDeletedDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ResourceNotificationsResourceDeletedDetails deserializedResourceNotificationsResourceDeletedDetails

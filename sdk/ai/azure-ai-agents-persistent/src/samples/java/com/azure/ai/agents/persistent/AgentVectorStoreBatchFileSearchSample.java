@@ -2,10 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.ai.agents.persistent;
 
-import com.azure.ai.agents.persistent.implementation.models.FileDetails;
-import com.azure.ai.agents.persistent.implementation.models.UploadFileRequest;
 import com.azure.ai.agents.persistent.models.CreateAgentOptions;
 import com.azure.ai.agents.persistent.models.CreateRunOptions;
+import com.azure.ai.agents.persistent.models.FileDetails;
 import com.azure.ai.agents.persistent.models.FileInfo;
 import com.azure.ai.agents.persistent.models.FilePurpose;
 import com.azure.ai.agents.persistent.models.FileSearchToolDefinition;
@@ -16,6 +15,7 @@ import com.azure.ai.agents.persistent.models.PersistentAgentThread;
 import com.azure.ai.agents.persistent.models.ThreadMessage;
 import com.azure.ai.agents.persistent.models.ThreadRun;
 import com.azure.ai.agents.persistent.models.ToolResources;
+import com.azure.ai.agents.persistent.models.UploadFileRequest;
 import com.azure.ai.agents.persistent.models.VectorStore;
 import com.azure.ai.agents.persistent.models.VectorStoreFileBatch;
 import com.azure.core.util.BinaryData;
@@ -34,15 +34,14 @@ import static com.azure.ai.agents.persistent.SampleUtils.waitForRunCompletion;
 public class AgentVectorStoreBatchFileSearchSample {
 
     public static void main(String[] args) throws FileNotFoundException, URISyntaxException {
-        PersistentAgentsAdministrationClientBuilder clientBuilder = new PersistentAgentsAdministrationClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+        PersistentAgentsClientBuilder clientBuilder = new PersistentAgentsClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build());
-        PersistentAgentsAdministrationClient agentsClient = clientBuilder.buildClient();
+        PersistentAgentsAdministrationClient agentsClient = clientBuilder.buildPersistentAgentsAdministrationClient();
         ThreadsClient threadsClient = clientBuilder.buildThreadsClient();
         MessagesClient messagesClient = clientBuilder.buildMessagesClient();
         RunsClient runsClient = clientBuilder.buildRunsClient();
         FilesClient filesClient = clientBuilder.buildFilesClient();
         VectorStoresClient vectorStoresClient = clientBuilder.buildVectorStoresClient();
-        VectorStoreFileBatchesClient vectorStoreFileBatchesClient = clientBuilder.buildVectorStoreFileBatchesClient();
 
         Path productFile = getFile("product_info.md");
 
@@ -56,7 +55,7 @@ public class AgentVectorStoreBatchFileSearchSample {
                 .setFilename("sample_product_info.md"),
             FilePurpose.AGENTS));
 
-        VectorStoreFileBatch vectorStoreFileBatch = vectorStoreFileBatchesClient.createVectorStoreFileBatch(
+        VectorStoreFileBatch vectorStoreFileBatch = vectorStoresClient.createVectorStoreFileBatch(
             vectorStore.getId(), Arrays.asList(uploadedAgentFile.getId()), null, null);
 
         FileSearchToolResource fileSearchToolResource = new FileSearchToolResource()

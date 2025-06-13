@@ -2,10 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.ai.agents.persistent;
 
-import com.azure.ai.agents.persistent.implementation.models.FileDetails;
-import com.azure.ai.agents.persistent.implementation.models.UploadFileRequest;
 import com.azure.ai.agents.persistent.models.CreateAgentOptions;
 import com.azure.ai.agents.persistent.models.CreateRunOptions;
+import com.azure.ai.agents.persistent.models.FileDetails;
 import com.azure.ai.agents.persistent.models.FileInfo;
 import com.azure.ai.agents.persistent.models.FilePurpose;
 import com.azure.ai.agents.persistent.models.MessageImageFileParam;
@@ -13,6 +12,7 @@ import com.azure.ai.agents.persistent.models.MessageInputContentBlock;
 import com.azure.ai.agents.persistent.models.MessageInputImageFileBlock;
 import com.azure.ai.agents.persistent.models.MessageInputTextBlock;
 import com.azure.ai.agents.persistent.models.MessageRole;
+import com.azure.ai.agents.persistent.models.UploadFileRequest;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -34,11 +34,11 @@ import static com.azure.ai.agents.persistent.SampleUtils.waitForRunCompletionAsy
 public final class AgentImageInputFileAsyncSample {
 
     public static void main(String[] args) throws IOException, URISyntaxException {
-        PersistentAgentsAdministrationClientBuilder clientBuilder = new PersistentAgentsAdministrationClientBuilder()
+        PersistentAgentsClientBuilder clientBuilder = new PersistentAgentsClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build());
 
-        PersistentAgentsAdministrationAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
+        PersistentAgentsAdministrationAsyncClient agentsAsyncClient = clientBuilder.buildPersistentAgentsAdministrationAsyncClient();
         ThreadsAsyncClient threadsAsyncClient = clientBuilder.buildThreadsAsyncClient();
         MessagesAsyncClient messagesAsyncClient = clientBuilder.buildMessagesAsyncClient();
         RunsAsyncClient runsAsyncClient = clientBuilder.buildRunsAsyncClient();

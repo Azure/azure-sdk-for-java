@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,6 +25,7 @@ public final class HazardDetail implements JsonSerializable<HazardDetail> {
      * * `3` - Take action.
      * * `4` - Life threatening, emergency.
      */
+    @Generated
     private HazardIndex hazardIndex;
 
     /*
@@ -32,16 +34,19 @@ public final class HazardDetail implements JsonSerializable<HazardDetail> {
      * SunGlare, SunGlareHigh, Lightning, SevereLightning, WindModerate, WindHigh, WindExtreme, FloodWarning,
      * FlashFloodWarning, TornadoWarning, TsunamiWarning, SevereThunderstormWarning.
      */
+    @Generated
     private String hazardCode;
 
     /*
      * A displayable short phrase describing the forecasted conditions and precipitation intensity/type.
      */
+    @Generated
     private String shortDescription;
 
     /**
      * Set default HazardDetail constructor to private
      */
+    @Generated
     private HazardDetail() {
     }
 
@@ -55,6 +60,7 @@ public final class HazardDetail implements JsonSerializable<HazardDetail> {
      *
      * @return the hazardIndex value.
      */
+    @Generated
     public HazardIndex getHazardIndex() {
         return this.hazardIndex;
     }
@@ -68,6 +74,7 @@ public final class HazardDetail implements JsonSerializable<HazardDetail> {
      *
      * @return the hazardCode value.
      */
+    @Generated
     public String getHazardCode() {
         return this.hazardCode;
     }
@@ -78,6 +85,7 @@ public final class HazardDetail implements JsonSerializable<HazardDetail> {
      *
      * @return the shortDescription value.
      */
+    @Generated
     public String getShortDescription() {
         return this.shortDescription;
     }
@@ -85,6 +93,7 @@ public final class HazardDetail implements JsonSerializable<HazardDetail> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -102,6 +111,7 @@ public final class HazardDetail implements JsonSerializable<HazardDetail> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the HazardDetail.
      */
+    @Generated
     public static HazardDetail fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HazardDetail deserializedHazardDetail = new HazardDetail();

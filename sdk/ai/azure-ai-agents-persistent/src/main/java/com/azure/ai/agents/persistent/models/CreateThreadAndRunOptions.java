@@ -249,6 +249,19 @@ public final class CreateThreadAndRunOptions {
     }
 
     /**
+     * Set the toolResources property: Override the tools the agent can use for this run. This is useful for modifying
+     * the behavior on a per-run basis.
+     *
+     * @param toolResources the toolResources value to set.
+     * @return the CreateThreadAndRunOptions object itself.
+     */
+    @Generated
+    public CreateThreadAndRunOptions setToolResources(ToolResources toolResources) {
+        this.toolResources = toolResources;
+        return this;
+    }
+
+    /**
      * Get the stream property: If `true`, returns a stream of events that happen during the Run as server-sent events,
      * terminating when the Run enters a terminal state with a `data: [DONE]` message.
      *
@@ -501,19 +514,6 @@ public final class CreateThreadAndRunOptions {
     @Generated
     public CreateThreadAndRunOptions setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
-        return this;
-    }
-
-    /**
-     * Set the toolResources property: Override the tools the agent can use for this run. This is useful for modifying
-     * the behavior on a per-run basis.
-     *
-     * @param toolResources the toolResources value to set.
-     * @return the CreateThreadAndRunOptions object itself.
-     */
-    @Generated
-    public CreateThreadAndRunOptions setToolResources(ToolResources toolResources) {
-        this.toolResources = toolResources;
         return this;
     }
 }

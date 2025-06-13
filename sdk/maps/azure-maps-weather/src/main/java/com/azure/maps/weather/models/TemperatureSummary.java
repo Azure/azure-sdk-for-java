@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class TemperatureSummary implements JsonSerializable<TemperatureSum
     /*
      * Summary of temperature fluctuations over the past 6 hours.
      */
+    @Generated
     private PastHoursTemperature past6Hours;
 
     /*
      * Summary of temperature fluctuations over the past 12 hours.
      */
+    @Generated
     private PastHoursTemperature past12Hours;
 
     /*
      * Summary of temperature fluctuations over the past 24 hours.
      */
+    @Generated
     private PastHoursTemperature past24Hours;
 
     /**
      * Set default TemperatureSummary constructor to private
      */
+    @Generated
     private TemperatureSummary() {
     }
 
@@ -42,6 +47,7 @@ public final class TemperatureSummary implements JsonSerializable<TemperatureSum
      *
      * @return the past6Hours value.
      */
+    @Generated
     public PastHoursTemperature getPast6Hours() {
         return this.past6Hours;
     }
@@ -51,6 +57,7 @@ public final class TemperatureSummary implements JsonSerializable<TemperatureSum
      *
      * @return the past12Hours value.
      */
+    @Generated
     public PastHoursTemperature getPast12Hours() {
         return this.past12Hours;
     }
@@ -60,6 +67,7 @@ public final class TemperatureSummary implements JsonSerializable<TemperatureSum
      *
      * @return the past24Hours value.
      */
+    @Generated
     public PastHoursTemperature getPast24Hours() {
         return this.past24Hours;
     }
@@ -67,6 +75,7 @@ public final class TemperatureSummary implements JsonSerializable<TemperatureSum
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -84,6 +93,7 @@ public final class TemperatureSummary implements JsonSerializable<TemperatureSum
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the TemperatureSummary.
      */
+    @Generated
     public static TemperatureSummary fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TemperatureSummary deserializedTemperatureSummary = new TemperatureSummary();

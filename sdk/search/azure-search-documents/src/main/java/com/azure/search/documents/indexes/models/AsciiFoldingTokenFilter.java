@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,11 +23,13 @@ public final class AsciiFoldingTokenFilter extends TokenFilter {
     /*
      * A URI fragment specifying the type of token filter.
      */
+    @Generated
     private String odataType = "#Microsoft.Azure.Search.AsciiFoldingTokenFilter";
 
     /*
      * A value indicating whether the original token will be kept. Default is false.
      */
+    @Generated
     private Boolean preserveOriginal;
 
     /**
@@ -34,6 +37,7 @@ public final class AsciiFoldingTokenFilter extends TokenFilter {
      * 
      * @param name the name value to set.
      */
+    @Generated
     public AsciiFoldingTokenFilter(String name) {
         super(name);
     }
@@ -43,6 +47,7 @@ public final class AsciiFoldingTokenFilter extends TokenFilter {
      * 
      * @return the odataType value.
      */
+    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -53,6 +58,7 @@ public final class AsciiFoldingTokenFilter extends TokenFilter {
      * 
      * @return the preserveOriginal value.
      */
+    @Generated
     public Boolean isPreserveOriginal() {
         return this.preserveOriginal;
     }
@@ -63,6 +69,7 @@ public final class AsciiFoldingTokenFilter extends TokenFilter {
      * @param preserveOriginal the preserveOriginal value to set.
      * @return the AsciiFoldingTokenFilter object itself.
      */
+    @Generated
     public AsciiFoldingTokenFilter setPreserveOriginal(Boolean preserveOriginal) {
         this.preserveOriginal = preserveOriginal;
         return this;
@@ -71,6 +78,7 @@ public final class AsciiFoldingTokenFilter extends TokenFilter {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -89,6 +97,7 @@ public final class AsciiFoldingTokenFilter extends TokenFilter {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AsciiFoldingTokenFilter.
      */
+    @Generated
     public static AsciiFoldingTokenFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

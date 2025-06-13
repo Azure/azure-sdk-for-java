@@ -76,7 +76,7 @@ public final class IndexesImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AIProjectClientIndex")
+    @ServiceInterface(name = "AIProjectClientIndexes")
     public interface IndexesService {
         @Get("/indexes/{name}/versions")
         @ExpectedResponses({ 200 })

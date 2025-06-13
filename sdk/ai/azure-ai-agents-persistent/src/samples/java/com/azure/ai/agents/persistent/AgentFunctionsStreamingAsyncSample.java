@@ -42,11 +42,11 @@ import static com.azure.ai.agents.persistent.SampleUtils.printStreamUpdate;
 public final class AgentFunctionsStreamingAsyncSample {
 
     public static void main(String[] args) {
-        PersistentAgentsAdministrationClientBuilder clientBuilder = new PersistentAgentsAdministrationClientBuilder()
+        PersistentAgentsClientBuilder clientBuilder = new PersistentAgentsClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build());
             
-        PersistentAgentsAdministrationAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
+        PersistentAgentsAdministrationAsyncClient agentsAsyncClient = clientBuilder.buildPersistentAgentsAdministrationAsyncClient();
         ThreadsAsyncClient threadsAsyncClient = clientBuilder.buildThreadsAsyncClient();
         MessagesAsyncClient messagesAsyncClient = clientBuilder.buildMessagesAsyncClient();
         RunsAsyncClient runsAsyncClient = clientBuilder.buildRunsAsyncClient();
@@ -181,8 +181,8 @@ public final class AgentFunctionsStreamingAsyncSample {
                                     .setAdditionalInstructions("");
                                 
                                 System.out.println("----- Run started! -----");
-                                return runsAsyncClient.createRunStreaming(createRunOptions)
-                                    .map(su -> handleStreamingRun(su, runsAsyncClient, getResolvedToolOutput));
+                                return handleStreamingRun(runsAsyncClient
+                                    .createRunStreaming(createRunOptions), runsAsyncClient, getResolvedToolOutput);
                             });
                     });
             })
@@ -238,7 +238,7 @@ public final class AgentFunctionsStreamingAsyncSample {
         return runsAsyncClient.submitToolOutputsToRunStreaming(
             run.getThreadId(),
             run.getId(),
-            toolOutputs).flatMapMany(su -> su);
+            toolOutputs);
     }
 
     // Use "Map.of" if available
