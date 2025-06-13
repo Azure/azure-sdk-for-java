@@ -27,17 +27,17 @@ public final class AuthMetadata {
      * @return the list containing supported auth schemes.
      */
     public List<AuthScheme> getAuthSchemes() {
-        return authScheme;
+        return authSchemes;
     }
 
     /**
      * Configures the auth schemes to be used.
      *
-     * @param authScheme the list of supported auth schemes.
+     * @param authSchemes the list of supported auth schemes.
      * @return the updated Auth Metadata instance.
      */
     public AuthMetadata setAuthSchemes(List<AuthScheme> authSchemes) {
-        this.authScheme = authScheme;
+        this.authSchemes = authSchemes;
         return this;
     }
 
