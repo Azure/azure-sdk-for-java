@@ -75,7 +75,7 @@ public final class MessagesImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PersistentAgentsClie")
+    @ServiceInterface(name = "PersistentAgentsClientMessages")
     public interface MessagesService {
         @Post("/threads/{threadId}/messages")
         @ExpectedResponses({ 200 })

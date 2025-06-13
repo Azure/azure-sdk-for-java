@@ -77,7 +77,7 @@ public final class PersistentAgentsAdministrationsImpl {
      * the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PersistentAgentsClie")
+    @ServiceInterface(name = "PersistentAgentsClientPersistentAgentsAdministrations")
     public interface PersistentAgentsAdministrationsService {
         @Get("/assistants/{assistantId}")
         @ExpectedResponses({ 200 })

@@ -77,7 +77,7 @@ public final class VectorStoresImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PersistentAgentsClie")
+    @ServiceInterface(name = "PersistentAgentsClientVectorStores")
     public interface VectorStoresService {
         @Post("/vector_stores")
         @ExpectedResponses({ 200 })
