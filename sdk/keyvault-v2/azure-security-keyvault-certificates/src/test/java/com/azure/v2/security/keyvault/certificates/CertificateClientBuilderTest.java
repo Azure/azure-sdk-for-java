@@ -39,7 +39,7 @@ public class CertificateClientBuilderTest {
     @Test
     public void buildSyncClientTest() {
         CertificateClient certificateClient = new CertificateClientBuilder()
-            .vaultUrl(vaultUrl)
+            .endpoint(vaultUrl)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
             .httpClient(request -> CompletableFuture.completedFuture(
@@ -53,7 +53,7 @@ public class CertificateClientBuilderTest {
     @Test
     public void buildSyncClientUsingDefaultApiVersionTest() {
         CertificateClient certificateClient = new CertificateClientBuilder()
-            .vaultUrl(vaultUrl)
+            .endpoint(vaultUrl)
             .credential(new TestUtils.TestCredential())
             .httpClient(request -> CompletableFuture.completedFuture(
                 Response.fromValue(null, null, 200, null, null)))
@@ -65,12 +65,12 @@ public class CertificateClientBuilderTest {
 
     @Test
     public void emptyVaultUrlThrowsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> new CertificateClientBuilder().vaultUrl(""));
+        assertThrows(IllegalArgumentException.class, () -> new CertificateClientBuilder().endpoint(""));
     }
 
     @Test
     public void nullVaultUrlThrowsIllegalArgumentException() {
-        assertThrows(NullPointerException.class, () -> new CertificateClientBuilder().vaultUrl(null));
+        assertThrows(NullPointerException.class, () -> new CertificateClientBuilder().endpoint(null));
     }
 
     @Test
@@ -86,7 +86,7 @@ public class CertificateClientBuilderTest {
     @Test
     public void clientOptionsIsPreferredOverRequestOptions() {
         CertificateClient certificateClient = new CertificateClientBuilder()
-            .vaultUrl(vaultUrl)
+            .endpoint(vaultUrl)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
             .httpClient(request -> CompletableFuture.completedFuture(
@@ -102,7 +102,7 @@ public class CertificateClientBuilderTest {
     @Test
     public void bothRetryOptionsAndRetryPolicySet() {
         assertThrows(IllegalStateException.class, () -> new CertificateClientBuilder()
-            .vaultUrl(vaultUrl)
+            .endpoint(vaultUrl)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
             .httpClient(request -> CompletableFuture.completedFuture(
@@ -115,7 +115,7 @@ public class CertificateClientBuilderTest {
     @Test
     public void buildClientWithRetryOptions() {
         CertificateClient certificateClient = new CertificateClientBuilder()
-            .vaultUrl(vaultUrl)
+            .endpoint(vaultUrl)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
             .httpClient(request -> CompletableFuture.completedFuture(
@@ -129,7 +129,7 @@ public class CertificateClientBuilderTest {
     @Test
     public void buildClientWithRetryPolicy() {
         CertificateClient certificateClient = new CertificateClientBuilder()
-            .vaultUrl(vaultUrl)
+            .endpoint(vaultUrl)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
             .httpClient(request -> CompletableFuture.completedFuture(
@@ -143,7 +143,7 @@ public class CertificateClientBuilderTest {
     @Test
     public void buildClientWithHttpLogOptions() {
         CertificateClient certificateClient = new CertificateClientBuilder()
-            .vaultUrl(vaultUrl)
+            .endpoint(vaultUrl)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
             .httpClient(request -> CompletableFuture.completedFuture(
@@ -157,7 +157,7 @@ public class CertificateClientBuilderTest {
     @Test
     public void buildClientWithHttpPipeline() {
         CertificateClient certificateClient = new CertificateClientBuilder()
-            .vaultUrl(vaultUrl)
+            .endpoint(vaultUrl)
             .serviceVersion(serviceVersion)
             .pipeline(TestUtils.buildHttpPipeline())
             .buildClient();
@@ -168,7 +168,7 @@ public class CertificateClientBuilderTest {
     @Test
     public void buildClientWithNullPipelineThrowsException() {
         assertThrows(NullPointerException.class, () -> new CertificateClientBuilder()
-            .vaultUrl(vaultUrl)
+            .endpoint(vaultUrl)
             .serviceVersion(serviceVersion)
             .pipeline(null)
             .buildClient());
@@ -177,7 +177,7 @@ public class CertificateClientBuilderTest {
     @Test
     public void buildClientWithCredentialAndPipelineThrowsException() {
         assertThrows(IllegalStateException.class, () -> new CertificateClientBuilder()
-            .vaultUrl(vaultUrl)
+            .endpoint(vaultUrl)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
             .pipeline(TestUtils.buildHttpPipeline())

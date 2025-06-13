@@ -75,6 +75,12 @@ Licensed under the MIT License.
     <!-- Test dependencies -->
     <dependency>
       <groupId>com.azure.v2</groupId>
+      <artifactId>azure-core-test</artifactId>
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure.v2:azure-core-test;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure.v2</groupId>
       <artifactId>azure-identity</artifactId>
       <version>2.0.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure.v2:azure-identity;dependency} -->
       <scope>test</scope>

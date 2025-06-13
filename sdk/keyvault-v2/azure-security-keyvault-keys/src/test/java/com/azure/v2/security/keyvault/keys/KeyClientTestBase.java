@@ -101,7 +101,7 @@ public abstract class KeyClientTestBase extends TestBase {
             interceptorManager.addMatchers(customMatchers);
         }
 
-        KeyClientBuilder builder = new KeyClientBuilder().vaultUrl(endpoint)
+        KeyClientBuilder builder = new KeyClientBuilder().endpoint(endpoint)
             .serviceVersion(serviceVersion)
             .credential(credential)
             .httpClient(httpClient);

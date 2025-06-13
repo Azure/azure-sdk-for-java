@@ -100,7 +100,7 @@ public abstract class CertificateClientTestBase extends TestBase {
             interceptorManager.addMatchers(customMatchers);
         }
 
-        CertificateClientBuilder builder = new CertificateClientBuilder().vaultUrl(endpoint)
+        CertificateClientBuilder builder = new CertificateClientBuilder().endpoint(endpoint)
             .serviceVersion(serviceVersion)
             .credential(credential)
             .httpClient(httpClient);

@@ -37,7 +37,7 @@ public class KeyClientBuilderTest {
 
     @Test
     public void buildSyncClientTest() {
-        KeyClient keyClient = new KeyClientBuilder().vaultUrl(vaultUrl)
+        KeyClient keyClient = new KeyClientBuilder().endpoint(vaultUrl)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
             .httpClient(request -> CompletableFuture.completedFuture(new MockHttpResponse(request, 200)))
@@ -49,7 +49,7 @@ public class KeyClientBuilderTest {
 
     @Test
     public void buildSyncClientUsingDefaultApiVersionTest() {
-        KeyClient keyClient = new KeyClientBuilder().vaultUrl(vaultUrl)
+        KeyClient keyClient = new KeyClientBuilder().endpoint(vaultUrl)
             .credential(new TestUtils.TestCredential())
             .httpClient(request -> CompletableFuture.completedFuture(new MockHttpResponse(request, 200)))
             .buildClient();
@@ -60,7 +60,7 @@ public class KeyClientBuilderTest {
 
     @Test
     public void emptyVaultUrlThrowsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> new KeyClientBuilder().vaultUrl(""));
+        assertThrows(IllegalArgumentException.class, () -> new KeyClientBuilder().endpoint(""));
     }
 
     @Test
@@ -70,7 +70,7 @@ public class KeyClientBuilderTest {
 
     @Test
     public void credentialWithInvalidChallengeThrowsHttpResponseException() {
-        KeyClient keyClient = new KeyClientBuilder().vaultUrl(vaultUrl)
+        KeyClient keyClient = new KeyClientBuilder().endpoint(vaultUrl)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
             .httpClient(httpRequest -> {
@@ -87,7 +87,7 @@ public class KeyClientBuilderTest {
 
     @Test
     public void credentialWithEmptyChallengeThrowsHttpResponseException() {
-        KeyClient keyClient = new KeyClientBuilder().vaultUrl(vaultUrl)
+        KeyClient keyClient = new KeyClientBuilder().endpoint(vaultUrl)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
             .httpClient(httpRequest -> {
@@ -104,7 +104,7 @@ public class KeyClientBuilderTest {
 
     @Test
     public void credentialWithNoChallengeThrowsHttpResponseException() {
-        KeyClient keyClient = new KeyClientBuilder().vaultUrl(vaultUrl)
+        KeyClient keyClient = new KeyClientBuilder().endpoint(vaultUrl)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
             .httpClient(httpRequest -> {
@@ -121,7 +121,7 @@ public class KeyClientBuilderTest {
 
     @Test
     public void clientOptionsIsPreferredOverLogOptions() {
-        KeyClient keyClient = new KeyClientBuilder().vaultUrl(vaultUrl)
+        KeyClient keyClient = new KeyClientBuilder().endpoint(vaultUrl)
             .credential(new TestUtils.TestCredential())
             .httpClient(request -> CompletableFuture.completedFuture(new MockHttpResponse(request, 200)))
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
@@ -135,7 +135,7 @@ public class KeyClientBuilderTest {
 
     @Test
     public void applicationIdFallsBackToLogOptions() {
-        KeyClient keyClient = new KeyClientBuilder().vaultUrl(vaultUrl)
+        KeyClient keyClient = new KeyClientBuilder().endpoint(vaultUrl)
             .credential(new TestUtils.TestCredential())
             .httpClient(request -> CompletableFuture.completedFuture(new MockHttpResponse(request, 200)))
             .httpLogOptions(new HttpLogOptions().setApplicationId("anApplication"))
@@ -148,7 +148,7 @@ public class KeyClientBuilderTest {
 
     @Test
     public void clientOptionHeadersAreAddedLast() {
-        KeyClient keyClient = new KeyClientBuilder().vaultUrl(vaultUrl)
+        KeyClient keyClient = new KeyClientBuilder().endpoint(vaultUrl)
             .credential(new TestUtils.TestCredential())
             .httpClient(request -> CompletableFuture.completedFuture(new MockHttpResponse(request, 200)))
             .clientOptions(new ClientOptions()

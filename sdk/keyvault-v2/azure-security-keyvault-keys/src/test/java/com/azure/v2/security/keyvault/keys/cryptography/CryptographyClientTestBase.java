@@ -92,7 +92,7 @@ public abstract class CryptographyClientTestBase extends TestBase {
         }
 
         KeyClientBuilder builder = new KeyClientBuilder()
-            .vaultUrl(endpoint)
+            .endpoint(endpoint)
             .serviceVersion(serviceVersion)
             .credential(credential)
             .httpClient(httpClient);

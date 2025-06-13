@@ -30,7 +30,7 @@ public final class TestUtils {
 
     public static class PerCallPolicy implements HttpPipelinePolicy {
         @Override
-        public CompletableFuture<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        public Response<BinaryData> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
             context.getHttpRequest().setHeader(CUSTOM_HEADER, "Some Value");
             return next.process();
         }
@@ -43,7 +43,7 @@ public final class TestUtils {
 
     public static class PerRetryPolicy implements HttpPipelinePolicy {
         @Override
-        public CompletableFuture<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        public Response<BinaryData> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
             context.getHttpRequest().setHeader(CUSTOM_HEADER, "Some Value");
             return next.process();
         }
