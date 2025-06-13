@@ -13,7 +13,6 @@
 - Removed support for service version `7.6-preview.2`.
 
 ### Other Changes
-[CHANGELOG.md](..%2Fazure-security-keyvault-keys%2FCHANGELOG.md)
 #### Dependency Updates
 
 > Compared to the latest release - `4.10.0-beta.1`
