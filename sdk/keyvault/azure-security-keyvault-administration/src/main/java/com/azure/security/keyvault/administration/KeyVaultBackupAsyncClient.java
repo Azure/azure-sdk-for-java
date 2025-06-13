@@ -320,7 +320,7 @@ public final class KeyVaultBackupAsyncClient {
         return (pollingContext) -> {
             try {
                 return withContext(context -> preBackupWithResponse(blobStorageUrl, sasToken, context))
-                    .flatMap(backupResponse -> Mono.just(backupResponse.getValue()));
+                    .map(Response::getValue);
             } catch (RuntimeException e) {
                 return monoError(LOGGER, e);
             }
@@ -411,7 +411,7 @@ public final class KeyVaultBackupAsyncClient {
         return (pollingContext) -> {
             try {
                 return withContext(context -> backupWithResponse(blobStorageUrl, sasToken, context))
-                    .flatMap(backupResponse -> Mono.just(backupResponse.getValue()));
+                    .map(Response::getValue);
             } catch (RuntimeException e) {
                 return monoError(LOGGER, e);
             }
@@ -583,7 +583,7 @@ public final class KeyVaultBackupAsyncClient {
         return (pollingContext) -> {
             try {
                 return withContext(context -> preRestoreWithResponse(folderUrl, sasToken, context))
-                    .flatMap(restoreResponse -> Mono.just(restoreResponse.getValue()));
+                    .map(Response::getValue);
             } catch (RuntimeException e) {
                 return monoError(LOGGER, e);
             }
@@ -683,7 +683,7 @@ public final class KeyVaultBackupAsyncClient {
         return (pollingContext) -> {
             try {
                 return withContext(context -> restoreWithResponse(folderUrl, sasToken, context))
-                    .flatMap(restoreResponse -> Mono.just(restoreResponse.getValue()));
+                    .map(Response::getValue);
             } catch (RuntimeException e) {
                 return monoError(LOGGER, e);
             }
@@ -846,7 +846,7 @@ public final class KeyVaultBackupAsyncClient {
         return (pollingContext) -> {
             try {
                 return withContext(context -> selectiveKeyRestoreWithResponse(keyName, folderUrl, sasToken, context))
-                    .flatMap(selectiveKeyRestoreResponse -> Mono.just(selectiveKeyRestoreResponse.getValue()));
+                    .map(Response::getValue);
             } catch (RuntimeException e) {
                 return monoError(LOGGER, e);
             }
