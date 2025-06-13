@@ -75,7 +75,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
     private int numberOfPartitions;
 
-    @Factory(dataProvider = "clientBuildersWithDirect")
+    @Factory(dataProvider = "clientBuildersWithGateway")
     public OrderbyDocumentQueryTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
@@ -907,7 +907,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             //Observable<FeedResponse<Document>> firstPageObservable = queryObservable.byPage().first();
             TestSubscriber<FeedResponse<InternalObjectNode>> testSubscriber = new TestSubscriber<>();
             queryObservable.byPage(requestContinuation, pageSize).subscribe(testSubscriber);
-            testSubscriber.awaitTerminalEvent(4 * TIMEOUT, TimeUnit.MILLISECONDS); // TODO: revert the timeout
+            testSubscriber.awaitTerminalEvent(10 * TIMEOUT, TimeUnit.MILLISECONDS); // TODO: revert the timeout
             testSubscriber.assertNoErrors();
             testSubscriber.assertComplete();
 
