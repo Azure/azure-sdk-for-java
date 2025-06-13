@@ -5,10 +5,10 @@ package com.azure.ai.agents.persistent;
 
 import com.azure.ai.agents.persistent.implementation.ThreadsImpl;
 import com.azure.ai.agents.persistent.implementation.models.CreateThreadRequest;
+import com.azure.ai.agents.persistent.implementation.models.ThreadDeletionStatus;
 import com.azure.ai.agents.persistent.implementation.models.UpdateThreadRequest;
 import com.azure.ai.agents.persistent.models.ListSortOrder;
 import com.azure.ai.agents.persistent.models.PersistentAgentThread;
-import com.azure.ai.agents.persistent.models.ThreadDeletionStatus;
 import com.azure.ai.agents.persistent.models.ThreadMessageOptions;
 import com.azure.ai.agents.persistent.models.ToolResources;
 import com.azure.core.annotation.Generated;
@@ -33,9 +33,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the asynchronous PersistentAgentsAdministrationClient type.
+ * Initializes a new instance of the asynchronous PersistentAgentsClient type.
  */
-@ServiceClient(builder = PersistentAgentsAdministrationClientBuilder.class, isAsync = true)
+@ServiceClient(builder = PersistentAgentsClientBuilder.class, isAsync = true)
 public final class ThreadsAsyncClient {
 
     @Generated
@@ -192,6 +192,93 @@ public final class ThreadsAsyncClient {
     public Mono<Response<BinaryData>> createThreadWithResponse(BinaryData createThreadRequest,
         RequestOptions requestOptions) {
         return this.serviceClient.createThreadWithResponseAsync(createThreadRequest, requestOptions);
+    }
+
+    /**
+     * Gets a list of threads that were previously created.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     tool_resources (Required): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             data_sources (Optional): [
+     *                  (Optional){
+     *                     uri: String (Required)
+     *                     type: String(uri_asset/id_asset) (Required)
+     *                 }
+     *             ]
+     *         }
+     *         file_search (Optional): {
+     *             vector_store_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             vector_stores (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     configuration (Required): {
+     *                         data_sources (Required): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                 }
+     *             ]
+     *         }
+     *         azure_ai_search (Optional): {
+     *             indexes (Optional): [
+     *                  (Optional){
+     *                     index_connection_id: String (Optional)
+     *                     index_name: String (Optional)
+     *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
+     *                     top_k: Integer (Optional)
+     *                     filter: String (Optional)
+     *                     index_asset_id: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     }
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of threads that were previously created as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listThreads(RequestOptions requestOptions) {
+        return this.serviceClient.listThreadsAsync(requestOptions);
     }
 
     /**
@@ -390,35 +477,6 @@ public final class ThreadsAsyncClient {
     public Mono<Response<BinaryData>> updateThreadWithResponse(String threadId, BinaryData updateThreadRequest,
         RequestOptions requestOptions) {
         return this.serviceClient.updateThreadWithResponseAsync(threadId, updateThreadRequest, requestOptions);
-    }
-
-    /**
-     * Deletes an existing thread.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     deleted: boolean (Required)
-     *     object: String (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param threadId Identifier of the thread.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the status of a thread deletion operation along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteThreadWithResponse(String threadId, RequestOptions requestOptions) {
-        return this.serviceClient.deleteThreadWithResponseAsync(threadId, requestOptions);
     }
 
     /**
@@ -640,6 +698,35 @@ public final class ThreadsAsyncClient {
 
     /**
      * Deletes an existing thread.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     deleted: boolean (Required)
+     *     object: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param threadId Identifier of the thread.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the status of a thread deletion operation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> deleteThreadInternalWithResponse(String threadId, RequestOptions requestOptions) {
+        return this.serviceClient.deleteThreadInternalWithResponseAsync(threadId, requestOptions);
+    }
+
+    /**
+     * Deletes an existing thread.
      *
      * @param threadId Identifier of the thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -652,97 +739,35 @@ public final class ThreadsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ThreadDeletionStatus> deleteThread(String threadId) {
-        // Generated convenience method for deleteThreadWithResponse
+    Mono<ThreadDeletionStatus> deleteThreadInternal(String threadId) {
+        // Generated convenience method for deleteThreadInternalWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteThreadWithResponse(threadId, requestOptions).flatMap(FluxUtil::toMono)
+        return deleteThreadInternalWithResponse(threadId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ThreadDeletionStatus.class));
     }
 
     /**
-     * Gets a list of threads that were previously created.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
-     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
-     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
-     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
-     * list.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     object: String (Required)
-     *     created_at: long (Required)
-     *     tool_resources (Required): {
-     *         code_interpreter (Optional): {
-     *             file_ids (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             data_sources (Optional): [
-     *                  (Optional){
-     *                     uri: String (Required)
-     *                     type: String(uri_asset/id_asset) (Required)
-     *                 }
-     *             ]
-     *         }
-     *         file_search (Optional): {
-     *             vector_store_ids (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             vector_stores (Optional): [
-     *                  (Optional){
-     *                     name: String (Required)
-     *                     configuration (Required): {
-     *                         data_sources (Required): [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                     }
-     *                 }
-     *             ]
-     *         }
-     *         azure_ai_search (Optional): {
-     *             indexes (Optional): [
-     *                  (Optional){
-     *                     index_connection_id: String (Optional)
-     *                     index_name: String (Optional)
-     *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
-     *                     top_k: Integer (Optional)
-     *                     filter: String (Optional)
-     *                     index_asset_id: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     }
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
+     * Deletes an existing thread.
      *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param threadId Identifier of the thread.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of threads that were previously created as paginated response with {@link PagedFlux}.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a {@link Mono} that completes when the thread is deleted successfully.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listThreads(RequestOptions requestOptions) {
-        return this.serviceClient.listThreadsAsync(requestOptions);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteThread(String threadId) {
+        // Generated convenience method for deleteThreadInternalWithResponse
+        Mono<ThreadDeletionStatus> deletionStatusMono = deleteThreadInternal(threadId);
+        return deletionStatusMono.flatMap(deletionStatus -> {
+            if (deletionStatus == null || !deletionStatus.isDeleted()) {
+                return Mono.error(new RuntimeException("Thread with ID '" + threadId + "' could not be deleted."));
+            } else {
+                return Mono.empty();
+            }
+        });
     }
 }
