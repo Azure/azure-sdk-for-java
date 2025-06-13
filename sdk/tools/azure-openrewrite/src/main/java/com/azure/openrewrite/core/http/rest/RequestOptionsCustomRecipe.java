@@ -1,6 +1,5 @@
 package com.azure.openrewrite.core.http.rest;
 
-import org.jspecify.annotations.Nullable;
 import org.openrewrite.Cursor;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.Recipe;
@@ -11,10 +10,10 @@ import org.openrewrite.java.JavaVisitor;
 import org.openrewrite.java.MethodMatcher;
 import org.openrewrite.java.tree.Flag;
 import org.openrewrite.java.tree.J;
-
-import com.azure.openrewrite.util.ConfiguredParserJavaTemplateBuilder;
 import org.openrewrite.java.tree.JavaType;
 import org.openrewrite.java.tree.Space;
+
+import com.azure.openrewrite.util.ConfiguredParserJavaTemplateBuilder;
 
 /**
  * A custom OpenRewrite recipe to migrate the use of RequestOptions.
@@ -60,9 +59,9 @@ public class RequestOptionsCustomRecipe extends Recipe {
         return new JavaIsoVisitor<ExecutionContext>() {
 
             @Override
-            public @Nullable J visit(@Nullable Tree tree, ExecutionContext executionContext) {
+            public J.CompilationUnit visitCompilationUnit(J.CompilationUnit cu, ExecutionContext executionContext) {
                 doAfterVisit(new ConvertToImmutableVisitor());
-                return super.visit(tree, executionContext);
+                return super.visitCompilationUnit(cu, executionContext);
             }
 
             @Override
@@ -72,9 +71,9 @@ public class RequestOptionsCustomRecipe extends Recipe {
                 MethodMatcher methodMatcher;
                 JavaTemplate replacementTemplate;
 
-                methodMatcher = new MethodMatcher("com.azure.core.http.rest.RequestOptions addHeader(java.lang.String, java.lang.String)");
+                methodMatcher = new MethodMatcher("com.azure.core.http.rest.RequestOptions setHeader(java.lang.String, java.lang.String)");
                 if (methodMatcher.matches(visitedMethodInvocation)) {
-                    replacementTemplate = templateBuilder.getJavaTemplateBuilder("addHeader(HttpHeaderName.fromString(#{any(java.lang.String)}), #{any(java.lang.String)})")
+                    replacementTemplate = templateBuilder.getJavaTemplateBuilder("setHeader(HttpHeaderName.fromString(#{any(java.lang.String)}), #{any(java.lang.String)})")
                         .imports("io.clientcore.core.http.models.HttpHeaderName")
                         .build();
                     visitedMethodInvocation = replacementTemplate.apply(getCursor(), visitedMethodInvocation.getCoordinates().replaceMethod(), visitedMethodInvocation.getArguments().toArray());
@@ -94,7 +93,7 @@ public class RequestOptionsCustomRecipe extends Recipe {
         final String FLUENT_KEY = "fluentConstructor";
 
         @Override
-        public @Nullable J visit(@Nullable Tree tree, ExecutionContext executionContext) {
+        public J visit(Tree tree, ExecutionContext executionContext) {
             return super.visit(tree, executionContext);
         }
 
