@@ -33,6 +33,7 @@ public class HttpClientConfig {
     private boolean connectionKeepAlive = true;
     private boolean serverCertValidationDisabled = false;
     private Http2ConnectionConfig http2ConnectionConfig;
+    private boolean enableDnsLookupLogging = false;
 
     public HttpClientConfig(Configs configs) {
         this.configs = configs;
@@ -109,6 +110,11 @@ public class HttpClientConfig {
         return this;
     }
 
+    public HttpClientConfig withEnableDnsLookupLogging(boolean enableDnsLookupLogging) {
+        this.enableDnsLookupLogging = enableDnsLookupLogging;
+        return this;
+    }
+
     public Configs getConfigs() {
         return configs;
     }
@@ -171,6 +177,14 @@ public class HttpClientConfig {
 
     public Http2ConnectionConfig getHttp2ConnectionConfig() {
         return this.http2ConnectionConfig;
+    }
+
+    public boolean isEnableDnsLookupLogging() {
+        return enableDnsLookupLogging;
+    }
+
+    public Http2ConnectionConfig getHttp2Config() {
+        return http2ConnectionConfig;
     }
 
     public String toDiagnosticsString() {
