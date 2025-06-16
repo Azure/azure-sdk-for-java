@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
@@ -174,7 +175,15 @@ public class EventGridSystemEventsCustomization extends Customization {
     public void customizeModuleInfo(LibraryCustomization customization) {
 
         Editor editor = customization.getRawEditor();
-        List<String> lines = editor.getFileLines("src/main/java/module-info.java");
+        String content = editor.getFileContent("src/main/java/module-info.java");;
+        List<String> lines = new ArrayList<>();
+        Scanner scanner = new Scanner(content);
+        while(scanner.hasNextLine()) {
+            lines.add(scanner.nextLine());
+        }
+        if (content.endsWith("\n")) {
+            lines.add("");
+        }
         StringBuilder sb = new StringBuilder();
         lines.forEach(line -> {
             if (!line.trim().equals("exports com.azure.messaging.eventgrid.systemevents;")) {
