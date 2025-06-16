@@ -7663,7 +7663,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    private boolean useThinClient() {
+    public boolean useThinClient() {
         return Configs.isThinClientEnabled() && this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY;
     }
 

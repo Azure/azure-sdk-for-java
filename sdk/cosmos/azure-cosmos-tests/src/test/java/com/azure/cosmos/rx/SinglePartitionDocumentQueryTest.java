@@ -2,11 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.*;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxStoreModel;
@@ -97,7 +93,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
                                              .getContainer(createdCollection.getId());
         RxDocumentClientImpl asyncDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(client);
         RxStoreModel serverStoreModel = ReflectionUtils.getRxServerStoreModel(asyncDocumentClient);
-        RxStoreModel proxy = Configs.isThinClientEnabled() ?
+        RxStoreModel proxy = asyncDocumentClient.useThinClient() ?
             ReflectionUtils.getThinProxy(asyncDocumentClient) :
             ReflectionUtils.getGatewayProxy(asyncDocumentClient);
 
@@ -105,8 +101,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         RxStoreModel spyProxy = Mockito.spy(proxy);
 
         ReflectionUtils.setServerStoreModel(asyncDocumentClient, spyServerStoreModel);
-
-        if (Configs.isThinClientEnabled()) {
+        if (asyncDocumentClient.useThinClient()) {
             ReflectionUtils.setThinProxy(asyncDocumentClient, spyProxy);
         } else {
             ReflectionUtils.setGatewayProxy(asyncDocumentClient, spyProxy);
@@ -120,14 +115,13 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         queryFlux.byPage().blockLast();
 
         // Validation:
-        // In gateway mode, serverstoremodel is GatewayStoreModel so below passes
+        // In gateway mode, serverstoremodel is GatewayStoreModel/ThinClientStoreModel so below passes
         // In direct mode, serverStoreModel is ServerStoreModel. So queryPlan goes through gatewayProxy and the query
         // goes through the serverStoreModel
         Mockito.verify(spyProxy, Mockito.times(1)).processMessage(Mockito.any());
-        if (!Configs.isThinClientEnabled()) {
+        if (asyncDocumentClient.getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
             Mockito.verify(spyServerStoreModel, Mockito.times(1)).processMessage(Mockito.any());
         }
-
     }
 
     @Test(groups = { "query" }, timeOut = TIMEOUT)
