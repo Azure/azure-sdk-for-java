@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.ai.projects;
 
-import com.azure.ai.agents.persistent.PersistentAgentsAdministrationAsyncClient;
-import com.azure.ai.agents.persistent.PersistentAgentsClientBuilder;
 import com.azure.ai.agents.persistent.models.CreateAgentOptions;
 import com.azure.ai.agents.persistent.models.PersistentAgent;
 import com.azure.core.util.Configuration;
@@ -12,10 +10,10 @@ import reactor.core.publisher.Mono;
 
 public class AgentsAsyncSample {
 
-    private static PersistentAgentsAdministrationAsyncClient agentsAsyncClient
-        = new PersistentAgentsClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+    private static PersistentAgentsAsyncClient agentsAsyncClient
+        = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
         .credential(new DefaultAzureCredentialBuilder().build())
-        .buildPersistentAgentsAdministrationAsyncClient();
+        .buildPersistentAgentsAsyncClient();
 
     public static void main(String[] args) {
         // Using block() to wait for the async operations to complete in the sample
@@ -31,7 +29,7 @@ public class AgentsAsyncSample {
             .setName(agentName)
             .setInstructions("You are a helpful agent");
             
-        return agentsAsyncClient.createAgent(createAgentOptions)
+        return agentsAsyncClient.getPersistentAgentsAdministration().createAgent(createAgentOptions)
             .doOnNext(agent -> System.out.println("Agent created: " + agent.getId()));
 
         // END:com.azure.ai.projects.AgentsAsyncSample.createAgent
@@ -40,7 +38,7 @@ public class AgentsAsyncSample {
     public static Mono<Void> deleteAgent(String agentId) {
         // BEGIN:com.azure.ai.projects.AgentsAsyncSample.deleteAgent
 
-        return agentsAsyncClient.deleteAgent(agentId)
+        return agentsAsyncClient.getPersistentAgentsAdministration().deleteAgent(agentId)
             .doOnSuccess(aVoid -> System.out.println("Agent deleted: " + agentId));
 
         // END:com.azure.ai.projects.AgentsAsyncSample.deleteAgent
