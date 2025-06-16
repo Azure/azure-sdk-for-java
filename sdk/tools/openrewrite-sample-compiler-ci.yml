@@ -54,7 +54,6 @@ extends:
                   options: '-B -DskipTests -Dgpg.skip -am'
                   javaHomeOption: 'JDKVersion'
                   jdkVersionOption: '1.8'
-                  mavenOptions: '-Xmx3072m'
                   publishJUnitResults: false
               
               - task: Maven@3
@@ -64,5 +63,4 @@ extends:
                   goals: 'com.azure:azure-openrewrite-compiler-maven-plugin:compile-golden-image'
                   javaHomeOption: 'JDKVersion'
                   jdkVersionOption: '1.8'
-                  mavenOptions: '-Xmx3072m'
                   publishJUnitResults: false
