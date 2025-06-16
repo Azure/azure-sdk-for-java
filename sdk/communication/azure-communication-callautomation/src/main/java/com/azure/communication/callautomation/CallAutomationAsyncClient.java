@@ -25,7 +25,6 @@ import com.azure.communication.callautomation.implementation.models.CreateCallRe
 import com.azure.communication.callautomation.implementation.models.MediaStreamingAudioChannelTypeInternal;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingContentTypeInternal;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingOptionsInternal;
-import com.azure.communication.callautomation.implementation.models.MicrosoftTeamsAppIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.RedirectCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.RejectCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.TranscriptionOptionsInternal;
