@@ -3,15 +3,16 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.guava25.collect.Lists;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.InternalObjectNode;
@@ -97,15 +98,19 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
                                              .getContainer(createdCollection.getId());
         RxDocumentClientImpl asyncDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(client);
         RxStoreModel serverStoreModel = ReflectionUtils.getRxServerStoreModel(asyncDocumentClient);
-        RxStoreModel gatewayProxy = ReflectionUtils.getGatewayProxy(asyncDocumentClient);
-
-
+        RxStoreModel proxy = asyncDocumentClient.useThinClient() ?
+            ReflectionUtils.getThinProxy(asyncDocumentClient) :
+            ReflectionUtils.getGatewayProxy(asyncDocumentClient);
 
         RxStoreModel spyServerStoreModel = Mockito.spy(serverStoreModel);
-        RxStoreModel spyGatewayProxy = Mockito.spy(gatewayProxy);
+        RxStoreModel spyProxy = Mockito.spy(proxy);
 
         ReflectionUtils.setServerStoreModel(asyncDocumentClient, spyServerStoreModel);
-        ReflectionUtils.setGatewayProxy(asyncDocumentClient, spyGatewayProxy);
+        if (asyncDocumentClient.useThinClient()) {
+            ReflectionUtils.setThinProxy(asyncDocumentClient, spyProxy);
+        } else {
+            ReflectionUtils.setGatewayProxy(asyncDocumentClient, spyProxy);
+        }
 
         CosmosPagedFlux<InternalObjectNode> queryFlux = container
                                                             .queryItems("select * from root", options,
@@ -115,12 +120,13 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         queryFlux.byPage().blockLast();
 
         // Validation:
-        // In gateway mode, serverstoremodel is GatewayStoreModel so below passes
+        // In gateway mode, serverstoremodel is GatewayStoreModel/ThinClientStoreModel so below passes
         // In direct mode, serverStoreModel is ServerStoreModel. So queryPlan goes through gatewayProxy and the query
         // goes through the serverStoreModel
-        Mockito.verify(spyGatewayProxy, Mockito.times(1)).processMessage(Mockito.any());
-        Mockito.verify(spyServerStoreModel, Mockito.times(1)).processMessage(Mockito.any());
-
+        Mockito.verify(spyProxy, Mockito.times(1)).processMessage(Mockito.any());
+        if (asyncDocumentClient.getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
+            Mockito.verify(spyServerStoreModel, Mockito.times(1)).processMessage(Mockito.any());
+        }
     }
 
     @Test(groups = { "query" }, timeOut = TIMEOUT)
