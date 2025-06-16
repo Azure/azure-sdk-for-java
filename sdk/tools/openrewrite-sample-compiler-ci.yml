@@ -48,7 +48,7 @@ extends:
                       "sdk/clientcore/pom.xml",
                       "sdk/core-v2/pom.xml"
                     )
-                    mvn clean install -pl io.clientcore:core,com.azure.v2:azure-core -am
+                    mvn clean install -pl ($modulePaths -join ',') -am --% -B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip
 
               - task: Maven@3
                 displayName: 'Build and Install OpenRewrite Compiler Maven Plugin'
