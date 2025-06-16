@@ -28,7 +28,11 @@ extends:
               - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                 parameters:
                   Paths:
-                    - /sdk/
+                    - /sdk/tools/
+                    - /sdk/core-v2/
+                    - /sdk/identity-v2/
+                    - /sdk/clientcore/
+                    - /sdk/parents/
                     - /eng/
                     - /common/perf-test-core/
 
@@ -44,13 +48,13 @@ extends:
                       "sdk/clientcore/pom.xml",
                       "sdk/core-v2/pom.xml"
                     )
-                    mvn clean install -pl ($modulePaths -join ',') --% -B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip
+                    mvn install -pl ($modulePaths -join ',') --% -B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip
 
               - task: Maven@3
                 displayName: 'Build and Install OpenRewrite Compiler Maven Plugin'
                 inputs:
                   mavenPomFile: 'sdk/tools/azure-openrewrite-compiler-maven-plugin/pom.xml'
-                  goals: 'clean install'
+                  goals: 'install'
                   options: '-B -DskipTests -Dgpg.skip -am'
                   javaHomeOption: 'JDKVersion'
                   jdkVersionOption: '1.8'
