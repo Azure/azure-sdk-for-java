@@ -28,11 +28,7 @@ extends:
               - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                 parameters:
                   Paths:
-                    - /sdk/tools/
-                    - /sdk/core-v2/
-                    - /sdk/identity-v2/
-                    - /sdk/clientcore/
-                    - /sdk/parents/
+                    - /sdk/
                     - /eng/
                     - /common/perf-test-core/
 
