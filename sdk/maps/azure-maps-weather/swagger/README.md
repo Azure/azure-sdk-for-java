@@ -42,7 +42,7 @@ title: WeatherClient
 input-file: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/maps/data-plane/Weather/stable/1.1/weather.json
 namespace: com.azure.maps.weather
 java: true
-use: '@autorest/java@4.1.50'
+use: '@autorest/java@4.1.52'
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
 payload-flattening-threshold: 0
@@ -59,7 +59,7 @@ custom-types: ActiveStorm,ActiveStormResult,AirAndPollen,AirQuality,AirQualityRe
 customization-class: src/main/java/WeatherCustomization.java
 generic-response-type: true
 no-custom-headers: true
-use-eclipse-language-server: false
+
 ```
 
 ### Rename WeatherUnit to WeatherUnitDetails
