@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class AzureSearchIndexWriteBehaviorType extends ExpandableStringEnu
     /**
      * Static value Merge for AzureSearchIndexWriteBehaviorType.
      */
+    @Generated
     public static final AzureSearchIndexWriteBehaviorType MERGE = fromString("Merge");
 
     /**
      * Static value Upload for AzureSearchIndexWriteBehaviorType.
      */
+    @Generated
     public static final AzureSearchIndexWriteBehaviorType UPLOAD = fromString("Upload");
 
     /**
@@ -26,6 +29,7 @@ public final class AzureSearchIndexWriteBehaviorType extends ExpandableStringEnu
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AzureSearchIndexWriteBehaviorType() {
     }
@@ -36,6 +40,7 @@ public final class AzureSearchIndexWriteBehaviorType extends ExpandableStringEnu
      * @param name a name to look for.
      * @return the corresponding AzureSearchIndexWriteBehaviorType.
      */
+    @Generated
     public static AzureSearchIndexWriteBehaviorType fromString(String name) {
         return fromString(name, AzureSearchIndexWriteBehaviorType.class);
     }
@@ -45,6 +50,7 @@ public final class AzureSearchIndexWriteBehaviorType extends ExpandableStringEnu
      * 
      * @return known AzureSearchIndexWriteBehaviorType values.
      */
+    @Generated
     public static Collection<AzureSearchIndexWriteBehaviorType> values() {
         return values(AzureSearchIndexWriteBehaviorType.class);
     }
