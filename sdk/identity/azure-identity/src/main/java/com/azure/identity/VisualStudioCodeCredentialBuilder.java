@@ -20,13 +20,7 @@ import java.util.List;
  *
  * @see VisualStudioCodeCredential
  *
- * @deprecated This credential is deprecated because the VS Code Azure Account extension on which this credential
- * relies has been deprecated. Users should use other dev-time credentials, such as {@link AzureCliCredential},
- * {@link AzureDeveloperCliCredential}, {@link AzurePowerShellCredential} or {@link IntelliJCredential} for their
- * local development needs. See <a href="https://github.com/microsoft/vscode-azure-account/issues/964">this issue</a>
- * for Azure Account extension deprecation notice.
  */
-@Deprecated
 public class VisualStudioCodeCredentialBuilder extends CredentialBuilderBase<VisualStudioCodeCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(VisualStudioCodeCredentialBuilder.class);
 

@@ -9,6 +9,7 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.AuthenticationRecord;
 import com.azure.identity.BrowserCustomizationOptions;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.json.JsonProviders;
@@ -20,12 +21,17 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 public final class IdentityUtil {
+    public static final Path VSCODE_AUTH_RECORD_PATH = Paths.get(System.getProperty("user.home"), ".azure",
+        "ms-azuretools.vscode-azureresourcegroups", "authRecord.json");
     private static final ClientLogger LOGGER = new ClientLogger(IdentityUtil.class);
     public static final String AZURE_ADDITIONALLY_ALLOWED_TENANTS = "AZURE_ADDITIONALLY_ALLOWED_TENANTS";
     public static final String ALL_TENANTS = "*";
@@ -170,5 +176,31 @@ public final class IdentityUtil {
 
     public static boolean isLinuxPlatform() {
         return System.getProperty("os.name").contains("Linux");
+    }
+
+    public static boolean isVsCodeBrokerAuthAvailable() {
+        try {
+            // 1. Check if Broker dependency is available
+            Class.forName("com.azure.identity.broker.InteractiveBrowserBrokerBuilder");
+
+            // 2. Check if VS Code broker auth record file exists
+            File authRecordFile = VSCODE_AUTH_RECORD_PATH.toFile();
+
+            return authRecordFile.exists() && authRecordFile.isFile();
+        } catch (ClassNotFoundException e) {
+            return false; // Broker not present
+        }
+    }
+
+    public static AuthenticationRecord loadVSCodeAuthRecord() throws IOException {
+        // Resolve the full path to authRecord.json
+        File file = VSCODE_AUTH_RECORD_PATH.toFile();
+        if (!file.exists()) {
+            return null;
+        }
+        // Read file content
+        InputStream json = Files.newInputStream(VSCODE_AUTH_RECORD_PATH);
+        // Deserialize to AuthenticationRecord
+        return AuthenticationRecord.deserialize(json);
     }
 }
