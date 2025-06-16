@@ -42,7 +42,7 @@ extends:
                       "sdk/parents/pom.xml",
                       "common/perf-test-core/pom.xml",
                       "sdk/clientcore/pom.xml",
-                      "sdk/core-v2/pom.xml"
+                      "com.azure.v2:azure-core"
                     )
                     mvn install -pl ($modulePaths -join ',') --% -B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip
 
