@@ -129,4 +129,11 @@ public class NetworkInterfacesImpl extends
                 .block(),
             Function.identity(), Void.class, null, context);
     }
+
+    @Override
+    public PagedIterable<NetworkInterface> listByResourceGroup(String resourceGroupName, Context context) {
+        return this.inner().listByResourceGroup(resourceGroupName, context)
+            .mapPage(networkInterfaceInner ->
+                new NetworkInterfaceImpl(networkInterfaceInner.name(), networkInterfaceInner, NetworkInterfacesImpl.this.manager()));
+    }
 }
