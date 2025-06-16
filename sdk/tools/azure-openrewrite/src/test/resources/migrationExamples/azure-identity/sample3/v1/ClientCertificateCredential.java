@@ -1,9 +1,7 @@
-import com.azure.identity.ClientCertificateCredentialBuilder;
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.ProxyOptions.Type;
 import java.io.ByteArrayInputStream;
-import java.net.InetSocketAddress;
+
+import com.azure.core.credential.TokenCredential;
+import com.azure.identity.ClientCertificateCredentialBuilder;
 
 public class ClientCertificateCredential {
 
@@ -34,8 +32,6 @@ public class ClientCertificateCredential {
         // BEGIN: com.azure.identity.credential.clientcertificatecredential.constructwithproxy
         TokenCredential certificateCredential = new ClientCertificateCredentialBuilder().tenantId(tenantId)
             .clientId(clientId)
-            .pfxCertificate("<PATH-TO-PFX-CERTIFICATE>", "P@s$w0rd")
-            .proxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("10.21.32.43", 5465)))
             .build();
         // END: com.azure.identity.credential.clientcertificatecredential.constructwithproxy
     }

@@ -1,10 +1,6 @@
 
-import java.net.InetSocketAddress;
-
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.ProxyOptions.Type;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.v2.core.credentials.TokenCredential;
+import com.azure.v2.identity.ClientSecretCredentialBuilder;
 
 public class ClientSecretCredential {
 
@@ -26,7 +22,6 @@ public class ClientSecretCredential {
         secretCredential = new ClientSecretCredentialBuilder().tenantId(tenantId)
                 .clientId(clientId)
                 .clientSecret(clientSecret)
-                .proxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("10.21.32.43", 5465)))
                 .build();
     }
 
