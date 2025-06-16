@@ -75,6 +75,7 @@ import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerIdentity;
+import com.azure.cosmos.models.CosmosDatabaseAccount;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -6232,6 +6233,28 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public ConsistencyLevel getDefaultConsistencyLevelOfAccount() {
         return this.gatewayConfigurationReader.getDefaultConsistencyLevel();
+    }
+
+    @Override
+    public CosmosDatabaseAccount readDatabaseAccount() {
+
+        DatabaseAccount databaseAccountSnapshot
+            = this.globalEndpointManager.getLatestDatabaseAccount();
+
+        return new CosmosDatabaseAccount(
+            this.globalEndpointManager
+                .getReadEndpoints()
+                .stream()
+                .map(regionalRoutingContext -> this.globalEndpointManager.getRegionName(regionalRoutingContext.getGatewayRegionalEndpoint(), OperationType.Read))
+                .collect(Collectors.toUnmodifiableList()),
+            this.globalEndpointManager
+                .getWriteEndpoints()
+                .stream()
+                .map(regionalRoutingContext -> this.globalEndpointManager.getRegionName(regionalRoutingContext.getGatewayRegionalEndpoint(), OperationType.Create))
+                .collect(Collectors.toUnmodifiableList()),
+            databaseAccountSnapshot.getEnableMultipleWriteLocations(),
+            databaseAccountSnapshot.getConsistencyPolicy().getDefaultConsistencyLevel()
+        );
     }
 
     /***

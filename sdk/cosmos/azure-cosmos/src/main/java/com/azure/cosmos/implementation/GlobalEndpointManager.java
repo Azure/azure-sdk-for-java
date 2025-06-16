@@ -409,4 +409,8 @@ public class GlobalEndpointManager implements AutoCloseable {
             this.databaseAccountReadLock.unlock();
         }
     }
+
+    public DatabaseAccount getDatabaseAccount() {
+        return this.latestDatabaseAccount;
+    }
 }

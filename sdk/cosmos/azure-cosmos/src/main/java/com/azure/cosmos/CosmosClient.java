@@ -6,6 +6,7 @@ package com.azure.cosmos;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CosmosContainerIdentity;
+import com.azure.cosmos.models.CosmosDatabaseAccount;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
@@ -309,6 +310,21 @@ public final class CosmosClient implements Closeable {
      */
     public CosmosDatabase getDatabase(String id) {
         return new CosmosDatabase(id, this, asyncClientWrapper.getDatabase(id));
+    }
+
+    /**
+     * Reads the Cosmos database account.
+     * <!-- src_embed com.azure.cosmos.CosmosClient.readDatabaseAccount -->
+     * <pre>
+     * CosmosDatabaseAccount databaseAccount = cosmosClient.readDatabaseAccount&#40;&#41;;
+     * System.out.println&#40;databaseAccount.getId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosClient.readDatabaseAccount -->
+     *
+     * @return the {@link CosmosDatabaseAccount} with the read database account.
+     */
+    public CosmosDatabaseAccount readDatabaseAccount() {
+        return this.asyncClientWrapper.readDatabaseAccount();
     }
 
     CosmosAsyncClient asyncClient() {
