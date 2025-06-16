@@ -3,6 +3,7 @@
 ### 4.72.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added query support for thin client - [PR 45420](https://github.com/Azure/azure-sdk-for-java/pull/45420) and [PR 45637](https://github.com/Azure/azure-sdk-for-java/pull/45637)
 
 #### Breaking Changes
 
@@ -50,6 +51,7 @@
 * Added API to allow customers to wrap/extend `CosmosAsyncContainer` - [PR 43724](https://github.com/Azure/azure-sdk-for-java/pull/43724) and [PR 45087](https://github.com/Azure/azure-sdk-for-java/pull/45087) 
 * Added Per-Partition Automatic Failover which enables failover for writes at per-partition level for Single-Write Multi-Region accounts. - [PR 44099](https://github.com/Azure/azure-sdk-for-java/pull/44099)
 * Added Beta public API to allow defining the consistency behavior for read / query / change feed operations independent of the chosen account-level consistency level. **NOTE: This API is still in preview mode and can only be used when using DIRECT connection mode.** - See [PR 45161](https://github.com/Azure/azure-sdk-for-java/pull/45161)
+* Added support for point operations in thin client - [PR 44854](https://github.com/Azure/azure-sdk-for-java/pull/44854)
 
 #### Bugs Fixed
 * Fixed the fail back flow where not all partitions were failing back to original first preferred region for Per-Partition Circuit Breaker. - [PR 44099](https://github.com/Azure/azure-sdk-for-java/pull/44099)
@@ -271,6 +273,7 @@
 #### Other Changes
 * Changed logic to only call `System.exit()` in `DiagnosticsProvider` for `Error` scenario. Also added `System.err` for `Error` cases. - See [PR 39077](https://github.com/Azure/azure-sdk-for-java/pull/39077)
 * Removed `System.exit()` calls from `ImplementationBridgeHelpers`. - See [PR 39387](https://github.com/Azure/azure-sdk-for-java/pull/39387)
+* Refactored routing logic to incorporate `RegionalRoutingContext`, an abstraction layer that supports encapsulating multiple endpoints for a region. - See [PR 44398](https://github.com/Azure/azure-sdk-for-java/pull/44398)
 
 ### 4.53.4-hotfix (2024-03-15)
 
