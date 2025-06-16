@@ -119,6 +119,7 @@ BinaryData data = storageBlobCreatedEventData.getStorageDiagnostics().get("batch
 System.out.println("Blob URL: " + storageBlobCreatedEventData.getUrl());
 System.out.println("Blob size: " + storageBlobCreatedEventData.getContentLength());
 System.out.println("Content type: " + storageBlobCreatedEventData.getContentType());
+
 ```
 
 ## Troubleshooting
@@ -156,7 +157,7 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 the PR appropriately (e.g., label, comment). Follow the instructions provided by the bot. You will only need to
 do this once across all repos using our CLA.
 
-This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the
+This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information, see the
 [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
@@ -168,4 +169,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [service_docs]: https://learn.microsoft.com/azure/event-grid/
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventgrid/azure-messaging-eventgrid/src/samples/java/com/azure/messaging/eventgrid
 [sources]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventgrid/azure-messaging-eventgrid-systemevents/src
-[javadocs]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventgrid-systemevents/1.0.0/index.html
+[javadocs]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventgrid/azure-messaging-eventgrid-systemevents/src
