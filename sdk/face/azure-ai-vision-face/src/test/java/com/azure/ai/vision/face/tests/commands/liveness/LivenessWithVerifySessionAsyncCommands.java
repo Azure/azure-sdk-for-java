@@ -18,7 +18,7 @@ class LivenessWithVerifySessionAsyncCommands implements ILivenessWithVerifySessi
     }
 
     public Mono<LivenessWithVerifySession>
-        createLivenessWithVerifySession(CreateLivenessWithVerifySessionContent content, BinaryData verifyImage) {
+        createLivenessWithVerifySession(CreateLivenessWithVerifySessionContent content) {
         // TODO: Fix the verifyimage parameter to add it to the createlivenesswith verify session content
         return mAsyncClient.createLivenessWithVerifySession(content);
     }
@@ -32,9 +32,9 @@ class LivenessWithVerifySessionAsyncCommands implements ILivenessWithVerifySessi
     }
 
     @Override
-    public LivenessWithVerifySession createLivenessWithVerifySessionSync(CreateLivenessWithVerifySessionContent content,
-        BinaryData verifyImage) {
-        return FunctionUtils.callAndAwait(() -> createLivenessWithVerifySession(content, verifyImage));
+    public LivenessWithVerifySession
+        createLivenessWithVerifySessionSync(CreateLivenessWithVerifySessionContent content) {
+        return FunctionUtils.callAndAwait(() -> createLivenessWithVerifySession(content));
     }
 
     @Override

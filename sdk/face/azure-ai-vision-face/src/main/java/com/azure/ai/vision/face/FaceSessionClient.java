@@ -4,6 +4,10 @@
 
 package com.azure.ai.vision.face;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 import com.azure.ai.vision.face.implementation.FaceSessionClientImpl;
 import com.azure.ai.vision.face.implementation.MultipartFormDataHelper;
 import com.azure.ai.vision.face.implementation.models.DetectFromSessionImageRequest;
@@ -28,9 +32,6 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Initializes a new instance of the synchronous FaceSessionClient type.
@@ -641,26 +642,43 @@ public final class FaceSessionClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return session result of detect liveness with verify.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LivenessWithVerifySession createLivenessWithVerifySession(CreateLivenessWithVerifySessionContent body) {
         // Generated convenience method for createLivenessWithVerifySessionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createLivenessWithVerifySessionWithResponse(new MultipartFormDataHelper(requestOptions)
-            .serializeTextField("livenessOperationMode", Objects.toString(body.getLivenessOperationMode()))
-            .serializeTextField("deviceCorrelationIdSetInClient",
-                Objects.toString(body.isDeviceCorrelationIdSetInClient()))
-            .serializeTextField("enableSessionImage", Objects.toString(body.isEnableSessionImage()))
-            .serializeTextField("livenessModelVersion", Objects.toString(body.getLivenessModelVersion()))
-            .serializeTextField("returnVerifyImageHash", Objects.toString(body.isReturnVerifyImageHash()))
-            .serializeTextField("verifyConfidenceThreshold", Objects.toString(body.getVerifyConfidenceThreshold()))
-            .serializeFileField("verifyImage", body.getVerifyImage().getContent(),
-                body.getVerifyImage().getContentType(), body.getVerifyImage().getFilename())
-            .serializeTextField("deviceCorrelationId", body.getDeviceCorrelationId())
-            .serializeTextField("authTokenTimeToLiveInSeconds",
-                Objects.toString(body.getAuthTokenTimeToLiveInSeconds()))
-            .end()
-            .getRequestBody(), requestOptions).getValue().toObject(LivenessWithVerifySession.class);
+        MultipartFormDataHelper form = new MultipartFormDataHelper(requestOptions)
+            .serializeTextField("livenessOperationMode", Objects.toString(body.getLivenessOperationMode()));
+
+        if (body.isDeviceCorrelationIdSetInClient() != null) {
+            form.serializeTextField("deviceCorrelationIdSetInClient",
+                Objects.toString(body.isDeviceCorrelationIdSetInClient()));
+        }
+        if (body.isEnableSessionImage() != null) {
+            form.serializeTextField("enableSessionImage", Objects.toString(body.isEnableSessionImage()));
+        }
+        if (body.getLivenessModelVersion() != null) {
+            form.serializeTextField("livenessModelVersion", Objects.toString(body.getLivenessModelVersion()));
+        }
+        if (body.isReturnVerifyImageHash() != null) {
+            form.serializeTextField("returnVerifyImageHash", Objects.toString(body.isReturnVerifyImageHash()));
+        }
+        if (body.getVerifyConfidenceThreshold() != null) {
+            form.serializeTextField("verifyConfidenceThreshold", Objects.toString(body.getVerifyConfidenceThreshold()));
+        }
+        if (body.getVerifyImage() != null && body.getVerifyImage().getContent() != null) {
+            form.serializeFileField("verifyImage", body.getVerifyImage().getContent(),
+                body.getVerifyImage().getContentType(), body.getVerifyImage().getFilename());
+        }
+        if (body.getDeviceCorrelationId() != null) {
+            form.serializeTextField("deviceCorrelationId", body.getDeviceCorrelationId());
+        }
+        if (body.getAuthTokenTimeToLiveInSeconds() != null) {
+            form.serializeTextField("authTokenTimeToLiveInSeconds",
+                Objects.toString(body.getAuthTokenTimeToLiveInSeconds()));
+        }
+
+        return createLivenessWithVerifySessionWithResponse(form.end().getRequestBody(), requestOptions).getValue()
+            .toObject(LivenessWithVerifySession.class);
     }
 
     /**

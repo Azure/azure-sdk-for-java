@@ -9,8 +9,7 @@ import com.azure.ai.vision.face.models.LivenessWithVerifySession;
 import com.azure.core.util.BinaryData;
 
 public interface ILivenessWithVerifySessionSyncCommands {
-    LivenessWithVerifySession createLivenessWithVerifySessionSync(CreateLivenessWithVerifySessionContent content,
-        BinaryData verifyImage);
+    LivenessWithVerifySession createLivenessWithVerifySessionSync(CreateLivenessWithVerifySessionContent content);
 
     LivenessWithVerifySession getLivenessWithVerifySessionResultSync(String sessionId);
 

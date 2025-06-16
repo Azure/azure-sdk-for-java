@@ -27,7 +27,7 @@ import java.util.UUID;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-@DisplayNameGeneration(FaceDisplayNameGenerator.class)
+// @DisplayNameGeneration(FaceDisplayNameGenerator.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class LivenessSessionTest extends FaceClientTestBase {
     private ILivenessSessionSyncCommands mCurrentCommand;
@@ -95,6 +95,14 @@ public class LivenessSessionTest extends FaceClientTestBase {
 
     private LivenessSession createSessionAndVerify(ILivenessSessionSyncCommands livenessCommands,
         CreateLivenessSessionContent content) {
+        // Debug logging to see what values are being sent
+        System.out.println("DEBUG: CreateLivenessWithVerifySessionContent values");
+        System.out.println("deviceCorrelationIdSetInClient: " + content.isDeviceCorrelationIdSetInClient());
+        System.out.println("deviceCorrelationId: " + content.getDeviceCorrelationId());
+        System.out.println("livenessOperationMode: " + content.getLivenessOperationMode());
+        System.out.println("enableSessionImage: " + content.isEnableSessionImage());
+        System.out.println("livenessModelVersion: " + content.getLivenessModelVersion());
+        System.out.println("authTokenTimeToLiveInSeconds: " + content.getAuthTokenTimeToLiveInSeconds());
         LivenessSession result = livenessCommands.createLivenessSessionSync(content);
 
         mCurrentCommand = livenessCommands;

@@ -16,8 +16,8 @@ class LivenessWithVerifySessionSyncCommands implements ILivenessWithVerifySessio
         mSyncClient = syncClient;
     }
 
-    public LivenessWithVerifySession createLivenessWithVerifySessionSync(CreateLivenessWithVerifySessionContent content,
-        BinaryData verifyImage) {
+    public LivenessWithVerifySession
+        createLivenessWithVerifySessionSync(CreateLivenessWithVerifySessionContent content) {
         return mSyncClient.createLivenessWithVerifySession(content);
     }
 
