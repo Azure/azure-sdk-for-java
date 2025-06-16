@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Request payload for creating a chat thread.
@@ -26,6 +27,17 @@ public final class CreateChatThreadOptions implements JsonSerializable<CreateCha
      * Participants to be added to the chat thread.
      */
     private List<ChatParticipant> participants;
+
+    /*
+     * Contextual metadata for the thread. The metadata consists of name/value pairs. The total size of all metadata
+     * pairs can be up to 1KB in size.
+     */
+    private Map<String, String> metadata;
+
+    /*
+     * Data retention policy for auto deletion.
+     */
+    private ChatRetentionPolicy retentionPolicy;
 
     /**
      * Creates an instance of CreateChatThreadOptions class.
@@ -74,6 +86,48 @@ public final class CreateChatThreadOptions implements JsonSerializable<CreateCha
     }
 
     /**
+     * Get the metadata property: Contextual metadata for the thread. The metadata consists of name/value pairs. The
+     * total size of all metadata pairs can be up to 1KB in size.
+     * 
+     * @return the metadata value.
+     */
+    public Map<String, String> getMetadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: Contextual metadata for the thread. The metadata consists of name/value pairs. The
+     * total size of all metadata pairs can be up to 1KB in size.
+     * 
+     * @param metadata the metadata value to set.
+     * @return the CreateChatThreadOptions object itself.
+     */
+    public CreateChatThreadOptions setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Get the retentionPolicy property: Data retention policy for auto deletion.
+     * 
+     * @return the retentionPolicy value.
+     */
+    public ChatRetentionPolicy getRetentionPolicy() {
+        return this.retentionPolicy;
+    }
+
+    /**
+     * Set the retentionPolicy property: Data retention policy for auto deletion.
+     * 
+     * @param retentionPolicy the retentionPolicy value to set.
+     * @return the CreateChatThreadOptions object itself.
+     */
+    public CreateChatThreadOptions setRetentionPolicy(ChatRetentionPolicy retentionPolicy) {
+        this.retentionPolicy = retentionPolicy;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -81,6 +135,8 @@ public final class CreateChatThreadOptions implements JsonSerializable<CreateCha
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("topic", this.topic);
         jsonWriter.writeArrayField("participants", this.participants, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("retentionPolicy", this.retentionPolicy);
         return jsonWriter.writeEndObject();
     }
 
@@ -105,6 +161,11 @@ public final class CreateChatThreadOptions implements JsonSerializable<CreateCha
                 } else if ("participants".equals(fieldName)) {
                     List<ChatParticipant> participants = reader.readArray(reader1 -> ChatParticipant.fromJson(reader1));
                     deserializedCreateChatThreadOptions.participants = participants;
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCreateChatThreadOptions.metadata = metadata;
+                } else if ("retentionPolicy".equals(fieldName)) {
+                    deserializedCreateChatThreadOptions.retentionPolicy = ChatRetentionPolicy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
