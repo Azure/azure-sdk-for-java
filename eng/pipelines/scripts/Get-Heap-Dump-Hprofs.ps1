@@ -27,8 +27,6 @@ if ($hrpofs.Count -gt 0) {
     if (-not (Test-Path "$StagingDirectory/troubleshooting")) {
         New-Item -ItemType Directory -Path "$StagingDirectory/troubleshooting" | Out-Null
     }
-    $destTar = "$StagingDirectory/troubleshooting/$OomArtifactName.tar.gz"
-
-    & tar -czf $destTar -- $hrpofs.FullName
+    Compress-Archive -Path $hrpofs -DestinationPath "$StagingDirectory/troubleshooting/$OomArtifactName.zip"
     Write-Host "##vso[task.setvariable variable=HAS_TROUBLESHOOTING]true"
 }
