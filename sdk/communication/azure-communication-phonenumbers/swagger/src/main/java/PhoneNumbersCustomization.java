@@ -197,18 +197,5 @@ public class PhoneNumbersCustomization extends Customization {
                         "}")));
             });
         });
-        // PhoneNumberCapabilities
-        models.getClass("PhoneNumberCapabilities").customizeAst(ast -> {
-            ast.getClassByName("PhoneNumberCapabilities").ifPresent(clazz -> {
-                clazz.getMethodsByName("toJson").forEach(method -> 
-                    method.setBody(StaticJavaParser.parseBlock(
-                        "{\n" +
-                        "    jsonWriter.writeStartObject();\n" +
-                        "    if (this.calling != null) jsonWriter.writeStringField(\"calling\", this.calling.toString());\n" +
-                        "    if (this.sms != null) jsonWriter.writeStringField(\"sms\", this.sms.toString());\n" +
-                        "    return jsonWriter.writeEndObject();\n" +
-                        "}")));
-            });
-        });
     }
 }
