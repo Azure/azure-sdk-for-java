@@ -87,8 +87,12 @@ public final class PhoneNumberCapabilities implements JsonSerializable<PhoneNumb
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("calling", this.calling == null ? null : this.calling.toString());
-        jsonWriter.writeStringField("sms", this.sms == null ? null : this.sms.toString());
+        if (this.calling != null) {
+            jsonWriter.writeStringField("calling", this.calling.toString());
+        }
+        if (this.sms != null) {
+            jsonWriter.writeStringField("sms", this.sms.toString());
+        }
         return jsonWriter.writeEndObject();
     }
 
