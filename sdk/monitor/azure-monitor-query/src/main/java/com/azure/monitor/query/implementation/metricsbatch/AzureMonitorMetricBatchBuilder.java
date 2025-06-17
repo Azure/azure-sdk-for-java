@@ -32,6 +32,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.monitor.query.models.MetricsAudience;
@@ -96,6 +97,9 @@ public final class AzureMonitorMetricBatchBuilder
     @Generated
     @Override
     public AzureMonitorMetricBatchBuilder pipeline(HttpPipeline pipeline) {
+        if (this.pipeline != null && pipeline == null) {
+            LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
+        }
         this.pipeline = pipeline;
         return this;
     }
@@ -326,6 +330,8 @@ public final class AzureMonitorMetricBatchBuilder
             .clientOptions(localClientOptions)
             .build();
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorMetricBatchBuilder.class);
 
     /**
      * The audience indicating the authorization scope of metrics clients.

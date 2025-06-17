@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,47 +21,56 @@ public final class ServiceNowV2LinkedServiceTypeProperties
     /*
      * The endpoint of the ServiceNowV2 server. (i.e. <instance>.service-now.com)
      */
+    @Generated
     private Object endpoint;
 
     /*
      * The authentication type to use.
      */
+    @Generated
     private ServiceNowV2AuthenticationType authenticationType;
 
     /*
      * The user name used to connect to the ServiceNowV2 server for Basic and OAuth2 authentication.
      */
+    @Generated
     private Object username;
 
     /*
      * The password corresponding to the user name for Basic and OAuth2 authentication.
      */
+    @Generated
     private SecretBase password;
 
     /*
      * The client id for OAuth2 authentication.
      */
+    @Generated
     private Object clientId;
 
     /*
      * The client secret for OAuth2 authentication.
      */
+    @Generated
     private SecretBase clientSecret;
 
     /*
      * GrantType for OAuth2 authentication. Default value is password.
      */
+    @Generated
     private Object grantType;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
+    @Generated
     private String encryptedCredential;
 
     /**
      * Creates an instance of ServiceNowV2LinkedServiceTypeProperties class.
      */
+    @Generated
     public ServiceNowV2LinkedServiceTypeProperties() {
     }
 
@@ -69,6 +79,7 @@ public final class ServiceNowV2LinkedServiceTypeProperties
      * 
      * @return the endpoint value.
      */
+    @Generated
     public Object getEndpoint() {
         return this.endpoint;
     }
@@ -79,6 +90,7 @@ public final class ServiceNowV2LinkedServiceTypeProperties
      * @param endpoint the endpoint value to set.
      * @return the ServiceNowV2LinkedServiceTypeProperties object itself.
      */
+    @Generated
     public ServiceNowV2LinkedServiceTypeProperties setEndpoint(Object endpoint) {
         this.endpoint = endpoint;
         return this;
@@ -89,6 +101,7 @@ public final class ServiceNowV2LinkedServiceTypeProperties
      * 
      * @return the authenticationType value.
      */
+    @Generated
     public ServiceNowV2AuthenticationType getAuthenticationType() {
         return this.authenticationType;
     }
@@ -99,6 +112,7 @@ public final class ServiceNowV2LinkedServiceTypeProperties
      * @param authenticationType the authenticationType value to set.
      * @return the ServiceNowV2LinkedServiceTypeProperties object itself.
      */
+    @Generated
     public ServiceNowV2LinkedServiceTypeProperties
         setAuthenticationType(ServiceNowV2AuthenticationType authenticationType) {
         this.authenticationType = authenticationType;
@@ -111,6 +125,7 @@ public final class ServiceNowV2LinkedServiceTypeProperties
      * 
      * @return the username value.
      */
+    @Generated
     public Object getUsername() {
         return this.username;
     }
@@ -122,6 +137,7 @@ public final class ServiceNowV2LinkedServiceTypeProperties
      * @param username the username value to set.
      * @return the ServiceNowV2LinkedServiceTypeProperties object itself.
      */
+    @Generated
     public ServiceNowV2LinkedServiceTypeProperties setUsername(Object username) {
         this.username = username;
         return this;
@@ -132,6 +148,7 @@ public final class ServiceNowV2LinkedServiceTypeProperties
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -142,6 +159,7 @@ public final class ServiceNowV2LinkedServiceTypeProperties
      * @param password the password value to set.
      * @return the ServiceNowV2LinkedServiceTypeProperties object itself.
      */
+    @Generated
     public ServiceNowV2LinkedServiceTypeProperties setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -152,6 +170,7 @@ public final class ServiceNowV2LinkedServiceTypeProperties
      * 
      * @return the clientId value.
      */
+    @Generated
     public Object getClientId() {
         return this.clientId;
     }
@@ -162,6 +181,7 @@ public final class ServiceNowV2LinkedServiceTypeProperties
      * @param clientId the clientId value to set.
      * @return the ServiceNowV2LinkedServiceTypeProperties object itself.
      */
+    @Generated
     public ServiceNowV2LinkedServiceTypeProperties setClientId(Object clientId) {
         this.clientId = clientId;
         return this;
@@ -172,6 +192,7 @@ public final class ServiceNowV2LinkedServiceTypeProperties
      * 
      * @return the clientSecret value.
      */
+    @Generated
     public SecretBase getClientSecret() {
         return this.clientSecret;
     }
@@ -182,6 +203,7 @@ public final class ServiceNowV2LinkedServiceTypeProperties
      * @param clientSecret the clientSecret value to set.
      * @return the ServiceNowV2LinkedServiceTypeProperties object itself.
      */
+    @Generated
     public ServiceNowV2LinkedServiceTypeProperties setClientSecret(SecretBase clientSecret) {
         this.clientSecret = clientSecret;
         return this;
@@ -192,6 +214,7 @@ public final class ServiceNowV2LinkedServiceTypeProperties
      * 
      * @return the grantType value.
      */
+    @Generated
     public Object getGrantType() {
         return this.grantType;
     }
@@ -202,6 +225,7 @@ public final class ServiceNowV2LinkedServiceTypeProperties
      * @param grantType the grantType value to set.
      * @return the ServiceNowV2LinkedServiceTypeProperties object itself.
      */
+    @Generated
     public ServiceNowV2LinkedServiceTypeProperties setGrantType(Object grantType) {
         this.grantType = grantType;
         return this;
@@ -213,6 +237,7 @@ public final class ServiceNowV2LinkedServiceTypeProperties
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public String getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -224,6 +249,7 @@ public final class ServiceNowV2LinkedServiceTypeProperties
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the ServiceNowV2LinkedServiceTypeProperties object itself.
      */
+    @Generated
     public ServiceNowV2LinkedServiceTypeProperties setEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -232,17 +258,24 @@ public final class ServiceNowV2LinkedServiceTypeProperties
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("endpoint", this.endpoint);
         jsonWriter.writeStringField("authenticationType",
             this.authenticationType == null ? null : this.authenticationType.toString());
-        jsonWriter.writeUntypedField("username", this.username);
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("username", this.username);
+        }
         jsonWriter.writeJsonField("password", this.password);
-        jsonWriter.writeUntypedField("clientId", this.clientId);
+        if (this.clientId != null) {
+            jsonWriter.writeUntypedField("clientId", this.clientId);
+        }
         jsonWriter.writeJsonField("clientSecret", this.clientSecret);
-        jsonWriter.writeUntypedField("grantType", this.grantType);
+        if (this.grantType != null) {
+            jsonWriter.writeUntypedField("grantType", this.grantType);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }
@@ -256,6 +289,7 @@ public final class ServiceNowV2LinkedServiceTypeProperties
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ServiceNowV2LinkedServiceTypeProperties.
      */
+    @Generated
     public static ServiceNowV2LinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ServiceNowV2LinkedServiceTypeProperties deserializedServiceNowV2LinkedServiceTypeProperties

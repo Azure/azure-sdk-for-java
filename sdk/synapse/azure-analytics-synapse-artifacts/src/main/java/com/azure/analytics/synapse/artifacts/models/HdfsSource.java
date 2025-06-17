@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,22 +21,26 @@ public final class HdfsSource extends CopySource {
     /*
      * Copy source type.
      */
+    @Generated
     private String type = "HdfsSource";
 
     /*
      * If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with
      * resultType boolean).
      */
+    @Generated
     private Object recursive;
 
     /*
      * Specifies Distcp-related settings.
      */
+    @Generated
     private DistcpSettings distcpSettings;
 
     /**
      * Creates an instance of HdfsSource class.
      */
+    @Generated
     public HdfsSource() {
     }
 
@@ -44,6 +49,7 @@ public final class HdfsSource extends CopySource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -55,6 +61,7 @@ public final class HdfsSource extends CopySource {
      * 
      * @return the recursive value.
      */
+    @Generated
     public Object getRecursive() {
         return this.recursive;
     }
@@ -66,6 +73,7 @@ public final class HdfsSource extends CopySource {
      * @param recursive the recursive value to set.
      * @return the HdfsSource object itself.
      */
+    @Generated
     public HdfsSource setRecursive(Object recursive) {
         this.recursive = recursive;
         return this;
@@ -76,6 +84,7 @@ public final class HdfsSource extends CopySource {
      * 
      * @return the distcpSettings value.
      */
+    @Generated
     public DistcpSettings getDistcpSettings() {
         return this.distcpSettings;
     }
@@ -86,6 +95,7 @@ public final class HdfsSource extends CopySource {
      * @param distcpSettings the distcpSettings value to set.
      * @return the HdfsSource object itself.
      */
+    @Generated
     public HdfsSource setDistcpSettings(DistcpSettings distcpSettings) {
         this.distcpSettings = distcpSettings;
         return this;
@@ -94,6 +104,7 @@ public final class HdfsSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HdfsSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
@@ -103,6 +114,7 @@ public final class HdfsSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HdfsSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
@@ -112,6 +124,7 @@ public final class HdfsSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HdfsSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -121,14 +134,23 @@ public final class HdfsSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getSourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        }
+        if (getSourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("recursive", this.recursive);
+        if (this.recursive != null) {
+            jsonWriter.writeUntypedField("recursive", this.recursive);
+        }
         jsonWriter.writeJsonField("distcpSettings", this.distcpSettings);
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
@@ -146,6 +168,7 @@ public final class HdfsSource extends CopySource {
      * to JSON null.
      * @throws IOException If an error occurs while reading the HdfsSource.
      */
+    @Generated
     public static HdfsSource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HdfsSource deserializedHdfsSource = new HdfsSource();

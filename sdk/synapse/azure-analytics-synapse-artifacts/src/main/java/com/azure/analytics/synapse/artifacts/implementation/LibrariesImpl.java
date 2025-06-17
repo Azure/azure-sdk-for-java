@@ -66,7 +66,7 @@ public final class LibrariesImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ArtifactsClientLibra")
+    @ServiceInterface(name = "ArtifactsClientLibraries")
     public interface LibrariesService {
         @Get("/libraries")
         @ExpectedResponses({ 200 })

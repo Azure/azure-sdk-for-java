@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -21,16 +22,19 @@ public final class EntityLinkingLROResult extends AnalyzeTextLROResult {
     /*
      * Enumeration of supported Text Analysis long-running operation task results.
      */
+    @Generated
     private AnalyzeTextLROResultsKind kind = AnalyzeTextLROResultsKind.ENTITY_LINKING_LRORESULTS;
 
     /*
      * The results property.
      */
+    @Generated
     private EntityLinkingResult results;
 
     /**
      * Creates an instance of EntityLinkingLROResult class.
      */
+    @Generated
     public EntityLinkingLROResult() {
     }
 
@@ -39,6 +43,7 @@ public final class EntityLinkingLROResult extends AnalyzeTextLROResult {
      * 
      * @return the kind value.
      */
+    @Generated
     @Override
     public AnalyzeTextLROResultsKind getKind() {
         return this.kind;
@@ -49,6 +54,7 @@ public final class EntityLinkingLROResult extends AnalyzeTextLROResult {
      * 
      * @return the results value.
      */
+    @Generated
     public EntityLinkingResult getResults() {
         return this.results;
     }
@@ -59,6 +65,7 @@ public final class EntityLinkingLROResult extends AnalyzeTextLROResult {
      * @param results the results value to set.
      * @return the EntityLinkingLROResult object itself.
      */
+    @Generated
     public EntityLinkingLROResult setResults(EntityLinkingResult results) {
         this.results = results;
         return this;
@@ -67,6 +74,7 @@ public final class EntityLinkingLROResult extends AnalyzeTextLROResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public EntityLinkingLROResult setTaskName(String taskName) {
         super.setTaskName(taskName);
@@ -76,6 +84,7 @@ public final class EntityLinkingLROResult extends AnalyzeTextLROResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public EntityLinkingLROResult setLastUpdateDateTime(OffsetDateTime lastUpdateDateTime) {
         super.setLastUpdateDateTime(lastUpdateDateTime);
@@ -85,6 +94,7 @@ public final class EntityLinkingLROResult extends AnalyzeTextLROResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public EntityLinkingLROResult setStatus(State status) {
         super.setStatus(status);
@@ -94,6 +104,7 @@ public final class EntityLinkingLROResult extends AnalyzeTextLROResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -117,6 +128,7 @@ public final class EntityLinkingLROResult extends AnalyzeTextLROResult {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the EntityLinkingLROResult.
      */
+    @Generated
     public static EntityLinkingLROResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             EntityLinkingLROResult deserializedEntityLinkingLROResult = new EntityLinkingLROResult();

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.accesscontrol.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class RequiredAction implements JsonSerializable<RequiredAction> {
     /*
      * Action Id.
      */
+    @Generated
     private String id;
 
     /*
      * Is a data action or not.
      */
+    @Generated
     private boolean isDataAction;
 
     /**
      * Creates an instance of RequiredAction class.
      */
+    @Generated
     public RequiredAction() {
     }
 
@@ -37,6 +41,7 @@ public final class RequiredAction implements JsonSerializable<RequiredAction> {
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -47,6 +52,7 @@ public final class RequiredAction implements JsonSerializable<RequiredAction> {
      * @param id the id value to set.
      * @return the RequiredAction object itself.
      */
+    @Generated
     public RequiredAction setId(String id) {
         this.id = id;
         return this;
@@ -57,6 +63,7 @@ public final class RequiredAction implements JsonSerializable<RequiredAction> {
      * 
      * @return the isDataAction value.
      */
+    @Generated
     public boolean isDataAction() {
         return this.isDataAction;
     }
@@ -67,6 +74,7 @@ public final class RequiredAction implements JsonSerializable<RequiredAction> {
      * @param isDataAction the isDataAction value to set.
      * @return the RequiredAction object itself.
      */
+    @Generated
     public RequiredAction setIsDataAction(boolean isDataAction) {
         this.isDataAction = isDataAction;
         return this;
@@ -75,6 +83,7 @@ public final class RequiredAction implements JsonSerializable<RequiredAction> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class RequiredAction implements JsonSerializable<RequiredAction> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RequiredAction.
      */
+    @Generated
     public static RequiredAction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RequiredAction deserializedRequiredAction = new RequiredAction();

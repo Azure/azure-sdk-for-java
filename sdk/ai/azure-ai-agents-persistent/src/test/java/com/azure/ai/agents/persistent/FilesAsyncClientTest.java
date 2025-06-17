@@ -30,7 +30,8 @@ public class FilesAsyncClientTest extends ClientTestBase {
 
     private void setup(HttpClient httpClient) {
         clientBuilder = getClientBuilder(httpClient);
-        filesAsyncClient = clientBuilder.buildFilesAsyncClient();
+        PersistentAgentsAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
+        filesAsyncClient = agentsAsyncClient.getFilesAsyncClient();
         uploadedFiles = new ArrayList<>();
     }
 

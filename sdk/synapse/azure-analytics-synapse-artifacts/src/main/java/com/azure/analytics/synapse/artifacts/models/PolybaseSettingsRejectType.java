@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class PolybaseSettingsRejectType extends ExpandableStringEnum<Polyb
     /**
      * Static value value for PolybaseSettingsRejectType.
      */
+    @Generated
     public static final PolybaseSettingsRejectType VALUE = fromString("value");
 
     /**
      * Static value percentage for PolybaseSettingsRejectType.
      */
+    @Generated
     public static final PolybaseSettingsRejectType PERCENTAGE = fromString("percentage");
 
     /**
@@ -26,6 +29,7 @@ public final class PolybaseSettingsRejectType extends ExpandableStringEnum<Polyb
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PolybaseSettingsRejectType() {
     }
@@ -36,6 +40,7 @@ public final class PolybaseSettingsRejectType extends ExpandableStringEnum<Polyb
      * @param name a name to look for.
      * @return the corresponding PolybaseSettingsRejectType.
      */
+    @Generated
     public static PolybaseSettingsRejectType fromString(String name) {
         return fromString(name, PolybaseSettingsRejectType.class);
     }
@@ -45,6 +50,7 @@ public final class PolybaseSettingsRejectType extends ExpandableStringEnum<Polyb
      * 
      * @return known PolybaseSettingsRejectType values.
      */
+    @Generated
     public static Collection<PolybaseSettingsRejectType> values() {
         return values(PolybaseSettingsRejectType.class);
     }

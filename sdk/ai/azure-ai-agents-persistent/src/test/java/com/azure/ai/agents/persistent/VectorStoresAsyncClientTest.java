@@ -38,8 +38,9 @@ public class VectorStoresAsyncClientTest extends ClientTestBase {
 
     private void setup(HttpClient httpClient) {
         clientBuilder = getClientBuilder(httpClient);
-        vectorStoresAsyncClient = clientBuilder.buildVectorStoresAsyncClient();
-        filesAsyncClient = clientBuilder.buildFilesAsyncClient();
+        PersistentAgentsAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
+        vectorStoresAsyncClient = agentsAsyncClient.getVectorStoresAsyncClient();
+        filesAsyncClient = agentsAsyncClient.getFilesAsyncClient();
     }
 
     private Mono<FileInfo> uploadFile(String fileName) {

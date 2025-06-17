@@ -25,10 +25,11 @@ public class AgentBingGroundingSample {
 
         PersistentAgentsClientBuilder clientBuilder = new PersistentAgentsClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build());
-        PersistentAgentsAdministrationClient agentsClient = clientBuilder.buildPersistentAgentsAdministrationClient();
-        ThreadsClient threadsClient = clientBuilder.buildThreadsClient();
-        MessagesClient messagesClient = clientBuilder.buildMessagesClient();
-        RunsClient runsClient = clientBuilder.buildRunsClient();
+        PersistentAgentsClient agentsClient = clientBuilder.buildClient();
+        PersistentAgentsAdministrationClient administrationClient = agentsClient.getPersistentAgentsAdministrationClient();
+        ThreadsClient threadsClient = agentsClient.getThreadsClient();
+        MessagesClient messagesClient = agentsClient.getMessagesClient();
+        RunsClient runsClient = agentsClient.getRunsClient();
 
         String bingConnectionId = Configuration.getGlobalConfiguration().get("BING_CONNECTION_ID", "");
 
@@ -43,7 +44,7 @@ public class AgentBingGroundingSample {
             .setName(agentName)
             .setInstructions("You are a helpful agent")
             .setTools(Arrays.asList(bingGroundingTool));
-        PersistentAgent agent = agentsClient.createAgent(createAgentOptions);
+        PersistentAgent agent = administrationClient.createAgent(createAgentOptions);
 
         PersistentAgentThread thread = threadsClient.createThread();
         ThreadMessage createdMessage = messagesClient.createMessage(
@@ -64,7 +65,7 @@ public class AgentBingGroundingSample {
         } finally {
             //cleanup
             threadsClient.deleteThread(thread.getId());
-            agentsClient.deleteAgent(agent.getId());
+            administrationClient.deleteAgent(agent.getId());
         }
     }
 }

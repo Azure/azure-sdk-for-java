@@ -32,13 +32,14 @@ public class AgentVectorStoreBatchFileSearchAsyncSample {
         PersistentAgentsClientBuilder clientBuilder = new PersistentAgentsClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build());
-        
-        PersistentAgentsAdministrationAsyncClient agentsAsyncClient = clientBuilder.buildPersistentAgentsAdministrationAsyncClient();
-        ThreadsAsyncClient threadsAsyncClient = clientBuilder.buildThreadsAsyncClient();
-        MessagesAsyncClient messagesAsyncClient = clientBuilder.buildMessagesAsyncClient();
-        RunsAsyncClient runsAsyncClient = clientBuilder.buildRunsAsyncClient();
-        FilesAsyncClient filesAsyncClient = clientBuilder.buildFilesAsyncClient();
-        VectorStoresAsyncClient vectorStoresAsyncClient = clientBuilder.buildVectorStoresAsyncClient();
+
+        PersistentAgentsAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
+        PersistentAgentsAdministrationAsyncClient administrationAsyncClient = agentsAsyncClient.getPersistentAgentsAdministrationAsyncClient();
+        ThreadsAsyncClient threadsAsyncClient = agentsAsyncClient.getThreadsAsyncClient();
+        MessagesAsyncClient messagesAsyncClient = agentsAsyncClient.getMessagesAsyncClient();
+        RunsAsyncClient runsAsyncClient = agentsAsyncClient.getRunsAsyncClient();
+        FilesAsyncClient filesAsyncClient = agentsAsyncClient.getFilesAsyncClient();
+        VectorStoresAsyncClient vectorStoresAsyncClient = agentsAsyncClient.getVectorStoresAsyncClient();
 
         Path productFile = getFile("product_info.md");
 
@@ -79,7 +80,7 @@ public class AgentVectorStoreBatchFileSearchAsyncSample {
                     .setTools(Arrays.asList(new FileSearchToolDefinition()))
                     .setToolResources(new ToolResources().setFileSearch(fileSearchToolResource));
                 
-                return agentsAsyncClient.createAgent(createAgentOptions);
+                return administrationAsyncClient.createAgent(createAgentOptions);
             })
             .flatMap(agent -> {
                 System.out.println("Created agent: " + agent.getId());
@@ -114,7 +115,7 @@ public class AgentVectorStoreBatchFileSearchAsyncSample {
                         });
                 });
             })
-            .doFinally(signalType -> cleanUpResources(threadId, threadsAsyncClient, agentId, agentsAsyncClient))
+            .doFinally(signalType -> cleanUpResources(threadId, threadsAsyncClient, agentId, administrationAsyncClient))
             .doOnError(error -> System.err.println("An error occurred: " + error.getMessage()))
             .block(); // Only block at the end of the reactive chain
     }

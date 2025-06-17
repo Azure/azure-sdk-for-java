@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.sharing;
 
+import com.azure.analytics.purview.sharing.implementation.ShareResourcesImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -22,16 +23,16 @@ import com.azure.core.util.BinaryData;
 @ServiceClient(builder = ShareResourcesClientBuilder.class)
 public final class ShareResourcesClient {
     @Generated
-    private final ShareResourcesAsyncClient client;
+    private final ShareResourcesImpl serviceClient;
 
     /**
      * Initializes an instance of ShareResourcesClient class.
      * 
-     * @param client the async client.
+     * @param serviceClient the service client implementation.
      */
     @Generated
-    ShareResourcesClient(ShareResourcesAsyncClient client) {
-        this.client = client;
+    ShareResourcesClient(ShareResourcesImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
@@ -74,6 +75,6 @@ public final class ShareResourcesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listShareResources(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listShareResources(requestOptions));
+        return this.serviceClient.listShareResources(requestOptions);
     }
 }
