@@ -28,10 +28,13 @@ extends:
               - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                 parameters:
                   Paths:
-                    - /sdk/tools/
-                    - /sdk/core-v2/
-                    - /eng/
-                    - /common/perf-test-core/
+                    - "/sdk/tools/"
+                    - "/sdk/core-v2/"
+                    - "/eng/"
+                    - "/common/perf-test-core/"
+                    - "**/*.xml"
+                    - "**/*.md"
+                    - "**/ci*.yml"
 
               - task: Maven@3
                 displayName: 'Build and Install Necesssary Dependencies'
