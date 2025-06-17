@@ -1,5 +1,5 @@
 {
-  "flavor": "azure",
+  "flavor": "azure", 
   "CrossLanguageDefinitionId": {
     "com.azure.compute.batch.BatchAsyncClient": "Client.BatchClient",
     "com.azure.compute.batch.BatchAsyncClient.cancelCertificateDeletion": "Client.BatchClient.cancelCertificateDeletion",
