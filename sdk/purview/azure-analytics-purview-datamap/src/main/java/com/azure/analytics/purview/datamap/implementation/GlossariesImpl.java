@@ -71,7 +71,7 @@ public final class GlossariesImpl {
      * REST calls.
      */
     @Host("{endpoint}/datamap/api")
-    @ServiceInterface(name = "DataMapClientGlossar")
+    @ServiceInterface(name = "DataMapClientGlossaries")
     public interface GlossariesService {
         @Get("/atlas/v2/glossary")
         @ExpectedResponses({ 200 })

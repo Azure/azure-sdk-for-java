@@ -14,7 +14,11 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -25,9 +29,19 @@ public class ClientTestBase extends TestProxyTestBase {
 
     private boolean sanitizersRemoved = false;
 
-    protected PersistentAgentsAdministrationClientBuilder getClientBuilder(HttpClient httpClient) {
+    @BeforeAll
+    protected static void beforeAll() {
+        StepVerifier.setDefaultTimeout(Duration.ofMinutes(5));
+    }
 
-        PersistentAgentsAdministrationClientBuilder builder = new PersistentAgentsAdministrationClientBuilder()
+    @AfterAll
+    protected static void afterAll() {
+        StepVerifier.resetDefaultTimeout();
+    }
+
+    protected PersistentAgentsClientBuilder getClientBuilder(HttpClient httpClient) {
+
+        PersistentAgentsClientBuilder builder = new PersistentAgentsClientBuilder()
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
         TestMode testMode = getTestMode();
         if (testMode != TestMode.LIVE) {
@@ -52,8 +66,9 @@ public class ClientTestBase extends TestProxyTestBase {
         }
 
         String version = Configuration.getGlobalConfiguration().get("SERVICE_VERSION");
-        AgentsServiceVersion serviceVersion
-            = version != null ? AgentsServiceVersion.valueOf(version) : AgentsServiceVersion.V2025_05_15_PREVIEW;
+        PersistentAgentsServiceVersion serviceVersion = version != null
+            ? PersistentAgentsServiceVersion.valueOf(version)
+            : PersistentAgentsServiceVersion.V2025_05_15_PREVIEW;
         builder.serviceVersion(serviceVersion);
         return builder;
     }

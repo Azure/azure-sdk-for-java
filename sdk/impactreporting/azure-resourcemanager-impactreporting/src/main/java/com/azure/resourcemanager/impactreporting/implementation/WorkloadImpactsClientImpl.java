@@ -70,7 +70,7 @@ public final class WorkloadImpactsClientImpl implements WorkloadImpactsClient {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ImpactReportingMgmtC")
+    @ServiceInterface(name = "ImpactReportingMgmtClientWorkloadImpacts")
     public interface WorkloadImpactsService {
         @Put("/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}")
         @ExpectedResponses({ 200, 201 })

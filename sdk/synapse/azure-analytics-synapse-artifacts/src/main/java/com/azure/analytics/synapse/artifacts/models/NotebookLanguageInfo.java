@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,21 +22,25 @@ public final class NotebookLanguageInfo implements JsonSerializable<NotebookLang
     /*
      * The programming language which this kernel runs.
      */
+    @Generated
     private String name;
 
     /*
      * The codemirror mode to use for code in this language.
      */
+    @Generated
     private String codemirrorMode;
 
     /*
      * Language info.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of NotebookLanguageInfo class.
      */
+    @Generated
     public NotebookLanguageInfo() {
     }
 
@@ -44,6 +49,7 @@ public final class NotebookLanguageInfo implements JsonSerializable<NotebookLang
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -54,6 +60,7 @@ public final class NotebookLanguageInfo implements JsonSerializable<NotebookLang
      * @param name the name value to set.
      * @return the NotebookLanguageInfo object itself.
      */
+    @Generated
     public NotebookLanguageInfo setName(String name) {
         this.name = name;
         return this;
@@ -64,6 +71,7 @@ public final class NotebookLanguageInfo implements JsonSerializable<NotebookLang
      * 
      * @return the codemirrorMode value.
      */
+    @Generated
     public String getCodemirrorMode() {
         return this.codemirrorMode;
     }
@@ -74,6 +82,7 @@ public final class NotebookLanguageInfo implements JsonSerializable<NotebookLang
      * @param codemirrorMode the codemirrorMode value to set.
      * @return the NotebookLanguageInfo object itself.
      */
+    @Generated
     public NotebookLanguageInfo setCodemirrorMode(String codemirrorMode) {
         this.codemirrorMode = codemirrorMode;
         return this;
@@ -84,6 +93,7 @@ public final class NotebookLanguageInfo implements JsonSerializable<NotebookLang
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -94,6 +104,7 @@ public final class NotebookLanguageInfo implements JsonSerializable<NotebookLang
      * @param additionalProperties the additionalProperties value to set.
      * @return the NotebookLanguageInfo object itself.
      */
+    @Generated
     public NotebookLanguageInfo setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -102,6 +113,7 @@ public final class NotebookLanguageInfo implements JsonSerializable<NotebookLang
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -124,6 +136,7 @@ public final class NotebookLanguageInfo implements JsonSerializable<NotebookLang
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the NotebookLanguageInfo.
      */
+    @Generated
     public static NotebookLanguageInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             NotebookLanguageInfo deserializedNotebookLanguageInfo = new NotebookLanguageInfo();

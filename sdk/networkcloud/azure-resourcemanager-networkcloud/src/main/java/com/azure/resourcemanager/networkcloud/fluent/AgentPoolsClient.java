@@ -114,6 +114,10 @@ public interface AgentPoolsClient {
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param agentPoolName The name of the Kubernetes cluster agent pool.
      * @param agentPoolParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -122,7 +126,8 @@ public interface AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdate(String resourceGroupName,
-        String kubernetesClusterName, String agentPoolName, AgentPoolInner agentPoolParameters, Context context);
+        String kubernetesClusterName, String agentPoolName, AgentPoolInner agentPoolParameters, String ifMatch,
+        String ifNoneMatch, Context context);
 
     /**
      * Create or update the Kubernetes cluster agent pool.
@@ -151,6 +156,10 @@ public interface AgentPoolsClient {
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param agentPoolName The name of the Kubernetes cluster agent pool.
      * @param agentPoolParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -159,7 +168,7 @@ public interface AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AgentPoolInner createOrUpdate(String resourceGroupName, String kubernetesClusterName, String agentPoolName,
-        AgentPoolInner agentPoolParameters, Context context);
+        AgentPoolInner agentPoolParameters, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete the Kubernetes cluster agent pool.
@@ -186,6 +195,10 @@ public interface AgentPoolsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param agentPoolName The name of the Kubernetes cluster agent pool.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -194,7 +207,7 @@ public interface AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
-        String kubernetesClusterName, String agentPoolName, Context context);
+        String kubernetesClusterName, String agentPoolName, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete the Kubernetes cluster agent pool.
@@ -220,6 +233,10 @@ public interface AgentPoolsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param agentPoolName The name of the Kubernetes cluster agent pool.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -228,7 +245,7 @@ public interface AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OperationStatusResultInner delete(String resourceGroupName, String kubernetesClusterName, String agentPoolName,
-        Context context);
+        String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Patch the Kubernetes cluster agent pool.
@@ -257,6 +274,10 @@ public interface AgentPoolsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param agentPoolName The name of the Kubernetes cluster agent pool.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param agentPoolUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -266,8 +287,8 @@ public interface AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdate(String resourceGroupName,
-        String kubernetesClusterName, String agentPoolName, AgentPoolPatchParameters agentPoolUpdateParameters,
-        Context context);
+        String kubernetesClusterName, String agentPoolName, String ifMatch, String ifNoneMatch,
+        AgentPoolPatchParameters agentPoolUpdateParameters, Context context);
 
     /**
      * Patch the Kubernetes cluster agent pool.
@@ -295,6 +316,10 @@ public interface AgentPoolsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param agentPoolName The name of the Kubernetes cluster agent pool.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param agentPoolUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -303,6 +328,6 @@ public interface AgentPoolsClient {
      * @return agentPool represents the agent pool of Kubernetes cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AgentPoolInner update(String resourceGroupName, String kubernetesClusterName, String agentPoolName,
-        AgentPoolPatchParameters agentPoolUpdateParameters, Context context);
+    AgentPoolInner update(String resourceGroupName, String kubernetesClusterName, String agentPoolName, String ifMatch,
+        String ifNoneMatch, AgentPoolPatchParameters agentPoolUpdateParameters, Context context);
 }

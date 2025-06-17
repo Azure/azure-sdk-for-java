@@ -139,7 +139,7 @@ public class SampleUtils {
     }
 
     @NotNull
-    public static void cleanUpResources(AtomicReference<String> threadId, ThreadsAsyncClient threadsAsyncClient, AtomicReference<String> agentId, PersistentAgentsAdministrationAsyncClient agentsAsyncClient) {
+    public static void cleanUpResources(AtomicReference<String> threadId, ThreadsAsyncClient threadsAsyncClient, AtomicReference<String> agentId, PersistentAgentsAdministrationAsyncClient administrationAsyncClient) {
         // Always clean up resources regardless of success or failure
         System.out.println("Cleaning up resources...");
 
@@ -153,7 +153,7 @@ public class SampleUtils {
 
         // Clean up agent if created
         if (agentId.get() != null) {
-            agentsAsyncClient.deleteAgent(agentId.get())
+            administrationAsyncClient.deleteAgent(agentId.get())
                 .doOnSuccess(ignored -> System.out.println("Agent deleted: " + agentId.get()))
                 .doOnError(error -> System.err.println("Failed to delete agent: " + error.getMessage()))
                 .subscribe();

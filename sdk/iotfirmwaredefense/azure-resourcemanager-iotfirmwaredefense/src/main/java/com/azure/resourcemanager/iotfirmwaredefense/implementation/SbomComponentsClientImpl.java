@@ -61,7 +61,7 @@ public final class SbomComponentsClientImpl implements SbomComponentsClient {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "IoTFirmwareDefenseMg")
+    @ServiceInterface(name = "IoTFirmwareDefenseMgmtClientSbomComponents")
     public interface SbomComponentsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTFirmwareDefense/workspaces/{workspaceName}/firmwares/{firmwareId}/sbomComponents")

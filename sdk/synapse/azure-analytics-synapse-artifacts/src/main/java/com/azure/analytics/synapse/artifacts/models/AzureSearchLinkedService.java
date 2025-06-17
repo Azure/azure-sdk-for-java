@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,27 +22,32 @@ public class AzureSearchLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "AzureSearch";
 
     /*
      * URL for Azure Search service. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object url;
 
     /*
      * Admin Key for Azure Search service
      */
+    @Generated
     private SecretBase key;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of AzureSearchLinkedService class.
      */
+    @Generated
     public AzureSearchLinkedService() {
     }
 
@@ -50,6 +56,7 @@ public class AzureSearchLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -60,6 +67,7 @@ public class AzureSearchLinkedService extends LinkedService {
      * 
      * @return the url value.
      */
+    @Generated
     public Object getUrl() {
         return this.url;
     }
@@ -70,6 +78,7 @@ public class AzureSearchLinkedService extends LinkedService {
      * @param url the url value to set.
      * @return the AzureSearchLinkedService object itself.
      */
+    @Generated
     public AzureSearchLinkedService setUrl(Object url) {
         this.url = url;
         return this;
@@ -80,6 +89,7 @@ public class AzureSearchLinkedService extends LinkedService {
      * 
      * @return the key value.
      */
+    @Generated
     public SecretBase getKey() {
         return this.key;
     }
@@ -90,6 +100,7 @@ public class AzureSearchLinkedService extends LinkedService {
      * @param key the key value to set.
      * @return the AzureSearchLinkedService object itself.
      */
+    @Generated
     public AzureSearchLinkedService setKey(SecretBase key) {
         this.key = key;
         return this;
@@ -101,6 +112,7 @@ public class AzureSearchLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -112,6 +124,7 @@ public class AzureSearchLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureSearchLinkedService object itself.
      */
+    @Generated
     public AzureSearchLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -120,6 +133,7 @@ public class AzureSearchLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureSearchLinkedService setVersion(String version) {
         super.setVersion(version);
@@ -129,6 +143,7 @@ public class AzureSearchLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureSearchLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -138,6 +153,7 @@ public class AzureSearchLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureSearchLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -147,6 +163,7 @@ public class AzureSearchLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureSearchLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -156,6 +173,7 @@ public class AzureSearchLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureSearchLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -165,6 +183,7 @@ public class AzureSearchLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -178,7 +197,9 @@ public class AzureSearchLinkedService extends LinkedService {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("url", this.url);
             jsonWriter.writeJsonField("key", this.key);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -198,6 +219,7 @@ public class AzureSearchLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureSearchLinkedService.
      */
+    @Generated
     public static AzureSearchLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureSearchLinkedService deserializedAzureSearchLinkedService = new AzureSearchLinkedService();

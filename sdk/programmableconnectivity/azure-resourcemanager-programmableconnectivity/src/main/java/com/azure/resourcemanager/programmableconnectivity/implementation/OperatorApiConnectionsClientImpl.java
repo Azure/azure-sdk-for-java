@@ -72,7 +72,7 @@ public final class OperatorApiConnectionsClientImpl implements OperatorApiConnec
      * by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ProgrammableConnecti")
+    @ServiceInterface(name = "ProgrammableConnectivityMgmtClientOperatorApiConnections")
     public interface OperatorApiConnectionsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProgrammableConnectivity/operatorApiConnections/{operatorApiConnectionName}")

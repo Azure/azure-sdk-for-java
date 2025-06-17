@@ -25,7 +25,7 @@ title: RenderClient
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/maps/data-plane/Render/stable/2024-04-01/render.json
 namespace: com.azure.maps.render
 java: true
-use: '@autorest/java@4.1.50'
+use: '@autorest/java@4.1.52'
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
 payload-flattening-threshold: 0
@@ -41,7 +41,6 @@ custom-types: ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseExcepti
 customization-class: src/main/java/RenderCustomization.java
 generic-response-type: true
 no-custom-headers: true
-use-eclipse-language-server: false
 modelerfour:
   additional-checks: false
   lenient-model-deduplication: true

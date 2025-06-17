@@ -33,6 +33,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertie
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSecurityProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSku;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterStatus;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterStorageProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterWindowsProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterWorkloadAutoScalerProfile;
@@ -653,33 +654,6 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the enablePodSecurityPolicy property: (DEPRECATED) Whether to enable Kubernetes pod security policy
-     * (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn more
-     * at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
-     * 
-     * @return the enablePodSecurityPolicy value.
-     */
-    public Boolean enablePodSecurityPolicy() {
-        return this.innerProperties() == null ? null : this.innerProperties().enablePodSecurityPolicy();
-    }
-
-    /**
-     * Set the enablePodSecurityPolicy property: (DEPRECATED) Whether to enable Kubernetes pod security policy
-     * (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn more
-     * at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
-     * 
-     * @param enablePodSecurityPolicy the enablePodSecurityPolicy value to set.
-     * @return the ManagedClusterInner object itself.
-     */
-    public ManagedClusterInner withEnablePodSecurityPolicy(Boolean enablePodSecurityPolicy) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedClusterProperties();
-        }
-        this.innerProperties().withEnablePodSecurityPolicy(enablePodSecurityPolicy);
-        return this;
-    }
-
-    /**
      * Get the networkProfile property: The network configuration profile.
      * 
      * @return the networkProfile value.
@@ -1159,6 +1133,29 @@ public final class ManagedClusterInner extends Resource {
             this.innerProperties = new ManagedClusterProperties();
         }
         this.innerProperties().withBootstrapProfile(bootstrapProfile);
+        return this;
+    }
+
+    /**
+     * Get the status property: Contains read-only information about the Managed Cluster.
+     * 
+     * @return the status value.
+     */
+    public ManagedClusterStatus status() {
+        return this.innerProperties() == null ? null : this.innerProperties().status();
+    }
+
+    /**
+     * Set the status property: Contains read-only information about the Managed Cluster.
+     * 
+     * @param status the status value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withStatus(ManagedClusterStatus status) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withStatus(status);
         return this;
     }
 
