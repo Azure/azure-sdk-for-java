@@ -1737,8 +1737,7 @@ class VirtualMachineImpl
 
     @Override
     public NetworkInterface getPrimaryNetworkInterface(Context context) {
-        return this.getPrimaryNetworkInterfaceAsync().contextWrite(c -> FluxUtil.toReactorContext(context))
-            .block();
+        return this.getPrimaryNetworkInterfaceAsync().contextWrite(c -> FluxUtil.toReactorContext(context)).block();
     }
 
     @Override

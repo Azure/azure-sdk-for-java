@@ -50,7 +50,7 @@ abstract class NicIpConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
     private final NetworkManager networkManager;
 
     protected NicIpConfigurationBaseImpl(NetworkInterfaceIpConfigurationInner inner, ParentImplT parent,
-                                         NetworkManager networkManager) {
+        NetworkManager networkManager) {
         super(inner, parent);
         this.networkManager = networkManager;
     }
@@ -184,9 +184,9 @@ abstract class NicIpConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
 
         List<ApplicationSecurityGroup> applicationSecurityGroups = Flux
             .fromStream(this.innerModel().applicationSecurityGroups().stream().map(ApplicationSecurityGroupInner::id))
-            .flatMapSequential(id ->
-                this.networkManager.applicationSecurityGroups().getByIdAsync(id)
-                    .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly())))
+            .flatMapSequential(id -> this.networkManager.applicationSecurityGroups()
+                .getByIdAsync(id)
+                .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly())))
             .collectList()
             .block();
         return applicationSecurityGroups == null

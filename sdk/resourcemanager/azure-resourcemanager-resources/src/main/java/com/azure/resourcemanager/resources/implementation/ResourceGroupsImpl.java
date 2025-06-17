@@ -128,7 +128,8 @@ public final class ResourceGroupsImpl
     }
 
     @Override
-    public Accepted<Void> beginDeleteByName(String name, Collection<ForceDeletionResourceType> forceDeletionResourceTypes, Context context) {
+    public Accepted<Void> beginDeleteByName(String name,
+        Collection<ForceDeletionResourceType> forceDeletionResourceTypes, Context context) {
         return AcceptedImpl.newAccepted(logger, this.manager().serviceClient().getHttpPipeline(),
             this.manager().serviceClient().getDefaultPollInterval(),
             () -> this.manager()

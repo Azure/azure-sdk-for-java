@@ -132,8 +132,9 @@ public class NetworkInterfacesImpl extends
 
     @Override
     public PagedIterable<NetworkInterface> listByResourceGroup(String resourceGroupName, Context context) {
-        return this.inner().listByResourceGroup(resourceGroupName, context)
-            .mapPage(networkInterfaceInner ->
-                new NetworkInterfaceImpl(networkInterfaceInner.name(), networkInterfaceInner, NetworkInterfacesImpl.this.manager()));
+        return this.inner()
+            .listByResourceGroup(resourceGroupName, context)
+            .mapPage(networkInterfaceInner -> new NetworkInterfaceImpl(networkInterfaceInner.name(),
+                networkInterfaceInner, NetworkInterfacesImpl.this.manager()));
     }
 }

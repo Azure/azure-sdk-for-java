@@ -17,7 +17,6 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
 import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
@@ -62,7 +61,7 @@ public class MethodsWithContextTests extends ResourceManagerTestProxyTestBase {
         String templateJson;
         try (InputStream templateStream = this.getClass().getResourceAsStream("/deploymentTemplate.json")) {
             templateJson = new BufferedReader(new InputStreamReader(templateStream, StandardCharsets.UTF_8)).lines()
-                    .collect(Collectors.joining("\n"));
+                .collect(Collectors.joining("\n"));
         }
         Map<String, Object> parametersMap = new HashMap<>();
         String nicName = generateRandomResourceName("nic", 15);
@@ -75,17 +74,18 @@ public class MethodsWithContextTests extends ResourceManagerTestProxyTestBase {
         addParameters(parametersMap, "applicationSecurityGroupName", asgName);
 
         Deployment deployment = azureResourceManager.deployments()
-                .define(deploymentName)
-                .withNewResourceGroup(rgName, region)
-                .withTemplate(templateJson)
-                .withParameters(parametersMap)
-                .withMode(DeploymentMode.INCREMENTAL)
-                .beginCreate(context)
-                .getFinalResult();
+            .define(deploymentName)
+            .withNewResourceGroup(rgName, region)
+            .withTemplate(templateJson)
+            .withParameters(parametersMap)
+            .withMode(DeploymentMode.INCREMENTAL)
+            .beginCreate(context)
+            .getFinalResult();
 
         int getCount = getCounter.get();
         azureResourceManager.applicationSecurityGroups().getByResourceGroup(rgName, asgName, context);
-        NetworkInterface nic = azureResourceManager.networkInterfaces().listByResourceGroup(rgName, context).stream().findFirst().get();
+        NetworkInterface nic
+            = azureResourceManager.networkInterfaces().listByResourceGroup(rgName, context).stream().findFirst().get();
         azureResourceManager.networkSecurityGroups().getByResourceGroup(rgName, nsgName, context);
         azureResourceManager.networks().getByResourceGroup(rgName, networkName, context);
         nic.primaryIPConfiguration().listAssociatedApplicationSecurityGroups(context).stream().count();
@@ -109,12 +109,13 @@ public class MethodsWithContextTests extends ResourceManagerTestProxyTestBase {
     }
 
     @Override
-    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile, HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
+        HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
         rgName = generateRandomResourceName("javacsmrg", 15);
         VerificationPolicy verificationPolicy = new VerificationPolicy();
         policies.add(0, verificationPolicy);
         return HttpPipelineProvider.buildHttpPipeline(credential, profile, null, httpLogOptions, null,
-                new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, httpClient);
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, httpClient);
     }
 
     @Override

@@ -2316,6 +2316,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
     @Test
     public void canBeginCreateAndDeleteWithContext() {
+        rgName = null;
         final String vmName = generateRandomResourceName("jvm", 15);
         final String diskName = generateRandomResourceName("jvdsk", 15);
         final String snapshotName = generateRandomResourceName("jvss", 15);

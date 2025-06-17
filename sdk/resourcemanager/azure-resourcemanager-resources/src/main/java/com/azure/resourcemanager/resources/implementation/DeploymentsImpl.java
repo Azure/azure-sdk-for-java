@@ -119,7 +119,8 @@ public final class DeploymentsImpl extends SupportsGettingByResourceGroupImpl<De
 
     @Override
     public Accepted<Void> beginDeleteById(String id, Context context) {
-        return beginDeleteByResourceGroup(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id), context);
+        return beginDeleteByResourceGroup(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id),
+            context);
     }
 
     @Override
@@ -137,8 +138,7 @@ public final class DeploymentsImpl extends SupportsGettingByResourceGroupImpl<De
                 .deleteWithResponseAsync(resourceGroupName, name)
                 .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
                 .block(),
-            Function.identity(),
-            Void.class, null, context);
+            Function.identity(), Void.class, null, context);
     }
 
     protected DeploymentImpl createFluentModel(String name) {

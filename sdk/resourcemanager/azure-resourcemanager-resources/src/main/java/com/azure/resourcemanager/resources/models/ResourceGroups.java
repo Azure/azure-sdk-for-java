@@ -70,7 +70,8 @@ public interface ResourceGroups
      * @param context the {@link Context} of the request
      * @return the accepted deleting operation
      */
-    Accepted<Void> beginDeleteByName(String name, Collection<ForceDeletionResourceType> forceDeletionResourceTypes, Context context);
+    Accepted<Void> beginDeleteByName(String name, Collection<ForceDeletionResourceType> forceDeletionResourceTypes,
+        Context context);
 
     /**
      * Deletes a resource from Azure, identifying it by its resource name.
