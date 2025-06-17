@@ -50,6 +50,10 @@ public final class KubernetesClusterFeatureImpl
         }
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
     }
@@ -113,6 +117,14 @@ public final class KubernetesClusterFeatureImpl
 
     private String featureName;
 
+    private String createIfMatch;
+
+    private String createIfNoneMatch;
+
+    private String updateIfMatch;
+
+    private String updateIfNoneMatch;
+
     private KubernetesClusterFeaturePatchParameters updateKubernetesClusterFeatureUpdateParameters;
 
     public KubernetesClusterFeatureImpl withExistingKubernetesCluster(String resourceGroupName,
@@ -125,14 +137,16 @@ public final class KubernetesClusterFeatureImpl
     public KubernetesClusterFeature create() {
         this.innerObject = serviceManager.serviceClient()
             .getKubernetesClusterFeatures()
-            .createOrUpdate(resourceGroupName, kubernetesClusterName, featureName, this.innerModel(), Context.NONE);
+            .createOrUpdate(resourceGroupName, kubernetesClusterName, featureName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, Context.NONE);
         return this;
     }
 
     public KubernetesClusterFeature create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getKubernetesClusterFeatures()
-            .createOrUpdate(resourceGroupName, kubernetesClusterName, featureName, this.innerModel(), context);
+            .createOrUpdate(resourceGroupName, kubernetesClusterName, featureName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, context);
         return this;
     }
 
@@ -141,9 +155,13 @@ public final class KubernetesClusterFeatureImpl
         this.innerObject = new KubernetesClusterFeatureInner();
         this.serviceManager = serviceManager;
         this.featureName = name;
+        this.createIfMatch = null;
+        this.createIfNoneMatch = null;
     }
 
     public KubernetesClusterFeatureImpl update() {
+        this.updateIfMatch = null;
+        this.updateIfNoneMatch = null;
         this.updateKubernetesClusterFeatureUpdateParameters = new KubernetesClusterFeaturePatchParameters();
         return this;
     }
@@ -151,7 +169,7 @@ public final class KubernetesClusterFeatureImpl
     public KubernetesClusterFeature apply() {
         this.innerObject = serviceManager.serviceClient()
             .getKubernetesClusterFeatures()
-            .update(resourceGroupName, kubernetesClusterName, featureName,
+            .update(resourceGroupName, kubernetesClusterName, featureName, updateIfMatch, updateIfNoneMatch,
                 updateKubernetesClusterFeatureUpdateParameters, Context.NONE);
         return this;
     }
@@ -159,7 +177,7 @@ public final class KubernetesClusterFeatureImpl
     public KubernetesClusterFeature apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getKubernetesClusterFeatures()
-            .update(resourceGroupName, kubernetesClusterName, featureName,
+            .update(resourceGroupName, kubernetesClusterName, featureName, updateIfMatch, updateIfNoneMatch,
                 updateKubernetesClusterFeatureUpdateParameters, context);
         return this;
     }
@@ -219,7 +237,27 @@ public final class KubernetesClusterFeatureImpl
         }
     }
 
+    public KubernetesClusterFeatureImpl withIfMatch(String ifMatch) {
+        if (isInCreateMode()) {
+            this.createIfMatch = ifMatch;
+            return this;
+        } else {
+            this.updateIfMatch = ifMatch;
+            return this;
+        }
+    }
+
+    public KubernetesClusterFeatureImpl withIfNoneMatch(String ifNoneMatch) {
+        if (isInCreateMode()) {
+            this.createIfNoneMatch = ifNoneMatch;
+            return this;
+        } else {
+            this.updateIfNoneMatch = ifNoneMatch;
+            return this;
+        }
+    }
+
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

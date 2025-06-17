@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,18 +21,21 @@ public final class RestSink extends CopySink {
     /*
      * Copy sink type.
      */
+    @Generated
     private String type = "RestSink";
 
     /*
      * The HTTP method used to call the RESTful API. The default is POST. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object requestMethod;
 
     /*
      * The additional HTTP headers in the request to the RESTful API. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object additionalHeaders;
 
     /*
@@ -39,22 +43,26 @@ public final class RestSink extends CopySink {
      * response data. Default value: 00:01:40. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
+    @Generated
     private Object httpRequestTimeout;
 
     /*
      * The time to await before sending next request, in milliseconds
      */
+    @Generated
     private Object requestInterval;
 
     /*
      * Http Compression Type to Send data in compressed format with Optimal Compression Level, Default is None. And The
      * Only Supported option is Gzip.
      */
+    @Generated
     private Object httpCompressionType;
 
     /**
      * Creates an instance of RestSink class.
      */
+    @Generated
     public RestSink() {
     }
 
@@ -63,6 +71,7 @@ public final class RestSink extends CopySink {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -74,6 +83,7 @@ public final class RestSink extends CopySink {
      * 
      * @return the requestMethod value.
      */
+    @Generated
     public Object getRequestMethod() {
         return this.requestMethod;
     }
@@ -85,6 +95,7 @@ public final class RestSink extends CopySink {
      * @param requestMethod the requestMethod value to set.
      * @return the RestSink object itself.
      */
+    @Generated
     public RestSink setRequestMethod(Object requestMethod) {
         this.requestMethod = requestMethod;
         return this;
@@ -96,6 +107,7 @@ public final class RestSink extends CopySink {
      * 
      * @return the additionalHeaders value.
      */
+    @Generated
     public Object getAdditionalHeaders() {
         return this.additionalHeaders;
     }
@@ -107,6 +119,7 @@ public final class RestSink extends CopySink {
      * @param additionalHeaders the additionalHeaders value to set.
      * @return the RestSink object itself.
      */
+    @Generated
     public RestSink setAdditionalHeaders(Object additionalHeaders) {
         this.additionalHeaders = additionalHeaders;
         return this;
@@ -119,6 +132,7 @@ public final class RestSink extends CopySink {
      * 
      * @return the httpRequestTimeout value.
      */
+    @Generated
     public Object getHttpRequestTimeout() {
         return this.httpRequestTimeout;
     }
@@ -131,6 +145,7 @@ public final class RestSink extends CopySink {
      * @param httpRequestTimeout the httpRequestTimeout value to set.
      * @return the RestSink object itself.
      */
+    @Generated
     public RestSink setHttpRequestTimeout(Object httpRequestTimeout) {
         this.httpRequestTimeout = httpRequestTimeout;
         return this;
@@ -141,6 +156,7 @@ public final class RestSink extends CopySink {
      * 
      * @return the requestInterval value.
      */
+    @Generated
     public Object getRequestInterval() {
         return this.requestInterval;
     }
@@ -151,6 +167,7 @@ public final class RestSink extends CopySink {
      * @param requestInterval the requestInterval value to set.
      * @return the RestSink object itself.
      */
+    @Generated
     public RestSink setRequestInterval(Object requestInterval) {
         this.requestInterval = requestInterval;
         return this;
@@ -162,6 +179,7 @@ public final class RestSink extends CopySink {
      * 
      * @return the httpCompressionType value.
      */
+    @Generated
     public Object getHttpCompressionType() {
         return this.httpCompressionType;
     }
@@ -173,6 +191,7 @@ public final class RestSink extends CopySink {
      * @param httpCompressionType the httpCompressionType value to set.
      * @return the RestSink object itself.
      */
+    @Generated
     public RestSink setHttpCompressionType(Object httpCompressionType) {
         this.httpCompressionType = httpCompressionType;
         return this;
@@ -181,6 +200,7 @@ public final class RestSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public RestSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
@@ -190,6 +210,7 @@ public final class RestSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public RestSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
@@ -199,6 +220,7 @@ public final class RestSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public RestSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
@@ -208,6 +230,7 @@ public final class RestSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public RestSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
@@ -217,6 +240,7 @@ public final class RestSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public RestSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -226,20 +250,41 @@ public final class RestSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
-        jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
-        jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
-        jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getWriteBatchSize() != null) {
+            jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
+        }
+        if (getWriteBatchTimeout() != null) {
+            jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
+        }
+        if (getSinkRetryCount() != null) {
+            jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
+        }
+        if (getSinkRetryWait() != null) {
+            jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("requestMethod", this.requestMethod);
-        jsonWriter.writeUntypedField("additionalHeaders", this.additionalHeaders);
-        jsonWriter.writeUntypedField("httpRequestTimeout", this.httpRequestTimeout);
-        jsonWriter.writeUntypedField("requestInterval", this.requestInterval);
-        jsonWriter.writeUntypedField("httpCompressionType", this.httpCompressionType);
+        if (this.requestMethod != null) {
+            jsonWriter.writeUntypedField("requestMethod", this.requestMethod);
+        }
+        if (this.additionalHeaders != null) {
+            jsonWriter.writeUntypedField("additionalHeaders", this.additionalHeaders);
+        }
+        if (this.httpRequestTimeout != null) {
+            jsonWriter.writeUntypedField("httpRequestTimeout", this.httpRequestTimeout);
+        }
+        if (this.requestInterval != null) {
+            jsonWriter.writeUntypedField("requestInterval", this.requestInterval);
+        }
+        if (this.httpCompressionType != null) {
+            jsonWriter.writeUntypedField("httpCompressionType", this.httpCompressionType);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -256,6 +301,7 @@ public final class RestSink extends CopySink {
      * to JSON null.
      * @throws IOException If an error occurs while reading the RestSink.
      */
+    @Generated
     public static RestSink fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RestSink deserializedRestSink = new RestSink();

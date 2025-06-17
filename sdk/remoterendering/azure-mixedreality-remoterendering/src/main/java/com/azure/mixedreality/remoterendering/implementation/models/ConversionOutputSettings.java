@@ -5,6 +5,7 @@
 package com.azure.mixedreality.remoterendering.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,6 +20,7 @@ public final class ConversionOutputSettings implements JsonSerializable<Conversi
     /*
      * The URI of the Azure blob storage container where the result of the conversion should be written to.
      */
+    @Generated
     private final String storageContainerUri;
 
     /*
@@ -28,18 +30,21 @@ public final class ConversionOutputSettings implements JsonSerializable<Conversi
      * https://docs.microsoft.com/azure/remote-rendering/how-tos/create-an-account#link-storage-accounts for details.
      * For security purposes this field will never be filled out in responses bodies.
      */
+    @Generated
     private String storageContainerWriteSas;
 
     /*
      * A prefix which gets prepended in front of all files produced by the conversion process. Will be treated as a
      * virtual folder. Optional. If not provided, output files will be stored at the container root.
      */
+    @Generated
     private String blobPrefix;
 
     /*
      * The file name of the output asset. Must end in '.arrAsset'. Optional. If not provided, file name will the same
      * name as the input asset, with '.arrAsset' extension
      */
+    @Generated
     private String outputAssetFilename;
 
     /**
@@ -47,6 +52,7 @@ public final class ConversionOutputSettings implements JsonSerializable<Conversi
      * 
      * @param storageContainerUri the storageContainerUri value to set.
      */
+    @Generated
     public ConversionOutputSettings(String storageContainerUri) {
         this.storageContainerUri = storageContainerUri;
     }
@@ -57,6 +63,7 @@ public final class ConversionOutputSettings implements JsonSerializable<Conversi
      * 
      * @return the storageContainerUri value.
      */
+    @Generated
     public String getStorageContainerUri() {
         return this.storageContainerUri;
     }
@@ -70,6 +77,7 @@ public final class ConversionOutputSettings implements JsonSerializable<Conversi
      * 
      * @return the storageContainerWriteSas value.
      */
+    @Generated
     public String getStorageContainerWriteSas() {
         return this.storageContainerWriteSas;
     }
@@ -84,6 +92,7 @@ public final class ConversionOutputSettings implements JsonSerializable<Conversi
      * @param storageContainerWriteSas the storageContainerWriteSas value to set.
      * @return the ConversionOutputSettings object itself.
      */
+    @Generated
     public ConversionOutputSettings setStorageContainerWriteSas(String storageContainerWriteSas) {
         this.storageContainerWriteSas = storageContainerWriteSas;
         return this;
@@ -96,6 +105,7 @@ public final class ConversionOutputSettings implements JsonSerializable<Conversi
      * 
      * @return the blobPrefix value.
      */
+    @Generated
     public String getBlobPrefix() {
         return this.blobPrefix;
     }
@@ -108,6 +118,7 @@ public final class ConversionOutputSettings implements JsonSerializable<Conversi
      * @param blobPrefix the blobPrefix value to set.
      * @return the ConversionOutputSettings object itself.
      */
+    @Generated
     public ConversionOutputSettings setBlobPrefix(String blobPrefix) {
         this.blobPrefix = blobPrefix;
         return this;
@@ -119,6 +130,7 @@ public final class ConversionOutputSettings implements JsonSerializable<Conversi
      * 
      * @return the outputAssetFilename value.
      */
+    @Generated
     public String getOutputAssetFilename() {
         return this.outputAssetFilename;
     }
@@ -130,6 +142,7 @@ public final class ConversionOutputSettings implements JsonSerializable<Conversi
      * @param outputAssetFilename the outputAssetFilename value to set.
      * @return the ConversionOutputSettings object itself.
      */
+    @Generated
     public ConversionOutputSettings setOutputAssetFilename(String outputAssetFilename) {
         this.outputAssetFilename = outputAssetFilename;
         return this;
@@ -138,6 +151,7 @@ public final class ConversionOutputSettings implements JsonSerializable<Conversi
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -157,6 +171,7 @@ public final class ConversionOutputSettings implements JsonSerializable<Conversi
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ConversionOutputSettings.
      */
+    @Generated
     public static ConversionOutputSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean storageContainerUriFound = false;

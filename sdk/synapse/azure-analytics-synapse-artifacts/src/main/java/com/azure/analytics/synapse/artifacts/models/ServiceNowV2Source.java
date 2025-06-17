@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,21 +21,25 @@ public final class ServiceNowV2Source extends TabularSource {
     /*
      * Copy source type.
      */
+    @Generated
     private String type = "ServiceNowV2Source";
 
     /*
      * Expression to filter data from source.
      */
+    @Generated
     private ExpressionV2 expression;
 
     /*
      * Page size of the result. Type: integer (or Expression with resultType integer).
      */
+    @Generated
     private Object pageSize;
 
     /**
      * Creates an instance of ServiceNowV2Source class.
      */
+    @Generated
     public ServiceNowV2Source() {
     }
 
@@ -43,6 +48,7 @@ public final class ServiceNowV2Source extends TabularSource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -53,6 +59,7 @@ public final class ServiceNowV2Source extends TabularSource {
      * 
      * @return the expression value.
      */
+    @Generated
     public ExpressionV2 getExpression() {
         return this.expression;
     }
@@ -63,6 +70,7 @@ public final class ServiceNowV2Source extends TabularSource {
      * @param expression the expression value to set.
      * @return the ServiceNowV2Source object itself.
      */
+    @Generated
     public ServiceNowV2Source setExpression(ExpressionV2 expression) {
         this.expression = expression;
         return this;
@@ -73,6 +81,7 @@ public final class ServiceNowV2Source extends TabularSource {
      * 
      * @return the pageSize value.
      */
+    @Generated
     public Object getPageSize() {
         return this.pageSize;
     }
@@ -83,6 +92,7 @@ public final class ServiceNowV2Source extends TabularSource {
      * @param pageSize the pageSize value to set.
      * @return the ServiceNowV2Source object itself.
      */
+    @Generated
     public ServiceNowV2Source setPageSize(Object pageSize) {
         this.pageSize = pageSize;
         return this;
@@ -91,6 +101,7 @@ public final class ServiceNowV2Source extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ServiceNowV2Source setQueryTimeout(Object queryTimeout) {
         super.setQueryTimeout(queryTimeout);
@@ -100,6 +111,7 @@ public final class ServiceNowV2Source extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ServiceNowV2Source setAdditionalColumns(Object additionalColumns) {
         super.setAdditionalColumns(additionalColumns);
@@ -109,6 +121,7 @@ public final class ServiceNowV2Source extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ServiceNowV2Source setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
@@ -118,6 +131,7 @@ public final class ServiceNowV2Source extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ServiceNowV2Source setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
@@ -127,6 +141,7 @@ public final class ServiceNowV2Source extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ServiceNowV2Source setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -136,17 +151,30 @@ public final class ServiceNowV2Source extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
-        jsonWriter.writeUntypedField("queryTimeout", getQueryTimeout());
-        jsonWriter.writeUntypedField("additionalColumns", getAdditionalColumns());
+        if (getSourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        }
+        if (getSourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
+        if (getQueryTimeout() != null) {
+            jsonWriter.writeUntypedField("queryTimeout", getQueryTimeout());
+        }
+        if (getAdditionalColumns() != null) {
+            jsonWriter.writeUntypedField("additionalColumns", getAdditionalColumns());
+        }
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeJsonField("expression", this.expression);
-        jsonWriter.writeUntypedField("pageSize", this.pageSize);
+        if (this.pageSize != null) {
+            jsonWriter.writeUntypedField("pageSize", this.pageSize);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -163,6 +191,7 @@ public final class ServiceNowV2Source extends TabularSource {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ServiceNowV2Source.
      */
+    @Generated
     public static ServiceNowV2Source fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ServiceNowV2Source deserializedServiceNowV2Source = new ServiceNowV2Source();

@@ -70,6 +70,10 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         }
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public ExtendedLocation extendedLocation() {
         return this.innerModel().extendedLocation();
     }
@@ -241,6 +245,14 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     private String clusterName;
 
+    private String createIfMatch;
+
+    private String createIfNoneMatch;
+
+    private String updateIfMatch;
+
+    private String updateIfNoneMatch;
+
     private ClusterPatchParameters updateClusterUpdateParameters;
 
     public ClusterImpl withExistingResourceGroup(String resourceGroupName) {
@@ -251,14 +263,16 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     public Cluster create() {
         this.innerObject = serviceManager.serviceClient()
             .getClusters()
-            .createOrUpdate(resourceGroupName, clusterName, this.innerModel(), Context.NONE);
+            .createOrUpdate(resourceGroupName, clusterName, this.innerModel(), createIfMatch, createIfNoneMatch,
+                Context.NONE);
         return this;
     }
 
     public Cluster create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getClusters()
-            .createOrUpdate(resourceGroupName, clusterName, this.innerModel(), context);
+            .createOrUpdate(resourceGroupName, clusterName, this.innerModel(), createIfMatch, createIfNoneMatch,
+                context);
         return this;
     }
 
@@ -266,9 +280,13 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         this.innerObject = new ClusterInner();
         this.serviceManager = serviceManager;
         this.clusterName = name;
+        this.createIfMatch = null;
+        this.createIfNoneMatch = null;
     }
 
     public ClusterImpl update() {
+        this.updateIfMatch = null;
+        this.updateIfNoneMatch = null;
         this.updateClusterUpdateParameters = new ClusterPatchParameters();
         return this;
     }
@@ -276,14 +294,16 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     public Cluster apply() {
         this.innerObject = serviceManager.serviceClient()
             .getClusters()
-            .update(resourceGroupName, clusterName, updateClusterUpdateParameters, Context.NONE);
+            .update(resourceGroupName, clusterName, updateIfMatch, updateIfNoneMatch, updateClusterUpdateParameters,
+                Context.NONE);
         return this;
     }
 
     public Cluster apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getClusters()
-            .update(resourceGroupName, clusterName, updateClusterUpdateParameters, context);
+            .update(resourceGroupName, clusterName, updateIfMatch, updateIfNoneMatch, updateClusterUpdateParameters,
+                context);
         return this;
     }
 
@@ -527,6 +547,26 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this;
     }
 
+    public ClusterImpl withIfMatch(String ifMatch) {
+        if (isInCreateMode()) {
+            this.createIfMatch = ifMatch;
+            return this;
+        } else {
+            this.updateIfMatch = ifMatch;
+            return this;
+        }
+    }
+
+    public ClusterImpl withIfNoneMatch(String ifNoneMatch) {
+        if (isInCreateMode()) {
+            this.createIfNoneMatch = ifNoneMatch;
+            return this;
+        } else {
+            this.updateIfNoneMatch = ifNoneMatch;
+            return this;
+        }
+    }
+
     public ClusterImpl
         withVulnerabilityScanningSettings(VulnerabilityScanningSettingsPatch vulnerabilityScanningSettings) {
         this.updateClusterUpdateParameters.withVulnerabilityScanningSettings(vulnerabilityScanningSettings);
@@ -534,6 +574,6 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

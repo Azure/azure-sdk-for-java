@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class SeriesIdentity implements JsonSerializable<SeriesIdentity> {
     /*
      * dimension specified for series
      */
+    @Generated
     private Map<String, String> dimension;
 
     /**
      * Creates an instance of SeriesIdentity class.
      */
+    @Generated
     public SeriesIdentity() {
     }
 
@@ -33,6 +36,7 @@ public final class SeriesIdentity implements JsonSerializable<SeriesIdentity> {
      * 
      * @return the dimension value.
      */
+    @Generated
     public Map<String, String> getDimension() {
         return this.dimension;
     }
@@ -43,6 +47,7 @@ public final class SeriesIdentity implements JsonSerializable<SeriesIdentity> {
      * @param dimension the dimension value to set.
      * @return the SeriesIdentity object itself.
      */
+    @Generated
     public SeriesIdentity setDimension(Map<String, String> dimension) {
         this.dimension = dimension;
         return this;
@@ -51,6 +56,7 @@ public final class SeriesIdentity implements JsonSerializable<SeriesIdentity> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -67,6 +73,7 @@ public final class SeriesIdentity implements JsonSerializable<SeriesIdentity> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SeriesIdentity.
      */
+    @Generated
     public static SeriesIdentity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SeriesIdentity deserializedSeriesIdentity = new SeriesIdentity();

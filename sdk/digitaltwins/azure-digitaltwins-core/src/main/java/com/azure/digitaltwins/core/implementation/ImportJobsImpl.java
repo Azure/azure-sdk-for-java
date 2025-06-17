@@ -66,7 +66,7 @@ public final class ImportJobsImpl {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureDigitalTwinsAPI")
+    @ServiceInterface(name = "AzureDigitalTwinsAPIImportJobs")
     public interface ImportJobsService {
         @Get("/jobs/imports")
         @ExpectedResponses({ 200 })

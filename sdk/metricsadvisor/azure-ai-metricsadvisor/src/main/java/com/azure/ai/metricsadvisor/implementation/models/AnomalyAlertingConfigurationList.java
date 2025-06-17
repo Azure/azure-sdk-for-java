@@ -4,6 +4,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class AnomalyAlertingConfigurationList implements JsonSerializable<
     /*
      * The value property.
      */
+    @Generated
     private List<AnomalyAlertingConfiguration> value;
 
     /*
      * The @nextLink property.
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of AnomalyAlertingConfigurationList class.
      */
+    @Generated
     public AnomalyAlertingConfigurationList() {
     }
 
@@ -38,6 +42,7 @@ public final class AnomalyAlertingConfigurationList implements JsonSerializable<
      * 
      * @return the value value.
      */
+    @Generated
     public List<AnomalyAlertingConfiguration> getValue() {
         return this.value;
     }
@@ -47,6 +52,7 @@ public final class AnomalyAlertingConfigurationList implements JsonSerializable<
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -54,6 +60,7 @@ public final class AnomalyAlertingConfigurationList implements JsonSerializable<
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -68,6 +75,7 @@ public final class AnomalyAlertingConfigurationList implements JsonSerializable<
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AnomalyAlertingConfigurationList.
      */
+    @Generated
     public static AnomalyAlertingConfigurationList fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AnomalyAlertingConfigurationList deserializedAnomalyAlertingConfigurationList

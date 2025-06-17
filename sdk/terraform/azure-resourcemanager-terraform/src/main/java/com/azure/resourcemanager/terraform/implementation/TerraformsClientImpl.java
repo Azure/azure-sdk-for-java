@@ -62,7 +62,7 @@ public final class TerraformsClientImpl implements TerraformsClient {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AzureTerraformManage")
+    @ServiceInterface(name = "AzureTerraformManagementClientTerraforms")
     public interface TerraformsService {
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.AzureTerraform/exportTerraform")
         @ExpectedResponses({ 202 })

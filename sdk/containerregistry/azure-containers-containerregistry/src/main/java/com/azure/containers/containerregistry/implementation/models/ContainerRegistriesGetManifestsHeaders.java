@@ -5,6 +5,7 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -16,6 +17,7 @@ public final class ContainerRegistriesGetManifestsHeaders {
     /*
      * The Link property.
      */
+    @Generated
     private String link;
 
     // HttpHeaders containing the raw property values.
@@ -33,6 +35,7 @@ public final class ContainerRegistriesGetManifestsHeaders {
      * 
      * @return the link value.
      */
+    @Generated
     public String getLink() {
         return this.link;
     }
@@ -43,6 +46,7 @@ public final class ContainerRegistriesGetManifestsHeaders {
      * @param link the link value to set.
      * @return the ContainerRegistriesGetManifestsHeaders object itself.
      */
+    @Generated
     public ContainerRegistriesGetManifestsHeaders setLink(String link) {
         this.link = link;
         return this;

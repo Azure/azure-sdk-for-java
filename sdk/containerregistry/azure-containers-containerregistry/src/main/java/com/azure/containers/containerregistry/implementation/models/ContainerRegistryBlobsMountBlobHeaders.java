@@ -5,6 +5,7 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -16,16 +17,19 @@ public final class ContainerRegistryBlobsMountBlobHeaders {
     /*
      * The Docker-Upload-UUID property.
      */
+    @Generated
     private String dockerUploadUUID;
 
     /*
      * The Location property.
      */
+    @Generated
     private String location;
 
     /*
      * The Docker-Content-Digest property.
      */
+    @Generated
     private String dockerContentDigest;
 
     private static final HttpHeaderName DOCKER_UPLOAD_UUID = HttpHeaderName.fromString("Docker-Upload-UUID");
@@ -49,6 +53,7 @@ public final class ContainerRegistryBlobsMountBlobHeaders {
      * 
      * @return the dockerUploadUUID value.
      */
+    @Generated
     public String getDockerUploadUUID() {
         return this.dockerUploadUUID;
     }
@@ -59,6 +64,7 @@ public final class ContainerRegistryBlobsMountBlobHeaders {
      * @param dockerUploadUUID the dockerUploadUUID value to set.
      * @return the ContainerRegistryBlobsMountBlobHeaders object itself.
      */
+    @Generated
     public ContainerRegistryBlobsMountBlobHeaders setDockerUploadUUID(String dockerUploadUUID) {
         this.dockerUploadUUID = dockerUploadUUID;
         return this;
@@ -69,6 +75,7 @@ public final class ContainerRegistryBlobsMountBlobHeaders {
      * 
      * @return the location value.
      */
+    @Generated
     public String getLocation() {
         return this.location;
     }
@@ -79,6 +86,7 @@ public final class ContainerRegistryBlobsMountBlobHeaders {
      * @param location the location value to set.
      * @return the ContainerRegistryBlobsMountBlobHeaders object itself.
      */
+    @Generated
     public ContainerRegistryBlobsMountBlobHeaders setLocation(String location) {
         this.location = location;
         return this;
@@ -89,6 +97,7 @@ public final class ContainerRegistryBlobsMountBlobHeaders {
      * 
      * @return the dockerContentDigest value.
      */
+    @Generated
     public String getDockerContentDigest() {
         return this.dockerContentDigest;
     }
@@ -99,6 +108,7 @@ public final class ContainerRegistryBlobsMountBlobHeaders {
      * @param dockerContentDigest the dockerContentDigest value to set.
      * @return the ContainerRegistryBlobsMountBlobHeaders object itself.
      */
+    @Generated
     public ContainerRegistryBlobsMountBlobHeaders setDockerContentDigest(String dockerContentDigest) {
         this.dockerContentDigest = dockerContentDigest;
         return this;

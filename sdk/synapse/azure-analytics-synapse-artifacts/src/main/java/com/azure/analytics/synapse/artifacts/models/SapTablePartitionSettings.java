@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,29 +21,34 @@ public final class SapTablePartitionSettings implements JsonSerializable<SapTabl
      * The name of the column that will be used for proceeding range partitioning. Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private Object partitionColumnName;
 
     /*
      * The maximum value of column specified in partitionColumnName that will be used for proceeding range partitioning.
      * Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object partitionUpperBound;
 
     /*
      * The minimum value of column specified in partitionColumnName that will be used for proceeding range partitioning.
      * Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object partitionLowerBound;
 
     /*
      * The maximum value of partitions the table will be split into. Type: integer (or Expression with resultType
      * string).
      */
+    @Generated
     private Object maxPartitionsNumber;
 
     /**
      * Creates an instance of SapTablePartitionSettings class.
      */
+    @Generated
     public SapTablePartitionSettings() {
     }
 
@@ -52,6 +58,7 @@ public final class SapTablePartitionSettings implements JsonSerializable<SapTabl
      * 
      * @return the partitionColumnName value.
      */
+    @Generated
     public Object getPartitionColumnName() {
         return this.partitionColumnName;
     }
@@ -63,6 +70,7 @@ public final class SapTablePartitionSettings implements JsonSerializable<SapTabl
      * @param partitionColumnName the partitionColumnName value to set.
      * @return the SapTablePartitionSettings object itself.
      */
+    @Generated
     public SapTablePartitionSettings setPartitionColumnName(Object partitionColumnName) {
         this.partitionColumnName = partitionColumnName;
         return this;
@@ -74,6 +82,7 @@ public final class SapTablePartitionSettings implements JsonSerializable<SapTabl
      * 
      * @return the partitionUpperBound value.
      */
+    @Generated
     public Object getPartitionUpperBound() {
         return this.partitionUpperBound;
     }
@@ -85,6 +94,7 @@ public final class SapTablePartitionSettings implements JsonSerializable<SapTabl
      * @param partitionUpperBound the partitionUpperBound value to set.
      * @return the SapTablePartitionSettings object itself.
      */
+    @Generated
     public SapTablePartitionSettings setPartitionUpperBound(Object partitionUpperBound) {
         this.partitionUpperBound = partitionUpperBound;
         return this;
@@ -96,6 +106,7 @@ public final class SapTablePartitionSettings implements JsonSerializable<SapTabl
      * 
      * @return the partitionLowerBound value.
      */
+    @Generated
     public Object getPartitionLowerBound() {
         return this.partitionLowerBound;
     }
@@ -107,6 +118,7 @@ public final class SapTablePartitionSettings implements JsonSerializable<SapTabl
      * @param partitionLowerBound the partitionLowerBound value to set.
      * @return the SapTablePartitionSettings object itself.
      */
+    @Generated
     public SapTablePartitionSettings setPartitionLowerBound(Object partitionLowerBound) {
         this.partitionLowerBound = partitionLowerBound;
         return this;
@@ -118,6 +130,7 @@ public final class SapTablePartitionSettings implements JsonSerializable<SapTabl
      * 
      * @return the maxPartitionsNumber value.
      */
+    @Generated
     public Object getMaxPartitionsNumber() {
         return this.maxPartitionsNumber;
     }
@@ -129,6 +142,7 @@ public final class SapTablePartitionSettings implements JsonSerializable<SapTabl
      * @param maxPartitionsNumber the maxPartitionsNumber value to set.
      * @return the SapTablePartitionSettings object itself.
      */
+    @Generated
     public SapTablePartitionSettings setMaxPartitionsNumber(Object maxPartitionsNumber) {
         this.maxPartitionsNumber = maxPartitionsNumber;
         return this;
@@ -137,13 +151,22 @@ public final class SapTablePartitionSettings implements JsonSerializable<SapTabl
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("partitionColumnName", this.partitionColumnName);
-        jsonWriter.writeUntypedField("partitionUpperBound", this.partitionUpperBound);
-        jsonWriter.writeUntypedField("partitionLowerBound", this.partitionLowerBound);
-        jsonWriter.writeUntypedField("maxPartitionsNumber", this.maxPartitionsNumber);
+        if (this.partitionColumnName != null) {
+            jsonWriter.writeUntypedField("partitionColumnName", this.partitionColumnName);
+        }
+        if (this.partitionUpperBound != null) {
+            jsonWriter.writeUntypedField("partitionUpperBound", this.partitionUpperBound);
+        }
+        if (this.partitionLowerBound != null) {
+            jsonWriter.writeUntypedField("partitionLowerBound", this.partitionLowerBound);
+        }
+        if (this.maxPartitionsNumber != null) {
+            jsonWriter.writeUntypedField("maxPartitionsNumber", this.maxPartitionsNumber);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -155,6 +178,7 @@ public final class SapTablePartitionSettings implements JsonSerializable<SapTabl
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SapTablePartitionSettings.
      */
+    @Generated
     public static SapTablePartitionSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SapTablePartitionSettings deserializedSapTablePartitionSettings = new SapTablePartitionSettings();

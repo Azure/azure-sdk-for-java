@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,36 +21,43 @@ public final class WebhookHookParameterPatch implements JsonSerializable<Webhook
     /*
      * API address, will be called when alert is triggered, only support POST method via SSL
      */
+    @Generated
     private String endpoint;
 
     /*
      * (Deprecated) The username, if using basic authentication
      */
+    @Generated
     private String username;
 
     /*
      * (Deprecated) The password, if using basic authentication
      */
+    @Generated
     private String password;
 
     /*
      * custom headers in api call
      */
+    @Generated
     private Map<String, String> headers;
 
     /*
      * The certificate key, if using client certificate
      */
+    @Generated
     private String certificateKey;
 
     /*
      * The certificate password, if using client certificate
      */
+    @Generated
     private String certificatePassword;
 
     /**
      * Creates an instance of WebhookHookParameterPatch class.
      */
+    @Generated
     public WebhookHookParameterPatch() {
     }
 
@@ -58,6 +66,7 @@ public final class WebhookHookParameterPatch implements JsonSerializable<Webhook
      * 
      * @return the endpoint value.
      */
+    @Generated
     public String getEndpoint() {
         return this.endpoint;
     }
@@ -68,6 +77,7 @@ public final class WebhookHookParameterPatch implements JsonSerializable<Webhook
      * @param endpoint the endpoint value to set.
      * @return the WebhookHookParameterPatch object itself.
      */
+    @Generated
     public WebhookHookParameterPatch setEndpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
@@ -78,6 +88,7 @@ public final class WebhookHookParameterPatch implements JsonSerializable<Webhook
      * 
      * @return the username value.
      */
+    @Generated
     public String getUsername() {
         return this.username;
     }
@@ -88,6 +99,7 @@ public final class WebhookHookParameterPatch implements JsonSerializable<Webhook
      * @param username the username value to set.
      * @return the WebhookHookParameterPatch object itself.
      */
+    @Generated
     public WebhookHookParameterPatch setUsername(String username) {
         this.username = username;
         return this;
@@ -98,6 +110,7 @@ public final class WebhookHookParameterPatch implements JsonSerializable<Webhook
      * 
      * @return the password value.
      */
+    @Generated
     public String getPassword() {
         return this.password;
     }
@@ -108,6 +121,7 @@ public final class WebhookHookParameterPatch implements JsonSerializable<Webhook
      * @param password the password value to set.
      * @return the WebhookHookParameterPatch object itself.
      */
+    @Generated
     public WebhookHookParameterPatch setPassword(String password) {
         this.password = password;
         return this;
@@ -118,6 +132,7 @@ public final class WebhookHookParameterPatch implements JsonSerializable<Webhook
      * 
      * @return the headers value.
      */
+    @Generated
     public Map<String, String> getHeaders() {
         return this.headers;
     }
@@ -128,6 +143,7 @@ public final class WebhookHookParameterPatch implements JsonSerializable<Webhook
      * @param headers the headers value to set.
      * @return the WebhookHookParameterPatch object itself.
      */
+    @Generated
     public WebhookHookParameterPatch setHeaders(Map<String, String> headers) {
         this.headers = headers;
         return this;
@@ -138,6 +154,7 @@ public final class WebhookHookParameterPatch implements JsonSerializable<Webhook
      * 
      * @return the certificateKey value.
      */
+    @Generated
     public String getCertificateKey() {
         return this.certificateKey;
     }
@@ -148,6 +165,7 @@ public final class WebhookHookParameterPatch implements JsonSerializable<Webhook
      * @param certificateKey the certificateKey value to set.
      * @return the WebhookHookParameterPatch object itself.
      */
+    @Generated
     public WebhookHookParameterPatch setCertificateKey(String certificateKey) {
         this.certificateKey = certificateKey;
         return this;
@@ -158,6 +176,7 @@ public final class WebhookHookParameterPatch implements JsonSerializable<Webhook
      * 
      * @return the certificatePassword value.
      */
+    @Generated
     public String getCertificatePassword() {
         return this.certificatePassword;
     }
@@ -168,6 +187,7 @@ public final class WebhookHookParameterPatch implements JsonSerializable<Webhook
      * @param certificatePassword the certificatePassword value to set.
      * @return the WebhookHookParameterPatch object itself.
      */
+    @Generated
     public WebhookHookParameterPatch setCertificatePassword(String certificatePassword) {
         this.certificatePassword = certificatePassword;
         return this;
@@ -176,6 +196,7 @@ public final class WebhookHookParameterPatch implements JsonSerializable<Webhook
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -196,6 +217,7 @@ public final class WebhookHookParameterPatch implements JsonSerializable<Webhook
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the WebhookHookParameterPatch.
      */
+    @Generated
     public static WebhookHookParameterPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WebhookHookParameterPatch deserializedWebhookHookParameterPatch = new WebhookHookParameterPatch();

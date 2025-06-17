@@ -18,6 +18,7 @@ import com.azure.resourcemanager.hybridcompute.models.CloudMetadata;
 import com.azure.resourcemanager.hybridcompute.models.FirmwareProfile;
 import com.azure.resourcemanager.hybridcompute.models.HardwareProfile;
 import com.azure.resourcemanager.hybridcompute.models.Identity;
+import com.azure.resourcemanager.hybridcompute.models.IdentityKeyStore;
 import com.azure.resourcemanager.hybridcompute.models.LocationData;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtensionInstanceView;
 import com.azure.resourcemanager.hybridcompute.models.OSProfile;
@@ -485,6 +486,54 @@ public final class MachineInner extends Resource {
     }
 
     /**
+     * Get the identityKeyStore property: Specifies the identity key store a machine is using.
+     * 
+     * @return the identityKeyStore value.
+     */
+    public IdentityKeyStore identityKeyStore() {
+        return this.innerProperties() == null ? null : this.innerProperties().identityKeyStore();
+    }
+
+    /**
+     * Set the identityKeyStore property: Specifies the identity key store a machine is using.
+     * 
+     * @param identityKeyStore the identityKeyStore value to set.
+     * @return the MachineInner object itself.
+     */
+    public MachineInner withIdentityKeyStore(IdentityKeyStore identityKeyStore) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MachinePropertiesInner();
+        }
+        this.innerProperties().withIdentityKeyStore(identityKeyStore);
+        return this;
+    }
+
+    /**
+     * Get the tpmEkCertificate property: Endorsement Key Certificate of the Trusted Platform Module (TPM) that the
+     * client provides to be used during initial resource onboarding.
+     * 
+     * @return the tpmEkCertificate value.
+     */
+    public String tpmEkCertificate() {
+        return this.innerProperties() == null ? null : this.innerProperties().tpmEkCertificate();
+    }
+
+    /**
+     * Set the tpmEkCertificate property: Endorsement Key Certificate of the Trusted Platform Module (TPM) that the
+     * client provides to be used during initial resource onboarding.
+     * 
+     * @param tpmEkCertificate the tpmEkCertificate value to set.
+     * @return the MachineInner object itself.
+     */
+    public MachineInner withTpmEkCertificate(String tpmEkCertificate) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MachinePropertiesInner();
+        }
+        this.innerProperties().withTpmEkCertificate(tpmEkCertificate);
+        return this;
+    }
+
+    /**
      * Get the osName property: The Operating System running on the hybrid machine.
      * 
      * @return the osName value.
@@ -649,6 +698,31 @@ public final class MachineInner extends Resource {
             this.innerProperties = new MachinePropertiesInner();
         }
         this.innerProperties().withParentClusterResourceId(parentClusterResourceId);
+        return this;
+    }
+
+    /**
+     * Get the hardwareResourceId property: Specifies the resource ID of the associated hardware device. Only settable
+     * by HCI RP.
+     * 
+     * @return the hardwareResourceId value.
+     */
+    public String hardwareResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().hardwareResourceId();
+    }
+
+    /**
+     * Set the hardwareResourceId property: Specifies the resource ID of the associated hardware device. Only settable
+     * by HCI RP.
+     * 
+     * @param hardwareResourceId the hardwareResourceId value to set.
+     * @return the MachineInner object itself.
+     */
+    public MachineInner withHardwareResourceId(String hardwareResourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MachinePropertiesInner();
+        }
+        this.innerProperties().withHardwareResourceId(hardwareResourceId);
         return this;
     }
 
