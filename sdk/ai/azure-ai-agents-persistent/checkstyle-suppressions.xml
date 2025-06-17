@@ -5,7 +5,7 @@
 <suppressions>
   <suppress files="com.azure.ai.agents.persistent.implementation.FilesImpl.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.ai.agents.persistent.implementation.MessagesImpl.java" checks="MissingJavadocMethodCheck" />
-  <suppress files="com.azure.ai.agents.persistent.implementation.PersistentAgentsAdministrationsImpl.java" checks="MissingJavadocMethodCheck" />
+  <suppress files="com.azure.ai.agents.persistent.implementation.PersistentAgentsAdministrationImpl.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.ai.agents.persistent.implementation.RunsImpl.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.ai.agents.persistent.implementation.ThreadsImpl.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.ai.agents.persistent.implementation.VectorStoresImpl.java" checks="MissingJavadocMethodCheck" />
