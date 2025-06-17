@@ -3,6 +3,7 @@
 
 package com.azure.identity.implementation.util;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.http.HttpHeaderName;
@@ -20,6 +21,9 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -33,6 +37,8 @@ public final class IdentityUtil {
     public static final HttpHeaderName X_TFS_FED_AUTH_REDIRECT = HttpHeaderName.fromString("X-TFS-FedAuthRedirect");
     public static final HttpHeaderName X_VSS_E2EID = HttpHeaderName.fromString("x-vss-e2eid");
     public static final HttpHeaderName X_MSEDGE_REF = HttpHeaderName.fromString("x-msedge-ref");
+    public static final Path VSCODE_AUTH_RECORD_PATH = Paths.get(System.getProperty("user.home"), ".azure",
+        "ms-azuretools.vscode-azureresourcegroups", "authRecord.json");
 
     public static final File NULL_FILE
         = new File((System.getProperty("os.name").startsWith("Windows") ? "NUL" : "/dev/null"));
@@ -170,5 +176,30 @@ public final class IdentityUtil {
 
     public static boolean isLinuxPlatform() {
         return System.getProperty("os.name").contains("Linux");
+    }
+
+    public static TokenCredential getVSCodeBrokerCredentialIfAvailable(String tenantId) {
+        try {
+            // 1. Check if Broker dependency is available
+            Class<?> builderClass = Class.forName("com.azure.identity.broker.VisualStudioCodeBrowserBrokerCredential");
+
+            // 2. Check if VS Code broker auth record file exists
+            File authRecordFile = VSCODE_AUTH_RECORD_PATH.toFile();
+
+            if (authRecordFile.exists() && authRecordFile.isFile()) {
+                Object builder = builderClass.getConstructor().newInstance();
+                if (!CoreUtils.isNullOrEmpty(tenantId)) {
+                    builderClass.getMethod("tenantId", String.class).invoke(builder, tenantId);
+                }
+                return (TokenCredential) builderClass.getMethod("build").invoke(builder);
+            }
+            //TODO: Consider Logging the non presence of Auth Record.
+            return null;
+
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException
+            | InvocationTargetException e) {
+            //TODO: Consider Logging the non presence.
+            return null; // Broker not present
+        }
     }
 }

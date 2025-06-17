@@ -307,6 +307,10 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
             output.add(new AzureCliCredential(tenantId, identityClientOptions.clone()));
             output.add(new AzurePowerShellCredential(tenantId, identityClientOptions.clone()));
             output.add(new AzureDeveloperCliCredential(tenantId, identityClientOptions.clone()));
+            TokenCredential vscodeBrokerCred = IdentityUtil.getVSCodeBrokerCredentialIfAvailable(tenantId);
+            if (vscodeBrokerCred != null) {
+                output.add(vscodeBrokerCred);
+            }
         }
 
         return output;
