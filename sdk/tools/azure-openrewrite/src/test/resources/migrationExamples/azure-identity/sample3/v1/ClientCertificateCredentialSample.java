@@ -1,7 +1,7 @@
 import java.io.ByteArrayInputStream;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.identity.ClientCertificateCredentialBuilder;
+import com.azure.core.credential.TokenCredential;
 
 public class ClientCertificateCredentialSample {
 
@@ -35,7 +35,7 @@ public class ClientCertificateCredentialSample {
             .build();
         // END: com.azure.identity.credential.ClientCertificateCredentialSample.constructwithproxy
     }
-    
+
 }
 
 

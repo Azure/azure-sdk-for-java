@@ -1,7 +1,7 @@
+import com.azure.core.credential.TokenCredential;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.identity.InteractiveBrowserCredentialBuilder;
 import com.azure.identity.ChainedTokenCredentialBuilder;
-import com.azure.core.credential.TokenCredential;
 
 public class ChainedTokenCredentialSample {
 
