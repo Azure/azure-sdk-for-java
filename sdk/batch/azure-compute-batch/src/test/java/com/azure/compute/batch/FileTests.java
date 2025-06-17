@@ -64,13 +64,8 @@ public class FileTests extends BatchClientTestBase {
             poolInfo.setPoolId(poolId);
 
             // Create job
-            SyncAsyncExtension.execute(() -> {
-                batchClient.createJob(new BatchJobCreateParameters(jobId, poolInfo));
-                return null;
-            }, () -> Mono.fromCallable(() -> {
-                batchAsyncClient.createJob(new BatchJobCreateParameters(jobId, poolInfo)).block();
-                return null;
-            }));
+            SyncAsyncExtension.execute(() -> batchClient.createJob(new BatchJobCreateParameters(jobId, poolInfo)),
+                () -> batchAsyncClient.createJob(new BatchJobCreateParameters(jobId, poolInfo)));
 
             // Create task
             BatchTaskCreateParameters taskToCreate
@@ -123,13 +118,7 @@ public class FileTests extends BatchClientTestBase {
 
         } finally {
             try {
-                SyncAsyncExtension.execute(() -> {
-                    batchClient.deleteJob(jobId);
-                    return null;
-                }, () -> Mono.fromCallable(() -> {
-                    batchAsyncClient.deleteJob(jobId).block();
-                    return null;
-                }));
+                SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
             } catch (Exception e) {
                 // Ignore here
             }
@@ -150,25 +139,15 @@ public class FileTests extends BatchClientTestBase {
             poolInfo.setPoolId(poolId);
 
             // Create job
-            SyncAsyncExtension.execute(() -> {
-                batchClient.createJob(new BatchJobCreateParameters(jobId, poolInfo));
-                return null;
-            }, () -> Mono.fromCallable(() -> {
-                batchAsyncClient.createJob(new BatchJobCreateParameters(jobId, poolInfo)).block();
-                return null;
-            }));
+            SyncAsyncExtension.execute(() -> batchClient.createJob(new BatchJobCreateParameters(jobId, poolInfo)),
+                () -> batchAsyncClient.createJob(new BatchJobCreateParameters(jobId, poolInfo)));
 
             // Create task
             BatchTaskCreateParameters taskToCreate
                 = new BatchTaskCreateParameters(taskId, "/bin/bash -c \"echo hello\"");
 
-            SyncAsyncExtension.execute(() -> {
-                batchClient.createTask(jobId, taskToCreate);
-                return null;
-            }, () -> Mono.fromCallable(() -> {
-                batchAsyncClient.createTask(jobId, taskToCreate).block();
-                return null;
-            }));
+            SyncAsyncExtension.execute(() -> batchClient.createTask(jobId, taskToCreate),
+                () -> batchAsyncClient.createTask(jobId, taskToCreate));
 
             // Wait for task completion
             boolean completed = SyncAsyncExtension
@@ -223,13 +202,7 @@ public class FileTests extends BatchClientTestBase {
 
         } finally {
             try {
-                SyncAsyncExtension.execute(() -> {
-                    batchClient.deleteJob(jobId);
-                    return null;
-                }, () -> Mono.fromCallable(() -> {
-                    batchAsyncClient.deleteJob(jobId).block();
-                    return null;
-                }));
+                SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
             } catch (Exception e) {
                 // Ignore here
             }
