@@ -40,7 +40,6 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
 
     private static final ConcurrentHashMap<String, Boolean> cache = new ConcurrentHashMap<>();
 
-
     public ServiceTest(TOptions options) {
         super(options);
 
@@ -62,7 +61,6 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
             client = "default";
         }
 
-
         HttpClient httpClient;
         if (client.equals("netty")) {
             System.out.println("Configuring Netty");
@@ -70,7 +68,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         } else if (client.equals("okhttp")) {
             System.out.println("Configuring OKHttp");
             httpClient = new OkHttpHttpClientBuilder().build();
-        }  else if (client.equals("noconfig")) {
+        } else if (client.equals("noconfig")) {
             System.out.println("Configuring Default JDK HttpClient without Conscrypt");
             // Create a default JDK HttpClient without any specific configuration
             httpClient = new JdkHttpClientBuilder().executor(SharedExecutorService.getInstance()).build();
@@ -78,7 +76,6 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
 
             // Add Conscrypt as a security provider
             Security.insertProviderAt(Conscrypt.newProvider(), 1);
-
 
             //Create SSLContext with Conscrypt or default JSSE provider
             SSLContext sslContext = null;
@@ -104,7 +101,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
 
             // Initialize the SSLContext with default TrustManagers
             try {
-                sslContext.init(null, new javax.net.ssl.TrustManager[]{cachingTrustManager}, null);
+                sslContext.init(null, new javax.net.ssl.TrustManager[] { cachingTrustManager }, null);
             } catch (KeyManagementException e) {
                 throw new RuntimeException(e);
             }
@@ -122,29 +119,25 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
             sslParameters.setCipherSuites(enabledCiphers);
 
             // Set TLS protocol versions (disable older versions)
-            sslParameters.setProtocols(new String[]{"TLSv1.3", "TLSv1.2"});
+            sslParameters.setProtocols(new String[] { "TLSv1.3", "TLSv1.2" });
 
             // Apply the SSLParameters to the SSLContext
             sslContext.getDefaultSSLParameters().setCipherSuites(enabledCiphers);
-            sslContext.getDefaultSSLParameters().setProtocols(new String[]{"TLSv1.3", "TLSv1.2"});
+            sslContext.getDefaultSSLParameters().setProtocols(new String[] { "TLSv1.3", "TLSv1.2" });
 
             System.out.println("HttpClient configured with optimized TLS settings");
 
             System.out.println("Configuring Default JDK Http");
-            httpClient = new JdkHttpClientBuilder()
-                .sslContext(sslContext)
-                .build();
+            httpClient = new JdkHttpClientBuilder().sslContext(sslContext).build();
         }
 
         SasCredentialPolicy sasCredentialPolicy = new SasCredentialPolicy(sasQueryParams);
-        blobClient = new AzureBlobStorageBuilder()
-            .url(accountUrl)
+        blobClient = new AzureBlobStorageBuilder().url(accountUrl)
             .addHttpPipelinePolicy(sasCredentialPolicy)
             .httpClient(httpClient)
             .buildBlobClient();
 
-        blockBlobClient = new AzureBlobStorageBuilder()
-            .url(accountUrl)
+        blockBlobClient = new AzureBlobStorageBuilder().url(accountUrl)
             .addHttpPipelinePolicy(sasCredentialPolicy)
             .httpClient(httpClient)
             .buildBlockBlobClient();

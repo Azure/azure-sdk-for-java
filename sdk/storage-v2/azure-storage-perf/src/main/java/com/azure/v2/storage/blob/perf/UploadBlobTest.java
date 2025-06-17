@@ -18,7 +18,6 @@ public class UploadBlobTest extends ServiceTest<BlobPerfStressOptions> {
         this.containerName = System.getenv("STORAGE_CONTAINER_NAME");
         this.blobName = generateRandomName("testfile");
 
-
         int size = 1024 * 1024; // 1 MiB = 1024 * 1024 bytes
 
         // Create a byte array of size 1 MiB
@@ -33,23 +32,20 @@ public class UploadBlobTest extends ServiceTest<BlobPerfStressOptions> {
     @Override
     public void run() {
         try {
-            io.clientcore.core.models.binarydata.BinaryData binaryData = io.clientcore.core.models.binarydata.BinaryData.fromBytes(uploadData);
-            blockBlobClient.upload(containerName, blobName, uploadData.length, binaryData, null, null, null,
-                null, null, null, null, null, null,
-                null, null, null, null, null, null, null, null, null, null, null, null);
+            io.clientcore.core.models.binarydata.BinaryData binaryData
+                = io.clientcore.core.models.binarydata.BinaryData.fromBytes(uploadData);
+            blockBlobClient.upload(containerName, blobName, uploadData.length, binaryData, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new RuntimeException(ex);
         }
     }
 
-
     @Override
     public Mono<Void> runAsync() {
         return Mono.error(new RuntimeException("Async is a thing of past."));
     }
-
-
 
     public static String generateRandomName(String prefix) {
         // Generate a random UUID and take only the first part

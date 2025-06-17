@@ -24,8 +24,8 @@ public class DownloadBlobTest extends ServiceTest<BlobPerfStressOptions> {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         this.containerName = configuration.get("STORAGE_CONTAINER_NAME");
         if (CoreUtils.isNullOrEmpty(this.containerName)) {
-            throw new IllegalStateException("STORAGE_CONTAINER_NAME must be set to the container containing the blob "
-                + "to download.");
+            throw new IllegalStateException(
+                "STORAGE_CONTAINER_NAME must be set to the container containing the blob " + "to download.");
         }
         this.blobName = configuration.get("STORAGE_BLOB_NAME");
         if (CoreUtils.isNullOrEmpty(this.blobName)) {
