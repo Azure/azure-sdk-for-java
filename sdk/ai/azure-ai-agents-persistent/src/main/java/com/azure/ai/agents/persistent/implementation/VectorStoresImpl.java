@@ -23,6 +23,10 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
@@ -33,13 +37,15 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in VectorStores.
+ * Initializes a new instance of the VectorStores type.
  */
 public final class VectorStoresImpl {
     /**
@@ -48,20 +54,25 @@ public final class VectorStoresImpl {
     private final VectorStoresService service;
 
     /**
-     * The service client containing this operation class.
+     * Project endpoint in the form of:
+     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
      */
-    private final PersistentAgentsClientImpl client;
+    private final String endpoint;
 
     /**
-     * Initializes an instance of VectorStoresImpl.
+     * Gets Project endpoint in the form of:
+     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
      * 
-     * @param client the instance of the service client containing this operation class.
+     * @return the endpoint value.
      */
-    VectorStoresImpl(PersistentAgentsClientImpl client) {
-        this.service
-            = RestProxy.create(VectorStoresService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
+    public String getEndpoint() {
+        return this.endpoint;
     }
+
+    /**
+     * Service version.
+     */
+    private final PersistentAgentsServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
@@ -69,15 +80,84 @@ public final class VectorStoresImpl {
      * @return the serviceVersion value.
      */
     public PersistentAgentsServiceVersion getServiceVersion() {
-        return client.getServiceVersion();
+        return this.serviceVersion;
     }
 
     /**
-     * The interface defining all the services for PersistentAgentsClientVectorStores to be used by the proxy service to
-     * perform REST calls.
+     * The HTTP pipeline to send requests through.
+     */
+    private final HttpPipeline httpPipeline;
+
+    /**
+     * Gets The HTTP pipeline to send requests through.
+     * 
+     * @return the httpPipeline value.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return this.httpPipeline;
+    }
+
+    /**
+     * The serializer to serialize an object into a string.
+     */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     * 
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
+    /**
+     * Initializes an instance of VectorStores client.
+     * 
+     * @param endpoint Project endpoint in the form of:
+     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
+     * @param serviceVersion Service version.
+     */
+    public VectorStoresImpl(String endpoint, PersistentAgentsServiceVersion serviceVersion) {
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
+    }
+
+    /**
+     * Initializes an instance of VectorStores client.
+     * 
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param endpoint Project endpoint in the form of:
+     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
+     * @param serviceVersion Service version.
+     */
+    public VectorStoresImpl(HttpPipeline httpPipeline, String endpoint, PersistentAgentsServiceVersion serviceVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
+    }
+
+    /**
+     * Initializes an instance of VectorStores client.
+     * 
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param endpoint Project endpoint in the form of:
+     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
+     * @param serviceVersion Service version.
+     */
+    public VectorStoresImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
+        PersistentAgentsServiceVersion serviceVersion) {
+        this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
+        this.endpoint = endpoint;
+        this.serviceVersion = serviceVersion;
+        this.service = RestProxy.create(VectorStoresService.class, this.httpPipeline, this.getSerializerAdapter());
+    }
+
+    /**
+     * The interface defining all the services for VectorStores to be used by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PersistentAgentsClientVectorStores")
+    @ServiceInterface(name = "VectorStores")
     public interface VectorStoresService {
         @Post("/vector_stores")
         @ExpectedResponses({ 200 })
@@ -442,9 +522,9 @@ public final class VectorStoresImpl {
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createVectorStore(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), contentType, accept, createVectorStoreRequest, requestOptions,
-            context));
+        return FluxUtil
+            .withContext(context -> service.createVectorStore(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                contentType, accept, createVectorStoreRequest, requestOptions, context));
     }
 
     /**
@@ -525,8 +605,8 @@ public final class VectorStoresImpl {
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createVectorStoreSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            contentType, accept, createVectorStoreRequest, requestOptions, Context.NONE);
+        return service.createVectorStoreSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
+            accept, createVectorStoreRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -575,8 +655,8 @@ public final class VectorStoresImpl {
     public Mono<Response<BinaryData>> getVectorStoreWithResponseAsync(String vectorStoreId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getVectorStore(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), vectorStoreId, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getVectorStore(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), vectorStoreId, accept, requestOptions, context));
     }
 
     /**
@@ -624,8 +704,8 @@ public final class VectorStoresImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getVectorStoreWithResponse(String vectorStoreId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getVectorStoreSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            vectorStoreId, accept, requestOptions, Context.NONE);
+        return service.getVectorStoreSync(this.getEndpoint(), this.getServiceVersion().getVersion(), vectorStoreId,
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -693,9 +773,9 @@ public final class VectorStoresImpl {
         BinaryData modifyVectorStoreRequest, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.modifyVectorStore(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), vectorStoreId, contentType, accept, modifyVectorStoreRequest,
-            requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.modifyVectorStore(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                vectorStoreId, contentType, accept, modifyVectorStoreRequest, requestOptions, context));
     }
 
     /**
@@ -763,8 +843,8 @@ public final class VectorStoresImpl {
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.modifyVectorStoreSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            vectorStoreId, contentType, accept, modifyVectorStoreRequest, requestOptions, Context.NONE);
+        return service.modifyVectorStoreSync(this.getEndpoint(), this.getServiceVersion().getVersion(), vectorStoreId,
+            contentType, accept, modifyVectorStoreRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -829,8 +909,8 @@ public final class VectorStoresImpl {
     private Mono<PagedResponse<BinaryData>> listVectorStoresSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listVectorStores(this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .withContext(context -> service.listVectorStores(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
     }
@@ -957,8 +1037,8 @@ public final class VectorStoresImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listVectorStoresSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listVectorStoresSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listVectorStoresSync(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
     }
@@ -1052,8 +1132,8 @@ public final class VectorStoresImpl {
     public Mono<Response<BinaryData>> deleteVectorStoreInternalWithResponseAsync(String vectorStoreId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteVectorStoreInternal(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), vectorStoreId, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.deleteVectorStoreInternal(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), vectorStoreId, accept, requestOptions, context));
     }
 
     /**
@@ -1082,8 +1162,8 @@ public final class VectorStoresImpl {
     public Response<BinaryData> deleteVectorStoreInternalWithResponse(String vectorStoreId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteVectorStoreInternalSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), vectorStoreId, accept, requestOptions, Context.NONE);
+        return service.deleteVectorStoreInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            vectorStoreId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1142,9 +1222,9 @@ public final class VectorStoresImpl {
         BinaryData createVectorStoreFileRequest, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createVectorStoreFile(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), vectorStoreId, contentType, accept,
-            createVectorStoreFileRequest, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.createVectorStoreFile(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                vectorStoreId, contentType, accept, createVectorStoreFileRequest, requestOptions, context));
     }
 
     /**
@@ -1202,9 +1282,8 @@ public final class VectorStoresImpl {
         BinaryData createVectorStoreFileRequest, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createVectorStoreFileSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), vectorStoreId, contentType, accept,
-            createVectorStoreFileRequest, requestOptions, Context.NONE);
+        return service.createVectorStoreFileSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            vectorStoreId, contentType, accept, createVectorStoreFileRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -1245,8 +1324,8 @@ public final class VectorStoresImpl {
     public Mono<Response<BinaryData>> getVectorStoreFileWithResponseAsync(String vectorStoreId, String fileId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getVectorStoreFile(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), vectorStoreId, fileId, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getVectorStoreFile(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), vectorStoreId, fileId, accept, requestOptions, context));
     }
 
     /**
@@ -1286,8 +1365,8 @@ public final class VectorStoresImpl {
     public Response<BinaryData> getVectorStoreFileWithResponse(String vectorStoreId, String fileId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getVectorStoreFileSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            vectorStoreId, fileId, accept, requestOptions, Context.NONE);
+        return service.getVectorStoreFileSync(this.getEndpoint(), this.getServiceVersion().getVersion(), vectorStoreId,
+            fileId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1318,8 +1397,8 @@ public final class VectorStoresImpl {
     public Mono<Response<BinaryData>> deleteVectorStoreFileInternalWithResponseAsync(String vectorStoreId,
         String fileId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteVectorStoreFileInternal(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), vectorStoreId, fileId, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.deleteVectorStoreFileInternal(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), vectorStoreId, fileId, accept, requestOptions, context));
     }
 
     /**
@@ -1349,8 +1428,8 @@ public final class VectorStoresImpl {
     public Response<BinaryData> deleteVectorStoreFileInternalWithResponse(String vectorStoreId, String fileId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteVectorStoreFileInternalSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), vectorStoreId, fileId, accept, requestOptions, Context.NONE);
+        return service.deleteVectorStoreFileInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            vectorStoreId, fileId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1410,8 +1489,8 @@ public final class VectorStoresImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listVectorStoreFiles(this.client.getEndpoint(), vectorStoreId,
-                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .withContext(context -> service.listVectorStoreFiles(this.getEndpoint(), vectorStoreId,
+                this.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
     }
@@ -1527,8 +1606,8 @@ public final class VectorStoresImpl {
     private PagedResponse<BinaryData> listVectorStoreFilesSinglePage(String vectorStoreId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listVectorStoreFilesSync(this.client.getEndpoint(), vectorStoreId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listVectorStoreFilesSync(this.getEndpoint(), vectorStoreId,
+            this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
     }
@@ -1648,9 +1727,9 @@ public final class VectorStoresImpl {
         BinaryData createVectorStoreFileBatchRequest, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createVectorStoreFileBatch(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), vectorStoreId, contentType, accept,
-            createVectorStoreFileBatchRequest, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.createVectorStoreFileBatch(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                vectorStoreId, contentType, accept, createVectorStoreFileBatchRequest, requestOptions, context));
     }
 
     /**
@@ -1711,9 +1790,8 @@ public final class VectorStoresImpl {
         BinaryData createVectorStoreFileBatchRequest, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createVectorStoreFileBatchSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), vectorStoreId, contentType, accept,
-            createVectorStoreFileBatchRequest, requestOptions, Context.NONE);
+        return service.createVectorStoreFileBatchSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            vectorStoreId, contentType, accept, createVectorStoreFileBatchRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -1753,8 +1831,8 @@ public final class VectorStoresImpl {
     public Mono<Response<BinaryData>> getVectorStoreFileBatchWithResponseAsync(String vectorStoreId, String batchId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getVectorStoreFileBatch(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), vectorStoreId, batchId, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getVectorStoreFileBatch(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), vectorStoreId, batchId, accept, requestOptions, context));
     }
 
     /**
@@ -1793,8 +1871,8 @@ public final class VectorStoresImpl {
     public Response<BinaryData> getVectorStoreFileBatchWithResponse(String vectorStoreId, String batchId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getVectorStoreFileBatchSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), vectorStoreId, batchId, accept, requestOptions, Context.NONE);
+        return service.getVectorStoreFileBatchSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            vectorStoreId, batchId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1835,8 +1913,8 @@ public final class VectorStoresImpl {
     public Mono<Response<BinaryData>> cancelVectorStoreFileBatchWithResponseAsync(String vectorStoreId, String batchId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.cancelVectorStoreFileBatch(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), vectorStoreId, batchId, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.cancelVectorStoreFileBatch(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), vectorStoreId, batchId, accept, requestOptions, context));
     }
 
     /**
@@ -1876,8 +1954,8 @@ public final class VectorStoresImpl {
     public Response<BinaryData> cancelVectorStoreFileBatchWithResponse(String vectorStoreId, String batchId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.cancelVectorStoreFileBatchSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), vectorStoreId, batchId, accept, requestOptions, Context.NONE);
+        return service.cancelVectorStoreFileBatchSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            vectorStoreId, batchId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1938,8 +2016,8 @@ public final class VectorStoresImpl {
         String batchId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listVectorStoreFileBatchFiles(this.client.getEndpoint(), vectorStoreId,
-                batchId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .withContext(context -> service.listVectorStoreFileBatchFiles(this.getEndpoint(), vectorStoreId, batchId,
+                this.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
     }
@@ -2059,8 +2137,8 @@ public final class VectorStoresImpl {
     private PagedResponse<BinaryData> listVectorStoreFileBatchFilesSinglePage(String vectorStoreId, String batchId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listVectorStoreFileBatchFilesSync(this.client.getEndpoint(), vectorStoreId,
-            batchId, this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listVectorStoreFileBatchFilesSync(this.getEndpoint(), vectorStoreId, batchId,
+            this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
     }

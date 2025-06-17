@@ -18,19 +18,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AdministrationAsyncClientTest extends ClientTestBase {
 
     private PersistentAgentsClientBuilder clientBuilder;
-    private PersistentAgentsAdministrationAsyncClient agentsAsyncClient;
+    private PersistentAgentsAdministrationAsyncClient administrationAsyncClient;
     private PersistentAgent agent;
 
     private void setup(HttpClient httpClient) {
         clientBuilder = getClientBuilder(httpClient);
-        agentsAsyncClient = clientBuilder.buildPersistentAgentsAdministrationAsyncClient();
+        PersistentAgentsAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
+        administrationAsyncClient = agentsAsyncClient.getPersistentAgentsAdministrationAsyncClient();
     }
 
     private void createTestAgent() {
         CreateAgentOptions options
             = new CreateAgentOptions("gpt-4o-mini").setName("TestAgent").setInstructions("You are a helpful agent");
 
-        StepVerifier.create(agentsAsyncClient.createAgent(options)).assertNext(createdAgent -> {
+        StepVerifier.create(administrationAsyncClient.createAgent(options)).assertNext(createdAgent -> {
             assertNotNull(createdAgent, "Persistent agent should not be null");
             agent = createdAgent;
             assertAgent(createdAgent);
@@ -51,7 +52,7 @@ public class AdministrationAsyncClientTest extends ClientTestBase {
         createTestAgent();
 
         // Validate agent listing
-        StepVerifier.create(agentsAsyncClient.listAgents().take(10).collectList()).assertNext(agents -> {
+        StepVerifier.create(administrationAsyncClient.listAgents().take(10).collectList()).assertNext(agents -> {
             assertNotNull(agents, "Agent list should not be null");
             assertTrue(agents != null, "Agent list should not be empty");
         }).verifyComplete();
@@ -63,7 +64,7 @@ public class AdministrationAsyncClientTest extends ClientTestBase {
         setup(httpClient);
         createTestAgent();
 
-        StepVerifier.create(agentsAsyncClient.getAgent(agent.getId())).assertNext(retrievedAgent -> {
+        StepVerifier.create(administrationAsyncClient.getAgent(agent.getId())).assertNext(retrievedAgent -> {
             assertAgent(retrievedAgent);
             assertTrue(retrievedAgent.getId().equals(agent.getId()),
                 "Retrieved agent ID should match created agent ID");
@@ -79,7 +80,7 @@ public class AdministrationAsyncClientTest extends ClientTestBase {
         UpdateAgentOptions updateOptions
             = new UpdateAgentOptions(agent.getId()).setInstructions("Updated instructions for the agent");
 
-        StepVerifier.create(agentsAsyncClient.updateAgent(updateOptions)).assertNext(updatedAgent -> {
+        StepVerifier.create(administrationAsyncClient.updateAgent(updateOptions)).assertNext(updatedAgent -> {
             assertAgent(updatedAgent);
             assertTrue(updatedAgent.getInstructions().equals("Updated instructions for the agent"),
                 "Updated agent instructions should match");
@@ -93,14 +94,14 @@ public class AdministrationAsyncClientTest extends ClientTestBase {
         setup(httpClient);
         createTestAgent();
 
-        StepVerifier.create(agentsAsyncClient.deleteAgent(agent.getId())).verifyComplete();
+        StepVerifier.create(administrationAsyncClient.deleteAgent(agent.getId())).verifyComplete();
     }
 
     @AfterEach
     public void cleanup() {
         if (agent != null) {
             try {
-                agentsAsyncClient.deleteAgent(agent.getId()).block();
+                administrationAsyncClient.deleteAgent(agent.getId()).block();
             } catch (Exception e) {
                 // Ignore exceptions during cleanup
                 System.out.println("Warning: Failed to delete test agent during cleanup: " + e.getMessage());
