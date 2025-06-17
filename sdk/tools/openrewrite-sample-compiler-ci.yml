@@ -32,18 +32,6 @@ extends:
                     - /eng/
                     - /common/perf-test-core/
 
-              - task: PowerShell@2
-                displayName: 'Install Required Dependencies from Source'
-                inputs:
-                  targetType: 'inline'
-                  script: |
-                    $modulePaths = @(
-                      "com.azure:perf-test-core",
-                      "io.clientcore:core",
-                      "com.azure.v2:azure-core"
-                    )
-                    mvn install -pl ($modulePaths -join ',') -am --% -B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip
-
               - task: Maven@3
                 displayName: 'Build and Install OpenRewrite Compiler Maven Plugin'
                 inputs:
@@ -59,7 +47,7 @@ extends:
                 inputs:
                   mavenPomFile: 'sdk/tools/azure-openrewrite-compiler-maven-plugin/pom.xml'
                   goals: 'install'
-                  options: '-B -DskipTests -Dgpg.skip -am'
+                  options: '-B -DskipTests -Dgpg.skip'
                   javaHomeOption: 'JDKVersion'
                   jdkVersionOption: '1.8'
                   publishJUnitResults: false
