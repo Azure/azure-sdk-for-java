@@ -29,13 +29,14 @@ public class AgentFileSearchAsyncSample {
         PersistentAgentsClientBuilder clientBuilder = new PersistentAgentsClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build());
-        
-        PersistentAgentsAdministrationAsyncClient agentsAsyncClient = clientBuilder.buildPersistentAgentsAdministrationAsyncClient();
-        ThreadsAsyncClient threadsAsyncClient = clientBuilder.buildThreadsAsyncClient();
-        MessagesAsyncClient messagesAsyncClient = clientBuilder.buildMessagesAsyncClient();
-        RunsAsyncClient runsAsyncClient = clientBuilder.buildRunsAsyncClient();
-        FilesAsyncClient filesAsyncClient = clientBuilder.buildFilesAsyncClient();
-        VectorStoresAsyncClient vectorStoresAsyncClient = clientBuilder.buildVectorStoresAsyncClient();
+
+        PersistentAgentsAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
+        PersistentAgentsAdministrationAsyncClient administrationAsyncClient = agentsAsyncClient.getPersistentAgentsAdministrationAsyncClient();
+        ThreadsAsyncClient threadsAsyncClient = agentsAsyncClient.getThreadsAsyncClient();
+        MessagesAsyncClient messagesAsyncClient = agentsAsyncClient.getMessagesAsyncClient();
+        RunsAsyncClient runsAsyncClient = agentsAsyncClient.getRunsAsyncClient();
+        FilesAsyncClient filesAsyncClient = agentsAsyncClient.getFilesAsyncClient();
+        VectorStoresAsyncClient vectorStoresAsyncClient = agentsAsyncClient.getVectorStoresAsyncClient();
 
         // Track resources for cleanup
         AtomicReference<String> agentId = new AtomicReference<>();
@@ -87,7 +88,7 @@ public class AgentFileSearchAsyncSample {
                     .setTools(Arrays.asList(new FileSearchToolDefinition()))
                     .setToolResources(new ToolResources().setFileSearch(fileSearchToolResource));
                 
-                return agentsAsyncClient.createAgent(createAgentOptions);
+                return administrationAsyncClient.createAgent(createAgentOptions);
             })
             .flatMap(agent -> {
                 System.out.println("Created agent: " + agent.getId());
@@ -127,7 +128,7 @@ public class AgentFileSearchAsyncSample {
                     System.out.println("Thread deleted: " + threadId.get());
                 }
                 if (agentId.get() != null) {
-                    agentsAsyncClient.deleteAgent(agentId.get()).block();
+                    administrationAsyncClient.deleteAgent(agentId.get()).block();
                     System.out.println("Agent deleted: " + agentId.get());
                 }
                 // Vector stores are not deleted in this sample

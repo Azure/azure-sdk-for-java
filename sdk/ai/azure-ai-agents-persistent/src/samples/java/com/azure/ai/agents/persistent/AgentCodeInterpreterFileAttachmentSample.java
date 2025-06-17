@@ -34,18 +34,19 @@ public class AgentCodeInterpreterFileAttachmentSample {
 
         PersistentAgentsClientBuilder clientBuilder = new PersistentAgentsClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build());
-        PersistentAgentsAdministrationClient agentsClient = clientBuilder.buildPersistentAgentsAdministrationClient();
-        ThreadsClient threadsClient = clientBuilder.buildThreadsClient();
-        MessagesClient messagesClient = clientBuilder.buildMessagesClient();
-        RunsClient runsClient = clientBuilder.buildRunsClient();
-        FilesClient filesClient = clientBuilder.buildFilesClient();
+        PersistentAgentsClient agentsClient = clientBuilder.buildClient();
+        PersistentAgentsAdministrationClient administrationClient = agentsClient.getPersistentAgentsAdministrationClient();
+        ThreadsClient threadsClient = agentsClient.getThreadsClient();
+        MessagesClient messagesClient = agentsClient.getMessagesClient();
+        RunsClient runsClient = agentsClient.getRunsClient();
+        FilesClient filesClient = agentsClient.getFilesClient();
 
         Path htmlFile = getFile("sample.html");
 
         String agentName = "code_interpreter_file_attachment_example";
         CodeInterpreterToolDefinition ciTool = new CodeInterpreterToolDefinition();
         CreateAgentOptions createAgentOptions = new CreateAgentOptions("gpt-4o-mini").setName(agentName).setInstructions("You are a helpful agent").setTools(Arrays.asList(ciTool));
-        PersistentAgent agent = agentsClient.createAgent(createAgentOptions);
+        PersistentAgent agent = administrationClient.createAgent(createAgentOptions);
 
         FileInfo uploadedFile = filesClient.uploadFile(new UploadFileRequest(
             new FileDetails(BinaryData.fromFile(htmlFile))
@@ -73,7 +74,7 @@ public class AgentCodeInterpreterFileAttachmentSample {
         } finally {
             //cleanup
             threadsClient.deleteThread(thread.getId());
-            agentsClient.deleteAgent(agent.getId());
+            administrationClient.deleteAgent(agent.getId());
         }
     }
 

@@ -45,11 +45,12 @@ public final class AgentFunctionsStreamingAsyncSample {
         PersistentAgentsClientBuilder clientBuilder = new PersistentAgentsClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build());
-            
-        PersistentAgentsAdministrationAsyncClient agentsAsyncClient = clientBuilder.buildPersistentAgentsAdministrationAsyncClient();
-        ThreadsAsyncClient threadsAsyncClient = clientBuilder.buildThreadsAsyncClient();
-        MessagesAsyncClient messagesAsyncClient = clientBuilder.buildMessagesAsyncClient();
-        RunsAsyncClient runsAsyncClient = clientBuilder.buildRunsAsyncClient();
+
+        PersistentAgentsAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
+        PersistentAgentsAdministrationAsyncClient administrationAsyncClient = agentsAsyncClient.getPersistentAgentsAdministrationAsyncClient();
+        ThreadsAsyncClient threadsAsyncClient = agentsAsyncClient.getThreadsAsyncClient();
+        MessagesAsyncClient messagesAsyncClient = agentsAsyncClient.getMessagesAsyncClient();
+        RunsAsyncClient runsAsyncClient = agentsAsyncClient.getRunsAsyncClient();
 
         // function tool definitions
         FunctionToolDefinition getUserFavoriteCityTool = new FunctionToolDefinition(
@@ -160,7 +161,7 @@ public final class AgentFunctionsStreamingAsyncSample {
             .setTools(Arrays.asList(getUserFavoriteCityTool, getCityNicknameTool, getCurrentWeatherAtLocationTool));
 
         // Create a fully reactive chain
-        agentsAsyncClient.createAgent(createAgentOptions)
+        administrationAsyncClient.createAgent(createAgentOptions)
             .flatMap(agent -> {
                 System.out.println("Created agent: " + agent.getId());
                 agentId.set(agent.getId());
@@ -186,7 +187,7 @@ public final class AgentFunctionsStreamingAsyncSample {
                             });
                     });
             })
-            .doFinally(signalType -> cleanUpResources(threadId, threadsAsyncClient, agentId, agentsAsyncClient))
+            .doFinally(signalType -> cleanUpResources(threadId, threadsAsyncClient, agentId, administrationAsyncClient))
             .doOnError(error -> System.err.println("An error occurred: " + error.getMessage()))
             .block(); // Only block at the end of the reactive chain
     }

@@ -33,11 +33,12 @@ public final class AgentOpenApiAsyncSample {
         PersistentAgentsClientBuilder clientBuilder = new PersistentAgentsClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build());
-        
-        PersistentAgentsAdministrationAsyncClient agentsAsyncClient = clientBuilder.buildPersistentAgentsAdministrationAsyncClient();
-        ThreadsAsyncClient threadsAsyncClient = clientBuilder.buildThreadsAsyncClient();
-        MessagesAsyncClient messagesAsyncClient = clientBuilder.buildMessagesAsyncClient();
-        RunsAsyncClient runsAsyncClient = clientBuilder.buildRunsAsyncClient();
+
+        PersistentAgentsAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
+        PersistentAgentsAdministrationAsyncClient administrationAsyncClient = agentsAsyncClient.getPersistentAgentsAdministrationAsyncClient();
+        ThreadsAsyncClient threadsAsyncClient = agentsAsyncClient.getThreadsAsyncClient();
+        MessagesAsyncClient messagesAsyncClient = agentsAsyncClient.getMessagesAsyncClient();
+        RunsAsyncClient runsAsyncClient = agentsAsyncClient.getRunsAsyncClient();
 
         Path filePath = getFile("weather_openapi.json");
         JsonReader reader = JsonProviders.createReader(Files.readAllBytes(filePath));
@@ -60,7 +61,7 @@ public final class AgentOpenApiAsyncSample {
             .setTools(Arrays.asList(openApiTool));
         
         // Create full reactive chain
-        agentsAsyncClient.createAgent(createAgentOptions)
+        administrationAsyncClient.createAgent(createAgentOptions)
             .flatMap(agent -> {
                 System.out.println("Created agent: " + agent.getId());
                 agentId.set(agent.getId());
@@ -92,7 +93,7 @@ public final class AgentOpenApiAsyncSample {
                             });
                     });
             })
-            .doFinally(signalType -> cleanUpResources(threadId, threadsAsyncClient, agentId, agentsAsyncClient))
+            .doFinally(signalType -> cleanUpResources(threadId, threadsAsyncClient, agentId, administrationAsyncClient))
             .doOnError(error -> System.err.println("An error occurred: " + error.getMessage()))
             .block(); // Only block at the end of the reactive chain
     }

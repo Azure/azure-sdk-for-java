@@ -77,9 +77,7 @@ public class ToolDefinition implements JsonSerializable<ToolDefinition> {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("code_interpreter".equals(discriminatorValue)) {
-                    return CodeInterpreterToolDefinition.fromJson(readerToUse.reset());
-                } else if ("file_search".equals(discriminatorValue)) {
+                if ("file_search".equals(discriminatorValue)) {
                     return FileSearchToolDefinition.fromJson(readerToUse.reset());
                 } else if ("function".equals(discriminatorValue)) {
                     return FunctionToolDefinition.fromJson(readerToUse.reset());
@@ -99,6 +97,8 @@ public class ToolDefinition implements JsonSerializable<ToolDefinition> {
                     return ConnectedAgentToolDefinition.fromJson(readerToUse.reset());
                 } else if ("azure_function".equals(discriminatorValue)) {
                     return AzureFunctionToolDefinition.fromJson(readerToUse.reset());
+                } else if ("code_interpreter".equals(discriminatorValue)) {
+                    return CodeInterpreterToolDefinition.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
