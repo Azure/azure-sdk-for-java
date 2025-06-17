@@ -54,7 +54,7 @@ public final class PoliciesImpl {
      * to perform REST calls.
      */
     @Host("{Endpoint}/personalizer/{ApiVersion}")
-    @ServiceInterface(name = "PersonalizerClientV1")
+    @ServiceInterface(name = "PersonalizerClientV1Preview3Policies")
     public interface PoliciesService {
         @Get("/configurations/policy")
         @ExpectedResponses({ 200 })

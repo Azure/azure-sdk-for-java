@@ -54,7 +54,7 @@ public final class EntitiesImpl {
      * perform REST calls.
      */
     @Host("https://{endpoint}")
-    @ServiceInterface(name = "ServiceBusManagement")
+    @ServiceInterface(name = "ServiceBusManagementClientEntities")
     public interface EntitiesService {
         @Get("/{entityName}")
         @ExpectedResponses({ 200 })

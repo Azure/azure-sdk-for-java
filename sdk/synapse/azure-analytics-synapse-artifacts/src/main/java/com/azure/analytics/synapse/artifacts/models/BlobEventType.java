@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class BlobEventType extends ExpandableStringEnum<BlobEventType> {
     /**
      * Static value Microsoft.Storage.BlobCreated for BlobEventType.
      */
+    @Generated
     public static final BlobEventType MICROSOFT_STORAGE_BLOB_CREATED = fromString("Microsoft.Storage.BlobCreated");
 
     /**
      * Static value Microsoft.Storage.BlobDeleted for BlobEventType.
      */
+    @Generated
     public static final BlobEventType MICROSOFT_STORAGE_BLOB_DELETED = fromString("Microsoft.Storage.BlobDeleted");
 
     /**
@@ -26,6 +29,7 @@ public final class BlobEventType extends ExpandableStringEnum<BlobEventType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public BlobEventType() {
     }
@@ -36,6 +40,7 @@ public final class BlobEventType extends ExpandableStringEnum<BlobEventType> {
      * @param name a name to look for.
      * @return the corresponding BlobEventType.
      */
+    @Generated
     public static BlobEventType fromString(String name) {
         return fromString(name, BlobEventType.class);
     }
@@ -45,6 +50,7 @@ public final class BlobEventType extends ExpandableStringEnum<BlobEventType> {
      * 
      * @return known BlobEventType values.
      */
+    @Generated
     public static Collection<BlobEventType> values() {
         return values(BlobEventType.class);
     }

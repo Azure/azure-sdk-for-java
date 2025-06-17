@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,21 +22,25 @@ public class ExecutionActivity extends Activity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "Execution";
 
     /*
      * Linked service reference.
      */
+    @Generated
     private LinkedServiceReference linkedServiceName;
 
     /*
      * Activity policy.
      */
+    @Generated
     private ActivityPolicy policy;
 
     /**
      * Creates an instance of ExecutionActivity class.
      */
+    @Generated
     public ExecutionActivity() {
     }
 
@@ -44,6 +49,7 @@ public class ExecutionActivity extends Activity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -54,6 +60,7 @@ public class ExecutionActivity extends Activity {
      * 
      * @return the linkedServiceName value.
      */
+    @Generated
     public LinkedServiceReference getLinkedServiceName() {
         return this.linkedServiceName;
     }
@@ -64,6 +71,7 @@ public class ExecutionActivity extends Activity {
      * @param linkedServiceName the linkedServiceName value to set.
      * @return the ExecutionActivity object itself.
      */
+    @Generated
     public ExecutionActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         this.linkedServiceName = linkedServiceName;
         return this;
@@ -74,6 +82,7 @@ public class ExecutionActivity extends Activity {
      * 
      * @return the policy value.
      */
+    @Generated
     public ActivityPolicy getPolicy() {
         return this.policy;
     }
@@ -84,6 +93,7 @@ public class ExecutionActivity extends Activity {
      * @param policy the policy value to set.
      * @return the ExecutionActivity object itself.
      */
+    @Generated
     public ExecutionActivity setPolicy(ActivityPolicy policy) {
         this.policy = policy;
         return this;
@@ -92,6 +102,7 @@ public class ExecutionActivity extends Activity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExecutionActivity setName(String name) {
         super.setName(name);
@@ -101,6 +112,7 @@ public class ExecutionActivity extends Activity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExecutionActivity setDescription(String description) {
         super.setDescription(description);
@@ -110,6 +122,7 @@ public class ExecutionActivity extends Activity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExecutionActivity setState(ActivityState state) {
         super.setState(state);
@@ -119,6 +132,7 @@ public class ExecutionActivity extends Activity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExecutionActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -128,6 +142,7 @@ public class ExecutionActivity extends Activity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExecutionActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -137,6 +152,7 @@ public class ExecutionActivity extends Activity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExecutionActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -146,6 +162,7 @@ public class ExecutionActivity extends Activity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -177,6 +194,7 @@ public class ExecutionActivity extends Activity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ExecutionActivity.
      */
+    @Generated
     public static ExecutionActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -252,6 +270,7 @@ public class ExecutionActivity extends Activity {
         });
     }
 
+    @Generated
     static ExecutionActivity fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ExecutionActivity deserializedExecutionActivity = new ExecutionActivity();

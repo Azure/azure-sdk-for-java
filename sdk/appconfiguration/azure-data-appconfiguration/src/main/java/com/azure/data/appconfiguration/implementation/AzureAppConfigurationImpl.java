@@ -209,7 +209,7 @@ public final class AzureAppConfigurationImpl {
      * calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AzureAppConfiguratio")
+    @ServiceInterface(name = "AzureAppConfiguration")
     public interface AzureAppConfigurationService {
         @Get("/keys")
         @ExpectedResponses({ 200 })
