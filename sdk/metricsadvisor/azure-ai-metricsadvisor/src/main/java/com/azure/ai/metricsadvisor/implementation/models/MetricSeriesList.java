@@ -4,6 +4,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class MetricSeriesList implements JsonSerializable<MetricSeriesList
     /*
      * The @nextLink property.
      */
+    @Generated
     private String nextLink;
 
     /*
      * The value property.
      */
+    @Generated
     private List<MetricSeriesItem> value;
 
     /**
      * Creates an instance of MetricSeriesList class.
      */
+    @Generated
     public MetricSeriesList() {
     }
 
@@ -38,6 +42,7 @@ public final class MetricSeriesList implements JsonSerializable<MetricSeriesList
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -47,6 +52,7 @@ public final class MetricSeriesList implements JsonSerializable<MetricSeriesList
      * 
      * @return the value value.
      */
+    @Generated
     public List<MetricSeriesItem> getValue() {
         return this.value;
     }
@@ -54,6 +60,7 @@ public final class MetricSeriesList implements JsonSerializable<MetricSeriesList
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -68,6 +75,7 @@ public final class MetricSeriesList implements JsonSerializable<MetricSeriesList
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the MetricSeriesList.
      */
+    @Generated
     public static MetricSeriesList fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MetricSeriesList deserializedMetricSeriesList = new MetricSeriesList();

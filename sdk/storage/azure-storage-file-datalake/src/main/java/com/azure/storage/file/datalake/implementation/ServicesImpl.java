@@ -59,7 +59,7 @@ public final class ServicesImpl {
      * to perform REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureDataLakeStorage")
+    @ServiceInterface(name = "AzureDataLakeStorageRestAPIServices")
     public interface ServicesService {
 
         @Get("/")

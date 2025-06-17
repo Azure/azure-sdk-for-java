@@ -77,7 +77,7 @@ public final class CollectionsImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PurviewAccountClient")
+    @ServiceInterface(name = "PurviewAccountClientCollections")
     public interface CollectionsService {
         @Get("/collections/{collectionName}")
         @ExpectedResponses({ 200 })

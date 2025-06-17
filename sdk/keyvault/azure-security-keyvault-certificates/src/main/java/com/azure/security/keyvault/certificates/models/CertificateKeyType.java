@@ -40,13 +40,13 @@ public final class CertificateKeyType extends ExpandableStringEnum<CertificateKe
      * Octet sequence (used to represent symmetric keys).
      */
     @Generated
-    public static final CertificateKeyType OCT = fromString("oct");
+    private static final CertificateKeyType OCT = fromString("oct");
 
     /**
      * Octet sequence with a private key which is not exportable from the HSM.
      */
     @Generated
-    public static final CertificateKeyType OCT_HSM = fromString("oct-HSM");
+    private static final CertificateKeyType OCT_HSM = fromString("oct-HSM");
 
     /**
      * Creates a new instance of CertificateKeyType value.

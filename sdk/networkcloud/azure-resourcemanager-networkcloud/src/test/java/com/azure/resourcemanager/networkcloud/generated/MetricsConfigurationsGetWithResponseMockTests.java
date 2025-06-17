@@ -21,7 +21,7 @@ public final class MetricsConfigurationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"extendedLocation\":{\"name\":\"f\",\"type\":\"zsifcuvbdujgcwx\"},\"properties\":{\"collectionInterval\":1219254206667481816,\"detailedStatus\":\"Applied\",\"detailedStatusMessage\":\"jtrdxr\",\"disabledMetrics\":[\"gbbgiarksykp\",\"dqxwabzrwiqrxhac\"],\"enabledMetrics\":[\"osqkptjqgk\",\"fmmainwhedxkpbq\",\"unt\"],\"provisioningState\":\"Accepted\"},\"location\":\"z\",\"tags\":{\"laxp\":\"elwgvydjufbnkl\",\"lfdxaglz\":\"gjwdab\",\"siflikyypzkgxf\":\"ytlbtlqhopxouvm\",\"qsdb\":\"fmy\"},\"id\":\"oksz\",\"name\":\"nm\",\"type\":\"wgpterdiuw\"}";
+            = "{\"etag\":\"k\",\"extendedLocation\":{\"name\":\"yrqolnthbbnkgz\",\"type\":\"kwdrnzkjthfc\"},\"properties\":{\"collectionInterval\":6414367114084625873,\"detailedStatus\":\"Processing\",\"detailedStatusMessage\":\"mlfuyfjbp\",\"disabledMetrics\":[\"dhlrufzcqyjmq\",\"fuiocuselq\",\"rsazrhxud\"],\"enabledMetrics\":[\"dtffisjmrkkhm\",\"dmdlgyqixokw\"],\"provisioningState\":\"Canceled\"},\"location\":\"hvagnqfqqdlcvmy\",\"tags\":{\"nzyzawatuwqko\":\"aymjchtvsnvlaq\",\"wgwima\":\"bczothymgobllms\",\"mhobcyan\":\"neakh\",\"xkf\":\"fvqtvkhgvoo\"},\"id\":\"aoaqymhccto\",\"name\":\"uowyrnskbyhqu\",\"type\":\"czygxv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,14 +31,14 @@ public final class MetricsConfigurationsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ClusterMetricsConfiguration response = manager.metricsConfigurations()
-            .getWithResponse("lhxd", "bkl", "iichgjsysmvxodgw", com.azure.core.util.Context.NONE)
+            .getWithResponse("kdxkuk", "kczynuhhoqeqsh", "vl", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("z", response.location());
-        Assertions.assertEquals("elwgvydjufbnkl", response.tags().get("laxp"));
-        Assertions.assertEquals("f", response.extendedLocation().name());
-        Assertions.assertEquals("zsifcuvbdujgcwx", response.extendedLocation().type());
-        Assertions.assertEquals(1219254206667481816L, response.collectionInterval());
-        Assertions.assertEquals("osqkptjqgk", response.enabledMetrics().get(0));
+        Assertions.assertEquals("hvagnqfqqdlcvmy", response.location());
+        Assertions.assertEquals("aymjchtvsnvlaq", response.tags().get("nzyzawatuwqko"));
+        Assertions.assertEquals("yrqolnthbbnkgz", response.extendedLocation().name());
+        Assertions.assertEquals("kwdrnzkjthfc", response.extendedLocation().type());
+        Assertions.assertEquals(6414367114084625873L, response.collectionInterval());
+        Assertions.assertEquals("dtffisjmrkkhm", response.enabledMetrics().get(0));
     }
 }

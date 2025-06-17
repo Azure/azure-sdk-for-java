@@ -24,7 +24,8 @@ import java.util.Map;
  */
 public final class DeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/
      * PutDeploymentWithExternalInputs.json
      */
     /**
@@ -36,7 +37,7 @@ public final class DeploymentsCreateOrUpdateSamples {
         throws IOException {
         azure.genericResources()
             .manager()
-            .serviceClient()
+            .deploymentClient()
             .getDeployments()
             .createOrUpdate("my-resource-group", "my-deployment",
                 new DeploymentInner().withProperties(new DeploymentProperties().withTemplate(SerializerFactory
@@ -54,7 +55,8 @@ public final class DeploymentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/
      * PutDeploymentResourceGroup.json
      */
     /**
@@ -66,7 +68,7 @@ public final class DeploymentsCreateOrUpdateSamples {
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure.genericResources()
             .manager()
-            .serviceClient()
+            .deploymentClient()
             .getDeployments()
             .createOrUpdate("my-resource-group", "my-deployment",
                 new DeploymentInner().withProperties(new DeploymentProperties().withTemplateLink(new TemplateLink()
@@ -79,7 +81,8 @@ public final class DeploymentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/
      * PutDeploymentResourceGroupTemplateSpecsWithId.json
      */
     /**
@@ -91,7 +94,7 @@ public final class DeploymentsCreateOrUpdateSamples {
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure.genericResources()
             .manager()
-            .serviceClient()
+            .deploymentClient()
             .getDeployments()
             .createOrUpdate("my-resource-group", "my-deployment", new DeploymentInner()
                 .withProperties(new DeploymentProperties().withTemplateLink(new TemplateLink().withId(
@@ -102,7 +105,8 @@ public final class DeploymentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/
      * PutDeploymentWithOnErrorDeploymentSpecificDeployment.json
      */
     /**
@@ -114,7 +118,7 @@ public final class DeploymentsCreateOrUpdateSamples {
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure.genericResources()
             .manager()
-            .serviceClient()
+            .deploymentClient()
             .getDeployments()
             .createOrUpdate("my-resource-group", "my-deployment",
                 new DeploymentInner().withProperties(new DeploymentProperties()
@@ -127,7 +131,8 @@ public final class DeploymentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/
      * PutDeploymentWithOnErrorDeploymentLastSuccessful.json
      */
     /**
@@ -139,7 +144,7 @@ public final class DeploymentsCreateOrUpdateSamples {
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure.genericResources()
             .manager()
-            .serviceClient()
+            .deploymentClient()
             .getDeployments()
             .createOrUpdate("my-resource-group", "my-deployment",
                 new DeploymentInner().withProperties(new DeploymentProperties()

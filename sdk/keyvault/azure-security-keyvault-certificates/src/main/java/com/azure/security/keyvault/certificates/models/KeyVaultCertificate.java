@@ -113,7 +113,7 @@ public class KeyVaultCertificate implements JsonSerializable<KeyVaultCertificate
      *
      * @return The preserve certificate order status.
      */
-    public boolean isCertificateOrderPreserved() {
+    public Boolean isCertificateOrderPreserved() {
         return properties.isCertificateOrderPreserved();
     }
 

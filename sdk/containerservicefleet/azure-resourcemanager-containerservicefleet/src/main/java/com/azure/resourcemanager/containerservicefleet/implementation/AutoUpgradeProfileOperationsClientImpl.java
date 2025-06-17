@@ -62,7 +62,7 @@ public final class AutoUpgradeProfileOperationsClientImpl implements AutoUpgrade
      * be used by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ContainerServiceFlee")
+    @ServiceInterface(name = "ContainerServiceFleetManagementClientAutoUpgradeProfileOperations")
     public interface AutoUpgradeProfileOperationsService {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/autoUpgradeProfiles/{autoUpgradeProfileName}/generateUpdateRun")

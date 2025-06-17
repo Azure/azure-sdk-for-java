@@ -9,9 +9,11 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.containerservice.models.AgentPoolGatewayProfile;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolNetworkProfile;
 import com.azure.resourcemanager.containerservice.models.AgentPoolSecurityProfile;
+import com.azure.resourcemanager.containerservice.models.AgentPoolStatus;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeSettings;
 import com.azure.resourcemanager.containerservice.models.AgentPoolWindowsProfile;
@@ -24,10 +26,13 @@ import com.azure.resourcemanager.containerservice.models.LinuxOSConfig;
 import com.azure.resourcemanager.containerservice.models.OSDiskType;
 import com.azure.resourcemanager.containerservice.models.OSSku;
 import com.azure.resourcemanager.containerservice.models.OSType;
+import com.azure.resourcemanager.containerservice.models.PodIpAllocationMode;
 import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.ScaleDownMode;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
 import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
+import com.azure.resourcemanager.containerservice.models.VirtualMachineNodes;
+import com.azure.resourcemanager.containerservice.models.VirtualMachinesProfile;
 import com.azure.resourcemanager.containerservice.models.WorkloadRuntime;
 import java.io.IOException;
 import java.util.List;
@@ -104,6 +109,12 @@ public class ManagedClusterAgentPoolProfileProperties
      * virtualNetworkName}/subnets/{subnetName}
      */
     private String podSubnetId;
+
+    /*
+     * The IP allocation mode for pods in the agent pool. Must be used with podSubnetId. The default is
+     * 'DynamicIndividual'.
+     */
+    private PodIpAllocationMode podIpAllocationMode;
 
     /*
      * The maximum number of pods that can run on a node.
@@ -322,6 +333,27 @@ public class ManagedClusterAgentPoolProfileProperties
      * GPU settings for the Agent Pool.
      */
     private GpuProfile gpuProfile;
+
+    /*
+     * Profile specific to a managed agent pool in Gateway mode. This field cannot be set if agent pool mode is not
+     * Gateway.
+     */
+    private AgentPoolGatewayProfile gatewayProfile;
+
+    /*
+     * Specifications on VirtualMachines agent pool.
+     */
+    private VirtualMachinesProfile virtualMachinesProfile;
+
+    /*
+     * The status of nodes in a VirtualMachines agent pool.
+     */
+    private List<VirtualMachineNodes> virtualMachineNodesStatus;
+
+    /*
+     * Contains read-only information about the Agent Pool.
+     */
+    private AgentPoolStatus status;
 
     /**
      * Creates an instance of ManagedClusterAgentPoolProfileProperties class.
@@ -560,6 +592,28 @@ public class ManagedClusterAgentPoolProfileProperties
      */
     public ManagedClusterAgentPoolProfileProperties withPodSubnetId(String podSubnetId) {
         this.podSubnetId = podSubnetId;
+        return this;
+    }
+
+    /**
+     * Get the podIpAllocationMode property: The IP allocation mode for pods in the agent pool. Must be used with
+     * podSubnetId. The default is 'DynamicIndividual'.
+     * 
+     * @return the podIpAllocationMode value.
+     */
+    public PodIpAllocationMode podIpAllocationMode() {
+        return this.podIpAllocationMode;
+    }
+
+    /**
+     * Set the podIpAllocationMode property: The IP allocation mode for pods in the agent pool. Must be used with
+     * podSubnetId. The default is 'DynamicIndividual'.
+     * 
+     * @param podIpAllocationMode the podIpAllocationMode value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withPodIpAllocationMode(PodIpAllocationMode podIpAllocationMode) {
+        this.podIpAllocationMode = podIpAllocationMode;
         return this;
     }
 
@@ -1399,6 +1453,90 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
+     * Get the gatewayProfile property: Profile specific to a managed agent pool in Gateway mode. This field cannot be
+     * set if agent pool mode is not Gateway.
+     * 
+     * @return the gatewayProfile value.
+     */
+    public AgentPoolGatewayProfile gatewayProfile() {
+        return this.gatewayProfile;
+    }
+
+    /**
+     * Set the gatewayProfile property: Profile specific to a managed agent pool in Gateway mode. This field cannot be
+     * set if agent pool mode is not Gateway.
+     * 
+     * @param gatewayProfile the gatewayProfile value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withGatewayProfile(AgentPoolGatewayProfile gatewayProfile) {
+        this.gatewayProfile = gatewayProfile;
+        return this;
+    }
+
+    /**
+     * Get the virtualMachinesProfile property: Specifications on VirtualMachines agent pool.
+     * 
+     * @return the virtualMachinesProfile value.
+     */
+    public VirtualMachinesProfile virtualMachinesProfile() {
+        return this.virtualMachinesProfile;
+    }
+
+    /**
+     * Set the virtualMachinesProfile property: Specifications on VirtualMachines agent pool.
+     * 
+     * @param virtualMachinesProfile the virtualMachinesProfile value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties
+        withVirtualMachinesProfile(VirtualMachinesProfile virtualMachinesProfile) {
+        this.virtualMachinesProfile = virtualMachinesProfile;
+        return this;
+    }
+
+    /**
+     * Get the virtualMachineNodesStatus property: The status of nodes in a VirtualMachines agent pool.
+     * 
+     * @return the virtualMachineNodesStatus value.
+     */
+    public List<VirtualMachineNodes> virtualMachineNodesStatus() {
+        return this.virtualMachineNodesStatus;
+    }
+
+    /**
+     * Set the virtualMachineNodesStatus property: The status of nodes in a VirtualMachines agent pool.
+     * 
+     * @param virtualMachineNodesStatus the virtualMachineNodesStatus value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties
+        withVirtualMachineNodesStatus(List<VirtualMachineNodes> virtualMachineNodesStatus) {
+        this.virtualMachineNodesStatus = virtualMachineNodesStatus;
+        return this;
+    }
+
+    /**
+     * Get the status property: Contains read-only information about the Agent Pool.
+     * 
+     * @return the status value.
+     */
+    public AgentPoolStatus status() {
+        return this.status;
+    }
+
+    /**
+     * Set the status property: Contains read-only information about the Agent Pool.
+     * 
+     * @param status the status value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withStatus(AgentPoolStatus status) {
+        this.status = status;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1431,6 +1569,18 @@ public class ManagedClusterAgentPoolProfileProperties
         if (gpuProfile() != null) {
             gpuProfile().validate();
         }
+        if (gatewayProfile() != null) {
+            gatewayProfile().validate();
+        }
+        if (virtualMachinesProfile() != null) {
+            virtualMachinesProfile().validate();
+        }
+        if (virtualMachineNodesStatus() != null) {
+            virtualMachineNodesStatus().forEach(e -> e.validate());
+        }
+        if (status() != null) {
+            status().validate();
+        }
     }
 
     /**
@@ -1450,6 +1600,8 @@ public class ManagedClusterAgentPoolProfileProperties
         jsonWriter.writeStringField("messageOfTheDay", this.messageOfTheDay);
         jsonWriter.writeStringField("vnetSubnetID", this.vnetSubnetId);
         jsonWriter.writeStringField("podSubnetID", this.podSubnetId);
+        jsonWriter.writeStringField("podIPAllocationMode",
+            this.podIpAllocationMode == null ? null : this.podIpAllocationMode.toString());
         jsonWriter.writeNumberField("maxPods", this.maxPods);
         jsonWriter.writeStringField("osType", this.osType == null ? null : this.osType.toString());
         jsonWriter.writeStringField("osSKU", this.osSku == null ? null : this.osSku.toString());
@@ -1489,6 +1641,11 @@ public class ManagedClusterAgentPoolProfileProperties
         jsonWriter.writeJsonField("windowsProfile", this.windowsProfile);
         jsonWriter.writeJsonField("securityProfile", this.securityProfile);
         jsonWriter.writeJsonField("gpuProfile", this.gpuProfile);
+        jsonWriter.writeJsonField("gatewayProfile", this.gatewayProfile);
+        jsonWriter.writeJsonField("virtualMachinesProfile", this.virtualMachinesProfile);
+        jsonWriter.writeArrayField("virtualMachineNodesStatus", this.virtualMachineNodesStatus,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("status", this.status);
         return jsonWriter.writeEndObject();
     }
 
@@ -1532,6 +1689,9 @@ public class ManagedClusterAgentPoolProfileProperties
                     deserializedManagedClusterAgentPoolProfileProperties.vnetSubnetId = reader.getString();
                 } else if ("podSubnetID".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.podSubnetId = reader.getString();
+                } else if ("podIPAllocationMode".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfileProperties.podIpAllocationMode
+                        = PodIpAllocationMode.fromString(reader.getString());
                 } else if ("maxPods".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.maxPods
                         = reader.getNullable(JsonReader::getInt);
@@ -1633,6 +1793,19 @@ public class ManagedClusterAgentPoolProfileProperties
                         = AgentPoolSecurityProfile.fromJson(reader);
                 } else if ("gpuProfile".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.gpuProfile = GpuProfile.fromJson(reader);
+                } else if ("gatewayProfile".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfileProperties.gatewayProfile
+                        = AgentPoolGatewayProfile.fromJson(reader);
+                } else if ("virtualMachinesProfile".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfileProperties.virtualMachinesProfile
+                        = VirtualMachinesProfile.fromJson(reader);
+                } else if ("virtualMachineNodesStatus".equals(fieldName)) {
+                    List<VirtualMachineNodes> virtualMachineNodesStatus
+                        = reader.readArray(reader1 -> VirtualMachineNodes.fromJson(reader1));
+                    deserializedManagedClusterAgentPoolProfileProperties.virtualMachineNodesStatus
+                        = virtualMachineNodesStatus;
+                } else if ("status".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfileProperties.status = AgentPoolStatus.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -72,7 +72,7 @@ public final class ExascaleDbStorageVaultsClientImpl implements ExascaleDbStorag
      * the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "OracleDatabaseManage")
+    @ServiceInterface(name = "OracleDatabaseManagementClientExascaleDbStorageVaults")
     public interface ExascaleDbStorageVaultsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/exascaleDbStorageVaults/{exascaleDbStorageVaultName}")

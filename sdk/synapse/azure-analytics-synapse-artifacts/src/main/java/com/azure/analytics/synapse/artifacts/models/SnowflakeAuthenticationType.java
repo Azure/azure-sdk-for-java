@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class SnowflakeAuthenticationType extends ExpandableStringEnum<Snow
     /**
      * Static value Basic for SnowflakeAuthenticationType.
      */
+    @Generated
     public static final SnowflakeAuthenticationType BASIC = fromString("Basic");
 
     /**
      * Static value KeyPair for SnowflakeAuthenticationType.
      */
+    @Generated
     public static final SnowflakeAuthenticationType KEY_PAIR = fromString("KeyPair");
 
     /**
      * Static value AADServicePrincipal for SnowflakeAuthenticationType.
      */
+    @Generated
     public static final SnowflakeAuthenticationType AADSERVICE_PRINCIPAL = fromString("AADServicePrincipal");
 
     /**
@@ -31,6 +35,7 @@ public final class SnowflakeAuthenticationType extends ExpandableStringEnum<Snow
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SnowflakeAuthenticationType() {
     }
@@ -41,6 +46,7 @@ public final class SnowflakeAuthenticationType extends ExpandableStringEnum<Snow
      * @param name a name to look for.
      * @return the corresponding SnowflakeAuthenticationType.
      */
+    @Generated
     public static SnowflakeAuthenticationType fromString(String name) {
         return fromString(name, SnowflakeAuthenticationType.class);
     }
@@ -50,6 +56,7 @@ public final class SnowflakeAuthenticationType extends ExpandableStringEnum<Snow
      * 
      * @return known SnowflakeAuthenticationType values.
      */
+    @Generated
     public static Collection<SnowflakeAuthenticationType> values() {
         return values(SnowflakeAuthenticationType.class);
     }

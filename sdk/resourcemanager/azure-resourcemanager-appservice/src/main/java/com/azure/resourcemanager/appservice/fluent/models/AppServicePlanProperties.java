@@ -140,6 +140,13 @@ public final class AppServicePlanProperties implements JsonSerializable<AppServi
      */
     private Boolean zoneRedundant;
 
+    /*
+     * If <code>true</code>, this App Service Plan will attempt to scale asynchronously if there are insufficient
+     * workers to scale synchronously.
+     * If <code>false</code>, this App Service Plan will only attempt sync scaling.
+     */
+    private Boolean asyncScalingEnabled;
+
     /**
      * Creates an instance of AppServicePlanProperties class.
      */
@@ -546,6 +553,30 @@ public final class AppServicePlanProperties implements JsonSerializable<AppServi
     }
 
     /**
+     * Get the asyncScalingEnabled property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will attempt to
+     * scale asynchronously if there are insufficient workers to scale synchronously.
+     * If &lt;code&gt;false&lt;/code&gt;, this App Service Plan will only attempt sync scaling.
+     * 
+     * @return the asyncScalingEnabled value.
+     */
+    public Boolean asyncScalingEnabled() {
+        return this.asyncScalingEnabled;
+    }
+
+    /**
+     * Set the asyncScalingEnabled property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will attempt to
+     * scale asynchronously if there are insufficient workers to scale synchronously.
+     * If &lt;code&gt;false&lt;/code&gt;, this App Service Plan will only attempt sync scaling.
+     * 
+     * @param asyncScalingEnabled the asyncScalingEnabled value to set.
+     * @return the AppServicePlanProperties object itself.
+     */
+    public AppServicePlanProperties withAsyncScalingEnabled(Boolean asyncScalingEnabled) {
+        this.asyncScalingEnabled = asyncScalingEnabled;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -586,6 +617,7 @@ public final class AppServicePlanProperties implements JsonSerializable<AppServi
         jsonWriter.writeNumberField("targetWorkerSizeId", this.targetWorkerSizeId);
         jsonWriter.writeJsonField("kubeEnvironmentProfile", this.kubeEnvironmentProfile);
         jsonWriter.writeBooleanField("zoneRedundant", this.zoneRedundant);
+        jsonWriter.writeBooleanField("asyncScalingEnabled", this.asyncScalingEnabled);
         return jsonWriter.writeEndObject();
     }
 
@@ -658,6 +690,9 @@ public final class AppServicePlanProperties implements JsonSerializable<AppServi
                         = KubeEnvironmentProfile.fromJson(reader);
                 } else if ("zoneRedundant".equals(fieldName)) {
                     deserializedAppServicePlanProperties.zoneRedundant = reader.getNullable(JsonReader::getBoolean);
+                } else if ("asyncScalingEnabled".equals(fieldName)) {
+                    deserializedAppServicePlanProperties.asyncScalingEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

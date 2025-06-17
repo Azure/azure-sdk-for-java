@@ -60,7 +60,7 @@ public final class CopilotSettingsClientImpl implements CopilotSettingsClient {
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PortalServicesCopilo")
+    @ServiceInterface(name = "PortalServicesCopilotMgmtClientCopilotSettings")
     public interface CopilotSettingsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.PortalServices/copilotSettings/default")

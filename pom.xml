@@ -208,6 +208,7 @@
     <module>sdk/resourcehealth</module>
     <module>sdk/resourcemanager</module>
     <module>sdk/resourcemover</module>
+    <module>sdk/resources</module>
     <module>sdk/schemaregistry</module>
     <module>sdk/scvmm</module>
     <module>sdk/search</module>
@@ -231,6 +232,7 @@
     <module>sdk/sqlvirtualmachine</module>
     <module>sdk/standbypool</module>
     <module>sdk/storage</module>
+    <module>sdk/storage-v2</module>
     <module>sdk/storageactions</module>
     <module>sdk/storagecache</module>
     <module>sdk/storagemover</module>
