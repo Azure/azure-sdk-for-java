@@ -195,16 +195,15 @@ public class AzureKeyVaultSslBundleRegistrar implements SslBundleRegistrar, Reso
             pm.from(jcaVaultProperties.getProfile().getTenantId())
                 .when(StringUtils::hasText)
                 .to(v -> System.setProperty("azure.keyvault.tenant-id", v));
-            pm.from(jcaVaultProperties.getCredential().getClientId())
-                .when(StringUtils::hasText)
-                .to(v -> System.setProperty("azure.keyvault.client-id", v));
+            String clientId = jcaVaultProperties.getCredential().getClientId();
+            pm.from(clientId).when(StringUtils::hasText).to(v -> System.setProperty("azure.keyvault.client-id", v));
             pm.from(jcaVaultProperties.getCredential().getClientSecret())
                 .when(StringUtils::hasText)
                 .to(v -> System.setProperty("azure.keyvault.client-secret", v));
-            pm.from(jcaVaultProperties.getCredential().isManagedIdentityEnabled() && StringUtils.hasText(jcaVaultProperties.getCredential().getClientId()))
+            pm.from(jcaVaultProperties.getCredential().isManagedIdentityEnabled() && StringUtils.hasText(clientId))
                 .whenTrue()
-                // should put the client id to the managed-identity property
-                .to(v -> System.setProperty("azure.keyvault.managed-identity", jcaVaultProperties.getCredential().getClientId()));
+                // When using user managed identity, the client ID must be placed in the managed identity attribute
+                .to(v -> System.setProperty("azure.keyvault.managed-identity", clientId));
         }
 
         pm.from(keyStoreProperties.getCertificatesRefreshInterval())
