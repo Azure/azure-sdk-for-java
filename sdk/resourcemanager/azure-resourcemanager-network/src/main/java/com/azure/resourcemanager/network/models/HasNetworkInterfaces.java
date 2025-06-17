@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.models;
 
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import reactor.core.publisher.Mono;
 
@@ -17,6 +18,16 @@ public interface HasNetworkInterfaces extends HasId {
      * @return the primary network interface associated with this resource
      */
     NetworkInterface getPrimaryNetworkInterface();
+
+    /**
+     * Gets the primary network interface.
+     *
+     * <p>Note that this method can result in a call to the cloud to fetch the network interface information.
+     *
+     * @param context the {@link Context} of the request
+     * @return the primary network interface associated with this resource
+     */
+    NetworkInterface getPrimaryNetworkInterface(Context context);
 
     /**
      * Gets the primary network interface.
