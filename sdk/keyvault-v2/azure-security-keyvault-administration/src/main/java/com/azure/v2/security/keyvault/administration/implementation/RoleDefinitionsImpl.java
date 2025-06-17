@@ -12,7 +12,6 @@ import com.azure.v2.security.keyvault.administration.implementation.models.RoleD
 import io.clientcore.core.annotations.ReturnType;
 import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.annotations.ServiceMethod;
-import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.annotations.BodyParam;
 import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HostParam;
@@ -27,6 +26,7 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -49,7 +49,7 @@ public final class RoleDefinitionsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     RoleDefinitionsImpl(KeyVaultAdministrationClientImpl client) {
-        this.service = RestProxy.create(RoleDefinitionsService.class, client.getHttpPipeline());
+        this.service = RoleDefinitionsService.getNewInstance(client.getHttpPipeline());
         this.client = client;
     }
 
@@ -66,7 +66,7 @@ public final class RoleDefinitionsImpl {
      * The interface defining all the services for KeyVaultAdministrationClientRoleDefinitions to be used by the proxy
      * service to perform REST calls.
      */
-    @ServiceInterface(name = "KeyVaultAdministrati", host = "{vaultBaseUrl}")
+    @ServiceInterface(name = "KeyVaultAdministrationClientRoleDefinitions", host = "{vaultBaseUrl}")
     public interface RoleDefinitionsService {
         static RoleDefinitionsService getNewInstance(HttpPipeline pipeline) {
             try {
@@ -288,8 +288,33 @@ public final class RoleDefinitionsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleDefinition> list(String scope, String filter) {
-        return new PagedIterable<>((pagingOptions) -> listSinglePage(scope, filter),
-            (pagingOptions, nextLink) -> listNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "list")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "list")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "list")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "list")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return listSinglePage(scope, filter);
+        }, (pagingOptions, nextLink) -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -304,8 +329,33 @@ public final class RoleDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleDefinition> list(String scope) {
         final String filter = null;
-        return new PagedIterable<>((pagingOptions) -> listSinglePage(scope, filter),
-            (pagingOptions, nextLink) -> listNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "list")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "list")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "list")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "list")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return listSinglePage(scope, filter);
+        }, (pagingOptions, nextLink) -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -323,8 +373,33 @@ public final class RoleDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleDefinition> list(String scope, String filter, RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
-        return new PagedIterable<>((pagingOptions) -> listSinglePage(scope, filter, requestContext),
-            (pagingOptions, nextLink) -> listNextSinglePage(nextLink, requestContextForNextPage));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "list")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "list")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "list")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "list")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return listSinglePage(scope, filter, requestContext);
+        }, (pagingOptions, nextLink) -> listNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -363,4 +438,6 @@ public final class RoleDefinitionsImpl {
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RoleDefinitionsImpl.class);
 }

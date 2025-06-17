@@ -19,7 +19,6 @@ import com.azure.v2.security.keyvault.secrets.implementation.models.SecretUpdate
 import io.clientcore.core.annotations.ReturnType;
 import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.annotations.ServiceMethod;
-import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.annotations.BodyParam;
 import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HostParam;
@@ -34,6 +33,7 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -97,7 +97,7 @@ public final class SecretClientImpl {
         this.httpPipeline = httpPipeline;
         this.vaultBaseUrl = vaultBaseUrl;
         this.serviceVersion = serviceVersion;
-        this.service = RestProxy.create(SecretClientService.class, this.httpPipeline);
+        this.service = SecretClientService.getNewInstance(this.httpPipeline);
     }
 
     /**
@@ -476,8 +476,33 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretItem> getSecrets(Integer maxresults) {
-        return new PagedIterable<>((pagingOptions) -> getSecretsSinglePage(maxresults),
-            (pagingOptions, nextLink) -> getSecretsNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getSecretsSinglePage(maxresults);
+        }, (pagingOptions, nextLink) -> getSecretsNextSinglePage(nextLink));
     }
 
     /**
@@ -494,8 +519,33 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretItem> getSecrets() {
         final Integer maxresults = null;
-        return new PagedIterable<>((pagingOptions) -> getSecretsSinglePage(maxresults),
-            (pagingOptions, nextLink) -> getSecretsNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getSecretsSinglePage(maxresults);
+        }, (pagingOptions, nextLink) -> getSecretsNextSinglePage(nextLink));
     }
 
     /**
@@ -516,8 +566,33 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretItem> getSecrets(Integer maxresults, RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
-        return new PagedIterable<>((pagingOptions) -> getSecretsSinglePage(maxresults, requestContext),
-            (pagingOptions, nextLink) -> getSecretsNextSinglePage(nextLink, requestContextForNextPage));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getSecretsSinglePage(maxresults, requestContext);
+        }, (pagingOptions, nextLink) -> getSecretsNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -584,8 +659,33 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretItem> getSecretVersions(String secretName, Integer maxresults) {
-        return new PagedIterable<>((pagingOptions) -> getSecretVersionsSinglePage(secretName, maxresults),
-            (pagingOptions, nextLink) -> getSecretVersionsNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getSecretVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getSecretVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getSecretVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getSecretVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getSecretVersionsSinglePage(secretName, maxresults);
+        }, (pagingOptions, nextLink) -> getSecretVersionsNextSinglePage(nextLink));
     }
 
     /**
@@ -603,8 +703,33 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretItem> getSecretVersions(String secretName) {
         final Integer maxresults = null;
-        return new PagedIterable<>((pagingOptions) -> getSecretVersionsSinglePage(secretName, maxresults),
-            (pagingOptions, nextLink) -> getSecretVersionsNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getSecretVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getSecretVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getSecretVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getSecretVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getSecretVersionsSinglePage(secretName, maxresults);
+        }, (pagingOptions, nextLink) -> getSecretVersionsNextSinglePage(nextLink));
     }
 
     /**
@@ -626,9 +751,33 @@ public final class SecretClientImpl {
     public PagedIterable<SecretItem> getSecretVersions(String secretName, Integer maxresults,
         RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
-        return new PagedIterable<>(
-            (pagingOptions) -> getSecretVersionsSinglePage(secretName, maxresults, requestContext),
-            (pagingOptions, nextLink) -> getSecretVersionsNextSinglePage(nextLink, requestContextForNextPage));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getSecretVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getSecretVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getSecretVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getSecretVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getSecretVersionsSinglePage(secretName, maxresults, requestContext);
+        }, (pagingOptions, nextLink) -> getSecretVersionsNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -692,8 +841,33 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedSecretItem> getDeletedSecrets(Integer maxresults) {
-        return new PagedIterable<>((pagingOptions) -> getDeletedSecretsSinglePage(maxresults),
-            (pagingOptions, nextLink) -> getDeletedSecretsNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getDeletedSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getDeletedSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getDeletedSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getDeletedSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getDeletedSecretsSinglePage(maxresults);
+        }, (pagingOptions, nextLink) -> getDeletedSecretsNextSinglePage(nextLink));
     }
 
     /**
@@ -709,8 +883,33 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedSecretItem> getDeletedSecrets() {
         final Integer maxresults = null;
-        return new PagedIterable<>((pagingOptions) -> getDeletedSecretsSinglePage(maxresults),
-            (pagingOptions, nextLink) -> getDeletedSecretsNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getDeletedSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getDeletedSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getDeletedSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getDeletedSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getDeletedSecretsSinglePage(maxresults);
+        }, (pagingOptions, nextLink) -> getDeletedSecretsNextSinglePage(nextLink));
     }
 
     /**
@@ -730,8 +929,33 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedSecretItem> getDeletedSecrets(Integer maxresults, RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
-        return new PagedIterable<>((pagingOptions) -> getDeletedSecretsSinglePage(maxresults, requestContext),
-            (pagingOptions, nextLink) -> getDeletedSecretsNextSinglePage(nextLink, requestContextForNextPage));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getDeletedSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getDeletedSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getDeletedSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getDeletedSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getDeletedSecretsSinglePage(maxresults, requestContext);
+        }, (pagingOptions, nextLink) -> getDeletedSecretsNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -1050,4 +1274,6 @@ public final class SecretClientImpl {
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SecretClientImpl.class);
 }
