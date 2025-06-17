@@ -179,11 +179,17 @@ public class BomGenerator {
         List<BomDependency> inputDependencies = new ArrayList<>();
 
         try {
+            Set<String> premiumLibraries = getPremiumLibraries();
             for (String line : Files.readAllLines(Paths.get(inputFileName))) {
                 BomDependency dependency = scanDependency(line);
 
                 if(dependency != null) {
-                    inputDependencies.add(dependency);
+                    // Hack for including only premium ARM libraries into BOM as the first step.
+                    // TODO(xiaofei) In core-v2, we need to change this, or may include only those from patch_release_client.txt.
+                    //  Also, we may include all ARM libraries in the future and remove this hack.
+                    if (!"com.azure.resourcemanager".equals(dependency.getGroupId()) || premiumLibraries.contains(dependency.getArtifactId())) {
+                        inputDependencies.add(dependency);
+                    }
                 }
             }
         } catch (IOException exception) {
@@ -353,17 +359,7 @@ public class BomGenerator {
 
         // Remove external dependencies from the BOM.
         Set<String> premiumLibraries = getPremiumLibraries();
-        dependencies = dependencies.stream().filter(dependency -> groupIds.contains(dependency.getGroupId()))
-                .filter(dependency -> {
-                    // Hack for including only premium ARM libraries into BOM as the first step.
-                    // TODO(xiaofei) In core-v2, we need to change this, or may include only those from patch_release_client.txt.
-                    //  Also, we may include all ARM libraries in the future and remove this hack.
-                    if ("com.azure.resourcemanager".equals(dependency.getGroupId())) {
-                        return premiumLibraries.contains(dependency.getArtifactId());
-                    }
-                    return true;
-                })
-                .collect(Collectors.toList());
+        dependencies = dependencies.stream().filter(dependency -> groupIds.contains(dependency.getGroupId())).collect(Collectors.toList());
         management.setDependencies(dependencies);
         writeModel(this.pomFileName, this.outputFileName, model);
     }
