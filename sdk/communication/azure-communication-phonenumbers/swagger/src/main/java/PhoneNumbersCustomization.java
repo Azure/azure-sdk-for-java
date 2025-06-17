@@ -24,6 +24,7 @@ public class PhoneNumbersCustomization extends Customization {
         customizePhoneNumbersReservation(models);
         customizeBrowsePhoneNumbersOptions(models);
         customizePhoneNumberSearchResult(models);
+        customizeToJson(models);
     }
 
     // Customizes the PhoneNumbersReservation class
@@ -139,5 +140,75 @@ public class PhoneNumbersCustomization extends Customization {
         models.getClass("PhoneNumberSearchResult").customizeAst(ast -> ast.getImports()
             .removeIf(importDeclaration -> importDeclaration.getNameAsString()
                 .equals("com.azure.communication.phonenumbers.implementation.models.PhoneNumberSearchResultError")));
+    }
+
+    // Combined toJson customization for all relevant models
+    private void customizeToJson(PackageCustomization models) {
+        // AvailablePhoneNumber
+        models.getClass("AvailablePhoneNumber").customizeAst(ast -> {
+            ast.getClassByName("AvailablePhoneNumber").ifPresent(clazz -> {
+                clazz.getMethodsByName("toJson").forEach(method -> 
+                    method.setBody(StaticJavaParser.parseBlock(
+                        "{\n" +
+                        "    jsonWriter.writeStartObject();\n" +
+                        "    if (this.countryCode != null) jsonWriter.writeStringField(\"countryCode\", this.countryCode);\n" +
+                        "    if (this.capabilities != null) { jsonWriter.writeFieldName(\"capabilities\"); this.capabilities.toJson(jsonWriter); }\n" +
+                        "    if (this.phoneNumberType != null) jsonWriter.writeStringField(\"phoneNumberType\", this.phoneNumberType.toString());\n" +
+                        "    if (this.assignmentType != null) jsonWriter.writeStringField(\"assignmentType\", this.assignmentType.toString());\n" +
+                        "    if (this.id != null) jsonWriter.writeStringField(\"id\", this.id);\n" +
+                        "    if (this.phoneNumber != null) jsonWriter.writeStringField(\"phoneNumber\", this.phoneNumber);\n" +
+                        "    if (this.cost != null) { jsonWriter.writeFieldName(\"cost\"); this.cost.toJson(jsonWriter); }\n" +
+                        "    if (this.status != null) jsonWriter.writeStringField(\"status\", this.status.toString());\n" +
+                        "    if (this.isAgreementToNotResellRequired != null) jsonWriter.writeBooleanField(\"isAgreementToNotResellRequired\", this.isAgreementToNotResellRequired);\n" +
+                        "    return jsonWriter.writeEndObject();\n" +
+                        "}")));
+            });
+        });
+        // PhoneNumbersReservation
+        models.getClass("PhoneNumbersReservation").customizeAst(ast -> {
+            ast.getClassByName("PhoneNumbersReservation").ifPresent(clazz -> {
+                clazz.getMethodsByName("toJson").forEach(method -> 
+                    method.setBody(StaticJavaParser.parseBlock(
+                        "{\n" +
+                        "    jsonWriter.writeStartObject();\n" +
+                        "    if (this.id != null) jsonWriter.writeStringField(\"id\", this.id.toString());\n" +
+                        "    if (this.expiresAt != null) jsonWriter.writeStringField(\"expiresAt\", this.expiresAt.toString());\n" +
+                        "    if (this.phoneNumbers != null) {\n" +
+                        "        jsonWriter.writeMapField(\"phoneNumbers\", this.phoneNumbers, (writer, value) -> {\n" +
+                        "            if (value != null) { value.toJson(writer); } else { writer.writeNull(); }\n" +
+                        "        });\n" +
+                        "    }\n" +
+                        "    if (this.status != null) jsonWriter.writeStringField(\"status\", this.status.toString());\n" +
+                        "    return jsonWriter.writeEndObject();\n" +
+                        "}")));
+            });
+        });
+        // PhoneNumberCost
+        models.getClass("PhoneNumberCost").customizeAst(ast -> {
+            ast.getClassByName("PhoneNumberCost").ifPresent(clazz -> {
+                clazz.getMethodsByName("toJson").forEach(method -> 
+                    method.setBody(StaticJavaParser.parseBlock(
+                        "{\n" +
+                        "    jsonWriter.writeStartObject();\n" +
+                        "    jsonWriter.writeNumberField(\"amount\", this.amount);\n" +
+                        "    if (this.currencyCode != null) jsonWriter.writeStringField(\"currencyCode\", this.currencyCode);\n" +
+                        "    if (this.billingFrequency != null) jsonWriter.writeStringField(\"billingFrequency\", this.billingFrequency.toString());\n" +
+                        "    return jsonWriter.writeEndObject();\n" +
+                        "}")));
+            });
+        });
+        // PhoneNumberCapabilities
+        models.getClass("PhoneNumberCapabilities").customizeAst(ast -> {
+            ast.getClassByName("PhoneNumberCapabilities").ifPresent(clazz -> {
+                clazz.getMethodsByName("toJson").forEach(method -> 
+                    method.setBody(StaticJavaParser.parseBlock(
+                        "{\n" +
+                        "    jsonWriter.writeStartObject();\n" +
+                        "    if (this.calling != null) jsonWriter.writeStringField(\"calling\", this.calling.toString());\n" +
+                        "    if (this.sms != null) jsonWriter.writeStringField(\"sms\", this.sms.toString());\n" +
+                        "    return jsonWriter.writeEndObject();\n" +
+                        "}")));
+            });
+        });
     }
 }

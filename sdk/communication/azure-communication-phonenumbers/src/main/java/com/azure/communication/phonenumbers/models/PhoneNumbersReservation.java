@@ -11,8 +11,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -90,7 +88,6 @@ public final class PhoneNumbersReservation implements JsonSerializable<PhoneNumb
      * @return the phoneNumbers value.
      */
     @Generated
-    @JsonProperty("phoneNumbers")
     public Map<String, AvailablePhoneNumber> getPhoneNumbers() {
         return this.phoneNumbers;
     }
@@ -113,24 +110,21 @@ public final class PhoneNumbersReservation implements JsonSerializable<PhoneNumb
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        if (this.id != null) {
+        if (this.id != null)
             jsonWriter.writeStringField("id", this.id.toString());
-        }
-        if (this.expiresAt != null) {
+        if (this.expiresAt != null)
             jsonWriter.writeStringField("expiresAt", this.expiresAt.toString());
-        }
         if (this.phoneNumbers != null) {
             jsonWriter.writeMapField("phoneNumbers", this.phoneNumbers, (writer, value) -> {
                 if (value != null) {
-                    value.toJson(writer); // AvailablePhoneNumber implements JsonSerializable
+                    value.toJson(writer);
                 } else {
                     writer.writeNull();
                 }
             });
         }
-        if (this.status != null) {
+        if (this.status != null)
             jsonWriter.writeStringField("status", this.status.toString());
-        }
         return jsonWriter.writeEndObject();
     }
 
