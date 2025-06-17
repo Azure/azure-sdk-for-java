@@ -48,6 +48,6 @@ extends:
                 displayName: 'Run Golden Image Compiler on OpenRewrite Samples'
                 inputs:
                   mavenPomFile: 'sdk/tools/azure-openrewrite/pom.xml'
-                  goals: 'com.azure:azure-openrewrite-compiler-maven-plugin:compile-golden-image'
+                  goals: 'com.azure:azure-openrewrite-compiler-maven-plugin:compile-golden-image --no-transfer-progress'
                   javaHomeOption: 'JDKVersion'
                   jdkVersionOption: '1.8'
