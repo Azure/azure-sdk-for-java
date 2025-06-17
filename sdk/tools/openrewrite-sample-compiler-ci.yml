@@ -38,13 +38,21 @@ extends:
                   targetType: 'inline'
                   script: |
                     $modulePaths = @(
-                      "eng/code-quality-reports/pom.xml",
-                      "sdk/parents/pom.xml",
-                      "common/perf-test-core/pom.xml",
-                      "sdk/clientcore/pom.xml",
+                      "com.azure:perf-test-core",
+                      "io.clientcore:core",
                       "com.azure.v2:azure-core"
                     )
-                    mvn install -pl ($modulePaths -join ',') --% -B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip
+                    mvn install -pl ($modulePaths -join ',') -am --% -B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip
+
+              - task: Maven@3
+                displayName: 'Build and Install OpenRewrite Compiler Maven Plugin'
+                inputs:
+                  goals: 'install'
+                  options: '-pl com.azure.v2:azure-core,io.clientcore:core,com.azure:perf-test-core -am --% -B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip'
+                  javaHomeOption: 'JDKVersion'
+                  jdkVersionOption: '1.8'
+                  publishJUnitResults: false
+
 
               - task: Maven@3
                 displayName: 'Build and Install OpenRewrite Compiler Maven Plugin'
