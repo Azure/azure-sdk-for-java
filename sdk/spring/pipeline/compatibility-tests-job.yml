@@ -78,7 +78,7 @@ jobs:
       - task: Maven@4
         displayName: 'Run tests'
         inputs:
-          options: '$(DefaultOptions) -ntp -T ${{parameters.BuildParallelization}} ${{parameters.SkipOptions}} -Dcompiler.failondeprecatedstatus=-'
+          options: '$(DefaultOptions) $(LoggingOptions) -ntp -T ${{parameters.BuildParallelization}} ${{parameters.SkipOptions}} -Dcompiler.failondeprecatedstatus=-'
           mavenPomFile: sdk/spring/pom.xml
           mavenOptions: '$(MemoryOptions)'
           javaHomeOption: 'JDKVersion'
