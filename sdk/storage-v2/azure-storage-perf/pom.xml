@@ -55,7 +55,7 @@
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>http-netty4</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:http-netty4;dependency} -->
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;unreleased_io.clientcore:http-netty4;dependency} -->
     </dependency>
 
     <dependency>
