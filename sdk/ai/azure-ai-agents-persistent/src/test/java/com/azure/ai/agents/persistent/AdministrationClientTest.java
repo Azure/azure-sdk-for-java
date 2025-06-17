@@ -20,20 +20,21 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class AdministrationClientTest extends ClientTestBase {
 
     private PersistentAgentsClientBuilder clientBuilder;
-    private PersistentAgentsAdministrationClient agentsClient;
+    private PersistentAgentsAdministrationClient administrationClient;
     private PersistentAgent agent;
 
     private PersistentAgent createAgent(String agentName) {
         CreateAgentOptions options
             = new CreateAgentOptions("gpt-4o-mini").setName(agentName).setInstructions("You are a helpful agent");
-        PersistentAgent createdAgent = agentsClient.createAgent(options);
+        PersistentAgent createdAgent = administrationClient.createAgent(options);
         assertNotNull(createdAgent, "Persistent agent should not be null");
         return createdAgent;
     }
 
     private void setup(HttpClient httpClient) {
         clientBuilder = getClientBuilder(httpClient);
-        agentsClient = clientBuilder.buildPersistentAgentsAdministrationClient();
+        PersistentAgentsClient agentsClient = clientBuilder.buildClient();
+        administrationClient = agentsClient.getPersistentAgentsAdministrationClient();
         agent = createAgent("TestAgent");
     }
 
@@ -50,7 +51,7 @@ public class AdministrationClientTest extends ClientTestBase {
         setup(httpClient);
 
         // Validate the agent listing
-        PagedIterable<PersistentAgent> agents = agentsClient.listAgents();
+        PagedIterable<PersistentAgent> agents = administrationClient.listAgents();
 
         assertNotNull(agents, "Agent list should not be null");
         assertTrue(size(agents) > 0, "Agent list should not be empty");
@@ -61,7 +62,7 @@ public class AdministrationClientTest extends ClientTestBase {
     public void testGetAgent(HttpClient httpClient) {
         setup(httpClient);
 
-        PersistentAgent retrievedAgent = agentsClient.getAgent(agent.getId());
+        PersistentAgent retrievedAgent = administrationClient.getAgent(agent.getId());
         assertAgent(retrievedAgent);
         assertTrue(retrievedAgent.getId().equals(agent.getId()), "Retrieved agent ID should match created agent ID");
     }
@@ -73,7 +74,7 @@ public class AdministrationClientTest extends ClientTestBase {
 
         UpdateAgentOptions updateOptions
             = new UpdateAgentOptions(agent.getId()).setInstructions("Updated instructions for the agent");
-        PersistentAgent updatedAgent = agentsClient.updateAgent(updateOptions);
+        PersistentAgent updatedAgent = administrationClient.updateAgent(updateOptions);
         assertAgent(updatedAgent);
         assertTrue(updatedAgent.getInstructions().equals("Updated instructions for the agent"),
             "Updated agent instructions should match");
@@ -85,7 +86,7 @@ public class AdministrationClientTest extends ClientTestBase {
     public void testDeleteAgent(HttpClient httpClient) {
         setup(httpClient);
         try {
-            agentsClient.deleteAgent(agent.getId());
+            administrationClient.deleteAgent(agent.getId());
         } catch (Exception e) {
             // If deletion fails, we still want to assert that the agent was created
             fail("Agent deletion failed: " + e.getMessage());
@@ -97,7 +98,7 @@ public class AdministrationClientTest extends ClientTestBase {
     public void cleanup() {
         if (agent != null) {
             try {
-                agentsClient.deleteAgent(agent.getId());
+                administrationClient.deleteAgent(agent.getId());
             } catch (Exception e) {
                 System.out.println("Failed to clean up agent: " + e.getMessage());
             }

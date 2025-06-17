@@ -27,15 +27,6 @@ public class QueueStorageCustomization extends Customization {
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
         updateImplToMapInternalException(customization.getPackage("com.azure.storage.queue.implementation"));
-
-        // Fix for a bug introduced in Autorest Java, this customization should be removed once fixed.
-        // Issue is in handing of header collections in the constructor that takes HttpHeaders.
-        // ".getValue()" was appended to "header.getName()", which isn't a valid call. Remove the "getValue()" call.
-        customization.getClass("com.azure.storage.queue.implementation.models", "QueuesGetPropertiesHeaders")
-            .customizeAst(ast -> ast.getClassByName("QueuesGetPropertiesHeaders").flatMap(
-                clazz -> clazz.getConstructorByParameterTypes("HttpHeaders")).ifPresent(ctor -> ctor.setBody(
-                    StaticJavaParser.parseBlock(ctor.getBody().toString()
-                        .replace("header.getName().getValue()", "header.getName()")))));
     }
 
     /**

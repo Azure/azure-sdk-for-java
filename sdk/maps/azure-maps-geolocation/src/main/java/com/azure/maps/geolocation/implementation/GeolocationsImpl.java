@@ -54,7 +54,7 @@ public final class GeolocationsImpl {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "GeolocationClientGeo")
+    @ServiceInterface(name = "GeolocationClientGeolocations")
     public interface GeolocationsService {
         @Get("/geolocation/ip/{format}")
         @ExpectedResponses({ 200 })

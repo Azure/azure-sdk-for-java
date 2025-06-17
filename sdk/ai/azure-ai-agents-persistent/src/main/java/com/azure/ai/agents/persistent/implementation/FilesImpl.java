@@ -23,16 +23,22 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in Files.
+ * Initializes a new instance of the Files type.
  */
 public final class FilesImpl {
     /**
@@ -41,19 +47,25 @@ public final class FilesImpl {
     private final FilesService service;
 
     /**
-     * The service client containing this operation class.
+     * Project endpoint in the form of:
+     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
      */
-    private final PersistentAgentsClientImpl client;
+    private final String endpoint;
 
     /**
-     * Initializes an instance of FilesImpl.
+     * Gets Project endpoint in the form of:
+     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
      * 
-     * @param client the instance of the service client containing this operation class.
+     * @return the endpoint value.
      */
-    FilesImpl(PersistentAgentsClientImpl client) {
-        this.service = RestProxy.create(FilesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
+    public String getEndpoint() {
+        return this.endpoint;
     }
+
+    /**
+     * Service version.
+     */
+    private final PersistentAgentsServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
@@ -61,15 +73,84 @@ public final class FilesImpl {
      * @return the serviceVersion value.
      */
     public PersistentAgentsServiceVersion getServiceVersion() {
-        return client.getServiceVersion();
+        return this.serviceVersion;
     }
 
     /**
-     * The interface defining all the services for PersistentAgentsClientFiles to be used by the proxy service to
-     * perform REST calls.
+     * The HTTP pipeline to send requests through.
+     */
+    private final HttpPipeline httpPipeline;
+
+    /**
+     * Gets The HTTP pipeline to send requests through.
+     * 
+     * @return the httpPipeline value.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return this.httpPipeline;
+    }
+
+    /**
+     * The serializer to serialize an object into a string.
+     */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     * 
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
+    /**
+     * Initializes an instance of Files client.
+     * 
+     * @param endpoint Project endpoint in the form of:
+     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
+     * @param serviceVersion Service version.
+     */
+    public FilesImpl(String endpoint, PersistentAgentsServiceVersion serviceVersion) {
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
+    }
+
+    /**
+     * Initializes an instance of Files client.
+     * 
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param endpoint Project endpoint in the form of:
+     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
+     * @param serviceVersion Service version.
+     */
+    public FilesImpl(HttpPipeline httpPipeline, String endpoint, PersistentAgentsServiceVersion serviceVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
+    }
+
+    /**
+     * Initializes an instance of Files client.
+     * 
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param endpoint Project endpoint in the form of:
+     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
+     * @param serviceVersion Service version.
+     */
+    public FilesImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
+        PersistentAgentsServiceVersion serviceVersion) {
+        this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
+        this.endpoint = endpoint;
+        this.serviceVersion = serviceVersion;
+        this.service = RestProxy.create(FilesService.class, this.httpPipeline, this.getSerializerAdapter());
+    }
+
+    /**
+     * The interface defining all the services for Files to be used by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PersistentAgentsClientFiles")
+    @ServiceInterface(name = "Files")
     public interface FilesService {
         @Get("/files")
         @ExpectedResponses({ 200 })
@@ -218,8 +299,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listFilesInternalWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listFilesInternal(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.listFilesInternal(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -264,8 +345,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listFilesInternalWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listFilesInternalSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            accept, requestOptions, Context.NONE);
+        return service.listFilesInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -300,8 +381,8 @@ public final class FilesImpl {
     public Mono<Response<BinaryData>> uploadFileWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.uploadFile(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
+        return FluxUtil.withContext(context -> service.uploadFile(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -335,8 +416,8 @@ public final class FilesImpl {
     public Response<BinaryData> uploadFileWithResponse(BinaryData body, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
-        return service.uploadFileSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            contentType, accept, body, requestOptions, Context.NONE);
+        return service.uploadFileSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
+            body, requestOptions, Context.NONE);
     }
 
     /**
@@ -370,8 +451,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getFileWithResponseAsync(String fileId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getFile(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), fileId, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getFile(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), fileId, accept, requestOptions, context));
     }
 
     /**
@@ -404,8 +485,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getFileWithResponse(String fileId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getFileSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), fileId,
-            accept, requestOptions, Context.NONE);
+        return service.getFileSync(this.getEndpoint(), this.getServiceVersion().getVersion(), fileId, accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -429,8 +510,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getFileContentWithResponseAsync(String fileId, RequestOptions requestOptions) {
         final String accept = "application/octet-stream";
-        return FluxUtil.withContext(context -> service.getFileContent(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), fileId, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getFileContent(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), fileId, accept, requestOptions, context));
     }
 
     /**
@@ -454,8 +535,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getFileContentWithResponse(String fileId, RequestOptions requestOptions) {
         final String accept = "application/octet-stream";
-        return service.getFileContentSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            fileId, accept, requestOptions, Context.NONE);
+        return service.getFileContentSync(this.getEndpoint(), this.getServiceVersion().getVersion(), fileId, accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -485,8 +566,8 @@ public final class FilesImpl {
     public Mono<Response<BinaryData>> deleteFileInternalWithResponseAsync(String fileId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteFileInternal(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), fileId, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.deleteFileInternal(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), fileId, accept, requestOptions, context));
     }
 
     /**
@@ -514,7 +595,7 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteFileInternalWithResponse(String fileId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteFileInternalSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            fileId, accept, requestOptions, Context.NONE);
+        return service.deleteFileInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), fileId, accept,
+            requestOptions, Context.NONE);
     }
 }

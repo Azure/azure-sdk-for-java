@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,11 +20,13 @@ public final class CustomEntitiesResult extends CustomResult {
     /*
      * Response by document
      */
+    @Generated
     private List<CustomEntitiesResultDocumentsItem> documents;
 
     /**
      * Creates an instance of CustomEntitiesResult class.
      */
+    @Generated
     public CustomEntitiesResult() {
     }
 
@@ -32,6 +35,7 @@ public final class CustomEntitiesResult extends CustomResult {
      * 
      * @return the documents value.
      */
+    @Generated
     public List<CustomEntitiesResultDocumentsItem> getDocuments() {
         return this.documents;
     }
@@ -42,6 +46,7 @@ public final class CustomEntitiesResult extends CustomResult {
      * @param documents the documents value to set.
      * @return the CustomEntitiesResult object itself.
      */
+    @Generated
     public CustomEntitiesResult setDocuments(List<CustomEntitiesResultDocumentsItem> documents) {
         this.documents = documents;
         return this;
@@ -50,6 +55,7 @@ public final class CustomEntitiesResult extends CustomResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CustomEntitiesResult setErrors(List<DocumentError> errors) {
         super.setErrors(errors);
@@ -59,6 +65,7 @@ public final class CustomEntitiesResult extends CustomResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CustomEntitiesResult setStatistics(RequestStatistics statistics) {
         super.setStatistics(statistics);
@@ -68,6 +75,7 @@ public final class CustomEntitiesResult extends CustomResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CustomEntitiesResult setProjectName(String projectName) {
         super.setProjectName(projectName);
@@ -77,6 +85,7 @@ public final class CustomEntitiesResult extends CustomResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CustomEntitiesResult setDeploymentName(String deploymentName) {
         super.setDeploymentName(deploymentName);
@@ -86,6 +95,7 @@ public final class CustomEntitiesResult extends CustomResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -106,6 +116,7 @@ public final class CustomEntitiesResult extends CustomResult {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CustomEntitiesResult.
      */
+    @Generated
     public static CustomEntitiesResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CustomEntitiesResult deserializedCustomEntitiesResult = new CustomEntitiesResult();

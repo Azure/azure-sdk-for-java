@@ -52,7 +52,7 @@ public final class NamespacesImpl {
      * to perform REST calls.
      */
     @Host("https://{endpoint}")
-    @ServiceInterface(name = "ServiceBusManagement")
+    @ServiceInterface(name = "ServiceBusManagementClientNamespaces")
     public interface NamespacesService {
         @Get("/$namespaceinfo")
         @ExpectedResponses({ 200 })

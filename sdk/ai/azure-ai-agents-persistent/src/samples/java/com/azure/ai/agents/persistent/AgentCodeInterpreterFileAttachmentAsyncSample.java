@@ -37,12 +37,13 @@ public class AgentCodeInterpreterFileAttachmentAsyncSample {
             PersistentAgentsClientBuilder clientBuilder = new PersistentAgentsClientBuilder()
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
                 .credential(new DefaultAzureCredentialBuilder().build());
-            
-            PersistentAgentsAdministrationAsyncClient agentsAsyncClient = clientBuilder.buildPersistentAgentsAdministrationAsyncClient();
-            ThreadsAsyncClient threadsAsyncClient = clientBuilder.buildThreadsAsyncClient();
-            MessagesAsyncClient messagesAsyncClient = clientBuilder.buildMessagesAsyncClient();
-            RunsAsyncClient runsAsyncClient = clientBuilder.buildRunsAsyncClient();
-            FilesAsyncClient filesAsyncClient = clientBuilder.buildFilesAsyncClient();
+
+            PersistentAgentsAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
+            PersistentAgentsAdministrationAsyncClient administrationAsyncClient = agentsAsyncClient.getPersistentAgentsAdministrationAsyncClient();
+            ThreadsAsyncClient threadsAsyncClient = agentsAsyncClient.getThreadsAsyncClient();
+            MessagesAsyncClient messagesAsyncClient = agentsAsyncClient.getMessagesAsyncClient();
+            RunsAsyncClient runsAsyncClient = agentsAsyncClient.getRunsAsyncClient();
+            FilesAsyncClient filesAsyncClient = agentsAsyncClient.getFilesAsyncClient();
 
             // Track resources for cleanup
             AtomicReference<String> agentId = new AtomicReference<>();
@@ -65,7 +66,7 @@ public class AgentCodeInterpreterFileAttachmentAsyncSample {
 
             // Build reactive chain
             Mono.zip(
-                agentsAsyncClient.createAgent(createAgentOptions),
+                administrationAsyncClient.createAgent(createAgentOptions),
                 filesAsyncClient.uploadFile(uploadFileRequest)
             ).flatMap(tuple -> {
                 // Store resources for cleanup
@@ -116,7 +117,7 @@ public class AgentCodeInterpreterFileAttachmentAsyncSample {
             .doFinally(signalType -> {
                 // Clean up resources
                 System.out.println("Cleaning up resources...");
-                cleanUpResources(threadId, threadsAsyncClient, agentId, agentsAsyncClient);
+                cleanUpResources(threadId, threadsAsyncClient, agentId, administrationAsyncClient);
                 
                 // Delete the file if it was created
                 if (fileId.get() != null) {

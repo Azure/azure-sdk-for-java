@@ -5,6 +5,7 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class TagAttributesTag implements JsonSerializable<TagAttributesTag
     /*
      * SignatureRecord value
      */
+    @Generated
     private String signatureRecord;
 
     /**
      * Creates an instance of TagAttributesTag class.
      */
+    @Generated
     public TagAttributesTag() {
     }
 
@@ -32,6 +35,7 @@ public final class TagAttributesTag implements JsonSerializable<TagAttributesTag
      * 
      * @return the signatureRecord value.
      */
+    @Generated
     public String getSignatureRecord() {
         return this.signatureRecord;
     }
@@ -42,6 +46,7 @@ public final class TagAttributesTag implements JsonSerializable<TagAttributesTag
      * @param signatureRecord the signatureRecord value to set.
      * @return the TagAttributesTag object itself.
      */
+    @Generated
     public TagAttributesTag setSignatureRecord(String signatureRecord) {
         this.signatureRecord = signatureRecord;
         return this;
@@ -50,6 +55,7 @@ public final class TagAttributesTag implements JsonSerializable<TagAttributesTag
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +71,7 @@ public final class TagAttributesTag implements JsonSerializable<TagAttributesTag
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the TagAttributesTag.
      */
+    @Generated
     public static TagAttributesTag fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TagAttributesTag deserializedTagAttributesTag = new TagAttributesTag();
