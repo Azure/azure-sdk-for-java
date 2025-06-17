@@ -160,7 +160,7 @@ public class BomGenerator {
         analyzer.reduce();
         Collection<BomDependency> outputDependencies = analyzer.getBomEligibleDependencies();
 
-        // 2. Create the new tree for the BOM.
+        // 3. Create the new tree for the BOM.
         analyzer = new DependencyAnalyzer(outputDependencies, externalDependencies, this.reportFileName);
         boolean validationFailed = analyzer.validate();
         outputDependencies = analyzer.getBomEligibleDependencies();
@@ -352,8 +352,28 @@ public class BomGenerator {
         dependencies.sort(new DependencyComparator());
 
         // Remove external dependencies from the BOM.
-        dependencies = dependencies.stream().filter(dependency -> groupIds.contains(dependency.getGroupId())).collect(Collectors.toList());
+        Set<String> premiumLibraries = getPremiumLibraries();
+        dependencies = dependencies.stream().filter(dependency -> groupIds.contains(dependency.getGroupId()))
+                .filter(dependency -> {
+                    // Hack for including only premium ARM libraries into BOM as the first step.
+                    // TODO(xiaofei) In core-v2, we need to change this, or may include only those from patch_release_client.txt.
+                    //  Also, we may include all ARM libraries in the future and remove this hack.
+                    if ("com.azure.resourcemanager".equals(dependency.getGroupId())) {
+                        return premiumLibraries.contains(dependency.getArtifactId());
+                    }
+                    return true;
+                })
+                .collect(Collectors.toList());
         management.setDependencies(dependencies);
         writeModel(this.pomFileName, this.outputFileName, model);
+    }
+
+    private Set<String> getPremiumLibraries() {
+        return Set.of("azure-resourcemanager", "azure-resourcemanager-appplatform", "azure-resourcemanager-appservice", "azure-resourcemanager-authorization",
+                "azure-resourcemanager-cdn", "azure-resourcemanager-compute", "azure-resourcemanager-containerinstance",
+                "azure-resourcemanager-containerregistry", "azure-resourcemanager-containerservice", "azure-resourcemanager-cosmos",
+                "azure-resourcemanager-dns", "azure-resourcemanager-eventhubs", "azure-resourcemanager-keyvault", "azure-resourcemanager-monitor"
+                , "azure-resourcemanager-msi", "azure-resourcemanagernetwork", "azure-resourcemanager-privatedns", "azure-resourcemanager-redis", "azure-resourcemanager-resources"
+                , "azure-resourcemanager-search", "azure-resourcemanager-servicebus", "azure-resourcemanager-sql", "azure-resourcemanager-storage", "azure-resourcemanager-trafficmanager");
     }
 }
