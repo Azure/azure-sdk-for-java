@@ -1,5 +1,5 @@
-import com.azure.identity.WorkloadIdentityCredentialBuilder;
 import com.azure.core.credential.TokenCredential;
+import com.azure.identity.WorkloadIdentityCredentialBuilder;
 
 public class WorkloadIdentityCredentialSample {
     public void workloadIdentityCredentialCodeSnippets() {

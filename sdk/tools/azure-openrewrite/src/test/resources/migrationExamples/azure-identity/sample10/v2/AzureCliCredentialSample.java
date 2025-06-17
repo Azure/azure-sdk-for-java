@@ -1,5 +1,5 @@
-import com.azure.v2.identity.AzureCliCredentialBuilder;
 import com.azure.v2.core.credentials.TokenCredential;
+import com.azure.v2.identity.AzureCliCredentialBuilder;
 
 public class AzureCliCredentialSample {
     public void azureCliCredentialsCodeSnippets() {

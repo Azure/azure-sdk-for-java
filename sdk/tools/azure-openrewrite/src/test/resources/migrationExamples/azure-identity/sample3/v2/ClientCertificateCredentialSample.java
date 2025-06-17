@@ -1,7 +1,7 @@
-import java.io.ByteArrayInputStream;
-
-import com.azure.v2.identity.ClientCertificateCredentialBuilder;
 import com.azure.v2.core.credentials.TokenCredential;
+import com.azure.v2.identity.ClientCertificateCredentialBuilder;
+
+import java.io.ByteArrayInputStream;
 
 public class ClientCertificateCredentialSample {
 

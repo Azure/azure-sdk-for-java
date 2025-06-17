@@ -1,5 +1,5 @@
-import com.azure.identity.DeviceCodeCredentialBuilder;
 import com.azure.core.credential.TokenCredential;
+import com.azure.identity.DeviceCodeCredentialBuilder;
 
 public class DeviceCodeCredentialSample {
     public void deviceCodeCredentialsCodeSnippets() {

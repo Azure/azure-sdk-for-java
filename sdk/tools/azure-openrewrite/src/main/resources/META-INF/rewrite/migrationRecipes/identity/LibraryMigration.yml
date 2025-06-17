@@ -12,4 +12,12 @@ recipeList:
   - org.openrewrite.java.ChangePackage:
       oldPackageName: 'com.azure.identity'
       newPackageName: 'com.azure.v2.identity'
+      recursive: true
+
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: "com.azure.v2.identity.ClientCertificateCredentialBuilder"
+
+
+
+  - org.openrewrite.java.OrderImports
 

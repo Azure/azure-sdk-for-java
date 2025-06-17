@@ -1,6 +1,6 @@
-
-import com.azure.v2.identity.ClientSecretCredentialBuilder;
 import com.azure.v2.core.credentials.TokenCredential;
+import com.azure.v2.identity.ClientSecretCredentialBuilder;
+
 
 public class ClientSecretCredentialSample {
 

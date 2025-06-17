@@ -1,5 +1,5 @@
-import com.azure.identity.OnBehalfOfCredentialBuilder;
 import com.azure.core.credential.TokenCredential;
+import com.azure.identity.OnBehalfOfCredentialBuilder;
 
 public class OboCredentialSample {
     public void oboCredentialsCodeSnippets() {

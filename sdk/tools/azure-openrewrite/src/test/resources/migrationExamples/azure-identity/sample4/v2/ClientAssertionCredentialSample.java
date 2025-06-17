@@ -1,5 +1,5 @@
-import com.azure.v2.identity.ClientAssertionCredentialBuilder;
 import com.azure.v2.core.credentials.TokenCredential;
+import com.azure.v2.identity.ClientAssertionCredentialBuilder;
 
 public class ClientAssertionCredentialSample {
 

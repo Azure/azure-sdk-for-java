@@ -1,5 +1,5 @@
-import com.azure.identity.InteractiveBrowserCredentialBuilder;
 import com.azure.core.credential.TokenCredential;
+import com.azure.identity.InteractiveBrowserCredentialBuilder;
 
 public class InteractiveBrowserCredentialSample {
 

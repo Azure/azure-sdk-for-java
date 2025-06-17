@@ -1,5 +1,5 @@
-import com.azure.v2.identity.AuthorizationCodeCredentialBuilder;
 import com.azure.v2.core.credentials.TokenCredential;
+import com.azure.v2.identity.AuthorizationCodeCredentialBuilder;
 
 public class AuthorizationCodeCredentialsSample {
     public void authorizationCodeCredentialsCodeSnippets() {

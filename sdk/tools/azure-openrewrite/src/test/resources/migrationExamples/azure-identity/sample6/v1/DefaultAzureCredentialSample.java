@@ -1,5 +1,5 @@
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.core.credential.TokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class DefaultAzureCredentialSample {
 
