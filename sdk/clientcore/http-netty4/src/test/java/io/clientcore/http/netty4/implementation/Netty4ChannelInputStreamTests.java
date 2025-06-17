@@ -173,8 +173,10 @@ public class Netty4ChannelInputStreamTests {
     @Test
     public void closingStreamClosesChannel() {
         AtomicInteger closeCount = new AtomicInteger();
+        AtomicInteger disconnectCount = new AtomicInteger();
 
-        new Netty4ChannelInputStream(null, createCloseableChannel(closeCount::incrementAndGet)).close();
+        new Netty4ChannelInputStream(null,
+            createCloseableChannel(closeCount::incrementAndGet, disconnectCount::incrementAndGet)).close();
 
         assertEquals(1, closeCount.get());
     }
@@ -233,14 +235,21 @@ public class Netty4ChannelInputStreamTests {
 
     private static Channel createCloseableChannel() {
         return createCloseableChannel(() -> {
+        }, () -> {
         });
     }
 
-    private static Channel createCloseableChannel(Runnable onClose) {
+    private static Channel createCloseableChannel(Runnable onClose, Runnable onDisconnect) {
         return new MockChannel() {
             @Override
             public ChannelFuture close() {
                 onClose.run();
+                return new DefaultChannelPromise(this);
+            }
+
+            @Override
+            public ChannelFuture disconnect() {
+                onDisconnect.run();
                 return new DefaultChannelPromise(this);
             }
         };
