@@ -26,4 +26,14 @@ public final class StructuredMessageConstants {
      * The length of the CRC64 checksum.
      */
     public static final int CRC64_LENGTH = 8;
+
+    /**
+     * The default length of segments for version 1.
+     */
+    public static final int V1_DEFAULT_SEGMENT_CONTENT_LENGTH = 4 * 1024 * 1024; // 4 MiB
+
+    /**
+     * The header name for the CRC64 checksum.
+     */
+    public static final String STRUCTUED_BODY_TYPE = "XSM/1.0; properties=crc64";
 }

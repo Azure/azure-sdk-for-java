@@ -1,0 +1,96 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.storage.common.policy;
+
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.storage.common.implementation.StorageCrc64Calculator;
+import com.azure.storage.common.implementation.structuredmessage.StructuredMessageEncoder;
+import com.azure.storage.common.implementation.structuredmessage.StructuredMessageFlags;
+import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
+
+import static com.azure.storage.common.implementation.Constants.CONTENT_VALIDATION_BEHAVIOR_KEY;
+import static com.azure.storage.common.implementation.Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME;
+import static com.azure.storage.common.implementation.Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME;
+import static com.azure.storage.common.implementation.Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME;
+import static com.azure.storage.common.implementation.Constants.USE_CRC64_CHECKSUM_HEADER_CONTEXT;
+import static com.azure.storage.common.implementation.Constants.USE_STRUCTURED_MESSAGE_CONTEXT;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.STRUCTUED_BODY_TYPE;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.V1_DEFAULT_SEGMENT_CONTENT_LENGTH;
+
+/**
+ * A policy that applies structured message to the body of a request, or applies the crc64 header to the request.
+ * Also, can be used for the response eventually.
+ */
+public class StorageContentValidationPolicy implements HttpPipelinePolicy {
+
+    /**
+     * Creates a new instance of {@link StorageContentValidationPolicy}.
+     */
+    public StorageContentValidationPolicy() {
+    }
+
+    /**
+     * stuff
+     *
+     * @return stuff
+     */
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        applyContentValidation(context);
+        return next.processSync();
+    }
+
+    /**
+     * Stuff
+     *
+     * @return stuff
+     */
+    @Override
+    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        applyContentValidation(context);
+        return next.process();
+    }
+
+    private void applyContentValidation(HttpPipelineCallContext context) {
+        String contentValidationBehavior = context.getContext().getData(CONTENT_VALIDATION_BEHAVIOR_KEY).toString();
+        if (contentValidationBehavior.contains(USE_CRC64_CHECKSUM_HEADER_CONTEXT)) {
+            applyCRC64Header(context);
+        } else if (contentValidationBehavior.contains(USE_STRUCTURED_MESSAGE_CONTEXT)) {
+            applyStructuredMessage(context);
+        }
+    }
+
+    private void applyCRC64Header(HttpPipelineCallContext context) {
+        // Implementation for setting the crc64 header
+        long contentCRC64 = StorageCrc64Calculator.compute(context.getHttpRequest().getBodyAsBinaryData().toBytes(), 0);
+        context.getHttpRequest().setHeader(CONTENT_CRC64_HEADER_NAME, String.valueOf(contentCRC64));
+    }
+
+    private void applyStructuredMessage(HttpPipelineCallContext context) {
+        // Implementation for applying structured message to the request body
+        ByteBuffer unencodedContent = context.getHttpRequest().getBodyAsBinaryData().toByteBuffer();
+        int unencodedContentLength
+            = Integer.parseInt(context.getHttpRequest().getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
+
+        StructuredMessageEncoder structuredMessageEncoder = new StructuredMessageEncoder(unencodedContentLength,
+            V1_DEFAULT_SEGMENT_CONTENT_LENGTH, StructuredMessageFlags.STORAGE_CRC64);
+        byte[] encodedContent = structuredMessageEncoder.encode(unencodedContent).array();
+
+        context.getHttpRequest().setBody(encodedContent);
+        context.getHttpRequest().setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(encodedContent.length));
+        // x-ms-structured-body
+        context.getHttpRequest().setHeader(STRUCTURED_BODY_TYPE_HEADER_NAME, STRUCTUED_BODY_TYPE);
+        // x-ms-structured-content-length
+        context.getHttpRequest()
+            .setHeader(STRUCTURED_CONTENT_LENGTH_HEADER_NAME, String.valueOf(unencodedContentLength));
+    }
+
+}
