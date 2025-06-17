@@ -26,14 +26,13 @@ import static com.azure.ai.agents.persistent.SampleUtils.waitForRunCompletion;
 public class AgentVectorStoreBatchEnterpriseFileSearchSample {
 
     public static void main(String[] args) {
-        PersistentAgentsAdministrationClientBuilder clientBuilder = new PersistentAgentsAdministrationClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+        PersistentAgentsClientBuilder clientBuilder = new PersistentAgentsClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build());
-        PersistentAgentsAdministrationClient agentsClient = clientBuilder.buildClient();
+        PersistentAgentsAdministrationClient agentsClient = clientBuilder.buildPersistentAgentsAdministrationClient();
         ThreadsClient threadsClient = clientBuilder.buildThreadsClient();
         MessagesClient messagesClient = clientBuilder.buildMessagesClient();
         RunsClient runsClient = clientBuilder.buildRunsClient();
         VectorStoresClient vectorStoresClient = clientBuilder.buildVectorStoresClient();
-        VectorStoreFileBatchesClient vectorStoreFileBatchesClient = clientBuilder.buildVectorStoreFileBatchesClient();
 
         String dataUri = Configuration.getGlobalConfiguration().get("DATA_URI", "");
         VectorStoreDataSource vectorStoreDataSource = new VectorStoreDataSource(
@@ -45,7 +44,7 @@ public class AgentVectorStoreBatchEnterpriseFileSearchSample {
             null, null, null
         );
 
-        vectorStoreFileBatchesClient.createVectorStoreFileBatch(vs.getId(),
+        vectorStoresClient.createVectorStoreFileBatch(vs.getId(),
             null, Arrays.asList(vectorStoreDataSource), null);
 
         FileSearchToolResource fileSearchToolResource = new FileSearchToolResource()
