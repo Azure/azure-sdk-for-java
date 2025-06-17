@@ -95,20 +95,17 @@ public class FileTests extends BatchClientTestBase {
                 Assertions.assertTrue(found);
 
                 // Get task file content
-                BinaryData binaryData = SyncAsyncExtension.execute(
-                    () -> batchClient.getTaskFile(jobId, taskId, "stdout.txt"),
-                    () -> Mono.fromCallable(() -> batchAsyncClient.getTaskFile(jobId, taskId, "stdout.txt").block()));
+                BinaryData binaryData
+                    = SyncAsyncExtension.execute(() -> batchClient.getTaskFile(jobId, taskId, "stdout.txt"),
+                        () -> batchAsyncClient.getTaskFile(jobId, taskId, "stdout.txt"));
 
                 String fileContent = new String(binaryData.toBytes(), StandardCharsets.UTF_8);
                 Assertions.assertEquals("hello\n", fileContent);
 
                 // Get task file properties
-                Response<Void> getFilePropertiesResponse
-                    = SyncAsyncExtension
-                        .execute(() -> batchClient.getTaskFilePropertiesWithResponse(jobId, taskId, "stdout.txt", null),
-                            () -> Mono.fromCallable(() -> batchAsyncClient
-                                .getTaskFilePropertiesWithResponse(jobId, taskId, "stdout.txt", null)
-                                .block()));
+                Response<Void> getFilePropertiesResponse = SyncAsyncExtension.execute(
+                    () -> batchClient.getTaskFilePropertiesWithResponse(jobId, taskId, "stdout.txt", null),
+                    () -> batchAsyncClient.getTaskFilePropertiesWithResponse(jobId, taskId, "stdout.txt", null));
 
                 Assertions.assertEquals("6",
                     getFilePropertiesResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
@@ -157,7 +154,7 @@ public class FileTests extends BatchClientTestBase {
             if (completed) {
                 // Get task
                 BatchTask task = SyncAsyncExtension.execute(() -> batchClient.getTask(jobId, taskId),
-                    () -> Mono.fromCallable(() -> batchAsyncClient.getTask(jobId, taskId).block()));
+                    () -> batchAsyncClient.getTask(jobId, taskId));
 
                 String nodeId = task.getNodeInfo().getNodeId();
 
@@ -191,8 +188,8 @@ public class FileTests extends BatchClientTestBase {
 
                 // Get node file properties
                 BatchFileProperties fileProperties = SyncAsyncExtension.execute(
-                    () -> batchClient.getNodeFileProperties(poolId, nodeId, fileNameHolder[0]), () -> Mono.fromCallable(
-                        () -> batchAsyncClient.getNodeFileProperties(poolId, nodeId, fileNameHolder[0]).block()));
+                    () -> batchClient.getNodeFileProperties(poolId, nodeId, fileNameHolder[0]),
+                    () -> batchAsyncClient.getNodeFileProperties(poolId, nodeId, fileNameHolder[0]));
 
                 Assertions.assertEquals(6, fileProperties.getContentLength());
 
