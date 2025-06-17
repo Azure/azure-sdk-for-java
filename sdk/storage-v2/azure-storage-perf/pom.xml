@@ -1,0 +1,71 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <parent>
+    <groupId>com.azure.v2</groupId>
+    <artifactId>azure-perf-test-parent</artifactId>
+    <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-perf-test-parent;current} -->
+    <relativePath>../../parents/azure-perf-test-parent-v2</relativePath>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.azure.v2</groupId>
+  <artifactId>azure-storage-perf</artifactId>
+  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.v2:azure-storage-perf;current} -->
+  <packaging>jar</packaging>
+
+  <properties>
+    <perf.test.mainClass>com.azure.v2.storage.blob.perf.App</perf.test.mainClass>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.azure.v2</groupId>
+      <artifactId>azure-storage-blob</artifactId>
+      <version>13.0.0-beta.1</version> <!-- {x-version-update;com.azure.v2:azure-storage-blob;current} -->
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>perf-test-core</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:perf-test-core;current} -->
+    </dependency>
+
+    <dependency>
+      <groupId>io.clientcore</groupId>
+      <artifactId>core</artifactId>
+      <version>1.0.0-beta.10</version> <!-- {x-version-update;unreleased_io.clientcore:core;dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure.v2</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure.v2:azure-core;dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>io.clientcore</groupId>
+      <artifactId>http-okhttp3</artifactId>
+      <version>1.0.0-beta.3</version> <!-- {x-version-update;unreleased_io.clientcore:http-okhttp3;dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>io.clientcore</groupId>
+      <artifactId>http-netty4</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;unreleased_io.clientcore:http-netty4;dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>org.conscrypt</groupId>
+      <artifactId>conscrypt-openjdk-uber</artifactId>
+      <version>2.5.2</version> <!-- {x-version-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
+    </dependency>
+  </dependencies>
+</project>
