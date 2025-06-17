@@ -201,7 +201,7 @@ public class AzureKeyVaultSslBundleRegistrar implements SslBundleRegistrar, Reso
             pm.from(jcaVaultProperties.getCredential().getClientSecret())
                 .when(StringUtils::hasText)
                 .to(v -> System.setProperty("azure.keyvault.client-secret", v));
-            pm.from(jcaVaultProperties.getCredential().isManagedIdentityEnabled())
+            pm.from(jcaVaultProperties.getCredential().isManagedIdentityEnabled() && StringUtils.hasText(jcaVaultProperties.getCredential().getClientId()))
                 .whenTrue()
                 // should put the client id to the managed-identity property
                 .to(v -> System.setProperty("azure.keyvault.managed-identity", jcaVaultProperties.getCredential().getClientId()));
