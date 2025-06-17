@@ -54,6 +54,13 @@ public final class AISearchIndexResource implements JsonSerializable<AISearchInd
     private String indexAssetId;
 
     /**
+     * Creates an instance of AISearchIndexResource class.
+     */
+    @Generated
+    public AISearchIndexResource() {
+    }
+
+    /**
      * Get the indexConnectionId property: An index connection id in an IndexResource attached to this agent.
      *
      * @return the indexConnectionId value.
@@ -64,6 +71,18 @@ public final class AISearchIndexResource implements JsonSerializable<AISearchInd
     }
 
     /**
+     * Set the indexConnectionId property: An index connection id in an IndexResource attached to this agent.
+     *
+     * @param indexConnectionId the indexConnectionId value to set.
+     * @return the AISearchIndexResource object itself.
+     */
+    @Generated
+    public AISearchIndexResource setIndexConnectionId(String indexConnectionId) {
+        this.indexConnectionId = indexConnectionId;
+        return this;
+    }
+
+    /**
      * Get the indexName property: The name of an index in an IndexResource attached to this agent.
      *
      * @return the indexName value.
@@ -71,6 +90,18 @@ public final class AISearchIndexResource implements JsonSerializable<AISearchInd
     @Generated
     public String getIndexName() {
         return this.indexName;
+    }
+
+    /**
+     * Set the indexName property: The name of an index in an IndexResource attached to this agent.
+     *
+     * @param indexName the indexName value to set.
+     * @return the AISearchIndexResource object itself.
+     */
+    @Generated
+    public AISearchIndexResource setIndexName(String indexName) {
+        this.indexName = indexName;
+        return this;
     }
 
     /**
@@ -210,36 +241,5 @@ public final class AISearchIndexResource implements JsonSerializable<AISearchInd
             }
             return deserializedAISearchIndexResource;
         });
-    }
-
-    /**
-     * Creates an instance of AISearchIndexResource class.
-     */
-    @Generated
-    public AISearchIndexResource() {
-    }
-
-    /**
-     * Set the indexConnectionId property: An index connection id in an IndexResource attached to this agent.
-     *
-     * @param indexConnectionId the indexConnectionId value to set.
-     * @return the AISearchIndexResource object itself.
-     */
-    @Generated
-    public AISearchIndexResource setIndexConnectionId(String indexConnectionId) {
-        this.indexConnectionId = indexConnectionId;
-        return this;
-    }
-
-    /**
-     * Set the indexName property: The name of an index in an IndexResource attached to this agent.
-     *
-     * @param indexName the indexName value to set.
-     * @return the AISearchIndexResource object itself.
-     */
-    @Generated
-    public AISearchIndexResource setIndexName(String indexName) {
-        this.indexName = indexName;
-        return this;
     }
 }

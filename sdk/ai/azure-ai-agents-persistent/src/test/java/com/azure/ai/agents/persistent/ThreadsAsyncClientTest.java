@@ -5,7 +5,6 @@ package com.azure.ai.agents.persistent;
 import com.azure.ai.agents.persistent.models.CreateAgentOptions;
 import com.azure.ai.agents.persistent.models.PersistentAgent;
 import com.azure.ai.agents.persistent.models.PersistentAgentThread;
-import com.azure.ai.agents.persistent.models.ThreadDeletionStatus;
 import com.azure.ai.agents.persistent.models.ToolResources;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.AfterEach;
@@ -20,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ThreadsAsyncClientTest extends ClientTestBase {
 
-    private PersistentAgentsAdministrationClientBuilder clientBuilder;
+    private PersistentAgentsClientBuilder clientBuilder;
     private PersistentAgentsAdministrationAsyncClient agentsAsyncClient;
     private ThreadsAsyncClient threadsAsyncClient;
     private PersistentAgent agent;
@@ -28,7 +27,7 @@ public class ThreadsAsyncClientTest extends ClientTestBase {
 
     private void setup(HttpClient httpClient) {
         clientBuilder = getClientBuilder(httpClient);
-        agentsAsyncClient = clientBuilder.buildAsyncClient();
+        agentsAsyncClient = clientBuilder.buildPersistentAgentsAdministrationAsyncClient();
         threadsAsyncClient = clientBuilder.buildThreadsAsyncClient();
         createAgent();
     }
@@ -113,11 +112,7 @@ public class ThreadsAsyncClientTest extends ClientTestBase {
         thread = threadsAsyncClient.createThread().block();
         assertNotNull(thread, "Thread should not be null");
 
-        StepVerifier.create(threadsAsyncClient.deleteThread(thread.getId())).assertNext(deletionStatus -> {
-            assertNotNull(deletionStatus, "Deletion status should not be null");
-            assertTrue(deletionStatus.isDeleted(), "Thread should be deleted");
-            thread = null; // Set to null since we've deleted it
-        }).verifyComplete();
+        StepVerifier.create(threadsAsyncClient.deleteThread(thread.getId())).verifyComplete();
     }
 
     @AfterEach
@@ -125,7 +120,7 @@ public class ThreadsAsyncClientTest extends ClientTestBase {
         if (thread != null) {
             try {
                 // Attempt to delete the thread
-                ThreadDeletionStatus deletionStatus = threadsAsyncClient.deleteThread(thread.getId()).block();
+                threadsAsyncClient.deleteThread(thread.getId()).block();
             } catch (Exception e) {
                 System.out.println("Failed to cleanup thread: " + thread.getId());
                 System.out.println(e.getMessage());

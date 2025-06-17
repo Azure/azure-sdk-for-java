@@ -323,6 +323,34 @@ public final class SiteContainerInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the inheritAppSettingsAndConnectionStrings property: &lt;code&gt;true&lt;/code&gt; if all AppSettings and
+     * ConnectionStrings have to be passed to the container as environment variables; &lt;code&gt;false&lt;/code&gt;
+     * otherwise.
+     * 
+     * @return the inheritAppSettingsAndConnectionStrings value.
+     */
+    public Boolean inheritAppSettingsAndConnectionStrings() {
+        return this.innerProperties() == null ? null : this.innerProperties().inheritAppSettingsAndConnectionStrings();
+    }
+
+    /**
+     * Set the inheritAppSettingsAndConnectionStrings property: &lt;code&gt;true&lt;/code&gt; if all AppSettings and
+     * ConnectionStrings have to be passed to the container as environment variables; &lt;code&gt;false&lt;/code&gt;
+     * otherwise.
+     * 
+     * @param inheritAppSettingsAndConnectionStrings the inheritAppSettingsAndConnectionStrings value to set.
+     * @return the SiteContainerInner object itself.
+     */
+    public SiteContainerInner
+        withInheritAppSettingsAndConnectionStrings(Boolean inheritAppSettingsAndConnectionStrings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteContainerProperties();
+        }
+        this.innerProperties().withInheritAppSettingsAndConnectionStrings(inheritAppSettingsAndConnectionStrings);
+        return this;
+    }
+
+    /**
      * Get the environmentVariables property: List of environment variables.
      * 
      * @return the environmentVariables value.

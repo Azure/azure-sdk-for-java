@@ -2,15 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.ai.agents.persistent;
 
-import com.azure.ai.agents.persistent.implementation.models.FileDetails;
-import com.azure.ai.agents.persistent.implementation.models.UploadFileRequest;
 import com.azure.ai.agents.persistent.models.CreateAgentOptions;
 import com.azure.ai.agents.persistent.models.CreateRunOptions;
+import com.azure.ai.agents.persistent.models.FileDetails;
 import com.azure.ai.agents.persistent.models.FilePurpose;
 import com.azure.ai.agents.persistent.models.FileSearchToolDefinition;
 import com.azure.ai.agents.persistent.models.FileSearchToolResource;
 import com.azure.ai.agents.persistent.models.MessageRole;
 import com.azure.ai.agents.persistent.models.ToolResources;
+import com.azure.ai.agents.persistent.models.UploadFileRequest;
 import com.azure.ai.agents.persistent.models.VectorStoreStatus;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
@@ -26,11 +26,11 @@ import static com.azure.ai.agents.persistent.SampleUtils.waitForRunCompletionAsy
 public class AgentFileSearchAsyncSample {
 
     public static void main(String[] args) {
-        PersistentAgentsAdministrationClientBuilder clientBuilder = new PersistentAgentsAdministrationClientBuilder()
+        PersistentAgentsClientBuilder clientBuilder = new PersistentAgentsClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build());
         
-        PersistentAgentsAdministrationAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
+        PersistentAgentsAdministrationAsyncClient agentsAsyncClient = clientBuilder.buildPersistentAgentsAdministrationAsyncClient();
         ThreadsAsyncClient threadsAsyncClient = clientBuilder.buildThreadsAsyncClient();
         MessagesAsyncClient messagesAsyncClient = clientBuilder.buildMessagesAsyncClient();
         RunsAsyncClient runsAsyncClient = clientBuilder.buildRunsAsyncClient();

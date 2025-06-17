@@ -23,16 +23,15 @@ import static com.azure.ai.agents.persistent.SampleUtils.waitForRunCompletionAsy
 public class AgentVectorStoreBatchEnterpriseFileSearchAsyncSample {
 
     public static void main(String[] args) {
-        PersistentAgentsAdministrationClientBuilder clientBuilder = new PersistentAgentsAdministrationClientBuilder()
+        PersistentAgentsClientBuilder clientBuilder = new PersistentAgentsClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build());
         
-        PersistentAgentsAdministrationAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
+        PersistentAgentsAdministrationAsyncClient agentsAsyncClient = clientBuilder.buildPersistentAgentsAdministrationAsyncClient();
         ThreadsAsyncClient threadsAsyncClient = clientBuilder.buildThreadsAsyncClient();
         MessagesAsyncClient messagesAsyncClient = clientBuilder.buildMessagesAsyncClient();
         RunsAsyncClient runsAsyncClient = clientBuilder.buildRunsAsyncClient();
         VectorStoresAsyncClient vectorStoresAsyncClient = clientBuilder.buildVectorStoresAsyncClient();
-        VectorStoreFileBatchesAsyncClient vectorStoreFileBatchesAsyncClient = clientBuilder.buildVectorStoreFileBatchesAsyncClient();
 
         String dataUri = Configuration.getGlobalConfiguration().get("DATA_URI", "");
         VectorStoreDataSource vectorStoreDataSource = new VectorStoreDataSource(
@@ -49,7 +48,7 @@ public class AgentVectorStoreBatchEnterpriseFileSearchAsyncSample {
                 null, null, null)
             .flatMap(vs -> {
                 // Create vector store file batch
-                return vectorStoreFileBatchesAsyncClient.createVectorStoreFileBatch(
+                return vectorStoresAsyncClient.createVectorStoreFileBatch(
                     vs.getId(), null, Arrays.asList(vectorStoreDataSource), null)
                     .map(batch -> {
                         // Return vector store ID for creating the agent

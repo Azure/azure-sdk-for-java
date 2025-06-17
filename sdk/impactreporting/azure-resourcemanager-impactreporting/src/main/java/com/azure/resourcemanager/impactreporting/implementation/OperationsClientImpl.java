@@ -61,7 +61,7 @@ public final class OperationsClientImpl implements OperationsClient {
      * to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ImpactReportingMgmtC")
+    @ServiceInterface(name = "ImpactReportingMgmtClientOperations")
     public interface OperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Impact/operations")

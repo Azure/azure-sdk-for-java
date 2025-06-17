@@ -22,11 +22,11 @@ import static com.azure.ai.agents.persistent.SampleUtils.waitForRunCompletionAsy
 public class AgentCodeInterpreterEnterpriseFileSearchAsyncSample {
 
     public static void main(String[] args) {
-        PersistentAgentsAdministrationClientBuilder clientBuilder = new PersistentAgentsAdministrationClientBuilder()
+        PersistentAgentsClientBuilder clientBuilder = new PersistentAgentsClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build());
         
-        PersistentAgentsAdministrationAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
+        PersistentAgentsAdministrationAsyncClient agentsAsyncClient = clientBuilder.buildPersistentAgentsAdministrationAsyncClient();
         ThreadsAsyncClient threadsAsyncClient = clientBuilder.buildThreadsAsyncClient();
         MessagesAsyncClient messagesAsyncClient = clientBuilder.buildMessagesAsyncClient();
         RunsAsyncClient runsAsyncClient = clientBuilder.buildRunsAsyncClient();

@@ -75,7 +75,7 @@ public final class RedTeamsImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AIProjectClientRedTe")
+    @ServiceInterface(name = "AIProjectClientRedTeams")
     public interface RedTeamsService {
         @Get("/redTeams/runs/{name}")
         @ExpectedResponses({ 200 })

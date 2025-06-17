@@ -199,7 +199,9 @@ public class OperationResultProperties implements JsonSerializable<OperationResu
         jsonWriter.writeJsonField("correlation", this.correlation);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeStringField("code", this.code);
-        jsonWriter.writeUntypedField("error", this.error);
+        if (this.error != null) {
+            jsonWriter.writeUntypedField("error", this.error);
+        }
         return jsonWriter.writeEndObject();
     }
 
