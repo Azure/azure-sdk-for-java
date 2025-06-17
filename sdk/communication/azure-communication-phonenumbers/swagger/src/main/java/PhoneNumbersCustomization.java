@@ -151,15 +151,15 @@ public class PhoneNumbersCustomization extends Customization {
                     method.setBody(StaticJavaParser.parseBlock(
                         "{\n" +
                         "    jsonWriter.writeStartObject();\n" +
-                        "    if (this.countryCode != null) jsonWriter.writeStringField(\"countryCode\", this.countryCode);\n" +
+                        "    if (this.countryCode != null) { jsonWriter.writeStringField(\"countryCode\", this.countryCode); }\n" +
                         "    if (this.capabilities != null) { jsonWriter.writeFieldName(\"capabilities\"); this.capabilities.toJson(jsonWriter); }\n" +
-                        "    if (this.phoneNumberType != null) jsonWriter.writeStringField(\"phoneNumberType\", this.phoneNumberType.toString());\n" +
-                        "    if (this.assignmentType != null) jsonWriter.writeStringField(\"assignmentType\", this.assignmentType.toString());\n" +
-                        "    if (this.id != null) jsonWriter.writeStringField(\"id\", this.id);\n" +
-                        "    if (this.phoneNumber != null) jsonWriter.writeStringField(\"phoneNumber\", this.phoneNumber);\n" +
+                        "    if (this.phoneNumberType != null) { jsonWriter.writeStringField(\"phoneNumberType\", this.phoneNumberType.toString()); }\n" +
+                        "    if (this.assignmentType != null) { jsonWriter.writeStringField(\"assignmentType\", this.assignmentType.toString()); }\n" +
+                        "    if (this.id != null) { jsonWriter.writeStringField(\"id\", this.id); }\n" +
+                        "    if (this.phoneNumber != null) { jsonWriter.writeStringField(\"phoneNumber\", this.phoneNumber); }\n" +
                         "    if (this.cost != null) { jsonWriter.writeFieldName(\"cost\"); this.cost.toJson(jsonWriter); }\n" +
-                        "    if (this.status != null) jsonWriter.writeStringField(\"status\", this.status.toString());\n" +
-                        "    if (this.isAgreementToNotResellRequired != null) jsonWriter.writeBooleanField(\"isAgreementToNotResellRequired\", this.isAgreementToNotResellRequired);\n" +
+                        "    if (this.status != null) { jsonWriter.writeStringField(\"status\", this.status.toString()); }\n" +
+                        "    if (this.isAgreementToNotResellRequired != null) { jsonWriter.writeBooleanField(\"isAgreementToNotResellRequired\", this.isAgreementToNotResellRequired); }\n" +
                         "    return jsonWriter.writeEndObject();\n" +
                         "}")));
             });
@@ -171,14 +171,14 @@ public class PhoneNumbersCustomization extends Customization {
                     method.setBody(StaticJavaParser.parseBlock(
                         "{\n" +
                         "    jsonWriter.writeStartObject();\n" +
-                        "    if (this.id != null) jsonWriter.writeStringField(\"id\", this.id.toString());\n" +
-                        "    if (this.expiresAt != null) jsonWriter.writeStringField(\"expiresAt\", this.expiresAt.toString());\n" +
+                        "    if (this.id != null) { jsonWriter.writeStringField(\"id\", this.id.toString()); }\n" +
+                        "    if (this.expiresAt != null) { jsonWriter.writeStringField(\"expiresAt\", this.expiresAt.toString()); }\n" +
                         "    if (this.phoneNumbers != null) {\n" +
                         "        jsonWriter.writeMapField(\"phoneNumbers\", this.phoneNumbers, (writer, value) -> {\n" +
                         "            if (value != null) { value.toJson(writer); } else { writer.writeNull(); }\n" +
                         "        });\n" +
                         "    }\n" +
-                        "    if (this.status != null) jsonWriter.writeStringField(\"status\", this.status.toString());\n" +
+                        "    if (this.status != null) { jsonWriter.writeStringField(\"status\", this.status.toString()); }\n" +
                         "    return jsonWriter.writeEndObject();\n" +
                         "}")));
             });
@@ -191,8 +191,8 @@ public class PhoneNumbersCustomization extends Customization {
                         "{\n" +
                         "    jsonWriter.writeStartObject();\n" +
                         "    jsonWriter.writeNumberField(\"amount\", this.amount);\n" +
-                        "    if (this.currencyCode != null) jsonWriter.writeStringField(\"currencyCode\", this.currencyCode);\n" +
-                        "    if (this.billingFrequency != null) jsonWriter.writeStringField(\"billingFrequency\", this.billingFrequency.toString());\n" +
+                        "    if (this.currencyCode != null) { jsonWriter.writeStringField(\"currencyCode\", this.currencyCode); }\n" +
+                        "    if (this.billingFrequency != null) { jsonWriter.writeStringField(\"billingFrequency\", this.billingFrequency.toString()); }\n" +
                         "    return jsonWriter.writeEndObject();\n" +
                         "}")));
             });

@@ -80,10 +80,12 @@ public final class PhoneNumberCost implements JsonSerializable<PhoneNumberCost> 
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("amount", this.amount);
-        if (this.currencyCode != null)
+        if (this.currencyCode != null) {
             jsonWriter.writeStringField("currencyCode", this.currencyCode);
-        if (this.billingFrequency != null)
+        }
+        if (this.billingFrequency != null) {
             jsonWriter.writeStringField("billingFrequency", this.billingFrequency.toString());
+        }
         return jsonWriter.writeEndObject();
     }
 
