@@ -76,13 +76,8 @@ public class FileTests extends BatchClientTestBase {
             BatchTaskCreateParameters taskToCreate
                 = new BatchTaskCreateParameters(taskId, "/bin/bash -c \"echo hello\"");
 
-            SyncAsyncExtension.execute(() -> {
-                batchClient.createTask(jobId, taskToCreate);
-                return null;
-            }, () -> Mono.fromCallable(() -> {
-                batchAsyncClient.createTask(jobId, taskToCreate).block();
-                return null;
-            }));
+            SyncAsyncExtension.execute(() -> batchClient.createTask(jobId, taskToCreate),
+                () -> batchAsyncClient.createTask(jobId, taskToCreate));
 
             // Use matching client for wait logic
             boolean completed = SyncAsyncExtension
