@@ -33,24 +33,12 @@ extends:
                     - /common/perf-test-core/
 
               - task: Maven@3
-                displayName: 'Build and Install OpenRewrite Compiler Maven Plugin'
+                displayName: 'Build and Install Necesssary Dependencies'
                 inputs:
                   goals: 'install'
-                  options: '-pl com.azure.v2:azure-core,io.clientcore:core,com.azure:perf-test-core -am --% -B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip'
+                  options: '-pl -T1c com.azure.v2:azure-core,io.clientcore:core,com.azure:perf-test-core,com.azure:azure-openrewrite-compiler-maven-plugin -am -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip'
                   javaHomeOption: 'JDKVersion'
                   jdkVersionOption: '1.8'
-                  publishJUnitResults: false
-
-
-              - task: Maven@3
-                displayName: 'Build and Install OpenRewrite Compiler Maven Plugin'
-                inputs:
-                  mavenPomFile: 'sdk/tools/azure-openrewrite-compiler-maven-plugin/pom.xml'
-                  goals: 'install'
-                  options: '-B -DskipTests -Dgpg.skip'
-                  javaHomeOption: 'JDKVersion'
-                  jdkVersionOption: '1.8'
-                  publishJUnitResults: false
               
               - task: Maven@3
                 displayName: 'Run Golden Image Compiler on OpenRewrite Samples'
@@ -59,4 +47,3 @@ extends:
                   goals: 'com.azure:azure-openrewrite-compiler-maven-plugin:compile-golden-image'
                   javaHomeOption: 'JDKVersion'
                   jdkVersionOption: '1.8'
-                  publishJUnitResults: false
