@@ -66,7 +66,7 @@ public final class FirmwaresClientImpl implements FirmwaresClient {
      * to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "IoTFirmwareDefenseMg")
+    @ServiceInterface(name = "IoTFirmwareDefenseMgmtClientFirmwares")
     public interface FirmwaresService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTFirmwareDefense/workspaces/{workspaceName}/firmwares/{firmwareId}")

@@ -152,7 +152,7 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "IngestionUsingDataCo")
+    @ServiceInterface(name = "IngestionUsingDataCollectionRulesClient")
     public interface IngestionUsingDataCollectionRulesClientService {
         @Post("/dataCollectionRules/{ruleId}/streams/{stream}")
         @ExpectedResponses({ 204 })

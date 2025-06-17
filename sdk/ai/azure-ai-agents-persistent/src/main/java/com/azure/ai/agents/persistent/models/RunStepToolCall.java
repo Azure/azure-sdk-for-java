@@ -106,6 +106,12 @@ public class RunStepToolCall implements JsonSerializable<RunStepToolCall> {
                     return RunStepBingGroundingToolCall.fromJson(readerToUse.reset());
                 } else if ("azure_ai_search".equals(discriminatorValue)) {
                     return RunStepAzureAISearchToolCall.fromJson(readerToUse.reset());
+                } else if ("sharepoint_grounding".equals(discriminatorValue)) {
+                    return RunStepSharepointToolCall.fromJson(readerToUse.reset());
+                } else if ("fabric_dataagent".equals(discriminatorValue)) {
+                    return RunStepMicrosoftFabricToolCall.fromJson(readerToUse.reset());
+                } else if ("bing_custom_search".equals(discriminatorValue)) {
+                    return RunStepBingCustomSearchToolCall.fromJson(readerToUse.reset());
                 } else if ("function".equals(discriminatorValue)) {
                     return RunStepFunctionToolCall.fromJson(readerToUse.reset());
                 } else if ("openapi".equals(discriminatorValue)) {

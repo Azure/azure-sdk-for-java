@@ -61,7 +61,7 @@ public final class InventoriesClientImpl implements InventoriesClient {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "HybridConnectivityMg")
+    @ServiceInterface(name = "HybridConnectivityMgmtClientInventories")
     public interface InventoriesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.HybridConnectivity/solutionConfigurations/{solutionConfiguration}/inventory/{inventoryId}")

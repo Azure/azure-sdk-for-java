@@ -27,13 +27,14 @@ public class AgentEnterpriseFileSearchSample {
 
     public static void main(String[] args) {
 
-        PersistentAgentsAdministrationClientBuilder clientBuilder = new PersistentAgentsAdministrationClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+        PersistentAgentsClientBuilder clientBuilder = new PersistentAgentsClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build());
-        PersistentAgentsAdministrationClient agentsClient = clientBuilder.buildClient();
-        ThreadsClient threadsClient = clientBuilder.buildThreadsClient();
-        MessagesClient messagesClient = clientBuilder.buildMessagesClient();
-        RunsClient runsClient = clientBuilder.buildRunsClient();
-        VectorStoresClient vectorStoresClient = clientBuilder.buildVectorStoresClient();
+        PersistentAgentsClient agentsClient = clientBuilder.buildClient();
+        PersistentAgentsAdministrationClient administrationClient = agentsClient.getPersistentAgentsAdministrationClient();
+        ThreadsClient threadsClient = agentsClient.getThreadsClient();
+        MessagesClient messagesClient = agentsClient.getMessagesClient();
+        RunsClient runsClient = agentsClient.getRunsClient();
+        VectorStoresClient vectorStoresClient = agentsClient.getVectorStoresClient();
 
         String dataUri = Configuration.getGlobalConfiguration().get("DATA_URI", "");
         VectorStoreDataSource vectorStoreDataSource = new VectorStoreDataSource(
@@ -54,7 +55,7 @@ public class AgentEnterpriseFileSearchSample {
             .setInstructions("You are a helpful agent")
             .setTools(Arrays.asList(new FileSearchToolDefinition()))
             .setToolResources(new ToolResources().setFileSearch(fileSearchToolResource));
-        PersistentAgent agent = agentsClient.createAgent(createAgentOptions);
+        PersistentAgent agent = administrationClient.createAgent(createAgentOptions);
 
         PersistentAgentThread thread = threadsClient.createThread();
         ThreadMessage createdMessage = messagesClient.createMessage(
@@ -75,7 +76,7 @@ public class AgentEnterpriseFileSearchSample {
         } finally {
             //cleanup
             threadsClient.deleteThread(thread.getId());
-            agentsClient.deleteAgent(agent.getId());
+            administrationClient.deleteAgent(agent.getId());
         }
     }
 }

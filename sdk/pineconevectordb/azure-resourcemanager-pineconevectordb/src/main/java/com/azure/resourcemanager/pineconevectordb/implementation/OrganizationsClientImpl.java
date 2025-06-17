@@ -72,7 +72,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PineconeVectorDbMgmt")
+    @ServiceInterface(name = "PineconeVectorDbMgmtClientOrganizations")
     public interface OrganizationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Pinecone.VectorDb/organizations/{organizationname}")

@@ -69,7 +69,7 @@ title: RouteClient
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/maps/data-plane/Route/preview/1.0/route.json
 namespace: com.azure.maps.route
 java: true
-use: '@autorest/java@4.1.50'
+use: '@autorest/java@4.1.52'
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
 payload-flattening-threshold: 0
@@ -86,7 +86,6 @@ custom-types: AlternativeRouteType,BatchResultSummary,BatchResultItem,ComputeTra
 customization-class: src/main/java/RouteCustomization.java
 generic-response-type: true
 no-custom-headers: true
-use-eclipse-language-server: false
 ```
 
 ### Rename ResponseSectionType to RouteSectionType

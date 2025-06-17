@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class HiveServerType extends ExpandableStringEnum<HiveServerType> {
     /**
      * Static value HiveServer1 for HiveServerType.
      */
+    @Generated
     public static final HiveServerType HIVE_SERVER1 = fromString("HiveServer1");
 
     /**
      * Static value HiveServer2 for HiveServerType.
      */
+    @Generated
     public static final HiveServerType HIVE_SERVER2 = fromString("HiveServer2");
 
     /**
      * Static value HiveThriftServer for HiveServerType.
      */
+    @Generated
     public static final HiveServerType HIVE_THRIFT_SERVER = fromString("HiveThriftServer");
 
     /**
@@ -31,6 +35,7 @@ public final class HiveServerType extends ExpandableStringEnum<HiveServerType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public HiveServerType() {
     }
@@ -41,6 +46,7 @@ public final class HiveServerType extends ExpandableStringEnum<HiveServerType> {
      * @param name a name to look for.
      * @return the corresponding HiveServerType.
      */
+    @Generated
     public static HiveServerType fromString(String name) {
         return fromString(name, HiveServerType.class);
     }
@@ -50,6 +56,7 @@ public final class HiveServerType extends ExpandableStringEnum<HiveServerType> {
      * 
      * @return known HiveServerType values.
      */
+    @Generated
     public static Collection<HiveServerType> values() {
         return values(HiveServerType.class);
     }

@@ -58,7 +58,7 @@ public final class CallDialogsImpl {
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AzureCommunicationCa")
+    @ServiceInterface(name = "AzureCommunicationCallAutomationServiceCallDialogs")
     public interface CallDialogsService {
         @Put("/calling/callConnections/{callConnectionId}/dialogs/{dialogId}")
         @ExpectedResponses({ 201 })

@@ -69,7 +69,7 @@ public final class TriggersImpl {
      * perform REST calls.
      */
     @Host("{Endpoint}")
-    @ServiceInterface(name = "PurviewScanningClien")
+    @ServiceInterface(name = "PurviewScanningClientTriggers")
     public interface TriggersService {
         @Get("/datasources/{dataSourceName}/scans/{scanName}/triggers/default")
         @ExpectedResponses({ 200 })

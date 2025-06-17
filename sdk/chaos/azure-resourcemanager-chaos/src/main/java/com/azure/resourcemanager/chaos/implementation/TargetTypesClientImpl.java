@@ -61,7 +61,7 @@ public final class TargetTypesClientImpl implements TargetTypesClient {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ChaosManagementClien")
+    @ServiceInterface(name = "ChaosManagementClientTargetTypes")
     public interface TargetTypesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/locations/{location}/targetTypes/{targetTypeName}")

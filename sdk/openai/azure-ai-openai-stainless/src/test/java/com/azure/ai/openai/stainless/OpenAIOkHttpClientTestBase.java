@@ -13,10 +13,14 @@ import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.ChainedTokenCredentialBuilder;
 import com.azure.identity.EnvironmentCredentialBuilder;
 import com.openai.azure.AzureOpenAIServiceVersion;
+import com.openai.models.ResponseFormatJsonSchema.JsonSchema;
 import com.openai.core.JsonValue;
 import com.openai.errors.BadRequestException;
 import com.openai.models.FunctionDefinition;
 import com.openai.models.FunctionParameters;
+import com.openai.models.audio.AudioModel;
+import com.openai.models.audio.transcriptions.Transcription;
+import com.openai.models.audio.transcriptions.TranscriptionCreateParams;
 import com.openai.models.chat.completions.ChatCompletion;
 import com.openai.models.chat.completions.ChatCompletionAssistantMessageParam;
 import com.openai.models.chat.completions.ChatCompletionContentPart;
@@ -33,13 +37,25 @@ import com.openai.models.chat.completions.ChatCompletionTool;
 import com.openai.models.chat.completions.ChatCompletionToolMessageParam;
 import com.openai.models.chat.completions.ChatCompletionUserMessageParam;
 import com.openai.models.completions.CompletionUsage;
+import com.openai.models.embeddings.CreateEmbeddingResponse;
+import com.openai.models.embeddings.Embedding;
+import com.openai.models.images.Image;
+import com.openai.models.images.ImageGenerateParams;
+import com.openai.models.responses.Response;
+import com.openai.models.responses.ResponseOutputText;
+import com.openai.models.responses.ResponseOutputMessage;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -51,9 +67,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class OpenAIOkHttpClientTestBase {
     static final String ASSISTANT_CONTENT
         = "Don't make assumptions about what values to plug into functions. Ask for clarification if a user request is ambiguous.";
-    static final AzureOpenAIServiceVersion AZURE_OPENAI_SERVICE_VERSION_GA = AzureOpenAIServiceVersion.getV2024_06_01();
+    static final AzureOpenAIServiceVersion AZURE_OPENAI_SERVICE_VERSION_GA
+        = AzureOpenAIServiceVersion.getV2025_03_01_PREVIEW();
     static final AzureOpenAIServiceVersion AZURE_OPENAI_SERVICE_VERSION_PREVIEW
-        = AzureOpenAIServiceVersion.getV2024_08_01_PREVIEW();
+        = AzureOpenAIServiceVersion.getV2025_03_01_PREVIEW();
     static final String USER_CONTENT = "Who won the world series in 2020?";
 
     String getEndpoint() {
@@ -62,6 +79,10 @@ public class OpenAIOkHttpClientTestBase {
             azureOpenaiEndpoint = azureOpenaiEndpoint.substring(0, azureOpenaiEndpoint.length() - 1);
         }
         return azureOpenaiEndpoint;
+    }
+
+    static Path openTestResourceFile(String fileName) {
+        return Paths.get("src/test/resources/" + fileName);
     }
 
     static Supplier<String> getBearerTokenCredentialProvider() {
@@ -325,6 +346,24 @@ public class OpenAIOkHttpClientTestBase {
         return extraBody;
     }
 
+    TranscriptionCreateParams createTranscriptionCreateParams(String testModel) {
+
+        TranscriptionCreateParams createParams = TranscriptionCreateParams.builder()
+            .file(openTestResourceFile("batman.wav"))
+            .model(AudioModel.of(testModel))
+            .build();
+        return createParams;
+    }
+
+    ImageGenerateParams createImageGenerateParams(String testModel, String prompt) {
+        return ImageGenerateParams.builder()
+            .prompt(prompt)
+            .model(testModel)
+            .n(1)
+            .quality(ImageGenerateParams.Quality.HD)
+            .build();
+    }
+
     // Response: Helper methods to assert response
     void assertChatCompletion(ChatCompletion chatCompletion, int expectedChoicesSize) {
         assertNotNull(chatCompletion._id());
@@ -563,5 +602,111 @@ public class OpenAIOkHttpClientTestBase {
         JsonValue violenceSeverity = violenceMap.get("severity");
         assertNotNull(violenceSeverity);
         assertEquals("medium", violenceSeverity.asString().get());
+    }
+
+    void assertAudioTranscription(Transcription transcription) {
+        assertNotNull(transcription.text());
+        assertTrue(transcription.isValid());
+    }
+
+    void assertImageGeneration(Optional<List<Image>> images) {
+        assertNotNull(images);
+        assertTrue(images.isPresent());
+        assertFalse(images.get().isEmpty());
+        for (Image image : images.get()) {
+            assertNotNull(image.url());
+        }
+    }
+
+    String extractOutputText(Response response) {
+        return response.output()
+            .stream()
+            .map(item -> item.message().orElse(null))
+            .filter(Objects::nonNull)
+            .flatMap(message -> message.content().stream())
+            .map(content -> content.outputText().map(ResponseOutputText::text).orElse(null))
+            .filter(Objects::nonNull)
+            .findFirst()
+            .orElse(null);
+    }
+
+    void assertResponsesReturnTextSuccessfully(Response response) {
+        assertNotNull(response, "Response should not be null");
+        assertFalse(response.output().isEmpty(), "Response output should not be empty");
+
+        String text = extractOutputText(response);
+
+        assertNotNull(text, "Text should not be null");
+        assertFalse(text.trim().isEmpty(), "Text should not be empty");
+    }
+
+    List<ResponseOutputMessage> assertResponsesConversationTest(Response response) {
+        assertNotNull(response, "Response should not be null");
+        assertFalse(response.output().isEmpty(), "Response output should not be empty");
+
+        List<ResponseOutputMessage> messages = new ArrayList<>();
+        response.output().forEach(output -> output.message().ifPresent(messages::add));
+
+        List<String> texts = messages.stream()
+            .flatMap(message -> message.content().stream())
+            .map(content -> content.outputText().map(ResponseOutputText::text).orElse(null))
+            .filter(Objects::nonNull)
+            .collect(Collectors.toList());
+
+        assertFalse(texts.isEmpty(), "Text outputs should not be empty");
+
+        return messages;
+    }
+
+    void assertEmbeddingsReturnSuccessfully(CreateEmbeddingResponse response) {
+        assertNotNull(response, "Embedding response should not be null");
+        List<Embedding> embeddings = response.data();
+        assertNotNull(embeddings, "Embedding list should not be null");
+        assertFalse(embeddings.isEmpty(), "Embedding list should not be empty");
+
+        Embedding embedding = embeddings.get(0);
+        assertNotNull(embedding.embedding(), "Embedding vector should not be null");
+        assertFalse(embedding.embedding().isEmpty(), "Embedding vector should not be empty");
+    }
+
+    void assertChatCompletionContainsField(ChatCompletion result, String fieldName) {
+        List<ChatCompletion.Choice> choices = result.choices();
+        assertFalse(choices.isEmpty(), "Expected at least one completion choice");
+
+        Optional<String> content = choices.get(0).message().content();
+        assertTrue(content.isPresent(), "Expected non-null structured response content");
+
+        String json = content.get();
+        assertTrue(json.contains(fieldName), "Output should contain '" + fieldName + "' field");
+    }
+
+    void assertChatCompletionDetailedResponse(ChatCompletion result, String fieldName) {
+        assertChatCompletionContainsField(result, fieldName);
+
+        assertNotNull(result.id(), "ChatCompletion ID should not be null");
+        assertNotNull(result.created(), "ChatCompletion creation timestamp should not be null");
+        assertTrue(result.usage().isPresent(), "Usage information should be present");
+        result.usage().ifPresent(usage -> {
+            assertTrue(usage.promptTokens() > 0, "Prompt tokens should be greater than 0");
+            assertTrue(usage.completionTokens() > 0, "Completion tokens should be greater than 0");
+            assertTrue(usage.totalTokens() > 0, "Total tokens should be greater than 0");
+        });
+    }
+
+    JsonSchema.Schema createSchema() {
+        Map<String, Object> itemsMap = new HashMap<>();
+        itemsMap.put("type", "string");
+
+        Map<String, Object> employeesMap = new HashMap<>();
+        employeesMap.put("type", "array");
+        employeesMap.put("items", itemsMap);
+
+        Map<String, Object> propertiesMap = new HashMap<>();
+        propertiesMap.put("employees", employeesMap);
+
+        return JsonSchema.Schema.builder()
+            .putAdditionalProperty("type", JsonValue.from("object"))
+            .putAdditionalProperty("properties", JsonValue.from(propertiesMap))
+            .build();
     }
 }

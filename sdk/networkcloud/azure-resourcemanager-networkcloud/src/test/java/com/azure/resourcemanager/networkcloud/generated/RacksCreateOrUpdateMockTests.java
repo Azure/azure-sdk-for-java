@@ -24,7 +24,7 @@ public final class RacksCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"extendedLocation\":{\"name\":\"qww\",\"type\":\"wjyofgwhnkbtl\"},\"properties\":{\"availabilityZone\":\"ljssm\",\"clusterId\":\"sn\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"wolgisubxbt\",\"provisioningState\":\"Succeeded\",\"rackLocation\":\"fgfiij\",\"rackSerialNumber\":\"ykwlefksxqceazf\",\"rackSkuId\":\"xgnmqvzvluyq\"},\"location\":\"ios\",\"tags\":{\"acvfyeowps\":\"yvaifpp\",\"jdhsoy\":\"x\",\"pboujs\":\"hpvtyqftteh\",\"suenyg\":\"kfvvdshxcde\"},\"id\":\"xcgjtf\",\"name\":\"nquktrfnslnlrxs\",\"type\":\"ylt\"}";
+            = "{\"etag\":\"nmdyfoebo\",\"extendedLocation\":{\"name\":\"tjpp\",\"type\":\"laohoqkp\"},\"properties\":{\"availabilityZone\":\"t\",\"clusterId\":\"jilaywkdcwmqsyri\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"dqaolfylnkk\",\"provisioningState\":\"Succeeded\",\"rackLocation\":\"jvlywl\",\"rackSerialNumber\":\"mfwo\",\"rackSkuId\":\"bjwhlwyjfnqzocr\"},\"location\":\"gczeuntgx\",\"tags\":{\"i\":\"aqttiek\"},\"id\":\"uvny\",\"name\":\"tzgixgyrihlgmgb\",\"type\":\"hlqtxnrflkn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,26 +34,27 @@ public final class RacksCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Rack response = manager.racks()
-            .define("kebhuhkslgw")
-            .withRegion("yhgww")
-            .withExistingResourceGroup("xunrswgkpjhboy")
-            .withExtendedLocation(new ExtendedLocation().withName("okhu").withType("o"))
-            .withAvailabilityZone("jy")
-            .withRackLocation("tfxptpqayamkncfg")
-            .withRackSerialNumber("bmxsnxoc")
-            .withRackSkuId("ullojk")
-            .withTags(
-                mapOf("bsgzl", "xdbdljzgdyrcvu", "x", "qhbjnqogdxwbsfpy", "ecominxojjluxxd", "jlf", "dzzqjmu", "ilz"))
+            .define("pwctofl")
+            .withRegion("rukoi")
+            .withExistingResourceGroup("hlr")
+            .withExtendedLocation(new ExtendedLocation().withName("brfgdrwji").withType("ewhfjsrwqrxetf"))
+            .withAvailabilityZone("cwv")
+            .withRackLocation("yeamcmhudf")
+            .withRackSerialNumber("ecehokw")
+            .withRackSkuId("pqtwloesqrggvrb")
+            .withTags(mapOf("leipjl", "iduw", "kkwhbgxvellvulnx", "wyxpzruzyth"))
+            .withIfMatch("fzuvrzmz")
+            .withIfNoneMatch("mzjqrbr")
             .create();
 
-        Assertions.assertEquals("ios", response.location());
-        Assertions.assertEquals("yvaifpp", response.tags().get("acvfyeowps"));
-        Assertions.assertEquals("qww", response.extendedLocation().name());
-        Assertions.assertEquals("wjyofgwhnkbtl", response.extendedLocation().type());
-        Assertions.assertEquals("ljssm", response.availabilityZone());
-        Assertions.assertEquals("fgfiij", response.rackLocation());
-        Assertions.assertEquals("ykwlefksxqceazf", response.rackSerialNumber());
-        Assertions.assertEquals("xgnmqvzvluyq", response.rackSkuId());
+        Assertions.assertEquals("gczeuntgx", response.location());
+        Assertions.assertEquals("aqttiek", response.tags().get("i"));
+        Assertions.assertEquals("tjpp", response.extendedLocation().name());
+        Assertions.assertEquals("laohoqkp", response.extendedLocation().type());
+        Assertions.assertEquals("t", response.availabilityZone());
+        Assertions.assertEquals("jvlywl", response.rackLocation());
+        Assertions.assertEquals("mfwo", response.rackSerialNumber());
+        Assertions.assertEquals("bjwhlwyjfnqzocr", response.rackSkuId());
     }
 
     // Use "Map.of" if available

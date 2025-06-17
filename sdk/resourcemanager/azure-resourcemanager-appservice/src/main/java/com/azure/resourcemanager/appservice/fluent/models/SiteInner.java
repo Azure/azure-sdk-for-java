@@ -19,6 +19,7 @@ import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.HostnameSslState;
 import com.azure.resourcemanager.appservice.models.IpMode;
 import com.azure.resourcemanager.appservice.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.appservice.models.OutboundVnetRouting;
 import com.azure.resourcemanager.appservice.models.RedundancyMode;
 import com.azure.resourcemanager.appservice.models.ResourceConfig;
 import com.azure.resourcemanager.appservice.models.SiteAvailabilityState;
@@ -431,101 +432,33 @@ public final class SiteInner extends Resource {
     }
 
     /**
-     * Get the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to have
-     * Virtual Network Security Groups and User Defined Routes applied.
+     * Get the outboundVnetRouting property: Property to configure various outbound traffic routing options over virtual
+     * network for a site.
      * 
-     * @return the vnetRouteAllEnabled value.
+     * @return the outboundVnetRouting value.
      */
-    public Boolean vnetRouteAllEnabled() {
-        return this.innerProperties() == null ? null : this.innerProperties().vnetRouteAllEnabled();
+    public OutboundVnetRouting outboundVnetRouting() {
+        return this.innerProperties() == null ? null : this.innerProperties().outboundVnetRouting();
     }
 
     /**
-     * Set the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to have
-     * Virtual Network Security Groups and User Defined Routes applied.
+     * Set the outboundVnetRouting property: Property to configure various outbound traffic routing options over virtual
+     * network for a site.
      * 
-     * @param vnetRouteAllEnabled the vnetRouteAllEnabled value to set.
+     * @param outboundVnetRouting the outboundVnetRouting value to set.
      * @return the SiteInner object itself.
      */
-    public SiteInner withVnetRouteAllEnabled(Boolean vnetRouteAllEnabled) {
+    public SiteInner withOutboundVnetRouting(OutboundVnetRouting outboundVnetRouting) {
         if (this.innerProperties() == null) {
             this.innerProperties = new SitePropertiesInner();
         }
-        this.innerProperties().withVnetRouteAllEnabled(vnetRouteAllEnabled);
+        this.innerProperties().withOutboundVnetRouting(outboundVnetRouting);
         return this;
     }
 
     /**
-     * Get the vnetImagePullEnabled property: To enable pulling image over Virtual Network.
-     * 
-     * @return the vnetImagePullEnabled value.
-     */
-    public Boolean vnetImagePullEnabled() {
-        return this.innerProperties() == null ? null : this.innerProperties().vnetImagePullEnabled();
-    }
-
-    /**
-     * Set the vnetImagePullEnabled property: To enable pulling image over Virtual Network.
-     * 
-     * @param vnetImagePullEnabled the vnetImagePullEnabled value to set.
-     * @return the SiteInner object itself.
-     */
-    public SiteInner withVnetImagePullEnabled(Boolean vnetImagePullEnabled) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SitePropertiesInner();
-        }
-        this.innerProperties().withVnetImagePullEnabled(vnetImagePullEnabled);
-        return this;
-    }
-
-    /**
-     * Get the vnetContentShareEnabled property: To enable accessing content over virtual network.
-     * 
-     * @return the vnetContentShareEnabled value.
-     */
-    public Boolean vnetContentShareEnabled() {
-        return this.innerProperties() == null ? null : this.innerProperties().vnetContentShareEnabled();
-    }
-
-    /**
-     * Set the vnetContentShareEnabled property: To enable accessing content over virtual network.
-     * 
-     * @param vnetContentShareEnabled the vnetContentShareEnabled value to set.
-     * @return the SiteInner object itself.
-     */
-    public SiteInner withVnetContentShareEnabled(Boolean vnetContentShareEnabled) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SitePropertiesInner();
-        }
-        this.innerProperties().withVnetContentShareEnabled(vnetContentShareEnabled);
-        return this;
-    }
-
-    /**
-     * Get the vnetBackupRestoreEnabled property: To enable Backup and Restore operations over virtual network.
-     * 
-     * @return the vnetBackupRestoreEnabled value.
-     */
-    public Boolean vnetBackupRestoreEnabled() {
-        return this.innerProperties() == null ? null : this.innerProperties().vnetBackupRestoreEnabled();
-    }
-
-    /**
-     * Set the vnetBackupRestoreEnabled property: To enable Backup and Restore operations over virtual network.
-     * 
-     * @param vnetBackupRestoreEnabled the vnetBackupRestoreEnabled value to set.
-     * @return the SiteInner object itself.
-     */
-    public SiteInner withVnetBackupRestoreEnabled(Boolean vnetBackupRestoreEnabled) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SitePropertiesInner();
-        }
-        this.innerProperties().withVnetBackupRestoreEnabled(vnetBackupRestoreEnabled);
-        return this;
-    }
-
-    /**
-     * Get the siteConfig property: Configuration of the app.
+     * Get the siteConfig property: Configuration of an App Service app. This property is not returned in response to
+     * normal create and read requests since it may contain sensitive information.
      * 
      * @return the siteConfig value.
      */
@@ -534,7 +467,8 @@ public final class SiteInner extends Resource {
     }
 
     /**
-     * Set the siteConfig property: Configuration of the app.
+     * Set the siteConfig property: Configuration of an App Service app. This property is not returned in response to
+     * normal create and read requests since it may contain sensitive information.
      * 
      * @param siteConfig the siteConfig value to set.
      * @return the SiteInner object itself.
@@ -733,6 +667,62 @@ public final class SiteInner extends Resource {
     }
 
     /**
+     * Get the clientAffinityPartitioningEnabled property: &lt;code&gt;true&lt;/code&gt; to enable client affinity
+     * partitioning using CHIPS cookies, this will add the &lt;code&gt;partitioned&lt;/code&gt; property to the affinity
+     * cookies; &lt;code&gt;false&lt;/code&gt; to stop sending partitioned affinity cookies. Default is
+     * &lt;code&gt;false&lt;/code&gt;.
+     * 
+     * @return the clientAffinityPartitioningEnabled value.
+     */
+    public Boolean clientAffinityPartitioningEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().clientAffinityPartitioningEnabled();
+    }
+
+    /**
+     * Set the clientAffinityPartitioningEnabled property: &lt;code&gt;true&lt;/code&gt; to enable client affinity
+     * partitioning using CHIPS cookies, this will add the &lt;code&gt;partitioned&lt;/code&gt; property to the affinity
+     * cookies; &lt;code&gt;false&lt;/code&gt; to stop sending partitioned affinity cookies. Default is
+     * &lt;code&gt;false&lt;/code&gt;.
+     * 
+     * @param clientAffinityPartitioningEnabled the clientAffinityPartitioningEnabled value to set.
+     * @return the SiteInner object itself.
+     */
+    public SiteInner withClientAffinityPartitioningEnabled(Boolean clientAffinityPartitioningEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SitePropertiesInner();
+        }
+        this.innerProperties().withClientAffinityPartitioningEnabled(clientAffinityPartitioningEnabled);
+        return this;
+    }
+
+    /**
+     * Get the clientAffinityProxyEnabled property: &lt;code&gt;true&lt;/code&gt; to override client affinity cookie
+     * domain with X-Forwarded-Host request header. &lt;code&gt;false&lt;/code&gt; to use default domain. Default is
+     * &lt;code&gt;false&lt;/code&gt;.
+     * 
+     * @return the clientAffinityProxyEnabled value.
+     */
+    public Boolean clientAffinityProxyEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().clientAffinityProxyEnabled();
+    }
+
+    /**
+     * Set the clientAffinityProxyEnabled property: &lt;code&gt;true&lt;/code&gt; to override client affinity cookie
+     * domain with X-Forwarded-Host request header. &lt;code&gt;false&lt;/code&gt; to use default domain. Default is
+     * &lt;code&gt;false&lt;/code&gt;.
+     * 
+     * @param clientAffinityProxyEnabled the clientAffinityProxyEnabled value to set.
+     * @return the SiteInner object itself.
+     */
+    public SiteInner withClientAffinityProxyEnabled(Boolean clientAffinityProxyEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SitePropertiesInner();
+        }
+        this.innerProperties().withClientAffinityProxyEnabled(clientAffinityProxyEnabled);
+        return this;
+    }
+
+    /**
      * Get the clientCertEnabled property: &lt;code&gt;true&lt;/code&gt; to enable client certificate authentication
      * (TLS mutual authentication); otherwise, &lt;code&gt;false&lt;/code&gt;. Default is
      * &lt;code&gt;false&lt;/code&gt;.
@@ -856,6 +846,29 @@ public final class SiteInner extends Resource {
             this.innerProperties = new SitePropertiesInner();
         }
         this.innerProperties().withEndToEndEncryptionEnabled(endToEndEncryptionEnabled);
+        return this;
+    }
+
+    /**
+     * Get the sshEnabled property: Whether to enable ssh access.
+     * 
+     * @return the sshEnabled value.
+     */
+    public Boolean sshEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().sshEnabled();
+    }
+
+    /**
+     * Set the sshEnabled property: Whether to enable ssh access.
+     * 
+     * @param sshEnabled the sshEnabled value to set.
+     * @return the SiteInner object itself.
+     */
+    public SiteInner withSshEnabled(Boolean sshEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SitePropertiesInner();
+        }
+        this.innerProperties().withSshEnabled(sshEnabled);
         return this;
     }
 

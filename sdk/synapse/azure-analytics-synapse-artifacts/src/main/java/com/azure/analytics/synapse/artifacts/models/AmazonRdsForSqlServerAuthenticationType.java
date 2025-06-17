@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,11 +16,13 @@ public final class AmazonRdsForSqlServerAuthenticationType
     /**
      * Static value SQL for AmazonRdsForSqlServerAuthenticationType.
      */
+    @Generated
     public static final AmazonRdsForSqlServerAuthenticationType SQL = fromString("SQL");
 
     /**
      * Static value Windows for AmazonRdsForSqlServerAuthenticationType.
      */
+    @Generated
     public static final AmazonRdsForSqlServerAuthenticationType WINDOWS = fromString("Windows");
 
     /**
@@ -27,6 +30,7 @@ public final class AmazonRdsForSqlServerAuthenticationType
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AmazonRdsForSqlServerAuthenticationType() {
     }
@@ -37,6 +41,7 @@ public final class AmazonRdsForSqlServerAuthenticationType
      * @param name a name to look for.
      * @return the corresponding AmazonRdsForSqlServerAuthenticationType.
      */
+    @Generated
     public static AmazonRdsForSqlServerAuthenticationType fromString(String name) {
         return fromString(name, AmazonRdsForSqlServerAuthenticationType.class);
     }
@@ -46,6 +51,7 @@ public final class AmazonRdsForSqlServerAuthenticationType
      * 
      * @return known AmazonRdsForSqlServerAuthenticationType values.
      */
+    @Generated
     public static Collection<AmazonRdsForSqlServerAuthenticationType> values() {
         return values(AmazonRdsForSqlServerAuthenticationType.class);
     }
