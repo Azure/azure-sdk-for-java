@@ -12,7 +12,6 @@ import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordl
 import org.apache.kafka.common.config.types.Password;
 import org.apache.kafka.common.security.auth.AuthenticateCallbackHandler;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerTokenCallback;
-import reactor.core.publisher.Mono;
 
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.UnsupportedCallbackException;
