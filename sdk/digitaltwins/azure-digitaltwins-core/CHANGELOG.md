@@ -1,19 +1,9 @@
 # Release History
 
-## 1.6.0 (2025-05-01)
+## 1.5.0 (2025-05-01)
 
 ### Features Added
 - Updated service API version to use API version 2023-10-31 by default.
-
-## 1.5.0-beta.1 (2025-05-01)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.4.2 (2025-03-24)
 
