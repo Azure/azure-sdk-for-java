@@ -10,9 +10,11 @@ trigger:
     include:
       - sdk/storage-v2/ci.yml
       - sdk/storage-v2/azure-storage-blob/
+      - sdk/storage-v2/azure-storage-perf/
     exclude:
       - sdk/storage-v2/pom.xml
       - sdk/storage-v2/azure-storage-blob/pom.xml
+      - sdk/storage-v2/azure-storage-perf/pom.xml
 
 pr:
   branches:
@@ -25,9 +27,11 @@ pr:
     include:
       - sdk/storage-v2/ci.yml
       - sdk/storage-v2/azure-storage-blob/
+      - sdk/storage-v2/azure-storage-perf/
     exclude:
       - sdk/storage-v2/pom.xml
       - sdk/storage-v2/azure-storage-blob/pom.xml
+      - sdk/storage-v2/azure-storage-perf/pom.xml
 
 parameters:
   - name: release_azurestorageblob
@@ -44,6 +48,12 @@ extends:
         groupId: com.azure.v2
         safeName: azurestorageblob
         releaseInBatch: ${{ parameters.release_azurestorageblob }}
+    AdditionalModules:
+      - name: azure-storage-perf
+        groupId: com.azure.v2
+        # required by the above perf library
+      - name: perf-test-core
+        groupId: com.azure
     MatrixConfigs:
       - Name: Storage_ci
         Path: sdk/storage-v2/platform-matrix-ci.json
