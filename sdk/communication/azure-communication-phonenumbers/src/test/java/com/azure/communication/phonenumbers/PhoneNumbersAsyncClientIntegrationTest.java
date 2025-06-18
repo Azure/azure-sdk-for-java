@@ -320,6 +320,16 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getLocalitiesWithPhoneNumberTypeWithAAD(HttpClient httpClient) {
+        StepVerifier.create(this.getClientWithManagedIdentity(httpClient, "listAvailableLocalities")
+            .listAvailableLocalities("IE", null, PhoneNumberType.MOBILE)
+            .next()).assertNext((PhoneNumberLocality locality) -> {
+                assertNotNull(locality);
+            }).verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getOfferingsWithAAD(HttpClient httpClient) {
         StepVerifier.create(this.getClientWithManagedIdentity(httpClient, "listAvailableOfferings")
             .listAvailableOfferings("US", null, null)
@@ -598,9 +608,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void updatePhoneNumbersReservation(HttpClient httpClient) {
         BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions("US", PhoneNumberType.TOLL_FREE)
-            .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
-            .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
-                .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
+            .setAssignmentType(PhoneNumberAssignmentType.APPLICATION);
 
         PhoneNumbersBrowseResult result = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
             .browseAvailableNumbers(browseRequest)
@@ -674,9 +682,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     private void runUpdatePhoneNumbersReservationWithAADTest(HttpClient httpClient, PhoneNumberType phoneNumberType,
         String countryCode) {
         BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions(countryCode, phoneNumberType)
-            .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
-            .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
-                .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
+            .setAssignmentType(PhoneNumberAssignmentType.APPLICATION);
 
         PhoneNumbersBrowseResult result = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
             .browseAvailableNumbers(browseRequest)
@@ -743,9 +749,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     private void runUpdatePhoneNumbersReservationTest(HttpClient httpClient, PhoneNumberType phoneNumberType,
         String countryCode) {
         BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions(countryCode, phoneNumberType)
-            .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
-            .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
-                .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
+            .setAssignmentType(PhoneNumberAssignmentType.APPLICATION);
 
         PhoneNumbersBrowseResult result = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
             .browseAvailableNumbers(browseRequest)

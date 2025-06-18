@@ -438,7 +438,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getGeographicAreaCodesWithAAD(HttpClient httpClient) {
-        PhoneNumberLocality locality = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
+        PhoneNumberLocality locality = this.getClientWithManagedIdentity(httpClient, "listAvailableLocalities")
             .listAvailableLocalities("US", null)
             .iterator()
             .next();
@@ -446,6 +446,22 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
             = this.getClientWithManagedIdentity(httpClient, "listAvailableGeographicAreaCodes")
                 .listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON, locality.getLocalizedName(),
                     locality.getAdministrativeDivision().getAbbreviatedName());
+        PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
+        assertNotNull(areaCodes);
+        assertNotNull(areaCodes.getAreaCode());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getMobileAreaCodesWithAAD(HttpClient httpClient) {
+        PhoneNumberLocality locality = this.getClientWithManagedIdentity(httpClient, "listAvailableLocalities")
+            .listAvailableLocalities("IE", null, PhoneNumberType.MOBILE)
+            .iterator()
+            .next();
+        PagedIterable<PhoneNumberAreaCode> areaCodesResult
+            = this.getClientWithManagedIdentity(httpClient, "listAvailableMobileAreaCodes")
+                .listAvailableMobileAreaCodes("IE", PhoneNumberAssignmentType.APPLICATION, locality.getLocalizedName(),
+                    Context.NONE);
         PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
         assertNotNull(areaCodes);
         assertNotNull(areaCodes.getAreaCode());
@@ -489,6 +505,16 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
             localityWithAD.getAdministrativeDivision().getAbbreviatedName());
         assertEquals(locality.getAdministrativeDivision().getLocalizedName(),
             localityWithAD.getAdministrativeDivision().getLocalizedName());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getLocalitiesWithPhoneNumberTypeWithAAD(HttpClient httpClient) {
+        PagedIterable<PhoneNumberLocality> localitiesResult
+            = this.getClientWithManagedIdentity(httpClient, "listAvailableLocalities")
+                .listAvailableLocalities("IE", null, PhoneNumberType.MOBILE, Context.NONE);
+        PhoneNumberLocality locality = localitiesResult.iterator().next();
+        assertNotNull(locality);
     }
 
     @ParameterizedTest
