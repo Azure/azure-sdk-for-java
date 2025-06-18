@@ -16,6 +16,7 @@ import org.apache.kafka.common.security.oauthbearer.OAuthBearerTokenCallback;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.test.util.ReflectionTestUtils;
+import reactor.core.publisher.Mono;
 
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.UnsupportedCallbackException;
@@ -45,6 +46,12 @@ class KafkaOAuth2AuthenticateCallbackHandlerTest {
     private static final String TOKEN_CREDENTIAL_RESOLVER_FIELD_NAME = "tokenCredentialResolver";
     @Test
     void testTokenCredentialShouldConfig() {
+        TokenCredential tokenCredential = new TokenCredential() {
+            @Override
+            public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
+                return null;
+            }
+        };
         Map<String, Object> configs = new HashMap<>();
         configs.put(BOOTSTRAP_SERVERS_CONFIG, KAFKA_BOOTSTRAP_SERVER);
         configs.put(AZURE_TOKEN_CREDENTIAL, tokenCredential);
