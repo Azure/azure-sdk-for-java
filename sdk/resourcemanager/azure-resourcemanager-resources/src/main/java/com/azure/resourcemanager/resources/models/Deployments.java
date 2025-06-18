@@ -42,7 +42,9 @@ public interface Deployments extends SupportsCreating<Deployment.DefinitionStage
      * @param id the resource ID of the resource to delete
      * @return the accepted deleting operation
      */
-    Accepted<Void> beginDeleteById(String id);
+    default Accepted<Void> beginDeleteById(String id) {
+        throw new UnsupportedOperationException("[beginDeleteById(String)] is not supported in " + getClass());
+    }
 
     /**
      * Deletes a deployment from the deployment history by its ID.
@@ -53,7 +55,9 @@ public interface Deployments extends SupportsCreating<Deployment.DefinitionStage
      * @param context the {@link Context} of the request
      * @return the accepted deleting operation
      */
-    Accepted<Void> beginDeleteById(String id, Context context);
+    default Accepted<Void> beginDeleteById(String id, Context context) {
+        throw new UnsupportedOperationException("[beginDeleteById(String, Context)] is not supported in " + getClass());
+    }
 
     /**
      * Deletes a deployment from the deployment history by its resource group and name.
@@ -64,7 +68,10 @@ public interface Deployments extends SupportsCreating<Deployment.DefinitionStage
      * @param name the name of the deployment
      * @return the accepted deleting operation
      */
-    Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name);
+    default Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name) {
+        throw new UnsupportedOperationException(
+            "[beginDeleteByResourceGroup(String, String)] is not supported in " + getClass());
+    }
 
     /**
      * Deletes a deployment from the deployment history by its resource group and name.
@@ -76,5 +83,8 @@ public interface Deployments extends SupportsCreating<Deployment.DefinitionStage
      * @param context the {@link Context} of the request
      * @return the accepted deleting operation
      */
-    Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, Context context);
+    default Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, Context context) {
+        throw new UnsupportedOperationException(
+            "[beginDeleteByResourceGroup(String, String, Context)] is not supported in " + getClass());
+    }
 }

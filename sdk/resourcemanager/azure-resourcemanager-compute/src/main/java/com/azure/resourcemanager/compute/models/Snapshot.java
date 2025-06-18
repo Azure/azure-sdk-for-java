@@ -456,7 +456,9 @@ public interface Snapshot
              *
              * @return the accepted create operation
              */
-            Accepted<Snapshot> beginCreate();
+            default Accepted<Snapshot> beginCreate() {
+                throw new UnsupportedOperationException("[beginCreate] is not supported in " + getClass());
+            }
 
             /**
              * Begins creating the snapshot resource.
@@ -464,7 +466,9 @@ public interface Snapshot
              * @param context the {@link Context} of the request
              * @return the accepted create operation
              */
-            Accepted<Snapshot> beginCreate(Context context);
+            default Accepted<Snapshot> beginCreate(Context context) {
+                throw new UnsupportedOperationException("[beginCreate(Context)] is not supported in " + getClass());
+            }
         }
     }
 

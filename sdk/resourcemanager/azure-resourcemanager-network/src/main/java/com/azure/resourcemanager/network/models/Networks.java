@@ -30,5 +30,8 @@ public interface Networks extends SupportsCreating<Network.DefinitionStages.Blan
      * @param context the {@link Context} of the request
      * @return an immutable representation of the resource
      */
-    Network getByResourceGroup(String resourceGroupName, String name, Context context);
+    default Network getByResourceGroup(String resourceGroupName, String name, Context context) {
+        throw new UnsupportedOperationException(
+            "[getByResourceGroup(String, String, Context)] is not supported in " + getClass());
+    }
 }

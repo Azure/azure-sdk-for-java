@@ -51,7 +51,10 @@ public interface ResourceGroups
      * @param context the {@link Context} of the request
      * @return the accepted deleting operation
      */
-    Accepted<Void> beginDeleteByName(String name, Context context);
+    default Accepted<Void> beginDeleteByName(String name, Context context) {
+        throw new UnsupportedOperationException(
+            "[beginDeleteByName(String, Context)] is not supported in " + getClass());
+    }
 
     /**
      * Begins deleting a resource group from Azure, identifying it by its name.
@@ -70,8 +73,11 @@ public interface ResourceGroups
      * @param context the {@link Context} of the request
      * @return the accepted deleting operation
      */
-    Accepted<Void> beginDeleteByName(String name, Collection<ForceDeletionResourceType> forceDeletionResourceTypes,
-        Context context);
+    default Accepted<Void> beginDeleteByName(String name,
+        Collection<ForceDeletionResourceType> forceDeletionResourceTypes, Context context) {
+        throw new UnsupportedOperationException(
+            "[beginDeleteByName(String, Collection, Context)] is not supported in " + getClass());
+    }
 
     /**
      * Deletes a resource from Azure, identifying it by its resource name.

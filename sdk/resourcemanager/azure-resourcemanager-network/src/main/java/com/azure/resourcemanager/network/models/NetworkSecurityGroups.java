@@ -31,5 +31,8 @@ public interface NetworkSecurityGroups
      * @param context the {@link Context} of the request
      * @return an immutable representation of the resource
      */
-    NetworkSecurityGroup getByResourceGroup(String resourceGroupName, String name, Context context);
+    default NetworkSecurityGroup getByResourceGroup(String resourceGroupName, String name, Context context) {
+        throw new UnsupportedOperationException(
+            "[getByResourceGroup(String, String, Context)] is not supported in " + getClass());
+    }
 }

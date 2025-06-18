@@ -32,5 +32,8 @@ public interface ApplicationSecurityGroups extends SupportsCreating<ApplicationS
      * @param context the {@link Context} of the request
      * @return an immutable representation of the resource
      */
-    ApplicationSecurityGroup getByResourceGroup(String resourceGroupName, String name, Context context);
+    default ApplicationSecurityGroup getByResourceGroup(String resourceGroupName, String name, Context context) {
+        throw new UnsupportedOperationException(
+            "[getByResourceGroup(String, String, Context)] is not supported in " + getClass());
+    }
 }
