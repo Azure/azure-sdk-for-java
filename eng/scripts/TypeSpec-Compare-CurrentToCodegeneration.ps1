@@ -51,6 +51,7 @@ function TypeSpec-Compare-CurrentToCodegeneration {
     Write-Host "$SeparatorBars"
     Write-Host "ServiceDirectory if V2 which isn't supported at this time: $ServiceDirectory"
     Write-Host "$SeparatorBars"
+    return $false
   }
 
   $tspYamls = Get-ChildItem -Path $ServiceDirectory -Filter "tsp-location.yaml" -Recurse
