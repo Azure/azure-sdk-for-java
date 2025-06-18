@@ -5,6 +5,8 @@
 package com.azure.security.attestation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,36 +26,43 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * established by [JWA] or be a value that contains a Collision-
      * Resistant Name.
      */
+    @Generated
     private String alg;
 
     /*
      * The "crv" (curve) parameter identifies the curve type
      */
+    @Generated
     private String crv;
 
     /*
      * RSA private exponent or ECC private key
      */
+    @Generated
     private String d;
 
     /*
      * RSA Private Key Parameter
      */
+    @Generated
     private String dp;
 
     /*
      * RSA Private Key Parameter
      */
+    @Generated
     private String dq;
 
     /*
      * RSA public exponent, in Base64
      */
+    @Generated
     private String e;
 
     /*
      * Symmetric key
      */
+    @Generated
     private String k;
 
     /*
@@ -67,6 +76,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * equivalent alternatives by the application using them.) The "kid"
      * value is a case-sensitive string.
      */
+    @Generated
     private String kid;
 
     /*
@@ -76,26 +86,31 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * established by [JWA] or be a value that contains a Collision-
      * Resistant Name. The "kty" value is a case-sensitive string.
      */
+    @Generated
     private final String kty;
 
     /*
      * RSA modulus, in Base64
      */
+    @Generated
     private String n;
 
     /*
      * RSA secret prime
      */
+    @Generated
     private String p;
 
     /*
      * RSA secret prime, with p < q
      */
+    @Generated
     private String q;
 
     /*
      * RSA Private Key Parameter
      */
+    @Generated
     private String qi;
 
     /*
@@ -104,11 +119,13 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * a public key is used for encrypting data or verifying the signature
      * on data. Values are commonly "sig" (signature) or "enc" (encryption).
      */
+    @Generated
     private String use;
 
     /*
      * X coordinate for the Elliptic Curve point
      */
+    @Generated
     private String x;
 
     /*
@@ -120,11 +137,13 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * The PKIX certificate containing the key value MUST be the first
      * certificate.
      */
+    @Generated
     private List<String> x5C;
 
     /*
      * Y coordinate for the Elliptic Curve point
      */
+    @Generated
     private String y;
 
     /**
@@ -132,6 +151,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * 
      * @param kty the kty value to set.
      */
+    @Generated
     public JsonWebKey(String kty) {
         this.kty = kty;
     }
@@ -145,6 +165,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * 
      * @return the alg value.
      */
+    @Generated
     public String getAlg() {
         return this.alg;
     }
@@ -159,6 +180,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * @param alg the alg value to set.
      * @return the JsonWebKey object itself.
      */
+    @Generated
     public JsonWebKey setAlg(String alg) {
         this.alg = alg;
         return this;
@@ -169,6 +191,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * 
      * @return the crv value.
      */
+    @Generated
     public String getCrv() {
         return this.crv;
     }
@@ -179,6 +202,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * @param crv the crv value to set.
      * @return the JsonWebKey object itself.
      */
+    @Generated
     public JsonWebKey setCrv(String crv) {
         this.crv = crv;
         return this;
@@ -189,6 +213,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * 
      * @return the d value.
      */
+    @Generated
     public String getD() {
         return this.d;
     }
@@ -199,6 +224,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * @param d the d value to set.
      * @return the JsonWebKey object itself.
      */
+    @Generated
     public JsonWebKey setD(String d) {
         this.d = d;
         return this;
@@ -209,6 +235,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * 
      * @return the dp value.
      */
+    @Generated
     public String getDp() {
         return this.dp;
     }
@@ -219,6 +246,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * @param dp the dp value to set.
      * @return the JsonWebKey object itself.
      */
+    @Generated
     public JsonWebKey setDp(String dp) {
         this.dp = dp;
         return this;
@@ -229,6 +257,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * 
      * @return the dq value.
      */
+    @Generated
     public String getDq() {
         return this.dq;
     }
@@ -239,6 +268,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * @param dq the dq value to set.
      * @return the JsonWebKey object itself.
      */
+    @Generated
     public JsonWebKey setDq(String dq) {
         this.dq = dq;
         return this;
@@ -249,6 +279,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * 
      * @return the e value.
      */
+    @Generated
     public String getE() {
         return this.e;
     }
@@ -259,6 +290,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * @param e the e value to set.
      * @return the JsonWebKey object itself.
      */
+    @Generated
     public JsonWebKey setE(String e) {
         this.e = e;
         return this;
@@ -269,6 +301,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * 
      * @return the k value.
      */
+    @Generated
     public String getK() {
         return this.k;
     }
@@ -279,6 +312,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * @param k the k value to set.
      * @return the JsonWebKey object itself.
      */
+    @Generated
     public JsonWebKey setK(String k) {
         this.k = k;
         return this;
@@ -297,6 +331,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * 
      * @return the kid value.
      */
+    @Generated
     public String getKid() {
         return this.kid;
     }
@@ -315,6 +350,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * @param kid the kid value to set.
      * @return the JsonWebKey object itself.
      */
+    @Generated
     public JsonWebKey setKid(String kid) {
         this.kid = kid;
         return this;
@@ -329,6 +365,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * 
      * @return the kty value.
      */
+    @Generated
     public String getKty() {
         return this.kty;
     }
@@ -338,6 +375,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * 
      * @return the n value.
      */
+    @Generated
     public String getN() {
         return this.n;
     }
@@ -348,6 +386,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * @param n the n value to set.
      * @return the JsonWebKey object itself.
      */
+    @Generated
     public JsonWebKey setN(String n) {
         this.n = n;
         return this;
@@ -358,6 +397,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * 
      * @return the p value.
      */
+    @Generated
     public String getP() {
         return this.p;
     }
@@ -368,6 +408,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * @param p the p value to set.
      * @return the JsonWebKey object itself.
      */
+    @Generated
     public JsonWebKey setP(String p) {
         this.p = p;
         return this;
@@ -378,6 +419,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * 
      * @return the q value.
      */
+    @Generated
     public String getQ() {
         return this.q;
     }
@@ -388,6 +430,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * @param q the q value to set.
      * @return the JsonWebKey object itself.
      */
+    @Generated
     public JsonWebKey setQ(String q) {
         this.q = q;
         return this;
@@ -398,6 +441,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * 
      * @return the qi value.
      */
+    @Generated
     public String getQi() {
         return this.qi;
     }
@@ -408,6 +452,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * @param qi the qi value to set.
      * @return the JsonWebKey object itself.
      */
+    @Generated
     public JsonWebKey setQi(String qi) {
         this.qi = qi;
         return this;
@@ -421,6 +466,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * 
      * @return the use value.
      */
+    @Generated
     public String getUse() {
         return this.use;
     }
@@ -434,6 +480,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * @param use the use value to set.
      * @return the JsonWebKey object itself.
      */
+    @Generated
     public JsonWebKey setUse(String use) {
         this.use = use;
         return this;
@@ -444,6 +491,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * 
      * @return the x value.
      */
+    @Generated
     public String getX() {
         return this.x;
     }
@@ -454,6 +502,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * @param x the x value to set.
      * @return the JsonWebKey object itself.
      */
+    @Generated
     public JsonWebKey setX(String x) {
         this.x = x;
         return this;
@@ -470,6 +519,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * 
      * @return the x5C value.
      */
+    @Generated
     public List<String> getX5C() {
         return this.x5C;
     }
@@ -486,6 +536,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * @param x5C the x5C value to set.
      * @return the JsonWebKey object itself.
      */
+    @Generated
     public JsonWebKey setX5C(List<String> x5C) {
         this.x5C = x5C;
         return this;
@@ -496,6 +547,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * 
      * @return the y value.
      */
+    @Generated
     public String getY() {
         return this.y;
     }
@@ -506,6 +558,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * @param y the y value to set.
      * @return the JsonWebKey object itself.
      */
+    @Generated
     public JsonWebKey setY(String y) {
         this.y = y;
         return this;
@@ -518,13 +571,17 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      */
     public void validate() {
         if (getKty() == null) {
-            throw new IllegalArgumentException("Missing required property kty in model JsonWebKey");
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property kty in model JsonWebKey"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(JsonWebKey.class);
 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -557,6 +614,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the JsonWebKey.
      */
+    @Generated
     public static JsonWebKey fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean ktyFound = false;

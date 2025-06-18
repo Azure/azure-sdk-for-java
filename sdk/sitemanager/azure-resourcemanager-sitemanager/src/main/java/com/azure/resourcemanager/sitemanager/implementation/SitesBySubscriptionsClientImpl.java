@@ -72,7 +72,7 @@ public final class SitesBySubscriptionsClientImpl implements SitesBySubscription
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "SiteManagerManagemen")
+    @ServiceInterface(name = "SiteManagerManagementClientSitesBySubscriptions")
     public interface SitesBySubscriptionsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Edge/sites")

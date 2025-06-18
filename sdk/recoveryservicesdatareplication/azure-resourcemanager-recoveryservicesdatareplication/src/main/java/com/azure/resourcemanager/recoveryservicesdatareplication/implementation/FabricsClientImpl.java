@@ -71,7 +71,7 @@ public final class FabricsClientImpl implements FabricsClient {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DataReplicationMgmtC")
+    @ServiceInterface(name = "DataReplicationMgmtClientFabrics")
     public interface FabricsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}")

@@ -188,7 +188,7 @@ public final class KeyVaultAdministrationClientImpl {
      * perform REST calls.
      */
     @Host("{vaultBaseUrl}")
-    @ServiceInterface(name = "KeyVaultAdministrati")
+    @ServiceInterface(name = "KeyVaultAdministrationClient")
     public interface KeyVaultAdministrationClientService {
 
         @Get("/backup/{jobId}/pending")

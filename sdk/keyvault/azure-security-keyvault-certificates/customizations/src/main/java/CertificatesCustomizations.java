@@ -23,9 +23,9 @@ import static com.github.javaparser.javadoc.description.JavadocDescription.parse
 public class CertificatesCustomizations extends Customization {
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
-        // Remove unnecessary files.
         removeFiles(libraryCustomization.getRawEditor());
         customizeError(libraryCustomization);
+        customizeCertificateKeyType(libraryCustomization);
         customizeCertificateKeyUsage(libraryCustomization);
         customizeServiceVersion(libraryCustomization);
         customizeModuleInfo(libraryCustomization.getRawEditor());
@@ -47,7 +47,9 @@ public class CertificatesCustomizations extends Customization {
 
         // Rename KeyVaultErrorError to CertificateOperationError and move it to the public models package.
         String fileContent = customization.getRawEditor().getFileContent(implModelsDirectory + oldClassName + ".java");
+
         customization.getRawEditor().removeFile(implModelsDirectory + oldClassName + ".java");
+
         fileContent = fileContent.replace(oldClassName, newClassName)
             .replace("com.azure.security.keyvault.certificates.implementation.models",
                 "com.azure.security.keyvault.certificates.models");
@@ -56,25 +58,40 @@ public class CertificatesCustomizations extends Customization {
         // The class is used in CertificateOperation, which is in the implementation package.
         // Add an import to handle the class moving.
         customization.getClass("com.azure.security.keyvault.certificates.implementation.models", "CertificateOperation")
-            .customizeAst(ast -> ast.addImport("com.azure.security.keyvault.certificates.models." + newClassName)
-                .getClassByName("CertificateOperation").ifPresent(clazz -> {
-                    clazz.getFieldByName("error").ifPresent(field -> field.getVariable(0).setType(newClassName));
-                    clazz.getMethodsByName("getError").forEach(method -> method.setType(newClassName));
-                    clazz.getMethodsByName("setError").forEach(method -> method.getParameter(0).setType(newClassName));
-                    clazz.getMethodsByName("fromJson").forEach(method -> method.getBody().ifPresent(body ->
-                        method.setBody(StaticJavaParser.parseBlock(body.toString().replace(oldClassName, newClassName)))));
-                }));
+            .customizeAst(ast ->
+                ast.addImport("com.azure.security.keyvault.certificates.models." + newClassName)
+                    .getClassByName("CertificateOperation")
+                    .ifPresent(clazz -> {
+                        clazz.getFieldByName("error").ifPresent(field -> field.getVariable(0).setType(newClassName));
+                        clazz.getMethodsByName("getError").forEach(method -> method.setType(newClassName));
+                        clazz.getMethodsByName("setError").forEach(method -> method.getParameter(0).setType(newClassName));
+                        clazz.getMethodsByName("fromJson").forEach(method -> method.getBody().ifPresent(body ->
+                            method.setBody(StaticJavaParser.parseBlock(body.toString().replace(oldClassName, newClassName)))));
+                    }));
     }
 
     private static void customizeCertificateKeyUsage(LibraryCustomization customization) {
         customization.getClass("com.azure.security.keyvault.certificates.models", "CertificateKeyUsage")
-            .customizeAst(ast -> ast.getClassByName("CertificateKeyUsage")
-                .flatMap(clazz -> clazz.getFieldByName("C_RLSIGN"))
-                .ifPresent(f -> f.getVariable(0).setName("CRL_SIGN")));
+            .customizeAst(ast ->
+                ast.getClassByName("CertificateKeyUsage").ifPresent(clazz ->
+                    clazz.getFieldByName("C_RLSIGN").ifPresent(field ->
+                        field.getVariable(0).setName("CRL_SIGN"))));
     }
 
-    private static void customizeServiceVersion(LibraryCustomization libraryCustomization) {
+    private static void customizeCertificateKeyType(LibraryCustomization customization) {
+        customization.getClass("com.azure.security.keyvault.certificates.models", "CertificateKeyType")
+            .customizeAst(ast ->
+                ast.getClassByName("CertificateKeyType").ifPresent(clazz -> {
+                    clazz.getFieldByName("OCT").ifPresent(field ->
+                        field.setModifiers(Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL));
+                    clazz.getFieldByName("OCT_HSM").ifPresent(field ->
+                        field.setModifiers(Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL));
+                }));
+    }
+
+    private static void customizeServiceVersion(LibraryCustomization customization) {
         CompilationUnit compilationUnit = new CompilationUnit();
+
         compilationUnit.addOrphanComment(new LineComment(" Copyright (c) Microsoft Corporation. All rights reserved."));
         compilationUnit.addOrphanComment(new LineComment(" Licensed under the MIT License."));
         compilationUnit.addOrphanComment(new LineComment(" Code generated by Microsoft (R) TypeSpec Code Generator."));
@@ -86,7 +103,7 @@ public class CertificatesCustomizations extends Customization {
             .addImplementedType("ServiceVersion")
             .setJavadocComment("The versions of Azure Key Vault Certificates supported by this client library.");
 
-        for (String version : Arrays.asList("7.0", "7.1", "7.2", "7.3", "7.4", "7.5", "7.6-preview.2")) {
+        for (String version : Arrays.asList("7.0", "7.1", "7.2", "7.3", "7.4", "7.5", "7.6")) {
             enumDeclaration.addEnumConstant("V" + version.replace('.', '_').replace('-', '_').toUpperCase())
                 .setJavadocComment("Service version {@code " + version + "}.")
                 .addArgument(new StringLiteralExpr(version));
@@ -107,16 +124,16 @@ public class CertificatesCustomizations extends Customization {
             .setType("CertificateServiceVersion")
             .setJavadocComment(new Javadoc(parseText("Gets the latest service version supported by this client library."))
                 .addBlockTag("return", "The latest {@link CertificateServiceVersion}."))
-            .setBody(StaticJavaParser.parseBlock("{ return V7_6_PREVIEW_2; }"));
+            .setBody(StaticJavaParser.parseBlock("{ return V7_6; }"));
 
-        libraryCustomization.getRawEditor()
+        customization.getRawEditor()
             .addFile("src/main/java/com/azure/security/keyvault/certificates/CertificateServiceVersion.java",
                 compilationUnit.toString());
 
         String fileName = "src/main/java/com/azure/security/keyvault/certificates/implementation/CertificateClientImpl.java";
-        String fileContent = libraryCustomization.getRawEditor().getFileContent(fileName);
+        String fileContent = customization.getRawEditor().getFileContent(fileName);
         fileContent = fileContent.replace("KeyVaultServiceVersion", "CertificateServiceVersion");
-        libraryCustomization.getRawEditor().replaceFile(fileName, fileContent);
+        customization.getRawEditor().replaceFile(fileName, fileContent);
     }
 
     private static void customizeModuleInfo(Editor editor) {
@@ -252,12 +269,15 @@ public class CertificatesCustomizations extends Customization {
             " *",
             " * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy -->",
             " * <pre>",
-            " * CertificatePolicy certPolicy = new CertificatePolicy&#40;&quot;Self&quot;,",
-            " *     &quot;CN=SelfSignedJavaPkcs12&quot;&#41;;",
-            " * SyncPoller&lt;CertificateOperation, KeyVaultCertificateWithPolicy&gt; certPoller = certificateClient",
-            " *     .beginCreateCertificate&#40;&quot;certificateName&quot;, certPolicy&#41;;",
+            " * CertificatePolicy certPolicy = new CertificatePolicy&#40;&quot;Self&quot;, &quot;CN=SelfSignedJavaPkcs12&quot;&#41;;",
+            " *",
+            " * SyncPoller&lt;CertificateOperation, KeyVaultCertificateWithPolicy&gt; certPoller =",
+            " *     certificateClient.beginCreateCertificate&#40;&quot;certificateName&quot;, certPolicy&#41;;",
+            " *",
             " * certPoller.waitUntil&#40;LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41;;",
+            " *",
             " * KeyVaultCertificate cert = certPoller.getFinalResult&#40;&#41;;",
+            " *",
             " * System.out.printf&#40;&quot;Certificate created with name %s%n&quot;, cert.getName&#40;&#41;&#41;;",
             " * </pre>",
             " * <!-- end com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy -->",

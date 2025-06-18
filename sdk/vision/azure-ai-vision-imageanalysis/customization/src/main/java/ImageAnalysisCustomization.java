@@ -1,6 +1,5 @@
 import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
-import com.azure.autorest.customization.JavadocCustomization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.github.javaparser.javadoc.description.JavadocDescription;
 import org.slf4j.Logger;

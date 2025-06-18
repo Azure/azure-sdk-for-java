@@ -72,7 +72,7 @@ public final class IspCustomersClientImpl implements IspCustomersClient {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ConnectedCacheManage")
+    @ServiceInterface(name = "ConnectedCacheManagementClientIspCustomers")
     public interface IspCustomersService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/ispCustomers/{customerResourceName}")

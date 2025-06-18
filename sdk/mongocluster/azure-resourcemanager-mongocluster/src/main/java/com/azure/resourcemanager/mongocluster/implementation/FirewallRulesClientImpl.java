@@ -70,7 +70,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "MongoClusterManageme")
+    @ServiceInterface(name = "MongoClusterManagementClientFirewallRules")
     public interface FirewallRulesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/firewallRules/{firewallRuleName}")

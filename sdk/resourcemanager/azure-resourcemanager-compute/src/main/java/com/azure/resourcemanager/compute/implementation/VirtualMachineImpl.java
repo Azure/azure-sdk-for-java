@@ -1736,6 +1736,11 @@ class VirtualMachineImpl
     }
 
     @Override
+    public NetworkInterface getPrimaryNetworkInterface(Context context) {
+        return this.getPrimaryNetworkInterfaceAsync().contextWrite(c -> FluxUtil.toReactorContext(context)).block();
+    }
+
+    @Override
     public Mono<NetworkInterface> getPrimaryNetworkInterfaceAsync() {
         return this.networkManager.networkInterfaces().getByIdAsync(primaryNetworkInterfaceId());
     }

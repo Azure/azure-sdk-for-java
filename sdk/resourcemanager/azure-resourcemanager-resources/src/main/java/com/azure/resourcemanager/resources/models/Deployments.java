@@ -4,6 +4,8 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.Context;
+import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByName;
@@ -13,7 +15,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 
 /**
  * Entry point to template deployment in Azure.
@@ -31,4 +33,48 @@ public interface Deployments extends SupportsCreating<Deployment.DefinitionStage
      * @return true if the deployment exists; false otherwise
      */
     boolean checkExistence(String resourceGroupName, String deploymentName);
+
+    /**
+     * Deletes a deployment from the deployment history by its ID.
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
+     *
+     * @param id the resource ID of the resource to delete
+     * @return the accepted deleting operation
+     */
+    Accepted<Void> beginDeleteById(String id);
+
+    /**
+     * Deletes a deployment from the deployment history by its ID.
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
+     *
+     * @param id the resource ID of the resource to delete
+     * @param context the {@link Context} of the request
+     * @return the accepted deleting operation
+     */
+    Accepted<Void> beginDeleteById(String id, Context context);
+
+    /**
+     * Deletes a deployment from the deployment history by its resource group and name.
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
+     *
+     * @param resourceGroupName the resource group the deployment is part of
+     * @param name the name of the deployment
+     * @return the accepted deleting operation
+     */
+    Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name);
+
+    /**
+     * Deletes a deployment from the deployment history by its resource group and name.
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
+     *
+     * @param resourceGroupName the resource group the deployment is part of
+     * @param name the name of the deployment
+     * @param context the {@link Context} of the request
+     * @return the accepted deleting operation
+     */
+    Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, Context context);
 }

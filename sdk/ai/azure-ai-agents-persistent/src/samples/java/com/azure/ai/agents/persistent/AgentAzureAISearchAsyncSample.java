@@ -20,14 +20,15 @@ import static com.azure.ai.agents.persistent.SampleUtils.waitForRunCompletionAsy
 public final class AgentAzureAISearchAsyncSample {
 
     public static void main(String[] args) {
-        PersistentAgentsAdministrationClientBuilder clientBuilder = new PersistentAgentsAdministrationClientBuilder()
+        PersistentAgentsClientBuilder clientBuilder = new PersistentAgentsClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build());
+        PersistentAgentsAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
         
-        PersistentAgentsAdministrationAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
-        ThreadsAsyncClient threadsAsyncClient = clientBuilder.buildThreadsAsyncClient();
-        MessagesAsyncClient messagesAsyncClient = clientBuilder.buildMessagesAsyncClient();
-        RunsAsyncClient runsAsyncClient = clientBuilder.buildRunsAsyncClient();
+        PersistentAgentsAdministrationAsyncClient administrationAsyncClient = agentsAsyncClient.getPersistentAgentsAdministrationAsyncClient();
+        ThreadsAsyncClient threadsAsyncClient = agentsAsyncClient.getThreadsAsyncClient();
+        MessagesAsyncClient messagesAsyncClient = agentsAsyncClient.getMessagesAsyncClient();
+        RunsAsyncClient runsAsyncClient = agentsAsyncClient.getRunsAsyncClient();
 
         String aiSearchConnectionId = Configuration.getGlobalConfiguration().get("AI_SEARCH_CONNECTION_ID", "");
 
@@ -50,7 +51,7 @@ public final class AgentAzureAISearchAsyncSample {
         AtomicReference<String> threadId = new AtomicReference<>();
         
         // Create full reactive chain to showcase reactive programming
-        agentsAsyncClient.createAgent(createAgentOptions)
+        administrationAsyncClient.createAgent(createAgentOptions)
             .flatMap(agent -> {
                 System.out.println("Created agent: " + agent.getId());
                 agentId.set(agent.getId());
@@ -98,7 +99,7 @@ public final class AgentAzureAISearchAsyncSample {
                 
                 // Clean up agent if created
                 if (agentId.get() != null) {
-                    agentsAsyncClient.deleteAgent(agentId.get())
+                    administrationAsyncClient.deleteAgent(agentId.get())
                         .doOnSuccess(ignored -> System.out.println("Agent deleted: " + agentId.get()))
                         .doOnError(error -> System.err.println("Failed to delete agent: " + error.getMessage()))
                         .subscribe();

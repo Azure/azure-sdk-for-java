@@ -4,6 +4,7 @@
 
 package com.azure.containers.containerregistry.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class DeleteRepositoryResult implements JsonSerializable<DeleteRepo
     /*
      * SHA of the deleted image
      */
+    @Generated
     private List<String> deletedManifests;
 
     /*
      * Tag of the deleted image
      */
+    @Generated
     private List<String> deletedTags;
 
     /**
      * Creates an instance of DeleteRepositoryResult class.
      */
+    @Generated
     public DeleteRepositoryResult() {
     }
 
@@ -38,6 +42,7 @@ public final class DeleteRepositoryResult implements JsonSerializable<DeleteRepo
      * 
      * @return the deletedManifests value.
      */
+    @Generated
     public List<String> getDeletedManifests() {
         return this.deletedManifests;
     }
@@ -47,6 +52,7 @@ public final class DeleteRepositoryResult implements JsonSerializable<DeleteRepo
      * 
      * @return the deletedTags value.
      */
+    @Generated
     public List<String> getDeletedTags() {
         return this.deletedTags;
     }
@@ -54,6 +60,7 @@ public final class DeleteRepositoryResult implements JsonSerializable<DeleteRepo
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -68,6 +75,7 @@ public final class DeleteRepositoryResult implements JsonSerializable<DeleteRepo
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DeleteRepositoryResult.
      */
+    @Generated
     public static DeleteRepositoryResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DeleteRepositoryResult deserializedDeleteRepositoryResult = new DeleteRepositoryResult();

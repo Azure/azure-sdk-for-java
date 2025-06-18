@@ -25,8 +25,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MessagesAsyncClientTest extends ClientTestBase {
 
-    private PersistentAgentsAdministrationClientBuilder clientBuilder;
-    private PersistentAgentsAdministrationAsyncClient agentsAsyncClient;
+    private PersistentAgentsClientBuilder clientBuilder;
+    private PersistentAgentsAdministrationAsyncClient administrationAsyncClient;
     private ThreadsAsyncClient threadsAsyncClient;
     private MessagesAsyncClient messagesAsyncClient;
     private PersistentAgent agent;
@@ -34,14 +34,15 @@ public class MessagesAsyncClientTest extends ClientTestBase {
 
     private void createTestAgent(HttpClient httpClient) {
         clientBuilder = getClientBuilder(httpClient);
-        agentsAsyncClient = clientBuilder.buildAsyncClient();
-        threadsAsyncClient = clientBuilder.buildThreadsAsyncClient();
-        messagesAsyncClient = clientBuilder.buildMessagesAsyncClient();
+        PersistentAgentsAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
+        administrationAsyncClient = agentsAsyncClient.getPersistentAgentsAdministrationAsyncClient();
+        threadsAsyncClient = agentsAsyncClient.getThreadsAsyncClient();
+        messagesAsyncClient = agentsAsyncClient.getMessagesAsyncClient();
 
         CreateAgentOptions options
             = new CreateAgentOptions("gpt-4o-mini").setName("TestAgent").setInstructions("You are a helpful agent");
 
-        StepVerifier.create(agentsAsyncClient.createAgent(options)).assertNext(createdAgent -> {
+        StepVerifier.create(administrationAsyncClient.createAgent(options)).assertNext(createdAgent -> {
             assertNotNull(createdAgent, "Persistent agent should not be null");
             agent = createdAgent;
         }).verifyComplete();
@@ -101,7 +102,6 @@ public class MessagesAsyncClientTest extends ClientTestBase {
             .verifyComplete();
     }
 
-    @Disabled
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.persistent.TestUtils#getTestParameters")
     public void testUpdateMessage(HttpClient httpClient) {
@@ -185,8 +185,8 @@ public class MessagesAsyncClientTest extends ClientTestBase {
         if (thread != null && threadsAsyncClient != null) {
             threadsAsyncClient.deleteThread(thread.getId()).block(Duration.ofSeconds(30));
         }
-        if (agent != null && agentsAsyncClient != null) {
-            agentsAsyncClient.deleteAgent(agent.getId()).block(Duration.ofSeconds(30));
+        if (agent != null && administrationAsyncClient != null) {
+            administrationAsyncClient.deleteAgent(agent.getId()).block(Duration.ofSeconds(30));
         }
     }
 }

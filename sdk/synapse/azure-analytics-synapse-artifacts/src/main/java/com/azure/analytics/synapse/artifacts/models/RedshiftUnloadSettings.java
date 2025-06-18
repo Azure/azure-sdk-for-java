@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,6 +23,7 @@ public final class RedshiftUnloadSettings implements JsonSerializable<RedshiftUn
      * The name of the Amazon S3 linked service which will be used for the unload operation when copying from the Amazon
      * Redshift source.
      */
+    @Generated
     private LinkedServiceReference s3LinkedServiceName;
 
     /*
@@ -29,11 +31,13 @@ public final class RedshiftUnloadSettings implements JsonSerializable<RedshiftUn
      * The bucket must be in the same region as the Amazon Redshift source. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object bucketName;
 
     /**
      * Creates an instance of RedshiftUnloadSettings class.
      */
+    @Generated
     public RedshiftUnloadSettings() {
     }
 
@@ -43,6 +47,7 @@ public final class RedshiftUnloadSettings implements JsonSerializable<RedshiftUn
      * 
      * @return the s3LinkedServiceName value.
      */
+    @Generated
     public LinkedServiceReference getS3LinkedServiceName() {
         return this.s3LinkedServiceName;
     }
@@ -54,6 +59,7 @@ public final class RedshiftUnloadSettings implements JsonSerializable<RedshiftUn
      * @param s3LinkedServiceName the s3LinkedServiceName value to set.
      * @return the RedshiftUnloadSettings object itself.
      */
+    @Generated
     public RedshiftUnloadSettings setS3LinkedServiceName(LinkedServiceReference s3LinkedServiceName) {
         this.s3LinkedServiceName = s3LinkedServiceName;
         return this;
@@ -66,6 +72,7 @@ public final class RedshiftUnloadSettings implements JsonSerializable<RedshiftUn
      * 
      * @return the bucketName value.
      */
+    @Generated
     public Object getBucketName() {
         return this.bucketName;
     }
@@ -78,6 +85,7 @@ public final class RedshiftUnloadSettings implements JsonSerializable<RedshiftUn
      * @param bucketName the bucketName value to set.
      * @return the RedshiftUnloadSettings object itself.
      */
+    @Generated
     public RedshiftUnloadSettings setBucketName(Object bucketName) {
         this.bucketName = bucketName;
         return this;
@@ -86,6 +94,7 @@ public final class RedshiftUnloadSettings implements JsonSerializable<RedshiftUn
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -103,6 +112,7 @@ public final class RedshiftUnloadSettings implements JsonSerializable<RedshiftUn
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RedshiftUnloadSettings.
      */
+    @Generated
     public static RedshiftUnloadSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RedshiftUnloadSettings deserializedRedshiftUnloadSettings = new RedshiftUnloadSettings();

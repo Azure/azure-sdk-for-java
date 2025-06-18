@@ -5,7 +5,6 @@ package com.azure.ai.agents.persistent;
 import com.azure.ai.agents.persistent.models.CreateAgentOptions;
 import com.azure.ai.agents.persistent.models.PersistentAgent;
 import com.azure.ai.agents.persistent.models.PersistentAgentThread;
-import com.azure.ai.agents.persistent.models.ThreadDeletionStatus;
 import com.azure.ai.agents.persistent.models.ToolResources;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.AfterEach;
@@ -20,16 +19,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ThreadsAsyncClientTest extends ClientTestBase {
 
-    private PersistentAgentsAdministrationClientBuilder clientBuilder;
-    private PersistentAgentsAdministrationAsyncClient agentsAsyncClient;
+    private PersistentAgentsClientBuilder clientBuilder;
+    private PersistentAgentsAdministrationAsyncClient administrationAsyncClient;
     private ThreadsAsyncClient threadsAsyncClient;
     private PersistentAgent agent;
     private PersistentAgentThread thread;
 
     private void setup(HttpClient httpClient) {
         clientBuilder = getClientBuilder(httpClient);
-        agentsAsyncClient = clientBuilder.buildAsyncClient();
-        threadsAsyncClient = clientBuilder.buildThreadsAsyncClient();
+        PersistentAgentsAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
+        administrationAsyncClient = agentsAsyncClient.getPersistentAgentsAdministrationAsyncClient();
+        threadsAsyncClient = agentsAsyncClient.getThreadsAsyncClient();
         createAgent();
     }
 
@@ -37,7 +37,7 @@ public class ThreadsAsyncClientTest extends ClientTestBase {
         CreateAgentOptions options
             = new CreateAgentOptions("gpt-4o-mini").setName("TestAgent").setInstructions("You are a helpful agent");
 
-        agent = agentsAsyncClient.createAgent(options).block();
+        agent = administrationAsyncClient.createAgent(options).block();
         assertNotNull(agent, "Persistent agent should not be null");
     }
 
@@ -113,11 +113,7 @@ public class ThreadsAsyncClientTest extends ClientTestBase {
         thread = threadsAsyncClient.createThread().block();
         assertNotNull(thread, "Thread should not be null");
 
-        StepVerifier.create(threadsAsyncClient.deleteThread(thread.getId())).assertNext(deletionStatus -> {
-            assertNotNull(deletionStatus, "Deletion status should not be null");
-            assertTrue(deletionStatus.isDeleted(), "Thread should be deleted");
-            thread = null; // Set to null since we've deleted it
-        }).verifyComplete();
+        StepVerifier.create(threadsAsyncClient.deleteThread(thread.getId())).verifyComplete();
     }
 
     @AfterEach
@@ -125,14 +121,14 @@ public class ThreadsAsyncClientTest extends ClientTestBase {
         if (thread != null) {
             try {
                 // Attempt to delete the thread
-                ThreadDeletionStatus deletionStatus = threadsAsyncClient.deleteThread(thread.getId()).block();
+                threadsAsyncClient.deleteThread(thread.getId()).block();
             } catch (Exception e) {
                 System.out.println("Failed to cleanup thread: " + thread.getId());
                 System.out.println(e.getMessage());
             }
         }
         if (agent != null) {
-            agentsAsyncClient.deleteAgent(agent.getId()).block();
+            administrationAsyncClient.deleteAgent(agent.getId()).block();
         }
     }
 }

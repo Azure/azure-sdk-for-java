@@ -105,7 +105,9 @@ public final class ExpressionRoot extends Expression {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("text", text());
-        jsonWriter.writeUntypedField("value", value());
+        if (value() != null) {
+            jsonWriter.writeUntypedField("value", value());
+        }
         jsonWriter.writeArrayField("subexpressions", subexpressions(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("error", error());
         jsonWriter.writeStringField("path", this.path);

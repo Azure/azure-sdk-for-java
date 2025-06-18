@@ -71,7 +71,7 @@ public final class DigitalTwinModelsImpl {
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureDigitalTwinsAPI")
+    @ServiceInterface(name = "AzureDigitalTwinsAPIDigitalTwinModels")
     public interface DigitalTwinModelsService {
         @Post("/models")
         @ExpectedResponses({ 201 })

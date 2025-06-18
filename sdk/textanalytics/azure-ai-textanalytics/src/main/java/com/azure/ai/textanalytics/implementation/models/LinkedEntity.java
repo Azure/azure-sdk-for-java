@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,41 +21,49 @@ public final class LinkedEntity implements JsonSerializable<LinkedEntity> {
     /*
      * Entity Linking formal name.
      */
+    @Generated
     private String name;
 
     /*
      * List of instances this entity appears in the text.
      */
+    @Generated
     private List<Match> matches;
 
     /*
      * Language used in the data source.
      */
+    @Generated
     private String language;
 
     /*
      * Unique identifier of the recognized entity from the data source.
      */
+    @Generated
     private String id;
 
     /*
      * URL for the entity's page from the data source.
      */
+    @Generated
     private String url;
 
     /*
      * Data source used to extract entity linking, such as Wiki/Bing etc.
      */
+    @Generated
     private String dataSource;
 
     /*
      * Bing Entity Search API unique identifier of the recognized entity.
      */
+    @Generated
     private String bingId;
 
     /**
      * Creates an instance of LinkedEntity class.
      */
+    @Generated
     public LinkedEntity() {
     }
 
@@ -63,6 +72,7 @@ public final class LinkedEntity implements JsonSerializable<LinkedEntity> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -73,6 +83,7 @@ public final class LinkedEntity implements JsonSerializable<LinkedEntity> {
      * @param name the name value to set.
      * @return the LinkedEntity object itself.
      */
+    @Generated
     public LinkedEntity setName(String name) {
         this.name = name;
         return this;
@@ -83,6 +94,7 @@ public final class LinkedEntity implements JsonSerializable<LinkedEntity> {
      * 
      * @return the matches value.
      */
+    @Generated
     public List<Match> getMatches() {
         return this.matches;
     }
@@ -93,6 +105,7 @@ public final class LinkedEntity implements JsonSerializable<LinkedEntity> {
      * @param matches the matches value to set.
      * @return the LinkedEntity object itself.
      */
+    @Generated
     public LinkedEntity setMatches(List<Match> matches) {
         this.matches = matches;
         return this;
@@ -103,6 +116,7 @@ public final class LinkedEntity implements JsonSerializable<LinkedEntity> {
      * 
      * @return the language value.
      */
+    @Generated
     public String getLanguage() {
         return this.language;
     }
@@ -113,6 +127,7 @@ public final class LinkedEntity implements JsonSerializable<LinkedEntity> {
      * @param language the language value to set.
      * @return the LinkedEntity object itself.
      */
+    @Generated
     public LinkedEntity setLanguage(String language) {
         this.language = language;
         return this;
@@ -123,6 +138,7 @@ public final class LinkedEntity implements JsonSerializable<LinkedEntity> {
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -133,6 +149,7 @@ public final class LinkedEntity implements JsonSerializable<LinkedEntity> {
      * @param id the id value to set.
      * @return the LinkedEntity object itself.
      */
+    @Generated
     public LinkedEntity setId(String id) {
         this.id = id;
         return this;
@@ -143,6 +160,7 @@ public final class LinkedEntity implements JsonSerializable<LinkedEntity> {
      * 
      * @return the url value.
      */
+    @Generated
     public String getUrl() {
         return this.url;
     }
@@ -153,6 +171,7 @@ public final class LinkedEntity implements JsonSerializable<LinkedEntity> {
      * @param url the url value to set.
      * @return the LinkedEntity object itself.
      */
+    @Generated
     public LinkedEntity setUrl(String url) {
         this.url = url;
         return this;
@@ -163,6 +182,7 @@ public final class LinkedEntity implements JsonSerializable<LinkedEntity> {
      * 
      * @return the dataSource value.
      */
+    @Generated
     public String getDataSource() {
         return this.dataSource;
     }
@@ -173,6 +193,7 @@ public final class LinkedEntity implements JsonSerializable<LinkedEntity> {
      * @param dataSource the dataSource value to set.
      * @return the LinkedEntity object itself.
      */
+    @Generated
     public LinkedEntity setDataSource(String dataSource) {
         this.dataSource = dataSource;
         return this;
@@ -183,6 +204,7 @@ public final class LinkedEntity implements JsonSerializable<LinkedEntity> {
      * 
      * @return the bingId value.
      */
+    @Generated
     public String getBingId() {
         return this.bingId;
     }
@@ -193,6 +215,7 @@ public final class LinkedEntity implements JsonSerializable<LinkedEntity> {
      * @param bingId the bingId value to set.
      * @return the LinkedEntity object itself.
      */
+    @Generated
     public LinkedEntity setBingId(String bingId) {
         this.bingId = bingId;
         return this;
@@ -201,6 +224,7 @@ public final class LinkedEntity implements JsonSerializable<LinkedEntity> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -223,6 +247,7 @@ public final class LinkedEntity implements JsonSerializable<LinkedEntity> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the LinkedEntity.
      */
+    @Generated
     public static LinkedEntity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LinkedEntity deserializedLinkedEntity = new LinkedEntity();
