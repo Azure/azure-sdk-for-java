@@ -24,7 +24,10 @@ import java.util.concurrent.CountDownLatch;
 
 import static io.clientcore.http.netty4.implementation.Netty4Utility.awaitLatch;
 
-final class Netty4ChannelBinaryData extends BinaryData {
+/**
+ * Implementation of {@link BinaryData} that is backed by a Netty {@link Channel}.
+ */
+public final class Netty4ChannelBinaryData extends BinaryData {
     private static final ClientLogger LOGGER = new ClientLogger(Netty4ChannelBinaryData.class);
     private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
     private static final String TOO_LARGE_FOR_BYTE_ARRAY
@@ -36,10 +39,16 @@ final class Netty4ChannelBinaryData extends BinaryData {
     // Non-final to allow nulling out after use.
     private ByteArrayOutputStream eagerContent;
 
-    private volatile boolean channelDone;
     private volatile byte[] bytes;
 
-    Netty4ChannelBinaryData(ByteArrayOutputStream eagerContent, Channel channel, Long length) {
+    /**
+     * Creates an instance of {@link Netty4ChannelBinaryData}.
+     *
+     * @param eagerContent Response body content that was eagerly read by Netty while processing the HTTP headers.
+     * @param channel The Netty {@link Channel}.
+     * @param length Size of the response body (if known).
+     */
+    public Netty4ChannelBinaryData(ByteArrayOutputStream eagerContent, Channel channel, Long length) {
         this.eagerContent = eagerContent;
         this.channel = channel;
         this.length = length;
@@ -53,13 +62,23 @@ final class Netty4ChannelBinaryData extends BinaryData {
 
         if (bytes == null) {
             CountDownLatch latch = new CountDownLatch(1);
-            channel.pipeline()
-                .addLast(Netty4HandlerNames.EAGER_CONSUME, new Netty4EagerConsumeChannelHandler(latch,
-                    buf -> buf.readBytes(eagerContent, buf.readableBytes())));
+            Netty4EagerConsumeChannelHandler handler
+                = new Netty4EagerConsumeChannelHandler(latch, buf -> buf.readBytes(eagerContent, buf.readableBytes()));
+            channel.pipeline().addLast(Netty4HandlerNames.EAGER_CONSUME, handler);
+            channel.config().setAutoRead(true);
 
             awaitLatch(latch);
-            channelDone = true;
-            bytes = eagerContent.toByteArray();
+
+            Throwable exception = handler.channelException();
+            if (exception != null) {
+                if (exception instanceof Error) {
+                    throw (Error) exception;
+                } else {
+                    throw CoreException.from(exception);
+                }
+            } else {
+                bytes = eagerContent.toByteArray();
+            }
             eagerContent = null;
         }
 
@@ -110,12 +129,21 @@ final class Netty4ChannelBinaryData extends BinaryData {
                 }
 
                 CountDownLatch latch = new CountDownLatch(1);
-                channel.pipeline()
-                    .addLast(Netty4HandlerNames.EAGER_CONSUME, new Netty4EagerConsumeChannelHandler(latch,
-                        buf -> buf.readBytes(outputStream, buf.readableBytes())));
+                Netty4EagerConsumeChannelHandler handler = new Netty4EagerConsumeChannelHandler(latch,
+                    buf -> buf.readBytes(outputStream, buf.readableBytes()));
+                channel.pipeline().addLast(Netty4HandlerNames.EAGER_CONSUME, handler);
+                channel.config().setAutoRead(true);
 
                 awaitLatch(latch);
-                channelDone = true;
+
+                Throwable exception = handler.channelException();
+                if (exception != null) {
+                    if (exception instanceof Error) {
+                        throw (Error) exception;
+                    } else {
+                        throw CoreException.from(exception);
+                    }
+                }
                 eagerContent = null;
             } else {
                 // Already converted the Channel to a byte[], use it.
@@ -154,8 +182,7 @@ final class Netty4ChannelBinaryData extends BinaryData {
     @Override
     public void close() {
         eagerContent = null;
-        if (!channelDone) {
-            channel.close();
-        }
+        channel.disconnect();
+        channel.close();
     }
 }

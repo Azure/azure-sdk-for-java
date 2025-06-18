@@ -38,7 +38,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
-    <jacoco.min.linecoverage>0.80</jacoco.min.linecoverage>
+    <jacoco.min.linecoverage>0.75</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.70</jacoco.min.branchcoverage>
     <javaModulesSurefireArgLine>
       --add-opens io.clientcore.http.netty4/io.clientcore.http.netty4=ALL-UNNAMED

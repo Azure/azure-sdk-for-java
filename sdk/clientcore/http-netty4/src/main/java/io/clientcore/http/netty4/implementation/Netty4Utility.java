@@ -109,7 +109,7 @@ public final class Netty4Utility {
      *
      * @param latch The latch to wait for.
      */
-    static void awaitLatch(CountDownLatch latch) {
+    public static void awaitLatch(CountDownLatch latch) {
         try {
             latch.await();
         } catch (InterruptedException e) {

@@ -5,6 +5,7 @@ package io.clientcore.http.netty4.implementation;
 import io.netty.channel.Channel;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.concurrent.CountDownLatch;
@@ -53,6 +54,9 @@ public final class Netty4ChannelInputStream extends InputStream {
         this.readIndex = 0;
         this.additionalBuffers = new LinkedList<>();
         this.channel = channel;
+        if (channel.pipeline().get(Netty4InitiateOneReadHandler.class) != null) {
+            channel.pipeline().remove(Netty4InitiateOneReadHandler.class);
+        }
     }
 
     byte[] getCurrentBuffer() {
@@ -60,7 +64,7 @@ public final class Netty4ChannelInputStream extends InputStream {
     }
 
     @Override
-    public int read() {
+    public int read() throws IOException {
         if (streamDone) {
             return -1;
         }
@@ -81,12 +85,12 @@ public final class Netty4ChannelInputStream extends InputStream {
     }
 
     @Override
-    public int read(byte[] b) {
+    public int read(byte[] b) throws IOException {
         return read(b, 0, b.length);
     }
 
     @Override
-    public int read(byte[] b, int off, int len) {
+    public int read(byte[] b, int off, int len) throws IOException {
         if (streamDone) {
             return -1;
         }
@@ -127,7 +131,7 @@ public final class Netty4ChannelInputStream extends InputStream {
     }
 
     @Override
-    public long skip(long n) {
+    public long skip(long n) throws IOException {
         if (streamDone) {
             return 0;
         }
@@ -164,14 +168,11 @@ public final class Netty4ChannelInputStream extends InputStream {
     public void close() {
         currentBuffer = null;
         additionalBuffers.clear();
-        if (!channelDone) {
-            // Close the Channel, the Channel will handle counting down the latch for the read operation if it is
-            // happening when close is called.
-            channel.close();
-        }
+        channel.disconnect();
+        channel.close();
     }
 
-    private boolean setupNextBuffer() {
+    private boolean setupNextBuffer() throws IOException {
         if (!additionalBuffers.isEmpty()) {
             currentBuffer = additionalBuffers.pop();
             readIndex = 0;
@@ -188,7 +189,7 @@ public final class Netty4ChannelInputStream extends InputStream {
     // If more data was read true will be returned, otherwise false will be returned indicating the Channel has no more
     // data is fully read.
     // This method should only be called when 'additionalBuffers' is empty and 'currentBuffer' has been fully consumed.
-    private boolean readMore() {
+    private boolean readMore() throws IOException {
         // Channel has been fully read, cannot retrieve anymore data from it.
         if (channelDone) {
             return false;
@@ -200,10 +201,9 @@ public final class Netty4ChannelInputStream extends InputStream {
             return false;
         }
 
-        // Run reading the Channel in a loop, just in case all reads return empty data but the Channel doesn't complete.
-        while (additionalBuffers.isEmpty() && !channelDone) {
-            CountDownLatch latch = new CountDownLatch(1);
-            Netty4InitiateOneReadHandler handler = new Netty4InitiateOneReadHandler(latch, byteBuf -> {
+        Netty4InitiateOneReadHandler handler = channel.pipeline().get(Netty4InitiateOneReadHandler.class);
+        if (handler == null) {
+            handler = new Netty4InitiateOneReadHandler(null, byteBuf -> {
                 // No need to check if the ByteBuf is readable as that is handled by Netty4InitiateOneReadHandler's
                 // channelRead method.
                 byte[] buffer = new byte[byteBuf.readableBytes()];
@@ -212,12 +212,28 @@ public final class Netty4ChannelInputStream extends InputStream {
                 additionalBuffers.add(buffer);
             });
             channel.pipeline().addLast(Netty4HandlerNames.READ_ONE, handler);
+        }
+
+        // Run reading the Channel in a loop, just in case all reads return empty data but the Channel doesn't complete.
+        while (additionalBuffers.isEmpty() && !channelDone) {
+            CountDownLatch latch = new CountDownLatch(1);
+            handler.setLatch(latch);
             channel.read();
 
             Netty4Utility.awaitLatch(latch);
 
             // Check to see if we've reach the end of the Channel.
             channelDone = handler.isChannelConsumed();
+            Throwable exception = handler.channelException();
+            if (exception != null) {
+                if (exception instanceof Error) {
+                    throw (Error) exception;
+                } else if (exception instanceof IOException) {
+                    throw (IOException) exception;
+                } else {
+                    throw new IOException(exception);
+                }
+            }
         }
 
         if (!additionalBuffers.isEmpty()) {

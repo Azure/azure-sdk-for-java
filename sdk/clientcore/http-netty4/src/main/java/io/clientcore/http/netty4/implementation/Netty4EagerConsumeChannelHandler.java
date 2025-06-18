@@ -24,6 +24,7 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
     private final IOExceptionCheckedConsumer<ByteBuf> byteBufConsumer;
 
     private boolean lastRead;
+    private Throwable exception;
 
     /**
      * Creates a new instance of {@link Netty4EagerConsumeChannelHandler}.
@@ -34,11 +35,6 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
     public Netty4EagerConsumeChannelHandler(CountDownLatch latch, IOExceptionCheckedConsumer<ByteBuf> byteBufConsumer) {
         this.latch = latch;
         this.byteBufConsumer = byteBufConsumer;
-    }
-
-    @Override
-    public void handlerAdded(ChannelHandlerContext ctx) {
-        ctx.channel().config().setAutoRead(true);
     }
 
     @Override
@@ -75,8 +71,13 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        this.exception = cause;
         latch.countDown();
-        ctx.fireExceptionCaught(cause);
+        ctx.close();
+    }
+
+    Throwable channelException() {
+        return exception;
     }
 
     // TODO (alzimmer): Are the latch countdowns needed for unregistering and inactivity?
