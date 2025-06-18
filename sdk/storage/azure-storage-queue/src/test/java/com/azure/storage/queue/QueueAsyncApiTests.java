@@ -21,7 +21,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -926,20 +925,13 @@ public class QueueAsyncApiTests extends QueueTestBase {
     @SuppressWarnings("deprecation")
     @Test
     public void getPropertiesApproximateMessagesCountOverflow() {
-        QueueAsyncClient mockAsyncClient = Mockito.mock(QueueAsyncClient.class);
-        QueueProperties queueProperties = Mockito.mock(QueueProperties.class);
+        QueueProperties properties = new QueueProperties(null, Long.MAX_VALUE);
+        Mono<QueueProperties> asyncResponse = Mono.just(properties);
 
-        Mockito.when(queueProperties.getApproximateMessagesCountLong()).thenReturn(Long.MAX_VALUE);
-        Mockito.when(queueProperties.getApproximateMessagesCount())
-            .thenThrow(new ArithmeticException("integer overflow"));
-
-        Mockito.when(mockAsyncClient.getProperties()).thenReturn(Mono.just(queueProperties));
-
-        StepVerifier.create(mockAsyncClient.getProperties()).assertNext(response -> {
-            assertNotNull(response);
+        StepVerifier.create(asyncResponse).assertNext(response -> {
             assertEquals(Long.MAX_VALUE, response.getApproximateMessagesCountLong());
-            assertThrows(ArithmeticException.class, () -> response.getApproximateMessagesCount());
+            int expectedOverflowValue = (int) Long.MAX_VALUE;
+            assertEquals(expectedOverflowValue, response.getApproximateMessagesCount());
         }).verifyComplete();
     }
-
 }
