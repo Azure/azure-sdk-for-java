@@ -10,6 +10,7 @@
 - Supported `beginDeleteByResourceGroup` and `beginDeleteById` in `Snapshots`.
 - Supported `beginCreate(Context)` in `Disk`.
 - Supported `beginDeleteByResourceGroup(Context)` and `beginDeleteById(Context)` in `Disks`.
+- Supported `getPrimaryNetworkInterface(Context)` in `VirtualMachine`.
 
 ### Breaking Changes
 
