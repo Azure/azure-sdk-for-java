@@ -497,6 +497,7 @@ com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-privatel
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
 com.azure.v2:azure-client-sdk-parent;2.0.0-beta.1;2.0.0-beta.1
+com.azure.v2:azure-perf-test-parent;2.0.0-beta.1;2.0.0-beta.1
 com.azure.v2:azure-core;2.0.0-beta.1;2.0.0-beta.1
 com.azure.v2:azure-core-test;2.0.0-beta.1;2.0.0-beta.1
 com.azure.v2:azure-data-appconfiguration;2.0.0-beta.1;2.0.0-beta.1
@@ -506,6 +507,7 @@ com.azure.v2:azure-security-keyvault-certificates;5.0.0-beta.1;5.0.0-beta.1
 com.azure.v2:azure-security-keyvault-secrets;5.0.0-beta.1;5.0.0-beta.1
 com.azure.v2:azure-security-keyvault-keys;5.0.0-beta.1;5.0.0-beta.1
 com.azure.v2:azure-storage-blob;13.0.0-beta.1;13.0.0-beta.1
+com.azure.v2:azure-storage-perf;2.0.0-beta.1;2.0.0-beta.1
 io.clientcore:clientcore-parent;1.0.0-beta.3;1.0.0-beta.3
 io.clientcore:core;1.0.0-beta.10;1.0.0-beta.11
 io.clientcore:http-netty4;1.0.0-beta.1;1.0.0-beta.1
@@ -526,6 +528,7 @@ io.clientcore:annotation-processor-test;1.0.0-beta.1;1.0.0-beta.1
 
 unreleased_com.azure.v2:azure-core;2.0.0-beta.1
 unreleased_com.azure.v2:azure-identity;2.0.0-beta.1
+unreleased_io.clientcore:http-netty4;1.0.0-beta.1
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid
