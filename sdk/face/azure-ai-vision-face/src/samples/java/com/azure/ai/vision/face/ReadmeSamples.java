@@ -27,7 +27,6 @@ import java.util.UUID;
 import com.azure.ai.vision.face.models.FaceLivenessDecision;
 import com.azure.ai.vision.face.models.LivenessWithVerifyOutputs;
 import com.azure.ai.vision.face.models.LivenessWithVerifySessionAttempt;
-import com.azure.ai.vision.face.models.LivenessWithVerifySessionResults;
 import com.azure.ai.vision.face.models.VerifyImageFileDetails;
 
 public final class ReadmeSamples {
@@ -115,7 +114,7 @@ public final class ReadmeSamples {
                 && session.getResults().getAttempts() != null
                 && !session.getResults().getAttempts().isEmpty()) {
 
-            if (session.getResults().getAttempts().get(0).getResult() != null){
+            if (session.getResults().getAttempts().get(0).getResult() != null) {
                 FaceLivenessDecision decision = session.getResults().getAttempts().get(0).getResult().getLivenessDecision();
                 System.out.println("First Attempt Result: " + decision);
             }

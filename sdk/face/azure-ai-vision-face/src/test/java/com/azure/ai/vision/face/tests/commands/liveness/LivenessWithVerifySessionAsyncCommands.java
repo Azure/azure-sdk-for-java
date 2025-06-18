@@ -7,7 +7,6 @@ import com.azure.ai.vision.face.FaceSessionAsyncClient;
 import com.azure.ai.vision.face.models.CreateLivenessWithVerifySessionContent;
 import com.azure.ai.vision.face.models.LivenessWithVerifySession;
 import com.azure.ai.vision.face.tests.function.FunctionUtils;
-import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
 
 class LivenessWithVerifySessionAsyncCommands implements ILivenessWithVerifySessionSyncCommands {

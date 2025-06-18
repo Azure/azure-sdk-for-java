@@ -33,10 +33,9 @@ import java.util.UUID;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import com.azure.ai.vision.face.models.LivenessSession;
 import com.azure.ai.vision.face.models.VerifyImageFileDetails;
 
-// @DisplayNameGeneration(FaceDisplayNameGenerator.class)
+@DisplayNameGeneration(FaceDisplayNameGenerator.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @RecordWithoutRequestBody
 public class LivenessSessionWithVerifyTest extends FaceClientTestBase {

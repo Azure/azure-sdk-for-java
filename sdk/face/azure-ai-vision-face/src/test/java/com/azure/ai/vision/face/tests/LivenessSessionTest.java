@@ -27,7 +27,7 @@ import java.util.UUID;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-// @DisplayNameGeneration(FaceDisplayNameGenerator.class)
+@DisplayNameGeneration(FaceDisplayNameGenerator.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class LivenessSessionTest extends FaceClientTestBase {
     private ILivenessSessionSyncCommands mCurrentCommand;

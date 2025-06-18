@@ -17,7 +17,6 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.List;
 import java.util.UUID;
 
-import com.azure.ai.vision.face.models.LivenessSessionAttempt;
 import com.azure.ai.vision.face.models.LivenessWithVerifySessionAttempt;
 import com.azure.ai.vision.face.models.VerifyImageFileDetails;
 import static com.azure.ai.vision.face.samples.utils.Utils.log;
