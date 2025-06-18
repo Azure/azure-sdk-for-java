@@ -6,8 +6,7 @@ import org.openrewrite.java.JavaIsoVisitor;
 import org.openrewrite.java.JavaTemplate;
 import org.openrewrite.java.MethodMatcher;
 import org.openrewrite.java.tree.J;
-
-import com.azure.openrewrite.util.ConfiguredParserJavaTemplateBuilder;
+import org.openrewrite.java.tree.Space;
 
 /**
  * A custom OpenRewrite recipe to migrate the use of HttpHeaders.
@@ -60,11 +59,12 @@ public class HttpHeadersCustomRecipe extends Recipe {
 
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpHeaders add(java.lang.String, java.lang.String)");
                 if (methodMatcher.matches(visitedMethodInvocation, true)) {
-                    replacementTemplate = templateBuilder.getJavaTemplateBuilder("add(#{any(io.clientcore.core.http.models.HttpHeaderName)}, #{any(java.lang.String)})")
+                    replacementTemplate = templateBuilder.getJavaTemplateBuilder("add(HttpHeaderName.fromString(#{any(java.lang.String)}), #{any(java.lang.String)})")
                         .imports("io.clientcore.core.http.models.HttpHeaderName")
                         .build();
                     visitedMethodInvocation = replacementTemplate.apply(updateCursor(visitedMethodInvocation), visitedMethodInvocation.getCoordinates().replaceMethod(), visitedMethodInvocation.getArguments().toArray());
                     maybeAddImport("io.clientcore.core.http.models.HttpHeaderName");
+                    return visitedMethodInvocation;
                 }
 
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpHeaders put(java.lang.String, java.lang.String)");
@@ -74,25 +74,31 @@ public class HttpHeadersCustomRecipe extends Recipe {
                         .build();
                     visitedMethodInvocation = replacementTemplate.apply(updateCursor(visitedMethodInvocation), visitedMethodInvocation.getCoordinates().replaceMethod(), visitedMethodInvocation.getArguments().toArray());
                     maybeAddImport("io.clientcore.core.http.models.HttpHeaderName");
+                    return visitedMethodInvocation;
                 }
 
-                methodMatcher = new MethodMatcher("com.azure.core.http.HttpHeaders set(java.lang.String, java.lang.String)");
+                methodMatcher = new MethodMatcher("com.azure.core.http.HttpHeaders set(java.lang.String, ..)");
                 if (methodMatcher.matches(visitedMethodInvocation, true)) {
                     replacementTemplate = templateBuilder.getJavaTemplateBuilder("set(HttpHeaderName.fromString(#{any(java.lang.String)}), #{any(java.lang.String)})")
                         .imports("io.clientcore.core.http.models.HttpHeaderName")
                         .build();
                     visitedMethodInvocation = replacementTemplate.apply(updateCursor(visitedMethodInvocation), visitedMethodInvocation.getCoordinates().replaceMethod(), visitedMethodInvocation.getArguments().toArray());
                     maybeAddImport("io.clientcore.core.http.models.HttpHeaderName");
+                    return visitedMethodInvocation;
                 }
 
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpHeaders setAll(java.util.Map)");
                 if (methodMatcher.matches(visitedMethodInvocation, true)) {
-                    replacementTemplate = templateBuilder.getJavaTemplateBuilder("setAll(#{any(java.util.Map)}.entrySet().stream().collect(HttpHeaders::new, (newHeaders, entry) -> newHeaders.set(HttpHeaderName.fromString(entry.getKey()), entry.getValue() instanceof java.util.List ? (java.util.List<String>) entry.getValue() : java.util.Collections.singletonList(entry.getValue().toString())), HttpHeaders::setAll))")
+                    replacementTemplate = templateBuilder.getJavaTemplateBuilder("setAll(#{any(java.util.Map)}.entrySet().stream().collect(\n" +
+                    "HttpHeaders::new,\n" +
+                    "(newHeaders, entry) -> newHeaders.set(HttpHeaderName.fromString(entry.getKey()), entry.getValue()),\n" +
+                    "HttpHeaders::setAll\n))")
                         .imports("io.clientcore.core.http.models.HttpHeaders", "io.clientcore.core.http.models.HttpHeaderName", "java.util.Collections")
                         .build();
                     visitedMethodInvocation = replacementTemplate.apply(updateCursor(visitedMethodInvocation), visitedMethodInvocation.getCoordinates().replaceMethod(), visitedMethodInvocation.getArguments().toArray());
                     maybeAddImport("io.clientcore.core.http.models.HttpHeaders");
                     maybeAddImport("io.clientcore.core.http.models.HttpHeaderName");
+                    return visitedMethodInvocation;
                 }
 
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpHeaders get(java.lang.String)");
@@ -102,6 +108,7 @@ public class HttpHeadersCustomRecipe extends Recipe {
                         .build();
                     visitedMethodInvocation = replacementTemplate.apply(updateCursor(visitedMethodInvocation), visitedMethodInvocation.getCoordinates().replaceMethod(), visitedMethodInvocation.getArguments().toArray());
                     maybeAddImport("io.clientcore.core.http.models.HttpHeaderName");
+                    return visitedMethodInvocation;
                 }
 
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpHeaders remove(java.lang.String)");
@@ -111,6 +118,7 @@ public class HttpHeadersCustomRecipe extends Recipe {
                         .build();
                     visitedMethodInvocation = replacementTemplate.apply(updateCursor(visitedMethodInvocation), visitedMethodInvocation.getCoordinates().replaceMethod(), visitedMethodInvocation.getArguments().toArray());
                     maybeAddImport("io.clientcore.core.http.models.HttpHeaderName");
+                    return visitedMethodInvocation;
                 }
 
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpHeaders getValue(java.lang.String)");
@@ -120,6 +128,7 @@ public class HttpHeadersCustomRecipe extends Recipe {
                         .build();
                     visitedMethodInvocation = replacementTemplate.apply(updateCursor(visitedMethodInvocation), visitedMethodInvocation.getCoordinates().replaceMethod(), visitedMethodInvocation.getArguments().toArray());
                     maybeAddImport("io.clientcore.core.http.models.HttpHeaderName");
+                    return visitedMethodInvocation;
                 }
 
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpHeaders getValues(java.lang.String)");
@@ -127,17 +136,24 @@ public class HttpHeadersCustomRecipe extends Recipe {
                     replacementTemplate = templateBuilder.getJavaTemplateBuilder("getValues(HttpHeaderName.fromString(#{any(java.lang.String)}))")
                         .imports("io.clientcore.core.http.models.HttpHeaderName")
                         .build();
-                    visitedMethodInvocation = replacementTemplate.apply(updateCursor(visitedMethodInvocation), visitedMethodInvocation.getCoordinates().replaceMethod(), visitedMethodInvocation.getArguments().toArray());
+                    J.MethodInvocation methodInvocation = replacementTemplate.apply(updateCursor(visitedMethodInvocation), visitedMethodInvocation.getCoordinates().replaceMethod(), visitedMethodInvocation.getArguments().toArray());
+                    visitedMethodInvocation = methodInvocation.withSelect(visitedMethodInvocation.getSelect());
+                    replacementTemplate = templateBuilder.getJavaTemplateBuilder("toArray(new String[0])").build();
+                    methodInvocation = replacementTemplate.apply(getCursor(), visitedMethodInvocation.getCoordinates().replaceMethod());
+                    visitedMethodInvocation = methodInvocation.withSelect(visitedMethodInvocation).withPrefix(Space.EMPTY);
                     maybeAddImport("io.clientcore.core.http.models.HttpHeaderName");
+                    return visitedMethodInvocation;
                 }
 
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpHeaders getValues(com.azure.core.http.HttpHeaderName)");
                 if (methodMatcher.matches(visitedMethodInvocation, true)) {
-                    replacementTemplate = templateBuilder.getJavaTemplateBuilder("getValues(#{any(io.clientcore.core.http.models.HttpHeaderName)})")
+                    replacementTemplate = templateBuilder.getJavaTemplateBuilder("toArray(new String[0])")
                         .imports("io.clientcore.core.http.models.HttpHeaderName")
                         .build();
-                    visitedMethodInvocation = replacementTemplate.apply(updateCursor(visitedMethodInvocation), visitedMethodInvocation.getCoordinates().replaceMethod(), visitedMethodInvocation.getArguments().toArray());
+                    J.MethodInvocation methodInvocation = replacementTemplate.apply(updateCursor(visitedMethodInvocation), visitedMethodInvocation.getCoordinates().replace());
+                    visitedMethodInvocation = methodInvocation.withSelect(visitedMethodInvocation).withPrefix(Space.EMPTY);
                     maybeAddImport("io.clientcore.core.http.models.HttpHeaderName");
+                    return visitedMethodInvocation;
                 }
 
                 return visitedMethodInvocation;
