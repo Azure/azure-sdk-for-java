@@ -7,18 +7,30 @@ trigger:
       - /sdk/tools/azure-openrewrite/
       - /sdk/tools/azure-openrewrite-compiler-maven-plugin/
 
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - /sdk/tools/azure-openrewrite/
+      - /sdk/tools/azure-openrewrite-compiler-maven-plugin/
+
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
   parameters:
-    stages: 
+    stages:
       - stage: CompileSamples
-        variables: 
+        variables:
           - template: /eng/pipelines/templates/variables/globals.yml
           - template: /eng/pipelines/templates/variables/image.yml
 
         jobs:
           - job: OpenRewriteCompilerPlugin
-            pool: 
+            pool:
               name: $(LINUXPOOL)
               image: $(LINUXVMIMAGE)
               os: linux
@@ -43,7 +55,7 @@ extends:
                   options: '-pl com.azure.v2:azure-core,com.azure:perf-test-core,com.azure:azure-openrewrite-compiler-maven-plugin -am -T 1C -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip --no-transfer-progress'
                   javaHomeOption: 'JDKVersion'
                   jdkVersionOption: '1.8'
-              
+
               - task: Maven@3
                 displayName: 'Run Golden Image Compiler on OpenRewrite Samples'
                 inputs:
