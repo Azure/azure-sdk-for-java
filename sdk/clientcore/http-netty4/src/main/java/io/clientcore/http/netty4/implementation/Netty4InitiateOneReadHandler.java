@@ -13,7 +13,6 @@ import io.netty.util.ReferenceCountUtil;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
-import java.util.function.Consumer;
 
 /**
  * {@link ChannelInboundHandler} that initiates one read request any time data is needed. Even though it is a single
@@ -60,7 +59,6 @@ public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAda
                 byteBufConsumer.accept(buf);
             } catch (IOException ex) {
                 ReferenceCountUtil.release(buf);
-                ctx.fireExceptionCaught(ex);
                 ctx.close();
                 return;
             }

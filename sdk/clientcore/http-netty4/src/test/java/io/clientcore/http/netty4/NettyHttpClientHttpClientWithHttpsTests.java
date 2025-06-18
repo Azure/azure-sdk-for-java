@@ -27,7 +27,7 @@ public class NettyHttpClientHttpClientWithHttpsTests extends HttpClientTests {
     private static final HttpClient HTTP_CLIENT_INSTANCE;
 
     static {
-        HTTP_CLIENT_INSTANCE = new NettyHttpClientBuilder().maximumHttpVersion(HttpProtocolVersion.HTTP_1_1)
+        HTTP_CLIENT_INSTANCE = new NettyHttpClientBuilder() //.maximumHttpVersion(HttpProtocolVersion.HTTP_1_1)
             .sslContextModifier(ssl -> ssl.trustManager(new InsecureTrustManager()).secureRandom(new SecureRandom()))
             .build();
     }

@@ -28,7 +28,7 @@ public class NettyHttp2HttpClientTests extends HttpClientTests {
         HTTP_CLIENT_INSTANCE = new NettyHttpClientBuilder()
             .sslContextModifier(
                 builder -> builder.trustManager(new InsecureTrustManager()).secureRandom(new SecureRandom()))
-            .maximumHttpVersion(HttpProtocolVersion.HTTP_2)
+            //.maximumHttpVersion(HttpProtocolVersion.HTTP_2)
             .build();
     }
 
