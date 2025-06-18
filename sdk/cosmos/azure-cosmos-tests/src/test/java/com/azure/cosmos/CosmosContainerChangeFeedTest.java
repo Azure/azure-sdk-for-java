@@ -106,7 +106,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
     @DataProvider(name = "changeFeedQueryEndLSNDataProvider")
     public static Object[][] changeFeedQueryEndLSNDataProvider() {
         return new Object[][]{
-                // container RU, continuous ingest items, partition count
+                // container RU, continuous ingest items
                 // number of docs from cf, documents to write
 
                 // endLSN is less than number of documents
