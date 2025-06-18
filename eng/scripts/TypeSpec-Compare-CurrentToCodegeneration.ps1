@@ -47,7 +47,8 @@ function TypeSpec-Compare-CurrentToCodegeneration {
     $ServiceDirectory
   )
 
-  $ServiceDirectory = $ServiceDirectory | Where-Object { -not $_.EndsWith("-v2") }
+  Write-Host "ServiceDirectory provided $ServiceDirectory"
+  $ServiceDirectory = $ServiceDirectory | Where-Object { -not $_.Contains("-v2") }
   $tspYamls = Get-ChildItem -Path $ServiceDirectory -Filter "tsp-location.yaml" -Recurse
   if ($tspYamls.Count -eq 0) {
     Write-Host "$SeparatorBars"
