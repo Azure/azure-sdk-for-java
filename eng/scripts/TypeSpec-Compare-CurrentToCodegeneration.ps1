@@ -49,7 +49,7 @@ function TypeSpec-Compare-CurrentToCodegeneration {
 
   if ($ServiceDirectory.Contains("-v2")) {
     Write-Host "$SeparatorBars"
-    Write-Host "ServiceDirectory if V2 which isn't supported at this time: $ServiceDirectory"
+    Write-Host "ServiceDirectory is V2 which isn't supported at this time: $ServiceDirectory"
     Write-Host "$SeparatorBars"
     return $false
   }
