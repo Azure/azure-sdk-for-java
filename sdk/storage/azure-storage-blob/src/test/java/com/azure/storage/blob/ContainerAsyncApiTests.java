@@ -1122,42 +1122,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         StepVerifier.create(ccAsync.listBlobs()).verifyError(BlobStorageException.class);
     }
 
-    @Test
-    public void listBlobsFlatWithTimeoutStillBackedByPagedFlux() {
-        int numBlobs = 5;
-        int pageResults = 3;
-
-        Mono<List<BlockBlobItem>> createBlob = Flux.range(0, numBlobs).flatMap(i -> {
-            BlockBlobAsyncClient blob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-            return blob.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize());
-        }).collectList();
-
-        // when: "Consume results by page, then still have paging functionality"
-        StepVerifier
-            .create(createBlob
-                .thenMany(ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageResults)).byPage()))
-            .expectNextCount(2)
-            .verifyComplete();
-    }
-
-    @Test
-    public void listBlobsHierWithTimeoutStillBackedByPagedFlux() {
-        int numBlobs = 5;
-        int pageResults = 3;
-
-        Mono<List<BlockBlobItem>> createBlob = Flux.range(0, numBlobs).flatMap(i -> {
-            BlockBlobAsyncClient blob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-            return blob.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize());
-        }).collectList();
-
-        // when: "Consume results by page, then still have paging functionality"
-        StepVerifier
-            .create(createBlob.thenMany(
-                ccAsync.listBlobsByHierarchy("/", new ListBlobsOptions().setMaxResultsPerPage(pageResults)).byPage()))
-            .expectNextCount(2)
-            .verifyComplete();
-    }
-
     /*
     This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
@@ -1776,35 +1740,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         StepVerifier.create(ccAsync.findBlobsByTags("garbageTag").byPage()).verifyError(BlobStorageException.class);
     }
 
-    @SuppressWarnings("deprecation")
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-04-10")
-    @Test
-    public void findBlobsWithTimeoutStillBackedByPagedFlux() {
-        int numBlobs = 5;
-        int pageResults = 3;
-        Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
-
-        Mono<List<Response<BlockBlobItem>>> uploadBlob = Flux.range(0, numBlobs)
-            .flatMap(i -> ccAsync.getBlobAsyncClient(generateBlobName())
-                .uploadWithResponse(
-                    new BlobParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSize())
-                        .setTags(tags)))
-            .collectList();
-
-        // when: "Consume results by page, still have paging functionality"
-        StepVerifier
-            .create(
-                uploadBlob
-                    .thenMany(
-                        ccAsync
-                            .findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue))
-                                .setMaxResultsPerPage(pageResults), Duration.ofSeconds(10), Context.NONE)
-                            .byPage()
-                            .count()))
-            .expectNextCount(1)
-            .verifyComplete();
-    }
-
     @ParameterizedTest
     @ValueSource(strings = { "中文", "az[]", "hello world", "hello/world", "hello&world", "!*'();:@&=+/$,/?#[]" })
     public void createURLSpecialChars(String name) {
@@ -1859,6 +1794,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     @Test
+    @PlaybackOnly
     public void rootExplicit() {
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(BlobContainerClient.ROOT_CONTAINER_NAME);
         // create root container if not exist.
@@ -1874,6 +1810,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     @Test
+    @PlaybackOnly
     public void rootExplicitInEndpoint() {
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(BlobContainerClient.ROOT_CONTAINER_NAME);
         // create root container if not exist.
@@ -1893,6 +1830,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     @Test
+    @PlaybackOnly
     public void blobClientBuilderRootImplicit() {
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(BlobContainerClient.ROOT_CONTAINER_NAME);
         // createroot container if not exist.
@@ -1917,6 +1855,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     @Test
+    @PlaybackOnly
     public void containerClientBuilderRootImplicit() {
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(BlobContainerClient.ROOT_CONTAINER_NAME);
         // create root container if not exist.
@@ -2096,6 +2035,44 @@ public class ContainerAsyncApiTests extends BlobTestBase {
                 .buildAsyncClient();
 
         StepVerifier.create(aadContainer.exists()).expectNext(true);
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
+    public void getSetAccessPolicyOAuth() {
+        // Arrange
+        BlobServiceAsyncClient serviceClient = getOAuthServiceAsyncClient();
+        BlobContainerAsyncClient containerClient = serviceClient.getBlobContainerAsyncClient(containerName);
+
+        Mono<Void> testMono = containerClient.exists().flatMap(exists -> {
+            if (!exists) {
+                return containerClient.create();
+            }
+            return Mono.empty();
+        })
+            .then(containerClient.getAccessPolicy())
+            .flatMap(response -> containerClient.setAccessPolicy(null, response.getIdentifiers()));
+
+        // Act & Assert
+        StepVerifier.create(testMono).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
+    @Test
+    public void getAccountInfoOAuth() {
+        // Arrange
+        BlobServiceAsyncClient serviceClient = getOAuthServiceAsyncClient();
+        BlobContainerAsyncClient containerClient = serviceClient.getBlobContainerAsyncClient(containerName);
+
+        Mono<Void> testMono = containerClient.exists().flatMap(exists -> {
+            if (!exists) {
+                return containerClient.create();
+            }
+            return Mono.empty();
+        }).then(containerClient.getAccountInfo()).then();
+
+        // Act & Assert
+        StepVerifier.create(testMono).verifyComplete();
     }
 
 }

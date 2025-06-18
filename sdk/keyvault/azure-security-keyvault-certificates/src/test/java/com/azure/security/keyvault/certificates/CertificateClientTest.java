@@ -186,7 +186,8 @@ public class CertificateClientTest extends CertificateClientTestBase {
     public void createCertificateNull(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateClient(httpClient, serviceVersion);
 
-        assertThrows(NullPointerException.class, () -> certificateClient.beginCreateCertificate(null, null));
+        assertThrows(NullPointerException.class,
+            () -> certificateClient.beginCreateCertificate(null, CertificatePolicy.getDefault()));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -883,7 +884,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
             KeyVaultCertificateWithPolicy importedCertificate
                 = certificateClient.importCertificate(importCertificateOptions);
 
-            assertTrue("73b4319cdf38e0797084535d9c02fd04d4b2b2e6"
+            assertTrue("931dd8219585752bc915684ca3967974c400de28"
                 .equalsIgnoreCase(importedCertificate.getProperties().getX509ThumbprintAsString()));
             assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
 
@@ -969,8 +970,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void importPemCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion)
-        throws IOException {
+    public void importPemCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateClient(httpClient, serviceVersion);
 
         importPemCertificateRunner((importCertificateOptions) -> {

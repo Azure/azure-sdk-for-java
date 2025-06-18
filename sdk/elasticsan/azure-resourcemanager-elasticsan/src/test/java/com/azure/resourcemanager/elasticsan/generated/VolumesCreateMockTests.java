@@ -6,8 +6,8 @@ package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
 import com.azure.resourcemanager.elasticsan.models.ManagedByInfo;
@@ -24,27 +24,27 @@ public final class VolumesCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"volumeId\":\"msweypqwdxggicc\",\"creationData\":{\"createSource\":\"DiskSnapshot\",\"sourceId\":\"uexmkttlst\"},\"sizeGiB\":7893862569434986458,\"storageTarget\":{\"targetIqn\":\"emhzrncsdtc\",\"targetPortalHostname\":\"siypbs\",\"targetPortalPort\":1861224364,\"provisioningState\":\"Succeeded\",\"status\":\"Invalid\"},\"managedBy\":{\"resourceId\":\"eadcygqukyhejhz\"},\"provisioningState\":\"Succeeded\"},\"id\":\"fpel\",\"name\":\"lppvksrpq\",\"type\":\"ujzra\"}";
+            = "{\"properties\":{\"volumeId\":\"ivfxzsjabibsyst\",\"creationData\":{\"createSource\":\"None\",\"sourceId\":\"jpvkvpbjxbkzbzkd\"},\"sizeGiB\":2436693610971493867,\"storageTarget\":{\"targetIqn\":\"budurgkakmo\",\"targetPortalHostname\":\"hjjklff\",\"targetPortalPort\":783879068,\"provisioningState\":\"SoftDeleting\",\"status\":\"Running\"},\"managedBy\":{\"resourceId\":\"rfzeey\"},\"provisioningState\":\"Succeeded\"},\"id\":\"ikayuhqlbjbsybb\",\"name\":\"wrv\",\"type\":\"ldgmfpgvmpip\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ElasticSanManager manager = ElasticSanManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Volume response = manager.volumes()
-            .define("bminrfdwoyuhhzi")
-            .withExistingVolumegroup("qmoa", "ufgmjzrwrdg", "twaenuuzko")
-            .withSizeGiB(2003517513510777740L)
-            .withCreationData(
-                new SourceCreationData().withCreateSource(VolumeCreateOption.VOLUME_SNAPSHOT).withSourceId("hoftr"))
-            .withManagedBy(new ManagedByInfo().withResourceId("hka"))
+            .define("nhltiugcxn")
+            .withExistingVolumegroup("khevxccedc", "nmdyodnwzxl", "jc")
+            .withSizeGiB(7402432030670029412L)
+            .withCreationData(new SourceCreationData().withCreateSource(VolumeCreateOption.VOLUME_SNAPSHOT)
+                .withSourceId("djrkvfgbvfvpd"))
+            .withManagedBy(new ManagedByInfo().withResourceId("wm"))
             .create();
 
-        Assertions.assertEquals(VolumeCreateOption.DISK_SNAPSHOT, response.creationData().createSource());
-        Assertions.assertEquals("uexmkttlst", response.creationData().sourceId());
-        Assertions.assertEquals(7893862569434986458L, response.sizeGiB());
-        Assertions.assertEquals("eadcygqukyhejhz", response.managedBy().resourceId());
+        Assertions.assertEquals(VolumeCreateOption.NONE, response.creationData().createSource());
+        Assertions.assertEquals("jpvkvpbjxbkzbzkd", response.creationData().sourceId());
+        Assertions.assertEquals(2436693610971493867L, response.sizeGiB());
+        Assertions.assertEquals("rfzeey", response.managedBy().resourceId());
     }
 }

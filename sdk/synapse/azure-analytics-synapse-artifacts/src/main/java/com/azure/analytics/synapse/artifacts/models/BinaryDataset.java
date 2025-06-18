@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,21 +22,25 @@ public class BinaryDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "Binary";
 
     /*
      * The location of the Binary storage.
      */
+    @Generated
     private DatasetLocation location;
 
     /*
      * The data compression method used for the binary dataset.
      */
+    @Generated
     private DatasetCompression compression;
 
     /**
      * Creates an instance of BinaryDataset class.
      */
+    @Generated
     public BinaryDataset() {
     }
 
@@ -44,6 +49,7 @@ public class BinaryDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -54,6 +60,7 @@ public class BinaryDataset extends Dataset {
      * 
      * @return the location value.
      */
+    @Generated
     public DatasetLocation getLocation() {
         return this.location;
     }
@@ -64,6 +71,7 @@ public class BinaryDataset extends Dataset {
      * @param location the location value to set.
      * @return the BinaryDataset object itself.
      */
+    @Generated
     public BinaryDataset setLocation(DatasetLocation location) {
         this.location = location;
         return this;
@@ -74,6 +82,7 @@ public class BinaryDataset extends Dataset {
      * 
      * @return the compression value.
      */
+    @Generated
     public DatasetCompression getCompression() {
         return this.compression;
     }
@@ -84,6 +93,7 @@ public class BinaryDataset extends Dataset {
      * @param compression the compression value to set.
      * @return the BinaryDataset object itself.
      */
+    @Generated
     public BinaryDataset setCompression(DatasetCompression compression) {
         this.compression = compression;
         return this;
@@ -92,6 +102,7 @@ public class BinaryDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public BinaryDataset setDescription(String description) {
         super.setDescription(description);
@@ -101,6 +112,7 @@ public class BinaryDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public BinaryDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -110,6 +122,7 @@ public class BinaryDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public BinaryDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -119,6 +132,7 @@ public class BinaryDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public BinaryDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -128,6 +142,7 @@ public class BinaryDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public BinaryDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -137,6 +152,7 @@ public class BinaryDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public BinaryDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -146,6 +162,7 @@ public class BinaryDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public BinaryDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -155,13 +172,18 @@ public class BinaryDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
@@ -189,6 +211,7 @@ public class BinaryDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BinaryDataset.
      */
+    @Generated
     public static BinaryDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BinaryDataset deserializedBinaryDataset = new BinaryDataset();

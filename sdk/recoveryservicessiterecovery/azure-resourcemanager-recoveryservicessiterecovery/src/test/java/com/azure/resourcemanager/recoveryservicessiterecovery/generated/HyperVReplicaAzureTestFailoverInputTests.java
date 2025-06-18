@@ -12,25 +12,25 @@ public final class HyperVReplicaAzureTestFailoverInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HyperVReplicaAzureTestFailoverInput model = BinaryData.fromString(
-            "{\"instanceType\":\"HyperVReplicaAzure\",\"primaryKekCertificatePfx\":\"nsjulugdybnh\",\"secondaryKekCertificatePfx\":\"lelfjhkeizcpih\",\"recoveryPointId\":\"miw\",\"osUpgradeVersion\":\"kpty\"}")
+            "{\"instanceType\":\"HyperVReplicaAzure\",\"primaryKekCertificatePfx\":\"ukmkczynu\",\"secondaryKekCertificatePfx\":\"oq\",\"recoveryPointId\":\"shavljqkx\",\"osUpgradeVersion\":\"qolnthbbn\"}")
             .toObject(HyperVReplicaAzureTestFailoverInput.class);
-        Assertions.assertEquals("nsjulugdybnh", model.primaryKekCertificatePfx());
-        Assertions.assertEquals("lelfjhkeizcpih", model.secondaryKekCertificatePfx());
-        Assertions.assertEquals("miw", model.recoveryPointId());
-        Assertions.assertEquals("kpty", model.osUpgradeVersion());
+        Assertions.assertEquals("ukmkczynu", model.primaryKekCertificatePfx());
+        Assertions.assertEquals("oq", model.secondaryKekCertificatePfx());
+        Assertions.assertEquals("shavljqkx", model.recoveryPointId());
+        Assertions.assertEquals("qolnthbbn", model.osUpgradeVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HyperVReplicaAzureTestFailoverInput model
-            = new HyperVReplicaAzureTestFailoverInput().withPrimaryKekCertificatePfx("nsjulugdybnh")
-                .withSecondaryKekCertificatePfx("lelfjhkeizcpih")
-                .withRecoveryPointId("miw")
-                .withOsUpgradeVersion("kpty");
+            = new HyperVReplicaAzureTestFailoverInput().withPrimaryKekCertificatePfx("ukmkczynu")
+                .withSecondaryKekCertificatePfx("oq")
+                .withRecoveryPointId("shavljqkx")
+                .withOsUpgradeVersion("qolnthbbn");
         model = BinaryData.fromObject(model).toObject(HyperVReplicaAzureTestFailoverInput.class);
-        Assertions.assertEquals("nsjulugdybnh", model.primaryKekCertificatePfx());
-        Assertions.assertEquals("lelfjhkeizcpih", model.secondaryKekCertificatePfx());
-        Assertions.assertEquals("miw", model.recoveryPointId());
-        Assertions.assertEquals("kpty", model.osUpgradeVersion());
+        Assertions.assertEquals("ukmkczynu", model.primaryKekCertificatePfx());
+        Assertions.assertEquals("oq", model.secondaryKekCertificatePfx());
+        Assertions.assertEquals("shavljqkx", model.recoveryPointId());
+        Assertions.assertEquals("qolnthbbn", model.osUpgradeVersion());
     }
 }

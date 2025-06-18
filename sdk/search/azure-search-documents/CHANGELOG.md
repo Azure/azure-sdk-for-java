@@ -1,6 +1,6 @@
 # Release History
 
-## 11.8.0-beta.6 (Unreleased)
+## 11.8.0-beta.8 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,53 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 11.7.7 (2025-06-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.5.8` to version `1.5.9`.
+
+## 11.8.0-beta.7 (2025-05-16)
+
+### Features Added
+
+- Added new `KnowledgeAgent` apis to index clients and introduced new `SearchKnowledgeAgentClient` for managing and querying Knowledge Agents,
+enabling multi-index grounding for agentic retrieval.
+- Added a method overloads for search client operations to include the `querySourceAuthentication` parameter, allowing users to specify the authentication method for the query source.
+- Added a `resync` method to indexer clients to resync selective options from the data source to be re-ingested by the indexer.
+- Added `permissionFilter` to Field Builder annotations, indication whether a field should be used as a permission filter.
+- Added `rerankerBoostedScore` to `SemanticSearchResult` and updated `SemanticConfiguration` with a new `rankingOrder` property.
+- Introduced new skill `ChatCompletionSkill` that integrates with Azure AI Foundry.
+- Enhanced `DocumentIntelligenceLayoutSkill` with new properties: `ChunkingProperties`, `ExtractionOptions`, and `OutputFormat`.
+- Added `IndexerPermissionOptions` to `SearchIndexerDataSourceConnection` to support ingestion of various types of permission data.
+- Introduced sub-field vector support (multi-vectors) via `VectorQuery.Fields`, and added new query option `VectorQuery.PerDocumentVectorLimit`.
+
+## 11.8.0-beta.6 (2025-04-17)
+
+### Features Added
+
+- Introduced new api `getIndexStatsSummary` into `SearchIndexClient` and `SearchIndexAsyncClient` to enable the retrieval of index stats summary.
+- Introduced `flightingOptIn` field onto `SemanticConfiguration` to enable flighting opt-in for semantic search.
+
+### Other Changes
+
+- Binary Quantization now supports configuring `rescoringOptions` to `true` with `rescoreStorageMethod` set to `discardOriginals`.
+
+## 11.7.6 (2025-03-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-json` from `1.4.0` to version `1.5.0`.
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.5.7` to version `1.5.8`.
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
 
 ## 11.7.5 (2025-02-25)
 

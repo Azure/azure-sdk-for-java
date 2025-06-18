@@ -18,10 +18,13 @@ import com.azure.search.documents.implementation.converters.AnalyzeRequestConver
 import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.indexes.implementation.SearchServiceClientImpl;
+import com.azure.search.documents.indexes.implementation.models.ErrorResponseException;
 import com.azure.search.documents.indexes.implementation.models.ListSynonymMapsResult;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
+import com.azure.search.documents.indexes.models.IndexStatisticsSummary;
+import com.azure.search.documents.indexes.models.KnowledgeAgent;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.LexicalTokenizerName;
 import com.azure.search.documents.indexes.models.SearchField;
@@ -1265,15 +1268,222 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Convenience method to convert a {@link Class Class's} {@link Field Fields} and {@link Method Methods} into {@link
-     * SearchField SearchFields} to help aid the creation of a {@link SearchField} which represents the {@link Class}.
+     * Retrieves a summary of statistics for all indexes in the search service.
      *
-     * @param model The model {@link Class} that will have {@link SearchField SearchFields} generated from its
-     * structure.
-     * @param options Configuration used to determine generation of the {@link SearchField SearchFields}.
-     * @return A list {@link SearchField SearchFields} which represent the model {@link Class}.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a request to retrieve stats summary of all indexes as paginated response with
+     * {@link PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<IndexStatisticsSummary> getIndexStatsSummary() {
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexStatsSummary(null), LOGGER);
+    }
+
+    /**
+     * Retrieves a summary of statistics for all indexes in the search service.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a request to retrieve stats summary of all indexes as paginated response with
+     * {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<IndexStatisticsSummary> getIndexStatsSummary(Context context) {
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexStatsSummary(null, context),
+            LOGGER);
+    }
+
+    /**
+    * Convenience method to convert a {@link Class Class's} {@link Field Fields} and {@link Method Methods} into {@link
+    * SearchField SearchFields} to help aid the creation of a {@link SearchField} which represents the {@link Class}.
+    *
+    * @param model The model {@link Class} that will have {@link SearchField SearchFields} generated from its
+    * structure.
+    * @param options Configuration used to determine generation of the {@link SearchField SearchFields}.
+    * @return A list {@link SearchField SearchFields} which represent the model {@link Class}.
+    */
     public static List<SearchField> buildSearchFields(Class<?> model, FieldBuilderOptions options) {
         return SearchIndexAsyncClient.buildSearchFields(model, options);
+    }
+
+    /**
+     * Creates a new agent.
+     * 
+     * @param knowledgeAgent The definition of the agent to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KnowledgeAgent createKnowledgeAgent(KnowledgeAgent knowledgeAgent) {
+        return createKnowledgeAgentWithResponse(knowledgeAgent, Context.NONE).getValue();
+
+    }
+
+    /**
+     * Creates a new agent.
+     * 
+     * @param knowledgeAgent The definition of the agent to create.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KnowledgeAgent> createKnowledgeAgentWithResponse(KnowledgeAgent knowledgeAgent, Context context) {
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getKnowledgeAgents().createWithResponse(knowledgeAgent, null, context), LOGGER);
+
+    }
+
+    /**
+     * Creates a new agent or updates an agent if it already exists.
+     * 
+     * @param agentName The name of the agent to create or update.
+     * @param knowledgeAgent The definition of the agent to create or update.
+     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
+     * matches this value.
+     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
+     * server does not match this value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KnowledgeAgent createOrUpdateKnowledgeAgent(String agentName, KnowledgeAgent knowledgeAgent, String ifMatch,
+        String ifNoneMatch) {
+        return createOrUpdateKnowledgeAgentWithResponse(agentName, knowledgeAgent, ifMatch, ifNoneMatch, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Creates a new agent or updates an agent if it already exists.
+     * 
+     * @param agentName The name of the agent to create or update.
+     * @param knowledgeAgent The definition of the agent to create or update.
+     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
+     * matches this value.
+     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
+     * server does not match this value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KnowledgeAgent> createOrUpdateKnowledgeAgentWithResponse(String agentName,
+        KnowledgeAgent knowledgeAgent, String ifMatch, String ifNoneMatch, Context context) {
+        return Utility
+            .executeRestCallWithExceptionHandling(
+                () -> restClient.getKnowledgeAgents()
+                    .createOrUpdateWithResponse(agentName, knowledgeAgent, ifMatch, ifNoneMatch, null, context),
+                LOGGER);
+    }
+
+    /**
+     * Retrieves an agent definition.
+     * 
+     * @param agentName The name of the agent to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KnowledgeAgent getKnowledgeAgent(String agentName) {
+        return getKnowledgeAgentWithResponse(agentName, Context.NONE).getValue();
+
+    }
+
+    /**
+     * Retrieves an agent definition.
+     * 
+     * @param agentName The name of the agent to retrieve.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KnowledgeAgent> getKnowledgeAgentWithResponse(String agentName, Context context) {
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getKnowledgeAgents().getWithResponse(agentName, null, context), LOGGER);
+    }
+
+    /**
+     * Lists all agents available for a search service.
+     * 
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<KnowledgeAgent> listKnowledgeAgents() {
+        return listKnowledgeAgents(Context.NONE);
+    }
+
+    /**
+     * Lists all agents available for a search service.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<KnowledgeAgent> listKnowledgeAgents(Context context) {
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getKnowledgeAgents().list(null, context),
+            LOGGER);
+    }
+
+    /**
+     * Deletes an existing agent.
+     * 
+     * @param agentName The name of the agent to delete.
+     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
+     * matches this value.
+     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
+     * server does not match this value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteKnowledgeAgent(String agentName, String ifMatch, String ifNoneMatch) {
+        deleteKnowledgeAgentWithResponse(agentName, ifMatch, ifNoneMatch, Context.NONE).getValue();
+    }
+
+    /**
+     * Deletes an existing agent.
+     * 
+     * @param agentName The name of the agent to delete.
+     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
+     * matches this value.
+     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
+     * server does not match this value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteKnowledgeAgentWithResponse(String agentName, String ifMatch, String ifNoneMatch,
+        Context context) {
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getKnowledgeAgents().deleteWithResponse(agentName, ifMatch, ifNoneMatch, null, context),
+            LOGGER);
+
     }
 }

@@ -204,7 +204,7 @@
         },
         {
           "code": "java.method.addedToInterface",
-          "new" : "method long com.azure.spring.data.cosmos.core.CosmosOperations::sum(com.azure.cosmos.models.SqlQuerySpec, java.lang.String)",
+          "new": "method long com.azure.spring.data.cosmos.core.CosmosOperations::sum(com.azure.cosmos.models.SqlQuerySpec, java.lang.String)",
           "justification": "Spring interfaces are allowed to add methods."
         },
         {
@@ -229,7 +229,7 @@
         },
         {
           "code": "java.method.addedToInterface",
-          "new" : "method reactor.core.publisher.Mono<java.lang.Long> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::sum(com.azure.cosmos.models.SqlQuerySpec, java.lang.String)",
+          "new": "method reactor.core.publisher.Mono<java.lang.Long> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::sum(com.azure.cosmos.models.SqlQuerySpec, java.lang.String)",
           "justification": "Spring interfaces are allowed to add methods."
         },
         {
@@ -716,14 +716,14 @@
         },
         {
           "ignore": true,
-          "code" : "java.method.removed",
-          "old" : "method com.azure.resourcemanager.cosmos.models.DatabaseAccountCreateUpdateParameters com.azure.resourcemanager.cosmos.models.DatabaseAccountCreateUpdateParameters::withDatabaseAccountOfferType(java.lang.String)",
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.cosmos.models.DatabaseAccountCreateUpdateParameters com.azure.resourcemanager.cosmos.models.DatabaseAccountCreateUpdateParameters::withDatabaseAccountOfferType(java.lang.String)",
           "justification": "The property is a constant, which should not be changed."
         },
         {
           "ignore": true,
-          "code" : "java.method.removed",
-          "old" : "method com.azure.resourcemanager.storage.models.StorageAccountCheckNameAvailabilityParameters com.azure.resourcemanager.storage.models.StorageAccountCheckNameAvailabilityParameters::withType(java.lang.String)",
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.storage.models.StorageAccountCheckNameAvailabilityParameters com.azure.resourcemanager.storage.models.StorageAccountCheckNameAvailabilityParameters::withType(java.lang.String)",
           "justification": "The property is a constant, which should not be changed."
         },
         {
@@ -731,6 +731,289 @@
           "code": "java.field.addedStaticField",
           "new": "field com.azure.messaging.webpubsub.models.WebPubSubClientProtocol.SOCKETIO",
           "justification": "Additional protocols are supported by Web PubSub."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParameters com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParameters::withType(java.lang.String)",
+          "justification": "The property is a constant, which should not be changed."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.containerservice.models.ManagedClusterLoadBalancerProfile com.azure.resourcemanager.containerservice.models.ManagedClusterLoadBalancerProfile::withEffectiveOutboundIPs(java.util.List<com.azure.resourcemanager.containerservice.models.ResourceReference>)",
+          "justification": "The effectiveOutboundIPs was never a client-side modifiable property."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.containerservice.models.ManagedClusterNatGatewayProfile com.azure.resourcemanager.containerservice.models.ManagedClusterNatGatewayProfile::withEffectiveOutboundIPs(java.util.List<com.azure.resourcemanager.containerservice.models.ResourceReference>)",
+          "justification": "The effectiveOutboundIPs was never a client-side modifiable property."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method void com.azure.search.documents.indexes.models.SearchResourceEncryptionKey::<init>(java.lang.String, java.lang.String, java.lang.String)",
+          "new": "method void com.azure.search.documents.indexes.models.SearchResourceEncryptionKey::<init>(java.lang.String, java.lang.String)",
+          "justification": "Breaking change in Search 03-01-2025 preview."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": "method <T> reactor.core.publisher.Mono<com.azure.core.http.rest.Response<T>> com.azure.search.documents.SearchAsyncClient::getDocumentWithResponse(java.lang.String, java.lang.Class<T>, java.util.List<java.lang.String>, com.azure.core.util.Context)",
+          "justification": "Non-breaking change in Search 05-01-2025 preview to package-private api."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": "method reactor.core.publisher.Mono<com.azure.search.documents.util.SearchPagedResponse> com.azure.search.documents.SearchAsyncClient::search(com.azure.search.documents.implementation.models.SearchRequest, java.lang.String, com.azure.search.documents.implementation.models.SearchFirstPageResponseWrapper, com.azure.core.util.Context)",
+          "justification": "Non-breaking change in Search 05-01-2025 preview to package-private api."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": "method com.azure.search.documents.util.SearchPagedFlux com.azure.search.documents.SearchAsyncClient::search(java.lang.String, com.azure.search.documents.models.SearchOptions, com.azure.core.util.Context)",
+          "justification": "Non-breaking change in Search 05-01-2025 preview to package-private api."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": "method com.azure.search.documents.util.SearchPagedResponse com.azure.search.documents.SearchClient::search(com.azure.search.documents.implementation.models.SearchRequest, java.lang.String, com.azure.search.documents.implementation.models.SearchFirstPageResponseWrapper, com.azure.core.util.Context)",
+          "justification": "Non-breaking change in Search 05-01-2025 preview to package-private api."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": "method com.azure.search.documents.util.SearchPagedFlux com.azure.search.documents.SearchAsyncClient::search(com.azure.search.documents.implementation.models.SearchRequest, java.lang.String, com.azure.core.util.Context)",
+          "justification": "Non-breaking change in Search 05-01-2025 preview to package-private api."
+        },
+        {
+          "regex": true,
+          "code": "java.field.enumConstantOrderChanged",
+          "old": "field com\\.azure\\.resourcemanager\\.storage\\.models\\.ProvisioningState\\.(CANCELED|DELETING|FAILED)",
+          "new": "field com\\.azure\\.resourcemanager\\.storage\\.models\\.ProvisioningState\\.(CANCELED|DELETING|FAILED)",
+          "justification": "Add Accepted to ProvisioningState."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.varargOverloadsOnlyDifferInVarargParameter",
+          "old": "method com\\.azure\\.communication\\.email\\.models\\.EmailMessage com\\.azure\\.communication\\.email\\.models\\.EmailMessage::set(Cc|Bcc|To)Recipients.*"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.containerregistry.models.RegistryNameCheckRequest com.azure.resourcemanager.containerregistry.models.RegistryNameCheckRequest::withType(java.lang.String)",
+          "justification" : "The property is a constant, which should not be changed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.network.models.ConnectionMonitorQueryResult com.azure.resourcemanager.network.models.ConnectionMonitor::query()",
+          "justification" : "Removed `query` from `ConnectionMonitor`. Its functionality is now provided by Log Analytics service.."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method reactor.core.publisher.Mono<com.azure.resourcemanager.network.models.ConnectionMonitorQueryResult> com.azure.resourcemanager.network.models.ConnectionMonitor::queryAsync()",
+          "justification" : "Removed `query` from `ConnectionMonitor`. Its functionality is now provided by Log Analytics service."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method void com.azure.resourcemanager.network.models.ConnectionMonitor::start()",
+          "justification" : "Removed `start` from `ConnectionMonitor`. It'll be started upon creation, hence no need for an explicit start."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method reactor.core.publisher.Mono<java.lang.Void> com.azure.resourcemanager.network.models.ConnectionMonitor::startAsync()",
+          "justification" : "Removed `start` from `ConnectionMonitor`. It'll be started upon creation, hence no need for an explicit start."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "interface com.azure.resourcemanager.network.models.ConnectionMonitorQueryResult",
+          "justification" : "Removed `query` from `ConnectionMonitor`. Its functionality is now provided by Log Analytics service."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.network.models.ConnectionMonitorSourceStatus",
+          "justification" : "Removed `query` from `ConnectionMonitor`. Its functionality is now provided by Log Analytics service."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.network.models.ConnectionState",
+          "justification" :  "Removed `start` from `ConnectionMonitor`. It'll be started upon creation, hence no need for an explicit start."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.network.models.ConnectionStateSnapshot",
+          "justification" : "Removed `query` from `ConnectionMonitor`. Its functionality is now provided by Log Analytics service."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.network.models.EvaluationState",
+          "justification" :  "Removed `start` from `ConnectionMonitor`. It'll be started upon creation, hence no need for an explicit start."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.ActiveRevisionsMode",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.Configuration",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.Container",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.ContainerAppCollection",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.ContainerAppProvisioningState",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.ContainerAppSecret",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.ContainerResources",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.CustomScaleRule",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.Dapr",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.DaprComponent",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.DaprMetadata",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.EnvironmentVar",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.HttpScaleRule",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.Ingress",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.IngressTransportMethod",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.QueueScaleRule",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.RegistryCredentials",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.RevisionCollection",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.RevisionHealthState",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.RevisionProvisioningState",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.Scale",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.ScaleRule",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.ScaleRuleAuth",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.Secret",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.Template",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.TrafficWeight",
+          "justification" : "Removed with the unused ContainerApp APIs."
         }
       ]
     }

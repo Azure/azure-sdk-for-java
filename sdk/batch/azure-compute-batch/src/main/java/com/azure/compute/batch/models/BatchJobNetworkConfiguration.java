@@ -37,6 +37,26 @@ public final class BatchJobNetworkConfiguration implements JsonSerializable<Batc
     @Generated
     private final String subnetId;
 
+    /*
+     * Whether to withdraw Compute Nodes from the virtual network to DNC when the job is terminated or deleted. If true,
+     * nodes will remain joined to the virtual network to DNC. If false, nodes will automatically withdraw when the job
+     * ends. Defaults to false.
+     */
+    @Generated
+    private final boolean skipWithdrawFromVNet;
+
+    /**
+     * Creates an instance of BatchJobNetworkConfiguration class.
+     *
+     * @param subnetId the subnetId value to set.
+     * @param skipWithdrawFromVNet the skipWithdrawFromVNet value to set.
+     */
+    @Generated
+    public BatchJobNetworkConfiguration(String subnetId, boolean skipWithdrawFromVNet) {
+        this.subnetId = subnetId;
+        this.skipWithdrawFromVNet = skipWithdrawFromVNet;
+    }
+
     /**
      * Get the subnetId property: The ARM resource identifier of the virtual network subnet which Compute Nodes running
      * Tasks from the Job will join for the duration of the Task. The virtual network must be in the same region and
@@ -59,6 +79,18 @@ public final class BatchJobNetworkConfiguration implements JsonSerializable<Batc
     @Generated
     public String getSubnetId() {
         return this.subnetId;
+    }
+
+    /**
+     * Get the skipWithdrawFromVNet property: Whether to withdraw Compute Nodes from the virtual network to DNC when the
+     * job is terminated or deleted. If true, nodes will remain joined to the virtual network to DNC. If false, nodes
+     * will automatically withdraw when the job ends. Defaults to false.
+     *
+     * @return the skipWithdrawFromVNet value.
+     */
+    @Generated
+    public boolean isSkipWithdrawFromVNet() {
+        return this.skipWithdrawFromVNet;
     }
 
     /**
@@ -100,37 +132,5 @@ public final class BatchJobNetworkConfiguration implements JsonSerializable<Batc
             }
             return new BatchJobNetworkConfiguration(subnetId, skipWithdrawFromVNet);
         });
-    }
-
-    /*
-     * Whether to withdraw Compute Nodes from the virtual network to DNC when the job is terminated or deleted. If true,
-     * nodes will remain joined to the virtual network to DNC. If false, nodes will automatically withdraw when the job
-     * ends. Defaults to false.
-     */
-    @Generated
-    private final boolean skipWithdrawFromVNet;
-
-    /**
-     * Creates an instance of BatchJobNetworkConfiguration class.
-     *
-     * @param subnetId the subnetId value to set.
-     * @param skipWithdrawFromVNet the skipWithdrawFromVNet value to set.
-     */
-    @Generated
-    public BatchJobNetworkConfiguration(String subnetId, boolean skipWithdrawFromVNet) {
-        this.subnetId = subnetId;
-        this.skipWithdrawFromVNet = skipWithdrawFromVNet;
-    }
-
-    /**
-     * Get the skipWithdrawFromVNet property: Whether to withdraw Compute Nodes from the virtual network to DNC when the
-     * job is terminated or deleted. If true, nodes will remain joined to the virtual network to DNC. If false, nodes
-     * will automatically withdraw when the job ends. Defaults to false.
-     *
-     * @return the skipWithdrawFromVNet value.
-     */
-    @Generated
-    public boolean isSkipWithdrawFromVNet() {
-        return this.skipWithdrawFromVNet;
     }
 }

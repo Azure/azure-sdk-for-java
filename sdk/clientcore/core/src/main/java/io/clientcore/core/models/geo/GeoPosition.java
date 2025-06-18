@@ -135,13 +135,13 @@ public final class GeoPosition implements JsonSerializable<GeoPosition> {
 
             case 2:
                 if (altitude == null) {
-                    throw LOGGER.logThrowableAsError(new IndexOutOfBoundsException("Index out of range: " + index));
+                    throw LOGGER.throwableAtError().addKeyValue("index", index).log(IndexOutOfBoundsException::new);
                 }
 
                 return altitude;
 
             default:
-                throw LOGGER.logThrowableAsError(new IndexOutOfBoundsException("Index out of range: " + index));
+                throw LOGGER.throwableAtError().addKeyValue("index", index).log(IndexOutOfBoundsException::new);
         }
     }
 
@@ -208,7 +208,8 @@ public final class GeoPosition implements JsonSerializable<GeoPosition> {
 
         int coordinateCount = coordinates.size();
         if (coordinateCount < 2 || coordinateCount > 3) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException("Only 2 or 3 element coordinates supported."));
+            throw LOGGER.throwableAtError()
+                .log("Only 2 or 3 element coordinates supported.", IllegalStateException::new);
         }
 
         double longitude = coordinates.get(0).doubleValue();

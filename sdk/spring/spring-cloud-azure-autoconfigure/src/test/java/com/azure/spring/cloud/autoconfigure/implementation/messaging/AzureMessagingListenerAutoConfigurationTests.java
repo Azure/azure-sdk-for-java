@@ -7,11 +7,14 @@ import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.AzureEventH
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.AzureServiceBusMessagingAutoConfiguration;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.messaging.eventhubs.core.listener.EventHubsMessageListenerContainer;
+import com.azure.spring.messaging.eventhubs.implementation.core.annotation.EventHubsListenerAnnotationBeanPostProcessor;
 import com.azure.spring.messaging.eventhubs.implementation.core.config.EventHubsMessageListenerContainerFactory;
 import com.azure.spring.messaging.eventhubs.implementation.support.converter.EventHubsMessageConverter;
+import com.azure.spring.messaging.implementation.annotation.AzureListenerAnnotationBeanPostProcessorAdapter;
 import com.azure.spring.messaging.implementation.annotation.EnableAzureMessaging;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.listener.ServiceBusMessageListenerContainer;
+import com.azure.spring.messaging.servicebus.implementation.core.annotation.ServiceBusListenerAnnotationBeanPostProcessor;
 import com.azure.spring.messaging.servicebus.implementation.core.config.ServiceBusMessageListenerContainerFactory;
 import com.azure.spring.messaging.servicebus.implementation.support.converter.ServiceBusMessageConverter;
 import org.junit.jupiter.api.Test;
@@ -69,6 +72,10 @@ public class AzureMessagingListenerAutoConfigurationTests {
             .run(context -> {
                 assertThat(context).hasBean("azureEventHubsListenerContainerFactory");
                 assertThat(context).hasBean("azureServiceBusListenerContainerFactory");
+
+                assertThat(context).hasBean(EventHubsListenerAnnotationBeanPostProcessor.DEFAULT_EVENT_HUBS_LISTENER_ANNOTATION_BPP_BEAN_NAME);
+                assertThat(context).hasBean(ServiceBusListenerAnnotationBeanPostProcessor.DEFAULT_SERVICE_BUS_LISTENER_ANNOTATION_BPP_BEAN_NAME);
+                assertThat(context).hasBean(AzureListenerAnnotationBeanPostProcessorAdapter.DEFAULT_AZURE_LISTENER_ENDPOINT_REGISTRY_BEAN_NAME);
 
                 EventHubsMessageConverter eventHubsMessageConverter = context.getBean(EventHubsMessageConverter.class);
                 EventHubsMessageListenerContainerFactory eventHubsContainerFactory = (EventHubsMessageListenerContainerFactory) context.getBean("azureEventHubsListenerContainerFactory");

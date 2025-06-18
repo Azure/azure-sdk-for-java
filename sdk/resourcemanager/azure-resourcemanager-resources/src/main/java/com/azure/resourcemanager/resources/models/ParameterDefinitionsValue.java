@@ -33,6 +33,13 @@ public final class ParameterDefinitionsValue implements JsonSerializable<Paramet
     private Object defaultValue;
 
     /*
+     * Provides validation of parameter inputs during assignment using a self-defined JSON schema. This property is only
+     * supported for object-type parameters and follows the Json.NET Schema 2019-09 implementation. You can learn more
+     * about using schemas at https://json-schema.org/ and test draft schemas at https://www.jsonschemavalidator.net/.
+     */
+    private Object schema;
+
+    /*
      * General metadata for the parameter.
      */
     private ParameterDefinitionsValueMetadata metadata;
@@ -104,6 +111,32 @@ public final class ParameterDefinitionsValue implements JsonSerializable<Paramet
     }
 
     /**
+     * Get the schema property: Provides validation of parameter inputs during assignment using a self-defined JSON
+     * schema. This property is only supported for object-type parameters and follows the Json.NET Schema 2019-09
+     * implementation. You can learn more about using schemas at https://json-schema.org/ and test draft schemas at
+     * https://www.jsonschemavalidator.net/.
+     * 
+     * @return the schema value.
+     */
+    public Object schema() {
+        return this.schema;
+    }
+
+    /**
+     * Set the schema property: Provides validation of parameter inputs during assignment using a self-defined JSON
+     * schema. This property is only supported for object-type parameters and follows the Json.NET Schema 2019-09
+     * implementation. You can learn more about using schemas at https://json-schema.org/ and test draft schemas at
+     * https://www.jsonschemavalidator.net/.
+     * 
+     * @param schema the schema value to set.
+     * @return the ParameterDefinitionsValue object itself.
+     */
+    public ParameterDefinitionsValue withSchema(Object schema) {
+        this.schema = schema;
+        return this;
+    }
+
+    /**
      * Get the metadata property: General metadata for the parameter.
      * 
      * @return the metadata value.
@@ -143,7 +176,12 @@ public final class ParameterDefinitionsValue implements JsonSerializable<Paramet
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeArrayField("allowedValues", this.allowedValues,
             (writer, element) -> writer.writeUntyped(element));
-        jsonWriter.writeUntypedField("defaultValue", this.defaultValue);
+        if (this.defaultValue != null) {
+            jsonWriter.writeUntypedField("defaultValue", this.defaultValue);
+        }
+        if (this.schema != null) {
+            jsonWriter.writeUntypedField("schema", this.schema);
+        }
         jsonWriter.writeJsonField("metadata", this.metadata);
         return jsonWriter.writeEndObject();
     }
@@ -170,6 +208,8 @@ public final class ParameterDefinitionsValue implements JsonSerializable<Paramet
                     deserializedParameterDefinitionsValue.allowedValues = allowedValues;
                 } else if ("defaultValue".equals(fieldName)) {
                     deserializedParameterDefinitionsValue.defaultValue = reader.readUntyped();
+                } else if ("schema".equals(fieldName)) {
+                    deserializedParameterDefinitionsValue.schema = reader.readUntyped();
                 } else if ("metadata".equals(fieldName)) {
                     deserializedParameterDefinitionsValue.metadata = ParameterDefinitionsValueMetadata.fromJson(reader);
                 } else {

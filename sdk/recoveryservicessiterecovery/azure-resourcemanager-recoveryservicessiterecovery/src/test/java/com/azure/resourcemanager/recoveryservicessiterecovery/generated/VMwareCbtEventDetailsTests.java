@@ -11,7 +11,7 @@ public final class VMwareCbtEventDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VMwareCbtEventDetails model
-            = BinaryData.fromString("{\"instanceType\":\"VMwareCbt\",\"migrationItemName\":\"rnxhjtlxfikjk\"}")
+            = BinaryData.fromString("{\"instanceType\":\"VMwareCbt\",\"migrationItemName\":\"osebmhht\"}")
                 .toObject(VMwareCbtEventDetails.class);
     }
 

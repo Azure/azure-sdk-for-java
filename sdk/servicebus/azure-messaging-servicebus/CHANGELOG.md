@@ -8,7 +8,26 @@
 
 ### Bugs Fixed
 
-* Fixed issue where OffsetDateTimeDescribedType would be translated to user's system time instead of UTC. ([42995](https://github.com/Azure/azure-sdk-for-java/pull/42995))
+### Other Changes
+
+## 7.17.11 (2025-04-15)
+
+### Bugs Fixed
+
+- Added retry for single message send and schedule cases. ([44920](https://github.com/Azure/azure-sdk-for-java/pull/44920))
+
+## 7.17.10 (2025-03-18)
+
+### Bugs Fixed
+
+- Updated the session processor idle timer to start immediately after accepting the session. ([44594](https://github.com/Azure/azure-sdk-for-java/pull/44594))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-amqp` from `2.9.15` to version `2.9.16`.
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
 
 ## 7.17.9 (2025-02-25)
 
@@ -50,6 +69,7 @@
 
 - Enabled RequestResponseChannelCache (CBS, Management channel cache) and ReactorSessionCache by default. ([42641](https://github.com/Azure/azure-sdk-for-java/pull/42641))
 - Improves the synchronous `acceptNextSession` and `acceptSession` APIs of `ServiceBusSessionReceiverClient` to reduce the chances of the broker holding session lock for some time when client-side timeout occurs. ([42838](https://github.com/Azure/azure-sdk-for-java/pull/42838))
+- Fixed issue where OffsetDateTimeDescribedType would be translated to user's system time instead of UTC. ([42995](https://github.com/Azure/azure-sdk-for-java/pull/42995))
 
 ### Other Changes
 

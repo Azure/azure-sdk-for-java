@@ -11,16 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class VMwareCbtResyncInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VMwareCbtResyncInput model
-            = BinaryData.fromString("{\"instanceType\":\"VMwareCbt\",\"skipCbtReset\":\"wgsqufmjxcyoseqc\"}")
-                .toObject(VMwareCbtResyncInput.class);
-        Assertions.assertEquals("wgsqufmjxcyoseqc", model.skipCbtReset());
+        VMwareCbtResyncInput model = BinaryData.fromString("{\"instanceType\":\"VMwareCbt\",\"skipCbtReset\":\"gage\"}")
+            .toObject(VMwareCbtResyncInput.class);
+        Assertions.assertEquals("gage", model.skipCbtReset());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VMwareCbtResyncInput model = new VMwareCbtResyncInput().withSkipCbtReset("wgsqufmjxcyoseqc");
+        VMwareCbtResyncInput model = new VMwareCbtResyncInput().withSkipCbtReset("gage");
         model = BinaryData.fromObject(model).toObject(VMwareCbtResyncInput.class);
-        Assertions.assertEquals("wgsqufmjxcyoseqc", model.skipCbtReset());
+        Assertions.assertEquals("gage", model.skipCbtReset());
     }
 }

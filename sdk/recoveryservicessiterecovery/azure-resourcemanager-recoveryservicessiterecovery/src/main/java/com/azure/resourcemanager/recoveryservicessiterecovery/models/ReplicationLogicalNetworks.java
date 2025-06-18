@@ -17,15 +17,15 @@ public interface ReplicationLogicalNetworks {
      * 
      * Lists all the logical networks of the Azure Site Recovery fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Server Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of logical networks as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<LogicalNetwork> listByReplicationFabrics(String resourceName, String resourceGroupName,
+    PagedIterable<LogicalNetwork> listByReplicationFabrics(String resourceGroupName, String resourceName,
         String fabricName);
 
     /**
@@ -33,8 +33,8 @@ public interface ReplicationLogicalNetworks {
      * 
      * Lists all the logical networks of the Azure Site Recovery fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Server Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,7 +42,7 @@ public interface ReplicationLogicalNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of logical networks as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<LogicalNetwork> listByReplicationFabrics(String resourceName, String resourceGroupName,
+    PagedIterable<LogicalNetwork> listByReplicationFabrics(String resourceGroupName, String resourceName,
         String fabricName, Context context);
 
     /**
@@ -50,8 +50,8 @@ public interface ReplicationLogicalNetworks {
      * 
      * Gets the details of a logical network.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Server Id.
      * @param logicalNetworkName Logical network name.
      * @param context The context to associate with this operation.
@@ -60,7 +60,7 @@ public interface ReplicationLogicalNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of a logical network along with {@link Response}.
      */
-    Response<LogicalNetwork> getWithResponse(String resourceName, String resourceGroupName, String fabricName,
+    Response<LogicalNetwork> getWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String logicalNetworkName, Context context);
 
     /**
@@ -68,8 +68,8 @@ public interface ReplicationLogicalNetworks {
      * 
      * Gets the details of a logical network.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Server Id.
      * @param logicalNetworkName Logical network name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -77,5 +77,5 @@ public interface ReplicationLogicalNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of a logical network.
      */
-    LogicalNetwork get(String resourceName, String resourceGroupName, String fabricName, String logicalNetworkName);
+    LogicalNetwork get(String resourceGroupName, String resourceName, String fabricName, String logicalNetworkName);
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicySetDefinitionsDeleteAtManagementGroupSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
      * deletePolicySetDefinitionAtManagementGroup.json
      */
     /**
@@ -23,7 +23,7 @@ public final class PolicySetDefinitionsDeleteAtManagementGroupSamples {
             .manager()
             .policyClient()
             .getPolicySetDefinitions()
-            .deleteAtManagementGroupWithResponse("CostManagement", "MyManagementGroup",
+            .deleteAtManagementGroupWithResponse("MyManagementGroup", "CostManagement",
                 com.azure.core.util.Context.NONE);
     }
 }

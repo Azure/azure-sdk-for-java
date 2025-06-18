@@ -11,11 +11,21 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.hybridkubernetes.models.AadProfile;
+import com.azure.resourcemanager.hybridkubernetes.models.ArcAgentProfile;
+import com.azure.resourcemanager.hybridkubernetes.models.ArcAgentryConfigurations;
+import com.azure.resourcemanager.hybridkubernetes.models.AzureHybridBenefit;
 import com.azure.resourcemanager.hybridkubernetes.models.ConnectedClusterIdentity;
+import com.azure.resourcemanager.hybridkubernetes.models.ConnectedClusterKind;
 import com.azure.resourcemanager.hybridkubernetes.models.ConnectivityStatus;
+import com.azure.resourcemanager.hybridkubernetes.models.Gateway;
+import com.azure.resourcemanager.hybridkubernetes.models.OidcIssuerProfile;
+import com.azure.resourcemanager.hybridkubernetes.models.PrivateLinkState;
 import com.azure.resourcemanager.hybridkubernetes.models.ProvisioningState;
+import com.azure.resourcemanager.hybridkubernetes.models.SecurityProfile;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,6 +37,11 @@ public final class ConnectedClusterInner extends Resource {
      * The identity of the connected cluster.
      */
     private ConnectedClusterIdentity identity;
+
+    /*
+     * The kind of connected cluster.
+     */
+    private ConnectedClusterKind kind;
 
     /*
      * Describes the connected cluster resource properties.
@@ -76,6 +91,26 @@ public final class ConnectedClusterInner extends Resource {
      */
     public ConnectedClusterInner withIdentity(ConnectedClusterIdentity identity) {
         this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the kind property: The kind of connected cluster.
+     * 
+     * @return the kind value.
+     */
+    public ConnectedClusterKind kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: The kind of connected cluster.
+     * 
+     * @param kind the kind value to set.
+     * @return the ConnectedClusterInner object itself.
+     */
+    public ConnectedClusterInner withKind(ConnectedClusterKind kind) {
+        this.kind = kind;
         return this;
     }
 
@@ -253,6 +288,29 @@ public final class ConnectedClusterInner extends Resource {
     }
 
     /**
+     * Get the distributionVersion property: The Kubernetes distribution version on this connected cluster.
+     * 
+     * @return the distributionVersion value.
+     */
+    public String distributionVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().distributionVersion();
+    }
+
+    /**
+     * Set the distributionVersion property: The Kubernetes distribution version on this connected cluster.
+     * 
+     * @param distributionVersion the distributionVersion value to set.
+     * @return the ConnectedClusterInner object itself.
+     */
+    public ConnectedClusterInner withDistributionVersion(String distributionVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectedClusterProperties();
+        }
+        this.innerProperties().withDistributionVersion(distributionVersion);
+        return this;
+    }
+
+    /**
      * Get the infrastructure property: The infrastructure on which the Kubernetes cluster represented by this connected
      * cluster is running on.
      * 
@@ -317,6 +375,228 @@ public final class ConnectedClusterInner extends Resource {
     }
 
     /**
+     * Get the privateLinkState property: Property which describes the state of private link on a connected cluster
+     * resource.
+     * 
+     * @return the privateLinkState value.
+     */
+    public PrivateLinkState privateLinkState() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateLinkState();
+    }
+
+    /**
+     * Set the privateLinkState property: Property which describes the state of private link on a connected cluster
+     * resource.
+     * 
+     * @param privateLinkState the privateLinkState value to set.
+     * @return the ConnectedClusterInner object itself.
+     */
+    public ConnectedClusterInner withPrivateLinkState(PrivateLinkState privateLinkState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectedClusterProperties();
+        }
+        this.innerProperties().withPrivateLinkState(privateLinkState);
+        return this;
+    }
+
+    /**
+     * Get the privateLinkScopeResourceId property: This is populated only if privateLinkState is enabled. The resource
+     * id of the private link scope this connected cluster is assigned to, if any.
+     * 
+     * @return the privateLinkScopeResourceId value.
+     */
+    public String privateLinkScopeResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateLinkScopeResourceId();
+    }
+
+    /**
+     * Set the privateLinkScopeResourceId property: This is populated only if privateLinkState is enabled. The resource
+     * id of the private link scope this connected cluster is assigned to, if any.
+     * 
+     * @param privateLinkScopeResourceId the privateLinkScopeResourceId value to set.
+     * @return the ConnectedClusterInner object itself.
+     */
+    public ConnectedClusterInner withPrivateLinkScopeResourceId(String privateLinkScopeResourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectedClusterProperties();
+        }
+        this.innerProperties().withPrivateLinkScopeResourceId(privateLinkScopeResourceId);
+        return this;
+    }
+
+    /**
+     * Get the azureHybridBenefit property: Indicates whether Azure Hybrid Benefit is opted in.
+     * 
+     * @return the azureHybridBenefit value.
+     */
+    public AzureHybridBenefit azureHybridBenefit() {
+        return this.innerProperties() == null ? null : this.innerProperties().azureHybridBenefit();
+    }
+
+    /**
+     * Set the azureHybridBenefit property: Indicates whether Azure Hybrid Benefit is opted in.
+     * 
+     * @param azureHybridBenefit the azureHybridBenefit value to set.
+     * @return the ConnectedClusterInner object itself.
+     */
+    public ConnectedClusterInner withAzureHybridBenefit(AzureHybridBenefit azureHybridBenefit) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectedClusterProperties();
+        }
+        this.innerProperties().withAzureHybridBenefit(azureHybridBenefit);
+        return this;
+    }
+
+    /**
+     * Get the aadProfile property: AAD profile for the connected cluster.
+     * 
+     * @return the aadProfile value.
+     */
+    public AadProfile aadProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().aadProfile();
+    }
+
+    /**
+     * Set the aadProfile property: AAD profile for the connected cluster.
+     * 
+     * @param aadProfile the aadProfile value to set.
+     * @return the ConnectedClusterInner object itself.
+     */
+    public ConnectedClusterInner withAadProfile(AadProfile aadProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectedClusterProperties();
+        }
+        this.innerProperties().withAadProfile(aadProfile);
+        return this;
+    }
+
+    /**
+     * Get the arcAgentProfile property: Arc agentry configuration for the provisioned cluster.
+     * 
+     * @return the arcAgentProfile value.
+     */
+    public ArcAgentProfile arcAgentProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().arcAgentProfile();
+    }
+
+    /**
+     * Set the arcAgentProfile property: Arc agentry configuration for the provisioned cluster.
+     * 
+     * @param arcAgentProfile the arcAgentProfile value to set.
+     * @return the ConnectedClusterInner object itself.
+     */
+    public ConnectedClusterInner withArcAgentProfile(ArcAgentProfile arcAgentProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectedClusterProperties();
+        }
+        this.innerProperties().withArcAgentProfile(arcAgentProfile);
+        return this;
+    }
+
+    /**
+     * Get the securityProfile property: Security profile for the connected cluster.
+     * 
+     * @return the securityProfile value.
+     */
+    public SecurityProfile securityProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().securityProfile();
+    }
+
+    /**
+     * Set the securityProfile property: Security profile for the connected cluster.
+     * 
+     * @param securityProfile the securityProfile value to set.
+     * @return the ConnectedClusterInner object itself.
+     */
+    public ConnectedClusterInner withSecurityProfile(SecurityProfile securityProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectedClusterProperties();
+        }
+        this.innerProperties().withSecurityProfile(securityProfile);
+        return this;
+    }
+
+    /**
+     * Get the oidcIssuerProfile property: Open ID Connect (OIDC) Issuer Profile for the connected cluster.
+     * 
+     * @return the oidcIssuerProfile value.
+     */
+    public OidcIssuerProfile oidcIssuerProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().oidcIssuerProfile();
+    }
+
+    /**
+     * Set the oidcIssuerProfile property: Open ID Connect (OIDC) Issuer Profile for the connected cluster.
+     * 
+     * @param oidcIssuerProfile the oidcIssuerProfile value to set.
+     * @return the ConnectedClusterInner object itself.
+     */
+    public ConnectedClusterInner withOidcIssuerProfile(OidcIssuerProfile oidcIssuerProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectedClusterProperties();
+        }
+        this.innerProperties().withOidcIssuerProfile(oidcIssuerProfile);
+        return this;
+    }
+
+    /**
+     * Get the gateway property: Details of the gateway used by the Arc router for connectivity.
+     * 
+     * @return the gateway value.
+     */
+    public Gateway gateway() {
+        return this.innerProperties() == null ? null : this.innerProperties().gateway();
+    }
+
+    /**
+     * Set the gateway property: Details of the gateway used by the Arc router for connectivity.
+     * 
+     * @param gateway the gateway value to set.
+     * @return the ConnectedClusterInner object itself.
+     */
+    public ConnectedClusterInner withGateway(Gateway gateway) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectedClusterProperties();
+        }
+        this.innerProperties().withGateway(gateway);
+        return this;
+    }
+
+    /**
+     * Get the arcAgentryConfigurations property: Configuration settings for customizing the behavior of the connected
+     * cluster.
+     * 
+     * @return the arcAgentryConfigurations value.
+     */
+    public List<ArcAgentryConfigurations> arcAgentryConfigurations() {
+        return this.innerProperties() == null ? null : this.innerProperties().arcAgentryConfigurations();
+    }
+
+    /**
+     * Set the arcAgentryConfigurations property: Configuration settings for customizing the behavior of the connected
+     * cluster.
+     * 
+     * @param arcAgentryConfigurations the arcAgentryConfigurations value to set.
+     * @return the ConnectedClusterInner object itself.
+     */
+    public ConnectedClusterInner withArcAgentryConfigurations(List<ArcAgentryConfigurations> arcAgentryConfigurations) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectedClusterProperties();
+        }
+        this.innerProperties().withArcAgentryConfigurations(arcAgentryConfigurations);
+        return this;
+    }
+
+    /**
+     * Get the miscellaneousProperties property: More properties related to the Connected Cluster.
+     * 
+     * @return the miscellaneousProperties value.
+     */
+    public Map<String, String> miscellaneousProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().miscellaneousProperties();
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -349,6 +629,7 @@ public final class ConnectedClusterInner extends Resource {
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -383,6 +664,8 @@ public final class ConnectedClusterInner extends Resource {
                     deserializedConnectedClusterInner.identity = ConnectedClusterIdentity.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedConnectedClusterInner.innerProperties = ConnectedClusterProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedConnectedClusterInner.kind = ConnectedClusterKind.fromString(reader.getString());
                 } else if ("systemData".equals(fieldName)) {
                     deserializedConnectedClusterInner.systemData = SystemData.fromJson(reader);
                 } else {

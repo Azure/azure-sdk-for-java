@@ -21,6 +21,10 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
@@ -30,9 +34,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.apimanagement.fluent.PolicyFragmentsClient;
-import com.azure.resourcemanager.apimanagement.fluent.models.PolicyFragmentCollectionInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.PolicyFragmentContractInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.ResourceCollectionInner;
+import com.azure.resourcemanager.apimanagement.models.PolicyFragmentCollection;
 import com.azure.resourcemanager.apimanagement.models.PolicyFragmentContentFormat;
 import com.azure.resourcemanager.apimanagement.models.PolicyFragmentsGetEntityTagResponse;
 import com.azure.resourcemanager.apimanagement.models.PolicyFragmentsGetResponse;
@@ -76,7 +80,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/policyFragments")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyFragmentCollectionInner>> listByService(@HostParam("$host") String endpoint,
+        Mono<Response<PolicyFragmentCollection>> listByService(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("$filter") String filter, @QueryParam("$orderby") String orderby,
@@ -105,7 +109,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/policyFragments/{id}")
-        @ExpectedResponses({ 200, 201, 202 })
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
@@ -133,6 +137,14 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
             @PathParam("id") String id, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("$top") Integer top,
             @QueryParam("$skip") Integer skip, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<PolicyFragmentCollection>> listByServiceNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -151,10 +163,10 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all policy fragments along with {@link Response} on successful completion of {@link Mono}.
+     * @return all policy fragments along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PolicyFragmentCollectionInner>> listByServiceWithResponseAsync(String resourceGroupName,
+    private Mono<PagedResponse<PolicyFragmentContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
         String serviceName, String filter, String orderby, Integer top, Integer skip) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -176,6 +188,8 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
             .withContext(context -> service.listByService(this.client.getEndpoint(), resourceGroupName, serviceName,
                 this.client.getApiVersion(), this.client.getSubscriptionId(), filter, orderby, top, skip, accept,
                 context))
+            .<PagedResponse<PolicyFragmentContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -196,10 +210,10 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all policy fragments along with {@link Response} on successful completion of {@link Mono}.
+     * @return all policy fragments along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PolicyFragmentCollectionInner>> listByServiceWithResponseAsync(String resourceGroupName,
+    private Mono<PagedResponse<PolicyFragmentContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
         String serviceName, String filter, String orderby, Integer top, Integer skip, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -218,8 +232,37 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listByService(this.client.getEndpoint(), resourceGroupName, serviceName,
-            this.client.getApiVersion(), this.client.getSubscriptionId(), filter, orderby, top, skip, accept, context);
+        return service
+            .listByService(this.client.getEndpoint(), resourceGroupName, serviceName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), filter, orderby, top, skip, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Gets all policy fragments.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param filter | Field | Usage | Supported operators | Supported functions
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter, orderBy | ge,
+     * le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| description | filter | ge, le, eq,
+     * ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| value | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * @param orderby OData order by query option.
+     * @param top Number of records to return.
+     * @param skip Number of records to skip.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all policy fragments as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<PolicyFragmentContractInner> listByServiceAsync(String resourceGroupName, String serviceName,
+        String filter, String orderby, Integer top, Integer skip) {
+        return new PagedFlux<>(
+            () -> listByServiceSinglePageAsync(resourceGroupName, serviceName, filter, orderby, top, skip),
+            nextLink -> listByServiceNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -230,16 +273,17 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all policy fragments on successful completion of {@link Mono}.
+     * @return all policy fragments as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PolicyFragmentCollectionInner> listByServiceAsync(String resourceGroupName, String serviceName) {
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<PolicyFragmentContractInner> listByServiceAsync(String resourceGroupName, String serviceName) {
         final String filter = null;
         final String orderby = null;
         final Integer top = null;
         final Integer skip = null;
-        return listByServiceWithResponseAsync(resourceGroupName, serviceName, filter, orderby, top, skip)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return new PagedFlux<>(
+            () -> listByServiceSinglePageAsync(resourceGroupName, serviceName, filter, orderby, top, skip),
+            nextLink -> listByServiceNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -259,13 +303,14 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all policy fragments along with {@link Response}.
+     * @return all policy fragments as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyFragmentCollectionInner> listByServiceWithResponse(String resourceGroupName,
-        String serviceName, String filter, String orderby, Integer top, Integer skip, Context context) {
-        return listByServiceWithResponseAsync(resourceGroupName, serviceName, filter, orderby, top, skip, context)
-            .block();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<PolicyFragmentContractInner> listByServiceAsync(String resourceGroupName, String serviceName,
+        String filter, String orderby, Integer top, Integer skip, Context context) {
+        return new PagedFlux<>(
+            () -> listByServiceSinglePageAsync(resourceGroupName, serviceName, filter, orderby, top, skip, context),
+            nextLink -> listByServiceNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -276,16 +321,41 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all policy fragments.
+     * @return all policy fragments as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyFragmentCollectionInner listByService(String resourceGroupName, String serviceName) {
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PolicyFragmentContractInner> listByService(String resourceGroupName, String serviceName) {
         final String filter = null;
         final String orderby = null;
         final Integer top = null;
         final Integer skip = null;
-        return listByServiceWithResponse(resourceGroupName, serviceName, filter, orderby, top, skip, Context.NONE)
-            .getValue();
+        return new PagedIterable<>(listByServiceAsync(resourceGroupName, serviceName, filter, orderby, top, skip));
+    }
+
+    /**
+     * Gets all policy fragments.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param filter | Field | Usage | Supported operators | Supported functions
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter, orderBy | ge,
+     * le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| description | filter | ge, le, eq,
+     * ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| value | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * @param orderby OData order by query option.
+     * @param top Number of records to return.
+     * @param skip Number of records to skip.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all policy fragments as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PolicyFragmentContractInner> listByService(String resourceGroupName, String serviceName,
+        String filter, String orderby, Integer top, Integer skip, Context context) {
+        return new PagedIterable<>(
+            listByServiceAsync(resourceGroupName, serviceName, filter, orderby, top, skip, context));
     }
 
     /**
@@ -1135,5 +1205,60 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
         final Integer top = null;
         final Integer skip = null;
         return listReferencesWithResponse(resourceGroupName, serviceName, id, top, skip, Context.NONE).getValue();
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the get policy fragments operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<PolicyFragmentContractInner>> listByServiceNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listByServiceNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<PolicyFragmentContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the get policy fragments operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<PolicyFragmentContractInner>> listByServiceNextSinglePageAsync(String nextLink,
+        Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listByServiceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

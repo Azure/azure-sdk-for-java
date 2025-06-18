@@ -11,16 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiManagementServiceCheckNameAvailabilityParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiManagementServiceCheckNameAvailabilityParameters model = BinaryData.fromString("{\"name\":\"opgjttba\"}")
-            .toObject(ApiManagementServiceCheckNameAvailabilityParameters.class);
-        Assertions.assertEquals("opgjttba", model.name());
+        ApiManagementServiceCheckNameAvailabilityParameters model
+            = BinaryData.fromString("{\"name\":\"fzjuegrhrhtsl\"}")
+                .toObject(ApiManagementServiceCheckNameAvailabilityParameters.class);
+        Assertions.assertEquals("fzjuegrhrhtsl", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApiManagementServiceCheckNameAvailabilityParameters model
-            = new ApiManagementServiceCheckNameAvailabilityParameters().withName("opgjttba");
+            = new ApiManagementServiceCheckNameAvailabilityParameters().withName("fzjuegrhrhtsl");
         model = BinaryData.fromObject(model).toObject(ApiManagementServiceCheckNameAvailabilityParameters.class);
-        Assertions.assertEquals("opgjttba", model.name());
+        Assertions.assertEquals("fzjuegrhrhtsl", model.name());
     }
 }

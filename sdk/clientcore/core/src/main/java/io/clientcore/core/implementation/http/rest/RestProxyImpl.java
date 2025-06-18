@@ -8,18 +8,17 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpResponseException;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.ReflectionSerializable;
-import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
 import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
 import io.clientcore.core.implementation.http.serializer.MalformedValueException;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.models.binarydata.InputStreamBinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
@@ -41,7 +40,6 @@ import java.util.Arrays;
 import static io.clientcore.core.implementation.http.serializer.HttpResponseBodyDecoder.decodeByteArray;
 
 public class RestProxyImpl {
-    static final ResponseConstructorsCache RESPONSE_CONSTRUCTORS_CACHE = new ResponseConstructorsCache();
 
     // RestProxy is a commonly used class, use a static logger.
     static final ClientLogger LOGGER = new ClientLogger(RestProxyImpl.class);
@@ -69,7 +67,7 @@ public class RestProxyImpl {
      * Invokes the provided method using the provided arguments.
      *
      * @param proxy The proxy object to invoke the method on.
-     * @param options The RequestOptions to use for the request.
+     * @param options The RequestContext to use for the request.
      * @param methodParser The SwaggerMethodParser that contains information about the method to invoke.
      * @param args The arguments to use when invoking the method.
      * @return The result of invoking the method.
@@ -77,15 +75,15 @@ public class RestProxyImpl {
      * @throws RuntimeException When a URI syntax error occurs.
      */
     @SuppressWarnings({ "try", "unused" })
-    public final Object invoke(Object proxy, RequestOptions options, SwaggerMethodParser methodParser, Object[] args) {
+    public final Object invoke(Object proxy, RequestContext options, SwaggerMethodParser methodParser, Object[] args) {
         try {
-            HttpRequest request = createHttpRequest(methodParser, serializer, args).setRequestOptions(options)
+            HttpRequest request = createHttpRequest(methodParser, serializer, args).setContext(options)
                 .setServerSentEventListener(methodParser.setServerSentEventListener(args));
 
-            // If there is 'RequestOptions' apply its request callback operations before validating the body.
+            // If there is 'RequestContext' apply its request callback operations before validating the body.
             // This is because the callbacks may mutate the request body.
-            if (request.getRequestOptions() != null) {
-                request.getRequestOptions().getRequestCallback().accept(request);
+            if (request.getContext() != null) {
+                request.getContext().getRequestCallback().accept(request);
             }
 
             if (request.getBody() != null) {
@@ -96,9 +94,9 @@ public class RestProxyImpl {
 
             return handleRestReturnType(response, methodParser, methodParser.getReturnType(), serializer);
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         } catch (URISyntaxException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+            throw LOGGER.throwableAtError().log(e, (msg, cause) -> CoreException.from(msg, cause, false));
         }
     }
 
@@ -108,7 +106,7 @@ public class RestProxyImpl {
      * @param request the input request to validate.
      * @return the requests body as BinaryData on successful validation.
      */
-    static BinaryData validateLength(final HttpRequest request) {
+    public static BinaryData validateLength(final HttpRequest request) {
         final BinaryData binaryData = request.getBody();
 
         if (binaryData == null) {
@@ -140,20 +138,18 @@ public class RestProxyImpl {
 
     private static void validateLengthInternal(long length, long expectedLength) {
         if (length > expectedLength) {
-            throw new IllegalStateException(bodyTooLarge(length, expectedLength));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("actualLength", length)
+                .addKeyValue("expectedLength", expectedLength)
+                .log("Request body emitted more than the expected stream length.", IllegalStateException::new);
         }
 
         if (length < expectedLength) {
-            throw new IllegalStateException(bodyTooSmall(length, expectedLength));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("actualLength", length)
+                .addKeyValue("expectedLength", expectedLength)
+                .log("Request body emitted less than the expected stream length.", IllegalStateException::new);
         }
-    }
-
-    static String bodyTooLarge(long length, long expectedLength) {
-        return "Request body emitted " + length + " bytes, more than the expected " + expectedLength + " bytes.";
-    }
-
-    static String bodyTooSmall(long length, long expectedLength) {
-        return "Request body emitted " + length + " bytes, less than the expected " + expectedLength + " bytes.";
     }
 
     /**
@@ -347,22 +343,10 @@ public class RestProxyImpl {
             final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
 
             if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {
-                try {
-                    response.close();
-                } catch (IOException e) {
-                    throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-                }
+                response.close();
 
                 return new Response<Void>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
             } else {
-                ResponseBodyMode responseBodyMode = null;
-                RequestOptions requestOptions = response.getRequest().getRequestOptions();
-
-                if (requestOptions != null) {
-                    responseBodyMode = requestOptions.getResponseBodyMode();
-                }
-
-                // TODO (alzimmer): Need a way to support deferred deserialization.
                 return new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                     handleResponseBody(response, methodParser, bodyType, response.getValue(), serializer));
             }
@@ -370,28 +354,6 @@ public class RestProxyImpl {
             // When not handling a Response subtype, we need to eagerly read the response body to construct the correct
             // return type.
             return handleResponseBody(response, methodParser, entityType, response.getValue(), serializer);
-        }
-    }
-
-    @SuppressWarnings({ "unchecked" })
-    private static Response<?> createResponseIfNecessary(Response<?> response, Type entityType, Object bodyAsObject) {
-        final Class<? extends Response<?>> clazz = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
-
-        // Inspection of the response type needs to be performed to determine the course of action: either return the
-        // Response or rely on reflection to create an appropriate Response subtype.
-        if (clazz.equals(Response.class)) {
-            // Return the Response.
-            return response;
-        } else {
-            // Otherwise, rely on reflection, for now, to get the best constructor to use to create the Response
-            // subtype.
-            //
-            // Ideally, in the future the SDKs won't need to dabble in reflection here as the Response subtypes should
-            // be given a way to register their constructor as a callback method that consumes Response and the body as
-            // an Object.
-            ReflectiveInvoker constructorReflectiveInvoker = RESPONSE_CONSTRUCTORS_CACHE.get(clazz);
-
-            return RESPONSE_CONSTRUCTORS_CACHE.invoke(constructorReflectiveInvoker, response, bodyAsObject);
         }
     }
 
@@ -446,11 +408,7 @@ public class RestProxyImpl {
         final Object result;
 
         if (TypeUtil.isTypeOrSubTypeOf(returnType, void.class) || TypeUtil.isTypeOrSubTypeOf(returnType, Void.class)) {
-            try {
-                expectedResponse.close();
-            } catch (IOException e) {
-                throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-            }
+            expectedResponse.close();
 
             result = null;
         } else {

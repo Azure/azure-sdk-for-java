@@ -23,7 +23,6 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  */
 @Metadata(properties = MetadataProperties.FLUENT)
 public final class HttpHeader {
-    private static final String[] EMPTY_HEADER_ARRAY = new String[0];
 
     private final HttpHeaderName name;
 
@@ -115,22 +114,13 @@ public final class HttpHeader {
     }
 
     /**
-     * Gets the comma separated value as an array. Changes made to this array will not be reflected in the headers.
-     *
-     * @return the values of this {@link HttpHeader} that are separated by a comma
-     */
-    String[] getValuesArray() {
-        if (value != null) {
-            return new String[] { value };
-        } else if (!isNullOrEmpty(values)) {
-            return values.toArray(new String[0]);
-        } else {
-            return EMPTY_HEADER_ARRAY;
-        }
-    }
-
-    /**
-     * Returns all values associated with this header, represented as an unmodifiable list of strings.
+     * Returns the list of values associated with the header.
+     * <p>
+     * If the header was added using multiple values, those values will be returned.
+     * If it was added with a single value, the list will contain only that value.
+     * This method does not split the value by commas, as some headers may include commas
+     * as part of the value (e.g., Date headers).
+     * </p>
      *
      * @return An unmodifiable list containing all values associated with this header.
      */

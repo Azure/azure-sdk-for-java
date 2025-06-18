@@ -18,13 +18,13 @@ public class DetectMultivariateBatchAnomaly {
             .credential(new KeyCredential(Configuration.getGlobalConfiguration().get("API_KEY")))
             .endpoint("{Endpoint}")
             .buildMultivariateClient();
-        // BEGIN:com.azure.ai.anomalydetector.generated.multivariatedetectmultivariatebatchanomaly.detectmultivariatebatchanomaly
+        // BEGIN:com.azure.ai.anomalydetector.generated.multivariate-detect-multivariate-batch-anomaly.detect-multivariate-batch-anomaly
         MultivariateDetectionResult response
             = multivariateClient.detectMultivariateBatchAnomaly("45aad126-aafd-11ea-b8fb-d89ef3400c5f",
                 new MultivariateBatchDetectionOptions(
                     "https://multiadsample.blob.core.windows.net/data/sample_data_2_1000.csv",
                     OffsetDateTime.parse("2019-04-01T00:15:00Z"), OffsetDateTime.parse("2019-04-01T00:40:00Z"))
                         .setTopContributorCount(10));
-        // END:com.azure.ai.anomalydetector.generated.multivariatedetectmultivariatebatchanomaly.detectmultivariatebatchanomaly
+        // END:com.azure.ai.anomalydetector.generated.multivariate-detect-multivariate-batch-anomaly.detect-multivariate-batch-anomaly
     }
 }

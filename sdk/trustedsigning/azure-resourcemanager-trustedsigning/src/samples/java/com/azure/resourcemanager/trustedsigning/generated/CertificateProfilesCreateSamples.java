@@ -12,7 +12,7 @@ import com.azure.resourcemanager.trustedsigning.models.ProfileType;
  */
 public final class CertificateProfilesCreateSamples {
     /*
-     * x-ms-original-file: 2024-02-05-preview/CertificateProfiles_Create.json
+     * x-ms-original-file: 2024-09-30-preview/CertificateProfiles_Create.json
      */
     /**
      * Sample code: Create a certificate profile.

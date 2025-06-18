@@ -12,7 +12,7 @@ import com.azure.resourcemanager.apimanagement.models.SubscriptionCreateParamete
 public final class SubscriptionCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateSubscription.json
      */
     /**
@@ -25,9 +25,9 @@ public final class SubscriptionCreateOrUpdateSamples {
         manager.subscriptions()
             .createOrUpdateWithResponse("rg1", "apimService1", "testsub", new SubscriptionCreateParameters()
                 .withOwnerId(
-                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/57127d485157a511ace86ae7")
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/57127d485157a511ace86ae7")
                 .withScope(
-                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/products/5600b59475ff190048060002")
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/products/5600b59475ff190048060002")
                 .withDisplayName("testsub"), null, null, null, com.azure.core.util.Context.NONE);
     }
 }

@@ -25,6 +25,23 @@ public final class PolicyDefinitionReference implements JsonSerializable<PolicyD
     private String policyDefinitionId;
 
     /*
+     * The version of the policy definition to use.
+     */
+    private String definitionVersion;
+
+    /*
+     * The latest version of the policy definition available. This is only present if requested via the $expand query
+     * parameter.
+     */
+    private String latestDefinitionVersion;
+
+    /*
+     * The effective version of the policy definition in use. This is only present if requested via the $expand query
+     * parameter.
+     */
+    private String effectiveDefinitionVersion;
+
+    /*
      * The parameter values for the referenced policy rule. The keys are the parameter names.
      */
     private Map<String, ParameterValuesValue> parameters;
@@ -63,6 +80,46 @@ public final class PolicyDefinitionReference implements JsonSerializable<PolicyD
     public PolicyDefinitionReference withPolicyDefinitionId(String policyDefinitionId) {
         this.policyDefinitionId = policyDefinitionId;
         return this;
+    }
+
+    /**
+     * Get the definitionVersion property: The version of the policy definition to use.
+     * 
+     * @return the definitionVersion value.
+     */
+    public String definitionVersion() {
+        return this.definitionVersion;
+    }
+
+    /**
+     * Set the definitionVersion property: The version of the policy definition to use.
+     * 
+     * @param definitionVersion the definitionVersion value to set.
+     * @return the PolicyDefinitionReference object itself.
+     */
+    public PolicyDefinitionReference withDefinitionVersion(String definitionVersion) {
+        this.definitionVersion = definitionVersion;
+        return this;
+    }
+
+    /**
+     * Get the latestDefinitionVersion property: The latest version of the policy definition available. This is only
+     * present if requested via the $expand query parameter.
+     * 
+     * @return the latestDefinitionVersion value.
+     */
+    public String latestDefinitionVersion() {
+        return this.latestDefinitionVersion;
+    }
+
+    /**
+     * Get the effectiveDefinitionVersion property: The effective version of the policy definition in use. This is only
+     * present if requested via the $expand query parameter.
+     * 
+     * @return the effectiveDefinitionVersion value.
+     */
+    public String effectiveDefinitionVersion() {
+        return this.effectiveDefinitionVersion;
     }
 
     /**
@@ -158,6 +215,7 @@ public final class PolicyDefinitionReference implements JsonSerializable<PolicyD
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("policyDefinitionId", this.policyDefinitionId);
+        jsonWriter.writeStringField("definitionVersion", this.definitionVersion);
         jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("policyDefinitionReferenceId", this.policyDefinitionReferenceId);
         jsonWriter.writeArrayField("groupNames", this.groupNames, (writer, element) -> writer.writeString(element));
@@ -182,6 +240,12 @@ public final class PolicyDefinitionReference implements JsonSerializable<PolicyD
 
                 if ("policyDefinitionId".equals(fieldName)) {
                     deserializedPolicyDefinitionReference.policyDefinitionId = reader.getString();
+                } else if ("definitionVersion".equals(fieldName)) {
+                    deserializedPolicyDefinitionReference.definitionVersion = reader.getString();
+                } else if ("latestDefinitionVersion".equals(fieldName)) {
+                    deserializedPolicyDefinitionReference.latestDefinitionVersion = reader.getString();
+                } else if ("effectiveDefinitionVersion".equals(fieldName)) {
+                    deserializedPolicyDefinitionReference.effectiveDefinitionVersion = reader.getString();
                 } else if ("parameters".equals(fieldName)) {
                     Map<String, ParameterValuesValue> parameters
                         = reader.readMap(reader1 -> ParameterValuesValue.fromJson(reader1));

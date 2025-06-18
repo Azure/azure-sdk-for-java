@@ -176,4 +176,8 @@ public class HttpBinJSON implements JsonSerializable<HttpBinJSON> {
     public String getHeaderValue(String name) {
         return headers == null ? null : headers.containsKey(name) ? headers.get(name).get(0) : null;
     }
+
+    public List<String> getHeaderValues(String name) {
+        return headers == null ? null : headers.containsKey(name) ? headers.get(name) : null;
+    }
 }

@@ -5,6 +5,8 @@ package io.clientcore.core.http.models;
 
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
+import io.clientcore.core.implementation.http.RetryUtils;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 
 /**
@@ -12,7 +14,7 @@ import io.clientcore.core.models.binarydata.BinaryData;
  * {@code 5XX}) from the service request.
  */
 @Metadata(properties = MetadataProperties.IMMUTABLE)
-public class HttpResponseException extends RuntimeException {
+public class HttpResponseException extends CoreException {
     /**
      * The HTTP response value.
      */
@@ -24,6 +26,11 @@ public class HttpResponseException extends RuntimeException {
     private final Response<BinaryData> response;
 
     /**
+     * Indicates whether the exception is retryable.
+     */
+    private final boolean isRetryable;
+
+    /**
      * Initializes a new instance of the HttpResponseException class.
      *
      * @param message The exception message.
@@ -31,10 +38,11 @@ public class HttpResponseException extends RuntimeException {
      * @param value The deserialized response value.
      */
     public HttpResponseException(final String message, final Response<BinaryData> response, final Object value) {
-        super(message);
+        super(message, null);
 
         this.value = value;
         this.response = response;
+        this.isRetryable = response == null || RetryUtils.isRetryable(response.getStatusCode());
     }
 
     /**
@@ -49,6 +57,8 @@ public class HttpResponseException extends RuntimeException {
 
         this.value = null;
         this.response = response;
+        this.isRetryable
+            = response != null ? RetryUtils.isRetryable(response.getStatusCode()) : RetryUtils.isRetryable(cause);
     }
 
     /**
@@ -67,5 +77,10 @@ public class HttpResponseException extends RuntimeException {
      */
     public Object getValue() {
         return value;
+    }
+
+    @Override
+    public boolean isRetryable() {
+        return isRetryable;
     }
 }

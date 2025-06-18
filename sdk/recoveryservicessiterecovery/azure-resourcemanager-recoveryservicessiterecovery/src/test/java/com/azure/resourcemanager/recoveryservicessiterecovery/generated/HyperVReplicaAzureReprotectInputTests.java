@@ -12,30 +12,30 @@ public final class HyperVReplicaAzureReprotectInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HyperVReplicaAzureReprotectInput model = BinaryData.fromString(
-            "{\"instanceType\":\"HyperVReplicaAzure\",\"hvHostVmId\":\"zbnobr\",\"vmName\":\"pbcjtrpzuyudivbx\",\"osType\":\"sqeaeonqelwg\",\"vHDId\":\"uruzy\",\"storageAccountId\":\"arogatmolji\",\"logStorageAccountId\":\"mpinmzvfkneerzzt\"}")
+            "{\"instanceType\":\"HyperVReplicaAzure\",\"hvHostVmId\":\"ujjs\",\"vmName\":\"mlzaahzb\",\"osType\":\"roolkolir\",\"vHDId\":\"mojusuz\",\"storageAccountId\":\"jzc\",\"logStorageAccountId\":\"axoialahfxwccokd\"}")
             .toObject(HyperVReplicaAzureReprotectInput.class);
-        Assertions.assertEquals("zbnobr", model.hvHostVmId());
-        Assertions.assertEquals("pbcjtrpzuyudivbx", model.vmName());
-        Assertions.assertEquals("sqeaeonqelwg", model.osType());
-        Assertions.assertEquals("uruzy", model.vHDId());
-        Assertions.assertEquals("arogatmolji", model.storageAccountId());
-        Assertions.assertEquals("mpinmzvfkneerzzt", model.logStorageAccountId());
+        Assertions.assertEquals("ujjs", model.hvHostVmId());
+        Assertions.assertEquals("mlzaahzb", model.vmName());
+        Assertions.assertEquals("roolkolir", model.osType());
+        Assertions.assertEquals("mojusuz", model.vHDId());
+        Assertions.assertEquals("jzc", model.storageAccountId());
+        Assertions.assertEquals("axoialahfxwccokd", model.logStorageAccountId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HyperVReplicaAzureReprotectInput model = new HyperVReplicaAzureReprotectInput().withHvHostVmId("zbnobr")
-            .withVmName("pbcjtrpzuyudivbx")
-            .withOsType("sqeaeonqelwg")
-            .withVHDId("uruzy")
-            .withStorageAccountId("arogatmolji")
-            .withLogStorageAccountId("mpinmzvfkneerzzt");
+        HyperVReplicaAzureReprotectInput model = new HyperVReplicaAzureReprotectInput().withHvHostVmId("ujjs")
+            .withVmName("mlzaahzb")
+            .withOsType("roolkolir")
+            .withVHDId("mojusuz")
+            .withStorageAccountId("jzc")
+            .withLogStorageAccountId("axoialahfxwccokd");
         model = BinaryData.fromObject(model).toObject(HyperVReplicaAzureReprotectInput.class);
-        Assertions.assertEquals("zbnobr", model.hvHostVmId());
-        Assertions.assertEquals("pbcjtrpzuyudivbx", model.vmName());
-        Assertions.assertEquals("sqeaeonqelwg", model.osType());
-        Assertions.assertEquals("uruzy", model.vHDId());
-        Assertions.assertEquals("arogatmolji", model.storageAccountId());
-        Assertions.assertEquals("mpinmzvfkneerzzt", model.logStorageAccountId());
+        Assertions.assertEquals("ujjs", model.hvHostVmId());
+        Assertions.assertEquals("mlzaahzb", model.vmName());
+        Assertions.assertEquals("roolkolir", model.osType());
+        Assertions.assertEquals("mojusuz", model.vHDId());
+        Assertions.assertEquals("jzc", model.storageAccountId());
+        Assertions.assertEquals("axoialahfxwccokd", model.logStorageAccountId());
     }
 }

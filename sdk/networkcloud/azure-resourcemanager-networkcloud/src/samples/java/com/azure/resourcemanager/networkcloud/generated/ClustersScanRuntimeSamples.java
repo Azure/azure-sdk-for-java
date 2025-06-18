@@ -13,7 +13,7 @@ import com.azure.resourcemanager.networkcloud.models.ClusterScanRuntimeParameter
 public final class ClustersScanRuntimeSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2024-07-01/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
      * Clusters_ScanRuntime.json
      */
     /**

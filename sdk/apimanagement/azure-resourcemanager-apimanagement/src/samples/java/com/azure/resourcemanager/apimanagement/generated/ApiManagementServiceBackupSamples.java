@@ -13,7 +13,7 @@ import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceBackup
 public final class ApiManagementServiceBackupSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementBackupWithAccessKey.json
      */
     /**
@@ -35,7 +35,7 @@ public final class ApiManagementServiceBackupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementBackupWithUserAssignedManagedIdentity.json
      */
     /**
@@ -57,7 +57,7 @@ public final class ApiManagementServiceBackupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementBackupWithSystemManagedIdentity.json
      */
     /**

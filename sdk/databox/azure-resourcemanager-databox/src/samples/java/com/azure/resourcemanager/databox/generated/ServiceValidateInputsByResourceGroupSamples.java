@@ -9,6 +9,7 @@ import com.azure.resourcemanager.databox.models.CreateJobValidations;
 import com.azure.resourcemanager.databox.models.CreateOrderLimitForSubscriptionValidationRequest;
 import com.azure.resourcemanager.databox.models.DataImportDetails;
 import com.azure.resourcemanager.databox.models.DataTransferDetailsValidationRequest;
+import com.azure.resourcemanager.databox.models.ModelName;
 import com.azure.resourcemanager.databox.models.Preferences;
 import com.azure.resourcemanager.databox.models.PreferencesValidationRequest;
 import com.azure.resourcemanager.databox.models.ShippingAddress;
@@ -28,7 +29,7 @@ import java.util.Arrays;
 public final class ServiceValidateInputsByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/ValidateInputsByResourceGroup
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/ValidateInputsByResourceGroup
      * .json
      */
     /**
@@ -44,7 +45,8 @@ public final class ServiceValidateInputsByResourceGroupSamples {
                         new DataImportDetails().withAccountDetails(new StorageAccountDetails().withStorageAccountId(
                             "/subscriptions/YourSubscriptionId/resourcegroups/YourResourceGroupName/providers/Microsoft.Storage/storageAccounts/YourStorageAccountName"))))
                         .withDeviceType(SkuName.DATA_BOX)
-                        .withTransferType(TransferType.IMPORT_TO_AZURE),
+                        .withTransferType(TransferType.IMPORT_TO_AZURE)
+                        .withModel(ModelName.DATA_BOX),
                     new ValidateAddress()
                         .withShippingAddress(new ShippingAddress().withStreetAddress1("XXXX XXXX")
                             .withStreetAddress2("XXXX XXXX")
@@ -56,17 +58,21 @@ public final class ServiceValidateInputsByResourceGroupSamples {
                             .withAddressType(AddressType.COMMERCIAL))
                         .withDeviceType(SkuName.DATA_BOX)
                         .withTransportPreferences(new TransportPreferences()
-                            .withPreferredShipmentType(TransportShipmentTypes.MICROSOFT_MANAGED)),
+                            .withPreferredShipmentType(TransportShipmentTypes.MICROSOFT_MANAGED))
+                        .withModel(ModelName.DATA_BOX),
                     new SubscriptionIsAllowedToCreateJobValidationRequest(),
                     new SkuAvailabilityValidationRequest().withDeviceType(SkuName.DATA_BOX)
                         .withTransferType(TransferType.IMPORT_TO_AZURE)
                         .withCountry("XX")
-                        .withLocation("westus"),
-                    new CreateOrderLimitForSubscriptionValidationRequest().withDeviceType(SkuName.DATA_BOX),
+                        .withLocation("westus")
+                        .withModel(ModelName.DATA_BOX),
+                    new CreateOrderLimitForSubscriptionValidationRequest().withDeviceType(SkuName.DATA_BOX)
+                        .withModel(ModelName.DATA_BOX),
                     new PreferencesValidationRequest()
                         .withPreference(new Preferences().withTransportPreferences(new TransportPreferences()
                             .withPreferredShipmentType(TransportShipmentTypes.MICROSOFT_MANAGED)))
-                        .withDeviceType(SkuName.DATA_BOX))),
+                        .withDeviceType(SkuName.DATA_BOX)
+                        .withModel(ModelName.DATA_BOX))),
                 com.azure.core.util.Context.NONE);
     }
 }

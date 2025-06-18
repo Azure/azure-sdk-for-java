@@ -7,8 +7,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.IpActionType;
@@ -26,27 +26,26 @@ public final class PartnerNamespacesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"zdprwnhkgqggox\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"id\":\"ivrakfrryn\",\"name\":\"cwmhlymgnukxrk\",\"type\":\"mjpequlr\"},{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"gjtfb\",\"lakkucddwnhcz\",\"utoucgjt\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"id\":\"ayhic\",\"name\":\"qwwvgwkslvl\",\"type\":\"zedv\"},{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"n\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"kzyqxadyfhbmw\",\"name\":\"hojqttbspvkhg\",\"type\":\"aqjsgyzstujr\"},{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"sf\",\"rlduyehiiittugy\",\"qwrldaxur\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"id\":\"csozjv\",\"name\":\"dzciggb\",\"type\":\"vt\"}],\"provisioningState\":\"Creating\",\"partnerRegistrationFullyQualifiedId\":\"alzyxwhoeamo\",\"minimumTlsVersionAllowed\":\"1.1\",\"endpoint\":\"oeysfp\",\"publicNetworkAccess\":\"SecuredByPerimeter\",\"inboundIpRules\":[{\"ipMask\":\"uh\",\"action\":\"Allow\"},{\"ipMask\":\"nkwmnfeub\",\"action\":\"Allow\"},{\"ipMask\":\"r\",\"action\":\"Allow\"},{\"ipMask\":\"giphrrkuumnqdu\",\"action\":\"Allow\"}],\"disableLocalAuth\":true,\"partnerTopicRoutingMode\":\"SourceEventAttribute\"},\"location\":\"eoq\",\"tags\":{\"oztjdqumqvfmw\":\"wlujopwnibit\",\"tgctxe\":\"ad\",\"fnzzryizwbxg\":\"tvgwyurbe\"},\"id\":\"ebxlayu\",\"name\":\"omirhp\",\"type\":\"abenqlamwmg\"}]}";
+            = "{\"value\":[{\"properties\":{\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"bfijzzcaoijol\",\"uauktwieopexelx\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"swyiljpibkgxyxy\",\"name\":\"ux\",\"type\":\"eddobmcnltm\"},{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"jsqy\",\"mmoxfablqgpwbmwh\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Canceled\"},\"id\":\"iwrycgnwplrrb\",\"name\":\"hctsbbibti\",\"type\":\"uhqvums\"}],\"provisioningState\":\"Failed\",\"partnerRegistrationFullyQualifiedId\":\"feq\",\"minimumTlsVersionAllowed\":\"1.0\",\"endpoint\":\"f\",\"publicNetworkAccess\":\"Disabled\",\"inboundIpRules\":[{\"ipMask\":\"yxmzrmtmvwituwey\",\"action\":\"Allow\"},{\"ipMask\":\"cybwfuppoxprcm\",\"action\":\"Allow\"},{\"ipMask\":\"jxdiikmoxrezsv\",\"action\":\"Allow\"},{\"ipMask\":\"xikjm\",\"action\":\"Allow\"}],\"disableLocalAuth\":false,\"partnerTopicRoutingMode\":\"SourceEventAttribute\"},\"location\":\"pcwybsz\",\"tags\":{\"wf\":\"npatpftsae\",\"exojfccy\":\"hxorpwaltzwu\"},\"id\":\"h\",\"name\":\"rh\",\"type\":\"hvazjpwexcdr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PartnerNamespace> response = manager.partnerNamespaces()
-            .listByResourceGroup("rpbj", "mvgoqpleh", 932346868, com.azure.core.util.Context.NONE);
+            .listByResourceGroup("aoq", "sgptotxjq", 523647498, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("eoq", response.iterator().next().location());
-        Assertions.assertEquals("wlujopwnibit", response.iterator().next().tags().get("oztjdqumqvfmw"));
-        Assertions.assertEquals("alzyxwhoeamo", response.iterator().next().partnerRegistrationFullyQualifiedId());
-        Assertions.assertEquals(TlsVersion.ONE_ONE, response.iterator().next().minimumTlsVersionAllowed());
-        Assertions.assertEquals(PublicNetworkAccess.SECURED_BY_PERIMETER,
-            response.iterator().next().publicNetworkAccess());
-        Assertions.assertEquals("uh", response.iterator().next().inboundIpRules().get(0).ipMask());
+        Assertions.assertEquals("pcwybsz", response.iterator().next().location());
+        Assertions.assertEquals("npatpftsae", response.iterator().next().tags().get("wf"));
+        Assertions.assertEquals("feq", response.iterator().next().partnerRegistrationFullyQualifiedId());
+        Assertions.assertEquals(TlsVersion.ONE_ZERO, response.iterator().next().minimumTlsVersionAllowed());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, response.iterator().next().publicNetworkAccess());
+        Assertions.assertEquals("yxmzrmtmvwituwey", response.iterator().next().inboundIpRules().get(0).ipMask());
         Assertions.assertEquals(IpActionType.ALLOW, response.iterator().next().inboundIpRules().get(0).action());
-        Assertions.assertEquals(true, response.iterator().next().disableLocalAuth());
+        Assertions.assertEquals(false, response.iterator().next().disableLocalAuth());
         Assertions.assertEquals(PartnerTopicRoutingMode.SOURCE_EVENT_ATTRIBUTE,
             response.iterator().next().partnerTopicRoutingMode());
     }

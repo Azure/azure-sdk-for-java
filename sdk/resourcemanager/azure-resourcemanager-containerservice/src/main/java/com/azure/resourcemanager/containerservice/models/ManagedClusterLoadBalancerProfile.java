@@ -137,17 +137,6 @@ public final class ManagedClusterLoadBalancerProfile implements JsonSerializable
     }
 
     /**
-     * Set the effectiveOutboundIPs property: The effective outbound IP resources of the cluster load balancer.
-     * 
-     * @param effectiveOutboundIPs the effectiveOutboundIPs value to set.
-     * @return the ManagedClusterLoadBalancerProfile object itself.
-     */
-    public ManagedClusterLoadBalancerProfile withEffectiveOutboundIPs(List<ResourceReference> effectiveOutboundIPs) {
-        this.effectiveOutboundIPs = effectiveOutboundIPs;
-        return this;
-    }
-
-    /**
      * Get the allocatedOutboundPorts property: The desired number of allocated SNAT ports per VM. Allowed values are in
      * the range of 0 to 64000 (inclusive). The default value is 0 which results in Azure dynamically allocating ports.
      * 
@@ -263,8 +252,6 @@ public final class ManagedClusterLoadBalancerProfile implements JsonSerializable
         jsonWriter.writeJsonField("managedOutboundIPs", this.managedOutboundIPs);
         jsonWriter.writeJsonField("outboundIPPrefixes", this.outboundIpPrefixes);
         jsonWriter.writeJsonField("outboundIPs", this.outboundIPs);
-        jsonWriter.writeArrayField("effectiveOutboundIPs", this.effectiveOutboundIPs,
-            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeNumberField("allocatedOutboundPorts", this.allocatedOutboundPorts);
         jsonWriter.writeNumberField("idleTimeoutInMinutes", this.idleTimeoutInMinutes);
         jsonWriter.writeBooleanField("enableMultipleStandardLoadBalancers", this.enableMultipleStandardLoadBalancers);

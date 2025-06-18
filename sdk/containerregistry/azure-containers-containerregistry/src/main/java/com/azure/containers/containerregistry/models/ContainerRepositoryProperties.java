@@ -5,6 +5,7 @@
 package com.azure.containers.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,56 +22,67 @@ public class ContainerRepositoryProperties implements JsonSerializable<Container
     /*
      * Registry login server name. This is likely to be similar to {registry-name}.azurecr.io.
      */
+    @Generated
     private String registryLoginServer;
 
     /*
      * Image name
      */
+    @Generated
     private String name;
 
     /*
      * Image created time
      */
+    @Generated
     private OffsetDateTime createdOn;
 
     /*
      * Image last update time
      */
+    @Generated
     private OffsetDateTime lastUpdatedOn;
 
     /*
      * Number of the manifests
      */
+    @Generated
     private int manifestCount;
 
     /*
      * Number of the tags
      */
+    @Generated
     private int tagCount;
 
     /*
      * Delete enabled
      */
+    @Generated
     private Boolean deleteEnabled;
 
     /*
      * Write enabled
      */
+    @Generated
     private Boolean writeEnabled;
 
     /*
      * List enabled
      */
+    @Generated
     private Boolean listEnabled;
 
     /*
      * Read enabled
      */
+    @Generated
     private Boolean readEnabled;
 
     /**
      * Creates an instance of ContainerRepositoryProperties class.
      */
+    @Generated
     public ContainerRepositoryProperties() {
     }
 
@@ -80,6 +92,7 @@ public class ContainerRepositoryProperties implements JsonSerializable<Container
      * 
      * @return the registryLoginServer value.
      */
+    @Generated
     public String getRegistryLoginServer() {
         return this.registryLoginServer;
     }
@@ -89,6 +102,7 @@ public class ContainerRepositoryProperties implements JsonSerializable<Container
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -98,6 +112,7 @@ public class ContainerRepositoryProperties implements JsonSerializable<Container
      * 
      * @return the createdOn value.
      */
+    @Generated
     public OffsetDateTime getCreatedOn() {
         return this.createdOn;
     }
@@ -107,6 +122,7 @@ public class ContainerRepositoryProperties implements JsonSerializable<Container
      * 
      * @return the lastUpdatedOn value.
      */
+    @Generated
     public OffsetDateTime getLastUpdatedOn() {
         return this.lastUpdatedOn;
     }
@@ -116,6 +132,7 @@ public class ContainerRepositoryProperties implements JsonSerializable<Container
      * 
      * @return the manifestCount value.
      */
+    @Generated
     public int getManifestCount() {
         return this.manifestCount;
     }
@@ -125,6 +142,7 @@ public class ContainerRepositoryProperties implements JsonSerializable<Container
      * 
      * @return the tagCount value.
      */
+    @Generated
     public int getTagCount() {
         return this.tagCount;
     }
@@ -134,6 +152,7 @@ public class ContainerRepositoryProperties implements JsonSerializable<Container
      * 
      * @return the deleteEnabled value.
      */
+    @Generated
     public Boolean isDeleteEnabled() {
         return this.deleteEnabled;
     }
@@ -144,6 +163,7 @@ public class ContainerRepositoryProperties implements JsonSerializable<Container
      * @param deleteEnabled the deleteEnabled value to set.
      * @return the ContainerRepositoryProperties object itself.
      */
+    @Generated
     public ContainerRepositoryProperties setDeleteEnabled(Boolean deleteEnabled) {
         this.deleteEnabled = deleteEnabled;
         return this;
@@ -154,6 +174,7 @@ public class ContainerRepositoryProperties implements JsonSerializable<Container
      * 
      * @return the writeEnabled value.
      */
+    @Generated
     public Boolean isWriteEnabled() {
         return this.writeEnabled;
     }
@@ -164,6 +185,7 @@ public class ContainerRepositoryProperties implements JsonSerializable<Container
      * @param writeEnabled the writeEnabled value to set.
      * @return the ContainerRepositoryProperties object itself.
      */
+    @Generated
     public ContainerRepositoryProperties setWriteEnabled(Boolean writeEnabled) {
         this.writeEnabled = writeEnabled;
         return this;
@@ -174,6 +196,7 @@ public class ContainerRepositoryProperties implements JsonSerializable<Container
      * 
      * @return the listEnabled value.
      */
+    @Generated
     public Boolean isListEnabled() {
         return this.listEnabled;
     }
@@ -184,6 +207,7 @@ public class ContainerRepositoryProperties implements JsonSerializable<Container
      * @param listEnabled the listEnabled value to set.
      * @return the ContainerRepositoryProperties object itself.
      */
+    @Generated
     public ContainerRepositoryProperties setListEnabled(Boolean listEnabled) {
         this.listEnabled = listEnabled;
         return this;
@@ -194,6 +218,7 @@ public class ContainerRepositoryProperties implements JsonSerializable<Container
      * 
      * @return the readEnabled value.
      */
+    @Generated
     public Boolean isReadEnabled() {
         return this.readEnabled;
     }
@@ -204,6 +229,7 @@ public class ContainerRepositoryProperties implements JsonSerializable<Container
      * @param readEnabled the readEnabled value to set.
      * @return the ContainerRepositoryProperties object itself.
      */
+    @Generated
     public ContainerRepositoryProperties setReadEnabled(Boolean readEnabled) {
         this.readEnabled = readEnabled;
         return this;
@@ -212,6 +238,7 @@ public class ContainerRepositoryProperties implements JsonSerializable<Container
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -235,6 +262,7 @@ public class ContainerRepositoryProperties implements JsonSerializable<Container
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ContainerRepositoryProperties.
      */
+    @Generated
     public static ContainerRepositoryProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ContainerRepositoryProperties deserializedContainerRepositoryProperties

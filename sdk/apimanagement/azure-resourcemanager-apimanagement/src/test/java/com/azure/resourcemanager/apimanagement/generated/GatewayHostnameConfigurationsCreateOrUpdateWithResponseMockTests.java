@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.GatewayHostnameConfigurationContract;
@@ -21,32 +21,32 @@ public final class GatewayHostnameConfigurationsCreateOrUpdateWithResponseMockTe
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"hostname\":\"yhheexz\",\"certificateId\":\"llxwkno\",\"negotiateClientCertificate\":true,\"tls10Enabled\":false,\"tls11Enabled\":false,\"http2Enabled\":true},\"id\":\"ntk\",\"name\":\"iymmddslwnlgj\",\"type\":\"lhmkspybnnn\"}";
+            = "{\"properties\":{\"hostname\":\"hkmqf\",\"certificateId\":\"ksksmqmwo\",\"negotiateClientCertificate\":true,\"tls10Enabled\":true,\"tls11Enabled\":true,\"http2Enabled\":false},\"id\":\"u\",\"name\":\"jyxntmgt\",\"type\":\"uqaemoyg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GatewayHostnameConfigurationContract response = manager.gatewayHostnameConfigurations()
-            .define("nuvhgcgrllyyfsm")
-            .withExistingGateway("zk", "dpfvlsqmmetwtla", "nkjtefbd")
-            .withHostname("xh")
-            .withCertificateId("hm")
+            .define("ngjoasnz")
+            .withExistingGateway("jzaqbodswazburs", "u", "fudbkvu")
+            .withHostname("owqsnix")
+            .withCertificateId("dqzu")
             .withNegotiateClientCertificate(false)
             .withTls10Enabled(false)
-            .withTls11Enabled(false)
+            .withTls11Enabled(true)
             .withHttp2Enabled(false)
-            .withIfMatch("otgnmzebcreluedc")
+            .withIfMatch("swbrnbo")
             .create();
 
-        Assertions.assertEquals("yhheexz", response.hostname());
-        Assertions.assertEquals("llxwkno", response.certificateId());
-        Assertions.assertEquals(true, response.negotiateClientCertificate());
-        Assertions.assertEquals(false, response.tls10Enabled());
-        Assertions.assertEquals(false, response.tls11Enabled());
-        Assertions.assertEquals(true, response.http2Enabled());
+        Assertions.assertEquals("hkmqf", response.hostname());
+        Assertions.assertEquals("ksksmqmwo", response.certificateId());
+        Assertions.assertTrue(response.negotiateClientCertificate());
+        Assertions.assertTrue(response.tls10Enabled());
+        Assertions.assertTrue(response.tls11Enabled());
+        Assertions.assertFalse(response.http2Enabled());
     }
 }

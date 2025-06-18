@@ -6,8 +6,8 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.Credential;
@@ -25,26 +25,26 @@ public final class CredentialOperationsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"Credential\",\"description\":\"uehcrywwfns\",\"annotations\":[\"datajadnwafjiba\",\"datal\",\"datatdije\"],\"\":{\"oxjwlhulvyz\":\"datarrm\",\"adkvld\":\"datavidokvzq\",\"tpwrm\":\"datacxvoltjyzolnqkdt\"}},\"name\":\"aoeghsqplnyp\",\"type\":\"wcevpmtpq\",\"etag\":\"pgsoje\",\"id\":\"jnlvcgar\"}";
+            = "{\"properties\":{\"type\":\"Credential\",\"description\":\"rgwmge\",\"annotations\":[\"datairnfnlyvdryx\",\"datauqwtazuacawxs\",\"datas\"],\"xycvoexbxr\":\"databbqqtvp\",\"acgmnelozzfwyegd\":\"datarvxwlfmbb\"},\"name\":\"fktmdlf\",\"type\":\"jucpt\",\"etag\":\"esdfujfpn\",\"id\":\"zablqmsybvjf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CredentialResource response = manager.credentialOperations()
-            .define("oiqtvfruyinavbf")
-            .withExistingFactory("sdewnkzwyr", "bhh")
-            .withProperties(new Credential().withDescription("vvrzdbrpdveyx")
-                .withAnnotations(Arrays.asList("datauldtfxedmm", "dataz", "datazhvjfij"))
-                .withAdditionalProperties(mapOf("type", "Credential")))
-            .withIfMatch("hfsoiihjkiajo")
+            .define("z")
+            .withExistingFactory("gunnjwmdtb", "qtomcbaiamtdfpkf")
+            .withProperties(new Credential().withDescription("elxd")
+                .withAnnotations(Arrays.asList("datafsteouzoglvtz", "datajlejvlf", "datazrqkgibpeh", "databctz"))
+                .withAdditionalProperties(mapOf("type", "Credential", "xfbwsdoaypixryf", "dataqehxigs")))
+            .withIfMatch("par")
             .create();
 
-        Assertions.assertEquals("jnlvcgar", response.id());
-        Assertions.assertEquals("uehcrywwfns", response.properties().description());
+        Assertions.assertEquals("zablqmsybvjf", response.id());
+        Assertions.assertEquals("rgwmge", response.properties().description());
     }
 
     // Use "Map.of" if available

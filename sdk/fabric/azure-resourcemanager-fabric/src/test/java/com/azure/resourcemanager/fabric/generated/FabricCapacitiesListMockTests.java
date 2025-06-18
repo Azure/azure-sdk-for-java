@@ -7,8 +7,8 @@ package com.azure.resourcemanager.fabric.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.fabric.FabricManager;
 import com.azure.resourcemanager.fabric.models.FabricCapacity;
@@ -23,22 +23,22 @@ public final class FabricCapacitiesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Provisioning\",\"state\":\"Preparing\",\"administration\":{\"members\":[\"vdjwzrlovm\",\"lwhijcoejctbzaq\",\"qsycbkbfkgu\"]}},\"sku\":{\"name\":\"dkexxppofm\",\"tier\":\"Fabric\"},\"location\":\"c\",\"tags\":{\"xhvpmoue\":\"gddtocj\"},\"id\":\"hd\",\"name\":\"xibqeojnx\",\"type\":\"bzv\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Provisioning\",\"state\":\"Updating\",\"administration\":{\"members\":[\"ayvvtpgvdf\"]}},\"sku\":{\"name\":\"iotkftutqxl\",\"tier\":\"Fabric\"},\"location\":\"lefgugnxk\",\"tags\":{\"tthzrvqd\":\"qmi\",\"ehoqfbowskan\":\"abhjybi\"},\"id\":\"ktzlcuiywg\",\"name\":\"ywgndrv\",\"type\":\"nhzgpphrcgyn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         FabricManager manager = FabricManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<FabricCapacity> response = manager.fabricCapacities().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("c", response.iterator().next().location());
-        Assertions.assertEquals("gddtocj", response.iterator().next().tags().get("xhvpmoue"));
-        Assertions.assertEquals("vdjwzrlovm",
+        Assertions.assertEquals("lefgugnxk", response.iterator().next().location());
+        Assertions.assertEquals("qmi", response.iterator().next().tags().get("tthzrvqd"));
+        Assertions.assertEquals("ayvvtpgvdf",
             response.iterator().next().properties().administration().members().get(0));
-        Assertions.assertEquals("dkexxppofm", response.iterator().next().sku().name());
+        Assertions.assertEquals("iotkftutqxl", response.iterator().next().sku().name());
         Assertions.assertEquals(RpSkuTier.FABRIC, response.iterator().next().sku().tier());
     }
 }

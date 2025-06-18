@@ -16,27 +16,21 @@
       <Class name="io.clientcore.core.credentials.NamedKeyCredential" />
       <Class name="io.clientcore.core.credentials.oauth.OAuthTokenRequestContext" />
       <Class name="io.clientcore.core.http.models.HttpRange" />
-      <Class name="io.clientcore.core.http.models.HttpRequest" />
       <Class name="io.clientcore.core.http.pipeline.HttpPipelineBuilder" />
-      <Class name="io.clientcore.core.http.pipeline.HttpPipelineNextPolicy" />
-      <Class name="io.clientcore.core.http.pipeline.HttpRetryPolicy" />
       <Class name="io.clientcore.core.http.pipeline.OAuthBearerTokenAuthenticationPolicy" />
       <Class name="io.clientcore.core.implementation.GenericParameterizedType" />
-      <Class name="io.clientcore.core.implementation.ReflectionUtilsMethodHandle" />
+      <Class name="io.clientcore.core.implementation.ReflectionSerializable" />
       <Class name="io.clientcore.core.implementation.http.HttpPipelineCallState" />
-      <Class name="io.clientcore.core.implementation.http.rest.PercentEscaper" />
-      <Class name="io.clientcore.core.implementation.http.rest.ResponseConstructorsCache" />
-      <Class name="io.clientcore.core.implementation.http.rest.ResponseConstructorsCacheLambdaMetaFactory" />
-      <Class name="io.clientcore.core.implementation.http.rest.ResponseConstructorsCacheLambdaMetaFactory$ResponseConstructor" />
-      <Class name="io.clientcore.core.implementation.http.rest.ResponseConstructorsNoCacheReflection" />
-      <Class name="io.clientcore.core.implementation.http.rest.ResponseExceptionConstructorCache" />
+      <Class name="io.clientcore.core.implementation.http.rest.LengthValidatingInputStream" />
       <Class name="io.clientcore.core.implementation.http.rest.RestProxyImpl" />
+      <Class name="io.clientcore.core.implementation.http.serializer.HttpResponseBodyDecoder" />
       <Class name="io.clientcore.core.implementation.utils.AuthenticateChallengeParser" />
-      <Class name="io.clientcore.core.implementation.utils.InternalContext" />
+      <Class name="io.clientcore.core.implementation.utils.PercentEscaper" />
       <Class name="io.clientcore.core.implementation.utils.Providers" />
       <Class name="io.clientcore.core.implementation.utils.SliceInputStream" />
       <Class name="io.clientcore.core.implementation.utils.StreamUtil" />
       <Class name="io.clientcore.core.models.CloudEvent" />
+      <Class name="io.clientcore.core.models.binarydata.BinaryData" />
       <Class name="io.clientcore.core.models.binarydata.FileBinaryData" />
       <Class name="io.clientcore.core.models.binarydata.InputStreamBinaryData" />
       <Class name="io.clientcore.core.models.binarydata.ListByteBufferBinaryData" />
@@ -48,8 +42,9 @@
       <Class name="io.clientcore.core.serialization.xml.XmlReader" />
       <Class name="io.clientcore.core.serialization.xml.XmlSerializer" />
       <Class name="io.clientcore.core.shared.HttpClientTests" />
-      <Class name="io.clientcore.core.utils.AuthenticateChallenge" />
+      <Class name="io.clientcore.core.utils.CoreUtils" />
       <Class name="io.clientcore.core.utils.DateTimeRfc1123" />
+      <Class name="io.clientcore.core.utils.GeneratedCodeUtils" />
       <Class name="io.clientcore.core.utils.SharedExecutorService" />
       <Class name="io.clientcore.core.utils.Union" />
     </Or>
@@ -86,16 +81,12 @@
       <Class name="io.clientcore.core.http.HttpPipelineBuilderJavaDocCodeSnippets" />
       <Class name="io.clientcore.core.http.pipeline.AddHeadersPolicyJavadocCodeSnippets" />
       <Class name="io.clientcore.core.http.pipeline.SetRequestIdPolicyJavadocCodeSnippets" />
-      <Class name="io.clientcore.core.http.pipeline.SetUserAgentPolicyJavadocCodeSnippets" />
-      <Class name="io.clientcore.core.implementation.http.rest.RestProxyImpl" />
+      <Class name="io.clientcore.core.http.pipeline.UserAgentPolicyJavadocCodeSnippets" />
       <Class name="io.clientcore.core.implementation.http.serializer.HttpResponseDecodeData" />
       <Class name="io.clientcore.core.instrumentation.TelemetryForLibraryDevelopersJavaDocCodeSnippets" />
       <Class name="io.clientcore.core.models.CloudEventJavaDocCodeSnippet" />
-      <Class name="io.clientcore.core.models.ContextJavaDocCodeSnippets" />
       <Class name="io.clientcore.core.serialization.xml.implementation.aalto.in.ReaderScanner" />
-      <Class name="io.clientcore.core.shared.HttpClientTests" />
       <Class name="io.clientcore.core.utils.AuthorizationChallengeHandlerTests" />
-      <Class name="io.clientcore.core.utils.ClientOptionsJavadocCodeSnippets" />
       <Class name="io.clientcore.core.utils.ProgressReporterTests" />
       <Class name="io.clientcore.core.utils.union.codesnippets.UnionJavaDocCodeSnippets" />
     </Or>
@@ -116,7 +107,6 @@
   <Match>
     <Bug pattern="DM_DEFAULT_ENCODING" />
     <Or>
-      <Class name="io.clientcore.core.http.RestProxyTests" />
       <Class name="io.clientcore.core.http.client.SimpleBasicAuthHttpProxyServer" />
       <Class name="io.clientcore.core.implementation.http.client.JdkHttpClientIT" />
       <Class name="io.clientcore.core.implementation.http.rest.RestProxyImplTests" />
@@ -132,11 +122,11 @@
       <Class name="io.clientcore.core.models.binarydata.BinaryDataJavaDocCodeSnippet" />
       <Class name="io.clientcore.core.models.binarydata.BinaryDataTest" />
       <Class name="io.clientcore.core.serialization.json.JsonReader" />
+      <Class name="io.clientcore.core.serialization.json.JsonSerializerTests" />
       <Class name="io.clientcore.core.serialization.json.JsonWriter" />
       <Class name="io.clientcore.core.serialization.xml.XmlReader" />
       <Class name="io.clientcore.core.shared.HttpClientTests" />
       <Class name="io.clientcore.core.shared.HttpClientTestsServer" />
-      <Class name="io.clientcore.core.utils.serializers.JsonSerializerTests" />
     </Or>
   </Match>
   <Match>
@@ -180,10 +170,6 @@
       <Class name="io.clientcore.core.instrumentation.logging.ClientLoggerTests" />
       <Class name="io.clientcore.core.serialization.xml.implementation.aalto.UncheckedStreamException" />
     </Or>
-  </Match>
-  <Match>
-    <Bug pattern="ISC_INSTANTIATE_STATIC_CLASS" />
-    <Class name="io.clientcore.core.models.ContextJavaDocCodeSnippets$TraceContext" />
   </Match>
   <Match>
     <Bug pattern="LI_LAZY_INIT_STATIC" />
@@ -235,7 +221,6 @@
     <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE" />
     <Or>
       <Class name="io.clientcore.core.http.pipeline.HttpInstrumentationPolicy" />
-      <Class name="io.clientcore.core.instrumentation.TelemetryForLibraryDevelopersJavaDocCodeSnippets" />
       <Class name="io.clientcore.core.models.binarydata.BinaryDataTest" />
       <Class name="io.clientcore.core.utils.CoreUtils" />
     </Or>
@@ -250,6 +235,7 @@
   <Match>
     <Bug pattern="NP_NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS" />
     <Or>
+      <Class name="io.clientcore.core.http.models.RequestContextTests" />
       <Class name="io.clientcore.core.implementation.instrumentation.fallback.FallbackInstrumentationTests" />
       <Class name="io.clientcore.core.serialization.json.JsonWriterTests" />
       <Class name="io.clientcore.core.serialization.json.models.JsonPatchDocumentTests" />
@@ -303,14 +289,12 @@
       <Class name="io.clientcore.core.serialization.xml.XmlSerializer" />
       <Class name="io.clientcore.core.utils.Base64Uri" />
       <Class name="io.clientcore.core.utils.CoreUtils" />
-      <Class name="io.clientcore.core.utils.serializers.MockSerializer" />
     </Or>
   </Match>
   <Match>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE" />
     <Or>
       <Class name="io.clientcore.core.http.pipeline.HttpInstrumentationPolicy" />
-      <Class name="io.clientcore.core.instrumentation.TelemetryForLibraryDevelopersJavaDocCodeSnippets" />
       <Class name="io.clientcore.core.utils.CoreUtils" />
     </Or>
   </Match>
@@ -381,7 +365,6 @@
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON" />
     <Or>
       <Class name="io.clientcore.core.http.pipeline.RetryPolicyTests" />
-      <Class name="io.clientcore.core.implementation.serializer.HttpResponseBodyDecoderTests" />
       <Class name="io.clientcore.core.instrumentation.TelemetryForLibraryDevelopersJavaDocCodeSnippets" />
       <Class name="io.clientcore.core.models.binarydata.BinaryDataJavaDocCodeSnippet" />
       <Class name="io.clientcore.core.shared.HttpClientTests" />
@@ -401,13 +384,12 @@
   </Match>
   <Match>
     <Bug pattern="UC_USELESS_VOID_METHOD" />
-    <Class name="io.clientcore.core.http.pipeline.SetUserAgentPolicyJavadocCodeSnippets" />
+    <Class name="io.clientcore.core.http.pipeline.UserAgentPolicyJavadocCodeSnippets" />
   </Match>
   <Match>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD" />
     <Or>
       <Class name="io.clientcore.core.http.models.ETag" />
-      <Class name="io.clientcore.core.implementation.http.rest.RestProxyImpl" />
       <Class name="io.clientcore.core.models.binarydata.BinaryDataJavaDocCodeSnippet" />
     </Or>
   </Match>
@@ -416,19 +398,15 @@
     <Or>
       <Class name="io.clientcore.core.http.models.PagedIterableTests" />
       <Class name="io.clientcore.core.implementation.http.client.InputStreamTimeoutResponseSubscriber" />
-      <Class name="io.clientcore.core.implementation.http.rest.ResponseConstructorsCacheBenchMark" />
       <Class name="io.clientcore.core.models.binarydata.BinaryDataTest$BinaryDataAsProperty" />
+      <Class name="io.clientcore.core.serialization.json.JsonSerializerTests$DateTimeWrapper" />
       <Class name="io.clientcore.core.serialization.xml.DefaultXmlWriterContractTests" />
       <Class name="io.clientcore.core.serialization.xml.implementation.aalto.in.ReaderConfig$EncodingContext" />
-      <Class name="io.clientcore.core.utils.serializers.JsonSerializerTests$DateTimeWrapper" />
     </Or>
   </Match>
   <Match>
     <Bug pattern="UWF_UNWRITTEN_FIELD" />
-    <Or>
-      <Class name="io.clientcore.core.implementation.TypeUtilTests$Dog" />
-      <Class name="io.clientcore.core.implementation.http.rest.ResponseConstructorsCacheBenchMarkTestData$FooHeader" />
-    </Or>
+    <Class name="io.clientcore.core.implementation.TypeUtilTests$Dog" />
   </Match>
   <Match>
     <Bug pattern="VO_VOLATILE_REFERENCE_TO_ARRAY" />

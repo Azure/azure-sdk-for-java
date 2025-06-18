@@ -10,7 +10,7 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 public final class ReplicationMigrationItemsListSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationMigrationItems_List.json
      */
     /**
@@ -21,6 +21,6 @@ public final class ReplicationMigrationItemsListSamples {
     public static void getsTheListOfMigrationItemsInTheVault(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager.replicationMigrationItems()
-            .list("migrationvault", "resourcegroup1", null, null, null, com.azure.core.util.Context.NONE);
+            .list("resourcegroup1", "migrationvault", null, null, null, com.azure.core.util.Context.NONE);
     }
 }

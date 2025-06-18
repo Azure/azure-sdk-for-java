@@ -136,6 +136,18 @@ public final class BatchPoolCreateContent implements JsonSerializable<BatchPoolC
     private BatchStartTask startTask;
 
     /*
+     * For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
+     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
+     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
+     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
+     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
+     */
+    @Generated
+    private List<BatchCertificateReference> certificateReferences;
+
+    /*
      * The list of Packages to be installed on each Compute Node in the Pool. When creating a pool, the package's
      * application ID must be fully qualified
      * (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{
@@ -549,6 +561,42 @@ public final class BatchPoolCreateContent implements JsonSerializable<BatchPoolC
     }
 
     /**
+     * Get the certificateReferences property: For Windows Nodes, the Batch service installs the Certificates to the
+     * specified Certificate store and location.
+     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
+     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
+     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
+     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
+     *
+     * @return the certificateReferences value.
+     */
+    @Generated
+    public List<BatchCertificateReference> getCertificateReferences() {
+        return this.certificateReferences;
+    }
+
+    /**
+     * Set the certificateReferences property: For Windows Nodes, the Batch service installs the Certificates to the
+     * specified Certificate store and location.
+     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
+     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
+     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
+     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
+     *
+     * @param certificateReferences the certificateReferences value to set.
+     * @return the BatchPoolCreateContent object itself.
+     */
+    @Generated
+    public BatchPoolCreateContent setCertificateReferences(List<BatchCertificateReference> certificateReferences) {
+        this.certificateReferences = certificateReferences;
+        return this;
+    }
+
+    /**
      * Get the applicationPackageReferences property: The list of Packages to be installed on each Compute Node in the
      * Pool. When creating a pool, the package's application ID must be fully qualified
      * (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}).
@@ -772,6 +820,8 @@ public final class BatchPoolCreateContent implements JsonSerializable<BatchPoolC
         jsonWriter.writeBooleanField("enableInterNodeCommunication", this.enableInterNodeCommunication);
         jsonWriter.writeJsonField("networkConfiguration", this.networkConfiguration);
         jsonWriter.writeJsonField("startTask", this.startTask);
+        jsonWriter.writeArrayField("certificateReferences", this.certificateReferences,
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("applicationPackageReferences", this.applicationPackageReferences,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeNumberField("taskSlotsPerNode", this.taskSlotsPerNode);
@@ -812,6 +862,7 @@ public final class BatchPoolCreateContent implements JsonSerializable<BatchPoolC
             Boolean enableInterNodeCommunication = null;
             NetworkConfiguration networkConfiguration = null;
             BatchStartTask startTask = null;
+            List<BatchCertificateReference> certificateReferences = null;
             List<BatchApplicationPackageReference> applicationPackageReferences = null;
             Integer taskSlotsPerNode = null;
             BatchTaskSchedulingPolicy taskSchedulingPolicy = null;
@@ -852,6 +903,8 @@ public final class BatchPoolCreateContent implements JsonSerializable<BatchPoolC
                     networkConfiguration = NetworkConfiguration.fromJson(reader);
                 } else if ("startTask".equals(fieldName)) {
                     startTask = BatchStartTask.fromJson(reader);
+                } else if ("certificateReferences".equals(fieldName)) {
+                    certificateReferences = reader.readArray(reader1 -> BatchCertificateReference.fromJson(reader1));
                 } else if ("applicationPackageReferences".equals(fieldName)) {
                     applicationPackageReferences
                         = reader.readArray(reader1 -> BatchApplicationPackageReference.fromJson(reader1));
@@ -886,6 +939,7 @@ public final class BatchPoolCreateContent implements JsonSerializable<BatchPoolC
             deserializedBatchPoolCreateContent.enableInterNodeCommunication = enableInterNodeCommunication;
             deserializedBatchPoolCreateContent.networkConfiguration = networkConfiguration;
             deserializedBatchPoolCreateContent.startTask = startTask;
+            deserializedBatchPoolCreateContent.certificateReferences = certificateReferences;
             deserializedBatchPoolCreateContent.applicationPackageReferences = applicationPackageReferences;
             deserializedBatchPoolCreateContent.taskSlotsPerNode = taskSlotsPerNode;
             deserializedBatchPoolCreateContent.taskSchedulingPolicy = taskSchedulingPolicy;

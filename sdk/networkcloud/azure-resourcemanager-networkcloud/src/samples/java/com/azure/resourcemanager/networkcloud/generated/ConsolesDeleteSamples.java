@@ -10,7 +10,7 @@ package com.azure.resourcemanager.networkcloud.generated;
 public final class ConsolesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2024-07-01/examples/Consoles_Delete.
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/Consoles_Delete.
      * json
      */
     /**
@@ -20,6 +20,6 @@ public final class ConsolesDeleteSamples {
      */
     public static void deleteVirtualMachineConsole(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
         manager.consoles()
-            .delete("resourceGroupName", "virtualMachineName", "default", com.azure.core.util.Context.NONE);
+            .delete("resourceGroupName", "virtualMachineName", "default", null, null, com.azure.core.util.Context.NONE);
     }
 }

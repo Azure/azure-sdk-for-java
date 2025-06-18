@@ -24,6 +24,7 @@ import io.netty.resolver.DefaultAddressResolverGroup;
 import io.netty.resolver.NoopAddressResolverGroup;
 import reactor.netty.Connection;
 import reactor.netty.NettyPipeline;
+import reactor.netty.http.HttpDecoderSpec;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpResponseDecoderSpec;
@@ -174,45 +175,6 @@ public class NettyAsyncHttpClientBuilder {
     public com.azure.core.http.HttpClient build() {
         HttpClient nettyHttpClient;
 
-        // Used to track if the builder set the DefaultAddressResolverGroup. If it did, when proxying it allows the
-        // no-op address resolver to be set.
-        boolean addressResolverWasSetByBuilder = false;
-        if (this.baseHttpClient != null) {
-            nettyHttpClient = baseHttpClient;
-        } else if (this.connectionProvider != null) {
-            nettyHttpClient = HttpClient.create(this.connectionProvider).resolver(DefaultAddressResolverGroup.INSTANCE);
-            addressResolverWasSetByBuilder = true;
-        } else {
-            nettyHttpClient = HttpClient.create().resolver(DefaultAddressResolverGroup.INSTANCE);
-            addressResolverWasSetByBuilder = true;
-        }
-
-        long writeTimeout = getTimeout(this.writeTimeout, getDefaultWriteTimeout()).toMillis();
-        long responseTimeout = getTimeout(this.responseTimeout, getDefaultResponseTimeout()).toMillis();
-        long readTimeout = getTimeout(this.readTimeout, getDefaultReadTimeout()).toMillis();
-
-        // Get the initial HttpResponseDecoderSpec and update it.
-        // .httpResponseDecoder passes a new HttpResponseDecoderSpec and any existing configuration should be updated
-        // instead of overwritten.
-        HttpResponseDecoderSpec initialSpec = nettyHttpClient.configuration().decoder();
-        nettyHttpClient = nettyHttpClient.port(port)
-            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS,
-                (int) getTimeout(connectTimeout, getDefaultConnectTimeout()).toMillis())
-            // TODO (alzimmer): What does validating HTTP response headers get us?
-            .httpResponseDecoder(httpResponseDecoderSpec -> initialSpec.validateHeaders(false))
-            .doOnRequest(
-                (request, connection) -> addHandler(request, connection, writeTimeout, responseTimeout, readTimeout))
-            .doAfterResponseSuccess((ignored, connection) -> removeHandler(connection));
-
-        LoggingHandler loggingHandler = nettyHttpClient.configuration().loggingHandler();
-        if (loggingHandler == null) {
-            // Only enable wiretap if the LoggingHandler is null. If the LoggingHandler isn't null this means that a
-            // base client was passed with logging enabled. 'wiretap(boolean)' is a basic API that doesn't allow for
-            // in-depth settings to be done on how logging works, so setting it always can replace a customized logger
-            // with a basic one that isn't as useful in troubleshooting scenarios.
-            nettyHttpClient.wiretap(enableWiretap);
-        }
-
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
@@ -228,6 +190,56 @@ public class NettyAsyncHttpClientBuilder {
             ? new AuthorizationChallengeHandler(buildProxyOptions.getUsername(), buildProxyOptions.getPassword())
             : null;
         AtomicReference<ChallengeHolder> proxyChallengeHolder = useCustomProxyHandler ? new AtomicReference<>() : null;
+
+        // Used to track if the builder set the DefaultAddressResolverGroup. If it did, when proxying it allows the
+        // no-op address resolver to be set.
+        if (this.baseHttpClient != null) {
+            nettyHttpClient = baseHttpClient;
+        } else if (this.connectionProvider != null) {
+            nettyHttpClient = HttpClient.create(this.connectionProvider);
+        } else {
+            nettyHttpClient = HttpClient.create();
+        }
+
+        if (proxyOptions == null) {
+            nettyHttpClient = nettyHttpClient.resolver(DefaultAddressResolverGroup.INSTANCE);
+        }
+
+        long writeTimeout = getTimeout(this.writeTimeout, getDefaultWriteTimeout()).toMillis();
+        long responseTimeout = getTimeout(this.responseTimeout, getDefaultResponseTimeout()).toMillis();
+        long readTimeout = getTimeout(this.readTimeout, getDefaultReadTimeout()).toMillis();
+
+        // Get the initial HttpResponseDecoderSpec and update it.
+        // .httpResponseDecoder passes a new HttpResponseDecoderSpec and any existing configuration should be updated
+        // instead of overwritten.
+        HttpResponseDecoderSpec initialSpec = nettyHttpClient.configuration().decoder();
+        nettyHttpClient = nettyHttpClient.port(port)
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS,
+                (int) getTimeout(connectTimeout, getDefaultConnectTimeout()).toMillis())
+            .httpResponseDecoder(httpResponseDecoderSpec -> {
+                int maxHeaderSize = initialSpec.maxHeaderSize();
+                if (maxHeaderSize == HttpDecoderSpec.DEFAULT_MAX_HEADER_SIZE) {
+                    // Only change the max header size if it is the default value. If it's set, this was done external
+                    // to the SDK and we should respect that.
+                    // For now, set the max header size to 256 KB. Follow up to see if this should be configurable.
+                    maxHeaderSize = 256 * 1024;
+                }
+
+                // TODO (alzimmer): What does validating HTTP response headers get us?
+                return initialSpec.validateHeaders(false).maxHeaderSize(maxHeaderSize);
+            })
+            .doOnRequest(
+                (request, connection) -> addHandler(request, connection, writeTimeout, responseTimeout, readTimeout))
+            .doAfterResponseSuccess((ignored, connection) -> removeHandler(connection));
+
+        LoggingHandler loggingHandler = nettyHttpClient.configuration().loggingHandler();
+        if (loggingHandler == null) {
+            // Only enable wiretap if the LoggingHandler is null. If the LoggingHandler isn't null this means that a
+            // base client was passed with logging enabled. 'wiretap(boolean)' is a basic API that doesn't allow for
+            // in-depth settings to be done on how logging works, so setting it always can replace a customized logger
+            // with a basic one that isn't as useful in troubleshooting scenarios.
+            nettyHttpClient.wiretap(enableWiretap);
+        }
 
         boolean addProxyHandler = false;
 
@@ -257,6 +269,12 @@ public class NettyAsyncHttpClientBuilder {
                                     handler, proxyChallengeHolder));
                     }
                 });
+
+                AddressResolverGroup<?> resolver = nettyHttpClient.configuration().resolver();
+                if (resolver == null) {
+                    // This mimics behaviors seen when Reactor Netty proxying is used.
+                    nettyHttpClient = nettyHttpClient.resolver(NoopAddressResolverGroup.INSTANCE);
+                }
             } else {
                 nettyHttpClient
                     = nettyHttpClient.proxy(proxy -> proxy.type(toReactorNettyProxyType(buildProxyOptions.getType()))
@@ -264,12 +282,6 @@ public class NettyAsyncHttpClientBuilder {
                         .username(buildProxyOptions.getUsername())
                         .password(ignored -> buildProxyOptions.getPassword())
                         .nonProxyHosts(buildProxyOptions.getNonProxyHosts()));
-            }
-
-            AddressResolverGroup<?> resolver = nettyHttpClient.configuration().resolver();
-            if (resolver == null || addressResolverWasSetByBuilder) {
-                // This mimics behaviors seen when Reactor Netty proxying is used.
-                nettyHttpClient = nettyHttpClient.resolver(NoopAddressResolverGroup.INSTANCE);
             }
         }
 

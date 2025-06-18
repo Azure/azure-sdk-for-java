@@ -41,7 +41,7 @@ autorest --tag=livemetrics
 These settings apply only when `--tag=exporters` is specified on the command line.
 
 ```yaml $(tag) == 'exporters'
-use: '@autorest/java@4.1.42'
+use: '@autorest/java@4.1.52'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/applicationinsights/data-plane/Monitor.Exporters/preview/v2.1/swagger.json
 java: true
 output-folder: ../
@@ -63,7 +63,7 @@ directive:
 These settings apply only when `--tag=livemetrics` is specified on the command line.
 
 ```yaml $(tag) == 'livemetrics'
-use: '@autorest/java@4.1.42'
+use: '@autorest/java@4.1.52'
 input-file: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/applicationinsights/data-plane/LiveMetrics/preview/2024-04-01-preview/livemetrics.json
 java: true
 output-folder: ../

@@ -12,39 +12,39 @@ public final class AutomationRunbookTaskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutomationRunbookTaskDetails model = BinaryData.fromString(
-            "{\"instanceType\":\"AutomationRunbookTaskDetails\",\"name\":\"idqpxlbtpakftn\",\"cloudServiceName\":\"twmykyut\",\"subscriptionId\":\"mdwmf\",\"accountName\":\"pycvjqdvdwkqpldr\",\"runbookId\":\"fgnaavuagnteta\",\"runbookName\":\"tnpdctuhspfefy\",\"jobId\":\"duyeuyl\",\"jobOutput\":\"hmtybkcgsuthhll\",\"isPrimarySideScript\":false}")
+            "{\"instanceType\":\"AutomationRunbookTaskDetails\",\"name\":\"u\",\"cloudServiceName\":\"a\",\"subscriptionId\":\"mhudfjecehokwcp\",\"accountName\":\"wloesqrggvrbn\",\"runbookId\":\"ukoila\",\"runbookName\":\"duwjleipjlhwy\",\"jobId\":\"zr\",\"jobOutput\":\"ythqkkwhbgxvel\",\"isPrimarySideScript\":true}")
             .toObject(AutomationRunbookTaskDetails.class);
-        Assertions.assertEquals("idqpxlbtpakftn", model.name());
-        Assertions.assertEquals("twmykyut", model.cloudServiceName());
-        Assertions.assertEquals("mdwmf", model.subscriptionId());
-        Assertions.assertEquals("pycvjqdvdwkqpldr", model.accountName());
-        Assertions.assertEquals("fgnaavuagnteta", model.runbookId());
-        Assertions.assertEquals("tnpdctuhspfefy", model.runbookName());
-        Assertions.assertEquals("duyeuyl", model.jobId());
-        Assertions.assertEquals("hmtybkcgsuthhll", model.jobOutput());
-        Assertions.assertEquals(false, model.isPrimarySideScript());
+        Assertions.assertEquals("u", model.name());
+        Assertions.assertEquals("a", model.cloudServiceName());
+        Assertions.assertEquals("mhudfjecehokwcp", model.subscriptionId());
+        Assertions.assertEquals("wloesqrggvrbn", model.accountName());
+        Assertions.assertEquals("ukoila", model.runbookId());
+        Assertions.assertEquals("duwjleipjlhwy", model.runbookName());
+        Assertions.assertEquals("zr", model.jobId());
+        Assertions.assertEquals("ythqkkwhbgxvel", model.jobOutput());
+        Assertions.assertTrue(model.isPrimarySideScript());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutomationRunbookTaskDetails model = new AutomationRunbookTaskDetails().withName("idqpxlbtpakftn")
-            .withCloudServiceName("twmykyut")
-            .withSubscriptionId("mdwmf")
-            .withAccountName("pycvjqdvdwkqpldr")
-            .withRunbookId("fgnaavuagnteta")
-            .withRunbookName("tnpdctuhspfefy")
-            .withJobId("duyeuyl")
-            .withJobOutput("hmtybkcgsuthhll")
-            .withIsPrimarySideScript(false);
+        AutomationRunbookTaskDetails model = new AutomationRunbookTaskDetails().withName("u")
+            .withCloudServiceName("a")
+            .withSubscriptionId("mhudfjecehokwcp")
+            .withAccountName("wloesqrggvrbn")
+            .withRunbookId("ukoila")
+            .withRunbookName("duwjleipjlhwy")
+            .withJobId("zr")
+            .withJobOutput("ythqkkwhbgxvel")
+            .withIsPrimarySideScript(true);
         model = BinaryData.fromObject(model).toObject(AutomationRunbookTaskDetails.class);
-        Assertions.assertEquals("idqpxlbtpakftn", model.name());
-        Assertions.assertEquals("twmykyut", model.cloudServiceName());
-        Assertions.assertEquals("mdwmf", model.subscriptionId());
-        Assertions.assertEquals("pycvjqdvdwkqpldr", model.accountName());
-        Assertions.assertEquals("fgnaavuagnteta", model.runbookId());
-        Assertions.assertEquals("tnpdctuhspfefy", model.runbookName());
-        Assertions.assertEquals("duyeuyl", model.jobId());
-        Assertions.assertEquals("hmtybkcgsuthhll", model.jobOutput());
-        Assertions.assertEquals(false, model.isPrimarySideScript());
+        Assertions.assertEquals("u", model.name());
+        Assertions.assertEquals("a", model.cloudServiceName());
+        Assertions.assertEquals("mhudfjecehokwcp", model.subscriptionId());
+        Assertions.assertEquals("wloesqrggvrbn", model.accountName());
+        Assertions.assertEquals("ukoila", model.runbookId());
+        Assertions.assertEquals("duwjleipjlhwy", model.runbookName());
+        Assertions.assertEquals("zr", model.jobId());
+        Assertions.assertEquals("ythqkkwhbgxvel", model.jobOutput());
+        Assertions.assertTrue(model.isPrimarySideScript());
     }
 }

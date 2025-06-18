@@ -22,6 +22,13 @@ public final class VirtualMachineState extends ExpandableStringEnum<VirtualMachi
     public static final VirtualMachineState DEALLOCATED = fromString("Deallocated");
 
     /**
+     * The virtual machine has released the lease on the underlying hardware and is powered off. Memory contents of the
+     * VM are stored in the OS disk. When started again, applications and processes that were previously running in your
+     * VM resume from the state prior to hibernation.
+     */
+    public static final VirtualMachineState HIBERNATED = fromString("Hibernated");
+
+    /**
      * Creates a new instance of VirtualMachineState value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

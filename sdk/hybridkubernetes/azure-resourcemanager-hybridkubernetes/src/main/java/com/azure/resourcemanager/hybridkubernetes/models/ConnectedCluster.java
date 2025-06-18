@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridkubernetes.fluent.models.ConnectedClusterInner;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -57,6 +58,13 @@ public interface ConnectedCluster {
      * @return the identity value.
      */
     ConnectedClusterIdentity identity();
+
+    /**
+     * Gets the kind property: The kind of connected cluster.
+     * 
+     * @return the kind value.
+     */
+    ConnectedClusterKind kind();
 
     /**
      * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
@@ -116,6 +124,13 @@ public interface ConnectedCluster {
     String distribution();
 
     /**
+     * Gets the distributionVersion property: The Kubernetes distribution version on this connected cluster.
+     * 
+     * @return the distributionVersion value.
+     */
+    String distributionVersion();
+
+    /**
      * Gets the infrastructure property: The infrastructure on which the Kubernetes cluster represented by this
      * connected cluster is running on.
      * 
@@ -151,6 +166,79 @@ public interface ConnectedCluster {
      * @return the connectivityStatus value.
      */
     ConnectivityStatus connectivityStatus();
+
+    /**
+     * Gets the privateLinkState property: Property which describes the state of private link on a connected cluster
+     * resource.
+     * 
+     * @return the privateLinkState value.
+     */
+    PrivateLinkState privateLinkState();
+
+    /**
+     * Gets the privateLinkScopeResourceId property: This is populated only if privateLinkState is enabled. The resource
+     * id of the private link scope this connected cluster is assigned to, if any.
+     * 
+     * @return the privateLinkScopeResourceId value.
+     */
+    String privateLinkScopeResourceId();
+
+    /**
+     * Gets the azureHybridBenefit property: Indicates whether Azure Hybrid Benefit is opted in.
+     * 
+     * @return the azureHybridBenefit value.
+     */
+    AzureHybridBenefit azureHybridBenefit();
+
+    /**
+     * Gets the aadProfile property: AAD profile for the connected cluster.
+     * 
+     * @return the aadProfile value.
+     */
+    AadProfile aadProfile();
+
+    /**
+     * Gets the arcAgentProfile property: Arc agentry configuration for the provisioned cluster.
+     * 
+     * @return the arcAgentProfile value.
+     */
+    ArcAgentProfile arcAgentProfile();
+
+    /**
+     * Gets the securityProfile property: Security profile for the connected cluster.
+     * 
+     * @return the securityProfile value.
+     */
+    SecurityProfile securityProfile();
+
+    /**
+     * Gets the oidcIssuerProfile property: Open ID Connect (OIDC) Issuer Profile for the connected cluster.
+     * 
+     * @return the oidcIssuerProfile value.
+     */
+    OidcIssuerProfile oidcIssuerProfile();
+
+    /**
+     * Gets the gateway property: Details of the gateway used by the Arc router for connectivity.
+     * 
+     * @return the gateway value.
+     */
+    Gateway gateway();
+
+    /**
+     * Gets the arcAgentryConfigurations property: Configuration settings for customizing the behavior of the connected
+     * cluster.
+     * 
+     * @return the arcAgentryConfigurations value.
+     */
+    List<ArcAgentryConfigurations> arcAgentryConfigurations();
+
+    /**
+     * Gets the miscellaneousProperties property: More properties related to the Connected Cluster.
+     * 
+     * @return the miscellaneousProperties value.
+     */
+    Map<String, String> miscellaneousProperties();
 
     /**
      * Gets the region of the resource.
@@ -264,8 +352,14 @@ public interface ConnectedCluster {
          * The stage of the ConnectedCluster definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProvisioningState,
-            DefinitionStages.WithDistribution, DefinitionStages.WithInfrastructure {
+        interface WithCreate
+            extends DefinitionStages.WithTags, DefinitionStages.WithKind, DefinitionStages.WithProvisioningState,
+            DefinitionStages.WithDistribution, DefinitionStages.WithDistributionVersion,
+            DefinitionStages.WithInfrastructure, DefinitionStages.WithPrivateLinkState,
+            DefinitionStages.WithPrivateLinkScopeResourceId, DefinitionStages.WithAzureHybridBenefit,
+            DefinitionStages.WithAadProfile, DefinitionStages.WithArcAgentProfile, DefinitionStages.WithSecurityProfile,
+            DefinitionStages.WithOidcIssuerProfile, DefinitionStages.WithGateway,
+            DefinitionStages.WithArcAgentryConfigurations {
             /**
              * Executes the create request.
              * 
@@ -296,6 +390,19 @@ public interface ConnectedCluster {
         }
 
         /**
+         * The stage of the ConnectedCluster definition allowing to specify kind.
+         */
+        interface WithKind {
+            /**
+             * Specifies the kind property: The kind of connected cluster..
+             * 
+             * @param kind The kind of connected cluster.
+             * @return the next definition stage.
+             */
+            WithCreate withKind(ConnectedClusterKind kind);
+        }
+
+        /**
          * The stage of the ConnectedCluster definition allowing to specify provisioningState.
          */
         interface WithProvisioningState {
@@ -322,6 +429,20 @@ public interface ConnectedCluster {
         }
 
         /**
+         * The stage of the ConnectedCluster definition allowing to specify distributionVersion.
+         */
+        interface WithDistributionVersion {
+            /**
+             * Specifies the distributionVersion property: The Kubernetes distribution version on this connected
+             * cluster..
+             * 
+             * @param distributionVersion The Kubernetes distribution version on this connected cluster.
+             * @return the next definition stage.
+             */
+            WithCreate withDistributionVersion(String distributionVersion);
+        }
+
+        /**
          * The stage of the ConnectedCluster definition allowing to specify infrastructure.
          */
         interface WithInfrastructure {
@@ -335,6 +456,130 @@ public interface ConnectedCluster {
              */
             WithCreate withInfrastructure(String infrastructure);
         }
+
+        /**
+         * The stage of the ConnectedCluster definition allowing to specify privateLinkState.
+         */
+        interface WithPrivateLinkState {
+            /**
+             * Specifies the privateLinkState property: Property which describes the state of private link on a
+             * connected cluster resource..
+             * 
+             * @param privateLinkState Property which describes the state of private link on a connected cluster
+             * resource.
+             * @return the next definition stage.
+             */
+            WithCreate withPrivateLinkState(PrivateLinkState privateLinkState);
+        }
+
+        /**
+         * The stage of the ConnectedCluster definition allowing to specify privateLinkScopeResourceId.
+         */
+        interface WithPrivateLinkScopeResourceId {
+            /**
+             * Specifies the privateLinkScopeResourceId property: This is populated only if privateLinkState is enabled.
+             * The resource id of the private link scope this connected cluster is assigned to, if any..
+             * 
+             * @param privateLinkScopeResourceId This is populated only if privateLinkState is enabled. The resource id
+             * of the private link scope this connected cluster is assigned to, if any.
+             * @return the next definition stage.
+             */
+            WithCreate withPrivateLinkScopeResourceId(String privateLinkScopeResourceId);
+        }
+
+        /**
+         * The stage of the ConnectedCluster definition allowing to specify azureHybridBenefit.
+         */
+        interface WithAzureHybridBenefit {
+            /**
+             * Specifies the azureHybridBenefit property: Indicates whether Azure Hybrid Benefit is opted in.
+             * 
+             * @param azureHybridBenefit Indicates whether Azure Hybrid Benefit is opted in.
+             * @return the next definition stage.
+             */
+            WithCreate withAzureHybridBenefit(AzureHybridBenefit azureHybridBenefit);
+        }
+
+        /**
+         * The stage of the ConnectedCluster definition allowing to specify aadProfile.
+         */
+        interface WithAadProfile {
+            /**
+             * Specifies the aadProfile property: AAD profile for the connected cluster..
+             * 
+             * @param aadProfile AAD profile for the connected cluster.
+             * @return the next definition stage.
+             */
+            WithCreate withAadProfile(AadProfile aadProfile);
+        }
+
+        /**
+         * The stage of the ConnectedCluster definition allowing to specify arcAgentProfile.
+         */
+        interface WithArcAgentProfile {
+            /**
+             * Specifies the arcAgentProfile property: Arc agentry configuration for the provisioned cluster..
+             * 
+             * @param arcAgentProfile Arc agentry configuration for the provisioned cluster.
+             * @return the next definition stage.
+             */
+            WithCreate withArcAgentProfile(ArcAgentProfile arcAgentProfile);
+        }
+
+        /**
+         * The stage of the ConnectedCluster definition allowing to specify securityProfile.
+         */
+        interface WithSecurityProfile {
+            /**
+             * Specifies the securityProfile property: Security profile for the connected cluster..
+             * 
+             * @param securityProfile Security profile for the connected cluster.
+             * @return the next definition stage.
+             */
+            WithCreate withSecurityProfile(SecurityProfile securityProfile);
+        }
+
+        /**
+         * The stage of the ConnectedCluster definition allowing to specify oidcIssuerProfile.
+         */
+        interface WithOidcIssuerProfile {
+            /**
+             * Specifies the oidcIssuerProfile property: Open ID Connect (OIDC) Issuer Profile for the connected
+             * cluster..
+             * 
+             * @param oidcIssuerProfile Open ID Connect (OIDC) Issuer Profile for the connected cluster.
+             * @return the next definition stage.
+             */
+            WithCreate withOidcIssuerProfile(OidcIssuerProfile oidcIssuerProfile);
+        }
+
+        /**
+         * The stage of the ConnectedCluster definition allowing to specify gateway.
+         */
+        interface WithGateway {
+            /**
+             * Specifies the gateway property: Details of the gateway used by the Arc router for connectivity..
+             * 
+             * @param gateway Details of the gateway used by the Arc router for connectivity.
+             * @return the next definition stage.
+             */
+            WithCreate withGateway(Gateway gateway);
+        }
+
+        /**
+         * The stage of the ConnectedCluster definition allowing to specify arcAgentryConfigurations.
+         */
+        interface WithArcAgentryConfigurations {
+            /**
+             * Specifies the arcAgentryConfigurations property: Configuration settings for customizing the behavior of
+             * the connected cluster..
+             * 
+             * @param arcAgentryConfigurations Configuration settings for customizing the behavior of the connected
+             * cluster.
+             * @return the next definition stage.
+             */
+            WithCreate withArcAgentryConfigurations(List<ArcAgentryConfigurations> arcAgentryConfigurations);
+        }
     }
 
     /**
@@ -347,7 +592,8 @@ public interface ConnectedCluster {
     /**
      * The template for ConnectedCluster update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithDistribution, UpdateStages.WithDistributionVersion,
+        UpdateStages.WithAzureHybridBenefit {
         /**
          * Executes the update request.
          * 
@@ -382,18 +628,43 @@ public interface ConnectedCluster {
         }
 
         /**
-         * The stage of the ConnectedCluster update allowing to specify properties.
+         * The stage of the ConnectedCluster update allowing to specify distribution.
          */
-        interface WithProperties {
+        interface WithDistribution {
             /**
-             * Specifies the properties property: Describes the connected cluster resource properties that can be
-             * updated during PATCH operation..
+             * Specifies the distribution property: Represents the distribution of the connected cluster.
              * 
-             * @param properties Describes the connected cluster resource properties that can be updated during PATCH
-             * operation.
+             * @param distribution Represents the distribution of the connected cluster.
              * @return the next definition stage.
              */
-            Update withProperties(Object properties);
+            Update withDistribution(String distribution);
+        }
+
+        /**
+         * The stage of the ConnectedCluster update allowing to specify distributionVersion.
+         */
+        interface WithDistributionVersion {
+            /**
+             * Specifies the distributionVersion property: Represents the Kubernetes distribution version on this
+             * connected cluster..
+             * 
+             * @param distributionVersion Represents the Kubernetes distribution version on this connected cluster.
+             * @return the next definition stage.
+             */
+            Update withDistributionVersion(String distributionVersion);
+        }
+
+        /**
+         * The stage of the ConnectedCluster update allowing to specify azureHybridBenefit.
+         */
+        interface WithAzureHybridBenefit {
+            /**
+             * Specifies the azureHybridBenefit property: Indicates whether Azure Hybrid Benefit is opted in.
+             * 
+             * @param azureHybridBenefit Indicates whether Azure Hybrid Benefit is opted in.
+             * @return the next definition stage.
+             */
+            Update withAzureHybridBenefit(AzureHybridBenefit azureHybridBenefit);
         }
     }
 

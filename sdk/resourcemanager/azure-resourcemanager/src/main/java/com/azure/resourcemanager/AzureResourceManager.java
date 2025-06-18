@@ -1256,7 +1256,13 @@ public final class AzureResourceManager {
      * Gets the spring service management API entry point.
      *
      * @return the spring service management API entry point
+     * @deprecated azure-resourcemanager-appplatform has been deprecated and will no longer be maintained after 03/31/2025.
+     *     <p>We recommend <a href="https://learn.microsoft.com/java/api/overview/azure/resourcemanager-appcontainers-readme">azure-resourcemanager-appcontainers</a>
+     *     and <a href="https://learn.microsoft.com/java/api/overview/azure/resourcemanager-containerservice-readme">azure-resourcemanager-containerservice</a> as the replacement libraries.</p>
+     *     <p>Refer to <a href="https://aka.ms/asaretirement">Azure Spring Apps retirement announcement</a> for more retirement details and how to migrate to the new services.</p>
+     *     <p>Refer to our <a href="https://aka.ms/azsdk/support-policies">deprecation policy</a> for more details.</p>
      */
+    @Deprecated
     public SpringServices springServices() {
         return this.appPlatformManager.springServices();
     }

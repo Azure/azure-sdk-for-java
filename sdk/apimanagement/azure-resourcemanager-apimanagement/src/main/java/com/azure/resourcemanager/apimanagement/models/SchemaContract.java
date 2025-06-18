@@ -38,11 +38,19 @@ public interface SchemaContract {
      * use `application/vnd.ms-azure-apim.swagger.definitions+json` &lt;/br&gt; - `WSDL` Schema use
      * `application/vnd.ms-azure-apim.xsd+xml` &lt;/br&gt; - `OpenApi` Schema use
      * `application/vnd.oai.openapi.components+json` &lt;/br&gt; - `WADL Schema` use
-     * `application/vnd.ms-azure-apim.wadl.grammars+xml`.
+     * `application/vnd.ms-azure-apim.wadl.grammars+xml` &lt;/br&gt; - `OData Schema` use
+     * `application/vnd.ms-azure-apim.odata.schema` &lt;/br&gt; - `gRPC Schema` use `text/protobuf`.
      * 
      * @return the contentType value.
      */
     String contentType();
+
+    /**
+     * Gets the provisioningState property: The provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    String provisioningState();
 
     /**
      * Gets the value property: Json escaped string defining the document representing the Schema. Used for schemas
@@ -145,14 +153,16 @@ public interface SchemaContract {
              * - `Swagger` Schema use `application/vnd.ms-azure-apim.swagger.definitions+json` &lt;/br&gt; - `WSDL`
              * Schema use `application/vnd.ms-azure-apim.xsd+xml` &lt;/br&gt; - `OpenApi` Schema use
              * `application/vnd.oai.openapi.components+json` &lt;/br&gt; - `WADL Schema` use
-             * `application/vnd.ms-azure-apim.wadl.grammars+xml`..
+             * `application/vnd.ms-azure-apim.wadl.grammars+xml` &lt;/br&gt; - `OData Schema` use
+             * `application/vnd.ms-azure-apim.odata.schema` &lt;/br&gt; - `gRPC Schema` use `text/protobuf`..
              * 
              * @param contentType Must be a valid a media type used in a Content-Type header as defined in the RFC 2616.
              * Media type of the schema document (e.g. application/json, application/xml). &lt;/br&gt; - `Swagger`
              * Schema use `application/vnd.ms-azure-apim.swagger.definitions+json` &lt;/br&gt; - `WSDL` Schema use
              * `application/vnd.ms-azure-apim.xsd+xml` &lt;/br&gt; - `OpenApi` Schema use
              * `application/vnd.oai.openapi.components+json` &lt;/br&gt; - `WADL Schema` use
-             * `application/vnd.ms-azure-apim.wadl.grammars+xml`.
+             * `application/vnd.ms-azure-apim.wadl.grammars+xml` &lt;/br&gt; - `OData Schema` use
+             * `application/vnd.ms-azure-apim.odata.schema` &lt;/br&gt; - `gRPC Schema` use `text/protobuf`.
              * @return the next definition stage.
              */
             WithCreate withContentType(String contentType);
@@ -259,14 +269,16 @@ public interface SchemaContract {
              * - `Swagger` Schema use `application/vnd.ms-azure-apim.swagger.definitions+json` &lt;/br&gt; - `WSDL`
              * Schema use `application/vnd.ms-azure-apim.xsd+xml` &lt;/br&gt; - `OpenApi` Schema use
              * `application/vnd.oai.openapi.components+json` &lt;/br&gt; - `WADL Schema` use
-             * `application/vnd.ms-azure-apim.wadl.grammars+xml`..
+             * `application/vnd.ms-azure-apim.wadl.grammars+xml` &lt;/br&gt; - `OData Schema` use
+             * `application/vnd.ms-azure-apim.odata.schema` &lt;/br&gt; - `gRPC Schema` use `text/protobuf`..
              * 
              * @param contentType Must be a valid a media type used in a Content-Type header as defined in the RFC 2616.
              * Media type of the schema document (e.g. application/json, application/xml). &lt;/br&gt; - `Swagger`
              * Schema use `application/vnd.ms-azure-apim.swagger.definitions+json` &lt;/br&gt; - `WSDL` Schema use
              * `application/vnd.ms-azure-apim.xsd+xml` &lt;/br&gt; - `OpenApi` Schema use
              * `application/vnd.oai.openapi.components+json` &lt;/br&gt; - `WADL Schema` use
-             * `application/vnd.ms-azure-apim.wadl.grammars+xml`.
+             * `application/vnd.ms-azure-apim.wadl.grammars+xml` &lt;/br&gt; - `OData Schema` use
+             * `application/vnd.ms-azure-apim.odata.schema` &lt;/br&gt; - `gRPC Schema` use `text/protobuf`.
              * @return the next definition stage.
              */
             Update withContentType(String contentType);

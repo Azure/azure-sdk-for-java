@@ -294,7 +294,9 @@ public class GenericResourceInner extends Resource {
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("plan", this.plan);
-        jsonWriter.writeUntypedField("properties", this.properties);
+        if (this.properties != null) {
+            jsonWriter.writeUntypedField("properties", this.properties);
+        }
         jsonWriter.writeStringField("kind", this.kind);
         jsonWriter.writeStringField("managedBy", this.managedBy);
         jsonWriter.writeJsonField("sku", this.sku);

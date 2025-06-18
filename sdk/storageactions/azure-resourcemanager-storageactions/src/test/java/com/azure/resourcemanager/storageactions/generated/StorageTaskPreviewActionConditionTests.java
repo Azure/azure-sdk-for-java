@@ -16,7 +16,7 @@ public final class StorageTaskPreviewActionConditionTests {
             = BinaryData.fromString("{\"if\":{\"condition\":\"ttgzfbis\"},\"elseBlockExists\":true}")
                 .toObject(StorageTaskPreviewActionCondition.class);
         Assertions.assertEquals("ttgzfbis", model.ifProperty().condition());
-        Assertions.assertEquals(true, model.elseBlockExists());
+        Assertions.assertTrue(model.elseBlockExists());
     }
 
     @org.junit.jupiter.api.Test
@@ -26,6 +26,6 @@ public final class StorageTaskPreviewActionConditionTests {
             .withElseBlockExists(true);
         model = BinaryData.fromObject(model).toObject(StorageTaskPreviewActionCondition.class);
         Assertions.assertEquals("ttgzfbis", model.ifProperty().condition());
-        Assertions.assertEquals(true, model.elseBlockExists());
+        Assertions.assertTrue(model.elseBlockExists());
     }
 }

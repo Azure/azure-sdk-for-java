@@ -23,7 +23,6 @@ import com.azure.resourcemanager.eventgrid.models.InputSchema;
 import com.azure.resourcemanager.eventgrid.models.InputSchemaMapping;
 import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
-import com.azure.resourcemanager.eventgrid.models.ResourceSku;
 import com.azure.resourcemanager.eventgrid.models.TlsVersion;
 import java.util.Collections;
 import java.util.List;
@@ -58,10 +57,6 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
         } else {
             return Collections.emptyMap();
         }
-    }
-
-    public ResourceSku sku() {
-        return this.innerModel().sku();
     }
 
     public IdentityInfo identity() {
@@ -267,16 +262,6 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
             return this;
         } else {
             this.updateDomainUpdateParameters.withTags(tags);
-            return this;
-        }
-    }
-
-    public DomainImpl withSku(ResourceSku sku) {
-        if (isInCreateMode()) {
-            this.innerModel().withSku(sku);
-            return this;
-        } else {
-            this.updateDomainUpdateParameters.withSku(sku);
             return this;
         }
     }

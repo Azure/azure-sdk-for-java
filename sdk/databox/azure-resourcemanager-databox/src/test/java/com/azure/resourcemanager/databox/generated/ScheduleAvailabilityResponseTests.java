@@ -10,9 +10,10 @@ import com.azure.resourcemanager.databox.models.ScheduleAvailabilityResponse;
 public final class ScheduleAvailabilityResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScheduleAvailabilityResponse model
-            = BinaryData.fromString("{\"availableDates\":[\"2021-06-19T21:54:55Z\",\"2021-03-21T19:22:18Z\"]}")
-                .toObject(ScheduleAvailabilityResponse.class);
+        ScheduleAvailabilityResponse model = BinaryData
+            .fromString(
+                "{\"availableDates\":[\"2021-05-08T07:32:01Z\",\"2021-05-02T05:37:12Z\",\"2021-09-15T06:09:09Z\"]}")
+            .toObject(ScheduleAvailabilityResponse.class);
     }
 
     @org.junit.jupiter.api.Test

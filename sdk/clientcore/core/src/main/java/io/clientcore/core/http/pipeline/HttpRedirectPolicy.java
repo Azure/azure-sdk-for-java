@@ -14,8 +14,6 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LoggingEvent;
 import io.clientcore.core.models.binarydata.BinaryData;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.util.Collections;
@@ -87,9 +85,7 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
     @Override
     public Response<BinaryData> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         // Reset the attemptedRedirectUris for each individual request.
-        InstrumentationContext instrumentationContext = httpRequest.getRequestOptions() == null
-            ? null
-            : httpRequest.getRequestOptions().getInstrumentationContext();
+        InstrumentationContext instrumentationContext = httpRequest.getContext().getInstrumentationContext();
 
         ClientLogger logger = getLogger(httpRequest);
         return attemptRedirect(logger, next, 0, new LinkedHashSet<>(), instrumentationContext);
@@ -181,11 +177,7 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
         redirectResponse.getRequest().getHeaders().remove(HttpHeaderName.AUTHORIZATION);
         redirectResponse.getRequest().setUri(redirectResponse.getHeaders().getValue(this.locationHeader));
 
-        try {
-            redirectResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        redirectResponse.close();
     }
 
     private void logRedirect(ClientLogger logger, boolean lastAttempt, String redirectUri, int tryCount,
@@ -217,8 +209,8 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
     private ClientLogger getLogger(HttpRequest httpRequest) {
         ClientLogger logger = null;
 
-        if (httpRequest.getRequestOptions() != null && httpRequest.getRequestOptions().getLogger() != null) {
-            logger = httpRequest.getRequestOptions().getLogger();
+        if (httpRequest.getContext() != null && httpRequest.getContext().getLogger() != null) {
+            logger = httpRequest.getContext().getLogger();
         }
 
         return logger == null ? LOGGER : logger;

@@ -58,6 +58,13 @@ import com.azure.ai.openai.models.SpeechGenerationOptions;
 import com.azure.ai.openai.models.SpeechVoice;
 import com.azure.ai.openai.models.Upload;
 import com.azure.ai.openai.models.UploadPart;
+import com.azure.ai.openai.responses.ResponsesClient;
+import com.azure.ai.openai.responses.ResponsesClientBuilder;
+import com.azure.ai.openai.responses.models.CreateResponsesRequest;
+import com.azure.ai.openai.responses.models.CreateResponsesRequestModel;
+import com.azure.ai.openai.responses.models.ResponsesAssistantMessage;
+import com.azure.ai.openai.responses.models.ResponsesOutputContentText;
+import com.azure.ai.openai.responses.models.ResponsesResponse;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -91,6 +98,8 @@ import java.util.List;
  */
 public final class ReadmeSamples {
     private OpenAIClient client = new OpenAIClientBuilder().buildClient();
+    private ResponsesClient responsesClient = new ResponsesClientBuilder().buildClient();
+
     public void createSyncClientKeyCredential() {
         // BEGIN: readme-sample-createSyncClientKeyCredential
         OpenAIClient client = new OpenAIClientBuilder()
@@ -123,6 +132,39 @@ public final class ReadmeSamples {
             .credential(new KeyCredential("{openai-secret-key}"))
             .buildAsyncClient();
         // END: readme-sample-createNonAzureOpenAIAsyncClientApiKey
+    }
+
+    public void createAzureResponsesClient() {
+        // BEGIN: readme-sample-createAzureResponsesClient
+        TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
+        ResponsesClient client = new ResponsesClientBuilder()
+            .credential(defaultCredential)
+            .endpoint("{endpoint}")
+            .buildClient(); // or .buildAsyncClient() for the ResponsesAsyncClient
+        // END: readme-sample-createAzureResponsesClient
+    }
+
+    public void createNonAzureResponsesClient() {
+        // BEGIN: readme-sample-createNonAzureResponsesClient
+        ResponsesClient client = new ResponsesClientBuilder()
+            .credential(new KeyCredential("{openai-secret-key}"))
+            .buildClient(); // or .buildAsyncClient() for the ResponsesAsyncClient
+        // END: readme-sample-createNonAzureResponsesClient
+    }
+
+    public void sendResponsesUserMessage() {
+        // BEGIN: readme-sample-sendResponsesUserMessage
+        CreateResponsesRequest request = new CreateResponsesRequest(
+                CreateResponsesRequestModel.GPT_4O_MINI, "Hello, world!"
+        );
+
+        ResponsesResponse response = responsesClient.createResponse(request);
+
+        // Print the response
+        ResponsesAssistantMessage assistantMessage = (ResponsesAssistantMessage) response.getOutput().get(0);
+        ResponsesOutputContentText outputContent = (ResponsesOutputContentText) assistantMessage.getContent().get(0);
+        System.out.println(outputContent.getText());
+        // END: readme-sample-sendResponsesUserMessage
     }
 
     public void createOpenAIClientWithEntraID() {

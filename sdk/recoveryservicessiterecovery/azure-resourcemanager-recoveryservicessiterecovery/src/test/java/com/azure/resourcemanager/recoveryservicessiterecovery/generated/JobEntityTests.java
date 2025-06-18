@@ -12,30 +12,30 @@ public final class JobEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JobEntity model = BinaryData.fromString(
-            "{\"jobId\":\"xpno\",\"jobFriendlyName\":\"oanfbcswqagyw\",\"targetObjectId\":\"xigvjrktpgaeuk\",\"targetObjectName\":\"wohpmwhqnucs\",\"targetInstanceType\":\"hsidsjtdlpbnin\",\"jobScenarioName\":\"azlsvbzfcpuo\"}")
+            "{\"jobId\":\"kx\",\"jobFriendlyName\":\"azwu\",\"targetObjectId\":\"yqvnjobfe\",\"targetObjectName\":\"ldiuhzzgqlm\",\"targetInstanceType\":\"ewzgiud\",\"jobScenarioName\":\"xpqh\"}")
             .toObject(JobEntity.class);
-        Assertions.assertEquals("xpno", model.jobId());
-        Assertions.assertEquals("oanfbcswqagyw", model.jobFriendlyName());
-        Assertions.assertEquals("xigvjrktpgaeuk", model.targetObjectId());
-        Assertions.assertEquals("wohpmwhqnucs", model.targetObjectName());
-        Assertions.assertEquals("hsidsjtdlpbnin", model.targetInstanceType());
-        Assertions.assertEquals("azlsvbzfcpuo", model.jobScenarioName());
+        Assertions.assertEquals("kx", model.jobId());
+        Assertions.assertEquals("azwu", model.jobFriendlyName());
+        Assertions.assertEquals("yqvnjobfe", model.targetObjectId());
+        Assertions.assertEquals("ldiuhzzgqlm", model.targetObjectName());
+        Assertions.assertEquals("ewzgiud", model.targetInstanceType());
+        Assertions.assertEquals("xpqh", model.jobScenarioName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobEntity model = new JobEntity().withJobId("xpno")
-            .withJobFriendlyName("oanfbcswqagyw")
-            .withTargetObjectId("xigvjrktpgaeuk")
-            .withTargetObjectName("wohpmwhqnucs")
-            .withTargetInstanceType("hsidsjtdlpbnin")
-            .withJobScenarioName("azlsvbzfcpuo");
+        JobEntity model = new JobEntity().withJobId("kx")
+            .withJobFriendlyName("azwu")
+            .withTargetObjectId("yqvnjobfe")
+            .withTargetObjectName("ldiuhzzgqlm")
+            .withTargetInstanceType("ewzgiud")
+            .withJobScenarioName("xpqh");
         model = BinaryData.fromObject(model).toObject(JobEntity.class);
-        Assertions.assertEquals("xpno", model.jobId());
-        Assertions.assertEquals("oanfbcswqagyw", model.jobFriendlyName());
-        Assertions.assertEquals("xigvjrktpgaeuk", model.targetObjectId());
-        Assertions.assertEquals("wohpmwhqnucs", model.targetObjectName());
-        Assertions.assertEquals("hsidsjtdlpbnin", model.targetInstanceType());
-        Assertions.assertEquals("azlsvbzfcpuo", model.jobScenarioName());
+        Assertions.assertEquals("kx", model.jobId());
+        Assertions.assertEquals("azwu", model.jobFriendlyName());
+        Assertions.assertEquals("yqvnjobfe", model.targetObjectId());
+        Assertions.assertEquals("ldiuhzzgqlm", model.targetObjectName());
+        Assertions.assertEquals("ewzgiud", model.targetInstanceType());
+        Assertions.assertEquals("xpqh", model.jobScenarioName());
     }
 }

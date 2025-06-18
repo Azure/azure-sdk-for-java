@@ -7,11 +7,12 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.instrumentation.InstrumentationContext;
-import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
+import io.clientcore.core.instrumentation.SdkInstrumentationOptions;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
@@ -50,7 +51,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.net.SocketException;
 import java.net.URI;
 import java.net.UnknownHostException;
@@ -191,7 +191,7 @@ public class HttpInstrumentationPolicyTests {
                     assertEquals(traceparent(Span.current().getSpanContext()),
                         request.getHeaders().get(TRACEPARENT).getValue());
                     if (count.getAndIncrement() == 0) {
-                        throw new UnknownHostException("test exception");
+                        throw CoreException.from(new UnknownHostException("test exception"));
                     } else {
                         return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
                     }
@@ -346,10 +346,10 @@ public class HttpInstrumentationPolicyTests {
         SocketException exception = new SocketException("test exception");
         HttpPipeline pipeline
             = new HttpPipelineBuilder().addPolicy(new HttpInstrumentationPolicy(otelOptions)).httpClient(request -> {
-                throw exception;
+                throw CoreException.from(exception);
             }).build();
 
-        assertThrows(UncheckedIOException.class,
+        assertThrows(CoreException.class,
             () -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost/")).close());
         assertNotNull(exporter.getFinishedSpanItems());
         assertEquals(1, exporter.getFinishedSpanItems().size());
@@ -430,7 +430,7 @@ public class HttpInstrumentationPolicyTests {
             @Override
             public Response<BinaryData> process(HttpRequest request, HttpPipelineNextPolicy next) {
                 io.clientcore.core.instrumentation.tracing.Span span
-                    = request.getRequestOptions().getInstrumentationContext().getSpan();
+                    = request.getContext().getInstrumentationContext().getSpan();
                 if (span.isRecording()) {
                     span.setAttribute("custom.request.id", request.getHeaders().getValue(CUSTOM_REQUEST_ID));
                 }
@@ -498,12 +498,13 @@ public class HttpInstrumentationPolicyTests {
             .httpClient(request -> new Response<>(request, 200, new HttpHeaders(), BinaryData.empty()))
             .build();
 
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.setInstrumentationContext(Instrumentation.createInstrumentationContext(testSpan));
+        RequestContext context = RequestContext.builder()
+            .setInstrumentationContext(Instrumentation.createInstrumentationContext(testSpan))
+            .build();
 
         pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
             .setUri("https://localhost:8080/path/to/resource?query=param")
-            .setRequestOptions(requestOptions)).close();
+            .setContext(context)).close();
         testSpan.end();
 
         assertNotNull(exporter.getFinishedSpanItems());
@@ -536,13 +537,13 @@ public class HttpInstrumentationPolicyTests {
     @Test
     public void explicitLibraryCallParent() throws IOException {
         io.clientcore.core.instrumentation.tracing.Tracer tracer
-            = Instrumentation.create(otelOptions, new LibraryInstrumentationOptions("test-library")).getTracer();
+            = Instrumentation.create(otelOptions, new SdkInstrumentationOptions("test-library")).getTracer();
 
-        RequestOptions requestOptions = new RequestOptions();
         io.clientcore.core.instrumentation.tracing.Span parent
             = tracer.spanBuilder("parent", INTERNAL, null).startSpan();
 
-        requestOptions.setInstrumentationContext(parent.getInstrumentationContext());
+        RequestContext context
+            = RequestContext.builder().setInstrumentationContext(parent.getInstrumentationContext()).build();
 
         HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpInstrumentationPolicy(otelOptions))
             .httpClient(request -> new Response<>(request, 200, new HttpHeaders(), BinaryData.empty()))
@@ -550,7 +551,7 @@ public class HttpInstrumentationPolicyTests {
 
         pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
             .setUri("https://localhost:8080/path/to/resource?query=param")
-            .setRequestOptions(requestOptions)).close();
+            .setContext(context)).close();
 
         parent.end();
 

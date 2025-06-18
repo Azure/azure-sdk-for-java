@@ -17,9 +17,14 @@ import java.io.IOException;
 @Fluent
 public final class SecurityPolicyConfigurations implements JsonSerializable<SecurityPolicyConfigurations> {
     /*
-     * Contains reference to a WAF-type security policy that is applied at the Traffic Controller level.
+     * Contains reference to a WAF-type security policy.
      */
     private WafSecurityPolicy wafSecurityPolicy;
+
+    /*
+     * Contains reference to a IpAccessRules-type security policy.
+     */
+    private IpAccessRulesSecurityPolicy ipAccessRulesSecurityPolicy;
 
     /**
      * Creates an instance of SecurityPolicyConfigurations class.
@@ -28,8 +33,7 @@ public final class SecurityPolicyConfigurations implements JsonSerializable<Secu
     }
 
     /**
-     * Get the wafSecurityPolicy property: Contains reference to a WAF-type security policy that is applied at the
-     * Traffic Controller level.
+     * Get the wafSecurityPolicy property: Contains reference to a WAF-type security policy.
      * 
      * @return the wafSecurityPolicy value.
      */
@@ -38,14 +42,34 @@ public final class SecurityPolicyConfigurations implements JsonSerializable<Secu
     }
 
     /**
-     * Set the wafSecurityPolicy property: Contains reference to a WAF-type security policy that is applied at the
-     * Traffic Controller level.
+     * Set the wafSecurityPolicy property: Contains reference to a WAF-type security policy.
      * 
      * @param wafSecurityPolicy the wafSecurityPolicy value to set.
      * @return the SecurityPolicyConfigurations object itself.
      */
     public SecurityPolicyConfigurations withWafSecurityPolicy(WafSecurityPolicy wafSecurityPolicy) {
         this.wafSecurityPolicy = wafSecurityPolicy;
+        return this;
+    }
+
+    /**
+     * Get the ipAccessRulesSecurityPolicy property: Contains reference to a IpAccessRules-type security policy.
+     * 
+     * @return the ipAccessRulesSecurityPolicy value.
+     */
+    public IpAccessRulesSecurityPolicy ipAccessRulesSecurityPolicy() {
+        return this.ipAccessRulesSecurityPolicy;
+    }
+
+    /**
+     * Set the ipAccessRulesSecurityPolicy property: Contains reference to a IpAccessRules-type security policy.
+     * 
+     * @param ipAccessRulesSecurityPolicy the ipAccessRulesSecurityPolicy value to set.
+     * @return the SecurityPolicyConfigurations object itself.
+     */
+    public SecurityPolicyConfigurations
+        withIpAccessRulesSecurityPolicy(IpAccessRulesSecurityPolicy ipAccessRulesSecurityPolicy) {
+        this.ipAccessRulesSecurityPolicy = ipAccessRulesSecurityPolicy;
         return this;
     }
 
@@ -58,6 +82,9 @@ public final class SecurityPolicyConfigurations implements JsonSerializable<Secu
         if (wafSecurityPolicy() != null) {
             wafSecurityPolicy().validate();
         }
+        if (ipAccessRulesSecurityPolicy() != null) {
+            ipAccessRulesSecurityPolicy().validate();
+        }
     }
 
     /**
@@ -67,6 +94,7 @@ public final class SecurityPolicyConfigurations implements JsonSerializable<Secu
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("wafSecurityPolicy", this.wafSecurityPolicy);
+        jsonWriter.writeJsonField("ipAccessRulesSecurityPolicy", this.ipAccessRulesSecurityPolicy);
         return jsonWriter.writeEndObject();
     }
 
@@ -87,6 +115,9 @@ public final class SecurityPolicyConfigurations implements JsonSerializable<Secu
 
                 if ("wafSecurityPolicy".equals(fieldName)) {
                     deserializedSecurityPolicyConfigurations.wafSecurityPolicy = WafSecurityPolicy.fromJson(reader);
+                } else if ("ipAccessRulesSecurityPolicy".equals(fieldName)) {
+                    deserializedSecurityPolicyConfigurations.ipAccessRulesSecurityPolicy
+                        = IpAccessRulesSecurityPolicy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

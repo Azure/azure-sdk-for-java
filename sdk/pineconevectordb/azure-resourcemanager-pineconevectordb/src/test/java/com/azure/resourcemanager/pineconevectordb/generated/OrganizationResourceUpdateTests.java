@@ -17,23 +17,24 @@ public final class OrganizationResourceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OrganizationResourceUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"szdnr\":\"rbnwbxgjvtbvpy\",\"uhmuouqfprwzwbn\":\"jq\",\"a\":\"uitnwuiz\",\"fizuckyf\":\"x\"},\"identity\":{\"principalId\":\"fidfvzw\",\"tenantId\":\"uht\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"ufufsrp\":{\"principalId\":\"dkfthwxmnt\",\"clientId\":\"waopvkmijcmmxd\"},\"mdwzjeiachboo\":{\"principalId\":\"zidnsezcxtbzsgfy\",\"clientId\":\"sne\"},\"inpvswjdkirsoodq\":{\"principalId\":\"lnrosfqp\",\"clientId\":\"ehzzvypyqrim\"},\"znorcj\":{\"principalId\":\"crmnohjtckwhds\",\"clientId\":\"fiyipjxsqwpgrj\"}}}}")
+            "{\"tags\":{\"oosflnr\":\"wzjeiach\",\"vypyqrimzinpv\":\"sfqpteehz\",\"rsoodqxhcrmnoh\":\"wjdk\"},\"identity\":{\"principalId\":\"kwh\",\"tenantId\":\"oifiyipjxsqwpgr\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"shurzafbljjgpbto\":{\"clientId\":\"rcjxvsnbyxqabn\",\"principalId\":\"cpc\"},\"kudjkrlkhb\":{\"clientId\":\"jmkljavbqidtqajz\",\"principalId\":\"l\"},\"scpai\":{\"clientId\":\"fepgzgq\",\"principalId\":\"zloc\"},\"onpimexgstxg\":{\"clientId\":\"hhbcsglummajtjao\",\"principalId\":\"obnbdxkqpxokaj\"}}}}")
             .toObject(OrganizationResourceUpdate.class);
-        Assertions.assertEquals("rbnwbxgjvtbvpy", model.tags().get("szdnr"));
+        Assertions.assertEquals("wzjeiach", model.tags().get("oosflnr"));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OrganizationResourceUpdate model = new OrganizationResourceUpdate()
-            .withTags(mapOf("szdnr", "rbnwbxgjvtbvpy", "uhmuouqfprwzwbn", "jq", "a", "uitnwuiz", "fizuckyf", "x"))
-            .withIdentity(
-                new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf("ufufsrp", new UserAssignedIdentity(), "mdwzjeiachboo", new UserAssignedIdentity(),
-                            "inpvswjdkirsoodq", new UserAssignedIdentity(), "znorcj", new UserAssignedIdentity())));
+        OrganizationResourceUpdate model
+            = new OrganizationResourceUpdate()
+                .withTags(mapOf("oosflnr", "wzjeiach", "vypyqrimzinpv", "sfqpteehz", "rsoodqxhcrmnoh", "wjdk"))
+                .withIdentity(
+                    new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                        .withUserAssignedIdentities(mapOf("shurzafbljjgpbto", new UserAssignedIdentity(), "kudjkrlkhb",
+                            new UserAssignedIdentity(), "scpai", new UserAssignedIdentity(), "onpimexgstxg",
+                            new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(OrganizationResourceUpdate.class);
-        Assertions.assertEquals("rbnwbxgjvtbvpy", model.tags().get("szdnr"));
+        Assertions.assertEquals("wzjeiach", model.tags().get("oosflnr"));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
     }
 

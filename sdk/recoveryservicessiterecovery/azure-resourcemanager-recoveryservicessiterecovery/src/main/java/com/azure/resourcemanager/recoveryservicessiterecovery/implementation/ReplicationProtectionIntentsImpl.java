@@ -27,25 +27,25 @@ public final class ReplicationProtectionIntentsImpl implements ReplicationProtec
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<ReplicationProtectionIntent> list(String resourceName, String resourceGroupName) {
+    public PagedIterable<ReplicationProtectionIntent> list(String resourceGroupName, String resourceName) {
         PagedIterable<ReplicationProtectionIntentInner> inner
-            = this.serviceClient().list(resourceName, resourceGroupName);
+            = this.serviceClient().list(resourceGroupName, resourceName);
         return ResourceManagerUtils.mapPage(inner,
             inner1 -> new ReplicationProtectionIntentImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ReplicationProtectionIntent> list(String resourceName, String resourceGroupName,
+    public PagedIterable<ReplicationProtectionIntent> list(String resourceGroupName, String resourceName,
         String skipToken, String takeToken, Context context) {
         PagedIterable<ReplicationProtectionIntentInner> inner
-            = this.serviceClient().list(resourceName, resourceGroupName, skipToken, takeToken, context);
+            = this.serviceClient().list(resourceGroupName, resourceName, skipToken, takeToken, context);
         return ResourceManagerUtils.mapPage(inner,
             inner1 -> new ReplicationProtectionIntentImpl(inner1, this.manager()));
     }
 
-    public Response<ReplicationProtectionIntent> getWithResponse(String resourceName, String resourceGroupName,
+    public Response<ReplicationProtectionIntent> getWithResponse(String resourceGroupName, String resourceName,
         String intentObjectName, Context context) {
         Response<ReplicationProtectionIntentInner> inner
-            = this.serviceClient().getWithResponse(resourceName, resourceGroupName, intentObjectName, context);
+            = this.serviceClient().getWithResponse(resourceGroupName, resourceName, intentObjectName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ReplicationProtectionIntentImpl(inner.getValue(), this.manager()));
@@ -54,9 +54,9 @@ public final class ReplicationProtectionIntentsImpl implements ReplicationProtec
         }
     }
 
-    public ReplicationProtectionIntent get(String resourceName, String resourceGroupName, String intentObjectName) {
+    public ReplicationProtectionIntent get(String resourceGroupName, String resourceName, String intentObjectName) {
         ReplicationProtectionIntentInner inner
-            = this.serviceClient().get(resourceName, resourceGroupName, intentObjectName);
+            = this.serviceClient().get(resourceGroupName, resourceName, intentObjectName);
         if (inner != null) {
             return new ReplicationProtectionIntentImpl(inner, this.manager());
         } else {
@@ -65,41 +65,41 @@ public final class ReplicationProtectionIntentsImpl implements ReplicationProtec
     }
 
     public ReplicationProtectionIntent getById(String id) {
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
+        if (resourceName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
         String intentObjectName = ResourceManagerUtils.getValueFromIdByName(id, "replicationProtectionIntents");
         if (intentObjectName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'replicationProtectionIntents'.", id)));
         }
-        return this.getWithResponse(resourceName, resourceGroupName, intentObjectName, Context.NONE).getValue();
+        return this.getWithResponse(resourceGroupName, resourceName, intentObjectName, Context.NONE).getValue();
     }
 
     public Response<ReplicationProtectionIntent> getByIdWithResponse(String id, Context context) {
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
+        if (resourceName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
         String intentObjectName = ResourceManagerUtils.getValueFromIdByName(id, "replicationProtectionIntents");
         if (intentObjectName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'replicationProtectionIntents'.", id)));
         }
-        return this.getWithResponse(resourceName, resourceGroupName, intentObjectName, context);
+        return this.getWithResponse(resourceGroupName, resourceName, intentObjectName, context);
     }
 
     private ReplicationProtectionIntentsClient serviceClient() {

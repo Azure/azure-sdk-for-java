@@ -9,24 +9,30 @@ import com.azure.core.management.SubResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.containerservice.models.AgentPoolGatewayProfile;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolNetworkProfile;
 import com.azure.resourcemanager.containerservice.models.AgentPoolSecurityProfile;
+import com.azure.resourcemanager.containerservice.models.AgentPoolStatus;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeSettings;
 import com.azure.resourcemanager.containerservice.models.AgentPoolWindowsProfile;
 import com.azure.resourcemanager.containerservice.models.CreationData;
 import com.azure.resourcemanager.containerservice.models.GpuInstanceProfile;
+import com.azure.resourcemanager.containerservice.models.GpuProfile;
 import com.azure.resourcemanager.containerservice.models.KubeletConfig;
 import com.azure.resourcemanager.containerservice.models.KubeletDiskType;
 import com.azure.resourcemanager.containerservice.models.LinuxOSConfig;
 import com.azure.resourcemanager.containerservice.models.OSDiskType;
 import com.azure.resourcemanager.containerservice.models.OSSku;
 import com.azure.resourcemanager.containerservice.models.OSType;
+import com.azure.resourcemanager.containerservice.models.PodIpAllocationMode;
 import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.ScaleDownMode;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
 import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
+import com.azure.resourcemanager.containerservice.models.VirtualMachineNodes;
+import com.azure.resourcemanager.containerservice.models.VirtualMachinesProfile;
 import com.azure.resourcemanager.containerservice.models.WorkloadRuntime;
 import java.io.IOException;
 import java.util.List;
@@ -340,6 +346,31 @@ public final class AgentPoolInner extends SubResource {
             this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
         }
         this.innerProperties().withPodSubnetId(podSubnetId);
+        return this;
+    }
+
+    /**
+     * Get the podIpAllocationMode property: The IP allocation mode for pods in the agent pool. Must be used with
+     * podSubnetId. The default is 'DynamicIndividual'.
+     * 
+     * @return the podIpAllocationMode value.
+     */
+    public PodIpAllocationMode podIpAllocationMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().podIpAllocationMode();
+    }
+
+    /**
+     * Set the podIpAllocationMode property: The IP allocation mode for pods in the agent pool. Must be used with
+     * podSubnetId. The default is 'DynamicIndividual'.
+     * 
+     * @param podIpAllocationMode the podIpAllocationMode value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withPodIpAllocationMode(PodIpAllocationMode podIpAllocationMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withPodIpAllocationMode(podIpAllocationMode);
         return this;
     }
 
@@ -1221,6 +1252,123 @@ public final class AgentPoolInner extends SubResource {
             this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
         }
         this.innerProperties().withSecurityProfile(securityProfile);
+        return this;
+    }
+
+    /**
+     * Get the gpuProfile property: GPU settings for the Agent Pool.
+     * 
+     * @return the gpuProfile value.
+     */
+    public GpuProfile gpuProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().gpuProfile();
+    }
+
+    /**
+     * Set the gpuProfile property: GPU settings for the Agent Pool.
+     * 
+     * @param gpuProfile the gpuProfile value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withGpuProfile(GpuProfile gpuProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withGpuProfile(gpuProfile);
+        return this;
+    }
+
+    /**
+     * Get the gatewayProfile property: Profile specific to a managed agent pool in Gateway mode. This field cannot be
+     * set if agent pool mode is not Gateway.
+     * 
+     * @return the gatewayProfile value.
+     */
+    public AgentPoolGatewayProfile gatewayProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().gatewayProfile();
+    }
+
+    /**
+     * Set the gatewayProfile property: Profile specific to a managed agent pool in Gateway mode. This field cannot be
+     * set if agent pool mode is not Gateway.
+     * 
+     * @param gatewayProfile the gatewayProfile value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withGatewayProfile(AgentPoolGatewayProfile gatewayProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withGatewayProfile(gatewayProfile);
+        return this;
+    }
+
+    /**
+     * Get the virtualMachinesProfile property: Specifications on VirtualMachines agent pool.
+     * 
+     * @return the virtualMachinesProfile value.
+     */
+    public VirtualMachinesProfile virtualMachinesProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualMachinesProfile();
+    }
+
+    /**
+     * Set the virtualMachinesProfile property: Specifications on VirtualMachines agent pool.
+     * 
+     * @param virtualMachinesProfile the virtualMachinesProfile value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withVirtualMachinesProfile(VirtualMachinesProfile virtualMachinesProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withVirtualMachinesProfile(virtualMachinesProfile);
+        return this;
+    }
+
+    /**
+     * Get the virtualMachineNodesStatus property: The status of nodes in a VirtualMachines agent pool.
+     * 
+     * @return the virtualMachineNodesStatus value.
+     */
+    public List<VirtualMachineNodes> virtualMachineNodesStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualMachineNodesStatus();
+    }
+
+    /**
+     * Set the virtualMachineNodesStatus property: The status of nodes in a VirtualMachines agent pool.
+     * 
+     * @param virtualMachineNodesStatus the virtualMachineNodesStatus value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withVirtualMachineNodesStatus(List<VirtualMachineNodes> virtualMachineNodesStatus) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withVirtualMachineNodesStatus(virtualMachineNodesStatus);
+        return this;
+    }
+
+    /**
+     * Get the status property: Contains read-only information about the Agent Pool.
+     * 
+     * @return the status value.
+     */
+    public AgentPoolStatus status() {
+        return this.innerProperties() == null ? null : this.innerProperties().status();
+    }
+
+    /**
+     * Set the status property: Contains read-only information about the Agent Pool.
+     * 
+     * @param status the status value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withStatus(AgentPoolStatus status) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withStatus(status);
         return this;
     }
 

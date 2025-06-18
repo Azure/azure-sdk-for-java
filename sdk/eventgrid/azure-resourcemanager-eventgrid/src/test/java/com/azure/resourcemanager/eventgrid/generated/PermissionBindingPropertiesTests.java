@@ -13,24 +13,24 @@ public final class PermissionBindingPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PermissionBindingProperties model = BinaryData.fromString(
-            "{\"description\":\"vlnnpx\",\"topicSpaceName\":\"afiqgeaarbgjekg\",\"permission\":\"Subscriber\",\"clientGroupName\":\"yulidwcwvm\",\"provisioningState\":\"Failed\"}")
+            "{\"description\":\"ey\",\"topicSpaceName\":\"uhxu\",\"permission\":\"Publisher\",\"clientGroupName\":\"ewmrswnjlxu\",\"provisioningState\":\"Failed\"}")
             .toObject(PermissionBindingProperties.class);
-        Assertions.assertEquals("vlnnpx", model.description());
-        Assertions.assertEquals("afiqgeaarbgjekg", model.topicSpaceName());
-        Assertions.assertEquals(PermissionType.SUBSCRIBER, model.permission());
-        Assertions.assertEquals("yulidwcwvm", model.clientGroupName());
+        Assertions.assertEquals("ey", model.description());
+        Assertions.assertEquals("uhxu", model.topicSpaceName());
+        Assertions.assertEquals(PermissionType.PUBLISHER, model.permission());
+        Assertions.assertEquals("ewmrswnjlxu", model.clientGroupName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PermissionBindingProperties model = new PermissionBindingProperties().withDescription("vlnnpx")
-            .withTopicSpaceName("afiqgeaarbgjekg")
-            .withPermission(PermissionType.SUBSCRIBER)
-            .withClientGroupName("yulidwcwvm");
+        PermissionBindingProperties model = new PermissionBindingProperties().withDescription("ey")
+            .withTopicSpaceName("uhxu")
+            .withPermission(PermissionType.PUBLISHER)
+            .withClientGroupName("ewmrswnjlxu");
         model = BinaryData.fromObject(model).toObject(PermissionBindingProperties.class);
-        Assertions.assertEquals("vlnnpx", model.description());
-        Assertions.assertEquals("afiqgeaarbgjekg", model.topicSpaceName());
-        Assertions.assertEquals(PermissionType.SUBSCRIBER, model.permission());
-        Assertions.assertEquals("yulidwcwvm", model.clientGroupName());
+        Assertions.assertEquals("ey", model.description());
+        Assertions.assertEquals("uhxu", model.topicSpaceName());
+        Assertions.assertEquals(PermissionType.PUBLISHER, model.permission());
+        Assertions.assertEquals("ewmrswnjlxu", model.clientGroupName());
     }
 }

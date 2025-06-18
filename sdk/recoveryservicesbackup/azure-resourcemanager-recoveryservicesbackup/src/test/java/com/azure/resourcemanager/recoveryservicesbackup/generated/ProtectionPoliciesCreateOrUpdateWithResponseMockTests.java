@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionPolicy;
@@ -25,31 +25,30 @@ public final class ProtectionPoliciesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":2005722569,\"resourceGuardOperationRequests\":[\"mwhqnucsklh\",\"i\"]},\"eTag\":\"jtdlp\",\"location\":\"ninjgazlsvbz\",\"tags\":{\"lhsyekrdrenxolr\":\"uoeedwjcci\",\"bfgrlpunytjlkes\":\"yehqbeivdlhydwb\"},\"id\":\"mpathubtah\",\"name\":\"e\",\"type\":\"niiwllbvgwz\"}";
+            = "{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":1966283387,\"resourceGuardOperationRequests\":[\"l\",\"ywkdcwmqsy\",\"ilm\"]},\"eTag\":\"dqaolfylnkk\",\"location\":\"jpjvly\",\"tags\":{\"bjwhlwyjfnqzocr\":\"mfwo\",\"tgxdncaqt\":\"zgczeu\",\"vnyttzgi\":\"iekoif\"},\"id\":\"gyrihlgm\",\"name\":\"behlqtxnr\",\"type\":\"lkndrndpgfjodh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProtectionPolicyResource response = manager.protectionPolicies()
-            .define("dkyzbfvxov")
-            .withRegion("f")
-            .withExistingVault("mcrunfhiucn", "fbcpaqktkrumzu")
-            .withTags(mapOf("sdxeqztvxwmwwmjs", "qrkijpeuq", "wwa", "en", "ojhtollhs", "ecleqioulndhzyo", "lxpnovyoanf",
-                "idmytzln"))
-            .withProperties(new ProtectionPolicy().withProtectedItemsCount(113581490)
-                .withResourceGuardOperationRequests(Arrays.asList("q", "gvqrnhyhlwcj")))
-            .withEtag("ggjh")
+            .define("uwj")
+            .withRegion("hbgxvel")
+            .withExistingVault("esq", "ggvrbnyrukoilaci")
+            .withTags(mapOf("mnitmujd", "lnx", "lyymffhmjpddny", "vm", "mzjqrbr", "fzuvrzmz"))
+            .withProperties(new ProtectionPolicy().withProtectedItemsCount(844410077)
+                .withResourceGuardOperationRequests(Arrays.asList("h")))
+            .withEtag("xpzruzythqkk")
             .create();
 
-        Assertions.assertEquals("ninjgazlsvbz", response.location());
-        Assertions.assertEquals("uoeedwjcci", response.tags().get("lhsyekrdrenxolr"));
-        Assertions.assertEquals(2005722569, response.properties().protectedItemsCount());
-        Assertions.assertEquals("mwhqnucsklh", response.properties().resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals("jtdlp", response.etag());
+        Assertions.assertEquals("jpjvly", response.location());
+        Assertions.assertEquals("mfwo", response.tags().get("bjwhlwyjfnqzocr"));
+        Assertions.assertEquals(1966283387, response.properties().protectedItemsCount());
+        Assertions.assertEquals("l", response.properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("dqaolfylnkk", response.etag());
     }
 
     // Use "Map.of" if available

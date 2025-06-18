@@ -4,6 +4,7 @@
 
 package com.azure.maps.weather.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,21 +16,25 @@ public final class PrecipitationType extends ExpandableStringEnum<PrecipitationT
     /**
      * Rain.
      */
+    @Generated
     public static final PrecipitationType RAIN = fromString("Rain");
 
     /**
      * Snow.
      */
+    @Generated
     public static final PrecipitationType SNOW = fromString("Snow");
 
     /**
      * Ice.
      */
+    @Generated
     public static final PrecipitationType ICE = fromString("Ice");
 
     /**
      * Mix.
      */
+    @Generated
     public static final PrecipitationType MIX = fromString("Mix");
 
     /**
@@ -37,6 +42,7 @@ public final class PrecipitationType extends ExpandableStringEnum<PrecipitationT
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PrecipitationType() {
     }
@@ -47,6 +53,7 @@ public final class PrecipitationType extends ExpandableStringEnum<PrecipitationT
      * @param name a name to look for.
      * @return the corresponding PrecipitationType.
      */
+    @Generated
     public static PrecipitationType fromString(String name) {
         return fromString(name, PrecipitationType.class);
     }
@@ -56,6 +63,7 @@ public final class PrecipitationType extends ExpandableStringEnum<PrecipitationT
      * 
      * @return known PrecipitationType values.
      */
+    @Generated
     public static Collection<PrecipitationType> values() {
         return values(PrecipitationType.class);
     }

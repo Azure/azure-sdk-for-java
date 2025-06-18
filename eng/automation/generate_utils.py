@@ -20,7 +20,7 @@ from utils import update_service_files_for_new_lib
 from utils import update_root_pom
 from utils import update_version
 from utils import is_windows
-from utils import set_or_default_version
+from utils import set_or_increase_version
 
 os.chdir(pwd)
 
@@ -158,7 +158,7 @@ def generate_changelog_and_breaking_change(
 
 
 def update_changelog(changelog_file, changelog):
-    version_pattern = "^## (\d+\.\d+\.\d+(?:-[\w\d\.]+)?) \((.*?)\)"
+    version_pattern = r"^## (\d+\.\d+\.\d+(?:-[\w\d\.]+)?) \((.*?)\)"
     with open(changelog_file, "r") as fin:
         old_changelog = fin.read()
 
@@ -175,8 +175,8 @@ def update_changelog(changelog_file, changelog):
 
     first_version_part = old_changelog[: first_version.end() + second_version.start()]
     # remove text starting from the first '###' (usually the block '### Features Added')
-    first_version_part = re.sub("\n###.*", "\n", first_version_part, flags=re.S)
-    first_version_part = re.sub("\s+$", "", first_version_part)
+    first_version_part = re.sub(r"\n###.*", "\n", first_version_part, flags=re.S)
+    first_version_part = re.sub(r"\s+$", "", first_version_part)
 
     first_version_part += "\n\n"
     if changelog.strip() != "":
@@ -252,7 +252,7 @@ def get_version(
 
 
 def valid_service(service: str):
-    return re.sub("[^a-z0-9_]", "", service.lower())
+    return re.sub(r"[^a-z0-9_]", "", service.lower())
 
 
 def read_api_specs(api_specs_file: str) -> Tuple[str, dict]:
@@ -284,9 +284,24 @@ def get_and_update_service_from_api_specs(
     api_specs_file: str,
     spec: str,
     service: str = None,
+    suffix: str = None,
+    truncate_service: bool = False,
 ):
-    SPECIAL_SPEC = {"resources"}
-    if spec in SPECIAL_SPEC:
+    """
+    Updates the API specs file with the provided service name and optional suffix.
+
+    Args:
+        api_specs_file (str): Path to the API specs file.
+        spec (str): The specification key to update in the API specs.
+        service (str, optional): The service name to associate with the spec. If not provided, it will be derived.
+        suffix (str, optional): An optional suffix to add to the spec entry in the API specs file.
+        truncate_service (bool, optional): Whether to truncate the service name to a maximum length of 32 characters.
+
+    Returns:
+        str: The validated and potentially updated service name.
+    """
+    special_spec = {"resources"}
+    if spec in special_spec:
         if not service:
             service = spec
         return valid_service(service)
@@ -299,11 +314,23 @@ def get_and_update_service_from_api_specs(
             service = api_spec.get("service")
         if not service:
             service = spec
+            # remove segment contains ".", e.g. "Microsoft.KubernetesConfiguration", "Astronomer.Astro"
+            service = re.sub(r"/[^/]+(\.[^/]+)+", "", service)
+            # truncate length of service to 32, as this is the maximum length for package name in Java repository
+            if truncate_service:
+                service = valid_service(service)
+                max_length = 32
+                if len(service) > max_length:
+                    logging.warning(f'[VALIDATE] service name truncated from "{service}" to "{service[:max_length]}"')
+                    service = service[:max_length]
     service = valid_service(service)
 
     if service != spec:
         api_specs[spec] = dict() if not api_spec else api_spec
         api_specs[spec]["service"] = service
+
+    if suffix:
+        api_specs[spec]["suffix"] = suffix
 
     write_api_specs(api_specs_file, comment, api_specs)
 
@@ -334,7 +361,9 @@ def generate_typespec_project(
     repo_url: str = "",
     remove_before_regen: bool = False,
     group_id: str = None,
-    version: str = None,
+    api_version: str = None,
+    generate_beta_sdk: bool = True,
+    version: str = None,  # SDK version
     **kwargs,
 ):
 
@@ -366,7 +395,7 @@ def generate_typespec_project(
                 tsp_project,
             ]
         else:
-            # sdk automation
+            # sdk automation/self serve
             tsp_dir = os.path.join(spec_root, tsp_project) if spec_root else tsp_project
             tspconfig_valid = validate_tspconfig(tsp_dir)
             repo = remove_prefix(repo_url, "https://github.com/")
@@ -414,9 +443,15 @@ def generate_typespec_project(
                     # clear existing generated source code, and regenerate
                     drop_changes(sdk_root)
                     remove_generated_source_code(sdk_folder, f"{group_id}.{service}")
-                    _, current_version = set_or_default_version(sdk_root, group_id, module, version=version)
+                    _, current_version = set_or_increase_version(
+                        sdk_root, group_id, module, version=version, preview=generate_beta_sdk
+                    )
                     tsp_cmd.append("--emitter-options")
-                    tsp_cmd.append(f'package-version={current_version}')
+                    emitter_options = f"package-version={current_version}"
+                    # currently for self-serve, may also need it in regular generation
+                    if api_version:
+                        emitter_options += f";api-version={api_version}"
+                    tsp_cmd.append(emitter_options)
                     # regenerate
                     check_call(tsp_cmd, sdk_root)
                 succeeded = True

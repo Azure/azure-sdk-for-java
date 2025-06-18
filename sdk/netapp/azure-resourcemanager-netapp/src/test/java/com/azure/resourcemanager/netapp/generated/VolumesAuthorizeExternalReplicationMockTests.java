@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class VolumesAuthorizeExternalReplicationMockTests {
     @Test
     public void testAuthorizeExternalReplication() throws Exception {
-        String responseStr = "{\"svmPeeringCommand\":\"pqhe\"}";
+        String responseStr = "{\"svmPeeringCommand\":\"n\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,9 @@ public final class VolumesAuthorizeExternalReplicationMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SvmPeerCommandResponse response = manager.volumes()
-            .authorizeExternalReplication("e", "pqxbkwvzgnzvdf", "zdix", "mqpnoda", com.azure.core.util.Context.NONE);
+            .authorizeExternalReplication("iofrzgbzjedmstk", "nlvxbcuii", "nktwfansnvpdibmi", "ostbzbkiwb",
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pqhe", response.svmPeeringCommand());
+        Assertions.assertEquals("n", response.svmPeeringCommand());
     }
 }

@@ -13,7 +13,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.HyperVRepli
 public final class ReplicationProtectedItemsCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationProtectedItems_Create.json
      */
     /**
@@ -25,7 +25,7 @@ public final class ReplicationProtectedItemsCreateSamples {
         enablesProtection(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager.replicationProtectedItems()
             .define("f8491e4f-817a-40dd-a90c-af773978c75b")
-            .withExistingReplicationProtectionContainer("vault1", "resourceGroupPS1", "cloud1",
+            .withExistingReplicationProtectionContainer("resourceGroupPS1", "vault1", "cloud1",
                 "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179")
             .withProperties(new EnableProtectionInputProperties().withPolicyId(
                 "/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationPolicies/protectionprofile1")

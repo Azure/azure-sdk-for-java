@@ -4,7 +4,9 @@
 package io.clientcore.annotation.processor.models;
 
 import io.clientcore.annotation.processor.mocks.MockDeclaredType;
+import io.clientcore.annotation.processor.mocks.MockPathParam;
 import io.clientcore.annotation.processor.mocks.MockTypeMirror;
+import io.clientcore.core.http.annotations.PathParam;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
 import org.junit.jupiter.api.Test;
 
@@ -18,6 +20,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -95,6 +98,22 @@ public class TemplateInputTest {
             = Collections.singletonList(new MockUnexpectedResponseExceptionDetail());
         templateInput.setUnexpectedResponseExceptionDetails(details);
         assertEquals(details, templateInput.getUnexpectedResponseExceptionDetails());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenPathParamValueIsNull() {
+        String paramName = "testParam";
+        PathParam pathParam = new MockPathParam(null, false); // Mock with null value
+        HttpRequestContext method = new HttpRequestContext();
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            if (pathParam.value() == null) {
+                throw new IllegalArgumentException("Path parameter '" + paramName + "' must not be null.");
+            }
+            method.addSubstitution(new Substitution(pathParam.value(), paramName, pathParam.encoded()));
+        });
+
+        assertEquals("Path parameter 'testParam' must not be null.", exception.getMessage());
     }
 
     private static final class MockUnexpectedResponseExceptionDetail implements UnexpectedResponseExceptionDetail {

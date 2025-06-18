@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.elasticsan.models.DeleteRetentionPolicy;
 import com.azure.resourcemanager.elasticsan.models.EncryptionProperties;
 import com.azure.resourcemanager.elasticsan.models.EncryptionType;
 import com.azure.resourcemanager.elasticsan.models.Identity;
@@ -260,6 +261,31 @@ public final class VolumeGroupInner extends ProxyResource {
             this.innerProperties = new VolumeGroupProperties();
         }
         this.innerProperties().withEnforceDataIntegrityCheckForIscsi(enforceDataIntegrityCheckForIscsi);
+        return this;
+    }
+
+    /**
+     * Get the deleteRetentionPolicy property: The retention policy for the soft deleted volume group and its associated
+     * resources.
+     * 
+     * @return the deleteRetentionPolicy value.
+     */
+    public DeleteRetentionPolicy deleteRetentionPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().deleteRetentionPolicy();
+    }
+
+    /**
+     * Set the deleteRetentionPolicy property: The retention policy for the soft deleted volume group and its associated
+     * resources.
+     * 
+     * @param deleteRetentionPolicy the deleteRetentionPolicy value to set.
+     * @return the VolumeGroupInner object itself.
+     */
+    public VolumeGroupInner withDeleteRetentionPolicy(DeleteRetentionPolicy deleteRetentionPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeGroupProperties();
+        }
+        this.innerProperties().withDeleteRetentionPolicy(deleteRetentionPolicy);
         return this;
     }
 

@@ -5,6 +5,8 @@
 package com.azure.communication.rooms.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,35 +23,40 @@ public final class RoomModel implements JsonSerializable<RoomModel> {
     /*
      * Unique identifier of a room. This id is server generated.
      */
+    @Generated
     private String id;
 
     /*
      * The timestamp when the room was created at the server. The timestamp is in RFC3339 format:
      * `yyyy-MM-ddTHH:mm:ssZ`.
      */
+    @Generated
     private OffsetDateTime createdAt;
 
     /*
-     * The timestamp from when the room is open for joining. The timestamp is in RFC3339 format:
-     * `yyyy-MM-ddTHH:mm:ssZ`.
+     * The timestamp from when the room is open for joining. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
+    @Generated
     private OffsetDateTime validFrom;
 
     /*
      * The timestamp from when the room can no longer be joined. The timestamp is in RFC3339 format:
      * `yyyy-MM-ddTHH:mm:ssZ`.
      */
+    @Generated
     private OffsetDateTime validUntil;
 
     /*
      * Set this flag to true if, at the time of the call, dial out to a PSTN number is enabled in a particular room. By
      * default, this flag is set to false.
      */
+    @Generated
     private boolean pstnDialOutEnabled;
 
     /**
      * Creates an instance of RoomModel class.
      */
+    @Generated
     public RoomModel() {
     }
 
@@ -58,6 +65,7 @@ public final class RoomModel implements JsonSerializable<RoomModel> {
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -68,6 +76,7 @@ public final class RoomModel implements JsonSerializable<RoomModel> {
      * @param id the id value to set.
      * @return the RoomModel object itself.
      */
+    @Generated
     public RoomModel setId(String id) {
         this.id = id;
         return this;
@@ -79,6 +88,7 @@ public final class RoomModel implements JsonSerializable<RoomModel> {
      * 
      * @return the createdAt value.
      */
+    @Generated
     public OffsetDateTime getCreatedAt() {
         return this.createdAt;
     }
@@ -90,6 +100,7 @@ public final class RoomModel implements JsonSerializable<RoomModel> {
      * @param createdAt the createdAt value to set.
      * @return the RoomModel object itself.
      */
+    @Generated
     public RoomModel setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
         return this;
@@ -101,6 +112,7 @@ public final class RoomModel implements JsonSerializable<RoomModel> {
      * 
      * @return the validFrom value.
      */
+    @Generated
     public OffsetDateTime getValidFrom() {
         return this.validFrom;
     }
@@ -112,6 +124,7 @@ public final class RoomModel implements JsonSerializable<RoomModel> {
      * @param validFrom the validFrom value to set.
      * @return the RoomModel object itself.
      */
+    @Generated
     public RoomModel setValidFrom(OffsetDateTime validFrom) {
         this.validFrom = validFrom;
         return this;
@@ -123,6 +136,7 @@ public final class RoomModel implements JsonSerializable<RoomModel> {
      * 
      * @return the validUntil value.
      */
+    @Generated
     public OffsetDateTime getValidUntil() {
         return this.validUntil;
     }
@@ -134,33 +148,40 @@ public final class RoomModel implements JsonSerializable<RoomModel> {
      * @param validUntil the validUntil value to set.
      * @return the RoomModel object itself.
      */
+    @Generated
     public RoomModel setValidUntil(OffsetDateTime validUntil) {
         this.validUntil = validUntil;
         return this;
     }
 
     /**
-     * Get the pstnDialOutEnabled property: Set this flag to true if, at the time of the call, dial out to a PSTN
-     * number is enabled in a particular room. By default, this flag is set to false.
+     * Get the pstnDialOutEnabled property: Set this flag to true if, at the time of the call, dial out to a PSTN number
+     * is enabled in a particular room. By default, this flag is set to false.
      * 
      * @return the pstnDialOutEnabled value.
      */
+    @Generated
     public boolean isPstnDialOutEnabled() {
         return this.pstnDialOutEnabled;
     }
 
     /**
-     * Set the pstnDialOutEnabled property: Set this flag to true if, at the time of the call, dial out to a PSTN
-     * number is enabled in a particular room. By default, this flag is set to false.
+     * Set the pstnDialOutEnabled property: Set this flag to true if, at the time of the call, dial out to a PSTN number
+     * is enabled in a particular room. By default, this flag is set to false.
      * 
      * @param pstnDialOutEnabled the pstnDialOutEnabled value to set.
      * @return the RoomModel object itself.
      */
+    @Generated
     public RoomModel setPstnDialOutEnabled(boolean pstnDialOutEnabled) {
         this.pstnDialOutEnabled = pstnDialOutEnabled;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -184,6 +205,7 @@ public final class RoomModel implements JsonSerializable<RoomModel> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RoomModel.
      */
+    @Generated
     public static RoomModel fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RoomModel deserializedRoomModel = new RoomModel();
@@ -194,14 +216,14 @@ public final class RoomModel implements JsonSerializable<RoomModel> {
                 if ("id".equals(fieldName)) {
                     deserializedRoomModel.id = reader.getString();
                 } else if ("createdAt".equals(fieldName)) {
-                    deserializedRoomModel.createdAt
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedRoomModel.createdAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("validFrom".equals(fieldName)) {
-                    deserializedRoomModel.validFrom
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedRoomModel.validFrom = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("validUntil".equals(fieldName)) {
-                    deserializedRoomModel.validUntil
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedRoomModel.validUntil = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("pstnDialOutEnabled".equals(fieldName)) {
                     deserializedRoomModel.pstnDialOutEnabled = reader.getBoolean();
                 } else {

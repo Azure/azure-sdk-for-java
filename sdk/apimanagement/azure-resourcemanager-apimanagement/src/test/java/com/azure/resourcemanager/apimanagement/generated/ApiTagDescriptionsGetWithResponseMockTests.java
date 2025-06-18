@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.TagDescriptionContract;
@@ -21,23 +21,24 @@ public final class ApiTagDescriptionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"tagId\":\"ktxagfujdb\",\"displayName\":\"nyexb\",\"description\":\"gxqqqasfeooqftp\",\"externalDocsUrl\":\"vta\",\"externalDocsDescription\":\"hklqlii\"},\"id\":\"eanuwg\",\"name\":\"nofgijydgsebju\",\"type\":\"mtevaebzm\"}";
+            = "{\"properties\":{\"tagId\":\"wxizkstxneykei\",\"displayName\":\"utcbvriuvnfazx\",\"description\":\"sayyaeiivjqkqtjw\",\"externalDocsUrl\":\"ew\",\"externalDocsDescription\":\"oqfxqetxtdqius\"},\"id\":\"guz\",\"name\":\"jvg\",\"type\":\"ijzqjhljsa\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TagDescriptionContract response = manager.apiTagDescriptions()
-            .getWithResponse("rtczwjcujyznvyrj", "djlgkuirxxeuwii", "rcvnfg", "dviw", com.azure.core.util.Context.NONE)
+            .getWithResponse("rkvorlfqmljewyn", "fvvcwvurkmjufa", "vlnpbsotmynklnm", "znmtvrk",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ktxagfujdb", response.tagId());
-        Assertions.assertEquals("nyexb", response.displayName());
-        Assertions.assertEquals("gxqqqasfeooqftp", response.description());
-        Assertions.assertEquals("vta", response.externalDocsUrl());
-        Assertions.assertEquals("hklqlii", response.externalDocsDescription());
+        Assertions.assertEquals("wxizkstxneykei", response.tagId());
+        Assertions.assertEquals("utcbvriuvnfazx", response.displayName());
+        Assertions.assertEquals("sayyaeiivjqkqtjw", response.description());
+        Assertions.assertEquals("ew", response.externalDocsUrl());
+        Assertions.assertEquals("oqfxqetxtdqius", response.externalDocsDescription());
     }
 }

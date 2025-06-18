@@ -23,7 +23,7 @@ import java.util.Arrays;
 public final class ApiCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiUsingSwaggerImport.json
      */
     /**
@@ -44,7 +44,7 @@ public final class ApiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiRevisionFromExistingApi.json
      */
     /**
@@ -58,7 +58,7 @@ public final class ApiCreateOrUpdateSamples {
             .define("echo-api;rev=3")
             .withExistingService("rg1", "apimService1")
             .withSourceApiId(
-                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echo-api")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echo-api")
             .withServiceUrl("http://echoapi.cloudapp.net/apiv3")
             .withPath("echo")
             .withApiRevisionDescription("Creating a Revision of an existing API")
@@ -67,7 +67,34 @@ public final class ApiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateGrpcApi.json
+     */
+    /**
+     * Sample code: ApiManagementCreateGrpcApi.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateGrpcApi(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apis()
+            .define("tempgroup")
+            .withExistingService("rg1", "apimService1")
+            .withValue(
+                "https://raw.githubusercontent.com/kedacore/keda/main/pkg/scalers/externalscaler/externalscaler.proto")
+            .withFormat(ContentFormat.GRPC_LINK)
+            .withDisplayName("apiname1463")
+            .withServiceUrl("https://your-api-hostname/samples")
+            .withPath("grpc-api")
+            .withProtocols(Arrays.asList(Protocol.HTTPS))
+            .withDescription("apidescription5200")
+            .withApiType(ApiType.GRPC)
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiClone.json
      */
     /**
@@ -81,7 +108,7 @@ public final class ApiCreateOrUpdateSamples {
             .define("echo-api2")
             .withExistingService("rg1", "apimService1")
             .withSourceApiId(
-                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/58a4aeac497000007d040001")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/58a4aeac497000007d040001")
             .withDisplayName("Echo API2")
             .withServiceUrl("http://echoapi.cloudapp.net/api")
             .withPath("echo2")
@@ -94,7 +121,33 @@ public final class ApiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateODataApi.json
+     */
+    /**
+     * Sample code: ApiManagementCreateODataApi.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateODataApi(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apis()
+            .define("tempgroup")
+            .withExistingService("rg1", "apimService1")
+            .withValue("https://services.odata.org/TripPinWebApiService/$metadata")
+            .withFormat(ContentFormat.ODATA_LINK)
+            .withDisplayName("apiname1463")
+            .withServiceUrl("https://services.odata.org/TripPinWebApiService")
+            .withPath("odata-api")
+            .withProtocols(Arrays.asList(Protocol.HTTP, Protocol.HTTPS))
+            .withDescription("apidescription5200")
+            .withApiType(ApiType.ODATA)
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiUsingOai3Import.json
      */
     /**
@@ -115,7 +168,7 @@ public final class ApiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiWithOpenIdConnect.json
      */
     /**
@@ -145,7 +198,7 @@ public final class ApiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateWebsocketApi.json
      */
     /**
@@ -169,7 +222,7 @@ public final class ApiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateGraphQLApi.json
      */
     /**
@@ -193,7 +246,7 @@ public final class ApiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateSoapPassThroughApiUsingWsdlImport.json
      */
     /**
@@ -217,7 +270,7 @@ public final class ApiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiUsingOai3ImportWithTranslateRequiredQueryParametersConduct.json
      */
     /**
@@ -239,7 +292,7 @@ public final class ApiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiWithMultipleAuthServers.json
      */
     /**
@@ -270,7 +323,7 @@ public final class ApiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiUsingImportOverrideServiceUrl.json
      */
     /**
@@ -292,7 +345,7 @@ public final class ApiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiUsingWadlImport.json
      */
     /**
@@ -314,7 +367,7 @@ public final class ApiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiNewVersionUsingExistingApi.json
      */
     /**
@@ -328,7 +381,7 @@ public final class ApiCreateOrUpdateSamples {
             .define("echoapiv3")
             .withExistingService("rg1", "apimService1")
             .withSourceApiId(
-                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echoPath")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echoPath")
             .withDisplayName("Echo API2")
             .withServiceUrl("http://echoapi.cloudapp.net/api")
             .withPath("echo2")
@@ -337,14 +390,14 @@ public final class ApiCreateOrUpdateSamples {
             .withApiVersion("v4")
             .withIsCurrent(true)
             .withApiVersionSetId(
-                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apiVersionSets/aa9c59e6-c0cd-4258-9356-9ca7d2f0b458")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apiVersionSets/aa9c59e6-c0cd-4258-9356-9ca7d2f0b458")
             .withSubscriptionRequired(true)
             .create();
     }
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApi.json
      */
     /**
@@ -371,7 +424,7 @@ public final class ApiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateSoapToRestApiUsingWsdlImport.json
      */
     /**
@@ -394,7 +447,7 @@ public final class ApiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiWithMultipleOpenIdConnectProviders.json
      */
     /**

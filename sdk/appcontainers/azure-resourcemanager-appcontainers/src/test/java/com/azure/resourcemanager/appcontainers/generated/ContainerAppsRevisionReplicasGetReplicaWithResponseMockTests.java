@@ -6,8 +6,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.Replica;
@@ -21,28 +21,29 @@ public final class ContainerAppsRevisionReplicasGetReplicaWithResponseMockTests 
     @Test
     public void testGetReplicaWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"createdTime\":\"2021-02-18T03:30:55Z\",\"runningState\":\"NotRunning\",\"runningStateDetails\":\"nbg\",\"containers\":[{\"name\":\"dorgmynltw\",\"containerId\":\"ftmfoeajogsy\",\"ready\":true,\"started\":false,\"restartCount\":1917204796,\"runningState\":\"Running\",\"runningStateDetails\":\"vlkpzwb\",\"logStreamEndpoint\":\"recchdidrmu\",\"execEndpoint\":\"ahmjedbiu\",\"debugEndpoint\":\"khhwmj\"}],\"initContainers\":[{\"name\":\"eunxcqrrihufoi\",\"containerId\":\"piybxvgnzuzpbg\",\"ready\":true,\"started\":false,\"restartCount\":1335795506,\"runningState\":\"Waiting\",\"runningStateDetails\":\"kunhdimjuk\",\"logStreamEndpoint\":\"r\",\"execEndpoint\":\"a\",\"debugEndpoint\":\"pucdocf\"},{\"name\":\"lwgofm\",\"containerId\":\"wrjlvzkl\",\"ready\":true,\"started\":true,\"restartCount\":104707977,\"runningState\":\"Running\",\"runningStateDetails\":\"akvlbishj\",\"logStreamEndpoint\":\"zaptuosk\",\"execEndpoint\":\"izjixwfgcd\",\"debugEndpoint\":\"kkcxwnujvqynvav\"}]},\"id\":\"mdmuqoh\",\"name\":\"ihraxqudd\",\"type\":\"wjc\"}";
+            = "{\"properties\":{\"createdTime\":\"2021-02-06T05:22:05Z\",\"runningState\":\"NotRunning\",\"runningStateDetails\":\"g\",\"containers\":[{\"name\":\"ejjjkxybwfdb\",\"containerId\":\"bztensvkzykjtj\",\"ready\":true,\"started\":true,\"restartCount\":443205456,\"runningState\":\"Waiting\",\"runningStateDetails\":\"dpkupnqrmgjf\",\"logStreamEndpoint\":\"kuwxeoiojfizfavk\",\"execEndpoint\":\"wfbcyaykmmfzsbf\"},{\"name\":\"rzx\",\"containerId\":\"ewsrsxkrplbjaze\",\"ready\":false,\"started\":true,\"restartCount\":999732785,\"runningState\":\"Running\",\"runningStateDetails\":\"uhbrnnhjxsq\",\"logStreamEndpoint\":\"hqkb\",\"execEndpoint\":\"etpozycyqiq\"},{\"name\":\"gfsetzlexbsfled\",\"containerId\":\"ojpziuwfb\",\"ready\":true,\"started\":false,\"restartCount\":564052271,\"runningState\":\"Running\",\"runningStateDetails\":\"cljse\",\"logStreamEndpoint\":\"kpbafvafhl\",\"execEndpoint\":\"lc\"}],\"initContainers\":[{\"name\":\"xrhyzdfwrsofplt\",\"containerId\":\"mairrh\",\"ready\":false,\"started\":false,\"restartCount\":2131656049,\"runningState\":\"Running\",\"runningStateDetails\":\"qigtuujwouhdaws\",\"logStreamEndpoint\":\"rb\",\"execEndpoint\":\"xsjybvitvqk\"},{\"name\":\"az\",\"containerId\":\"mtggmu\",\"ready\":false,\"started\":true,\"restartCount\":1037948650,\"runningState\":\"Terminated\",\"runningStateDetails\":\"exlvxnoakiz\",\"logStreamEndpoint\":\"aikn\",\"execEndpoint\":\"lnuwiguy\"}]},\"id\":\"ykwphvxzcwxhmpe\",\"name\":\"tl\",\"type\":\"exaonwivkcq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Replica response = manager.containerAppsRevisionReplicas()
-            .getReplicaWithResponse("hudsmusuaa", "jakx", "jnfczmnniixy", "vqban", com.azure.core.util.Context.NONE)
+            .getReplicaWithResponse("ljnhvlqj", "ek", "eeksnbksdqhjvyk", "xeslkhhustcpoqm",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("dorgmynltw", response.containers().get(0).name());
-        Assertions.assertEquals("ftmfoeajogsy", response.containers().get(0).containerId());
+        Assertions.assertEquals("ejjjkxybwfdb", response.containers().get(0).name());
+        Assertions.assertEquals("bztensvkzykjtj", response.containers().get(0).containerId());
         Assertions.assertEquals(true, response.containers().get(0).ready());
-        Assertions.assertEquals(false, response.containers().get(0).started());
-        Assertions.assertEquals(1917204796, response.containers().get(0).restartCount());
-        Assertions.assertEquals("eunxcqrrihufoi", response.initContainers().get(0).name());
-        Assertions.assertEquals("piybxvgnzuzpbg", response.initContainers().get(0).containerId());
-        Assertions.assertEquals(true, response.initContainers().get(0).ready());
+        Assertions.assertEquals(true, response.containers().get(0).started());
+        Assertions.assertEquals(443205456, response.containers().get(0).restartCount());
+        Assertions.assertEquals("xrhyzdfwrsofplt", response.initContainers().get(0).name());
+        Assertions.assertEquals("mairrh", response.initContainers().get(0).containerId());
+        Assertions.assertEquals(false, response.initContainers().get(0).ready());
         Assertions.assertEquals(false, response.initContainers().get(0).started());
-        Assertions.assertEquals(1335795506, response.initContainers().get(0).restartCount());
+        Assertions.assertEquals(2131656049, response.initContainers().get(0).restartCount());
     }
 }

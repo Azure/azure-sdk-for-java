@@ -36,7 +36,7 @@ private abstract class CosmosWriterBase(
   private val cacheItemReleasedCount = new AtomicInteger(0)
 
   private val clientCacheItem = CosmosClientCache(
-    CosmosClientConfiguration(userConfig, cosmosReadConfig.forceEventualConsistency, sparkEnvironmentInfo),
+    CosmosClientConfiguration(userConfig, cosmosReadConfig.readConsistencyStrategy, sparkEnvironmentInfo),
     Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
     s"CosmosWriter($partitionId, $taskId, $epochId)"
   )

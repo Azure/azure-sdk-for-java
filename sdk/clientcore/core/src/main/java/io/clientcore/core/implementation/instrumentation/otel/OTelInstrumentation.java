@@ -3,11 +3,11 @@
 
 package io.clientcore.core.implementation.instrumentation.otel;
 
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.implementation.ReflectiveInvoker;
-import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
 import io.clientcore.core.implementation.instrumentation.NoopAttributes;
 import io.clientcore.core.implementation.instrumentation.NoopMeter;
+import io.clientcore.core.implementation.instrumentation.SdkInstrumentationOptionsAccessHelper;
 import io.clientcore.core.implementation.instrumentation.otel.metrics.OTelMeter;
 import io.clientcore.core.implementation.instrumentation.otel.tracing.OTelSpan;
 import io.clientcore.core.implementation.instrumentation.otel.tracing.OTelSpanContext;
@@ -16,7 +16,7 @@ import io.clientcore.core.implementation.instrumentation.otel.tracing.OTelTracer
 import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.instrumentation.InstrumentationAttributes;
 import io.clientcore.core.instrumentation.InstrumentationContext;
-import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
+import io.clientcore.core.instrumentation.SdkInstrumentationOptions;
 import io.clientcore.core.instrumentation.InstrumentationOptions;
 import io.clientcore.core.instrumentation.metrics.DoubleHistogram;
 import io.clientcore.core.instrumentation.metrics.Meter;
@@ -112,31 +112,30 @@ public class OTelInstrumentation implements Instrumentation {
      * Creates a new instance of {@link OTelInstrumentation}.
      *
      * @param applicationOptions the application options
-     * @param libraryOptions the library options
+     * @param sdkOptions the sdk instrumentation options
      * @param host the service host
      * @param port the service port
      */
-    public OTelInstrumentation(InstrumentationOptions applicationOptions, LibraryInstrumentationOptions libraryOptions,
+    public OTelInstrumentation(InstrumentationOptions applicationOptions, SdkInstrumentationOptions sdkOptions,
         String host, int port) {
         Object explicitOTel = applicationOptions == null ? null : applicationOptions.getTelemetryProvider();
         if (explicitOTel != null && !OTEL_CLASS.isInstance(explicitOTel)) {
-            throw LOGGER.atError()
-                .addKeyValue("expectedProvider", OTEL_CLASS.getName())
-                .addKeyValue("actualProvider", explicitOTel.getClass().getName())
-                .log("Unexpected telemetry provider type.",
-                    new IllegalArgumentException("Telemetry provider is not an instance of " + OTEL_CLASS.getName()));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("providerType", explicitOTel.getClass().getCanonicalName())
+                .addKeyValue("expectedType", OTEL_CLASS.getCanonicalName())
+                .log("Unexpected telemetry provider type.", IllegalArgumentException::new);
         }
 
         Object otelInstance = explicitOTel != null ? explicitOTel : GET_GLOBAL_OTEL_INVOKER.invoke();
         this.isTracingEnabled = applicationOptions == null || applicationOptions.isTracingEnabled();
         this.isMetricsEnabled = applicationOptions == null || applicationOptions.isMetricsEnabled();
-        this.allowNestedSpans = libraryOptions != null
-            && LibraryInstrumentationOptionsAccessHelper.isSpanSuppressionDisabled(libraryOptions);
+        this.allowNestedSpans
+            = sdkOptions != null && SdkInstrumentationOptionsAccessHelper.isSpanSuppressionDisabled(sdkOptions);
 
-        this.tracer = createTracer(isTracingEnabled, libraryOptions, otelInstance);
-        this.meter = createMeter(isMetricsEnabled, libraryOptions, otelInstance);
+        this.tracer = createTracer(isTracingEnabled, sdkOptions, otelInstance);
+        this.meter = createMeter(isMetricsEnabled, sdkOptions, otelInstance);
         this.callDurationMetric
-            = createOperationDurationHistogram(libraryOptions == null ? null : libraryOptions.getLibraryName(), meter);
+            = createOperationDurationHistogram(sdkOptions == null ? null : sdkOptions.getSdkName(), meter);
         this.host = host;
         this.port = port;
     }
@@ -154,26 +153,26 @@ public class OTelInstrumentation implements Instrumentation {
         return meter;
     }
 
-    private static Tracer createTracer(boolean isTracingEnabled, LibraryInstrumentationOptions libraryOptions,
+    private static Tracer createTracer(boolean isTracingEnabled, SdkInstrumentationOptions sdkOptions,
         Object otelInstance) {
         if (isTracingEnabled && OTelInitializer.isInitialized()) {
             Object otelTracerProvider = GET_TRACER_PROVIDER_INVOKER.invoke(otelInstance);
 
             if (otelTracerProvider != null && otelTracerProvider != NOOP_PROVIDER) {
-                return new OTelTracer(otelTracerProvider, libraryOptions);
+                return new OTelTracer(otelTracerProvider, sdkOptions);
             }
         }
 
         return OTelTracer.NOOP;
     }
 
-    private static Meter createMeter(boolean isMetricsEnabled, LibraryInstrumentationOptions libraryOptions,
+    private static Meter createMeter(boolean isMetricsEnabled, SdkInstrumentationOptions sdkOptions,
         Object otelInstance) {
         if (isMetricsEnabled && OTelInitializer.isInitialized()) {
             Object otelMeterProvider = GET_METER_PROVIDER_INVOKER.invoke(otelInstance);
 
             if (otelMeterProvider != null && otelMeterProvider != NOOP_PROVIDER) {
-                return new OTelMeter(otelMeterProvider, libraryOptions);
+                return new OTelMeter(otelMeterProvider, sdkOptions);
             }
         }
 
@@ -219,33 +218,32 @@ public class OTelInstrumentation implements Instrumentation {
     }
 
     @Override
-    public <TResponse> TResponse instrumentWithResponse(String operationName, RequestOptions requestOptions,
-        Function<RequestOptions, TResponse> operation) {
+    public <TResponse> TResponse instrumentWithResponse(String operationName, RequestContext requestContext,
+        Function<RequestContext, TResponse> operation) {
         Objects.requireNonNull(operationName, "'operationName' cannot be null");
         Objects.requireNonNull(operation, "'operation' cannot be null");
 
-        if (!shouldInstrument(SpanKind.CLIENT,
-            requestOptions == null ? null : requestOptions.getInstrumentationContext())) {
-            return operation.apply(requestOptions);
-        }
+        requestContext = requestContext == null ? RequestContext.none() : requestContext;
 
-        if (requestOptions == null || requestOptions == RequestOptions.none()) {
-            requestOptions = new RequestOptions();
+        InstrumentationContext context = requestContext.getInstrumentationContext();
+        if (!shouldInstrument(SpanKind.CLIENT, context)) {
+            return operation.apply(requestContext);
         }
 
         long startTimeNs = callDurationMetric.isEnabled() ? System.nanoTime() : 0;
         InstrumentationAttributes commonAttributes = getOrCreateCommonAttributes(operationName);
-        Span span = tracer.spanBuilder(operationName, SpanKind.CLIENT, requestOptions.getInstrumentationContext())
+        Span span = tracer.spanBuilder(operationName, SpanKind.CLIENT, context)
             .setAllAttributes(commonAttributes)
             .startSpan();
 
         TracingScope scope = span.makeCurrent();
         RuntimeException error = null;
+
+        RequestContext childContext
+            = requestContext.toBuilder().setInstrumentationContext(span.getInstrumentationContext()).build();
+
         try {
-            if (span.getInstrumentationContext().isValid()) {
-                requestOptions.setInstrumentationContext(span.getInstrumentationContext());
-            }
-            return operation.apply(requestOptions);
+            return operation.apply(childContext);
         } catch (RuntimeException t) {
             error = t;
             throw t;
@@ -255,7 +253,7 @@ public class OTelInstrumentation implements Instrumentation {
                     ? commonAttributes
                     : commonAttributes.put(ERROR_TYPE_KEY, error.getClass().getCanonicalName());
                 callDurationMetric.record((System.nanoTime() - startTimeNs) / 1e9, attributes,
-                    requestOptions.getInstrumentationContext());
+                    childContext.getInstrumentationContext());
             }
             span.end(error);
             scope.close();

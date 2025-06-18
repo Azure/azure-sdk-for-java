@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicyAssignmentsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
      * listPolicyAssignmentsForResourceGroup.json
      */
     /**
@@ -23,6 +23,7 @@ public final class PolicyAssignmentsListByResourceGroupSamples {
             .manager()
             .policyClient()
             .getPolicyAssignments()
-            .listByResourceGroup("TestResourceGroup", "atScope()", null, com.azure.core.util.Context.NONE);
+            .listByResourceGroup("TestResourceGroup", "atScope()",
+                "LatestDefinitionVersion, EffectiveDefinitionVersion", null, com.azure.core.util.Context.NONE);
     }
 }

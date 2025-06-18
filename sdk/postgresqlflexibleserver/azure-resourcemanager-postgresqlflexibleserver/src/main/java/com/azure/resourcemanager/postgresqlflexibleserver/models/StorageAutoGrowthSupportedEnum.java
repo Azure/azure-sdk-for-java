@@ -9,7 +9,8 @@ import java.util.Collection;
 
 /**
  * A value indicating whether storage auto-grow is supported in this region. "Enabled" means storage auto-grow is
- * supported. "Disabled" stands for storage auto-grow is not supported.
+ * supported. "Disabled" stands for storage auto-grow is not supported. Will be deprecated in future, please look to
+ * Supported Features for "StorageAutoGrowth".
  */
 public final class StorageAutoGrowthSupportedEnum extends ExpandableStringEnum<StorageAutoGrowthSupportedEnum> {
     /**

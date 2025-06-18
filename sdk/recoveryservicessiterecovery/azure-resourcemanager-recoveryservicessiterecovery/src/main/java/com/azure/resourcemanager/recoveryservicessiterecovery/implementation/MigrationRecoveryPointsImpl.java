@@ -27,28 +27,28 @@ public final class MigrationRecoveryPointsImpl implements MigrationRecoveryPoint
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<MigrationRecoveryPoint> listByReplicationMigrationItems(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName) {
+    public PagedIterable<MigrationRecoveryPoint> listByReplicationMigrationItems(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName) {
         PagedIterable<MigrationRecoveryPointInner> inner = this.serviceClient()
-            .listByReplicationMigrationItems(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .listByReplicationMigrationItems(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 migrationItemName);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new MigrationRecoveryPointImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<MigrationRecoveryPoint> listByReplicationMigrationItems(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
+    public PagedIterable<MigrationRecoveryPoint> listByReplicationMigrationItems(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         Context context) {
         PagedIterable<MigrationRecoveryPointInner> inner = this.serviceClient()
-            .listByReplicationMigrationItems(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .listByReplicationMigrationItems(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 migrationItemName, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new MigrationRecoveryPointImpl(inner1, this.manager()));
     }
 
-    public Response<MigrationRecoveryPoint> getWithResponse(String resourceName, String resourceGroupName,
+    public Response<MigrationRecoveryPoint> getWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName, String migrationRecoveryPointName,
         Context context) {
         Response<MigrationRecoveryPointInner> inner = this.serviceClient()
-            .getWithResponse(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+            .getWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
                 migrationRecoveryPointName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
@@ -58,10 +58,10 @@ public final class MigrationRecoveryPointsImpl implements MigrationRecoveryPoint
         }
     }
 
-    public MigrationRecoveryPoint get(String resourceName, String resourceGroupName, String fabricName,
+    public MigrationRecoveryPoint get(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, String migrationRecoveryPointName) {
         MigrationRecoveryPointInner inner = this.serviceClient()
-            .get(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+            .get(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
                 migrationRecoveryPointName);
         if (inner != null) {
             return new MigrationRecoveryPointImpl(inner, this.manager());

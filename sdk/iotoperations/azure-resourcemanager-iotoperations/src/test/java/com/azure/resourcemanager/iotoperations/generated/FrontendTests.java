@@ -12,16 +12,16 @@ public final class FrontendTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Frontend model
-            = BinaryData.fromString("{\"replicas\":1140257037,\"workers\":1873646059}").toObject(Frontend.class);
-        Assertions.assertEquals(1140257037, model.replicas());
-        Assertions.assertEquals(1873646059, model.workers());
+            = BinaryData.fromString("{\"replicas\":638643145,\"workers\":693587344}").toObject(Frontend.class);
+        Assertions.assertEquals(638643145, model.replicas());
+        Assertions.assertEquals(693587344, model.workers());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Frontend model = new Frontend().withReplicas(1140257037).withWorkers(1873646059);
+        Frontend model = new Frontend().withReplicas(638643145).withWorkers(693587344);
         model = BinaryData.fromObject(model).toObject(Frontend.class);
-        Assertions.assertEquals(1140257037, model.replicas());
-        Assertions.assertEquals(1873646059, model.workers());
+        Assertions.assertEquals(638643145, model.replicas());
+        Assertions.assertEquals(693587344, model.workers());
     }
 }

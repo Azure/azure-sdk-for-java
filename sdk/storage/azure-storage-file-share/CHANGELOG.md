@@ -1,5 +1,22 @@
 # Release History
 
+## 12.27.0-beta.2 (Unreleased)
+
+### Features Added
+- Added support for bearer token challenges.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.27.0-beta.1 (2025-05-06)
+
+### Features Added
+- Added the `ShareFileClient.CreateSymbolicLink()`, `.CreateSymbolicLinkAsync()`, `.GetSymbolicLink()`, and `.GetSymbolicLinkAsync()` APIs.
+- Added support for service version 2025-07-05.
+
 ## 12.26.0 (2025-03-11)
 
 ### Features Added

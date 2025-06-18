@@ -67,9 +67,9 @@ public final class TargetComputeSizesClientImpl implements TargetComputeSizesCli
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TargetComputeSizeCollection>> listByReplicationProtectedItems(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName,
             @PathParam("protectionContainerName") String protectionContainerName,
             @PathParam("replicatedProtectedItemName") String replicatedProtectedItemName,
             @HeaderParam("Accept") String accept, Context context);
@@ -88,8 +88,8 @@ public final class TargetComputeSizesClientImpl implements TargetComputeSizesCli
      * 
      * Lists the available target compute sizes for a replication protected item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName protection container name.
      * @param replicatedProtectedItemName Replication protected item name.
@@ -100,18 +100,18 @@ public final class TargetComputeSizesClientImpl implements TargetComputeSizesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TargetComputeSizeInner>> listByReplicationProtectedItemsSinglePageAsync(
-        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -131,7 +131,7 @@ public final class TargetComputeSizesClientImpl implements TargetComputeSizesCli
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByReplicationProtectedItems(this.client.getEndpoint(),
-                this.client.getApiVersion(), resourceName, resourceGroupName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), resourceGroupName, resourceName, this.client.getSubscriptionId(),
                 fabricName, protectionContainerName, replicatedProtectedItemName, accept, context))
             .<PagedResponse<TargetComputeSizeInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -143,8 +143,8 @@ public final class TargetComputeSizesClientImpl implements TargetComputeSizesCli
      * 
      * Lists the available target compute sizes for a replication protected item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName protection container name.
      * @param replicatedProtectedItemName Replication protected item name.
@@ -156,18 +156,18 @@ public final class TargetComputeSizesClientImpl implements TargetComputeSizesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TargetComputeSizeInner>> listByReplicationProtectedItemsSinglePageAsync(
-        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -187,8 +187,8 @@ public final class TargetComputeSizesClientImpl implements TargetComputeSizesCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByReplicationProtectedItems(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
+            .listByReplicationProtectedItems(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+                resourceName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
                 replicatedProtectedItemName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
@@ -199,8 +199,8 @@ public final class TargetComputeSizesClientImpl implements TargetComputeSizesCli
      * 
      * Lists the available target compute sizes for a replication protected item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName protection container name.
      * @param replicatedProtectedItemName Replication protected item name.
@@ -210,11 +210,10 @@ public final class TargetComputeSizesClientImpl implements TargetComputeSizesCli
      * @return target compute size collection as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<TargetComputeSizeInner> listByReplicationProtectedItemsAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName,
-        String replicatedProtectedItemName) {
+    private PagedFlux<TargetComputeSizeInner> listByReplicationProtectedItemsAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String replicatedProtectedItemName) {
         return new PagedFlux<>(
-            () -> listByReplicationProtectedItemsSinglePageAsync(resourceName, resourceGroupName, fabricName,
+            () -> listByReplicationProtectedItemsSinglePageAsync(resourceGroupName, resourceName, fabricName,
                 protectionContainerName, replicatedProtectedItemName),
             nextLink -> listByReplicationProtectedItemsNextSinglePageAsync(nextLink));
     }
@@ -224,8 +223,8 @@ public final class TargetComputeSizesClientImpl implements TargetComputeSizesCli
      * 
      * Lists the available target compute sizes for a replication protected item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName protection container name.
      * @param replicatedProtectedItemName Replication protected item name.
@@ -236,11 +235,11 @@ public final class TargetComputeSizesClientImpl implements TargetComputeSizesCli
      * @return target compute size collection as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<TargetComputeSizeInner> listByReplicationProtectedItemsAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String replicatedProtectedItemName,
+    private PagedFlux<TargetComputeSizeInner> listByReplicationProtectedItemsAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         Context context) {
         return new PagedFlux<>(
-            () -> listByReplicationProtectedItemsSinglePageAsync(resourceName, resourceGroupName, fabricName,
+            () -> listByReplicationProtectedItemsSinglePageAsync(resourceGroupName, resourceName, fabricName,
                 protectionContainerName, replicatedProtectedItemName, context),
             nextLink -> listByReplicationProtectedItemsNextSinglePageAsync(nextLink, context));
     }
@@ -250,8 +249,8 @@ public final class TargetComputeSizesClientImpl implements TargetComputeSizesCli
      * 
      * Lists the available target compute sizes for a replication protected item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName protection container name.
      * @param replicatedProtectedItemName Replication protected item name.
@@ -261,10 +260,9 @@ public final class TargetComputeSizesClientImpl implements TargetComputeSizesCli
      * @return target compute size collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TargetComputeSizeInner> listByReplicationProtectedItems(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName,
-        String replicatedProtectedItemName) {
-        return new PagedIterable<>(listByReplicationProtectedItemsAsync(resourceName, resourceGroupName, fabricName,
+    public PagedIterable<TargetComputeSizeInner> listByReplicationProtectedItems(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String replicatedProtectedItemName) {
+        return new PagedIterable<>(listByReplicationProtectedItemsAsync(resourceGroupName, resourceName, fabricName,
             protectionContainerName, replicatedProtectedItemName));
     }
 
@@ -273,8 +271,8 @@ public final class TargetComputeSizesClientImpl implements TargetComputeSizesCli
      * 
      * Lists the available target compute sizes for a replication protected item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName protection container name.
      * @param replicatedProtectedItemName Replication protected item name.
@@ -285,10 +283,10 @@ public final class TargetComputeSizesClientImpl implements TargetComputeSizesCli
      * @return target compute size collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TargetComputeSizeInner> listByReplicationProtectedItems(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String replicatedProtectedItemName,
+    public PagedIterable<TargetComputeSizeInner> listByReplicationProtectedItems(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         Context context) {
-        return new PagedIterable<>(listByReplicationProtectedItemsAsync(resourceName, resourceGroupName, fabricName,
+        return new PagedIterable<>(listByReplicationProtectedItemsAsync(resourceGroupName, resourceName, fabricName,
             protectionContainerName, replicatedProtectedItemName, context));
     }
 

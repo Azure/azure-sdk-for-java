@@ -22,7 +22,7 @@ public final class L2NetworksGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"extendedLocation\":{\"name\":\"yqgxhlus\",\"type\":\"vxisimjcea\"},\"properties\":{\"associatedResourceIds\":[\"qvlsumywzas\",\"xgo\",\"oyjfqipu\"],\"clusterId\":\"znclkfkeebgv\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"tuoqujlyegqavni\",\"hybridAksClustersAssociatedIds\":[\"qqbtny\",\"pylx\",\"bf\",\"abmvmsxbaevwjc\"],\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"tlwuhvaj\",\"l2IsolationDomainId\":\"ailfemjjzak\",\"provisioningState\":\"Provisioning\",\"virtualMachinesAssociatedIds\":[\"ullqxbdmvrscm\",\"erndbrnyeofltfnn\",\"rkadjfynnfmuiiir\",\"pfoh\"]},\"location\":\"fkx\",\"tags\":{\"ewoi\":\"brwjiutgnjizb\",\"juyrsrziuctixg\":\"mrvz\",\"uifr\":\"d\",\"pezkis\":\"vka\"},\"id\":\"qjm\",\"name\":\"g\",\"type\":\"syparybjufp\"}";
+            = "{\"etag\":\"tvlmbjwcolbmxlb\",\"extendedLocation\":{\"name\":\"w\",\"type\":\"pcpahprzrvxhmtf\"},\"properties\":{\"associatedResourceIds\":[\"nxzcm\",\"hngxnoqrxtd\"],\"clusterId\":\"njevhdlmydidw\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"wwtjfdoesxxhmwc\",\"hybridAksClustersAssociatedIds\":[\"ky\"],\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"kxhnegknj\",\"l2IsolationDomainId\":\"rbhtmeplvukaobr\",\"provisioningState\":\"Failed\",\"virtualMachinesAssociatedIds\":[\"nbagnchj\",\"g\",\"muowakywalhjy\"]},\"location\":\"cgqtag\",\"tags\":{\"ljomevt\":\"lss\",\"gjiiytssiki\":\"ycnlbvgjcodk\",\"gmqsorhcekxg\":\"bcufqbvntn\",\"sqdtiwlwxlbon\":\"lykmxcpwzvmdo\"},\"id\":\"qba\",\"name\":\"qicqchygt\",\"type\":\"xbyja\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,15 @@ public final class L2NetworksGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         L2Network response = manager.l2Networks()
-            .getByResourceGroupWithResponse("qmje", "jcx", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("utrpbr", "uyu", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("fkx", response.location());
-        Assertions.assertEquals("brwjiutgnjizb", response.tags().get("ewoi"));
-        Assertions.assertEquals("yqgxhlus", response.extendedLocation().name());
-        Assertions.assertEquals("vxisimjcea", response.extendedLocation().type());
-        Assertions.assertEquals(HybridAksPluginType.DPDK, response.hybridAksPluginType());
-        Assertions.assertEquals("tlwuhvaj", response.interfaceName());
-        Assertions.assertEquals("ailfemjjzak", response.l2IsolationDomainId());
+        Assertions.assertEquals("cgqtag", response.location());
+        Assertions.assertEquals("lss", response.tags().get("ljomevt"));
+        Assertions.assertEquals("w", response.extendedLocation().name());
+        Assertions.assertEquals("pcpahprzrvxhmtf", response.extendedLocation().type());
+        Assertions.assertEquals(HybridAksPluginType.OSDEVICE, response.hybridAksPluginType());
+        Assertions.assertEquals("kxhnegknj", response.interfaceName());
+        Assertions.assertEquals("rbhtmeplvukaobr", response.l2IsolationDomainId());
     }
 }

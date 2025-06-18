@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.ConnectivityStatusType;
@@ -23,31 +23,31 @@ public final class NetworkStatusListByServiceWithResponseMockTests {
     @Test
     public void testListByServiceWithResponse() throws Exception {
         String responseStr
-            = "[{\"location\":\"zmzctbxzjk\",\"networkStatus\":{\"dnsServers\":[\"pucv\",\"dozw\",\"sk\"],\"connectivityStatus\":[{\"name\":\"afzsq\",\"status\":\"success\",\"error\":\"npxmiwtkqifp\",\"lastUpdated\":\"2021-07-05T10:06:31Z\",\"lastStatusChange\":\"2021-09-17T21:43:47Z\",\"resourceType\":\"ukcdnzoxlabu\",\"isOptional\":false}]}},{\"location\":\"gba\",\"networkStatus\":{\"dnsServers\":[\"ram\",\"sugqcglma\"],\"connectivityStatus\":[{\"name\":\"ztofxvqla\",\"status\":\"success\",\"error\":\"gwa\",\"lastUpdated\":\"2021-02-16T13:43:28Z\",\"lastStatusChange\":\"2021-05-13T04:45:23Z\",\"resourceType\":\"cerfxfeiqbasthz\",\"isOptional\":true}]}},{\"location\":\"pssvnonij\",\"networkStatus\":{\"dnsServers\":[\"jozzjkugp\"],\"connectivityStatus\":[{\"name\":\"qbtokvocuzxl\",\"status\":\"initializing\",\"error\":\"warhwett\",\"lastUpdated\":\"2021-11-19T09:33:44Z\",\"lastStatusChange\":\"2021-06-23T01:24:41Z\",\"resourceType\":\"pzwxy\",\"isOptional\":true}]}}]";
+            = "[{\"location\":\"qiqddjynpgomz\",\"networkStatus\":{\"dnsServers\":[\"pajlf\",\"svrljlhejccc\"],\"connectivityStatus\":[{\"name\":\"bnwitafjjevp\",\"status\":\"success\",\"error\":\"tghzqwvk\",\"lastUpdated\":\"2021-08-02T02:15:11Z\",\"lastStatusChange\":\"2021-10-10T05:26:34Z\",\"resourceType\":\"skplqftqcxqm\",\"isOptional\":true},{\"name\":\"udcykgul\",\"status\":\"success\",\"error\":\"fwrm\",\"lastUpdated\":\"2021-12-05T19:56:18Z\",\"lastStatusChange\":\"2021-09-19T18:27:34Z\",\"resourceType\":\"y\",\"isOptional\":false}]}},{\"location\":\"qoubxlpkdsnbqoy\",\"networkStatus\":{\"dnsServers\":[\"lraduhgwa\",\"zyrp\"],\"connectivityStatus\":[{\"name\":\"y\",\"status\":\"initializing\",\"error\":\"ribeskkopbk\",\"lastUpdated\":\"2021-07-24T10:38:36Z\",\"lastStatusChange\":\"2021-05-25T02:27:43Z\",\"resourceType\":\"bmbtmorikcze\",\"isOptional\":true},{\"name\":\"tiqxg\",\"status\":\"initializing\",\"error\":\"rlyvzlljydgmdoq\",\"lastUpdated\":\"2021-09-19T10:13:56Z\",\"lastStatusChange\":\"2021-04-04T15:22:59Z\",\"resourceType\":\"cwz\",\"isOptional\":true},{\"name\":\"judhgw\",\"status\":\"success\",\"error\":\"glym\",\"lastUpdated\":\"2021-03-18T02:23:13Z\",\"lastStatusChange\":\"2021-05-23T20:14:39Z\",\"resourceType\":\"uwsqpiyxkmqmge\",\"isOptional\":false},{\"name\":\"cilfiulgnnyxwdp\",\"status\":\"initializing\",\"error\":\"wqvvzxgbamqrbb\",\"lastUpdated\":\"2021-04-25T13:58:34Z\",\"lastStatusChange\":\"2021-04-07T05:09:35Z\",\"resourceType\":\"tm\",\"isOptional\":false}]}},{\"location\":\"pavcjkbyjuwhizc\",\"networkStatus\":{\"dnsServers\":[\"xmhwdtunpcskd\"],\"connectivityStatus\":[{\"name\":\"fouwkoltjdauuj\",\"status\":\"success\",\"error\":\"yhddzeykudjzrim\",\"lastUpdated\":\"2021-08-15T14:27:28Z\",\"lastStatusChange\":\"2021-12-10T12:48:32Z\",\"resourceType\":\"plmqyo\",\"isOptional\":true},{\"name\":\"ks\",\"status\":\"initializing\",\"error\":\"nqqkqxkd\",\"lastUpdated\":\"2021-07-31T00:27:02Z\",\"lastStatusChange\":\"2021-10-19T02:04:13Z\",\"resourceType\":\"euqkrbyy\",\"isOptional\":true},{\"name\":\"rjgbnwgokr\",\"status\":\"initializing\",\"error\":\"ecannv\",\"lastUpdated\":\"2021-09-23T22:17:17Z\",\"lastStatusChange\":\"2021-09-28T13:43:30Z\",\"resourceType\":\"hdc\",\"isOptional\":false},{\"name\":\"ptfcjapmfwxmcxhw\",\"status\":\"initializing\",\"error\":\"hifoyo\",\"lastUpdated\":\"2021-09-26T13:13:40Z\",\"lastStatusChange\":\"2021-10-26T12:54:24Z\",\"resourceType\":\"adhmqyufpfowwey\",\"isOptional\":true}]}},{\"location\":\"rtngiqcypmonfcor\",\"networkStatus\":{\"dnsServers\":[\"fycigcbmayhdtj\",\"rp\",\"na\",\"zdjqzbrwrf\"],\"connectivityStatus\":[{\"name\":\"houf\",\"status\":\"failure\",\"error\":\"bgvojck\",\"lastUpdated\":\"2021-11-03T10:09:32Z\",\"lastStatusChange\":\"2021-01-25T11:08:50Z\",\"resourceType\":\"snqunnikl\",\"isOptional\":false},{\"name\":\"deggnzadqmvpe\",\"status\":\"initializing\",\"error\":\"s\",\"lastUpdated\":\"2021-04-09T17:02:29Z\",\"lastStatusChange\":\"2021-08-13T17:23:50Z\",\"resourceType\":\"qhrplfqqnwojs\",\"isOptional\":true},{\"name\":\"c\",\"status\":\"failure\",\"error\":\"svbkhhaqsytuecm\",\"lastUpdated\":\"2021-05-03T20:39:56Z\",\"lastStatusChange\":\"2021-01-29T07:45:24Z\",\"resourceType\":\"ywdpuowl\",\"isOptional\":false},{\"name\":\"xkr\",\"status\":\"failure\",\"error\":\"qzq\",\"lastUpdated\":\"2020-12-22T19:11:17Z\",\"lastStatusChange\":\"2021-11-02T19:55:57Z\",\"resourceType\":\"eujcmtci\",\"isOptional\":false}]}}]";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         List<NetworkStatusContractByLocation> response = manager.networkStatus()
-            .listByServiceWithResponse("rycpanapfa", "izrinlpxngzzxqb", com.azure.core.util.Context.NONE)
+            .listByServiceWithResponse("tgljop", "zqqihvb", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zmzctbxzjk", response.get(0).location());
-        Assertions.assertEquals("pucv", response.get(0).networkStatus().dnsServers().get(0));
-        Assertions.assertEquals("afzsq", response.get(0).networkStatus().connectivityStatus().get(0).name());
+        Assertions.assertEquals("qiqddjynpgomz", response.get(0).location());
+        Assertions.assertEquals("pajlf", response.get(0).networkStatus().dnsServers().get(0));
+        Assertions.assertEquals("bnwitafjjevp", response.get(0).networkStatus().connectivityStatus().get(0).name());
         Assertions.assertEquals(ConnectivityStatusType.SUCCESS,
             response.get(0).networkStatus().connectivityStatus().get(0).status());
-        Assertions.assertEquals("npxmiwtkqifp", response.get(0).networkStatus().connectivityStatus().get(0).error());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-05T10:06:31Z"),
+        Assertions.assertEquals("tghzqwvk", response.get(0).networkStatus().connectivityStatus().get(0).error());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-02T02:15:11Z"),
             response.get(0).networkStatus().connectivityStatus().get(0).lastUpdated());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-17T21:43:47Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-10T05:26:34Z"),
             response.get(0).networkStatus().connectivityStatus().get(0).lastStatusChange());
-        Assertions.assertEquals("ukcdnzoxlabu",
+        Assertions.assertEquals("skplqftqcxqm",
             response.get(0).networkStatus().connectivityStatus().get(0).resourceType());
-        Assertions.assertEquals(false, response.get(0).networkStatus().connectivityStatus().get(0).isOptional());
+        Assertions.assertTrue(response.get(0).networkStatus().connectivityStatus().get(0).isOptional());
     }
 }

@@ -51,7 +51,7 @@ public final class MagentoLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private MagentoLinkedServiceTypeProperties innerTypeProperties() {
+    MagentoLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

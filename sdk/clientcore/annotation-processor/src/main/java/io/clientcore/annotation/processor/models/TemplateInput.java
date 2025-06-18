@@ -6,15 +6,15 @@ package io.clientcore.annotation.processor.models;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.type.Type;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
-
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.TypeKind;
-import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.ArrayType;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeKind;
+import javax.lang.model.type.TypeMirror;
 
 /**
  * Represents the input required for generating a template.
@@ -27,7 +27,7 @@ public class TemplateInput {
     public TemplateInput() {
     }
 
-    // A map of fully-qualified class names to their short names
+    // A map of fully qualified class names to their short names
     private final Map<String, String> imports = new TreeMap<>();
 
     private String packageName;
@@ -120,9 +120,9 @@ public class TemplateInput {
     }
 
     /**
-     * Converts a fully-qualified class name to its short name.
+     * Converts a fully qualified class name to its short name.
      *
-     * @param fqcn the fully-qualified class name.
+     * @param fqcn the fully qualified class name.
      * @return the short name of the class.
      */
     private static String toShortName(String fqcn) {
@@ -136,7 +136,7 @@ public class TemplateInput {
     /**
      * Adds an import to the imports map.
      *
-     * @param importFQN the fully-qualified name of the import.
+     * @param importFQN the fully qualified name of the import.
      * @return the short name of the class.
      */
     public String addImport(String importFQN) {
@@ -157,7 +157,12 @@ public class TemplateInput {
     public String addImport(TypeMirror type) {
         String longName = type.toString();
         String shortName = null;
-
+        // Handle array types properly
+        if (type.getKind() == TypeKind.ARRAY) {
+            ArrayType arrayType = (ArrayType) type;
+            String componentType = addImport(arrayType.getComponentType()); // Recursively get the short name
+            return componentType + "[]"; // Append array brackets
+        }
         if (type.getKind().isPrimitive()) {
             return longName;
         } else if (imports.containsKey(type.toString())) {
@@ -209,18 +214,18 @@ public class TemplateInput {
     }
 
     /**
-     * Sets the fully-qualified name of the service interface.
+     * Sets the fully qualified name of the service interface.
      *
-     * @param serviceInterfaceFQN the fully-qualified name of the service interface to set.
+     * @param serviceInterfaceFQN the fully qualified name of the service interface to set.
      */
     public void setServiceInterfaceFQN(String serviceInterfaceFQN) {
         this.serviceInterfaceFQN = serviceInterfaceFQN;
     }
 
     /**
-     * Gets the fully-qualified name of the service interface.
+     * Gets the fully qualified name of the service interface.
      *
-     * @return the fully-qualified name of the service interface.
+     * @return the fully qualified name of the service interface.
      */
     public String getServiceInterfaceFQN() {
         return serviceInterfaceFQN;

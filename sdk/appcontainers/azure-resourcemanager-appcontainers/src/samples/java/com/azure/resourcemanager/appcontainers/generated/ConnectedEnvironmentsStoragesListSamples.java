@@ -9,8 +9,9 @@ package com.azure.resourcemanager.appcontainers.generated;
  */
 public final class ConnectedEnvironmentsStoragesListSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/
-     * ConnectedEnvironmentsStorages_List.json
+     * x-ms-original-file:
+     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ConnectedEnvironmentsStorages_List.
+     * json
      */
     /**
      * Sample code: List environments storages by subscription.

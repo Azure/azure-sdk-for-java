@@ -16,6 +16,7 @@ import com.azure.resourcemanager.compute.models.HardwareProfile;
 import com.azure.resourcemanager.compute.models.NetworkProfile;
 import com.azure.resourcemanager.compute.models.OSProfile;
 import com.azure.resourcemanager.compute.models.Plan;
+import com.azure.resourcemanager.compute.models.ResilientVMDeletionStatus;
 import com.azure.resourcemanager.compute.models.SecurityProfile;
 import com.azure.resourcemanager.compute.models.Sku;
 import com.azure.resourcemanager.compute.models.StorageProfile;
@@ -295,6 +296,30 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
             this.innerProperties = new VirtualMachineScaleSetVMPropertiesInner();
         }
         this.innerProperties().withHardwareProfile(hardwareProfile);
+        return this;
+    }
+
+    /**
+     * Get the resilientVMDeletionStatus property: Specifies the resilient VM deletion status for the virtual machine.
+     * 
+     * @return the resilientVMDeletionStatus value.
+     */
+    public ResilientVMDeletionStatus resilientVMDeletionStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().resilientVMDeletionStatus();
+    }
+
+    /**
+     * Set the resilientVMDeletionStatus property: Specifies the resilient VM deletion status for the virtual machine.
+     * 
+     * @param resilientVMDeletionStatus the resilientVMDeletionStatus value to set.
+     * @return the VirtualMachineScaleSetVMInner object itself.
+     */
+    public VirtualMachineScaleSetVMInner
+        withResilientVMDeletionStatus(ResilientVMDeletionStatus resilientVMDeletionStatus) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetVMPropertiesInner();
+        }
+        this.innerProperties().withResilientVMDeletionStatus(resilientVMDeletionStatus);
         return this;
     }
 

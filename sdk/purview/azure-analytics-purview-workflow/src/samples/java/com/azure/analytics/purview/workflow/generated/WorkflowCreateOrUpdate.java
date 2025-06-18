@@ -18,12 +18,12 @@ public class WorkflowCreateOrUpdate {
             = new WorkflowClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
-        // BEGIN:com.azure.analytics.purview.workflow.generated.workflowcreateorreplace.workflowcreateorupdate
+        // BEGIN:com.azure.analytics.purview.workflow.generated.workflow-create-or-replace.workflow-create-or-update
         BinaryData workflowCreateOrUpdateCommand = BinaryData.fromString(
             "{\"name\":\"Create glossary term workflow\",\"description\":\"\",\"actionDag\":{\"actions\":{\"Condition\":{\"type\":\"If\",\"actions\":{\"Create glossary term\":{\"type\":\"CreateTerm\",\"runAfter\":{}},\"Send email notification\":{\"type\":\"EmailNotification\",\"inputs\":{\"parameters\":{\"emailMessage\":\"Your request for Glossary Term @{runInput()['term']['name']} is approved.\",\"emailRecipients\":[\"@{runInput()['requestor']}\"],\"emailSubject\":\"Glossary Term Create - APPROVED\"}},\"runAfter\":{\"Create glossary term\":[\"Succeeded\"]}}},\"else\":{\"actions\":{\"Send reject email notification\":{\"type\":\"EmailNotification\",\"inputs\":{\"parameters\":{\"emailMessage\":\"Your request for Glossary Term @{runInput()['term']['name']} is rejected.\",\"emailRecipients\":[\"@{runInput()['requestor']}\"],\"emailSubject\":\"Glossary Term Create - REJECTED\"}},\"runAfter\":{}}}},\"expression\":{\"and\":[{\"equals\":[\"@{outputs('Start and wait for an approval')['outcome']}\",\"Approved\"]}]},\"runAfter\":{\"Start and wait for an approval\":[\"Succeeded\"]}},\"Start and wait for an approval\":{\"type\":\"Approval\",\"inputs\":{\"parameters\":{\"approvalType\":\"PendingOnAll\",\"assignedTo\":[\"eece94d9-0619-4669-bb8a-d6ecec5220bc\"],\"title\":\"Approval Request for Create Glossary Term\"}},\"runAfter\":{}}}},\"isEnabled\":true,\"triggers\":[{\"type\":\"when_term_creation_is_requested\",\"underGlossaryHierarchy\":\"/glossaries/20031e20-b4df-4a66-a61d-1b0716f3fa48\"}]}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = workflowClient.createOrReplaceWithResponse(
             "4afb5752-e47f-43a1-8ba7-c696bf8d2745", workflowCreateOrUpdateCommand, requestOptions);
-        // END:com.azure.analytics.purview.workflow.generated.workflowcreateorreplace.workflowcreateorupdate
+        // END:com.azure.analytics.purview.workflow.generated.workflow-create-or-replace.workflow-create-or-update
     }
 }

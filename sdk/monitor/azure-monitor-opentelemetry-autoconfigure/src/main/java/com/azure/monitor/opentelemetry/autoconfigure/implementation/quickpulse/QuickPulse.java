@@ -24,6 +24,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
+import java.util.Objects;
 
 public class QuickPulse {
 
@@ -63,6 +64,10 @@ public class QuickPulse {
     }
 
     public boolean isEnabled() {
+        if (collector == null) {
+            // Because QuickPulse is initialized with a 5 s delay
+            return false;
+        }
         return collector.isEnabled();
     }
 
@@ -77,8 +82,8 @@ public class QuickPulse {
         if (LOGGER.canLogAtLevel(LogLevel.VERBOSE)) {
             LOGGER.verbose(
                 "Initializing QuickPulse with instrumentation key: {} , URL {}, rolename {}, role instance {}, sdk version {}",
-                IKeyMasker.mask(instrumentationKey.get()), endpointUrl.get().toString(), roleName, roleInstance,
-                sdkVersion);
+                Objects.toString(IKeyMasker.mask(instrumentationKey.get())), Objects.toString(endpointUrl.get()),
+                roleName, roleInstance, sdkVersion);
         }
 
         String quickPulseId = UUID.randomUUID().toString().replace("-", "");
@@ -131,6 +136,7 @@ public class QuickPulse {
         collector.enable(instrumentationKey);
 
         this.collector = collector;
+
     }
 
 }

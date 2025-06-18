@@ -42,7 +42,7 @@ public class HttpRequest {
     private HttpHeaders headers;
     private BinaryData body;
     private ServerSentEventListener serverSentEventListener;
-    private RequestOptions requestOptions;
+    private RequestContext requestContext;
     private int tryCount;
 
     /**
@@ -50,7 +50,7 @@ public class HttpRequest {
      */
     public HttpRequest() {
         this.headers = new HttpHeaders();
-        this.requestOptions = RequestOptions.none();
+        this.requestContext = RequestContext.none();
     }
 
     /**
@@ -107,7 +107,7 @@ public class HttpRequest {
         try {
             this.uri = new URI(Objects.requireNonNull(uri, "'uri' cannot be null"));
         } catch (URISyntaxException ex) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'uri' must be a valid URI.", ex));
+            throw LOGGER.throwableAtError().log("'uri' must be a valid URI.", ex, IllegalArgumentException::new);
         }
 
         return this;
@@ -165,22 +165,22 @@ public class HttpRequest {
     }
 
     /**
-     * Get the request {@link RequestOptions options}.
+     * Get the request context. If no context was provided, {@link RequestContext#none()} is returned.
      *
-     * @return The request {@link RequestOptions options}.
+     * @return The {@link RequestContext}.
      */
-    public RequestOptions getRequestOptions() {
-        return requestOptions;
+    public RequestContext getContext() {
+        return requestContext;
     }
 
     /**
-     * Set the request {@link RequestOptions options}.
+     * Set the request context.
      *
-     * @param requestOptions The request {@link RequestOptions options}.
+     * @param requestContext The {@link RequestContext}.
      * @return The updated {@link HttpRequest}.
      */
-    public HttpRequest setRequestOptions(RequestOptions requestOptions) {
-        this.requestOptions = requestOptions;
+    public HttpRequest setContext(RequestContext requestContext) {
+        this.requestContext = requestContext == null ? RequestContext.none() : requestContext;
         return this;
     }
 

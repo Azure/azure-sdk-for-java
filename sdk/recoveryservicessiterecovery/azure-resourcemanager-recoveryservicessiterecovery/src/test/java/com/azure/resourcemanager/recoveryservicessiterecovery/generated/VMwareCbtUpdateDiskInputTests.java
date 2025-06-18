@@ -12,20 +12,21 @@ public final class VMwareCbtUpdateDiskInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VMwareCbtUpdateDiskInput model
-            = BinaryData.fromString("{\"diskId\":\"ld\",\"targetDiskName\":\"bnwvpaq\",\"isOSDisk\":\"xf\"}")
+            = BinaryData.fromString("{\"diskId\":\"xvlqgfbrve\",\"targetDiskName\":\"c\",\"isOSDisk\":\"vphirlzbip\"}")
                 .toObject(VMwareCbtUpdateDiskInput.class);
-        Assertions.assertEquals("ld", model.diskId());
-        Assertions.assertEquals("bnwvpaq", model.targetDiskName());
-        Assertions.assertEquals("xf", model.isOSDisk());
+        Assertions.assertEquals("xvlqgfbrve", model.diskId());
+        Assertions.assertEquals("c", model.targetDiskName());
+        Assertions.assertEquals("vphirlzbip", model.isOSDisk());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VMwareCbtUpdateDiskInput model
-            = new VMwareCbtUpdateDiskInput().withDiskId("ld").withTargetDiskName("bnwvpaq").withIsOSDisk("xf");
+        VMwareCbtUpdateDiskInput model = new VMwareCbtUpdateDiskInput().withDiskId("xvlqgfbrve")
+            .withTargetDiskName("c")
+            .withIsOSDisk("vphirlzbip");
         model = BinaryData.fromObject(model).toObject(VMwareCbtUpdateDiskInput.class);
-        Assertions.assertEquals("ld", model.diskId());
-        Assertions.assertEquals("bnwvpaq", model.targetDiskName());
-        Assertions.assertEquals("xf", model.isOSDisk());
+        Assertions.assertEquals("xvlqgfbrve", model.diskId());
+        Assertions.assertEquals("c", model.targetDiskName());
+        Assertions.assertEquals("vphirlzbip", model.isOSDisk());
     }
 }

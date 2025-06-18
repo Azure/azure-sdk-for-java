@@ -7,8 +7,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.ContentTypeContract;
@@ -22,21 +22,21 @@ public final class ContentTypesListByServiceMockTests {
     @Test
     public void testListByService() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"id\":\"pjy\",\"name\":\"fppqcwdnnj\",\"description\":\"h\",\"schema\":\"datanxebycympohx\",\"version\":\"nnp\"},\"id\":\"sebcxno\",\"name\":\"spdyzssj\",\"type\":\"mykdy\"}]}";
+            = "{\"value\":[{\"properties\":{\"id\":\"romppzsauqmeuhpl\",\"name\":\"mpuai\",\"description\":\"oceqtlyspjymwic\",\"schema\":\"datarncfu\",\"version\":\"akgixhqjq\"},\"id\":\"gqwbbxiwtwfgo\",\"name\":\"lalvemnnzug\",\"type\":\"bkyy\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ContentTypeContract> response
-            = manager.contentTypes().listByService("vlrlkbhzirm", "caujbfomf", com.azure.core.util.Context.NONE);
+            = manager.contentTypes().listByService("hhlhrvmgs", "pgmncrvtp", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pjy", response.iterator().next().idPropertiesId());
-        Assertions.assertEquals("fppqcwdnnj", response.iterator().next().namePropertiesName());
-        Assertions.assertEquals("h", response.iterator().next().description());
-        Assertions.assertEquals("nnp", response.iterator().next().version());
+        Assertions.assertEquals("romppzsauqmeuhpl", response.iterator().next().idPropertiesId());
+        Assertions.assertEquals("mpuai", response.iterator().next().namePropertiesName());
+        Assertions.assertEquals("oceqtlyspjymwic", response.iterator().next().description());
+        Assertions.assertEquals("akgixhqjq", response.iterator().next().version());
     }
 }

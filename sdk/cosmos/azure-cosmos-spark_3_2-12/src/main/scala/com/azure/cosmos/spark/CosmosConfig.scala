@@ -4,7 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.core.management.AzureEnvironment
-import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, spark}
+import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, ReadConsistencyStrategy, spark}
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants
 import com.azure.cosmos.implementation.routing.LocationHelper
 import com.azure.cosmos.implementation.{Configs, SparkBridgeImplementationInternal, Strings}
@@ -31,6 +31,7 @@ import org.apache.spark.sql.types.{DataType, NumericType, StructType}
 import java.net.{URI, URISyntaxException, URL}
 import java.time.format.DateTimeFormatter
 import java.time.{Duration, Instant}
+import java.util
 import java.util.{Locale, ServiceLoader}
 import scala.collection.concurrent.TrieMap
 import scala.collection.immutable.{HashSet, List, Map}
@@ -48,6 +49,8 @@ private[spark] object CosmosConfigNames {
   val TenantId = "spark.cosmos.account.tenantId"
   val ResourceGroupName = "spark.cosmos.account.resourceGroupName"
   val AzureEnvironment = "spark.cosmos.account.azureEnvironment"
+  val AzureEnvironmentAAD = "spark.cosmos.account.azureEnvironment.aad"
+  val AzureEnvironmentManagement = "spark.cosmos.account.azureEnvironment.management"
   val AuthType = "spark.cosmos.auth.type"
   val ClientId = "spark.cosmos.auth.aad.clientId"
   val ResourceId = "spark.cosmos.auth.aad.resourceId"
@@ -71,6 +74,7 @@ private[spark] object CosmosConfigNames {
   val ReadResponseContinuationTokenLimitInKb = "spark.cosmos.read.responseContinuationTokenLimitInKb"
   val ReadPrefetchBufferSize = "spark.cosmos.read.prefetchBufferSize"
   val ReadForceEventualConsistency = "spark.cosmos.read.forceEventualConsistency"
+  val ReadConsistencyStrategy = "spark.cosmos.read.consistencyStrategy"
   val ReadSchemaConversionMode = "spark.cosmos.read.schemaConversionMode"
   val ReadInferSchemaSamplingSize = "spark.cosmos.read.inferSchema.samplingSize"
   val ReadInferSchemaEnabled = "spark.cosmos.read.inferSchema.enabled"
@@ -159,6 +163,8 @@ private[spark] object CosmosConfigNames {
     ClientCertPemBase64,
     ClientCertSendChain,
     AzureEnvironment,
+    AzureEnvironmentAAD,
+    AzureEnvironmentManagement,
     Database,
     Container,
     PreferredRegionsList,
@@ -173,6 +179,7 @@ private[spark] object CosmosConfigNames {
     AllowInvalidJsonWithDuplicateJsonProperties,
     ReadCustomQuery,
     ReadForceEventualConsistency,
+    ReadConsistencyStrategy,
     ReadSchemaConversionMode,
     ReadMaxItemCount,
     ReadResponseContinuationTokenLimitInKb,
@@ -613,6 +620,18 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
       parseFromStringFunction = resourceGroupName => resourceGroupName,
       helpMessage = "The resource group of the CosmosDB account. Required for `ServicePrincipal` authentication.")
 
+  private val AzureEnvironmentManagementUri = CosmosConfigEntry[String](key = CosmosConfigNames.AzureEnvironmentManagement,
+    defaultValue = None,
+    mandatory = false,
+    parseFromStringFunction = managementUri => managementUri,
+    helpMessage = "The ARM management endpoint to be used when selecting AzureEnvironment `Custom`.")
+
+  private val AzureEnvironmentAadUri = CosmosConfigEntry[String](key = CosmosConfigNames.AzureEnvironmentAAD,
+    defaultValue = None,
+    mandatory = false,
+    parseFromStringFunction = aadUri => aadUri,
+    helpMessage = "The AAD endpoint to be used when selecting AzureEnvironment `Custom`.")
+
   private val AzureEnvironmentTypeEnum = CosmosConfigEntry[java.util.Map[String, String]](key = CosmosConfigNames.AzureEnvironment,
       defaultValue = Option.apply(AzureEnvironment.AZURE.getEndpoints),
       mandatory = false,
@@ -669,7 +688,6 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
     val subscriptionIdOpt = CosmosConfigEntry.parse(cfg, SubscriptionId)
     val resourceGroupNameOpt = CosmosConfigEntry.parse(cfg, ResourceGroupName)
     val tenantIdOpt = CosmosConfigEntry.parse(cfg, TenantId)
-    val azureEnvironmentOpt = CosmosConfigEntry.parse(cfg, AzureEnvironmentTypeEnum)
     val clientBuilderInterceptors = CosmosConfigEntry.parse(cfg, ClientBuilderInterceptors)
     val clientInterceptors = CosmosConfigEntry.parse(cfg, ClientInterceptors)
 
@@ -679,6 +697,34 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
 
     if (allowDuplicateJsonPropertiesOverride.isDefined && allowDuplicateJsonPropertiesOverride.get) {
       SparkBridgeImplementationInternal.configureSimpleObjectMapper(true)
+    }
+
+    val azureEnvironmentOpt : Option[util.Map[String, String]] = if (cfg.exists(kvp =>
+        CosmosConfigNames.AzureEnvironment.equalsIgnoreCase(kvp._1)
+        && "Custom".equalsIgnoreCase(kvp._2))) {
+
+      val endpoints: util.Map[String, String] = new util.HashMap[String, String]()
+      val mgmtEndpoint = CosmosConfigEntry.parse(cfg, AzureEnvironmentManagementUri)
+      if (mgmtEndpoint.isDefined) {
+        endpoints.put("resourceManagerEndpointUrl", mgmtEndpoint.get)
+      } else {
+        throw new IllegalArgumentException(
+          s"The configuration '${CosmosConfigNames.AzureEnvironmentManagement}' is required when "
+            + "choosing AzureEnvironment 'Custom'.")
+      }
+
+      val aadEndpoint = CosmosConfigEntry.parse(cfg, AzureEnvironmentAadUri)
+      if (aadEndpoint.isDefined) {
+        endpoints.put("activeDirectoryEndpointUrl", aadEndpoint.get)
+      } else {
+        throw new IllegalArgumentException(
+          s"The configuration '${CosmosConfigNames.AzureEnvironmentAAD}' is required when "
+            + "choosing AzureEnvironment 'Custom'.")
+      }
+
+      Option.apply(endpoints)
+    } else {
+      CosmosConfigEntry.parse(cfg, AzureEnvironmentTypeEnum)
     }
 
     // parsing above already validated these assertions
@@ -909,7 +955,7 @@ private object CosmosAuthConfig {
     }
 }
 
-private case class CosmosReadConfig(forceEventualConsistency: Boolean,
+private case class CosmosReadConfig(readConsistencyStrategy: ReadConsistencyStrategy,
                                     schemaConversionMode: SchemaConversionMode,
                                     maxItemCount: Int,
                                     prefetchBufferSize: Int,
@@ -936,6 +982,14 @@ private object CosmosReadConfig {
     defaultValue = Some(true),
     parseFromStringFunction = value => value.toBoolean,
     helpMessage = "Makes the client use Eventual consistency for read operations")
+
+  private val ReadConsistencyStrategyOverride = CosmosConfigEntry[ReadConsistencyStrategy](key = CosmosConfigNames.ReadConsistencyStrategy,
+    mandatory = false,
+    defaultValue = None,
+    parseFromStringFunction = value => SparkBridgeImplementationInternal
+      .parseReadConsistencyStrategy(value)
+      .getOrElse(ReadConsistencyStrategy.DEFAULT),
+    helpMessage = "Makes the client use the specified read consistency strategy")
 
   private val JsonSchemaConversion = CosmosConfigEntry[SchemaConversionMode](
     key = CosmosConfigNames.ReadSchemaConversionMode,
@@ -1006,6 +1060,7 @@ private object CosmosReadConfig {
 
   def parseCosmosReadConfig(cfg: Map[String, String]): CosmosReadConfig = {
     val forceEventualConsistency = CosmosConfigEntry.parse(cfg, ForceEventualConsistency)
+    val readConsistencyStrategyOverride = CosmosConfigEntry.parse(cfg, ReadConsistencyStrategyOverride)
     val jsonSchemaConversionMode = CosmosConfigEntry.parse(cfg, JsonSchemaConversion)
     val customQuery = CosmosConfigEntry.parse(cfg, CustomQuery)
     val maxItemCount = CosmosConfigEntry.parse(cfg, MaxItemCount)
@@ -1026,8 +1081,18 @@ private object CosmosReadConfig {
     val runtimeFilteringEnabled = CosmosConfigEntry.parse(cfg, ReadRuntimeFilteringEnabled)
     val readManyFilteringConfig = CosmosReadManyFilteringConfig.parseCosmosReadManyFilterConfig(cfg)
 
+    val effectiveReadConsistencyStrategy = if (readConsistencyStrategyOverride.getOrElse(ReadConsistencyStrategy.DEFAULT) != ReadConsistencyStrategy.DEFAULT) {
+      readConsistencyStrategyOverride.get
+    } else {
+      if (forceEventualConsistency.getOrElse(true)) {
+        ReadConsistencyStrategy.EVENTUAL
+      } else {
+        ReadConsistencyStrategy.DEFAULT
+      }
+    }
+
     CosmosReadConfig(
-      forceEventualConsistency.get,
+      effectiveReadConsistencyStrategy,
       jsonSchemaConversionMode.get,
       maxItemCount.getOrElse(DefaultMaxItemCount),
       prefetchBufferSize.getOrElse(
@@ -1178,7 +1243,7 @@ private case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy,
                                      maxMicroBatchSize: Option[Int] = None,
                                      minTargetMicroBatchSize: Option[Int] = None,
                                      flushCloseIntervalInSeconds: Int = 60,
-                                     maxNoProgressIntervalInSeconds: Int = 180,
+                                     maxInitialNoProgressIntervalInSeconds: Int = 180,
                                      maxRetryNoProgressIntervalInSeconds: Int = 45 * 60,
                                      retryCommitInterceptor: Option[WriteOnRetryCommitInterceptor] = None)
 
@@ -1324,14 +1389,14 @@ private object CosmosWriteConfig {
     parseFromStringFunction = intAsString => intAsString.toInt,
     helpMessage = s"Interval of checks whether any progress has been made when flushing write operations.")
 
-  private val maxNoProgressIntervalInSeconds = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteMaxNoProgressIntervalInSeconds,
-    defaultValue = Some(45 * 60),
+  private val maxInitialNoProgressIntervalInSeconds = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteMaxNoProgressIntervalInSeconds,
+    defaultValue = Some(3 * 60),
     mandatory = false,
     parseFromStringFunction = intAsString => intAsString.toInt,
     helpMessage = s"Interval after which a writer fails when no progress has been made when flushing operations.")
 
   private val maxRetryNoProgressIntervalInSeconds = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteMaxRetryNoProgressIntervalInSeconds,
-    defaultValue = Some(3 * 60),
+    defaultValue = Some(45 * 60),
     mandatory = false,
     parseFromStringFunction = intAsString => intAsString.toInt,
     helpMessage = s"Interval after which a writer fails when no progress has been made when flushing operations in the second commit.")
@@ -1504,7 +1569,7 @@ private object CosmosWriteConfig {
       maxMicroBatchSize = maxBatchSizeOpt,
       minTargetMicroBatchSize = minTargetBatchSizeOpt,
       flushCloseIntervalInSeconds = CosmosConfigEntry.parse(cfg, flushCloseIntervalInSeconds).get,
-      maxNoProgressIntervalInSeconds = CosmosConfigEntry.parse(cfg, maxNoProgressIntervalInSeconds).get,
+      maxInitialNoProgressIntervalInSeconds = CosmosConfigEntry.parse(cfg, maxInitialNoProgressIntervalInSeconds).get,
       maxRetryNoProgressIntervalInSeconds = CosmosConfigEntry.parse(cfg, maxRetryNoProgressIntervalInSeconds).get,
       retryCommitInterceptor = writeRetryCommitInterceptor)
   }

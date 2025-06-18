@@ -65,6 +65,15 @@ public final class BatchPoolSpecification implements JsonSerializable<BatchPoolS
     private Duration resizeTimeout;
 
     /*
+     * The user-specified tags associated with the pool.The user-defined tags to be associated with the Azure Batch
+     * Pool. When specified, these tags are propagated to the backing Azure resources associated with the pool. This
+     * property can only be specified when the Batch account was created with the poolAllocationMode property set to
+     * 'UserSubscription'.
+     */
+    @Generated
+    private String resourceTags;
+
+    /*
      * The desired number of dedicated Compute Nodes in the Pool. This property must not be specified if enableAutoScale
      * is set to true. If enableAutoScale is set to false, then you must set either targetDedicatedNodes,
      * targetLowPriorityNodes, or both.
@@ -128,6 +137,19 @@ public final class BatchPoolSpecification implements JsonSerializable<BatchPoolS
     private BatchStartTask startTask;
 
     /*
+     * For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
+     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
+     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. For
+     * Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g.,
+     * /home/{user-name}/certs) and Certificates are placed in that directory.
+     * Warning: This property is deprecated and will be removed after February, 2024.
+     * Please use the [Azure KeyVault
+     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
+     */
+    @Generated
+    private List<BatchCertificateReference> certificateReferences;
+
+    /*
      * The list of Packages to be installed on each Compute Node in the Pool. When creating a pool, the package's
      * application ID must be fully qualified
      * (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{
@@ -162,6 +184,12 @@ public final class BatchPoolSpecification implements JsonSerializable<BatchPoolS
      */
     @Generated
     private BatchNodeCommunicationMode targetNodeCommunicationMode;
+
+    /*
+     * The upgrade policy for the Pool. Describes an upgrade policy - automatic, manual, or rolling.
+     */
+    @Generated
+    private UpgradePolicy upgradePolicy;
 
     /**
      * Creates an instance of BatchPoolSpecification class.
@@ -309,6 +337,34 @@ public final class BatchPoolSpecification implements JsonSerializable<BatchPoolS
     @Generated
     public BatchPoolSpecification setResizeTimeout(Duration resizeTimeout) {
         this.resizeTimeout = resizeTimeout;
+        return this;
+    }
+
+    /**
+     * Get the resourceTags property: The user-specified tags associated with the pool.The user-defined tags to be
+     * associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources
+     * associated with the pool. This property can only be specified when the Batch account was created with the
+     * poolAllocationMode property set to 'UserSubscription'.
+     *
+     * @return the resourceTags value.
+     */
+    @Generated
+    public String getResourceTags() {
+        return this.resourceTags;
+    }
+
+    /**
+     * Set the resourceTags property: The user-specified tags associated with the pool.The user-defined tags to be
+     * associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources
+     * associated with the pool. This property can only be specified when the Batch account was created with the
+     * poolAllocationMode property set to 'UserSubscription'.
+     *
+     * @param resourceTags the resourceTags value to set.
+     * @return the BatchPoolSpecification object itself.
+     */
+    @Generated
+    public BatchPoolSpecification setResourceTags(String resourceTags) {
+        this.resourceTags = resourceTags;
         return this;
     }
 
@@ -523,6 +579,42 @@ public final class BatchPoolSpecification implements JsonSerializable<BatchPoolS
     }
 
     /**
+     * Get the certificateReferences property: For Windows Nodes, the Batch service installs the Certificates to the
+     * specified Certificate store and location. For Linux Compute Nodes, the Certificates are stored in a directory
+     * inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task
+     * to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in
+     * the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     * Warning: This property is deprecated and will be removed after February, 2024.
+     * Please use the [Azure KeyVault
+     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
+     *
+     * @return the certificateReferences value.
+     */
+    @Generated
+    public List<BatchCertificateReference> getCertificateReferences() {
+        return this.certificateReferences;
+    }
+
+    /**
+     * Set the certificateReferences property: For Windows Nodes, the Batch service installs the Certificates to the
+     * specified Certificate store and location. For Linux Compute Nodes, the Certificates are stored in a directory
+     * inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task
+     * to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in
+     * the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     * Warning: This property is deprecated and will be removed after February, 2024.
+     * Please use the [Azure KeyVault
+     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
+     *
+     * @param certificateReferences the certificateReferences value to set.
+     * @return the BatchPoolSpecification object itself.
+     */
+    @Generated
+    public BatchPoolSpecification setCertificateReferences(List<BatchCertificateReference> certificateReferences) {
+        this.certificateReferences = certificateReferences;
+        return this;
+    }
+
+    /**
      * Get the applicationPackageReferences property: The list of Packages to be installed on each Compute Node in the
      * Pool. When creating a pool, the package's application ID must be fully qualified
      * (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}).
@@ -650,49 +742,6 @@ public final class BatchPoolSpecification implements JsonSerializable<BatchPoolS
         return this;
     }
 
-    /*
-     * The user-specified tags associated with the pool.The user-defined tags to be associated with the Azure Batch
-     * Pool. When specified, these tags are propagated to the backing Azure resources associated with the pool. This
-     * property can only be specified when the Batch account was created with the poolAllocationMode property set to
-     * 'UserSubscription'.
-     */
-    @Generated
-    private String resourceTags;
-
-    /**
-     * Get the resourceTags property: The user-specified tags associated with the pool.The user-defined tags to be
-     * associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources
-     * associated with the pool. This property can only be specified when the Batch account was created with the
-     * poolAllocationMode property set to 'UserSubscription'.
-     *
-     * @return the resourceTags value.
-     */
-    @Generated
-    public String getResourceTags() {
-        return this.resourceTags;
-    }
-
-    /**
-     * Set the resourceTags property: The user-specified tags associated with the pool.The user-defined tags to be
-     * associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources
-     * associated with the pool. This property can only be specified when the Batch account was created with the
-     * poolAllocationMode property set to 'UserSubscription'.
-     *
-     * @param resourceTags the resourceTags value to set.
-     * @return the BatchPoolSpecification object itself.
-     */
-    @Generated
-    public BatchPoolSpecification setResourceTags(String resourceTags) {
-        this.resourceTags = resourceTags;
-        return this;
-    }
-
-    /*
-     * The upgrade policy for the Pool. Describes an upgrade policy - automatic, manual, or rolling.
-     */
-    @Generated
-    private UpgradePolicy upgradePolicy;
-
     /**
      * Get the upgradePolicy property: The upgrade policy for the Pool. Describes an upgrade policy - automatic, manual,
      * or rolling.
@@ -740,6 +789,8 @@ public final class BatchPoolSpecification implements JsonSerializable<BatchPoolS
         jsonWriter.writeBooleanField("enableInterNodeCommunication", this.enableInterNodeCommunication);
         jsonWriter.writeJsonField("networkConfiguration", this.networkConfiguration);
         jsonWriter.writeJsonField("startTask", this.startTask);
+        jsonWriter.writeArrayField("certificateReferences", this.certificateReferences,
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("applicationPackageReferences", this.applicationPackageReferences,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("userAccounts", this.userAccounts, (writer, element) -> writer.writeJson(element));
@@ -779,6 +830,7 @@ public final class BatchPoolSpecification implements JsonSerializable<BatchPoolS
             Boolean enableInterNodeCommunication = null;
             NetworkConfiguration networkConfiguration = null;
             BatchStartTask startTask = null;
+            List<BatchCertificateReference> certificateReferences = null;
             List<BatchApplicationPackageReference> applicationPackageReferences = null;
             List<UserAccount> userAccounts = null;
             List<MetadataItem> metadata = null;
@@ -819,6 +871,8 @@ public final class BatchPoolSpecification implements JsonSerializable<BatchPoolS
                     networkConfiguration = NetworkConfiguration.fromJson(reader);
                 } else if ("startTask".equals(fieldName)) {
                     startTask = BatchStartTask.fromJson(reader);
+                } else if ("certificateReferences".equals(fieldName)) {
+                    certificateReferences = reader.readArray(reader1 -> BatchCertificateReference.fromJson(reader1));
                 } else if ("applicationPackageReferences".equals(fieldName)) {
                     applicationPackageReferences
                         = reader.readArray(reader1 -> BatchApplicationPackageReference.fromJson(reader1));
@@ -851,6 +905,7 @@ public final class BatchPoolSpecification implements JsonSerializable<BatchPoolS
             deserializedBatchPoolSpecification.enableInterNodeCommunication = enableInterNodeCommunication;
             deserializedBatchPoolSpecification.networkConfiguration = networkConfiguration;
             deserializedBatchPoolSpecification.startTask = startTask;
+            deserializedBatchPoolSpecification.certificateReferences = certificateReferences;
             deserializedBatchPoolSpecification.applicationPackageReferences = applicationPackageReferences;
             deserializedBatchPoolSpecification.userAccounts = userAccounts;
             deserializedBatchPoolSpecification.metadata = metadata;

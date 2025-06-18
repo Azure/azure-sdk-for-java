@@ -1,6 +1,6 @@
 # Release History
 
-## 4.30.0-beta.1 (Unreleased)
+## 4.31.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,22 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.30.0 (2025-05-16)
+
+### Features Added
+- Added new values to `SystemEventNames` related to Azure Communication Services and Azure Edge.
+
+## 4.29.1 (2025-03-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-json` from `1.4.0` to version `1.5.0`.
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+
 
 ## 4.29.0 (2025-02-26)
 

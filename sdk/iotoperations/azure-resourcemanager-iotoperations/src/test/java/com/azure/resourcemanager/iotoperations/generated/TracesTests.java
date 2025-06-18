@@ -14,26 +14,26 @@ public final class TracesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Traces model = BinaryData.fromString(
-            "{\"mode\":\"Disabled\",\"cacheSizeMegabytes\":15253955,\"selfTracing\":{\"mode\":\"Disabled\",\"intervalSeconds\":57336706},\"spanChannelCapacity\":514021855}")
+            "{\"mode\":\"Enabled\",\"cacheSizeMegabytes\":389510865,\"selfTracing\":{\"mode\":\"Enabled\",\"intervalSeconds\":453736827},\"spanChannelCapacity\":2029190304}")
             .toObject(Traces.class);
-        Assertions.assertEquals(OperationalMode.DISABLED, model.mode());
-        Assertions.assertEquals(15253955, model.cacheSizeMegabytes());
-        Assertions.assertEquals(OperationalMode.DISABLED, model.selfTracing().mode());
-        Assertions.assertEquals(57336706, model.selfTracing().intervalSeconds());
-        Assertions.assertEquals(514021855, model.spanChannelCapacity());
+        Assertions.assertEquals(OperationalMode.ENABLED, model.mode());
+        Assertions.assertEquals(389510865, model.cacheSizeMegabytes());
+        Assertions.assertEquals(OperationalMode.ENABLED, model.selfTracing().mode());
+        Assertions.assertEquals(453736827, model.selfTracing().intervalSeconds());
+        Assertions.assertEquals(2029190304, model.spanChannelCapacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Traces model = new Traces().withMode(OperationalMode.DISABLED)
-            .withCacheSizeMegabytes(15253955)
-            .withSelfTracing(new SelfTracing().withMode(OperationalMode.DISABLED).withIntervalSeconds(57336706))
-            .withSpanChannelCapacity(514021855);
+        Traces model = new Traces().withMode(OperationalMode.ENABLED)
+            .withCacheSizeMegabytes(389510865)
+            .withSelfTracing(new SelfTracing().withMode(OperationalMode.ENABLED).withIntervalSeconds(453736827))
+            .withSpanChannelCapacity(2029190304);
         model = BinaryData.fromObject(model).toObject(Traces.class);
-        Assertions.assertEquals(OperationalMode.DISABLED, model.mode());
-        Assertions.assertEquals(15253955, model.cacheSizeMegabytes());
-        Assertions.assertEquals(OperationalMode.DISABLED, model.selfTracing().mode());
-        Assertions.assertEquals(57336706, model.selfTracing().intervalSeconds());
-        Assertions.assertEquals(514021855, model.spanChannelCapacity());
+        Assertions.assertEquals(OperationalMode.ENABLED, model.mode());
+        Assertions.assertEquals(389510865, model.cacheSizeMegabytes());
+        Assertions.assertEquals(OperationalMode.ENABLED, model.selfTracing().mode());
+        Assertions.assertEquals(453736827, model.selfTracing().intervalSeconds());
+        Assertions.assertEquals(2029190304, model.spanChannelCapacity());
     }
 }

@@ -14,7 +14,6 @@ import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.core.utils.Base64Uri;
 import io.clientcore.core.utils.DateTimeRfc1123;
-
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
@@ -61,7 +60,8 @@ public final class HttpResponseBodyDecoder {
                     decodeData.getUnexpectedException(response.getStatusCode()).getExceptionBodyClass(), null,
                     RestProxyImpl.serializationFormatFromContentType(response.getHeaders()), serializer);
             } catch (IOException e) {
-                return LOGGER.atWarning().log("Failed to deserialize the error entity.", e);
+                LOGGER.atWarning().setThrowable(e).log("Failed to deserialize the error entity.");
+                return e;
             } catch (RuntimeException e) {
                 Throwable cause = e.getCause();
 
@@ -77,7 +77,7 @@ public final class HttpResponseBodyDecoder {
                     // - IOException is thrown when the deserializer cannot read the response body.
                     //
                     // Return the exception as the body type, RestProxyBase will handle this later.
-                    LOGGER.atWarning().log("Failed to deserialize the error entity.", e);
+                    LOGGER.atWarning().setThrowable(e).log("Failed to deserialize the error entity.");
 
                     return e;
                 } else {
@@ -94,9 +94,11 @@ public final class HttpResponseBodyDecoder {
                     extractEntityTypeFromReturnType(decodeData), decodeData.getReturnValueWireType(),
                     RestProxyImpl.serializationFormatFromContentType(response.getHeaders()), serializer);
             } catch (MalformedValueException e) {
-                throw new HttpResponseException("HTTP response has a malformed body.", response, e);
+                throw LOGGER.throwableAtError()
+                    .log("HTTP response has a malformed body.", e, (m, c) -> new HttpResponseException(m, response, c));
             } catch (IOException e) {
-                throw new HttpResponseException("Deserialization failed.", response, e);
+                throw LOGGER.throwableAtError()
+                    .log("Deserialization failed.", e, (m, c) -> new HttpResponseException(m, response, c));
             }
         }
     }

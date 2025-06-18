@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,56 +22,67 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
     /*
      * API version used to produce this result.
      */
+    @Generated
     private final String apiVersion;
 
     /*
      * Document model ID used to produce this result.
      */
+    @Generated
     private final String modelId;
 
     /*
      * Method used to compute string offset and length.
      */
+    @Generated
     private final StringIndexType stringIndexType;
 
     /*
      * Concatenate string representation of all textual and visual elements in reading order.
      */
+    @Generated
     private final String content;
 
     /*
      * Analyzed pages.
      */
+    @Generated
     private final List<DocumentPage> pages;
 
     /*
      * Extracted paragraphs.
      */
+    @Generated
     private List<DocumentParagraph> paragraphs;
 
     /*
      * Extracted tables.
      */
+    @Generated
     private List<DocumentTable> tables;
 
     /*
      * Extracted key-value pairs.
      */
+    @Generated
     private List<DocumentKeyValuePair> keyValuePairs;
 
     /*
      * Extracted font styles.
      */
+    @Generated
     private List<DocumentStyle> styles;
 
     /*
      * Detected languages.
      */
+    @Generated
     private List<DocumentLanguage> languages;
 
     /*
      * Extracted documents.
      */
+    @Generated
     private List<Document> documents;
 
     /**
@@ -82,6 +94,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * @param content the content value to set.
      * @param pages the pages value to set.
      */
+    @Generated
     public AnalyzeResult(String apiVersion, String modelId, StringIndexType stringIndexType, String content,
         List<DocumentPage> pages) {
         this.apiVersion = apiVersion;
@@ -96,6 +109,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * 
      * @return the apiVersion value.
      */
+    @Generated
     public String getApiVersion() {
         return this.apiVersion;
     }
@@ -105,6 +119,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * 
      * @return the modelId value.
      */
+    @Generated
     public String getModelId() {
         return this.modelId;
     }
@@ -114,6 +129,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * 
      * @return the stringIndexType value.
      */
+    @Generated
     public StringIndexType getStringIndexType() {
         return this.stringIndexType;
     }
@@ -123,6 +139,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * 
      * @return the content value.
      */
+    @Generated
     public String getContent() {
         return this.content;
     }
@@ -132,6 +149,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * 
      * @return the pages value.
      */
+    @Generated
     public List<DocumentPage> getPages() {
         return this.pages;
     }
@@ -141,6 +159,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * 
      * @return the paragraphs value.
      */
+    @Generated
     public List<DocumentParagraph> getParagraphs() {
         return this.paragraphs;
     }
@@ -151,6 +170,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * @param paragraphs the paragraphs value to set.
      * @return the AnalyzeResult object itself.
      */
+    @Generated
     public AnalyzeResult setParagraphs(List<DocumentParagraph> paragraphs) {
         this.paragraphs = paragraphs;
         return this;
@@ -161,6 +181,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * 
      * @return the tables value.
      */
+    @Generated
     public List<DocumentTable> getTables() {
         return this.tables;
     }
@@ -171,6 +192,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * @param tables the tables value to set.
      * @return the AnalyzeResult object itself.
      */
+    @Generated
     public AnalyzeResult setTables(List<DocumentTable> tables) {
         this.tables = tables;
         return this;
@@ -181,6 +203,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * 
      * @return the keyValuePairs value.
      */
+    @Generated
     public List<DocumentKeyValuePair> getKeyValuePairs() {
         return this.keyValuePairs;
     }
@@ -191,6 +214,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * @param keyValuePairs the keyValuePairs value to set.
      * @return the AnalyzeResult object itself.
      */
+    @Generated
     public AnalyzeResult setKeyValuePairs(List<DocumentKeyValuePair> keyValuePairs) {
         this.keyValuePairs = keyValuePairs;
         return this;
@@ -201,6 +225,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * 
      * @return the styles value.
      */
+    @Generated
     public List<DocumentStyle> getStyles() {
         return this.styles;
     }
@@ -211,6 +236,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * @param styles the styles value to set.
      * @return the AnalyzeResult object itself.
      */
+    @Generated
     public AnalyzeResult setStyles(List<DocumentStyle> styles) {
         this.styles = styles;
         return this;
@@ -221,6 +247,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * 
      * @return the languages value.
      */
+    @Generated
     public List<DocumentLanguage> getLanguages() {
         return this.languages;
     }
@@ -231,6 +258,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * @param languages the languages value to set.
      * @return the AnalyzeResult object itself.
      */
+    @Generated
     public AnalyzeResult setLanguages(List<DocumentLanguage> languages) {
         this.languages = languages;
         return this;
@@ -241,6 +269,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * 
      * @return the documents value.
      */
+    @Generated
     public List<Document> getDocuments() {
         return this.documents;
     }
@@ -251,6 +280,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * @param documents the documents value to set.
      * @return the AnalyzeResult object itself.
      */
+    @Generated
     public AnalyzeResult setDocuments(List<Document> documents) {
         this.documents = documents;
         return this;
@@ -259,6 +289,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -286,6 +317,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AnalyzeResult.
      */
+    @Generated
     public static AnalyzeResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean apiVersionFound = false;

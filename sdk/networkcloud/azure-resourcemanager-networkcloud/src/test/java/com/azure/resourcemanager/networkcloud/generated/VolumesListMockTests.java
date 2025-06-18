@@ -22,7 +22,7 @@ public final class VolumesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"extendedLocation\":{\"name\":\"yvdgxlyzk\",\"type\":\"itdshezsvkolru\"},\"properties\":{\"attachedTo\":[\"vmozsayebrazwz\",\"pzbtzuyk\",\"kipfsdyepf\",\"ocmbezacf\"],\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"azwyqejgaaokctgk\",\"provisioningState\":\"Provisioning\",\"serialNumber\":\"qzkcyzm\",\"sizeMiB\":1437328628753102819},\"location\":\"dyfcix\",\"tags\":{\"a\":\"cqvhoejgoiutgwrm\",\"hazyntacihnco\":\"p\",\"mliqmvlb\":\"mip\",\"eaqgrvgpomxpupd\":\"i\"},\"id\":\"sdfjyiesoc\",\"name\":\"iqbuou\",\"type\":\"mpyzgleo\"}]}";
+            = "{\"value\":[{\"etag\":\"jgquxweysland\",\"extendedLocation\":{\"name\":\"dcdjhunh\",\"type\":\"hcgawn\"},\"properties\":{\"attachedTo\":[\"quox\",\"otire\",\"mseobfsxstcyilbv\",\"m\"],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"zlquzexo\",\"provisioningState\":\"Accepted\",\"serialNumber\":\"bjvbzinzab\",\"sizeMiB\":6852976663989653349},\"location\":\"gl\",\"tags\":{\"cehaqi\":\"lpgidn\"},\"id\":\"oyzlt\",\"name\":\"iomqoqpepiaea\",\"type\":\"fsergdtpeqnacy\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +33,10 @@ public final class VolumesListMockTests {
 
         PagedIterable<Volume> response = manager.volumes().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dyfcix", response.iterator().next().location());
-        Assertions.assertEquals("cqvhoejgoiutgwrm", response.iterator().next().tags().get("a"));
-        Assertions.assertEquals("yvdgxlyzk", response.iterator().next().extendedLocation().name());
-        Assertions.assertEquals("itdshezsvkolru", response.iterator().next().extendedLocation().type());
-        Assertions.assertEquals(1437328628753102819L, response.iterator().next().sizeMiB());
+        Assertions.assertEquals("gl", response.iterator().next().location());
+        Assertions.assertEquals("lpgidn", response.iterator().next().tags().get("cehaqi"));
+        Assertions.assertEquals("dcdjhunh", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("hcgawn", response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals(6852976663989653349L, response.iterator().next().sizeMiB());
     }
 }

@@ -27,6 +27,11 @@ public final class EncryptionIdentity implements JsonSerializable<EncryptionIden
      */
     private String userAssignedIdentity;
 
+    /*
+     * ClientId of the multi-tenant AAD Application. Used to access cross-tenant KeyVaults.
+     */
+    private String federatedClientId;
+
     /**
      * Creates an instance of EncryptionIdentity class.
      */
@@ -68,6 +73,28 @@ public final class EncryptionIdentity implements JsonSerializable<EncryptionIden
     }
 
     /**
+     * Get the federatedClientId property: ClientId of the multi-tenant AAD Application. Used to access cross-tenant
+     * KeyVaults.
+     * 
+     * @return the federatedClientId value.
+     */
+    public String federatedClientId() {
+        return this.federatedClientId;
+    }
+
+    /**
+     * Set the federatedClientId property: ClientId of the multi-tenant AAD Application. Used to access cross-tenant
+     * KeyVaults.
+     * 
+     * @param federatedClientId the federatedClientId value to set.
+     * @return the EncryptionIdentity object itself.
+     */
+    public EncryptionIdentity withFederatedClientId(String federatedClientId) {
+        this.federatedClientId = federatedClientId;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -82,6 +109,7 @@ public final class EncryptionIdentity implements JsonSerializable<EncryptionIden
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("userAssignedIdentity", this.userAssignedIdentity);
+        jsonWriter.writeStringField("federatedClientId", this.federatedClientId);
         return jsonWriter.writeEndObject();
     }
 
@@ -104,6 +132,8 @@ public final class EncryptionIdentity implements JsonSerializable<EncryptionIden
                     deserializedEncryptionIdentity.principalId = reader.getString();
                 } else if ("userAssignedIdentity".equals(fieldName)) {
                     deserializedEncryptionIdentity.userAssignedIdentity = reader.getString();
+                } else if ("federatedClientId".equals(fieldName)) {
+                    deserializedEncryptionIdentity.federatedClientId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

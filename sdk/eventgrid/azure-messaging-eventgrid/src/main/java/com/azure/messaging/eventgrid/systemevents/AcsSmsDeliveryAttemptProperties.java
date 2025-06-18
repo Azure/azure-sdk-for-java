@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,21 +23,25 @@ public final class AcsSmsDeliveryAttemptProperties implements JsonSerializable<A
     /*
      * TimeStamp when delivery was attempted
      */
+    @Generated
     private OffsetDateTime timestamp;
 
     /*
      * Number of segments that were successfully delivered
      */
+    @Generated
     private Integer segmentsSucceeded;
 
     /*
      * Number of segments whose delivery failed
      */
+    @Generated
     private Integer segmentsFailed;
 
     /**
      * Creates an instance of AcsSmsDeliveryAttemptProperties class.
      */
+    @Generated
     public AcsSmsDeliveryAttemptProperties() {
     }
 
@@ -45,6 +50,7 @@ public final class AcsSmsDeliveryAttemptProperties implements JsonSerializable<A
      * 
      * @return the timestamp value.
      */
+    @Generated
     public OffsetDateTime getTimestamp() {
         return this.timestamp;
     }
@@ -55,6 +61,7 @@ public final class AcsSmsDeliveryAttemptProperties implements JsonSerializable<A
      * @param timestamp the timestamp value to set.
      * @return the AcsSmsDeliveryAttemptProperties object itself.
      */
+    @Generated
     public AcsSmsDeliveryAttemptProperties setTimestamp(OffsetDateTime timestamp) {
         this.timestamp = timestamp;
         return this;
@@ -65,6 +72,7 @@ public final class AcsSmsDeliveryAttemptProperties implements JsonSerializable<A
      * 
      * @return the segmentsSucceeded value.
      */
+    @Generated
     public Integer getSegmentsSucceeded() {
         return this.segmentsSucceeded;
     }
@@ -75,6 +83,7 @@ public final class AcsSmsDeliveryAttemptProperties implements JsonSerializable<A
      * @param segmentsSucceeded the segmentsSucceeded value to set.
      * @return the AcsSmsDeliveryAttemptProperties object itself.
      */
+    @Generated
     public AcsSmsDeliveryAttemptProperties setSegmentsSucceeded(Integer segmentsSucceeded) {
         this.segmentsSucceeded = segmentsSucceeded;
         return this;
@@ -85,6 +94,7 @@ public final class AcsSmsDeliveryAttemptProperties implements JsonSerializable<A
      * 
      * @return the segmentsFailed value.
      */
+    @Generated
     public Integer getSegmentsFailed() {
         return this.segmentsFailed;
     }
@@ -95,6 +105,7 @@ public final class AcsSmsDeliveryAttemptProperties implements JsonSerializable<A
      * @param segmentsFailed the segmentsFailed value to set.
      * @return the AcsSmsDeliveryAttemptProperties object itself.
      */
+    @Generated
     public AcsSmsDeliveryAttemptProperties setSegmentsFailed(Integer segmentsFailed) {
         this.segmentsFailed = segmentsFailed;
         return this;
@@ -103,6 +114,7 @@ public final class AcsSmsDeliveryAttemptProperties implements JsonSerializable<A
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -121,6 +133,7 @@ public final class AcsSmsDeliveryAttemptProperties implements JsonSerializable<A
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AcsSmsDeliveryAttemptProperties.
      */
+    @Generated
     public static AcsSmsDeliveryAttemptProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsSmsDeliveryAttemptProperties deserializedAcsSmsDeliveryAttemptProperties

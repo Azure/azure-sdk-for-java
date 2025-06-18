@@ -10,6 +10,10 @@
 
 ### Other Changes
 
+## 1.2.16 (2025-03-24)
+
+### Other Changes
+
 ## 1.2.15 (2025-02-25)
 
 ### Other Changes

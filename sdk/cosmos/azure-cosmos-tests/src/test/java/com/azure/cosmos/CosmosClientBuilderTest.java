@@ -10,15 +10,27 @@ import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
-import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.util.CosmosPagedFlux;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.testng.SkipException;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class CosmosClientBuilderTest {
     String hostName = "https://sample-account.documents.azure.com:443/";
@@ -57,124 +69,6 @@ public class CosmosClientBuilderTest {
             assertThat(e).isInstanceOf(RuntimeException.class);
             assertThat(e.getMessage()).isEqualTo("preferredRegion can't be empty");
         }
-    }
-
-    @Test(groups = "emulator")
-    public void validateIsClientTelemetryEnabledConflicts() {
-        ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor
-            telemetryAccessor = ImplementationBridgeHelpers
-                .CosmosClientTelemetryConfigHelper
-                .getCosmosClientTelemetryConfigAccessor();
-
-        // DEFAULT - clientTelemetry should be disabled for now
-        CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig();
-
-        CosmosAsyncClient client = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .clientTelemetryConfig(telemetryConfig)
-            .buildAsyncClient();
-
-        assertThat(telemetryAccessor.isSendClientTelemetryToServiceEnabled(client.getClientTelemetryConfig()))
-            .isEqualTo(false);
-        client.close();
-
-        // trying to enable via telemetryConfig - should fail because the same CosmosClientTelemetryConfig instance
-        // has been used to built another Cosmos Client - enabling/disabling ClientTelemetry is immutable right now
-        telemetryConfig.sendClientTelemetryToService(true);
-        client = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .clientTelemetryConfig(telemetryConfig)
-            .buildAsyncClient();
-
-        assertThat(telemetryAccessor.isSendClientTelemetryToServiceEnabled(client.getClientTelemetryConfig()))
-            .isEqualTo(false);
-        client.close();
-
-        // Enabling via telemetryConfig and disabled via builder.isClientTelemetryEnabled --> Disabled
-        telemetryConfig = new CosmosClientTelemetryConfig();
-        telemetryConfig.sendClientTelemetryToService(true);
-        client = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .clientTelemetryConfig(telemetryConfig)
-            .clientTelemetryEnabled(false)
-            .buildAsyncClient();
-
-        assertThat(telemetryAccessor.isSendClientTelemetryToServiceEnabled(client.getClientTelemetryConfig()))
-            .isEqualTo(false);
-        client.close();
-
-        // Enabling via telemetryConfig, disabling via builder.isClientTelemetryEnabled and re-enabling again --> Enabled
-        telemetryConfig = new CosmosClientTelemetryConfig();
-        telemetryConfig.sendClientTelemetryToService(true);
-        client = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .clientTelemetryConfig(telemetryConfig)
-            .clientTelemetryEnabled(false)
-            .clientTelemetryConfig(telemetryConfig)
-            .buildAsyncClient();
-
-        assertThat(telemetryAccessor.isSendClientTelemetryToServiceEnabled(client.getClientTelemetryConfig()))
-            .isEqualTo(true);
-        client.close();
-
-        // Disabling via telemetryConfig, enabling via builder.isClientTelemetryEnabled --> Enabled
-        telemetryConfig = new CosmosClientTelemetryConfig();
-        telemetryConfig.sendClientTelemetryToService(false);
-        client = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .clientTelemetryConfig(telemetryConfig)
-            .clientTelemetryEnabled(true)
-            .buildAsyncClient();
-
-        assertThat(telemetryAccessor.isSendClientTelemetryToServiceEnabled(client.getClientTelemetryConfig()))
-            .isEqualTo(true);
-        client.close();
-
-        // Disabling via telemetryConfig, enabling via builder.isClientTelemetryEnabled and
-        // re-disabling again --> Disabled
-        telemetryConfig = new CosmosClientTelemetryConfig();
-        telemetryConfig.sendClientTelemetryToService(false);
-        client = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .clientTelemetryConfig(telemetryConfig)
-            .clientTelemetryEnabled(true)
-            .clientTelemetryConfig(telemetryConfig)
-            .buildAsyncClient();
-
-        assertThat(telemetryAccessor.isSendClientTelemetryToServiceEnabled(client.getClientTelemetryConfig()))
-            .isEqualTo(false);
-        client.close();
-
-        // Enabling via telemetryConfig, enabling via builder.isClientTelemetryEnabled --> Enabled
-        telemetryConfig = new CosmosClientTelemetryConfig();
-        telemetryConfig.sendClientTelemetryToService(true);
-        client = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .clientTelemetryEnabled(true)
-            .clientTelemetryConfig(telemetryConfig)
-            .buildAsyncClient();
-
-        assertThat(telemetryAccessor.isSendClientTelemetryToServiceEnabled(client.getClientTelemetryConfig()))
-            .isEqualTo(true);
-        client.close();
-
-        client = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .clientTelemetryConfig(telemetryConfig)
-            .clientTelemetryEnabled(true)
-            .buildAsyncClient();
-
-        assertThat(telemetryAccessor.isSendClientTelemetryToServiceEnabled(client.getClientTelemetryConfig()))
-            .isEqualTo(true);
-        client.close();
     }
 
     @Test(groups = "emulator")
@@ -266,6 +160,212 @@ public class CosmosClientBuilderTest {
             assertThat(sessionContainer.getDisableSessionCapturing()).isEqualTo(false);
         } finally {
             System.clearProperty("COSMOS.SESSION_CAPTURING_TYPE");
+        }
+    }
+
+    @Test(groups = "emulator")
+    public void validateContainerCreationInterceptor() {
+        CosmosClient clientWithoutInterceptor = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .userAgentSuffix("noInterceptor")
+            .buildClient();
+
+        ConcurrentMap<CacheKey, List<?>> queryCache = new ConcurrentHashMap<>();
+
+        CosmosClient clientWithInterceptor = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .userAgentSuffix("withInterceptor")
+            .containerCreationInterceptor(originalContainer -> new CacheAndValidateQueriesContainer(originalContainer, queryCache))
+            .buildClient();
+
+        CosmosAsyncClient asyncClientWithInterceptor = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .userAgentSuffix("withInterceptor")
+            .containerCreationInterceptor(originalContainer -> new CacheAndValidateQueriesContainer(originalContainer, queryCache))
+            .buildAsyncClient();
+
+        CosmosContainer normalContainer = clientWithoutInterceptor
+            .getDatabase("TestDB")
+            .getContainer("TestContainer");
+        assertThat(normalContainer).isNotNull();
+        assertThat(normalContainer.getClass()).isEqualTo(CosmosContainer.class);
+        assertThat(normalContainer.asyncContainer.getClass()).isEqualTo(CosmosAsyncContainer.class);
+
+        CosmosContainer customSyncContainer = clientWithInterceptor
+            .getDatabase("TestDB")
+            .getContainer("TestContainer");
+        assertThat(customSyncContainer).isNotNull();
+        assertThat(customSyncContainer.getClass()).isEqualTo(CosmosContainer.class);
+        assertThat(customSyncContainer.asyncContainer.getClass()).isEqualTo(CacheAndValidateQueriesContainer.class);
+
+        CosmosAsyncContainer customAsyncContainer = asyncClientWithInterceptor
+            .getDatabase("TestDB")
+            .getContainer("TestContainer");
+        assertThat(customAsyncContainer).isNotNull();
+        assertThat(customAsyncContainer.getClass()).isEqualTo(CacheAndValidateQueriesContainer.class);
+
+        try {
+            customSyncContainer.queryItems("SELECT * from c", null, ObjectNode.class);
+            fail("Unparameterized query should throw");
+        } catch (IllegalStateException expectedError) {}
+
+        try {
+            customAsyncContainer.queryItems("SELECT * from c", null, ObjectNode.class);
+            fail("Unparameterized query should throw");
+        } catch (IllegalStateException expectedError) {}
+
+        try {
+            customAsyncContainer.queryItems("SELECT * from c", ObjectNode.class);
+            fail("Unparameterized query should throw");
+        } catch (IllegalStateException expectedError) {}
+
+        SqlQuerySpec querySpec = new SqlQuerySpec().setQueryText("SELECT * from c");
+        assertThat(queryCache).size().isEqualTo(0);
+
+        try {
+            List<ObjectNode> items = customSyncContainer
+                .queryItems(querySpec, null, ObjectNode.class)
+                .stream().collect(Collectors.toList());
+            fail("Not yet cached - the query above should always throw");
+        } catch (CosmosException cosmosException) {
+            // Container does not exist - when not cached should fail
+            assertThat(cosmosException.getStatusCode()).isEqualTo(404);
+            assertThat(cosmosException.getSubStatusCode()).isEqualTo(1003);
+        }
+
+        queryCache.putIfAbsent(new CacheKey(ObjectNode.class.getCanonicalName(), querySpec), new ArrayList<>());
+        assertThat(queryCache).size().isEqualTo(1);
+
+        // Validate that CacheKey equality check works
+        queryCache.putIfAbsent(new CacheKey(ObjectNode.class.getCanonicalName(), querySpec), new ArrayList<>());
+        assertThat(queryCache).size().isEqualTo(1);
+
+        // Validate that form cache the results can be served
+        List<ObjectNode> items = customSyncContainer
+            .queryItems(querySpec, null, ObjectNode.class)
+            .stream().collect(Collectors.toList());
+
+        querySpec = new SqlQuerySpec().setQueryText("SELECT * from c");
+        CosmosPagedFlux<ObjectNode> cachedPagedFlux = customAsyncContainer
+            .queryItems(querySpec, null, ObjectNode.class);
+        assertThat(cachedPagedFlux.getClass().getName()).startsWith("com.azure.cosmos.util.CosmosPagedFluxStaticListImpl");
+
+        // Validate that uncached query form async Container also fails with 404 due to non-existing Container
+        querySpec = new SqlQuerySpec().setQueryText("SELECT * from r");
+        try {
+            CosmosPagedFlux<ObjectNode> uncachedPagedFlux = customAsyncContainer
+                .queryItems(querySpec, null, ObjectNode.class);
+        } catch (CosmosException cosmosException) {
+            assertThat(cosmosException.getStatusCode()).isEqualTo(404);
+            assertThat(cosmosException.getSubStatusCode()).isEqualTo(1003);
+        }
+    }
+
+    private static class CacheKey {
+        private final String className;
+        private final String queryText;
+
+        private final List<SqlParameter> parameters;
+        public CacheKey(String className, SqlQuerySpec querySpec) {
+            this.className = className;
+            this.queryText = querySpec.getQueryText();
+            List<SqlParameter> tempParameters = querySpec.getParameters();
+            if (tempParameters != null) {
+                tempParameters.sort(Comparator.comparing(SqlParameter::getName));
+                this.parameters = tempParameters;
+            } else {
+                this.parameters = new ArrayList<>();
+            }
+        }
+
+        @Override
+        public int hashCode() {
+            Object[] temp = new Object[2 + this.parameters.size()];
+            temp[0] = this.className;
+            temp[1] = this.queryText;
+            for (int i = 0; i < this.parameters.size(); i++) {
+                temp[2 + i] = this.parameters.get(i).getValue(Object.class);
+            }
+
+            return Objects.hash(temp);
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == null) {
+                return false;
+            }
+
+            if (!(obj instanceof CacheKey)) {
+                return false;
+            }
+
+            CacheKey other = (CacheKey)obj;
+            if (!this.className.equals(other.className)) {
+                return false;
+            }
+
+            if (!this.queryText.equals(other.queryText)) {
+                return false;
+            }
+
+            if (this.parameters.size() != other.parameters.size()) {
+                return false;
+            }
+
+            for (int i = 0; i < this.parameters.size(); i++) {
+                if (!this.parameters.get(i).getName().equals(other.parameters.get(i).getName())) {
+                    return false;
+                }
+
+                if (!this.parameters.get(i).getValue(Object.class).equals(other.parameters.get(i).getValue(Object.class))) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    }
+
+    private static class CacheAndValidateQueriesContainer extends CosmosAsyncContainer {
+        private final ConcurrentMap<CacheKey, List<?>> queryCache;
+
+        protected CacheAndValidateQueriesContainer(
+            CosmosAsyncContainer toBeWrappedContainer,
+            ConcurrentMap<CacheKey, List<?>> queryCache) {
+
+            super(toBeWrappedContainer);
+            this.queryCache = queryCache;
+        }
+
+        @Override
+        public <T> CosmosPagedFlux<T> queryItems(String query, CosmosQueryRequestOptions options, Class<T> classType) {
+            throw new IllegalStateException("No unparameterized queries allowed. Use parameterized query instead.");
+        }
+
+        @Override
+        public <T> CosmosPagedFlux<T> queryItems(SqlQuerySpec querySpec, Class<T> classType) {
+            return this.queryItems(querySpec, null, classType);
+        }
+
+        @Override
+        public <T> CosmosPagedFlux<T> queryItems(String query, Class<T> classType) {
+            throw new IllegalStateException("No unparameterized queries allowed. Use parameterized query instead.");
+        }
+
+        @Override
+        public <T> CosmosPagedFlux<T> queryItems(SqlQuerySpec querySpec, CosmosQueryRequestOptions options, Class<T> classType) {
+            CacheKey key = new CacheKey(classType.getCanonicalName(), querySpec);
+            List<?> cachedResult = this.queryCache.get(key);
+            if (cachedResult != null) {
+                return CosmosPagedFlux.fromList((List<T>)cachedResult, false);
+            }
+
+            return super
+                .queryItems(querySpec, options, classType);
         }
     }
 }

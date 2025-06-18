@@ -6,8 +6,8 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeResource;
@@ -21,20 +21,20 @@ public final class IntegrationRuntimesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"zq\",\"\":{\"f\":\"datao\",\"qjvju\":\"datalibwdkjq\",\"tz\":\"datajqjxobmvf\"}},\"name\":\"rtarneug\",\"type\":\"pkjyo\",\"etag\":\"wcxedkkd\",\"id\":\"frisreh\"}";
+            = "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"tkpo\",\"njduyotqb\":\"dataoyjjfx\"},\"name\":\"tx\",\"type\":\"uxmegrix\",\"etag\":\"bzjlqr\",\"id\":\"qpjstc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         IntegrationRuntimeResource response = manager.integrationRuntimes()
-            .getWithResponse("eel", "mavinumdngqyvzzr", "ikanybo", "agaigtpj", com.azure.core.util.Context.NONE)
+            .getWithResponse("hkm", "iraoytkkq", "aazvmnv", "dzfypdsrfpihvij", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("frisreh", response.id());
-        Assertions.assertEquals("zq", response.properties().description());
+        Assertions.assertEquals("qpjstc", response.id());
+        Assertions.assertEquals("tkpo", response.properties().description());
     }
 }

@@ -62,8 +62,9 @@ final class ReflectionUtilsMethodHandle implements ReflectionUtilsApi {
                 throw (Error) throwable;
             } else {
                 LOGGER.atInfo()
+                    .setThrowable(throwable)
                     .log("Unable to create MethodHandles to use Java 9+ MethodHandles.privateLookupIn. Will "
-                        + "attempt to fallback to using the package-private constructor.", throwable);
+                        + "attempt to fallback to using the package-private constructor.");
             }
         }
 
@@ -78,8 +79,8 @@ final class ReflectionUtilsMethodHandle implements ReflectionUtilsApi {
 
                 jdkInternalPrivateLookupInConstructor = lookup.unreflectConstructor(privateLookupInConstructor);
             } catch (ReflectiveOperationException ex) {
-                throw LOGGER.logThrowableAsError(
-                    new RuntimeException("Unable to use package-private MethodHandles.Lookup constructor.", ex));
+                throw LOGGER.throwableAtError()
+                    .log("Unable to use package-private MethodHandles.Lookup constructor.", ex, RuntimeException::new);
             }
         }
 

@@ -85,7 +85,7 @@ public final class DateTimeRfc1123 {
      */
     private static OffsetDateTime parse(final String date) {
         if (date.length() != 29 || !date.endsWith("GMT")) {
-            throw LOGGER.logThrowableAsError(new DateTimeException("Invalid date time: " + date));
+            throw LOGGER.throwableAtError().addKeyValue("date", date).log("Invalid date time.", DateTimeException::new);
         }
 
         try {
@@ -117,7 +117,9 @@ public final class DateTimeRfc1123 {
         for (int i = beginIndex; i < endIndex; i++) {
             final char c = date.charAt(i);
             if (c < '0' || c > '9') {
-                throw LOGGER.logThrowableAsError(new DateTimeException("Invalid date time: " + date));
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("date", date)
+                    .log("Invalid date time.", DateTimeException::new);
             }
             num = num * 10 + (c - '0');
         }
@@ -179,7 +181,9 @@ public final class DateTimeRfc1123 {
             return Month.DECEMBER;
         }
 
-        throw LOGGER.logThrowableAsError(new IllegalArgumentException("Unknown month " + date));
+        throw LOGGER.throwableAtError()
+            .addKeyValue("month", date.toString())
+            .log("Unknown month.", IllegalArgumentException::new);
     }
 
     /**
@@ -240,7 +244,9 @@ public final class DateTimeRfc1123 {
                 break;
 
             default:
-                throw LOGGER.logThrowableAsError(new IllegalArgumentException("Unknown day of week " + dayOfWeek));
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("dayOfWeek", dayOfWeek.name())
+                    .log("Unknown day of week.", IllegalArgumentException::new);
         }
 
         bytes[3] = ',';
@@ -324,7 +330,9 @@ public final class DateTimeRfc1123 {
                 break;
 
             default:
-                throw LOGGER.logThrowableAsError(new IllegalArgumentException("Unknown month " + month));
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("month", month.name())
+                    .log("Unknown month.", IllegalArgumentException::new);
         }
         bytes[11] = ' ';
 

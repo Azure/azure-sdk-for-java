@@ -49,13 +49,14 @@ public final class GeoLinearRing implements JsonSerializable<GeoLinearRing> {
 
         int size = coordinates.size();
         if (size < 4) {
-            throw LOGGER
-                .logThrowableAsError(new IllegalArgumentException("A linear ring requires at least 4 coordinates."));
+            throw LOGGER.throwableAtError()
+                .log("A linear ring requires at least 4 coordinates.", IllegalArgumentException::new);
         }
 
         if (!Objects.equals(coordinates.get(0), coordinates.get(size - 1))) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("The first and last coordinates of a linear ring must be equivalent."));
+            throw LOGGER.throwableAtError()
+                .log("The first and last coordinates of a linear ring must be equivalent.",
+                    IllegalArgumentException::new);
         }
 
         this.coordinates = new GeoArray<>(new ArrayList<>(coordinates));

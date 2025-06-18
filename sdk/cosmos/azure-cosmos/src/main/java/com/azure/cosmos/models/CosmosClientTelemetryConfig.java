@@ -51,7 +51,6 @@ public final class CosmosClientTelemetryConfig {
     private static final Duration DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
     private static final int DEFAULT_MAX_CONNECTION_POOL_SIZE = 1000;
 
-    private Boolean clientTelemetryEnabled;
     private final Duration httpNetworkRequestTimeout;
     private final int maxConnectionPoolSize;
     private final Duration idleHttpConnectionTimeout;
@@ -66,8 +65,6 @@ public final class CosmosClientTelemetryConfig {
     private Tag clientCorrelationTag;
     private String accountName;
     private ClientTelemetry clientTelemetry;
-
-    private Boolean effectiveIsClientTelemetryEnabled = null;
     private CosmosMicrometerMetricsOptions micrometerMetricsOptions = null;
     private CosmosDiagnosticsThresholds diagnosticsThresholds = new CosmosDiagnosticsThresholds();
     private Tracer tracer;
@@ -81,8 +78,6 @@ public final class CosmosClientTelemetryConfig {
      * Instantiates a new Cosmos client telemetry configuration.
      */
     public CosmosClientTelemetryConfig() {
-        this.clientTelemetryEnabled = null;
-        this.effectiveIsClientTelemetryEnabled = null;
         this.httpNetworkRequestTimeout = DEFAULT_NETWORK_REQUEST_TIMEOUT;
         this.maxConnectionPoolSize = DEFAULT_MAX_CONNECTION_POOL_SIZE;
         this.idleHttpConnectionTimeout = DEFAULT_IDLE_CONNECTION_TIMEOUT;
@@ -101,25 +96,19 @@ public final class CosmosClientTelemetryConfig {
 
     /**
      * Enables or disables sending Cosmos DB client telemetry to the Azure Cosmos DB Service
+     *
+     * @deprecated is is not possible to send the telemetry to the service. But client-side telemetry can be 
+     * enabled via {@link CosmosClientTelemetryConfig#diagnosticsHandler(CosmosDiagnosticsHandler)},
+     * {@link CosmosClientTelemetryConfig#metricsOptions(MetricsOptions)} and
+     * {@link CosmosClientTelemetryConfig#tracingOptions(TracingOptions)}.
+     *
      * @param enabled a flag indicating whether sending client telemetry to the backend should be
      * enabled or not
      * @return current CosmosClientTelemetryConfig
      */
+    @Deprecated()    
     public CosmosClientTelemetryConfig sendClientTelemetryToService(boolean enabled) {
-        this.clientTelemetryEnabled = enabled;
-
         return this;
-    }
-
-    Boolean isSendClientTelemetryToServiceEnabled() {
-        Boolean effectiveSnapshot = this.effectiveIsClientTelemetryEnabled;
-        Boolean currentSnapshot = this.clientTelemetryEnabled;
-
-        return  effectiveSnapshot != null ? effectiveSnapshot : currentSnapshot;
-    }
-
-    void resetIsSendClientTelemetryToServiceEnabled() {
-        this.clientTelemetryEnabled = null;
     }
 
     void setAccountName(String accountName) {
@@ -308,13 +297,6 @@ public final class CosmosClientTelemetryConfig {
         return this;
     }
 
-    private CosmosClientTelemetryConfig setEffectiveIsClientTelemetryEnabled(
-        boolean effectiveIsClientTelemetryEnabled) {
-
-        this.effectiveIsClientTelemetryEnabled = effectiveIsClientTelemetryEnabled;
-        return this;
-    }
-
     Duration getHttpNetworkRequestTimeout() {
         return this.httpNetworkRequestTimeout;
     }
@@ -449,7 +431,6 @@ public final class CosmosClientTelemetryConfig {
             "samplingRate=" + this.samplingRate +
             ", thresholds=" + this.diagnosticsThresholds +
             ", clientCorrelationId=" + this.clientCorrelationId +
-            ", clientTelemetryEnabled=" + this.effectiveIsClientTelemetryEnabled +
             ", clientMetricsEnabled=" + this.isClientMetricsEnabled +
             ", transportLevelTracingEnabled=" + this.isTransportLevelTracingEnabled +
             ", showQueryMode=" + this.showQueryMode +
@@ -568,21 +549,8 @@ public final class CosmosClientTelemetryConfig {
                 }
 
                 @Override
-                public Boolean isSendClientTelemetryToServiceEnabled(CosmosClientTelemetryConfig config) {
-                    return config.isSendClientTelemetryToServiceEnabled();
-                }
-
-                @Override
                 public boolean isClientMetricsEnabled(CosmosClientTelemetryConfig config) {
                     return config.isClientMetricsEnabled;
-                }
-
-                @Override
-                public CosmosClientTelemetryConfig createSnapshot(
-                    CosmosClientTelemetryConfig config,
-                    boolean effectiveIsClientTelemetryEnabled) {
-
-                    return config.setEffectiveIsClientTelemetryEnabled(effectiveIsClientTelemetryEnabled);
                 }
 
                 @Override
@@ -632,12 +600,6 @@ public final class CosmosClientTelemetryConfig {
                         }
                     }
                     config.diagnosticHandlers.add(handler);
-                }
-
-                @Override
-                public void resetIsSendClientTelemetryToServiceEnabled(CosmosClientTelemetryConfig config) {
-
-                    config.resetIsSendClientTelemetryToServiceEnabled();
                 }
 
                 @Override

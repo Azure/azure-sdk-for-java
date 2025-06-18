@@ -22,18 +22,25 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.ApiManagementClient;
+import com.azure.resourcemanager.apimanagement.implementation.AllPoliciesImpl;
 import com.azure.resourcemanager.apimanagement.implementation.ApiDiagnosticsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.ApiExportsImpl;
+import com.azure.resourcemanager.apimanagement.implementation.ApiGatewayConfigConnectionsImpl;
+import com.azure.resourcemanager.apimanagement.implementation.ApiGatewaysImpl;
 import com.azure.resourcemanager.apimanagement.implementation.ApiIssueAttachmentsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.ApiIssueCommentsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.ApiIssuesImpl;
 import com.azure.resourcemanager.apimanagement.implementation.ApiManagementClientBuilder;
+import com.azure.resourcemanager.apimanagement.implementation.ApiManagementGatewaySkusImpl;
 import com.azure.resourcemanager.apimanagement.implementation.ApiManagementOperationsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.ApiManagementServiceSkusImpl;
 import com.azure.resourcemanager.apimanagement.implementation.ApiManagementServicesImpl;
 import com.azure.resourcemanager.apimanagement.implementation.ApiManagementSkusImpl;
+import com.azure.resourcemanager.apimanagement.implementation.ApiManagementWorkspaceLinkOperationsImpl;
+import com.azure.resourcemanager.apimanagement.implementation.ApiManagementWorkspaceLinksImpl;
 import com.azure.resourcemanager.apimanagement.implementation.ApiOperationPoliciesImpl;
 import com.azure.resourcemanager.apimanagement.implementation.ApiOperationsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.ApiPoliciesImpl;
@@ -79,16 +86,22 @@ import com.azure.resourcemanager.apimanagement.implementation.NotificationRecipi
 import com.azure.resourcemanager.apimanagement.implementation.NotificationRecipientUsersImpl;
 import com.azure.resourcemanager.apimanagement.implementation.NotificationsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.OpenIdConnectProvidersImpl;
+import com.azure.resourcemanager.apimanagement.implementation.OperationStatusImpl;
 import com.azure.resourcemanager.apimanagement.implementation.OperationsImpl;
+import com.azure.resourcemanager.apimanagement.implementation.OperationsResultsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.OutboundNetworkDependenciesEndpointsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.PoliciesImpl;
 import com.azure.resourcemanager.apimanagement.implementation.PolicyDescriptionsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.PolicyFragmentsImpl;
+import com.azure.resourcemanager.apimanagement.implementation.PolicyRestrictionValidationsImpl;
+import com.azure.resourcemanager.apimanagement.implementation.PolicyRestrictionsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.PortalConfigsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.PortalRevisionsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.PortalSettingsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.PrivateEndpointConnectionsImpl;
+import com.azure.resourcemanager.apimanagement.implementation.ProductApiLinksImpl;
 import com.azure.resourcemanager.apimanagement.implementation.ProductApisImpl;
+import com.azure.resourcemanager.apimanagement.implementation.ProductGroupLinksImpl;
 import com.azure.resourcemanager.apimanagement.implementation.ProductGroupsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.ProductPoliciesImpl;
 import com.azure.resourcemanager.apimanagement.implementation.ProductSubscriptionsImpl;
@@ -103,6 +116,9 @@ import com.azure.resourcemanager.apimanagement.implementation.ResourceProvidersI
 import com.azure.resourcemanager.apimanagement.implementation.SignInSettingsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.SignUpSettingsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.SubscriptionsImpl;
+import com.azure.resourcemanager.apimanagement.implementation.TagApiLinksImpl;
+import com.azure.resourcemanager.apimanagement.implementation.TagOperationLinksImpl;
+import com.azure.resourcemanager.apimanagement.implementation.TagProductLinksImpl;
 import com.azure.resourcemanager.apimanagement.implementation.TagResourcesImpl;
 import com.azure.resourcemanager.apimanagement.implementation.TagsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.TenantAccessGitsImpl;
@@ -114,15 +130,54 @@ import com.azure.resourcemanager.apimanagement.implementation.UserGroupsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.UserIdentitiesImpl;
 import com.azure.resourcemanager.apimanagement.implementation.UserSubscriptionsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.UsersImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspaceApiDiagnosticsImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspaceApiExportsImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspaceApiOperationPoliciesImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspaceApiOperationsImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspaceApiPoliciesImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspaceApiReleasesImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspaceApiRevisionsImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspaceApiSchemasImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspaceApiVersionSetsImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspaceApisImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspaceBackendsImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspaceCertificatesImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspaceDiagnosticsImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspaceGlobalSchemasImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspaceGroupUsersImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspaceGroupsImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspaceLoggersImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspaceNamedValuesImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspaceNotificationRecipientEmailsImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspaceNotificationRecipientUsersImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspaceNotificationsImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspacePoliciesImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspacePolicyFragmentsImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspaceProductApiLinksImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspaceProductGroupLinksImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspaceProductPoliciesImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspaceProductsImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspaceSubscriptionsImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspaceTagApiLinksImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspaceTagOperationLinksImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspaceTagProductLinksImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspaceTagsImpl;
+import com.azure.resourcemanager.apimanagement.implementation.WorkspacesImpl;
+import com.azure.resourcemanager.apimanagement.models.AllPolicies;
 import com.azure.resourcemanager.apimanagement.models.ApiDiagnostics;
 import com.azure.resourcemanager.apimanagement.models.ApiExports;
+import com.azure.resourcemanager.apimanagement.models.ApiGatewayConfigConnections;
+import com.azure.resourcemanager.apimanagement.models.ApiGateways;
 import com.azure.resourcemanager.apimanagement.models.ApiIssueAttachments;
 import com.azure.resourcemanager.apimanagement.models.ApiIssueComments;
 import com.azure.resourcemanager.apimanagement.models.ApiIssues;
+import com.azure.resourcemanager.apimanagement.models.ApiManagementGatewaySkus;
 import com.azure.resourcemanager.apimanagement.models.ApiManagementOperations;
 import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceSkus;
 import com.azure.resourcemanager.apimanagement.models.ApiManagementServices;
 import com.azure.resourcemanager.apimanagement.models.ApiManagementSkus;
+import com.azure.resourcemanager.apimanagement.models.ApiManagementWorkspaceLinkOperations;
+import com.azure.resourcemanager.apimanagement.models.ApiManagementWorkspaceLinks;
 import com.azure.resourcemanager.apimanagement.models.ApiOperationPolicies;
 import com.azure.resourcemanager.apimanagement.models.ApiOperations;
 import com.azure.resourcemanager.apimanagement.models.ApiPolicies;
@@ -168,16 +223,22 @@ import com.azure.resourcemanager.apimanagement.models.NotificationRecipientEmail
 import com.azure.resourcemanager.apimanagement.models.NotificationRecipientUsers;
 import com.azure.resourcemanager.apimanagement.models.Notifications;
 import com.azure.resourcemanager.apimanagement.models.OpenIdConnectProviders;
+import com.azure.resourcemanager.apimanagement.models.OperationStatus;
 import com.azure.resourcemanager.apimanagement.models.Operations;
+import com.azure.resourcemanager.apimanagement.models.OperationsResults;
 import com.azure.resourcemanager.apimanagement.models.OutboundNetworkDependenciesEndpoints;
 import com.azure.resourcemanager.apimanagement.models.Policies;
 import com.azure.resourcemanager.apimanagement.models.PolicyDescriptions;
 import com.azure.resourcemanager.apimanagement.models.PolicyFragments;
+import com.azure.resourcemanager.apimanagement.models.PolicyRestrictionValidations;
+import com.azure.resourcemanager.apimanagement.models.PolicyRestrictions;
 import com.azure.resourcemanager.apimanagement.models.PortalConfigs;
 import com.azure.resourcemanager.apimanagement.models.PortalRevisions;
 import com.azure.resourcemanager.apimanagement.models.PortalSettings;
 import com.azure.resourcemanager.apimanagement.models.PrivateEndpointConnections;
+import com.azure.resourcemanager.apimanagement.models.ProductApiLinks;
 import com.azure.resourcemanager.apimanagement.models.ProductApis;
+import com.azure.resourcemanager.apimanagement.models.ProductGroupLinks;
 import com.azure.resourcemanager.apimanagement.models.ProductGroups;
 import com.azure.resourcemanager.apimanagement.models.ProductPolicies;
 import com.azure.resourcemanager.apimanagement.models.ProductSubscriptions;
@@ -192,6 +253,9 @@ import com.azure.resourcemanager.apimanagement.models.ResourceProviders;
 import com.azure.resourcemanager.apimanagement.models.SignInSettings;
 import com.azure.resourcemanager.apimanagement.models.SignUpSettings;
 import com.azure.resourcemanager.apimanagement.models.Subscriptions;
+import com.azure.resourcemanager.apimanagement.models.TagApiLinks;
+import com.azure.resourcemanager.apimanagement.models.TagOperationLinks;
+import com.azure.resourcemanager.apimanagement.models.TagProductLinks;
 import com.azure.resourcemanager.apimanagement.models.TagResources;
 import com.azure.resourcemanager.apimanagement.models.Tags;
 import com.azure.resourcemanager.apimanagement.models.TenantAccess;
@@ -203,10 +267,44 @@ import com.azure.resourcemanager.apimanagement.models.UserGroups;
 import com.azure.resourcemanager.apimanagement.models.UserIdentities;
 import com.azure.resourcemanager.apimanagement.models.UserSubscriptions;
 import com.azure.resourcemanager.apimanagement.models.Users;
+import com.azure.resourcemanager.apimanagement.models.WorkspaceApiDiagnostics;
+import com.azure.resourcemanager.apimanagement.models.WorkspaceApiExports;
+import com.azure.resourcemanager.apimanagement.models.WorkspaceApiOperationPolicies;
+import com.azure.resourcemanager.apimanagement.models.WorkspaceApiOperations;
+import com.azure.resourcemanager.apimanagement.models.WorkspaceApiPolicies;
+import com.azure.resourcemanager.apimanagement.models.WorkspaceApiReleases;
+import com.azure.resourcemanager.apimanagement.models.WorkspaceApiRevisions;
+import com.azure.resourcemanager.apimanagement.models.WorkspaceApiSchemas;
+import com.azure.resourcemanager.apimanagement.models.WorkspaceApiVersionSets;
+import com.azure.resourcemanager.apimanagement.models.WorkspaceApis;
+import com.azure.resourcemanager.apimanagement.models.WorkspaceBackends;
+import com.azure.resourcemanager.apimanagement.models.WorkspaceCertificates;
+import com.azure.resourcemanager.apimanagement.models.WorkspaceDiagnostics;
+import com.azure.resourcemanager.apimanagement.models.WorkspaceGlobalSchemas;
+import com.azure.resourcemanager.apimanagement.models.WorkspaceGroupUsers;
+import com.azure.resourcemanager.apimanagement.models.WorkspaceGroups;
+import com.azure.resourcemanager.apimanagement.models.WorkspaceLoggers;
+import com.azure.resourcemanager.apimanagement.models.WorkspaceNamedValues;
+import com.azure.resourcemanager.apimanagement.models.WorkspaceNotificationRecipientEmails;
+import com.azure.resourcemanager.apimanagement.models.WorkspaceNotificationRecipientUsers;
+import com.azure.resourcemanager.apimanagement.models.WorkspaceNotifications;
+import com.azure.resourcemanager.apimanagement.models.WorkspacePolicies;
+import com.azure.resourcemanager.apimanagement.models.WorkspacePolicyFragments;
+import com.azure.resourcemanager.apimanagement.models.WorkspaceProductApiLinks;
+import com.azure.resourcemanager.apimanagement.models.WorkspaceProductGroupLinks;
+import com.azure.resourcemanager.apimanagement.models.WorkspaceProductPolicies;
+import com.azure.resourcemanager.apimanagement.models.WorkspaceProducts;
+import com.azure.resourcemanager.apimanagement.models.WorkspaceSubscriptions;
+import com.azure.resourcemanager.apimanagement.models.WorkspaceTagApiLinks;
+import com.azure.resourcemanager.apimanagement.models.WorkspaceTagOperationLinks;
+import com.azure.resourcemanager.apimanagement.models.WorkspaceTagProductLinks;
+import com.azure.resourcemanager.apimanagement.models.WorkspaceTags;
+import com.azure.resourcemanager.apimanagement.models.Workspaces;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -215,6 +313,12 @@ import java.util.stream.Collectors;
  * ApiManagement Client.
  */
 public final class ApiManagementManager {
+    private ApiGateways apiGateways;
+
+    private ApiManagementGatewaySkus apiManagementGatewaySkus;
+
+    private AllPolicies allPolicies;
+
     private Apis apis;
 
     private ApiRevisions apiRevisions;
@@ -257,8 +361,6 @@ public final class ApiManagementManager {
 
     private ApiVersionSets apiVersionSets;
 
-    private AuthorizationServers authorizationServers;
-
     private AuthorizationProviders authorizationProviders;
 
     private Authorizations authorizations;
@@ -266,6 +368,8 @@ public final class ApiManagementManager {
     private AuthorizationLoginLinks authorizationLoginLinks;
 
     private AuthorizationAccessPolicies authorizationAccessPolicies;
+
+    private AuthorizationServers authorizationServers;
 
     private Backends backends;
 
@@ -289,7 +393,11 @@ public final class ApiManagementManager {
 
     private Diagnostics diagnostics;
 
+    private Documentations documentations;
+
     private EmailTemplates emailTemplates;
+
+    private ApiGatewayConfigConnections apiGatewayConfigConnections;
 
     private Gateways gateways;
 
@@ -329,6 +437,10 @@ public final class ApiManagementManager {
 
     private PolicyFragments policyFragments;
 
+    private PolicyRestrictions policyRestrictions;
+
+    private PolicyRestrictionValidations policyRestrictionValidations;
+
     private PortalConfigs portalConfigs;
 
     private PortalRevisions portalRevisions;
@@ -357,6 +469,10 @@ public final class ApiManagementManager {
 
     private ProductWikisOperations productWikisOperations;
 
+    private ProductApiLinks productApiLinks;
+
+    private ProductGroupLinks productGroupLinks;
+
     private QuotaByCounterKeys quotaByCounterKeys;
 
     private QuotaByPeriodKeys quotaByPeriodKeys;
@@ -375,6 +491,12 @@ public final class ApiManagementManager {
 
     private TagResources tagResources;
 
+    private TagApiLinks tagApiLinks;
+
+    private TagOperationLinks tagOperationLinks;
+
+    private TagProductLinks tagProductLinks;
+
     private TenantAccess tenantAccess;
 
     private TenantAccessGits tenantAccessGits;
@@ -391,7 +513,79 @@ public final class ApiManagementManager {
 
     private UserConfirmationPasswords userConfirmationPasswords;
 
-    private Documentations documentations;
+    private WorkspaceBackends workspaceBackends;
+
+    private WorkspaceCertificates workspaceCertificates;
+
+    private WorkspaceDiagnostics workspaceDiagnostics;
+
+    private WorkspaceApiDiagnostics workspaceApiDiagnostics;
+
+    private ApiManagementWorkspaceLinks apiManagementWorkspaceLinks;
+
+    private ApiManagementWorkspaceLinkOperations apiManagementWorkspaceLinkOperations;
+
+    private WorkspaceLoggers workspaceLoggers;
+
+    private Workspaces workspaces;
+
+    private WorkspacePolicies workspacePolicies;
+
+    private WorkspaceNamedValues workspaceNamedValues;
+
+    private WorkspaceGlobalSchemas workspaceGlobalSchemas;
+
+    private WorkspaceNotifications workspaceNotifications;
+
+    private WorkspaceNotificationRecipientUsers workspaceNotificationRecipientUsers;
+
+    private WorkspaceNotificationRecipientEmails workspaceNotificationRecipientEmails;
+
+    private WorkspacePolicyFragments workspacePolicyFragments;
+
+    private WorkspaceGroups workspaceGroups;
+
+    private WorkspaceGroupUsers workspaceGroupUsers;
+
+    private WorkspaceSubscriptions workspaceSubscriptions;
+
+    private WorkspaceApiVersionSets workspaceApiVersionSets;
+
+    private WorkspaceApis workspaceApis;
+
+    private WorkspaceApiRevisions workspaceApiRevisions;
+
+    private WorkspaceApiReleases workspaceApiReleases;
+
+    private WorkspaceApiOperations workspaceApiOperations;
+
+    private WorkspaceApiOperationPolicies workspaceApiOperationPolicies;
+
+    private WorkspaceApiPolicies workspaceApiPolicies;
+
+    private WorkspaceApiSchemas workspaceApiSchemas;
+
+    private WorkspaceProducts workspaceProducts;
+
+    private WorkspaceProductApiLinks workspaceProductApiLinks;
+
+    private WorkspaceProductGroupLinks workspaceProductGroupLinks;
+
+    private WorkspaceProductPolicies workspaceProductPolicies;
+
+    private WorkspaceTags workspaceTags;
+
+    private WorkspaceTagApiLinks workspaceTagApiLinks;
+
+    private WorkspaceTagOperationLinks workspaceTagOperationLinks;
+
+    private WorkspaceTagProductLinks workspaceTagProductLinks;
+
+    private WorkspaceApiExports workspaceApiExports;
+
+    private OperationStatus operationStatus;
+
+    private OperationsResults operationsResults;
 
     private final ApiManagementClient clientObject;
 
@@ -445,6 +639,9 @@ public final class ApiManagementManager {
      */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
+        private static final String SDK_VERSION = "version";
+        private static final Map<String, String> PROPERTIES
+            = CoreUtils.getProperties("azure-resourcemanager-apimanagement.properties");
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -552,12 +749,14 @@ public final class ApiManagementManager {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
+            String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+
             StringBuilder userAgentBuilder = new StringBuilder();
             userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.apimanagement")
                 .append("/")
-                .append("1.0.0");
+                .append(clientVersion);
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -601,6 +800,43 @@ public final class ApiManagementManager {
                 .build();
             return new ApiManagementManager(httpPipeline, profile, defaultPollInterval);
         }
+    }
+
+    /**
+     * Gets the resource collection API of ApiGateways. It manages ApiManagementGatewayResource.
+     * 
+     * @return Resource collection API of ApiGateways.
+     */
+    public ApiGateways apiGateways() {
+        if (this.apiGateways == null) {
+            this.apiGateways = new ApiGatewaysImpl(clientObject.getApiGateways(), this);
+        }
+        return apiGateways;
+    }
+
+    /**
+     * Gets the resource collection API of ApiManagementGatewaySkus.
+     * 
+     * @return Resource collection API of ApiManagementGatewaySkus.
+     */
+    public ApiManagementGatewaySkus apiManagementGatewaySkus() {
+        if (this.apiManagementGatewaySkus == null) {
+            this.apiManagementGatewaySkus
+                = new ApiManagementGatewaySkusImpl(clientObject.getApiManagementGatewaySkus(), this);
+        }
+        return apiManagementGatewaySkus;
+    }
+
+    /**
+     * Gets the resource collection API of AllPolicies.
+     * 
+     * @return Resource collection API of AllPolicies.
+     */
+    public AllPolicies allPolicies() {
+        if (this.allPolicies == null) {
+            this.allPolicies = new AllPoliciesImpl(clientObject.getAllPolicies(), this);
+        }
+        return allPolicies;
     }
 
     /**
@@ -857,18 +1093,6 @@ public final class ApiManagementManager {
     }
 
     /**
-     * Gets the resource collection API of AuthorizationServers. It manages AuthorizationServerContract.
-     * 
-     * @return Resource collection API of AuthorizationServers.
-     */
-    public AuthorizationServers authorizationServers() {
-        if (this.authorizationServers == null) {
-            this.authorizationServers = new AuthorizationServersImpl(clientObject.getAuthorizationServers(), this);
-        }
-        return authorizationServers;
-    }
-
-    /**
      * Gets the resource collection API of AuthorizationProviders. It manages AuthorizationProviderContract.
      * 
      * @return Resource collection API of AuthorizationProviders.
@@ -917,6 +1141,18 @@ public final class ApiManagementManager {
                 = new AuthorizationAccessPoliciesImpl(clientObject.getAuthorizationAccessPolicies(), this);
         }
         return authorizationAccessPolicies;
+    }
+
+    /**
+     * Gets the resource collection API of AuthorizationServers. It manages AuthorizationServerContract.
+     * 
+     * @return Resource collection API of AuthorizationServers.
+     */
+    public AuthorizationServers authorizationServers() {
+        if (this.authorizationServers == null) {
+            this.authorizationServers = new AuthorizationServersImpl(clientObject.getAuthorizationServers(), this);
+        }
+        return authorizationServers;
     }
 
     /**
@@ -1054,6 +1290,18 @@ public final class ApiManagementManager {
     }
 
     /**
+     * Gets the resource collection API of Documentations. It manages DocumentationContract.
+     * 
+     * @return Resource collection API of Documentations.
+     */
+    public Documentations documentations() {
+        if (this.documentations == null) {
+            this.documentations = new DocumentationsImpl(clientObject.getDocumentations(), this);
+        }
+        return documentations;
+    }
+
+    /**
      * Gets the resource collection API of EmailTemplates. It manages EmailTemplateContract.
      * 
      * @return Resource collection API of EmailTemplates.
@@ -1063,6 +1311,20 @@ public final class ApiManagementManager {
             this.emailTemplates = new EmailTemplatesImpl(clientObject.getEmailTemplates(), this);
         }
         return emailTemplates;
+    }
+
+    /**
+     * Gets the resource collection API of ApiGatewayConfigConnections. It manages
+     * ApiManagementGatewayConfigConnectionResource.
+     * 
+     * @return Resource collection API of ApiGatewayConfigConnections.
+     */
+    public ApiGatewayConfigConnections apiGatewayConfigConnections() {
+        if (this.apiGatewayConfigConnections == null) {
+            this.apiGatewayConfigConnections
+                = new ApiGatewayConfigConnectionsImpl(clientObject.getApiGatewayConfigConnections(), this);
+        }
+        return apiGatewayConfigConnections;
     }
 
     /**
@@ -1302,6 +1564,31 @@ public final class ApiManagementManager {
     }
 
     /**
+     * Gets the resource collection API of PolicyRestrictions. It manages PolicyRestrictionContract.
+     * 
+     * @return Resource collection API of PolicyRestrictions.
+     */
+    public PolicyRestrictions policyRestrictions() {
+        if (this.policyRestrictions == null) {
+            this.policyRestrictions = new PolicyRestrictionsImpl(clientObject.getPolicyRestrictions(), this);
+        }
+        return policyRestrictions;
+    }
+
+    /**
+     * Gets the resource collection API of PolicyRestrictionValidations.
+     * 
+     * @return Resource collection API of PolicyRestrictionValidations.
+     */
+    public PolicyRestrictionValidations policyRestrictionValidations() {
+        if (this.policyRestrictionValidations == null) {
+            this.policyRestrictionValidations
+                = new PolicyRestrictionValidationsImpl(clientObject.getPolicyRestrictionValidations(), this);
+        }
+        return policyRestrictionValidations;
+    }
+
+    /**
      * Gets the resource collection API of PortalConfigs. It manages PortalConfigContract.
      * 
      * @return Resource collection API of PortalConfigs.
@@ -1472,6 +1759,30 @@ public final class ApiManagementManager {
     }
 
     /**
+     * Gets the resource collection API of ProductApiLinks. It manages ProductApiLinkContract.
+     * 
+     * @return Resource collection API of ProductApiLinks.
+     */
+    public ProductApiLinks productApiLinks() {
+        if (this.productApiLinks == null) {
+            this.productApiLinks = new ProductApiLinksImpl(clientObject.getProductApiLinks(), this);
+        }
+        return productApiLinks;
+    }
+
+    /**
+     * Gets the resource collection API of ProductGroupLinks. It manages ProductGroupLinkContract.
+     * 
+     * @return Resource collection API of ProductGroupLinks.
+     */
+    public ProductGroupLinks productGroupLinks() {
+        if (this.productGroupLinks == null) {
+            this.productGroupLinks = new ProductGroupLinksImpl(clientObject.getProductGroupLinks(), this);
+        }
+        return productGroupLinks;
+    }
+
+    /**
      * Gets the resource collection API of QuotaByCounterKeys.
      * 
      * @return Resource collection API of QuotaByCounterKeys.
@@ -1580,6 +1891,42 @@ public final class ApiManagementManager {
     }
 
     /**
+     * Gets the resource collection API of TagApiLinks. It manages TagApiLinkContract.
+     * 
+     * @return Resource collection API of TagApiLinks.
+     */
+    public TagApiLinks tagApiLinks() {
+        if (this.tagApiLinks == null) {
+            this.tagApiLinks = new TagApiLinksImpl(clientObject.getTagApiLinks(), this);
+        }
+        return tagApiLinks;
+    }
+
+    /**
+     * Gets the resource collection API of TagOperationLinks. It manages TagOperationLinkContract.
+     * 
+     * @return Resource collection API of TagOperationLinks.
+     */
+    public TagOperationLinks tagOperationLinks() {
+        if (this.tagOperationLinks == null) {
+            this.tagOperationLinks = new TagOperationLinksImpl(clientObject.getTagOperationLinks(), this);
+        }
+        return tagOperationLinks;
+    }
+
+    /**
+     * Gets the resource collection API of TagProductLinks. It manages TagProductLinkContract.
+     * 
+     * @return Resource collection API of TagProductLinks.
+     */
+    public TagProductLinks tagProductLinks() {
+        if (this.tagProductLinks == null) {
+            this.tagProductLinks = new TagProductLinksImpl(clientObject.getTagProductLinks(), this);
+        }
+        return tagProductLinks;
+    }
+
+    /**
      * Gets the resource collection API of TenantAccess. It manages AccessInformationContract.
      * 
      * @return Resource collection API of TenantAccess.
@@ -1677,15 +2024,464 @@ public final class ApiManagementManager {
     }
 
     /**
-     * Gets the resource collection API of Documentations. It manages DocumentationContract.
+     * Gets the resource collection API of WorkspaceBackends.
      * 
-     * @return Resource collection API of Documentations.
+     * @return Resource collection API of WorkspaceBackends.
      */
-    public Documentations documentations() {
-        if (this.documentations == null) {
-            this.documentations = new DocumentationsImpl(clientObject.getDocumentations(), this);
+    public WorkspaceBackends workspaceBackends() {
+        if (this.workspaceBackends == null) {
+            this.workspaceBackends = new WorkspaceBackendsImpl(clientObject.getWorkspaceBackends(), this);
         }
-        return documentations;
+        return workspaceBackends;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspaceCertificates.
+     * 
+     * @return Resource collection API of WorkspaceCertificates.
+     */
+    public WorkspaceCertificates workspaceCertificates() {
+        if (this.workspaceCertificates == null) {
+            this.workspaceCertificates = new WorkspaceCertificatesImpl(clientObject.getWorkspaceCertificates(), this);
+        }
+        return workspaceCertificates;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspaceDiagnostics.
+     * 
+     * @return Resource collection API of WorkspaceDiagnostics.
+     */
+    public WorkspaceDiagnostics workspaceDiagnostics() {
+        if (this.workspaceDiagnostics == null) {
+            this.workspaceDiagnostics = new WorkspaceDiagnosticsImpl(clientObject.getWorkspaceDiagnostics(), this);
+        }
+        return workspaceDiagnostics;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspaceApiDiagnostics.
+     * 
+     * @return Resource collection API of WorkspaceApiDiagnostics.
+     */
+    public WorkspaceApiDiagnostics workspaceApiDiagnostics() {
+        if (this.workspaceApiDiagnostics == null) {
+            this.workspaceApiDiagnostics
+                = new WorkspaceApiDiagnosticsImpl(clientObject.getWorkspaceApiDiagnostics(), this);
+        }
+        return workspaceApiDiagnostics;
+    }
+
+    /**
+     * Gets the resource collection API of ApiManagementWorkspaceLinks.
+     * 
+     * @return Resource collection API of ApiManagementWorkspaceLinks.
+     */
+    public ApiManagementWorkspaceLinks apiManagementWorkspaceLinks() {
+        if (this.apiManagementWorkspaceLinks == null) {
+            this.apiManagementWorkspaceLinks
+                = new ApiManagementWorkspaceLinksImpl(clientObject.getApiManagementWorkspaceLinks(), this);
+        }
+        return apiManagementWorkspaceLinks;
+    }
+
+    /**
+     * Gets the resource collection API of ApiManagementWorkspaceLinkOperations.
+     * 
+     * @return Resource collection API of ApiManagementWorkspaceLinkOperations.
+     */
+    public ApiManagementWorkspaceLinkOperations apiManagementWorkspaceLinkOperations() {
+        if (this.apiManagementWorkspaceLinkOperations == null) {
+            this.apiManagementWorkspaceLinkOperations = new ApiManagementWorkspaceLinkOperationsImpl(
+                clientObject.getApiManagementWorkspaceLinkOperations(), this);
+        }
+        return apiManagementWorkspaceLinkOperations;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspaceLoggers.
+     * 
+     * @return Resource collection API of WorkspaceLoggers.
+     */
+    public WorkspaceLoggers workspaceLoggers() {
+        if (this.workspaceLoggers == null) {
+            this.workspaceLoggers = new WorkspaceLoggersImpl(clientObject.getWorkspaceLoggers(), this);
+        }
+        return workspaceLoggers;
+    }
+
+    /**
+     * Gets the resource collection API of Workspaces. It manages WorkspaceContract.
+     * 
+     * @return Resource collection API of Workspaces.
+     */
+    public Workspaces workspaces() {
+        if (this.workspaces == null) {
+            this.workspaces = new WorkspacesImpl(clientObject.getWorkspaces(), this);
+        }
+        return workspaces;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspacePolicies.
+     * 
+     * @return Resource collection API of WorkspacePolicies.
+     */
+    public WorkspacePolicies workspacePolicies() {
+        if (this.workspacePolicies == null) {
+            this.workspacePolicies = new WorkspacePoliciesImpl(clientObject.getWorkspacePolicies(), this);
+        }
+        return workspacePolicies;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspaceNamedValues.
+     * 
+     * @return Resource collection API of WorkspaceNamedValues.
+     */
+    public WorkspaceNamedValues workspaceNamedValues() {
+        if (this.workspaceNamedValues == null) {
+            this.workspaceNamedValues = new WorkspaceNamedValuesImpl(clientObject.getWorkspaceNamedValues(), this);
+        }
+        return workspaceNamedValues;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspaceGlobalSchemas.
+     * 
+     * @return Resource collection API of WorkspaceGlobalSchemas.
+     */
+    public WorkspaceGlobalSchemas workspaceGlobalSchemas() {
+        if (this.workspaceGlobalSchemas == null) {
+            this.workspaceGlobalSchemas
+                = new WorkspaceGlobalSchemasImpl(clientObject.getWorkspaceGlobalSchemas(), this);
+        }
+        return workspaceGlobalSchemas;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspaceNotifications.
+     * 
+     * @return Resource collection API of WorkspaceNotifications.
+     */
+    public WorkspaceNotifications workspaceNotifications() {
+        if (this.workspaceNotifications == null) {
+            this.workspaceNotifications
+                = new WorkspaceNotificationsImpl(clientObject.getWorkspaceNotifications(), this);
+        }
+        return workspaceNotifications;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspaceNotificationRecipientUsers.
+     * 
+     * @return Resource collection API of WorkspaceNotificationRecipientUsers.
+     */
+    public WorkspaceNotificationRecipientUsers workspaceNotificationRecipientUsers() {
+        if (this.workspaceNotificationRecipientUsers == null) {
+            this.workspaceNotificationRecipientUsers = new WorkspaceNotificationRecipientUsersImpl(
+                clientObject.getWorkspaceNotificationRecipientUsers(), this);
+        }
+        return workspaceNotificationRecipientUsers;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspaceNotificationRecipientEmails.
+     * 
+     * @return Resource collection API of WorkspaceNotificationRecipientEmails.
+     */
+    public WorkspaceNotificationRecipientEmails workspaceNotificationRecipientEmails() {
+        if (this.workspaceNotificationRecipientEmails == null) {
+            this.workspaceNotificationRecipientEmails = new WorkspaceNotificationRecipientEmailsImpl(
+                clientObject.getWorkspaceNotificationRecipientEmails(), this);
+        }
+        return workspaceNotificationRecipientEmails;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspacePolicyFragments.
+     * 
+     * @return Resource collection API of WorkspacePolicyFragments.
+     */
+    public WorkspacePolicyFragments workspacePolicyFragments() {
+        if (this.workspacePolicyFragments == null) {
+            this.workspacePolicyFragments
+                = new WorkspacePolicyFragmentsImpl(clientObject.getWorkspacePolicyFragments(), this);
+        }
+        return workspacePolicyFragments;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspaceGroups.
+     * 
+     * @return Resource collection API of WorkspaceGroups.
+     */
+    public WorkspaceGroups workspaceGroups() {
+        if (this.workspaceGroups == null) {
+            this.workspaceGroups = new WorkspaceGroupsImpl(clientObject.getWorkspaceGroups(), this);
+        }
+        return workspaceGroups;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspaceGroupUsers.
+     * 
+     * @return Resource collection API of WorkspaceGroupUsers.
+     */
+    public WorkspaceGroupUsers workspaceGroupUsers() {
+        if (this.workspaceGroupUsers == null) {
+            this.workspaceGroupUsers = new WorkspaceGroupUsersImpl(clientObject.getWorkspaceGroupUsers(), this);
+        }
+        return workspaceGroupUsers;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspaceSubscriptions.
+     * 
+     * @return Resource collection API of WorkspaceSubscriptions.
+     */
+    public WorkspaceSubscriptions workspaceSubscriptions() {
+        if (this.workspaceSubscriptions == null) {
+            this.workspaceSubscriptions
+                = new WorkspaceSubscriptionsImpl(clientObject.getWorkspaceSubscriptions(), this);
+        }
+        return workspaceSubscriptions;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspaceApiVersionSets.
+     * 
+     * @return Resource collection API of WorkspaceApiVersionSets.
+     */
+    public WorkspaceApiVersionSets workspaceApiVersionSets() {
+        if (this.workspaceApiVersionSets == null) {
+            this.workspaceApiVersionSets
+                = new WorkspaceApiVersionSetsImpl(clientObject.getWorkspaceApiVersionSets(), this);
+        }
+        return workspaceApiVersionSets;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspaceApis.
+     * 
+     * @return Resource collection API of WorkspaceApis.
+     */
+    public WorkspaceApis workspaceApis() {
+        if (this.workspaceApis == null) {
+            this.workspaceApis = new WorkspaceApisImpl(clientObject.getWorkspaceApis(), this);
+        }
+        return workspaceApis;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspaceApiRevisions.
+     * 
+     * @return Resource collection API of WorkspaceApiRevisions.
+     */
+    public WorkspaceApiRevisions workspaceApiRevisions() {
+        if (this.workspaceApiRevisions == null) {
+            this.workspaceApiRevisions = new WorkspaceApiRevisionsImpl(clientObject.getWorkspaceApiRevisions(), this);
+        }
+        return workspaceApiRevisions;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspaceApiReleases.
+     * 
+     * @return Resource collection API of WorkspaceApiReleases.
+     */
+    public WorkspaceApiReleases workspaceApiReleases() {
+        if (this.workspaceApiReleases == null) {
+            this.workspaceApiReleases = new WorkspaceApiReleasesImpl(clientObject.getWorkspaceApiReleases(), this);
+        }
+        return workspaceApiReleases;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspaceApiOperations.
+     * 
+     * @return Resource collection API of WorkspaceApiOperations.
+     */
+    public WorkspaceApiOperations workspaceApiOperations() {
+        if (this.workspaceApiOperations == null) {
+            this.workspaceApiOperations
+                = new WorkspaceApiOperationsImpl(clientObject.getWorkspaceApiOperations(), this);
+        }
+        return workspaceApiOperations;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspaceApiOperationPolicies.
+     * 
+     * @return Resource collection API of WorkspaceApiOperationPolicies.
+     */
+    public WorkspaceApiOperationPolicies workspaceApiOperationPolicies() {
+        if (this.workspaceApiOperationPolicies == null) {
+            this.workspaceApiOperationPolicies
+                = new WorkspaceApiOperationPoliciesImpl(clientObject.getWorkspaceApiOperationPolicies(), this);
+        }
+        return workspaceApiOperationPolicies;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspaceApiPolicies.
+     * 
+     * @return Resource collection API of WorkspaceApiPolicies.
+     */
+    public WorkspaceApiPolicies workspaceApiPolicies() {
+        if (this.workspaceApiPolicies == null) {
+            this.workspaceApiPolicies = new WorkspaceApiPoliciesImpl(clientObject.getWorkspaceApiPolicies(), this);
+        }
+        return workspaceApiPolicies;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspaceApiSchemas.
+     * 
+     * @return Resource collection API of WorkspaceApiSchemas.
+     */
+    public WorkspaceApiSchemas workspaceApiSchemas() {
+        if (this.workspaceApiSchemas == null) {
+            this.workspaceApiSchemas = new WorkspaceApiSchemasImpl(clientObject.getWorkspaceApiSchemas(), this);
+        }
+        return workspaceApiSchemas;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspaceProducts.
+     * 
+     * @return Resource collection API of WorkspaceProducts.
+     */
+    public WorkspaceProducts workspaceProducts() {
+        if (this.workspaceProducts == null) {
+            this.workspaceProducts = new WorkspaceProductsImpl(clientObject.getWorkspaceProducts(), this);
+        }
+        return workspaceProducts;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspaceProductApiLinks.
+     * 
+     * @return Resource collection API of WorkspaceProductApiLinks.
+     */
+    public WorkspaceProductApiLinks workspaceProductApiLinks() {
+        if (this.workspaceProductApiLinks == null) {
+            this.workspaceProductApiLinks
+                = new WorkspaceProductApiLinksImpl(clientObject.getWorkspaceProductApiLinks(), this);
+        }
+        return workspaceProductApiLinks;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspaceProductGroupLinks.
+     * 
+     * @return Resource collection API of WorkspaceProductGroupLinks.
+     */
+    public WorkspaceProductGroupLinks workspaceProductGroupLinks() {
+        if (this.workspaceProductGroupLinks == null) {
+            this.workspaceProductGroupLinks
+                = new WorkspaceProductGroupLinksImpl(clientObject.getWorkspaceProductGroupLinks(), this);
+        }
+        return workspaceProductGroupLinks;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspaceProductPolicies.
+     * 
+     * @return Resource collection API of WorkspaceProductPolicies.
+     */
+    public WorkspaceProductPolicies workspaceProductPolicies() {
+        if (this.workspaceProductPolicies == null) {
+            this.workspaceProductPolicies
+                = new WorkspaceProductPoliciesImpl(clientObject.getWorkspaceProductPolicies(), this);
+        }
+        return workspaceProductPolicies;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspaceTags.
+     * 
+     * @return Resource collection API of WorkspaceTags.
+     */
+    public WorkspaceTags workspaceTags() {
+        if (this.workspaceTags == null) {
+            this.workspaceTags = new WorkspaceTagsImpl(clientObject.getWorkspaceTags(), this);
+        }
+        return workspaceTags;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspaceTagApiLinks.
+     * 
+     * @return Resource collection API of WorkspaceTagApiLinks.
+     */
+    public WorkspaceTagApiLinks workspaceTagApiLinks() {
+        if (this.workspaceTagApiLinks == null) {
+            this.workspaceTagApiLinks = new WorkspaceTagApiLinksImpl(clientObject.getWorkspaceTagApiLinks(), this);
+        }
+        return workspaceTagApiLinks;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspaceTagOperationLinks.
+     * 
+     * @return Resource collection API of WorkspaceTagOperationLinks.
+     */
+    public WorkspaceTagOperationLinks workspaceTagOperationLinks() {
+        if (this.workspaceTagOperationLinks == null) {
+            this.workspaceTagOperationLinks
+                = new WorkspaceTagOperationLinksImpl(clientObject.getWorkspaceTagOperationLinks(), this);
+        }
+        return workspaceTagOperationLinks;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspaceTagProductLinks.
+     * 
+     * @return Resource collection API of WorkspaceTagProductLinks.
+     */
+    public WorkspaceTagProductLinks workspaceTagProductLinks() {
+        if (this.workspaceTagProductLinks == null) {
+            this.workspaceTagProductLinks
+                = new WorkspaceTagProductLinksImpl(clientObject.getWorkspaceTagProductLinks(), this);
+        }
+        return workspaceTagProductLinks;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspaceApiExports.
+     * 
+     * @return Resource collection API of WorkspaceApiExports.
+     */
+    public WorkspaceApiExports workspaceApiExports() {
+        if (this.workspaceApiExports == null) {
+            this.workspaceApiExports = new WorkspaceApiExportsImpl(clientObject.getWorkspaceApiExports(), this);
+        }
+        return workspaceApiExports;
+    }
+
+    /**
+     * Gets the resource collection API of OperationStatus.
+     * 
+     * @return Resource collection API of OperationStatus.
+     */
+    public OperationStatus operationStatus() {
+        if (this.operationStatus == null) {
+            this.operationStatus = new OperationStatusImpl(clientObject.getOperationStatus(), this);
+        }
+        return operationStatus;
+    }
+
+    /**
+     * Gets the resource collection API of OperationsResults.
+     * 
+     * @return Resource collection API of OperationsResults.
+     */
+    public OperationsResults operationsResults() {
+        if (this.operationsResults == null) {
+            this.operationsResults = new OperationsResultsImpl(clientObject.getOperationsResults(), this);
+        }
+        return operationsResults;
     }
 
     /**

@@ -3,7 +3,7 @@
 
 package io.clientcore.core.implementation.instrumentation;
 
-import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
+import io.clientcore.core.instrumentation.SdkInstrumentationOptions;
 import io.clientcore.core.instrumentation.metrics.DoubleHistogram;
 import io.clientcore.core.instrumentation.metrics.Meter;
 
@@ -23,19 +23,18 @@ public final class InstrumentationUtils {
     private static final List<Double> DURATION_BOUNDARIES_ADVICE = Collections.unmodifiableList(
         Arrays.asList(0.005d, 0.01d, 0.025d, 0.05d, 0.075d, 0.1d, 0.25d, 0.5d, 0.75d, 1d, 2.5d, 5d, 7.5d, 10d));
 
-    public static final LibraryInstrumentationOptions UNKNOWN_LIBRARY_OPTIONS
-        = new LibraryInstrumentationOptions("unknown");
+    public static final SdkInstrumentationOptions UNKNOWN_LIBRARY_OPTIONS = new SdkInstrumentationOptions("unknown");
 
     /**
      * Creates a new {@link DoubleHistogram} for measuring the duration of client operations.
-     * @param libraryName the name of the library - corresponds to artifact id and does not include group id
+     * @param sdkName the name of the library - corresponds to artifact id and does not include group id
      * @param meter the meter to use for creating the histogram
      * @return a new {@link DoubleHistogram} for measuring the duration of client operations
      */
-    public static DoubleHistogram createOperationDurationHistogram(String libraryName, Meter meter) {
-        if (meter.isEnabled() && libraryName != null) {
+    public static DoubleHistogram createOperationDurationHistogram(String sdkName, Meter meter) {
+        if (meter.isEnabled() && sdkName != null) {
             String metricDescription = "Duration of client operation";
-            String metricName = libraryName.replace("-", ".") + ".client.operation.duration";
+            String metricName = sdkName.replace("-", ".") + ".client.operation.duration";
             return meter.createDoubleHistogram(metricName, metricDescription, "s", DURATION_BOUNDARIES_ADVICE);
         }
 

@@ -146,7 +146,9 @@ public final class DiscoveryClient {
      *             qualifiedName: String (Optional)
      *             entityType: String (Optional)
      *             description: String (Optional)
-     *             endorsement: String (Optional)
+     *             endorsement (Optional): [
+     *                 String (Optional)
+     *             ]
      *             owner: String (Optional)
      *             classification (Optional): [
      *                 String (Optional)
@@ -229,7 +231,9 @@ public final class DiscoveryClient {
      *             qualifiedName: String (Optional)
      *             entityType: String (Optional)
      *             description: String (Optional)
-     *             endorsement: String (Optional)
+     *             endorsement (Optional): [
+     *                 String (Optional)
+     *             ]
      *             owner: String (Optional)
      *             classification (Optional): [
      *                 String (Optional)

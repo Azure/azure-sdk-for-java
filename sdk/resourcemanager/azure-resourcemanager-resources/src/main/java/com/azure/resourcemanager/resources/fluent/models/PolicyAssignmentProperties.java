@@ -34,6 +34,23 @@ public final class PolicyAssignmentProperties implements JsonSerializable<Policy
     private String policyDefinitionId;
 
     /*
+     * The version of the policy definition to use.
+     */
+    private String definitionVersion;
+
+    /*
+     * The latest version of the policy definition available. This is only present if requested via the $expand query
+     * parameter.
+     */
+    private String latestDefinitionVersion;
+
+    /*
+     * The effective version of the policy definition in use. This is only present if requested via the $expand query
+     * parameter.
+     */
+    private String effectiveDefinitionVersion;
+
+    /*
      * The scope for the policy assignment.
      */
     private String scope;
@@ -123,6 +140,46 @@ public final class PolicyAssignmentProperties implements JsonSerializable<Policy
     public PolicyAssignmentProperties withPolicyDefinitionId(String policyDefinitionId) {
         this.policyDefinitionId = policyDefinitionId;
         return this;
+    }
+
+    /**
+     * Get the definitionVersion property: The version of the policy definition to use.
+     * 
+     * @return the definitionVersion value.
+     */
+    public String definitionVersion() {
+        return this.definitionVersion;
+    }
+
+    /**
+     * Set the definitionVersion property: The version of the policy definition to use.
+     * 
+     * @param definitionVersion the definitionVersion value to set.
+     * @return the PolicyAssignmentProperties object itself.
+     */
+    public PolicyAssignmentProperties withDefinitionVersion(String definitionVersion) {
+        this.definitionVersion = definitionVersion;
+        return this;
+    }
+
+    /**
+     * Get the latestDefinitionVersion property: The latest version of the policy definition available. This is only
+     * present if requested via the $expand query parameter.
+     * 
+     * @return the latestDefinitionVersion value.
+     */
+    public String latestDefinitionVersion() {
+        return this.latestDefinitionVersion;
+    }
+
+    /**
+     * Get the effectiveDefinitionVersion property: The effective version of the policy definition in use. This is only
+     * present if requested via the $expand query parameter.
+     * 
+     * @return the effectiveDefinitionVersion value.
+     */
+    public String effectiveDefinitionVersion() {
+        return this.effectiveDefinitionVersion;
     }
 
     /**
@@ -332,10 +389,13 @@ public final class PolicyAssignmentProperties implements JsonSerializable<Policy
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeStringField("policyDefinitionId", this.policyDefinitionId);
+        jsonWriter.writeStringField("definitionVersion", this.definitionVersion);
         jsonWriter.writeArrayField("notScopes", this.notScopes, (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeUntypedField("metadata", this.metadata);
+        if (this.metadata != null) {
+            jsonWriter.writeUntypedField("metadata", this.metadata);
+        }
         jsonWriter.writeStringField("enforcementMode",
             this.enforcementMode == null ? null : this.enforcementMode.toString());
         jsonWriter.writeArrayField("nonComplianceMessages", this.nonComplianceMessages,
@@ -365,6 +425,12 @@ public final class PolicyAssignmentProperties implements JsonSerializable<Policy
                     deserializedPolicyAssignmentProperties.displayName = reader.getString();
                 } else if ("policyDefinitionId".equals(fieldName)) {
                     deserializedPolicyAssignmentProperties.policyDefinitionId = reader.getString();
+                } else if ("definitionVersion".equals(fieldName)) {
+                    deserializedPolicyAssignmentProperties.definitionVersion = reader.getString();
+                } else if ("latestDefinitionVersion".equals(fieldName)) {
+                    deserializedPolicyAssignmentProperties.latestDefinitionVersion = reader.getString();
+                } else if ("effectiveDefinitionVersion".equals(fieldName)) {
+                    deserializedPolicyAssignmentProperties.effectiveDefinitionVersion = reader.getString();
                 } else if ("scope".equals(fieldName)) {
                     deserializedPolicyAssignmentProperties.scope = reader.getString();
                 } else if ("notScopes".equals(fieldName)) {

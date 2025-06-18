@@ -10,6 +10,15 @@
 
 #### Other Changes
 
+### 4.37.2 (2025-05-14)
+
+#### Features Added
+* Added option to use the connector in non-public Azure clouds. - See [PR 45310](https://github.com/Azure/azure-sdk-for-java/pull/45310)
+
+#### Bugs Fixed
+* Fixed an issue during bulk write operations that could result in failing the Spark job in `BulkWriter.flushAndClose` too eagerly in certain cases. - See [PR 44992](https://github.com/Azure/azure-sdk-for-java/pull/44992)
+* Fixed hang issue in `CosmosPagedIterable#handle` by preventing race conditions in underlying subscription of `Flux<FeedResponse>`. - [PR 45290](https://github.com/Azure/azure-sdk-for-java/pull/45290)
+
 ### 4.37.1 (2025-03-04)
 
 #### Features Added

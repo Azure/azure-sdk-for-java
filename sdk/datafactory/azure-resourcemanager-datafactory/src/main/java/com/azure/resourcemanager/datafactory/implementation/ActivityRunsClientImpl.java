@@ -22,6 +22,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.ActivityRunsClient;
 import com.azure.resourcemanager.datafactory.fluent.models.ActivityRunsQueryResponseInner;
 import com.azure.resourcemanager.datafactory.models.RunFilterParameters;
@@ -64,6 +65,17 @@ public final class ActivityRunsClientImpl implements ActivityRunsClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ActivityRunsQueryResponseInner>> queryByPipelineRun(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @PathParam("runId") String runId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") RunFilterParameters filterParameters, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelineruns/{runId}/queryActivityruns")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ActivityRunsQueryResponseInner> queryByPipelineRunSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
             @PathParam("runId") String runId, @QueryParam("api-version") String apiVersion,
@@ -125,52 +137,6 @@ public final class ActivityRunsClientImpl implements ActivityRunsClient {
      * @param factoryName The factory name.
      * @param runId The pipeline run identifier.
      * @param filterParameters Parameters to filter the activity runs.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list activity runs along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ActivityRunsQueryResponseInner>> queryByPipelineRunWithResponseAsync(String resourceGroupName,
-        String factoryName, String runId, RunFilterParameters filterParameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
-        }
-        if (runId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter runId is required and cannot be null."));
-        }
-        if (filterParameters == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter filterParameters is required and cannot be null."));
-        } else {
-            filterParameters.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.queryByPipelineRun(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            factoryName, runId, this.client.getApiVersion(), filterParameters, accept, context);
-    }
-
-    /**
-     * Query activity runs based on input filter conditions.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param runId The pipeline run identifier.
-     * @param filterParameters Parameters to filter the activity runs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -199,8 +165,36 @@ public final class ActivityRunsClientImpl implements ActivityRunsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ActivityRunsQueryResponseInner> queryByPipelineRunWithResponse(String resourceGroupName,
         String factoryName, String runId, RunFilterParameters filterParameters, Context context) {
-        return queryByPipelineRunWithResponseAsync(resourceGroupName, factoryName, runId, filterParameters, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (runId == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter runId is required and cannot be null."));
+        }
+        if (filterParameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter filterParameters is required and cannot be null."));
+        } else {
+            filterParameters.validate();
+        }
+        final String accept = "application/json";
+        return service.queryByPipelineRunSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, factoryName, runId, this.client.getApiVersion(), filterParameters, accept, context);
     }
 
     /**
@@ -221,4 +215,6 @@ public final class ActivityRunsClientImpl implements ActivityRunsClient {
         return queryByPipelineRunWithResponse(resourceGroupName, factoryName, runId, filterParameters, Context.NONE)
             .getValue();
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ActivityRunsClientImpl.class);
 }

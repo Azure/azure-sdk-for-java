@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,106 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0 (2025-04-10)
+
+- Azure Resource Manager Container Service Fleet client library for Java. This package contains Microsoft Azure SDK for Container Service Fleet Management SDK. Azure Kubernetes Fleet Manager api client. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### Serialization/Deserialization change
+
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
+
+#### `models.FleetMemberListResult` was removed
+
+#### `models.UpdateRunListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.FleetUpdateStrategyListResult` was removed
+
+#### `models.FleetListResult` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+
+### Features Added
+
+* `models.UpgradeChannel` was added
+
+* `models.AutoUpgradeProfile$Update` was added
+
+* `models.AutoUpgradeProfile$Definition` was added
+
+* `models.FleetStatus` was added
+
+* `models.AutoUpgradeProfileProvisioningState` was added
+
+* `models.FleetMemberStatus` was added
+
+* `models.AutoUpgradeNodeImageSelectionType` was added
+
+* `models.AutoUpgradeProfile$UpdateStages` was added
+
+* `models.AutoUpgradeProfiles` was added
+
+* `models.AutoUpgradeProfile` was added
+
+* `models.AutoUpgradeNodeImageSelection` was added
+
+* `models.AutoUpgradeProfile$DefinitionStages` was added
+
+* `models.AutoUpgradeProfileOperations` was added
+
+* `models.AutoUpgradeLastTriggerStatus` was added
+
+* `models.GenerateResponse` was added
+
+* `models.AutoUpgradeProfileStatus` was added
+
+#### `models.ApiServerAccessProfile` was modified
+
+* `withSubnetId(java.lang.String)` was added
+* `withEnableVnetIntegration(java.lang.Boolean)` was added
+* `enableVnetIntegration()` was added
+* `subnetId()` was added
+
+#### `ContainerServiceFleetManager` was modified
+
+* `autoUpgradeProfiles()` was added
+* `autoUpgradeProfileOperations()` was added
+
+#### `models.FleetMember` was modified
+
+* `status()` was added
+
+#### `models.Fleet` was modified
+
+* `status()` was added
+
+#### `models.NodeImageSelection` was modified
+
+* `withCustomNodeImageVersions(java.util.List)` was added
+* `customNodeImageVersions()` was added
+
+#### `models.UpdateRun` was modified
+
+* `autoUpgradeProfileId()` was added
 
 ## 1.2.0-beta.1 (2024-10-17)
 

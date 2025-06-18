@@ -212,36 +212,41 @@ public class GenericResourcesTests extends ResourceManagementTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void canCreateUpdateKindSkuIdentity() throws Exception {
         final String resourceName = "rs" + testId;
         final String apiVersion = "2021-01-01";
 
-        GenericResource storageResource
-            = resourceClient.genericResources()
-                .define(resourceName)
-                .withRegion(Region.US_WEST)
-                .withExistingResourceGroup(rgName)
-                .withResourceType("storageAccounts")
-                .withProviderNamespace("Microsoft.Storage")
-                .withoutPlan()
-                .withKind("Storage")
-                .withSku(new Sku().withName("Standard_LRS"))
-                .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
-                .withProperties(serializerAdapter.deserialize(
-                    "{\"minimumTlsVersion\": \"TLS1_2\", \"supportsHttpsTrafficOnly\": true}", Object.class,
-                    SerializerEncoding.JSON))
-                .withApiVersion(apiVersion)
-                .create();
+        GenericResource storageResource = resourceClient.genericResources()
+            .define(resourceName)
+            .withRegion(Region.US_WEST)
+            .withExistingResourceGroup(rgName)
+            .withResourceType("storageAccounts")
+            .withProviderNamespace("Microsoft.Storage")
+            .withoutPlan()
+            .withKind("Storage")
+            .withSku(new Sku().withName("Standard_LRS"))
+            .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
+            .withProperties(serializerAdapter.deserialize(
+                "{\"minimumTlsVersion\": \"TLS1_2\", \"supportsHttpsTrafficOnly\": true, \"allowSharedKeyAccess\": false}",
+                Object.class, SerializerEncoding.JSON))
+            .withApiVersion(apiVersion)
+            .create();
         Assertions.assertEquals("Storage", storageResource.kind());
         Assertions.assertEquals("Standard_LRS", storageResource.sku().name());
         Assertions.assertNotNull(storageResource.identity());
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, storageResource.identity().type());
         Assertions.assertNotNull(storageResource.identity().principalId());
         Assertions.assertNotNull(storageResource.identity().tenantId());
+        Assertions
+            .assertFalse((boolean) ((Map<String, Object>) storageResource.properties()).get("allowSharedKeyAccess"));
 
         storageResource.update().withKind("StorageV2").withoutIdentity().withApiVersion(apiVersion).apply();
         Assertions.assertEquals("StorageV2", storageResource.kind());
         Assertions.assertEquals(ResourceIdentityType.NONE, storageResource.identity().type());
+        // verify property not modified
+        Assertions
+            .assertFalse((boolean) ((Map<String, Object>) storageResource.properties()).get("allowSharedKeyAccess"));
 
         storageResource.update().withSku(new Sku().withName("Standard_RAGRS")).withApiVersion(apiVersion).apply();
         Assertions.assertEquals("Standard_RAGRS", storageResource.sku().name());

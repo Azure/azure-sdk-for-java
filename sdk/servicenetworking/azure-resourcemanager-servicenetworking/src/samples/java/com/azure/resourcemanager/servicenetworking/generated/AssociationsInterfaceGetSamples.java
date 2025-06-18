@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicenetworking.generated;
  */
 public final class AssociationsInterfaceGetSamples {
     /*
-     * x-ms-original-file: 2025-01-01/AssociationGet.json
+     * x-ms-original-file: 2025-03-01-preview/AssociationGet.json
      */
     /**
      * Sample code: Get Association.

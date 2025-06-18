@@ -17,9 +17,9 @@ public class ScanResultListScanHistory {
             = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{Endpoint}")
                 .buildScanResultClient();
-        // BEGIN:com.azure.analytics.purview.scanning.generated.scanresultlistscanhistory.scanresultlistscanhistory
+        // BEGIN:com.azure.analytics.purview.scanning.generated.scan-result-list-scan-history.scan-result-list-scan-history
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response = scanResultClient.listScanHistory("DataSource1", "scan1", requestOptions);
-        // END:com.azure.analytics.purview.scanning.generated.scanresultlistscanhistory.scanresultlistscanhistory
+        // END:com.azure.analytics.purview.scanning.generated.scan-result-list-scan-history.scan-result-list-scan-history
     }
 }

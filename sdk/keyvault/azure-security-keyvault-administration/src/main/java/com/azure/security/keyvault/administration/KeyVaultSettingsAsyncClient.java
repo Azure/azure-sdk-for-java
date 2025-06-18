@@ -15,6 +15,7 @@ import com.azure.security.keyvault.administration.implementation.KeyVaultAdminis
 import com.azure.security.keyvault.administration.implementation.KeyVaultAdministrationUtils;
 import com.azure.security.keyvault.administration.implementation.models.Setting;
 import com.azure.security.keyvault.administration.implementation.models.SettingsListResult;
+import com.azure.security.keyvault.administration.implementation.models.UpdateSettingRequest;
 import com.azure.security.keyvault.administration.models.KeyVaultAdministrationException;
 import com.azure.security.keyvault.administration.models.KeyVaultGetSettingsResult;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition;
@@ -197,7 +198,8 @@ public final class KeyVaultSettingsAsyncClient {
             }
 
             return implClient
-                .updateSettingWithResponseAsync(setting.getName(), BinaryData.fromObject(settingValue), EMPTY_OPTIONS)
+                .updateSettingWithResponseAsync(setting.getName(),
+                    BinaryData.fromObject(new UpdateSettingRequest(settingValue)), EMPTY_OPTIONS)
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(response -> transformToKeyVaultSetting(response.getValue().toObject(Setting.class)));
         } catch (RuntimeException e) {
@@ -242,7 +244,8 @@ public final class KeyVaultSettingsAsyncClient {
             }
 
             return implClient
-                .updateSettingWithResponseAsync(setting.getName(), BinaryData.fromObject(settingValue), EMPTY_OPTIONS)
+                .updateSettingWithResponseAsync(setting.getName(),
+                    BinaryData.fromObject(new UpdateSettingRequest(settingValue)), EMPTY_OPTIONS)
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(response -> new SimpleResponse<>(response,
                     transformToKeyVaultSetting(response.getValue().toObject(Setting.class))));

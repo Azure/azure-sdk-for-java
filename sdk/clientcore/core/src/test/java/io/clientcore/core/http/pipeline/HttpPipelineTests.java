@@ -35,7 +35,7 @@ public class HttpPipelineTests {
     }
 
     @Test
-    public void withRequestOptions() {
+    public void withRequestContext() {
         HttpPipeline pipeline
             = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy()).httpClient(request -> null).build();
 

@@ -12,24 +12,24 @@ public final class CacheUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CacheUpdateParameters model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"vnmdyfoeboj\",\"connectionString\":\"pp\",\"useFromLocation\":\"aohoqkpjtnq\",\"resourceId\":\"l\"}}")
+            "{\"properties\":{\"description\":\"qqrsil\",\"connectionString\":\"hskxx\",\"useFromLocation\":\"nsbvr\",\"resourceId\":\"qgvtojrulfu\"}}")
             .toObject(CacheUpdateParameters.class);
-        Assertions.assertEquals("vnmdyfoeboj", model.description());
-        Assertions.assertEquals("pp", model.connectionString());
-        Assertions.assertEquals("aohoqkpjtnq", model.useFromLocation());
-        Assertions.assertEquals("l", model.resourceId());
+        Assertions.assertEquals("qqrsil", model.description());
+        Assertions.assertEquals("hskxx", model.connectionString());
+        Assertions.assertEquals("nsbvr", model.useFromLocation());
+        Assertions.assertEquals("qgvtojrulfu", model.resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CacheUpdateParameters model = new CacheUpdateParameters().withDescription("vnmdyfoeboj")
-            .withConnectionString("pp")
-            .withUseFromLocation("aohoqkpjtnq")
-            .withResourceId("l");
+        CacheUpdateParameters model = new CacheUpdateParameters().withDescription("qqrsil")
+            .withConnectionString("hskxx")
+            .withUseFromLocation("nsbvr")
+            .withResourceId("qgvtojrulfu");
         model = BinaryData.fromObject(model).toObject(CacheUpdateParameters.class);
-        Assertions.assertEquals("vnmdyfoeboj", model.description());
-        Assertions.assertEquals("pp", model.connectionString());
-        Assertions.assertEquals("aohoqkpjtnq", model.useFromLocation());
-        Assertions.assertEquals("l", model.resourceId());
+        Assertions.assertEquals("qqrsil", model.description());
+        Assertions.assertEquals("hskxx", model.connectionString());
+        Assertions.assertEquals("nsbvr", model.useFromLocation());
+        Assertions.assertEquals("qgvtojrulfu", model.resourceId());
     }
 }

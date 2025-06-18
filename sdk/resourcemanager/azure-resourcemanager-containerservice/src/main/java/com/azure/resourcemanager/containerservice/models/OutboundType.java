@@ -35,6 +35,11 @@ public final class OutboundType extends ExpandableStringEnum<OutboundType> {
     public static final OutboundType USER_ASSIGNED_NATGATEWAY = fromString("userAssignedNATGateway");
 
     /**
+     * Static value none for OutboundType.
+     */
+    public static final OutboundType NONE = fromString("none");
+
+    /**
      * Creates a new instance of OutboundType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

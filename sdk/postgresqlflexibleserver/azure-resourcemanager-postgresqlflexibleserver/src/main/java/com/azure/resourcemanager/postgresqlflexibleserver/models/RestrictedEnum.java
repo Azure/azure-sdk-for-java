@@ -9,7 +9,7 @@ import java.util.Collection;
 
 /**
  * A value indicating whether this region is restricted. "Enabled" means region is restricted. "Disabled" stands for
- * region is not restricted.
+ * region is not restricted. Will be deprecated in future, please look to Supported Features for "Restricted".
  */
 public final class RestrictedEnum extends ExpandableStringEnum<RestrictedEnum> {
     /**

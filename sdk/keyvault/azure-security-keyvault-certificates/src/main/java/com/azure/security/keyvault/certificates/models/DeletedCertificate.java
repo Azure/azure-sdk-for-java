@@ -147,6 +147,7 @@ public final class DeletedCertificate extends KeyVaultCertificateWithPolicy {
             String recoveryId = null;
             OffsetDateTime deletedOn = null;
             OffsetDateTime scheduledPurgeDate = null;
+            boolean certificateOrderPreserved = false;
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -176,14 +177,16 @@ public final class DeletedCertificate extends KeyVaultCertificateWithPolicy {
                 } else if ("scheduledPurgeDate".equals(fieldName)) {
                     scheduledPurgeDate = reader.getNullable(nonNull -> OffsetDateTime
                         .ofInstant(Instant.ofEpochMilli(nonNull.getLong() * 1000L), ZoneOffset.UTC));
+                } else if ("preserveCertOrder".equals(fieldName)) {
+                    certificateOrderPreserved = reader.getBoolean();
                 } else {
                     reader.skipChildren();
                 }
             }
 
             return new DeletedCertificate(cer, keyId, secretId,
-                new CertificateProperties(id, attributes, tags, wireThumbprint, null), policy, recoveryId, deletedOn,
-                scheduledPurgeDate);
+                new CertificateProperties(id, attributes, tags, wireThumbprint, null, certificateOrderPreserved),
+                policy, recoveryId, deletedOn, scheduledPurgeDate);
         });
     }
 }

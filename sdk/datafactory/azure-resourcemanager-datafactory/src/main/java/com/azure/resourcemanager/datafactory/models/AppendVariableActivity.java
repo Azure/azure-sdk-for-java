@@ -51,7 +51,7 @@ public final class AppendVariableActivity extends ControlActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private AppendVariableActivityTypeProperties innerTypeProperties() {
+    AppendVariableActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

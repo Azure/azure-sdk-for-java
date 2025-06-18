@@ -10,7 +10,7 @@ package com.azure.resourcemanager.apimanagement.generated;
 public final class ApiGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetApiRevision.json
      */
     /**
@@ -25,7 +25,7 @@ public final class ApiGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetApiContract.json
      */
     /**

@@ -4,13 +4,15 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
+import java.util.Arrays;
+
 /**
  * Samples for AuthorizationAccessPolicy CreateOrUpdate.
  */
 public final class AuthorizationAccessPolicyCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateAuthorizationAccessPolicy.json
      */
     /**
@@ -23,6 +25,7 @@ public final class AuthorizationAccessPolicyCreateOrUpdateSamples {
         manager.authorizationAccessPolicies()
             .define("fe0bed83-631f-4149-bd0b-0464b1bc7cab")
             .withExistingAuthorization("rg1", "apimService1", "aadwithauthcode", "authz1")
+            .withAppIds(Arrays.asList("d5f04bb0-ba78-4878-a43e-35a0b74fe315"))
             .withTenantId("13932a0d-5c63-4d37-901d-1df9c97722ff")
             .withObjectId("fe0bed83-631f-4149-bd0b-0464b1bc7cab")
             .create();

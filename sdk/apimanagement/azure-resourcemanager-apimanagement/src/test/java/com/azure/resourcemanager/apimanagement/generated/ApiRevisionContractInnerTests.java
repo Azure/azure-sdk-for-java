@@ -11,7 +11,7 @@ public final class ApiRevisionContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApiRevisionContractInner model = BinaryData.fromString(
-            "{\"apiId\":\"wrlyxwjkcprb\",\"apiRevision\":\"b\",\"createdDateTime\":\"2021-03-13T04:04:08Z\",\"updatedDateTime\":\"2021-05-28T17:15:13Z\",\"description\":\"vpys\",\"privateUrl\":\"dnrujqguhmuouqfp\",\"isOnline\":false,\"isCurrent\":false}")
+            "{\"apiId\":\"zoqftiyqzrnkcqvy\",\"apiRevision\":\"whzlsicohoq\",\"createdDateTime\":\"2021-07-18T04:21:11Z\",\"updatedDateTime\":\"2021-08-05T01:30:43Z\",\"description\":\"yav\",\"privateUrl\":\"heun\",\"isOnline\":true,\"isCurrent\":false}")
             .toObject(ApiRevisionContractInner.class);
     }
 

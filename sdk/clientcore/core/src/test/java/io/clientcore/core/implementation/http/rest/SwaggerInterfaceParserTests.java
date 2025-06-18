@@ -6,9 +6,8 @@ package io.clientcore.core.implementation.http.rest;
 import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.http.annotations.HttpRequestInformation;
 import io.clientcore.core.http.models.HttpMethod;
-import org.junit.jupiter.api.Test;
-
 import java.lang.reflect.Method;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

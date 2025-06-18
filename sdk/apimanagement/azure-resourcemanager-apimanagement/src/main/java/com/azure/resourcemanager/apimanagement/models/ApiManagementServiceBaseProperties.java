@@ -104,6 +104,11 @@ public class ApiManagementServiceBaseProperties implements JsonSerializable<ApiM
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
+     * Configuration API configuration of the API Management service.
+     */
+    private ConfigurationApi configurationApi;
+
+    /*
      * Virtual network configuration of the API Management service.
      */
     private VirtualNetworkConfiguration virtualNetworkConfiguration;
@@ -202,6 +207,16 @@ public class ApiManagementServiceBaseProperties implements JsonSerializable<ApiM
      * Compute Platform Version running the service in this location.
      */
     private PlatformVersion platformVersion;
+
+    /*
+     * Status of legacy portal in the API Management service.
+     */
+    private LegacyPortalStatus legacyPortalStatus;
+
+    /*
+     * Status of developer portal in this API Management service.
+     */
+    private DeveloperPortalStatus developerPortalStatus;
 
     /**
      * Creates an instance of ApiManagementServiceBaseProperties class.
@@ -531,6 +546,26 @@ public class ApiManagementServiceBaseProperties implements JsonSerializable<ApiM
     }
 
     /**
+     * Get the configurationApi property: Configuration API configuration of the API Management service.
+     * 
+     * @return the configurationApi value.
+     */
+    public ConfigurationApi configurationApi() {
+        return this.configurationApi;
+    }
+
+    /**
+     * Set the configurationApi property: Configuration API configuration of the API Management service.
+     * 
+     * @param configurationApi the configurationApi value to set.
+     * @return the ApiManagementServiceBaseProperties object itself.
+     */
+    public ApiManagementServiceBaseProperties withConfigurationApi(ConfigurationApi configurationApi) {
+        this.configurationApi = configurationApi;
+        return this;
+    }
+
+    /**
      * Get the virtualNetworkConfiguration property: Virtual network configuration of the API Management service.
      * 
      * @return the virtualNetworkConfiguration value.
@@ -855,6 +890,46 @@ public class ApiManagementServiceBaseProperties implements JsonSerializable<ApiM
     }
 
     /**
+     * Get the legacyPortalStatus property: Status of legacy portal in the API Management service.
+     * 
+     * @return the legacyPortalStatus value.
+     */
+    public LegacyPortalStatus legacyPortalStatus() {
+        return this.legacyPortalStatus;
+    }
+
+    /**
+     * Set the legacyPortalStatus property: Status of legacy portal in the API Management service.
+     * 
+     * @param legacyPortalStatus the legacyPortalStatus value to set.
+     * @return the ApiManagementServiceBaseProperties object itself.
+     */
+    public ApiManagementServiceBaseProperties withLegacyPortalStatus(LegacyPortalStatus legacyPortalStatus) {
+        this.legacyPortalStatus = legacyPortalStatus;
+        return this;
+    }
+
+    /**
+     * Get the developerPortalStatus property: Status of developer portal in this API Management service.
+     * 
+     * @return the developerPortalStatus value.
+     */
+    public DeveloperPortalStatus developerPortalStatus() {
+        return this.developerPortalStatus;
+    }
+
+    /**
+     * Set the developerPortalStatus property: Status of developer portal in this API Management service.
+     * 
+     * @param developerPortalStatus the developerPortalStatus value to set.
+     * @return the ApiManagementServiceBaseProperties object itself.
+     */
+    public ApiManagementServiceBaseProperties withDeveloperPortalStatus(DeveloperPortalStatus developerPortalStatus) {
+        this.developerPortalStatus = developerPortalStatus;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -862,6 +937,9 @@ public class ApiManagementServiceBaseProperties implements JsonSerializable<ApiM
     public void validate() {
         if (hostnameConfigurations() != null) {
             hostnameConfigurations().forEach(e -> e.validate());
+        }
+        if (configurationApi() != null) {
+            configurationApi().validate();
         }
         if (virtualNetworkConfiguration() != null) {
             virtualNetworkConfiguration().validate();
@@ -892,6 +970,7 @@ public class ApiManagementServiceBaseProperties implements JsonSerializable<ApiM
         jsonWriter.writeStringField("publicIpAddressId", this.publicIpAddressId);
         jsonWriter.writeStringField("publicNetworkAccess",
             this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeJsonField("configurationApi", this.configurationApi);
         jsonWriter.writeJsonField("virtualNetworkConfiguration", this.virtualNetworkConfiguration);
         jsonWriter.writeArrayField("additionalLocations", this.additionalLocations,
             (writer, element) -> writer.writeJson(element));
@@ -908,6 +987,10 @@ public class ApiManagementServiceBaseProperties implements JsonSerializable<ApiM
         jsonWriter.writeBooleanField("restore", this.restore);
         jsonWriter.writeArrayField("privateEndpointConnections", this.privateEndpointConnections,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("legacyPortalStatus",
+            this.legacyPortalStatus == null ? null : this.legacyPortalStatus.toString());
+        jsonWriter.writeStringField("developerPortalStatus",
+            this.developerPortalStatus == null ? null : this.developerPortalStatus.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -963,6 +1046,8 @@ public class ApiManagementServiceBaseProperties implements JsonSerializable<ApiM
                 } else if ("publicNetworkAccess".equals(fieldName)) {
                     deserializedApiManagementServiceBaseProperties.publicNetworkAccess
                         = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("configurationApi".equals(fieldName)) {
+                    deserializedApiManagementServiceBaseProperties.configurationApi = ConfigurationApi.fromJson(reader);
                 } else if ("virtualNetworkConfiguration".equals(fieldName)) {
                     deserializedApiManagementServiceBaseProperties.virtualNetworkConfiguration
                         = VirtualNetworkConfiguration.fromJson(reader);
@@ -1006,6 +1091,12 @@ public class ApiManagementServiceBaseProperties implements JsonSerializable<ApiM
                 } else if ("platformVersion".equals(fieldName)) {
                     deserializedApiManagementServiceBaseProperties.platformVersion
                         = PlatformVersion.fromString(reader.getString());
+                } else if ("legacyPortalStatus".equals(fieldName)) {
+                    deserializedApiManagementServiceBaseProperties.legacyPortalStatus
+                        = LegacyPortalStatus.fromString(reader.getString());
+                } else if ("developerPortalStatus".equals(fieldName)) {
+                    deserializedApiManagementServiceBaseProperties.developerPortalStatus
+                        = DeveloperPortalStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

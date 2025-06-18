@@ -17,6 +17,50 @@
 
 ```java
 /**
+ * Samples for Organizations Delete.
+ */
+public final class OrganizationsDeleteSamples {
+    /*
+     * x-ms-original-file: 2024-10-22-preview/Organizations_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Organizations_Delete_MaximumSet.
+     * 
+     * @param manager Entry point to PineconeVectorDbManager.
+     */
+    public static void
+        organizationsDeleteMaximumSet(com.azure.resourcemanager.pineconevectordb.PineconeVectorDbManager manager) {
+        manager.organizations().delete("rgopenapi", "example-organization-name", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Organizations_CreateOrUpdate
+
+```java
+/**
+ * Samples for Organizations ListByResourceGroup.
+ */
+public final class OrganizationsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2024-10-22-preview/Organizations_ListByResourceGroup_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Organizations_ListByResourceGroup_MaximumSet.
+     * 
+     * @param manager Entry point to PineconeVectorDbManager.
+     */
+    public static void organizationsListByResourceGroupMaximumSet(
+        com.azure.resourcemanager.pineconevectordb.PineconeVectorDbManager manager) {
+        manager.organizations().listByResourceGroup("rgopenapi", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Organizations_Delete
+
+```java
+/**
  * Samples for Operations List.
  */
 public final class OperationsListSamples {
@@ -48,7 +92,7 @@ public final class OperationsListSamples {
 }
 ```
 
-### Organizations_CreateOrUpdate
+### Organizations_GetByResourceGroup
 
 ```java
 import com.azure.resourcemanager.pineconevectordb.models.ManagedServiceIdentity;
@@ -123,51 +167,6 @@ public final class OrganizationsCreateOrUpdateSamples {
 }
 ```
 
-### Organizations_Delete
-
-```java
-/**
- * Samples for Organizations Delete.
- */
-public final class OrganizationsDeleteSamples {
-    /*
-     * x-ms-original-file: 2024-10-22-preview/Organizations_Delete_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: Organizations_Delete_MaximumSet.
-     * 
-     * @param manager Entry point to PineconeVectorDbManager.
-     */
-    public static void
-        organizationsDeleteMaximumSet(com.azure.resourcemanager.pineconevectordb.PineconeVectorDbManager manager) {
-        manager.organizations().delete("rgopenapi", "example-organization-name", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Organizations_GetByResourceGroup
-
-```java
-/**
- * Samples for Organizations GetByResourceGroup.
- */
-public final class OrganizationsGetByResourceGroupSamples {
-    /*
-     * x-ms-original-file: 2024-10-22-preview/Organizations_Get_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: Organizations_Get_MaximumSet.
-     * 
-     * @param manager Entry point to PineconeVectorDbManager.
-     */
-    public static void
-        organizationsGetMaximumSet(com.azure.resourcemanager.pineconevectordb.PineconeVectorDbManager manager) {
-        manager.organizations()
-            .getByResourceGroupWithResponse("rgopenapi", "example-organization-name", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
 ### Organizations_List
 
 ```java
@@ -191,28 +190,6 @@ public final class OrganizationsListSamples {
 ```
 
 ### Organizations_ListByResourceGroup
-
-```java
-/**
- * Samples for Organizations ListByResourceGroup.
- */
-public final class OrganizationsListByResourceGroupSamples {
-    /*
-     * x-ms-original-file: 2024-10-22-preview/Organizations_ListByResourceGroup_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: Organizations_ListByResourceGroup_MaximumSet.
-     * 
-     * @param manager Entry point to PineconeVectorDbManager.
-     */
-    public static void organizationsListByResourceGroupMaximumSet(
-        com.azure.resourcemanager.pineconevectordb.PineconeVectorDbManager manager) {
-        manager.organizations().listByResourceGroup("rgopenapi", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Organizations_Update
 
 ```java
 import com.azure.resourcemanager.pineconevectordb.models.ManagedServiceIdentity;
@@ -256,6 +233,29 @@ public final class OrganizationsUpdateSamples {
             map.put(key, value);
         }
         return map;
+    }
+}
+```
+
+### Organizations_Update
+
+```java
+/**
+ * Samples for Organizations GetByResourceGroup.
+ */
+public final class OrganizationsGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2024-10-22-preview/Organizations_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Organizations_Get_MaximumSet.
+     * 
+     * @param manager Entry point to PineconeVectorDbManager.
+     */
+    public static void
+        organizationsGetMaximumSet(com.azure.resourcemanager.pineconevectordb.PineconeVectorDbManager manager) {
+        manager.organizations()
+            .getByResourceGroupWithResponse("rgopenapi", "example-organization-name", com.azure.core.util.Context.NONE);
     }
 }
 ```

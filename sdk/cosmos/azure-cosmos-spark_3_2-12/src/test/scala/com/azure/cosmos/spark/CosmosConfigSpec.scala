@@ -3,6 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.core.management.AzureEnvironment
+import com.azure.cosmos.ReadConsistencyStrategy
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants
 import com.azure.cosmos.models.CosmosContainerIdentity
@@ -226,6 +227,61 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     }
   }
 
+  "Config Parser" should "parse custom azure environment" in {
+
+    for (authType <- Array("ServicePrinciple", "ServicePrincipal")) {
+      val userConfig = Map(
+        "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
+        "spark.cosmos.auth.type" -> authType,
+        "spark.cosmos.account.subscriptionId" -> testAccountSubscriptionId,
+        "spark.cosmos.account.tenantId" -> testAccountTenantId,
+        "spark.cosmos.account.resourceGroupName" -> testAccountResourceGroupName,
+        "spark.cosmos.auth.aad.clientId" -> testServicePrincipalClientId,
+        "spark.cosmos.auth.aad.clientSecret" -> testServicePrincipalClientSecret,
+        "spark.cosmos.account.azureEnvironment" -> "CuSTom",
+        "spark.cosmos.account.azureEnvironment.AaD" -> "CustomAadEndpoint",
+        "spark.cosmos.account.azureEnvironment.mANagement" -> "CustomARMEndpoint"
+      )
+
+      val userCfgMissingAadEndpoint = userConfig.toMap.filter { case (key, _) => key != "spark.cosmos.account.azureEnvironment.AaD" }
+      try {
+        CosmosAccountConfig.parseCosmosAccountConfig(userCfgMissingAadEndpoint)
+        throw new  IllegalStateException("Should never reach here when AAD endpoint config is missing")
+      } catch {
+        case _: IllegalArgumentException =>
+        case otherError: Throwable => throw otherError
+      }
+
+      val userCfgMissingArmEndpoint = userConfig.toMap.filterKeys(_ != "spark.cosmos.account.azureEnvironment.mANagement")
+      try {
+        CosmosAccountConfig.parseCosmosAccountConfig(userCfgMissingArmEndpoint)
+        throw new IllegalStateException("Should never reach here when ARM endpoint config is missing")
+      } catch {
+        case _: IllegalArgumentException =>
+        case otherError: Throwable => throw otherError
+      }
+
+      val endpointConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+
+      endpointConfig.endpoint shouldEqual sampleProdEndpoint
+
+      val servicePrincipalAuthConfig = endpointConfig.authConfig.asInstanceOf[CosmosServicePrincipalAuthConfig]
+      endpointConfig.subscriptionId.get shouldEqual testAccountSubscriptionId
+      servicePrincipalAuthConfig.tenantId shouldEqual testAccountTenantId
+      endpointConfig.resourceGroupName.get shouldEqual testAccountResourceGroupName
+      servicePrincipalAuthConfig.clientId shouldEqual testServicePrincipalClientId
+      servicePrincipalAuthConfig.clientSecret.isDefined shouldEqual true
+      servicePrincipalAuthConfig.clientSecret.get shouldEqual testServicePrincipalClientSecret
+      servicePrincipalAuthConfig.clientCertPemBase64.isDefined shouldEqual false
+      servicePrincipalAuthConfig.sendChain shouldEqual false
+      endpointConfig.accountName shouldEqual "boson-test"
+      endpointConfig.azureEnvironmentEndpoints should not be null
+      endpointConfig.azureEnvironmentEndpoints.size() shouldEqual 2
+      endpointConfig.azureEnvironmentEndpoints.get("activeDirectoryEndpointUrl") shouldEqual "CustomAadEndpoint"
+      endpointConfig.azureEnvironmentEndpoints.get("resourceManagerEndpointUrl") shouldEqual "CustomARMEndpoint"
+    }
+  }
+
   it should "validate account endpoint" in {
     val userConfig = Map(
       "spark.cosmos.accountEndpoint" -> "invalidUrl",
@@ -391,7 +447,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
 
     var config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
 
-    config.forceEventualConsistency shouldBe false
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.DEFAULT
     config.responseContinuationTokenLimitInKb shouldBe None
     config.schemaConversionMode shouldBe SchemaConversionModes.Strict
     config.customQuery shouldBe empty
@@ -401,6 +457,76 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     config.runtimeFilteringEnabled shouldBe true
     config.readManyFilteringConfig.readManyFilteringEnabled shouldBe false
     config.readManyFilteringConfig.readManyFilterProperty shouldEqual "_itemIdentity"
+
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.consistencyStrategy" -> "DEFAULT",
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.DEFAULT
+
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "true",
+      "spark.cosmos.read.consistencyStrategy" -> "DEFAULT",
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.EVENTUAL
+
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.consistencyStrategy" -> "DEFault",
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.DEFAULT
+
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "true",
+      "spark.cosmos.read.consistencyStrategy" -> "DEFault",
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.EVENTUAL
+
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "true",
+      "spark.cosmos.read.consistencyStrategy" -> "LatestCommitted",
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.LATEST_COMMITTED
+
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.consistencyStrategy" -> "LatestCommitted",
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.LATEST_COMMITTED
+
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "true",
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.EVENTUAL
+
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.DEFAULT
+
+    userConfig = Map(
+      "spark.cosmos.read.consistencyStrategy" -> "LatestCommitted",
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.LATEST_COMMITTED
+
+    userConfig = Map(
+      "spark.cosmos.read.consistencyStrategy" -> "Default",
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.EVENTUAL
+
+    userConfig = Map()
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.EVENTUAL
 
     userConfig = Map(
       "spark.cosmos.read.forceEventualConsistency" -> "false",
@@ -414,7 +540,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
 
     config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
 
-    config.forceEventualConsistency shouldBe false
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.DEFAULT
     config.schemaConversionMode shouldBe SchemaConversionModes.Strict
     config.customQuery shouldBe empty
     config.maxItemCount shouldBe 1000
@@ -434,7 +560,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
 
     config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
 
-    config.forceEventualConsistency shouldBe false
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.DEFAULT
     config.schemaConversionMode shouldBe SchemaConversionModes.Strict
     config.customQuery shouldBe empty
     config.maxItemCount shouldBe 1001
@@ -449,7 +575,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
 
     config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
 
-    config.forceEventualConsistency shouldBe false
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.DEFAULT
     config.schemaConversionMode shouldBe SchemaConversionModes.Strict
     config.customQuery shouldBe empty
     config.maxItemCount shouldBe 1001
@@ -464,7 +590,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
 
     config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
 
-    config.forceEventualConsistency shouldBe false
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.DEFAULT
     config.schemaConversionMode shouldBe SchemaConversionModes.Strict
     config.customQuery shouldBe empty
     config.maxItemCount shouldBe 1001
@@ -479,7 +605,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
 
     config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
 
-    config.forceEventualConsistency shouldBe false
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.DEFAULT
     config.schemaConversionMode shouldBe SchemaConversionModes.Strict
     config.customQuery shouldBe empty
     config.maxItemCount shouldBe 1001
@@ -498,7 +624,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
 
     val config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
 
-    config.forceEventualConsistency shouldBe false
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.DEFAULT
     config.schemaConversionMode shouldBe SchemaConversionModes.Strict
     config.customQuery.isDefined shouldBe true
     config.customQuery.get.queryText shouldBe queryText
@@ -521,7 +647,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
 
     val config = CosmosReadConfig.parseCosmosReadConfig(Map.empty[String, String])
 
-    config.forceEventualConsistency shouldBe true
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.EVENTUAL
     config.schemaConversionMode shouldBe SchemaConversionModes.Relaxed
   }
 
@@ -564,7 +690,8 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     config.bulkEnabled shouldEqual true
     config.pointMaxConcurrency.isDefined shouldEqual false
     config.bulkMaxPendingOperations.isDefined shouldEqual false
-
+    config.maxInitialNoProgressIntervalInSeconds shouldEqual 180
+    config.maxRetryNoProgressIntervalInSeconds shouldEqual 45 * 60
   }
 
   it should "parse point write config" in {
@@ -597,6 +724,8 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     config.maxRetryCount shouldEqual 8
     config.bulkEnabled shouldEqual true
     config.bulkMaxPendingOperations.get shouldEqual 12
+    config.maxInitialNoProgressIntervalInSeconds shouldEqual 180
+    config.maxRetryNoProgressIntervalInSeconds shouldEqual 45 * 60
   }
 
   it should "parse partitioning config with custom Strategy" in {
@@ -1342,6 +1471,25 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
           throw e
         }
     }
+  }
+
+  "CosmosWriteConfig" should "parse custom no-progress intervals for bulk write config" in {
+    val userConfig = Map(
+      "spark.cosmos.write.strategy" -> "ItemAppend",
+      "spark.cosmos.write.maxRetryCount" -> "9",
+      "spark.cosmos.write.bulk.maxPendingOperations" -> "13",
+      "spark.cosmos.write.flush.noProgress.maxIntervalInSeconds" -> "157",
+      "spark.cosmos.write.flush.noProgress.maxRetryIntervalInSeconds" -> "314"
+    )
+
+    val config = CosmosWriteConfig.parseWriteConfig(userConfig, StructType(Nil))
+
+    config.itemWriteStrategy shouldEqual ItemWriteStrategy.ItemAppend
+    config.maxRetryCount shouldEqual 9
+    config.bulkEnabled shouldEqual true
+    config.bulkMaxPendingOperations.get shouldEqual 13
+    config.maxInitialNoProgressIntervalInSeconds shouldEqual 157
+    config.maxRetryNoProgressIntervalInSeconds shouldEqual 314
   }
 
   private case class PatchColumnConfigParameterTest

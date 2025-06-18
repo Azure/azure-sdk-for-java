@@ -3,6 +3,7 @@
 package io.clientcore.annotation.processor.mocks;
 
 import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVisitor;
@@ -14,7 +15,7 @@ import java.util.List;
 /**
  * Mock implementation of {@link TypeMirror}.
  */
-public class MockTypeMirror implements TypeMirror {
+public class MockTypeMirror implements TypeMirror, ArrayType {
     private final TypeKind kind;
     private final String toString;
 
@@ -58,5 +59,13 @@ public class MockTypeMirror implements TypeMirror {
     @Override
     public String toString() {
         return toString;
+    }
+
+    @Override
+    public TypeMirror getComponentType() {
+        if (kind == TypeKind.ARRAY) {
+            return new MockTypeMirror(TypeKind.BYTE, "byte");
+        }
+        return null;
     }
 }

@@ -99,7 +99,8 @@ public final class ImplUtils {
             logger.atInfo()
                 .addKeyValue(timeoutPropertyName, environmentTimeout)
                 .addKeyValue("defaultTimeout", defaultTimeout)
-                .log("Timeout is not valid number. Using default value.", ex);
+                .setThrowable(ex)
+                .log("Timeout is not valid number. Using default value.");
 
             return defaultTimeout;
         }

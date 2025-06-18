@@ -26,6 +26,11 @@ public final class SkuCapacity implements JsonSerializable<SkuCapacity> {
      */
     private String maximum;
 
+    /*
+     * Maximum capacity per device in TB.
+     */
+    private String individualSkuUsable;
+
     /**
      * Creates an instance of SkuCapacity class.
      */
@@ -48,6 +53,15 @@ public final class SkuCapacity implements JsonSerializable<SkuCapacity> {
      */
     public String maximum() {
         return this.maximum;
+    }
+
+    /**
+     * Get the individualSkuUsable property: Maximum capacity per device in TB.
+     * 
+     * @return the individualSkuUsable value.
+     */
+    public String individualSkuUsable() {
+        return this.individualSkuUsable;
     }
 
     /**
@@ -86,6 +100,8 @@ public final class SkuCapacity implements JsonSerializable<SkuCapacity> {
                     deserializedSkuCapacity.usable = reader.getString();
                 } else if ("maximum".equals(fieldName)) {
                     deserializedSkuCapacity.maximum = reader.getString();
+                } else if ("individualSkuUsable".equals(fieldName)) {
+                    deserializedSkuCapacity.individualSkuUsable = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

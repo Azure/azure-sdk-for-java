@@ -14,20 +14,8 @@ import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
 
 public class CosmosClientStore {
-    private static final Map<CosmosAzureEnvironment, String> ACTIVE_DIRECTORY_ENDPOINT_MAP;
-    static {
-        // for now we maintain a static list within the SDK these values do not change very frequently
-        ACTIVE_DIRECTORY_ENDPOINT_MAP = new HashMap<>();
-        ACTIVE_DIRECTORY_ENDPOINT_MAP.put(CosmosAzureEnvironment.AZURE, "https://login.microsoftonline.com/");
-        ACTIVE_DIRECTORY_ENDPOINT_MAP.put(CosmosAzureEnvironment.AZURE_CHINA, "https://login.chinacloudapi.cn/");
-        ACTIVE_DIRECTORY_ENDPOINT_MAP.put(CosmosAzureEnvironment.AZURE_US_GOVERNMENT, "https://login.microsoftonline.us/");
-        ACTIVE_DIRECTORY_ENDPOINT_MAP.put(CosmosAzureEnvironment.AZURE_GERMANY, "https://login.microsoftonline.de/");
-    }
-
     public static CosmosAsyncClient getCosmosClient(
         CosmosAccountConfig accountConfig,
         String sourceName) {
@@ -59,10 +47,9 @@ public class CosmosClientStore {
         if (accountConfig.getCosmosAuthConfig() instanceof CosmosMasterKeyAuthConfig) {
             cosmosClientBuilder.key(((CosmosMasterKeyAuthConfig) accountConfig.getCosmosAuthConfig()).getMasterKey());
         } else if (accountConfig.getCosmosAuthConfig() instanceof CosmosAadAuthConfig) {
-
             CosmosAadAuthConfig aadAuthConfig = (CosmosAadAuthConfig) accountConfig.getCosmosAuthConfig();
             ClientSecretCredential tokenCredential = new ClientSecretCredentialBuilder()
-                .authorityHost(ACTIVE_DIRECTORY_ENDPOINT_MAP.get(aadAuthConfig.getAzureEnvironment()).replaceAll("/$", "") + "/")
+                .authorityHost(aadAuthConfig.getAuthEndpoint())
                 .tenantId(aadAuthConfig.getTenantId())
                 .clientId(aadAuthConfig.getClientId())
                 .clientSecret(aadAuthConfig.getClientSecret())

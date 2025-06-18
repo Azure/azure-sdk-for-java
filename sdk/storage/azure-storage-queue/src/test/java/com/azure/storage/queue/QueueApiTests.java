@@ -3,6 +3,7 @@
 
 package com.azure.storage.queue;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -917,5 +918,17 @@ public class QueueApiTests extends QueueTestBase {
             = getOAuthQueueClientBuilder().audience(audience).queueName(queueClient.getQueueName()).buildClient();
 
         assertNotNull(aadQueue.getProperties());
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2025-07-05")
+    public void getSetAccessPolicyOAuth() {
+        // Arrange
+        QueueServiceClient service = getOAuthQueueServiceClient();
+        queueClient.createIfNotExists();
+        queueClient = service.getQueueClient(queueName);
+
+        PagedIterable<QueueSignedIdentifier> response = queueClient.getAccessPolicy();
+        queueClient.setAccessPolicy(response.stream().collect(Collectors.toList()));
     }
 }

@@ -128,7 +128,7 @@ public final class EventTypeInner extends ProxyResource {
     }
 
     /**
-     * Get the schemaUrl property: Url of the schema for this event type.
+     * Get the schemaUrl property: URL of the schema for this event type.
      * 
      * @return the schemaUrl value.
      */
@@ -137,7 +137,7 @@ public final class EventTypeInner extends ProxyResource {
     }
 
     /**
-     * Set the schemaUrl property: Url of the schema for this event type.
+     * Set the schemaUrl property: URL of the schema for this event type.
      * 
      * @param schemaUrl the schemaUrl value to set.
      * @return the EventTypeInner object itself.

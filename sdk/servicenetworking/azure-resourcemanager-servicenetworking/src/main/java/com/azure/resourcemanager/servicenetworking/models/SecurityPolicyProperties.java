@@ -22,9 +22,16 @@ public final class SecurityPolicyProperties implements JsonSerializable<Security
     private PolicyType policyType;
 
     /*
-     * Web Application Firewall Policy of the Traffic Controller Security Policy
+     * Web Application Firewall Policy of the Traffic Controller Security Policy. Single Security Policy can have only
+     * one policy type set.
      */
     private WafPolicy wafPolicy;
+
+    /*
+     * Ip Access Policy of the Traffic Controller Security Policy. Single Security Policy can have only one policy type
+     * set.
+     */
+    private IpAccessRulesPolicy ipAccessRulesPolicy;
 
     /*
      * Provisioning State of Traffic Controller SecurityPolicy Resource
@@ -47,7 +54,8 @@ public final class SecurityPolicyProperties implements JsonSerializable<Security
     }
 
     /**
-     * Get the wafPolicy property: Web Application Firewall Policy of the Traffic Controller Security Policy.
+     * Get the wafPolicy property: Web Application Firewall Policy of the Traffic Controller Security Policy. Single
+     * Security Policy can have only one policy type set.
      * 
      * @return the wafPolicy value.
      */
@@ -56,13 +64,36 @@ public final class SecurityPolicyProperties implements JsonSerializable<Security
     }
 
     /**
-     * Set the wafPolicy property: Web Application Firewall Policy of the Traffic Controller Security Policy.
+     * Set the wafPolicy property: Web Application Firewall Policy of the Traffic Controller Security Policy. Single
+     * Security Policy can have only one policy type set.
      * 
      * @param wafPolicy the wafPolicy value to set.
      * @return the SecurityPolicyProperties object itself.
      */
     public SecurityPolicyProperties withWafPolicy(WafPolicy wafPolicy) {
         this.wafPolicy = wafPolicy;
+        return this;
+    }
+
+    /**
+     * Get the ipAccessRulesPolicy property: Ip Access Policy of the Traffic Controller Security Policy. Single Security
+     * Policy can have only one policy type set.
+     * 
+     * @return the ipAccessRulesPolicy value.
+     */
+    public IpAccessRulesPolicy ipAccessRulesPolicy() {
+        return this.ipAccessRulesPolicy;
+    }
+
+    /**
+     * Set the ipAccessRulesPolicy property: Ip Access Policy of the Traffic Controller Security Policy. Single Security
+     * Policy can have only one policy type set.
+     * 
+     * @param ipAccessRulesPolicy the ipAccessRulesPolicy value to set.
+     * @return the SecurityPolicyProperties object itself.
+     */
+    public SecurityPolicyProperties withIpAccessRulesPolicy(IpAccessRulesPolicy ipAccessRulesPolicy) {
+        this.ipAccessRulesPolicy = ipAccessRulesPolicy;
         return this;
     }
 
@@ -84,6 +115,9 @@ public final class SecurityPolicyProperties implements JsonSerializable<Security
         if (wafPolicy() != null) {
             wafPolicy().validate();
         }
+        if (ipAccessRulesPolicy() != null) {
+            ipAccessRulesPolicy().validate();
+        }
     }
 
     /**
@@ -93,6 +127,7 @@ public final class SecurityPolicyProperties implements JsonSerializable<Security
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("wafPolicy", this.wafPolicy);
+        jsonWriter.writeJsonField("ipAccessRulesPolicy", this.ipAccessRulesPolicy);
         return jsonWriter.writeEndObject();
     }
 
@@ -115,6 +150,8 @@ public final class SecurityPolicyProperties implements JsonSerializable<Security
                     deserializedSecurityPolicyProperties.policyType = PolicyType.fromString(reader.getString());
                 } else if ("wafPolicy".equals(fieldName)) {
                     deserializedSecurityPolicyProperties.wafPolicy = WafPolicy.fromJson(reader);
+                } else if ("ipAccessRulesPolicy".equals(fieldName)) {
+                    deserializedSecurityPolicyProperties.ipAccessRulesPolicy = IpAccessRulesPolicy.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedSecurityPolicyProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());

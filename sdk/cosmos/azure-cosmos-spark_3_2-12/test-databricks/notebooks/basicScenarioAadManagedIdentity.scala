@@ -21,7 +21,8 @@ val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
     "spark.cosmos.account.resourceGroupName" -> resourceGroupName,
     "spark.cosmos.database" -> cosmosDatabaseName,
     "spark.cosmos.container" -> cosmosContainerName,
-    "spark.cosmos.enforceNativeTransport" -> "true"
+    "spark.cosmos.enforceNativeTransport" -> "true",
+    "spark.cosmos.read.consistencyStrategy" -> "LatestCommitted",
 )
 
 val cfgWithAutoSchemaInference = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
@@ -32,7 +33,8 @@ val cfgWithAutoSchemaInference = Map("spark.cosmos.accountEndpoint" -> cosmosEnd
     "spark.cosmos.database" -> cosmosDatabaseName,
     "spark.cosmos.container" -> cosmosContainerName,
     "spark.cosmos.read.inferSchema.enabled" -> "true",
-    "spark.cosmos.enforceNativeTransport" -> "true"
+    "spark.cosmos.enforceNativeTransport" -> "true",
+    "spark.cosmos.read.consistencyStrategy" -> "LatestCommitted",
 )
 
 // COMMAND ----------

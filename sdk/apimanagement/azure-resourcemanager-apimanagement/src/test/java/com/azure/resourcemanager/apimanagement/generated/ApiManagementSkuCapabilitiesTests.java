@@ -10,7 +10,7 @@ import com.azure.resourcemanager.apimanagement.models.ApiManagementSkuCapabiliti
 public final class ApiManagementSkuCapabilitiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiManagementSkuCapabilities model = BinaryData.fromString("{\"name\":\"pmtonvhgnhtm\",\"value\":\"lhbp\"}")
+        ApiManagementSkuCapabilities model = BinaryData.fromString("{\"name\":\"nwepfgsvbbv\",\"value\":\"dljnpetl\"}")
             .toObject(ApiManagementSkuCapabilities.class);
     }
 

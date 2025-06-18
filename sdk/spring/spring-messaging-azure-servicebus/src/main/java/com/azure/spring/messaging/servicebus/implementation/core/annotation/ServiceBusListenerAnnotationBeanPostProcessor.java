@@ -42,8 +42,7 @@ import java.util.Set;
  */
 public class ServiceBusListenerAnnotationBeanPostProcessor extends AzureListenerAnnotationBeanPostProcessorAdapter<ServiceBusListener> {
 
-
-    private static final String DEFAULT_SERVICE_BUS_LISTENER_ANNOTATION_BPP_BEAN_NAME = "serviceBusListenerAnnotationBeanPostProcessor";
+    public static final String DEFAULT_SERVICE_BUS_LISTENER_ANNOTATION_BPP_BEAN_NAME = "serviceBusListenerAnnotationBeanPostProcessor";
     private static final String DEFAULT_SERVICE_BUS_LISTENER_CONTAINER_FACTORY_BEAN_NAME = "azureServiceBusListenerContainerFactory";
 
     /**

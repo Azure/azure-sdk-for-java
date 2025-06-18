@@ -235,7 +235,7 @@ class ChangeFeedPartitionReaderITest
   val readConfig = CosmosReadConfig.parseCosmosReadConfig(effectiveUserConfig)
   val cosmosClientConfig = CosmosClientConfiguration(
    effectiveUserConfig,
-   useEventualConsistency = readConfig.forceEventualConsistency,
+   readConsistencyStrategy = readConfig.readConsistencyStrategy,
    "")
   val calledFrom = s"ChangeFeedPartitionReaderTest.initializeAndBroadcastCosmosClientStateForContainer"
   Loan(

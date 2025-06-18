@@ -7,8 +7,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.Diagnostics;
@@ -22,35 +22,36 @@ public final class JobsListDetectorsMockTests {
     @Test
     public void testListDetectors() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"metadata\":{\"id\":\"olmugpyvao\",\"name\":\"kluwz\",\"description\":\"ygz\",\"author\":\"yevjhubnobguq\",\"category\":\"qsq\",\"supportTopicList\":[{\"id\":\"ioyj\",\"pesId\":\"mlviqcpszpmcvqdv\"},{\"id\":\"mvxyrxdh\",\"pesId\":\"qojbxao\"},{\"id\":\"gbzxmbtplefoioy\",\"pesId\":\"oxznvgvd\"}],\"analysisTypes\":[\"uvda\",\"sxmrszbknimxlp\"],\"type\":\"rxrzutylcur\",\"score\":4.548967},\"dataset\":[{\"table\":{\"tableName\":\"qaeht\",\"columns\":[{},{}],\"rows\":[\"datanvynfaooeactedc\",\"datalsk\",\"datak\"]},\"renderingProperties\":{\"type\":247319273,\"title\":\"hzllrqmtlpbyxro\",\"description\":\"uyqyp\",\"isVisible\":true}},{\"table\":{\"tableName\":\"iicsudyhbrjjt\",\"columns\":[{},{},{},{}],\"rows\":[\"datasjrholuqwgus\",\"dataxhdod\",\"datajwyblvtbdmvsb\",\"dataidaelqpvekmkwjfb\"]},\"renderingProperties\":{\"type\":912529746,\"title\":\"gdusxurs\",\"description\":\"v\",\"isVisible\":true}}],\"status\":{\"message\":\"coqwczsyiqri\",\"statusId\":916243678},\"dataProviderMetadata\":{\"providerName\":\"vaangqtnhjrfdmf\",\"propertyBag\":[{\"name\":\"aexxjfwtgdfkka\",\"value\":\"gvmuafmczf\"},{\"name\":\"yuepsvpltidajjvy\",\"value\":\"ocfkumcfjxoky\"}]}},\"id\":\"syasvfnkwmygjjek\",\"name\":\"knfdr\",\"type\":\"gjqyckgtxkrdtulc\"}]}";
+            = "{\"value\":[{\"properties\":{\"metadata\":{\"id\":\"iii\",\"name\":\"pfoh\",\"description\":\"fkx\",\"author\":\"cbrwjiutgnjizbe\",\"category\":\"oiymrvzbjuyrsrzi\",\"supportTopicList\":[{\"id\":\"xgbdsuifrevka\",\"pesId\":\"ezkiswqjmdghsypa\"},{\"id\":\"bjufptbjczjnciu\",\"pesId\":\"qvldaswvppisqqzl\"}],\"analysisTypes\":[\"dhzxrrfcfsrh\",\"hgsnxuwwkpph\"],\"type\":\"sbzxl\",\"score\":83.39866},\"dataset\":[{\"table\":{\"tableName\":\"k\",\"columns\":[{},{}],\"rows\":[\"dataacnmwpfsuqtaaz\"]},\"renderingProperties\":{\"type\":1674351827,\"title\":\"xoyf\",\"description\":\"qqi\",\"isVisible\":true}},{\"table\":{\"tableName\":\"hdjzqdcadwvpsoz\",\"columns\":[{}],\"rows\":[\"datariybmrz\",\"dataepnxwd\"]},\"renderingProperties\":{\"type\":1032969367,\"title\":\"gv\",\"description\":\"mxaursqftibtyi\",\"isVisible\":false}}],\"status\":{\"message\":\"irfqjpnqnoow\",\"statusId\":1074790994},\"dataProviderMetadata\":{\"providerName\":\"nrexkxbhxv\",\"propertyBag\":[{\"name\":\"lgmnhjevdyzn\",\"value\":\"jsvkskmqozzkivy\"}]}},\"id\":\"rl\",\"name\":\"izjixlq\",\"type\":\"hefkwabsolronqq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Diagnostics> response
-            = manager.jobs().listDetectors("hmmlc", "yarnggcjfwblqhxk", com.azure.core.util.Context.NONE);
+            = manager.jobs().listDetectors("kadjf", "n", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("uvda", response.iterator().next().properties().metadata().analysisTypes().get(0));
-        Assertions.assertEquals("qaeht", response.iterator().next().properties().dataset().get(0).table().tableName());
-        Assertions.assertEquals(247319273,
+        Assertions.assertEquals("dhzxrrfcfsrh",
+            response.iterator().next().properties().metadata().analysisTypes().get(0));
+        Assertions.assertEquals("k", response.iterator().next().properties().dataset().get(0).table().tableName());
+        Assertions.assertEquals(1674351827,
             response.iterator().next().properties().dataset().get(0).renderingProperties().type());
-        Assertions.assertEquals("hzllrqmtlpbyxro",
+        Assertions.assertEquals("xoyf",
             response.iterator().next().properties().dataset().get(0).renderingProperties().title());
-        Assertions.assertEquals("uyqyp",
+        Assertions.assertEquals("qqi",
             response.iterator().next().properties().dataset().get(0).renderingProperties().description());
         Assertions.assertEquals(true,
             response.iterator().next().properties().dataset().get(0).renderingProperties().isVisible());
-        Assertions.assertEquals("coqwczsyiqri", response.iterator().next().properties().status().message());
-        Assertions.assertEquals(916243678, response.iterator().next().properties().status().statusId());
-        Assertions.assertEquals("vaangqtnhjrfdmf",
+        Assertions.assertEquals("irfqjpnqnoow", response.iterator().next().properties().status().message());
+        Assertions.assertEquals(1074790994, response.iterator().next().properties().status().statusId());
+        Assertions.assertEquals("nrexkxbhxv",
             response.iterator().next().properties().dataProviderMetadata().providerName());
-        Assertions.assertEquals("aexxjfwtgdfkka",
+        Assertions.assertEquals("lgmnhjevdyzn",
             response.iterator().next().properties().dataProviderMetadata().propertyBag().get(0).name());
-        Assertions.assertEquals("gvmuafmczf",
+        Assertions.assertEquals("jsvkskmqozzkivy",
             response.iterator().next().properties().dataProviderMetadata().propertyBag().get(0).value());
     }
 }

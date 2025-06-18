@@ -27,7 +27,6 @@ import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.TokenProviderResult;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
-import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -55,7 +54,6 @@ public class IdentitySyncClient extends IdentityClientBase {
     private final SynchronousAccessor<ConfidentialClientApplication> confidentialClientApplicationAccessor;
 
     private final SynchronousAccessor<ConfidentialClientApplication> confidentialClientApplicationAccessorWithCae;
-    private final SynchronousAccessor<ConfidentialClientApplication> managedIdentityConfidentialClientApplicationAccessor;
     private final SynchronousAccessor<ConfidentialClientApplication> workloadIdentityConfidentialClientApplicationAccessor;
     private final SynchronousAccessor<String> clientAssertionAccessor;
 
@@ -93,9 +91,6 @@ public class IdentitySyncClient extends IdentityClientBase {
 
         this.confidentialClientApplicationAccessorWithCae
             = new SynchronousAccessor<>(() -> this.getConfidentialClient(true));
-
-        this.managedIdentityConfidentialClientApplicationAccessor
-            = new SynchronousAccessor<>(() -> this.getManagedIdentityConfidentialClient());
 
         this.workloadIdentityConfidentialClientApplicationAccessor
             = new SynchronousAccessor<>(() -> this.getWorkloadIdentityConfidentialClient());
@@ -152,19 +147,6 @@ public class IdentitySyncClient extends IdentityClientBase {
 
     private SynchronousAccessor<PublicClientApplication> getPublicClientInstance(TokenRequestContext request) {
         return request.isCaeEnabled() ? publicClientApplicationAccessorWithCae : publicClientApplicationAccessor;
-    }
-
-    public AccessToken authenticateWithManagedIdentityConfidentialClient(TokenRequestContext request) {
-        ConfidentialClientApplication confidentialClient
-            = managedIdentityConfidentialClientApplicationAccessor.getValue();
-        ClientCredentialParameters.ClientCredentialParametersBuilder builder
-            = ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
-                .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
-        try {
-            return new MsalToken(confidentialClient.acquireToken(builder.build()).get());
-        } catch (Exception e) {
-            throw new CredentialUnavailableException("Managed Identity authentication is not available.", e);
-        }
     }
 
     /**
@@ -515,10 +497,5 @@ public class IdentitySyncClient extends IdentityClientBase {
      */
     public IdentityClientOptions getIdentityClientOptions() {
         return options;
-    }
-
-    @Override
-    Mono<AccessToken> getTokenFromTargetManagedIdentity(TokenRequestContext tokenRequestContext) {
-        return null;
     }
 }

@@ -8,9 +8,8 @@ import io.clientcore.core.serialization.xml.XmlSerializable;
 import io.clientcore.core.serialization.xml.XmlToken;
 import io.clientcore.core.serialization.xml.XmlWriter;
 import io.clientcore.core.utils.CoreUtils;
-
-import javax.xml.stream.XMLStreamException;
 import java.util.Objects;
+import javax.xml.stream.XMLStreamException;
 
 /**
  * Test class implementing {@link XmlSerializable}.

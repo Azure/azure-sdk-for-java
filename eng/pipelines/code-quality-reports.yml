@@ -95,7 +95,7 @@ extends:
                 inputs:
                   mavenPomFile: ClientFromSourcePom.xml
                   goals: 'install'
-                  options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true $(LintingGoals) -Djacoco.skip=true -Dspotless.skip=true -pl "!com.azure:azure-sdk-from-source,$(SkipLintingProjects)"'
+                  options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true $(LintingGoals) -Djacoco.skip=true -Dspotless.skip=true -Dshade.skip=true -Dmaven.antrun.skip=true -pl "!com.azure:azure-sdk-from-source,$(SkipLintingProjects)"'
                   mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
                   javaHomeOption: 'JDKVersion'
                   jdkVersionOption: $(JavaBuildVersion)

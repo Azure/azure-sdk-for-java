@@ -43,8 +43,8 @@ extends:
         groupId: com.azure
         safeName: azureclientsdkparent
         releaseInBatch: ${{ parameters.release_azureclientsdkparent }}
-      - name: azure-client-sdk-parent-v2
-        groupId: com.azure
+      - name: azure-client-sdk-parent
+        groupId: com.azure.v2
         safeName: azureclientsdkparentv2
         releaseInBatch: ${{ parameters.release_azureclientsdkparentv2 }}
       - name: clientcore-parent

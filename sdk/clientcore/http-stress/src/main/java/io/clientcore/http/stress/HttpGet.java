@@ -20,8 +20,6 @@ import io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
 import io.clientcore.http.stress.util.TelemetryHelper;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
@@ -55,7 +53,7 @@ public class HttpGet extends ScenarioBase<StressOptions> {
         try {
             uri = new URI(options.getServiceEndpoint());
         } catch (URISyntaxException ex) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'uri' must be a valid URI.", ex));
+            throw LOGGER.throwableAtError().log("'uri' must be a valid URI.", ex, IllegalArgumentException::new);
         }
     }
 
@@ -67,11 +65,8 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     private void runInternal() {
         // no need to handle exceptions here, they will be handled (and recorded) by the telemetry helper
         HttpRequest request = createRequest();
-        try (Response<BinaryData> response = pipeline.send(request)) {
-            response.getValue().toBytes();
-        } catch (IOException e) {
-            LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        Response<BinaryData> response = pipeline.send(request);
+        response.getValue().toBytes();
     }
 
     @Override
@@ -98,13 +93,7 @@ public class HttpGet extends ScenarioBase<StressOptions> {
         return Mono.usingWhen(Mono.fromCallable(() -> pipeline.send(createRequest())), response -> {
             response.getValue().toBytes();
             return Mono.empty();
-        }, response -> Mono.fromRunnable(() -> {
-            try {
-                response.close();
-            } catch (IOException e) {
-                LOGGER.logThrowableAsError(new UncheckedIOException(e));
-            }
-        }));
+        }, response -> Mono.fromRunnable(response::close));
     }
 
     // Method to run using CompletableFuture
@@ -112,8 +101,6 @@ public class HttpGet extends ScenarioBase<StressOptions> {
         return CompletableFuture.supplyAsync(() -> {
             try (Response<BinaryData> response = pipeline.send(createRequest())) {
                 response.getValue().toBytes();
-            } catch (Exception e) {
-                LOGGER.logThrowableAsError(e);
             }
             return null;
         }, executorService);
@@ -124,8 +111,6 @@ public class HttpGet extends ScenarioBase<StressOptions> {
         return () -> {
             try (Response<BinaryData> response = pipeline.send(createRequest())) {
                 response.getValue().toBytes();
-            } catch (Exception e) {
-                LOGGER.logThrowableAsError(e);
             }
         };
     }
@@ -135,8 +120,6 @@ public class HttpGet extends ScenarioBase<StressOptions> {
         return () -> {
             try (Response<BinaryData> response = pipeline.send(createRequest())) {
                 response.getValue().toBytes();
-            } catch (Exception e) {
-                LOGGER.logThrowableAsError(e);
             }
         };
     }

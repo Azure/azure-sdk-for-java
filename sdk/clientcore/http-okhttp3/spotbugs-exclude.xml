@@ -7,6 +7,7 @@
     <Or>
       <Class name="io.clientcore.http.okhttp3.OkHttpHttpClient" />
       <Class name="io.clientcore.http.okhttp3.implementation.OkHttpInputStreamRequestBody" />
+      <Class name="io.clientcore.http.okhttp3.implementation.ProxyAuthenticator" />
     </Or>
   </Match>
   <Match>
@@ -19,7 +20,10 @@
   </Match>
   <Match>
     <Bug pattern="NP_NONNULL_RETURN_VIOLATION" />
-    <Class name="io.clientcore.http.okhttp3.implementation.OkHttpFileRequestBodyTest$TestSink" />
+    <Or>
+      <Class name="io.clientcore.http.okhttp3.implementation.OkHttpFileRequestBodyTest$TestSink" />
+      <Class name="io.clientcore.http.okhttp3.mocking.MockInterceptorChain" />
+    </Or>
   </Match>
   <Match>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE" />
@@ -35,6 +39,6 @@
   </Match>
   <Match>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />
-    <Class name="io.clientcore.http.okhttp3.DeadlockTests" />
+    <Class name="io.clientcore.http.okhttp3.OkHttpHttpClientDeadlockTests" />
   </Match>
 </FindBugsFilter>
