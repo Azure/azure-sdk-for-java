@@ -3344,24 +3344,4 @@ class FileApiTests extends FileShareTestBase {
         shareClient.delete();
     }
 
-    @Test
-    public void invalidServiceVersion() {
-        ShareServiceClient serviceClient = instrument(
-            new ShareServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint())
-                .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
-                .httpClient(HttpClient.createDefault())
-                .pipeline(new HttpPipelineBuilder().policies(new InvalidServiceVersionPipelinePolicy())
-                    .httpClient(HttpClient.createDefault())
-                    .build())).buildClient();
-
-        ShareClient shareClient = serviceClient.getShareClient(generateShareName());
-        ShareFileClient fileClient = shareClient.getFileClient(generatePathName());
-
-        ShareStorageException exception
-            = assertThrows(ShareStorageException.class, () -> fileClient.createIfNotExists(1024));
-
-        assertEquals(400, exception.getStatusCode());
-        assertTrue(exception.getMessage().contains(Constants.Errors.INVALID_VERSION_HEADER_MESSAGE));
-        assertEquals(ShareErrorCode.INVALID_HEADER_VALUE, exception.getErrorCode());
-    }
 }

@@ -2152,27 +2152,4 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
         oauthServiceClient.deleteShare(shareName).block();
     }
-
-    @Test
-    public void invalidServiceVersion() {
-        ShareServiceAsyncClient serviceClient = instrument(
-            new ShareServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint())
-                .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
-                .httpClient(HttpClient.createDefault())
-                .pipeline(new HttpPipelineBuilder().policies(new InvalidServiceVersionPipelinePolicy())
-                    .httpClient(HttpClient.createDefault())
-                    .build())).buildAsyncClient();
-
-        ShareAsyncClient shareClient = serviceClient.getShareAsyncClient(generateShareName());
-        ShareFileAsyncClient fileClient = shareClient.getFileClient(generatePathName());
-
-        StepVerifier.create(fileClient.createIfNotExists(1024))
-            .verifyErrorSatisfies(ex -> {
-                ShareStorageException exception = assertInstanceOf(ShareStorageException.class, ex);
-                assertEquals(400, exception.getStatusCode());
-                assertTrue(exception.getMessage().contains(Constants.Errors.INVALID_VERSION_HEADER_MESSAGE));
-                assertEquals(ShareErrorCode.INVALID_HEADER_VALUE, exception.getErrorCode());
-            });
-    }
-
 }

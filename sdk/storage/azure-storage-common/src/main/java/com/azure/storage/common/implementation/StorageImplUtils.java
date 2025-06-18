@@ -10,10 +10,13 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlToken;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import javax.xml.stream.XMLStreamException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -298,67 +301,47 @@ public class StorageImplUtils {
      * @param response The storage service response.
      * @return The converted storage exception message.
      */
+    //TODO (gunjan): Investigate why we do not parse the XML error bodies to pull out the error messages and codes.
     public static String convertStorageExceptionMessage(String message, HttpResponse response) {
-        if (response == null) {
-            return message;
-        }
-
-        String errorCode = response.getHeaders().getValue(ERROR_CODE_HEADER_NAME);
-        String headerName = response.getHeaders().getValue(HEADER_NAME);
-
-        if (errorCode == null) {
-            errorCode = extractXmlTagValue(message, "Code");
-        }
-        if (headerName == null) {
-            headerName = extractXmlTagValue(message, "HeaderName");
-        }
-
-        if (Constants.HeaderConstants.INVALID_HEADER_VALUE.equals(errorCode)
-            && Constants.HeaderConstants.VERSION.equalsIgnoreCase(headerName)) {
-            return Constants.Errors.INVALID_VERSION_HEADER_MESSAGE + message;
-        }
-
-        if (response.getStatusCode() == 403) {
-            return STORAGE_EXCEPTION_LOG_STRING_TO_SIGN_MESSAGE + message;
-        }
-
-        if (response.getRequest() != null
-            && response.getRequest().getHttpMethod() == HttpMethod.HEAD
-            && errorCode != null) {
-            int indexOfEmptyBody = message.indexOf("(empty body)");
-            if (indexOfEmptyBody >= 0) {
-                return message.substring(0, indexOfEmptyBody) + errorCode + message.substring(indexOfEmptyBody + 12);
-            }
-        }
-
-        return message;
-    }
-
-    public static HttpResponse convertStorageResponse(String message, HttpResponse response) {
-        if (response != null && response.getStatusCode() == 400) {
+        if (response != null) {
             String errorCode = response.getHeaders().getValue(ERROR_CODE_HEADER_NAME);
             String headerName = response.getHeaders().getValue(HEADER_NAME);
 
-            if (errorCode == null) {
-                errorCode = extractXmlTagValue(message, "Code");
-            }
-            if (headerName == null) {
-                headerName = extractXmlTagValue(message, "HeaderName");
+            // Handle 403 Forbidden responses by appending detailed logging instructions for signature mismatches.
+            if (response.getStatusCode() == 403) {
+                return STORAGE_EXCEPTION_LOG_STRING_TO_SIGN_MESSAGE + message;
             }
 
-            if (Constants.HeaderConstants.INVALID_HEADER_VALUE.equals(errorCode)
-                && Constants.HeaderConstants.VERSION.equalsIgnoreCase(headerName)) {
-                if (response.getHeaders().getValue(ERROR_CODE_HEADER_NAME) == null && errorCode != null) {
-                    response.getHeaders().set(ERROR_CODE_HEADER_NAME, errorCode);
+            // Handle HEAD requests specifically by inserting the error code into the message if the body is empty.
+            if (response.getRequest() != null
+                && response.getRequest().getHttpMethod() == HttpMethod.HEAD
+                && errorCode != null) {
+                int indexOfEmptyBody = message.indexOf("(empty body)");
+                if (indexOfEmptyBody >= 0) {
+                    return message.substring(0, indexOfEmptyBody) + errorCode
+                        + message.substring(indexOfEmptyBody + 12);
+                }
+            }
+
+            /*
+             * Extract error details from XML when headers are missing to provide meaningful error message
+             * for x-ms-version mismatch issues.
+             * Note : This is currently supported only for blob package.
+             */
+            if (errorCode == null && headerName == null) {
+                errorCode = extractXmlTagValue(message, "Code");
+                headerName = extractXmlTagValue(message, "HeaderName");
+                if (Constants.HeaderConstants.INVALID_HEADER_VALUE.equals(errorCode)
+                    && Constants.HeaderConstants.VERSION.equalsIgnoreCase(headerName)) {
+                    return Constants.INVALID_VERSION_HEADER_MESSAGE + message;
                 }
             }
         }
-
-        return response;
+        return message;
     }
 
     private static String extractXmlTagValue(String message, String tag) {
-        if (message == null || tag == null) {
+        if (CoreUtils.isNullOrEmpty(message) || CoreUtils.isNullOrEmpty(tag)) {
             return null;
         }
 
@@ -367,29 +350,19 @@ public class StorageImplUtils {
             return null;
         }
 
-        String xml = message.substring(xmlStart);
-
-        LOGGER.info("XML :" + xml);
-
-        String openTag = "<" + tag + ">";
-        String closeTag = "</" + tag + ">";
-        int start = xml.indexOf(openTag);
-        int end = xml.indexOf(closeTag);
-
-        if (start >= 0 && end > start) {
-            return xml.substring(start + openTag.length(), end).trim();
+        try {
+            XmlReader xmlReader = XmlReader.fromString(message.substring(xmlStart));
+            while (xmlReader.nextElement() != XmlToken.END_DOCUMENT) {
+                if (xmlReader.getElementName().getLocalPart().equals(tag)) {
+                    return xmlReader.getStringElement().trim();
+                }
+            }
+        } catch (XMLStreamException e) {
+            throw new RuntimeException(e);
         }
 
         return null;
     }
-
-    //    private static String extractXmlFromErrorMessage(String errorMessage) {
-    //        int xmlStart = errorMessage.indexOf("<?xml");
-    //        if (xmlStart >= 0) {
-    //            return errorMessage.substring(xmlStart).replaceFirst("^\\?+", "");
-    //        }
-    //        return null;
-    //    }
 
     /**
      * Given a String representing a date in a form of the ISO8601 pattern, generates a Date representing it with up to

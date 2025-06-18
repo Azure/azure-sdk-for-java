@@ -2025,8 +2025,7 @@ public class ContainerApiTests extends BlobTestBase {
             = assertThrows(BlobStorageException.class, () -> containerClient.createIfNotExists());
 
         assertEquals(400, exception.getStatusCode());
-        assertTrue(exception.getMessage().contains(Constants.Errors.INVALID_VERSION_HEADER_MESSAGE));
-        assertEquals(BlobErrorCode.INVALID_HEADER_VALUE, exception.getErrorCode());
+        assertTrue(exception.getMessage().contains(Constants.INVALID_VERSION_HEADER_MESSAGE));
     }
 
     // TODO: Reintroduce these tests once service starts supporting it.
