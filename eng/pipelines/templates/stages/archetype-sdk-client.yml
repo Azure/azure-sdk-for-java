@@ -158,6 +158,6 @@ extends:
                     - ${{ if ne(artifact.releaseInBatch, 'false') }}:
                         - ${{ artifact }}
               TestPipeline: ${{ parameters.TestPipeline }}
-              PublicFeedUrl: ${{ parameters.PublicFeed }}
+              PublicFeedUrl: ${{ parameters.PublicFeedUrl }}
               PublicPublishEnvironment: ${{ parameters.PublicPublishEnvironment }}
 
