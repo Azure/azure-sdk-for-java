@@ -4,6 +4,7 @@ trigger:
       - main
   paths:
     include:
+      - /sdk/tools/openrewrite-sample-compiler-ci.yml
       - /sdk/tools/azure-openrewrite/
       - /sdk/tools/azure-openrewrite-compiler-maven-plugin/
 
@@ -16,6 +17,7 @@ pr:
       - release/*
   paths:
     include:
+      - /sdk/tools/openrewrite-sample-compiler-ci.yml
       - /sdk/tools/azure-openrewrite/
       - /sdk/tools/azure-openrewrite-compiler-maven-plugin/
 
