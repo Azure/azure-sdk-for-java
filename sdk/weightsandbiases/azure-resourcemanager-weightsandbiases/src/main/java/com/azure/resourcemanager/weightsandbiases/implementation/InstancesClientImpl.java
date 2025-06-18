@@ -72,7 +72,7 @@ public final class InstancesClientImpl implements InstancesClient {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "WeightsAndBiasesMana")
+    @ServiceInterface(name = "WeightsAndBiasesManagementClientInstances")
     public interface InstancesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.WeightsAndBiases/instances/{instancename}")

@@ -79,7 +79,7 @@ public final class DocumentClassifiersImpl {
      * service to perform REST calls.
      */
     @Host("{endpoint}/formrecognizer")
-    @ServiceInterface(name = "FormRecognizerClient")
+    @ServiceInterface(name = "FormRecognizerClientDocumentClassifiers")
     public interface DocumentClassifiersService {
         @Post("/documentClassifiers:build")
         @ExpectedResponses({ 202 })

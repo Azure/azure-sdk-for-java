@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.keys.cryptography.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
@@ -69,19 +68,16 @@ public final class SignatureAlgorithm extends ExpandableStringEnum<SignatureAlgo
     /**
      * HMAC using SHA-256, as described in <a href="https://tools.ietf.org/html/rfc7518">RFC7518</a>.
      */
-    @Generated
     public static final SignatureAlgorithm HS256 = fromString("HS256");
 
     /**
      * HMAC using SHA-384, as described in <a href="https://tools.ietf.org/html/rfc7518">RFC7518</a>.
      */
-    @Generated
     public static final SignatureAlgorithm HS384 = fromString("HS384");
 
     /**
      * HMAC using SHA-512, as described in <a href="https://tools.ietf.org/html/rfc7518">RFC7518</a>.
      */
-    @Generated
     public static final SignatureAlgorithm HS512 = fromString("HS512");
 
     /**

@@ -57,7 +57,7 @@ public final class DeploymentPreflightsClientImpl implements DeploymentPreflight
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DataReplicationMgmtC")
+    @ServiceInterface(name = "DataReplicationMgmtClientDeploymentPreflights")
     public interface DeploymentPreflightsService {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/deployments/{deploymentId}/preflight")

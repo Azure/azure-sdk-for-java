@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservice.models.MachineProperties;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * A machine. Contains details about the underlying virtual machine. A machine may be visible here but not in kubectl
@@ -18,6 +19,11 @@ import java.io.IOException;
  */
 @Fluent
 public final class MachineInner extends SubResource {
+    /*
+     * The Availability zone in which machine is located.
+     */
+    private List<String> zones;
+
     /*
      * The properties of the machine
      */
@@ -37,6 +43,15 @@ public final class MachineInner extends SubResource {
      * Creates an instance of MachineInner class.
      */
     public MachineInner() {
+    }
+
+    /**
+     * Get the zones property: The Availability zone in which machine is located.
+     * 
+     * @return the zones value.
+     */
+    public List<String> zones() {
+        return this.zones;
     }
 
     /**
@@ -114,6 +129,9 @@ public final class MachineInner extends SubResource {
 
                 if ("id".equals(fieldName)) {
                     deserializedMachineInner.withId(reader.getString());
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMachineInner.zones = zones;
                 } else if ("properties".equals(fieldName)) {
                     deserializedMachineInner.properties = MachineProperties.fromJson(reader);
                 } else if ("name".equals(fieldName)) {

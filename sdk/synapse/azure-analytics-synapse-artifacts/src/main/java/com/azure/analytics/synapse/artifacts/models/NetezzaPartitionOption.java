@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class NetezzaPartitionOption extends ExpandableStringEnum<NetezzaPa
     /**
      * Static value None for NetezzaPartitionOption.
      */
+    @Generated
     public static final NetezzaPartitionOption NONE = fromString("None");
 
     /**
      * Static value DataSlice for NetezzaPartitionOption.
      */
+    @Generated
     public static final NetezzaPartitionOption DATA_SLICE = fromString("DataSlice");
 
     /**
      * Static value DynamicRange for NetezzaPartitionOption.
      */
+    @Generated
     public static final NetezzaPartitionOption DYNAMIC_RANGE = fromString("DynamicRange");
 
     /**
@@ -31,6 +35,7 @@ public final class NetezzaPartitionOption extends ExpandableStringEnum<NetezzaPa
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public NetezzaPartitionOption() {
     }
@@ -41,6 +46,7 @@ public final class NetezzaPartitionOption extends ExpandableStringEnum<NetezzaPa
      * @param name a name to look for.
      * @return the corresponding NetezzaPartitionOption.
      */
+    @Generated
     public static NetezzaPartitionOption fromString(String name) {
         return fromString(name, NetezzaPartitionOption.class);
     }
@@ -50,6 +56,7 @@ public final class NetezzaPartitionOption extends ExpandableStringEnum<NetezzaPa
      * 
      * @return known NetezzaPartitionOption values.
      */
+    @Generated
     public static Collection<NetezzaPartitionOption> values() {
         return values(NetezzaPartitionOption.class);
     }

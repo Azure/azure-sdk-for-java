@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class WebAppsListBasicPublishingCredentialsPoliciesSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/ListPublishingCredentialsPolicies.
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/ListPublishingCredentialsPolicies.
      * json
      */
     /**

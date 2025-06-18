@@ -126,7 +126,7 @@ public final class LiveMetricsRestAPIsForClientSDKs {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "LiveMetricsRestAPIsF")
+    @ServiceInterface(name = "LiveMetricsRestAPIsForClientSDKs")
     public interface LiveMetricsRestAPIsForClientSDKsService {
         @Post("/QuickPulseService.svc/ping")
         @ExpectedResponses({ 200 })

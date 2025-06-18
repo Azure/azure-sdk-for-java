@@ -662,6 +662,10 @@
 # ServiceLabel: %Notification Hub
 # ServiceOwners:                                     @tjsomasundaram
 
+# PRLabel: %Online Experimentation
+# ServiceLabel: %Online Experimentation
+/sdk/onlineexperimentation/                          @Azure/azure-sdk-write-onlineexperimentation
+
 # PRLabel: %OpenAI
 /sdk/openai/azure-ai-openai/                         @brandom-msft @jpalvarezl
 
@@ -669,7 +673,7 @@
 /sdk/openai/azure-ai-openai-assistants/              @brandom-msft @jpalvarezl
 
 # PRLabel: %OpenAI
-/sdk/openai/azure-ai-openai-realtime/              @brandom-msft @jpalvarezl
+/sdk/openai/azure-ai-openai-realtime/                @brandom-msft @jpalvarezl
 
 # PRLabel: %OpenAI
 /sdk/openai/azure-ai-openai-stainless/             @brandom-msft @jpalvarezl

@@ -78,7 +78,7 @@ public final class ClassificationRulesImpl {
      * service to perform REST calls.
      */
     @Host("{Endpoint}")
-    @ServiceInterface(name = "PurviewScanningClien")
+    @ServiceInterface(name = "PurviewScanningClientClassificationRules")
     public interface ClassificationRulesService {
         @Get("/classificationrules/{classificationRuleName}")
         @ExpectedResponses({ 200 })

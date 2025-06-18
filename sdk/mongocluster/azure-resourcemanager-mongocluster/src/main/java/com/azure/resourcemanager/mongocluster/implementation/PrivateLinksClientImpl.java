@@ -61,7 +61,7 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "MongoClusterManageme")
+    @ServiceInterface(name = "MongoClusterManagementClientPrivateLinks")
     public interface PrivateLinksService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/privateLinkResources")

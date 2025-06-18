@@ -11,6 +11,7 @@ import com.azure.ai.agents.persistent.models.CreateRunOptions;
 import com.azure.ai.agents.persistent.models.ListSortOrder;
 import com.azure.ai.agents.persistent.models.PersistentAgentServerSentEvents;
 import com.azure.ai.agents.persistent.models.RunAdditionalFieldList;
+import com.azure.ai.agents.persistent.models.RunStep;
 import com.azure.ai.agents.persistent.models.StreamUpdate;
 import com.azure.ai.agents.persistent.models.ThreadRun;
 import com.azure.ai.agents.persistent.models.ToolOutput;
@@ -37,9 +38,9 @@ import java.util.stream.StreamSupport;
 import reactor.core.publisher.Flux;
 
 /**
- * Initializes a new instance of the synchronous PersistentAgentsAdministrationClient type.
+ * Initializes a new instance of the synchronous Runs type.
  */
-@ServiceClient(builder = PersistentAgentsAdministrationClientBuilder.class)
+@ServiceClient(builder = PersistentAgentsClientBuilder.class)
 public final class RunsClient {
 
     private final ClientLogger logger = new ClientLogger(RunsClient.class);
@@ -233,6 +234,135 @@ public final class RunsClient {
     public Response<BinaryData> createRunWithResponse(String threadId, BinaryData createRunRequest,
         RequestOptions requestOptions) {
         return this.serviceClient.createRunWithResponse(threadId, createRunRequest, requestOptions);
+    }
+
+    /**
+     * Gets a list of runs for a specified thread.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     thread_id: String (Required)
+     *     assistant_id: String (Required)
+     *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
+     *     required_action (Optional): {
+     *         type: String (Required)
+     *     }
+     *     last_error (Required): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     *     model: String (Required)
+     *     instructions: String (Required)
+     *     tools (Required): [
+     *          (Required){
+     *             type: String (Required)
+     *         }
+     *     ]
+     *     created_at: long (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
+     *     incomplete_details (Required): {
+     *         reason: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *     }
+     *     usage (Required): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     max_prompt_tokens: Integer (Required)
+     *     max_completion_tokens: Integer (Required)
+     *     truncation_strategy (Required): {
+     *         type: String(auto/last_messages) (Required)
+     *         last_messages: Integer (Optional)
+     *     }
+     *     tool_choice: BinaryData (Required)
+     *     response_format: BinaryData (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     *     tool_resources (Optional): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             data_sources (Optional): [
+     *                  (Optional){
+     *                     uri: String (Required)
+     *                     type: String(uri_asset/id_asset) (Required)
+     *                 }
+     *             ]
+     *         }
+     *         file_search (Optional): {
+     *             vector_store_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             vector_stores (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     configuration (Required): {
+     *                         data_sources (Required): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                 }
+     *             ]
+     *         }
+     *         azure_ai_search (Optional): {
+     *             indexes (Optional): [
+     *                  (Optional){
+     *                     index_connection_id: String (Optional)
+     *                     index_name: String (Optional)
+     *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
+     *                     top_k: Integer (Optional)
+     *                     filter: String (Optional)
+     *                     index_asset_id: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     }
+     *     parallel_tool_calls: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param threadId Identifier of the thread.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of runs for a specified thread as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listRuns(String threadId, RequestOptions requestOptions) {
+        return this.serviceClient.listRuns(threadId, requestOptions);
     }
 
     /**
@@ -721,6 +851,145 @@ public final class RunsClient {
     }
 
     /**
+     * Retrieves a single run step from a thread run.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>include[]</td><td>List&lt;String&gt;</td><td>No</td><td>A list of additional fields to include in the
+     * response.
+     * Currently the only supported value is `step_details.tool_calls[*].file_search.results[*].content` to fetch the
+     * file search result content. In the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     type: String(message_creation/tool_calls) (Required)
+     *     assistant_id: String (Required)
+     *     thread_id: String (Required)
+     *     run_id: String (Required)
+     *     status: String(in_progress/cancelled/failed/completed/expired) (Required)
+     *     step_details (Required): {
+     *         type: String(message_creation/tool_calls) (Required)
+     *     }
+     *     last_error (Required): {
+     *         code: String(server_error/rate_limit_exceeded) (Required)
+     *         message: String (Required)
+     *     }
+     *     created_at: long (Required)
+     *     expired_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
+     *     usage (Optional): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param threadId Identifier of the thread.
+     * @param runId Identifier of the run.
+     * @param stepId Identifier of the run step.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return detailed information about a single step of an agent thread run along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getRunStepWithResponse(String threadId, String runId, String stepId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getRunStepWithResponse(threadId, runId, stepId, requestOptions);
+    }
+
+    /**
+     * Gets a list of run steps from a thread run.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>include[]</td><td>List&lt;String&gt;</td><td>No</td><td>A list of additional fields to include in the
+     * response.
+     * Currently the only supported value is `step_details.tool_calls[*].file_search.results[*].content` to fetch the
+     * file search result content. In the form of "," separated string.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     type: String(message_creation/tool_calls) (Required)
+     *     assistant_id: String (Required)
+     *     thread_id: String (Required)
+     *     run_id: String (Required)
+     *     status: String(in_progress/cancelled/failed/completed/expired) (Required)
+     *     step_details (Required): {
+     *         type: String(message_creation/tool_calls) (Required)
+     *     }
+     *     last_error (Required): {
+     *         code: String(server_error/rate_limit_exceeded) (Required)
+     *         message: String (Required)
+     *     }
+     *     created_at: long (Required)
+     *     expired_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
+     *     usage (Optional): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param threadId Identifier of the thread.
+     * @param runId Identifier of the run.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of run steps from a thread run as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listRunSteps(String threadId, String runId, RequestOptions requestOptions) {
+        return this.serviceClient.listRunSteps(threadId, runId, requestOptions);
+    }
+
+    /**
      * Creates a new run for an agent thread.
      *
      * @param options Options for createRun API.
@@ -980,6 +1249,137 @@ public final class RunsClient {
     }
 
     /**
+     * Retrieves a single run step from a thread run.
+     *
+     * @param threadId Identifier of the thread.
+     * @param runId Identifier of the run.
+     * @param stepId Identifier of the run step.
+     * @param include A list of additional fields to include in the response.
+     * Currently the only supported value is `step_details.tool_calls[*].file_search.results[*].content` to fetch the
+     * file search result content.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return detailed information about a single step of an agent thread run.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RunStep getRunStep(String threadId, String runId, String stepId, List<RunAdditionalFieldList> include) {
+        // Generated convenience method for getRunStepWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (include != null) {
+            requestOptions.addQueryParam("include[]",
+                include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        return getRunStepWithResponse(threadId, runId, stepId, requestOptions).getValue().toObject(RunStep.class);
+    }
+
+    /**
+     * Retrieves a single run step from a thread run.
+     *
+     * @param threadId Identifier of the thread.
+     * @param runId Identifier of the run.
+     * @param stepId Identifier of the run step.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return detailed information about a single step of an agent thread run.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RunStep getRunStep(String threadId, String runId, String stepId) {
+        // Generated convenience method for getRunStepWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getRunStepWithResponse(threadId, runId, stepId, requestOptions).getValue().toObject(RunStep.class);
+    }
+
+    /**
+     * Gets a list of run steps from a thread run.
+     *
+     * @param threadId Identifier of the thread.
+     * @param runId Identifier of the run.
+     * @param include A list of additional fields to include in the response.
+     * Currently the only supported value is `step_details.tool_calls[*].file_search.results[*].content` to fetch the
+     * file search result content.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default
+     * is 20.
+     * @param order Sort order by the created_at timestamp of the objects. asc for ascending order and desc for
+     * descending order.
+     * @param after A cursor for use in pagination. after is an object ID that defines your place in the list. For
+     * instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can
+     * include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. before is an object ID that defines your place in the list. For
+     * instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can
+     * include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of run steps from a thread run as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<RunStep> listRunSteps(String threadId, String runId, List<RunAdditionalFieldList> include,
+        Integer limit, ListSortOrder order, String after, String before) {
+        // Generated convenience method for listRunSteps
+        RequestOptions requestOptions = new RequestOptions();
+        if (include != null) {
+            requestOptions.addQueryParam("include[]",
+                include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        return serviceClient.listRunSteps(threadId, runId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(RunStep.class));
+    }
+
+    /**
+     * Gets a list of run steps from a thread run.
+     *
+     * @param threadId Identifier of the thread.
+     * @param runId Identifier of the run.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of run steps from a thread run as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<RunStep> listRunSteps(String threadId, String runId) {
+        // Generated convenience method for listRunSteps
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listRunSteps(threadId, runId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(RunStep.class));
+    }
+
+    /**
      * Creates a new streaming run for an agent thread.
      *
      * @param options Options for createRun API.
@@ -1077,134 +1477,5 @@ public final class RunsClient {
                 }
             }
         });
-    }
-
-    /**
-     * Gets a list of runs for a specified thread.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
-     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
-     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
-     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
-     * list.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     object: String (Required)
-     *     thread_id: String (Required)
-     *     assistant_id: String (Required)
-     *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
-     *     required_action (Optional): {
-     *         type: String (Required)
-     *     }
-     *     last_error (Required): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *     }
-     *     model: String (Required)
-     *     instructions: String (Required)
-     *     tools (Required): [
-     *          (Required){
-     *             type: String (Required)
-     *         }
-     *     ]
-     *     created_at: long (Required)
-     *     expires_at: Long (Required)
-     *     started_at: Long (Required)
-     *     completed_at: Long (Required)
-     *     cancelled_at: Long (Required)
-     *     failed_at: Long (Required)
-     *     incomplete_details (Required): {
-     *         reason: String(max_completion_tokens/max_prompt_tokens) (Required)
-     *     }
-     *     usage (Required): {
-     *         completion_tokens: long (Required)
-     *         prompt_tokens: long (Required)
-     *         total_tokens: long (Required)
-     *     }
-     *     temperature: Double (Optional)
-     *     top_p: Double (Optional)
-     *     max_prompt_tokens: Integer (Required)
-     *     max_completion_tokens: Integer (Required)
-     *     truncation_strategy (Required): {
-     *         type: String(auto/last_messages) (Required)
-     *         last_messages: Integer (Optional)
-     *     }
-     *     tool_choice: BinaryData (Required)
-     *     response_format: BinaryData (Required)
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
-     *     tool_resources (Optional): {
-     *         code_interpreter (Optional): {
-     *             file_ids (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             data_sources (Optional): [
-     *                  (Optional){
-     *                     uri: String (Required)
-     *                     type: String(uri_asset/id_asset) (Required)
-     *                 }
-     *             ]
-     *         }
-     *         file_search (Optional): {
-     *             vector_store_ids (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             vector_stores (Optional): [
-     *                  (Optional){
-     *                     name: String (Required)
-     *                     configuration (Required): {
-     *                         data_sources (Required): [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                     }
-     *                 }
-     *             ]
-     *         }
-     *         azure_ai_search (Optional): {
-     *             indexes (Optional): [
-     *                  (Optional){
-     *                     index_connection_id: String (Optional)
-     *                     index_name: String (Optional)
-     *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
-     *                     top_k: Integer (Optional)
-     *                     filter: String (Optional)
-     *                     index_asset_id: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     }
-     *     parallel_tool_calls: boolean (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param threadId Identifier of the thread.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of runs for a specified thread as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listRuns(String threadId, RequestOptions requestOptions) {
-        return this.serviceClient.listRuns(threadId, requestOptions);
     }
 }

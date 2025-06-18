@@ -6,9 +6,9 @@ package com.azure.resourcemanager.dnsresolver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dnsresolver.DnsResolverManager;
 import com.azure.resourcemanager.dnsresolver.models.DnsResolver;
@@ -24,29 +24,28 @@ public final class DnsResolversCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"etag\":\"us\",\"properties\":{\"virtualNetwork\":{\"id\":\"touwaboekqv\"},\"dnsResolverState\":\"Connected\",\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"vbxwyjsflhh\"},\"location\":\"aln\",\"tags\":{\"kiidzyex\":\"isxyawjoyaqcslyj\",\"hb\":\"nelixhnrztfo\",\"dtpnapnyiropuhp\":\"xknalaulppg\",\"gqgitxmedjvcsl\":\"gvpgy\"},\"id\":\"n\",\"name\":\"wwncwzzhxgk\",\"type\":\"rmgucnap\"}";
+            = "{\"etag\":\"x\",\"properties\":{\"virtualNetwork\":{\"id\":\"q\"},\"dnsResolverState\":\"Disconnected\",\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"mciodhkhazxkhn\"},\"location\":\"onlwntoeg\",\"tags\":{\"kszzcmrvexztv\":\"wbw\",\"gsfraoyzkoow\":\"t\",\"aldsy\":\"lmnguxaw\",\"znkbykutwpfhpagm\":\"uximerqfobw\"},\"id\":\"r\",\"name\":\"kdsnfdsdoakgtdl\",\"type\":\"kkze\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DnsResolverManager manager = DnsResolverManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DnsResolver response = manager.dnsResolvers()
-            .define("nmxiebwwaloayqc")
-            .withRegion("vriuhprwmdyvx")
-            .withExistingResourceGroup("xzvlvqhjkbegib")
-            .withVirtualNetwork(new SubResource().withId("wyzmhtxon"))
-            .withTags(mapOf("xrmcqibycnojvk", "yriwwroyqb", "vgqzcjrvxd", "mefqsgzvahapjyzh", "vawjvzunlu",
-                "zlmwlxkvugfhz", "xipeilpjzuaejx", "hnnpr"))
-            .withIfMatch("wozuhkf")
-            .withIfNoneMatch("bsjyofdx")
+            .define("f")
+            .withRegion("grauwjuetaebur")
+            .withExistingResourceGroup("xqtvcofu")
+            .withVirtualNetwork(new SubResource().withId("tor"))
+            .withTags(mapOf("kif", "movsmzlxwabmqoe", "btndo", "vtpuqujmqlgk"))
+            .withIfMatch("i")
+            .withIfNoneMatch("ybxarzgszu")
             .create();
 
-        Assertions.assertEquals("aln", response.location());
-        Assertions.assertEquals("isxyawjoyaqcslyj", response.tags().get("kiidzyex"));
-        Assertions.assertEquals("touwaboekqv", response.virtualNetwork().id());
+        Assertions.assertEquals("onlwntoeg", response.location());
+        Assertions.assertEquals("wbw", response.tags().get("kszzcmrvexztv"));
+        Assertions.assertEquals("q", response.virtualNetwork().id());
     }
 
     // Use "Map.of" if available

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,47 +22,56 @@ public class ExcelDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "Excel";
 
     /*
      * The location of the excel storage.
      */
+    @Generated
     private DatasetLocation location;
 
     /*
      * The sheet name of excel file. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object sheetName;
 
     /*
      * The sheet index of excel file and default value is 0. Type: integer (or Expression with resultType integer)
      */
+    @Generated
     private Object sheetIndex;
 
     /*
      * The partial data of one sheet. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object range;
 
     /*
      * When used as input, treat the first row of data as headers. When used as output,write the headers into the output
      * as the first row of data. The default value is false. Type: boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object firstRowAsHeader;
 
     /*
      * The data compression method used for the json dataset.
      */
+    @Generated
     private DatasetCompression compression;
 
     /*
      * The null value string. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object nullValue;
 
     /**
      * Creates an instance of ExcelDataset class.
      */
+    @Generated
     public ExcelDataset() {
     }
 
@@ -70,6 +80,7 @@ public class ExcelDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -80,6 +91,7 @@ public class ExcelDataset extends Dataset {
      * 
      * @return the location value.
      */
+    @Generated
     public DatasetLocation getLocation() {
         return this.location;
     }
@@ -90,6 +102,7 @@ public class ExcelDataset extends Dataset {
      * @param location the location value to set.
      * @return the ExcelDataset object itself.
      */
+    @Generated
     public ExcelDataset setLocation(DatasetLocation location) {
         this.location = location;
         return this;
@@ -100,6 +113,7 @@ public class ExcelDataset extends Dataset {
      * 
      * @return the sheetName value.
      */
+    @Generated
     public Object getSheetName() {
         return this.sheetName;
     }
@@ -110,6 +124,7 @@ public class ExcelDataset extends Dataset {
      * @param sheetName the sheetName value to set.
      * @return the ExcelDataset object itself.
      */
+    @Generated
     public ExcelDataset setSheetName(Object sheetName) {
         this.sheetName = sheetName;
         return this;
@@ -121,6 +136,7 @@ public class ExcelDataset extends Dataset {
      * 
      * @return the sheetIndex value.
      */
+    @Generated
     public Object getSheetIndex() {
         return this.sheetIndex;
     }
@@ -132,6 +148,7 @@ public class ExcelDataset extends Dataset {
      * @param sheetIndex the sheetIndex value to set.
      * @return the ExcelDataset object itself.
      */
+    @Generated
     public ExcelDataset setSheetIndex(Object sheetIndex) {
         this.sheetIndex = sheetIndex;
         return this;
@@ -142,6 +159,7 @@ public class ExcelDataset extends Dataset {
      * 
      * @return the range value.
      */
+    @Generated
     public Object getRange() {
         return this.range;
     }
@@ -152,6 +170,7 @@ public class ExcelDataset extends Dataset {
      * @param range the range value to set.
      * @return the ExcelDataset object itself.
      */
+    @Generated
     public ExcelDataset setRange(Object range) {
         this.range = range;
         return this;
@@ -164,6 +183,7 @@ public class ExcelDataset extends Dataset {
      * 
      * @return the firstRowAsHeader value.
      */
+    @Generated
     public Object getFirstRowAsHeader() {
         return this.firstRowAsHeader;
     }
@@ -176,6 +196,7 @@ public class ExcelDataset extends Dataset {
      * @param firstRowAsHeader the firstRowAsHeader value to set.
      * @return the ExcelDataset object itself.
      */
+    @Generated
     public ExcelDataset setFirstRowAsHeader(Object firstRowAsHeader) {
         this.firstRowAsHeader = firstRowAsHeader;
         return this;
@@ -186,6 +207,7 @@ public class ExcelDataset extends Dataset {
      * 
      * @return the compression value.
      */
+    @Generated
     public DatasetCompression getCompression() {
         return this.compression;
     }
@@ -196,6 +218,7 @@ public class ExcelDataset extends Dataset {
      * @param compression the compression value to set.
      * @return the ExcelDataset object itself.
      */
+    @Generated
     public ExcelDataset setCompression(DatasetCompression compression) {
         this.compression = compression;
         return this;
@@ -206,6 +229,7 @@ public class ExcelDataset extends Dataset {
      * 
      * @return the nullValue value.
      */
+    @Generated
     public Object getNullValue() {
         return this.nullValue;
     }
@@ -216,6 +240,7 @@ public class ExcelDataset extends Dataset {
      * @param nullValue the nullValue value to set.
      * @return the ExcelDataset object itself.
      */
+    @Generated
     public ExcelDataset setNullValue(Object nullValue) {
         this.nullValue = nullValue;
         return this;
@@ -224,6 +249,7 @@ public class ExcelDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExcelDataset setDescription(String description) {
         super.setDescription(description);
@@ -233,6 +259,7 @@ public class ExcelDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExcelDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -242,6 +269,7 @@ public class ExcelDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExcelDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -251,6 +279,7 @@ public class ExcelDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExcelDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -260,6 +289,7 @@ public class ExcelDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExcelDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -269,6 +299,7 @@ public class ExcelDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExcelDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -278,6 +309,7 @@ public class ExcelDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExcelDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -287,13 +319,18 @@ public class ExcelDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
@@ -307,12 +344,22 @@ public class ExcelDataset extends Dataset {
             || nullValue != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeJsonField("location", this.location);
-            jsonWriter.writeUntypedField("sheetName", this.sheetName);
-            jsonWriter.writeUntypedField("sheetIndex", this.sheetIndex);
-            jsonWriter.writeUntypedField("range", this.range);
-            jsonWriter.writeUntypedField("firstRowAsHeader", this.firstRowAsHeader);
+            if (this.sheetName != null) {
+                jsonWriter.writeUntypedField("sheetName", this.sheetName);
+            }
+            if (this.sheetIndex != null) {
+                jsonWriter.writeUntypedField("sheetIndex", this.sheetIndex);
+            }
+            if (this.range != null) {
+                jsonWriter.writeUntypedField("range", this.range);
+            }
+            if (this.firstRowAsHeader != null) {
+                jsonWriter.writeUntypedField("firstRowAsHeader", this.firstRowAsHeader);
+            }
             jsonWriter.writeJsonField("compression", this.compression);
-            jsonWriter.writeUntypedField("nullValue", this.nullValue);
+            if (this.nullValue != null) {
+                jsonWriter.writeUntypedField("nullValue", this.nullValue);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -332,6 +379,7 @@ public class ExcelDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ExcelDataset.
      */
+    @Generated
     public static ExcelDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ExcelDataset deserializedExcelDataset = new ExcelDataset();

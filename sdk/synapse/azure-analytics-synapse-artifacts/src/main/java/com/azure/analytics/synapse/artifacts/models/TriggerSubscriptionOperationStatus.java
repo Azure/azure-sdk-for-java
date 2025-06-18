@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,16 +20,19 @@ public final class TriggerSubscriptionOperationStatus implements JsonSerializabl
     /*
      * Trigger name.
      */
+    @Generated
     private String triggerName;
 
     /*
      * Event Subscription Status.
      */
+    @Generated
     private EventSubscriptionStatus status;
 
     /**
      * Creates an instance of TriggerSubscriptionOperationStatus class.
      */
+    @Generated
     public TriggerSubscriptionOperationStatus() {
     }
 
@@ -37,6 +41,7 @@ public final class TriggerSubscriptionOperationStatus implements JsonSerializabl
      * 
      * @return the triggerName value.
      */
+    @Generated
     public String getTriggerName() {
         return this.triggerName;
     }
@@ -46,6 +51,7 @@ public final class TriggerSubscriptionOperationStatus implements JsonSerializabl
      * 
      * @return the status value.
      */
+    @Generated
     public EventSubscriptionStatus getStatus() {
         return this.status;
     }
@@ -53,6 +59,7 @@ public final class TriggerSubscriptionOperationStatus implements JsonSerializabl
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -67,6 +74,7 @@ public final class TriggerSubscriptionOperationStatus implements JsonSerializabl
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the TriggerSubscriptionOperationStatus.
      */
+    @Generated
     public static TriggerSubscriptionOperationStatus fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TriggerSubscriptionOperationStatus deserializedTriggerSubscriptionOperationStatus

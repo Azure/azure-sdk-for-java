@@ -5,6 +5,7 @@
 package com.azure.mixedreality.remoterendering.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -16,11 +17,13 @@ public final class RemoteRenderingsGetConversionHeaders {
     /*
      * The Retry-After property.
      */
+    @Generated
     private Integer retryAfter;
 
     /*
      * The MS-CV property.
      */
+    @Generated
     private String msCV;
 
     private static final HttpHeaderName MS_CV = HttpHeaderName.fromString("MS-CV");
@@ -35,6 +38,8 @@ public final class RemoteRenderingsGetConversionHeaders {
         String retryAfter = rawHeaders.getValue(HttpHeaderName.RETRY_AFTER);
         if (retryAfter != null) {
             this.retryAfter = Integer.parseInt(retryAfter);
+        } else {
+            this.retryAfter = null;
         }
         this.msCV = rawHeaders.getValue(MS_CV);
     }
@@ -44,6 +49,7 @@ public final class RemoteRenderingsGetConversionHeaders {
      * 
      * @return the retryAfter value.
      */
+    @Generated
     public Integer getRetryAfter() {
         return this.retryAfter;
     }
@@ -54,6 +60,7 @@ public final class RemoteRenderingsGetConversionHeaders {
      * @param retryAfter the retryAfter value to set.
      * @return the RemoteRenderingsGetConversionHeaders object itself.
      */
+    @Generated
     public RemoteRenderingsGetConversionHeaders setRetryAfter(Integer retryAfter) {
         this.retryAfter = retryAfter;
         return this;
@@ -64,6 +71,7 @@ public final class RemoteRenderingsGetConversionHeaders {
      * 
      * @return the msCV value.
      */
+    @Generated
     public String getMsCV() {
         return this.msCV;
     }
@@ -74,6 +82,7 @@ public final class RemoteRenderingsGetConversionHeaders {
      * @param msCV the msCV value to set.
      * @return the RemoteRenderingsGetConversionHeaders object itself.
      */
+    @Generated
     public RemoteRenderingsGetConversionHeaders setMsCV(String msCV) {
         this.msCV = msCV;
         return this;

@@ -5,6 +5,7 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -16,11 +17,13 @@ public final class ContainerRegistryBlobsGetChunkHeaders {
     /*
      * The Content-Range property.
      */
+    @Generated
     private String contentRange;
 
     /*
      * The Content-Length property.
      */
+    @Generated
     private Long contentLength;
 
     // HttpHeaders containing the raw property values.
@@ -34,6 +37,8 @@ public final class ContainerRegistryBlobsGetChunkHeaders {
         String contentLength = rawHeaders.getValue(HttpHeaderName.CONTENT_LENGTH);
         if (contentLength != null) {
             this.contentLength = Long.parseLong(contentLength);
+        } else {
+            this.contentLength = null;
         }
     }
 
@@ -42,6 +47,7 @@ public final class ContainerRegistryBlobsGetChunkHeaders {
      * 
      * @return the contentRange value.
      */
+    @Generated
     public String getContentRange() {
         return this.contentRange;
     }
@@ -52,6 +58,7 @@ public final class ContainerRegistryBlobsGetChunkHeaders {
      * @param contentRange the contentRange value to set.
      * @return the ContainerRegistryBlobsGetChunkHeaders object itself.
      */
+    @Generated
     public ContainerRegistryBlobsGetChunkHeaders setContentRange(String contentRange) {
         this.contentRange = contentRange;
         return this;
@@ -62,6 +69,7 @@ public final class ContainerRegistryBlobsGetChunkHeaders {
      * 
      * @return the contentLength value.
      */
+    @Generated
     public Long getContentLength() {
         return this.contentLength;
     }
@@ -72,6 +80,7 @@ public final class ContainerRegistryBlobsGetChunkHeaders {
      * @param contentLength the contentLength value to set.
      * @return the ContainerRegistryBlobsGetChunkHeaders object itself.
      */
+    @Generated
     public ContainerRegistryBlobsGetChunkHeaders setContentLength(Long contentLength) {
         this.contentLength = contentLength;
         return this;

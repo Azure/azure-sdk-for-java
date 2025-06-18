@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,16 +22,19 @@ public class FormatReadSettings implements JsonSerializable<FormatReadSettings> 
     /*
      * The read setting type.
      */
+    @Generated
     private String type = "FormatReadSettings";
 
     /*
      * Format read settings.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of FormatReadSettings class.
      */
+    @Generated
     public FormatReadSettings() {
     }
 
@@ -39,6 +43,7 @@ public class FormatReadSettings implements JsonSerializable<FormatReadSettings> 
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -48,6 +53,7 @@ public class FormatReadSettings implements JsonSerializable<FormatReadSettings> 
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -58,6 +64,7 @@ public class FormatReadSettings implements JsonSerializable<FormatReadSettings> 
      * @param additionalProperties the additionalProperties value to set.
      * @return the FormatReadSettings object itself.
      */
+    @Generated
     public FormatReadSettings setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -66,6 +73,7 @@ public class FormatReadSettings implements JsonSerializable<FormatReadSettings> 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -86,6 +94,7 @@ public class FormatReadSettings implements JsonSerializable<FormatReadSettings> 
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the FormatReadSettings.
      */
+    @Generated
     public static FormatReadSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -119,6 +128,7 @@ public class FormatReadSettings implements JsonSerializable<FormatReadSettings> 
         });
     }
 
+    @Generated
     static FormatReadSettings fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             FormatReadSettings deserializedFormatReadSettings = new FormatReadSettings();
