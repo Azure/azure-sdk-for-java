@@ -128,4 +128,13 @@ public interface NetworkInterfaces
      * @return the accepted deleting operation
      */
     Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, Context context);
+
+    /**
+     * Lists resources of the specified type in the specified resource group.
+     *
+     * @param resourceGroupName the name of the resource group to list the resources from
+     * @param context the {@link Context} of the request
+     * @return the list of resources
+     */
+    PagedIterable<NetworkInterface> listByResourceGroup(String resourceGroupName, Context context);
 }

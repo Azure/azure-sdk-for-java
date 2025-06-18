@@ -126,7 +126,7 @@ public class HttpRequestCustomRecipe extends Recipe {
                 }
 
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest setUrl(java.net.URL)");
-                if (methodMatcher.matches((J.MethodInvocation) visited, true)) {
+                if (methodMatcher.matches((J.MethodInvocation) visited)) {
                     replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder("setUri(#{any(java.net.URL)}.toURI())")
                         .imports("java.net.URI")
                         .build();
@@ -136,7 +136,7 @@ public class HttpRequestCustomRecipe extends Recipe {
                 }
 
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest getUrl()");
-                if (methodMatcher.matches((J.MethodInvocation) visited, true)) {
+                if (methodMatcher.matches((J.MethodInvocation) visited)) {
                     replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder(String.format("%s.getUri().toURL()", ((J.MethodInvocation) visited).getSelect().toString()))
                         .imports("java.net.URL")
                         .build();
@@ -146,7 +146,7 @@ public class HttpRequestCustomRecipe extends Recipe {
                 }
 
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest setHeader(..)");
-                if (methodMatcher.matches((J.MethodInvocation) visited, true)) {
+                if (methodMatcher.matches((J.MethodInvocation) visited)) {
                     J variableIdentifier = ((J.MethodInvocation) visited).getSelect();
                     while ((variableIdentifier instanceof J.MethodInvocation)) {
 
@@ -165,7 +165,7 @@ public class HttpRequestCustomRecipe extends Recipe {
                 }
 
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest getBodyAsBinaryData()");
-                if (methodMatcher.matches((J.MethodInvocation) visited, true)) {
+                if (methodMatcher.matches((J.MethodInvocation) visited)) {
                     replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder("getBody()")
                         .build();
                     visited = replacementTemplate.apply(updateCursor(visited), ((J.MethodInvocation) visited).getCoordinates().replaceMethod());
@@ -173,7 +173,7 @@ public class HttpRequestCustomRecipe extends Recipe {
                 }
 
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest setBody(byte[])");
-                if (methodMatcher.matches((J.MethodInvocation) visited, true)) {
+                if (methodMatcher.matches((J.MethodInvocation) visited)) {
                     replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder("setBody(BinaryData.fromBytes(#{anyArray(byte)})")
                         .imports("io.clientcore.core.models.binarydata.BinaryData")
                         .build();
@@ -183,7 +183,7 @@ public class HttpRequestCustomRecipe extends Recipe {
                 }
 
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest copy()");
-                if (methodMatcher.matches((J.MethodInvocation) visited, true)) {
+                if (methodMatcher.matches((J.MethodInvocation) visited)) {
                     J variableIdentifier = ((J.MethodInvocation) visited).getSelect();
                     while ((variableIdentifier instanceof J.MethodInvocation)) {
 
