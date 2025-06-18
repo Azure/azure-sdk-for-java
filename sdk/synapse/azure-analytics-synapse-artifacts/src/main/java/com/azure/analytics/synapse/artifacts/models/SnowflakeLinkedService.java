@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,27 +22,32 @@ public class SnowflakeLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "Snowflake";
 
     /*
      * The connection string of snowflake. Type: string, SecureString.
      */
+    @Generated
     private Object connectionString;
 
     /*
      * The Azure key vault secret reference of password in connection string.
      */
+    @Generated
     private AzureKeyVaultSecretReference password;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of SnowflakeLinkedService class.
      */
+    @Generated
     public SnowflakeLinkedService() {
     }
 
@@ -50,6 +56,7 @@ public class SnowflakeLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -60,6 +67,7 @@ public class SnowflakeLinkedService extends LinkedService {
      * 
      * @return the connectionString value.
      */
+    @Generated
     public Object getConnectionString() {
         return this.connectionString;
     }
@@ -70,6 +78,7 @@ public class SnowflakeLinkedService extends LinkedService {
      * @param connectionString the connectionString value to set.
      * @return the SnowflakeLinkedService object itself.
      */
+    @Generated
     public SnowflakeLinkedService setConnectionString(Object connectionString) {
         this.connectionString = connectionString;
         return this;
@@ -80,6 +89,7 @@ public class SnowflakeLinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public AzureKeyVaultSecretReference getPassword() {
         return this.password;
     }
@@ -90,6 +100,7 @@ public class SnowflakeLinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the SnowflakeLinkedService object itself.
      */
+    @Generated
     public SnowflakeLinkedService setPassword(AzureKeyVaultSecretReference password) {
         this.password = password;
         return this;
@@ -101,6 +112,7 @@ public class SnowflakeLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -112,6 +124,7 @@ public class SnowflakeLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SnowflakeLinkedService object itself.
      */
+    @Generated
     public SnowflakeLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -120,6 +133,7 @@ public class SnowflakeLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SnowflakeLinkedService setVersion(String version) {
         super.setVersion(version);
@@ -129,6 +143,7 @@ public class SnowflakeLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SnowflakeLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -138,6 +153,7 @@ public class SnowflakeLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SnowflakeLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -147,6 +163,7 @@ public class SnowflakeLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SnowflakeLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -156,6 +173,7 @@ public class SnowflakeLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SnowflakeLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -165,6 +183,7 @@ public class SnowflakeLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -178,7 +197,9 @@ public class SnowflakeLinkedService extends LinkedService {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("connectionString", this.connectionString);
             jsonWriter.writeJsonField("password", this.password);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -198,6 +219,7 @@ public class SnowflakeLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SnowflakeLinkedService.
      */
+    @Generated
     public static SnowflakeLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SnowflakeLinkedService deserializedSnowflakeLinkedService = new SnowflakeLinkedService();

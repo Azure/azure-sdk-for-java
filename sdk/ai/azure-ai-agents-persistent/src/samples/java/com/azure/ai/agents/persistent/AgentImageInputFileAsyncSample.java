@@ -2,10 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.ai.agents.persistent;
 
-import com.azure.ai.agents.persistent.implementation.models.FileDetails;
-import com.azure.ai.agents.persistent.implementation.models.UploadFileRequest;
 import com.azure.ai.agents.persistent.models.CreateAgentOptions;
 import com.azure.ai.agents.persistent.models.CreateRunOptions;
+import com.azure.ai.agents.persistent.models.FileDetails;
 import com.azure.ai.agents.persistent.models.FileInfo;
 import com.azure.ai.agents.persistent.models.FilePurpose;
 import com.azure.ai.agents.persistent.models.MessageImageFileParam;
@@ -13,6 +12,7 @@ import com.azure.ai.agents.persistent.models.MessageInputContentBlock;
 import com.azure.ai.agents.persistent.models.MessageInputImageFileBlock;
 import com.azure.ai.agents.persistent.models.MessageInputTextBlock;
 import com.azure.ai.agents.persistent.models.MessageRole;
+import com.azure.ai.agents.persistent.models.UploadFileRequest;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -34,15 +34,16 @@ import static com.azure.ai.agents.persistent.SampleUtils.waitForRunCompletionAsy
 public final class AgentImageInputFileAsyncSample {
 
     public static void main(String[] args) throws IOException, URISyntaxException {
-        PersistentAgentsAdministrationClientBuilder clientBuilder = new PersistentAgentsAdministrationClientBuilder()
+        PersistentAgentsClientBuilder clientBuilder = new PersistentAgentsClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build());
 
-        PersistentAgentsAdministrationAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
-        ThreadsAsyncClient threadsAsyncClient = clientBuilder.buildThreadsAsyncClient();
-        MessagesAsyncClient messagesAsyncClient = clientBuilder.buildMessagesAsyncClient();
-        RunsAsyncClient runsAsyncClient = clientBuilder.buildRunsAsyncClient();
-        FilesAsyncClient filesAsyncClient = clientBuilder.buildFilesAsyncClient();
+        PersistentAgentsAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
+        PersistentAgentsAdministrationAsyncClient administrationAsyncClient = agentsAsyncClient.getPersistentAgentsAdministrationAsyncClient();
+        ThreadsAsyncClient threadsAsyncClient = agentsAsyncClient.getThreadsAsyncClient();
+        MessagesAsyncClient messagesAsyncClient = agentsAsyncClient.getMessagesAsyncClient();
+        RunsAsyncClient runsAsyncClient = agentsAsyncClient.getRunsAsyncClient();
+        FilesAsyncClient filesAsyncClient = agentsAsyncClient.getFilesAsyncClient();
 
         Path file = getFile("sample_image.jpg");
 
@@ -70,7 +71,7 @@ public final class AgentImageInputFileAsyncSample {
                     .setName(agentName)
                     .setInstructions("You are a helpful agent");
 
-                return agentsAsyncClient.createAgent(createAgentOptions)
+                return administrationAsyncClient.createAgent(createAgentOptions)
                     .flatMap(agent -> {
                         System.out.println("Created agent: " + agent.getId());
                         agentId.set(agent.getId());
@@ -103,7 +104,7 @@ public final class AgentImageInputFileAsyncSample {
                             });
                     });
             })
-            .doFinally(signalType -> cleanUpResources(threadId, threadsAsyncClient, agentId, agentsAsyncClient))
+            .doFinally(signalType -> cleanUpResources(threadId, threadsAsyncClient, agentId, administrationAsyncClient))
             .doOnError(error -> System.err.println("An error occurred: " + error.getMessage()))
             .block(); // Only block at the end of the reactive chain
     }

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,27 +19,32 @@ public final class AzureKeyVaultSecretReference extends SecretBase {
     /*
      * Type of the secret.
      */
+    @Generated
     private String type = "AzureKeyVaultSecret";
 
     /*
      * The Azure Key Vault linked service reference.
      */
+    @Generated
     private LinkedServiceReference store;
 
     /*
      * The name of the secret in Azure Key Vault. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object secretName;
 
     /*
      * The version of the secret in Azure Key Vault. The default value is the latest version of the secret. Type: string
      * (or Expression with resultType string).
      */
+    @Generated
     private Object secretVersion;
 
     /**
      * Creates an instance of AzureKeyVaultSecretReference class.
      */
+    @Generated
     public AzureKeyVaultSecretReference() {
     }
 
@@ -47,6 +53,7 @@ public final class AzureKeyVaultSecretReference extends SecretBase {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -57,6 +64,7 @@ public final class AzureKeyVaultSecretReference extends SecretBase {
      * 
      * @return the store value.
      */
+    @Generated
     public LinkedServiceReference getStore() {
         return this.store;
     }
@@ -67,6 +75,7 @@ public final class AzureKeyVaultSecretReference extends SecretBase {
      * @param store the store value to set.
      * @return the AzureKeyVaultSecretReference object itself.
      */
+    @Generated
     public AzureKeyVaultSecretReference setStore(LinkedServiceReference store) {
         this.store = store;
         return this;
@@ -78,6 +87,7 @@ public final class AzureKeyVaultSecretReference extends SecretBase {
      * 
      * @return the secretName value.
      */
+    @Generated
     public Object getSecretName() {
         return this.secretName;
     }
@@ -89,6 +99,7 @@ public final class AzureKeyVaultSecretReference extends SecretBase {
      * @param secretName the secretName value to set.
      * @return the AzureKeyVaultSecretReference object itself.
      */
+    @Generated
     public AzureKeyVaultSecretReference setSecretName(Object secretName) {
         this.secretName = secretName;
         return this;
@@ -100,6 +111,7 @@ public final class AzureKeyVaultSecretReference extends SecretBase {
      * 
      * @return the secretVersion value.
      */
+    @Generated
     public Object getSecretVersion() {
         return this.secretVersion;
     }
@@ -111,6 +123,7 @@ public final class AzureKeyVaultSecretReference extends SecretBase {
      * @param secretVersion the secretVersion value to set.
      * @return the AzureKeyVaultSecretReference object itself.
      */
+    @Generated
     public AzureKeyVaultSecretReference setSecretVersion(Object secretVersion) {
         this.secretVersion = secretVersion;
         return this;
@@ -119,13 +132,16 @@ public final class AzureKeyVaultSecretReference extends SecretBase {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("store", this.store);
         jsonWriter.writeUntypedField("secretName", this.secretName);
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("secretVersion", this.secretVersion);
+        if (this.secretVersion != null) {
+            jsonWriter.writeUntypedField("secretVersion", this.secretVersion);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -138,6 +154,7 @@ public final class AzureKeyVaultSecretReference extends SecretBase {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureKeyVaultSecretReference.
      */
+    @Generated
     public static AzureKeyVaultSecretReference fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureKeyVaultSecretReference deserializedAzureKeyVaultSecretReference = new AzureKeyVaultSecretReference();

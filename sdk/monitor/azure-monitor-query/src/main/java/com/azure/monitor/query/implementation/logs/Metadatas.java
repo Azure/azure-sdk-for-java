@@ -53,7 +53,7 @@ public final class Metadatas {
      * REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureLogAnalyticsMet")
+    @ServiceInterface(name = "AzureLogAnalyticsMetadatas")
     public interface MetadatasService {
         @Get("/workspaces/{workspaceId}/metadata")
         @ExpectedResponses({ 200 })

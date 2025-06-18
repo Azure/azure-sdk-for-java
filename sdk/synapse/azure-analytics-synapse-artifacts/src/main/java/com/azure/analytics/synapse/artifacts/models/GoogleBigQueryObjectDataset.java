@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,26 +22,31 @@ public class GoogleBigQueryObjectDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "GoogleBigQueryObject";
 
     /*
      * This property will be retired. Please consider using database + table properties instead.
      */
+    @Generated
     private Object tableName;
 
     /*
      * The table name of the Google BigQuery. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object table;
 
     /*
      * The database name of the Google BigQuery. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object dataset;
 
     /**
      * Creates an instance of GoogleBigQueryObjectDataset class.
      */
+    @Generated
     public GoogleBigQueryObjectDataset() {
     }
 
@@ -49,6 +55,7 @@ public class GoogleBigQueryObjectDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -60,6 +67,7 @@ public class GoogleBigQueryObjectDataset extends Dataset {
      * 
      * @return the tableName value.
      */
+    @Generated
     public Object getTableName() {
         return this.tableName;
     }
@@ -71,6 +79,7 @@ public class GoogleBigQueryObjectDataset extends Dataset {
      * @param tableName the tableName value to set.
      * @return the GoogleBigQueryObjectDataset object itself.
      */
+    @Generated
     public GoogleBigQueryObjectDataset setTableName(Object tableName) {
         this.tableName = tableName;
         return this;
@@ -82,6 +91,7 @@ public class GoogleBigQueryObjectDataset extends Dataset {
      * 
      * @return the table value.
      */
+    @Generated
     public Object getTable() {
         return this.table;
     }
@@ -93,6 +103,7 @@ public class GoogleBigQueryObjectDataset extends Dataset {
      * @param table the table value to set.
      * @return the GoogleBigQueryObjectDataset object itself.
      */
+    @Generated
     public GoogleBigQueryObjectDataset setTable(Object table) {
         this.table = table;
         return this;
@@ -104,6 +115,7 @@ public class GoogleBigQueryObjectDataset extends Dataset {
      * 
      * @return the dataset value.
      */
+    @Generated
     public Object getDataset() {
         return this.dataset;
     }
@@ -115,6 +127,7 @@ public class GoogleBigQueryObjectDataset extends Dataset {
      * @param dataset the dataset value to set.
      * @return the GoogleBigQueryObjectDataset object itself.
      */
+    @Generated
     public GoogleBigQueryObjectDataset setDataset(Object dataset) {
         this.dataset = dataset;
         return this;
@@ -123,6 +136,7 @@ public class GoogleBigQueryObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GoogleBigQueryObjectDataset setDescription(String description) {
         super.setDescription(description);
@@ -132,6 +146,7 @@ public class GoogleBigQueryObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GoogleBigQueryObjectDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -141,6 +156,7 @@ public class GoogleBigQueryObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GoogleBigQueryObjectDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -150,6 +166,7 @@ public class GoogleBigQueryObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GoogleBigQueryObjectDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -159,6 +176,7 @@ public class GoogleBigQueryObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GoogleBigQueryObjectDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -168,6 +186,7 @@ public class GoogleBigQueryObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GoogleBigQueryObjectDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -177,6 +196,7 @@ public class GoogleBigQueryObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GoogleBigQueryObjectDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -186,22 +206,33 @@ public class GoogleBigQueryObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
         jsonWriter.writeStringField("type", this.type);
         if (tableName != null || table != null || dataset != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("tableName", this.tableName);
-            jsonWriter.writeUntypedField("table", this.table);
-            jsonWriter.writeUntypedField("dataset", this.dataset);
+            if (this.tableName != null) {
+                jsonWriter.writeUntypedField("tableName", this.tableName);
+            }
+            if (this.table != null) {
+                jsonWriter.writeUntypedField("table", this.table);
+            }
+            if (this.dataset != null) {
+                jsonWriter.writeUntypedField("dataset", this.dataset);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -221,6 +252,7 @@ public class GoogleBigQueryObjectDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the GoogleBigQueryObjectDataset.
      */
+    @Generated
     public static GoogleBigQueryObjectDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GoogleBigQueryObjectDataset deserializedGoogleBigQueryObjectDataset = new GoogleBigQueryObjectDataset();

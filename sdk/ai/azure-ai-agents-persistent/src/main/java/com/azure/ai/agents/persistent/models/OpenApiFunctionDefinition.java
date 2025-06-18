@@ -49,6 +49,12 @@ public final class OpenApiFunctionDefinition implements JsonSerializable<OpenApi
     @Generated
     private List<String> defaultParams;
 
+    /*
+     * List of function definitions used by OpenApi tool
+     */
+    @Generated
+    private List<FunctionDefinition> functions;
+
     /**
      * Creates an instance of OpenApiFunctionDefinition class.
      *
@@ -140,6 +146,16 @@ public final class OpenApiFunctionDefinition implements JsonSerializable<OpenApi
     }
 
     /**
+     * Get the functions property: List of function definitions used by OpenApi tool.
+     *
+     * @return the functions value.
+     */
+    @Generated
+    public List<FunctionDefinition> getFunctions() {
+        return this.functions;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -200,21 +216,5 @@ public final class OpenApiFunctionDefinition implements JsonSerializable<OpenApi
             deserializedOpenApiFunctionDefinition.functions = functions;
             return deserializedOpenApiFunctionDefinition;
         });
-    }
-
-    /*
-     * List of function definitions used by OpenApi tool
-     */
-    @Generated
-    private List<FunctionDefinition> functions;
-
-    /**
-     * Get the functions property: List of function definitions used by OpenApi tool.
-     *
-     * @return the functions value.
-     */
-    @Generated
-    public List<FunctionDefinition> getFunctions() {
-        return this.functions;
     }
 }

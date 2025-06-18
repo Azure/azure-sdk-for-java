@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,46 +21,54 @@ public final class SapTableSource extends TabularSource {
     /*
      * Copy source type.
      */
+    @Generated
     private String type = "SapTableSource";
 
     /*
      * The number of rows to be retrieved. Type: integer(or Expression with resultType integer).
      */
+    @Generated
     private Object rowCount;
 
     /*
      * The number of rows that will be skipped. Type: integer (or Expression with resultType integer).
      */
+    @Generated
     private Object rowSkips;
 
     /*
      * The fields of the SAP table that will be retrieved. For example, column0, column1. Type: string (or Expression
      * with resultType string).
      */
+    @Generated
     private Object rfcTableFields;
 
     /*
      * The options for the filtering of the SAP Table. For example, COLUMN0 EQ SOME VALUE. Type: string (or Expression
      * with resultType string).
      */
+    @Generated
     private Object rfcTableOptions;
 
     /*
      * Specifies the maximum number of rows that will be retrieved at a time when retrieving data from SAP Table. Type:
      * integer (or Expression with resultType integer).
      */
+    @Generated
     private Object batchSize;
 
     /*
      * Specifies the custom RFC function module that will be used to read data from SAP Table. Type: string (or
      * Expression with resultType string).
      */
+    @Generated
     private Object customRfcReadTableFunctionModule;
 
     /*
      * The single character that will be used as delimiter passed to SAP RFC as well as splitting the output data
      * retrieved. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object sapDataColumnDelimiter;
 
     /*
@@ -67,16 +76,19 @@ public final class SapTableSource extends TabularSource {
      * "PartitionOnInt", "PartitionOnCalendarYear", "PartitionOnCalendarMonth", "PartitionOnCalendarDate",
      * "PartitionOnTime".
      */
+    @Generated
     private Object partitionOption;
 
     /*
      * The settings that will be leveraged for SAP table source partitioning.
      */
+    @Generated
     private SapTablePartitionSettings partitionSettings;
 
     /**
      * Creates an instance of SapTableSource class.
      */
+    @Generated
     public SapTableSource() {
     }
 
@@ -85,6 +97,7 @@ public final class SapTableSource extends TabularSource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -96,6 +109,7 @@ public final class SapTableSource extends TabularSource {
      * 
      * @return the rowCount value.
      */
+    @Generated
     public Object getRowCount() {
         return this.rowCount;
     }
@@ -107,6 +121,7 @@ public final class SapTableSource extends TabularSource {
      * @param rowCount the rowCount value to set.
      * @return the SapTableSource object itself.
      */
+    @Generated
     public SapTableSource setRowCount(Object rowCount) {
         this.rowCount = rowCount;
         return this;
@@ -118,6 +133,7 @@ public final class SapTableSource extends TabularSource {
      * 
      * @return the rowSkips value.
      */
+    @Generated
     public Object getRowSkips() {
         return this.rowSkips;
     }
@@ -129,6 +145,7 @@ public final class SapTableSource extends TabularSource {
      * @param rowSkips the rowSkips value to set.
      * @return the SapTableSource object itself.
      */
+    @Generated
     public SapTableSource setRowSkips(Object rowSkips) {
         this.rowSkips = rowSkips;
         return this;
@@ -140,6 +157,7 @@ public final class SapTableSource extends TabularSource {
      * 
      * @return the rfcTableFields value.
      */
+    @Generated
     public Object getRfcTableFields() {
         return this.rfcTableFields;
     }
@@ -151,6 +169,7 @@ public final class SapTableSource extends TabularSource {
      * @param rfcTableFields the rfcTableFields value to set.
      * @return the SapTableSource object itself.
      */
+    @Generated
     public SapTableSource setRfcTableFields(Object rfcTableFields) {
         this.rfcTableFields = rfcTableFields;
         return this;
@@ -162,6 +181,7 @@ public final class SapTableSource extends TabularSource {
      * 
      * @return the rfcTableOptions value.
      */
+    @Generated
     public Object getRfcTableOptions() {
         return this.rfcTableOptions;
     }
@@ -173,6 +193,7 @@ public final class SapTableSource extends TabularSource {
      * @param rfcTableOptions the rfcTableOptions value to set.
      * @return the SapTableSource object itself.
      */
+    @Generated
     public SapTableSource setRfcTableOptions(Object rfcTableOptions) {
         this.rfcTableOptions = rfcTableOptions;
         return this;
@@ -184,6 +205,7 @@ public final class SapTableSource extends TabularSource {
      * 
      * @return the batchSize value.
      */
+    @Generated
     public Object getBatchSize() {
         return this.batchSize;
     }
@@ -195,6 +217,7 @@ public final class SapTableSource extends TabularSource {
      * @param batchSize the batchSize value to set.
      * @return the SapTableSource object itself.
      */
+    @Generated
     public SapTableSource setBatchSize(Object batchSize) {
         this.batchSize = batchSize;
         return this;
@@ -206,6 +229,7 @@ public final class SapTableSource extends TabularSource {
      * 
      * @return the customRfcReadTableFunctionModule value.
      */
+    @Generated
     public Object getCustomRfcReadTableFunctionModule() {
         return this.customRfcReadTableFunctionModule;
     }
@@ -217,6 +241,7 @@ public final class SapTableSource extends TabularSource {
      * @param customRfcReadTableFunctionModule the customRfcReadTableFunctionModule value to set.
      * @return the SapTableSource object itself.
      */
+    @Generated
     public SapTableSource setCustomRfcReadTableFunctionModule(Object customRfcReadTableFunctionModule) {
         this.customRfcReadTableFunctionModule = customRfcReadTableFunctionModule;
         return this;
@@ -228,6 +253,7 @@ public final class SapTableSource extends TabularSource {
      * 
      * @return the sapDataColumnDelimiter value.
      */
+    @Generated
     public Object getSapDataColumnDelimiter() {
         return this.sapDataColumnDelimiter;
     }
@@ -239,6 +265,7 @@ public final class SapTableSource extends TabularSource {
      * @param sapDataColumnDelimiter the sapDataColumnDelimiter value to set.
      * @return the SapTableSource object itself.
      */
+    @Generated
     public SapTableSource setSapDataColumnDelimiter(Object sapDataColumnDelimiter) {
         this.sapDataColumnDelimiter = sapDataColumnDelimiter;
         return this;
@@ -251,6 +278,7 @@ public final class SapTableSource extends TabularSource {
      * 
      * @return the partitionOption value.
      */
+    @Generated
     public Object getPartitionOption() {
         return this.partitionOption;
     }
@@ -263,6 +291,7 @@ public final class SapTableSource extends TabularSource {
      * @param partitionOption the partitionOption value to set.
      * @return the SapTableSource object itself.
      */
+    @Generated
     public SapTableSource setPartitionOption(Object partitionOption) {
         this.partitionOption = partitionOption;
         return this;
@@ -273,6 +302,7 @@ public final class SapTableSource extends TabularSource {
      * 
      * @return the partitionSettings value.
      */
+    @Generated
     public SapTablePartitionSettings getPartitionSettings() {
         return this.partitionSettings;
     }
@@ -283,6 +313,7 @@ public final class SapTableSource extends TabularSource {
      * @param partitionSettings the partitionSettings value to set.
      * @return the SapTableSource object itself.
      */
+    @Generated
     public SapTableSource setPartitionSettings(SapTablePartitionSettings partitionSettings) {
         this.partitionSettings = partitionSettings;
         return this;
@@ -291,6 +322,7 @@ public final class SapTableSource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapTableSource setQueryTimeout(Object queryTimeout) {
         super.setQueryTimeout(queryTimeout);
@@ -300,6 +332,7 @@ public final class SapTableSource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapTableSource setAdditionalColumns(Object additionalColumns) {
         super.setAdditionalColumns(additionalColumns);
@@ -309,6 +342,7 @@ public final class SapTableSource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapTableSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
@@ -318,6 +352,7 @@ public final class SapTableSource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapTableSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
@@ -327,6 +362,7 @@ public final class SapTableSource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapTableSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -336,23 +372,50 @@ public final class SapTableSource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
-        jsonWriter.writeUntypedField("queryTimeout", getQueryTimeout());
-        jsonWriter.writeUntypedField("additionalColumns", getAdditionalColumns());
+        if (getSourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        }
+        if (getSourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
+        if (getQueryTimeout() != null) {
+            jsonWriter.writeUntypedField("queryTimeout", getQueryTimeout());
+        }
+        if (getAdditionalColumns() != null) {
+            jsonWriter.writeUntypedField("additionalColumns", getAdditionalColumns());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("rowCount", this.rowCount);
-        jsonWriter.writeUntypedField("rowSkips", this.rowSkips);
-        jsonWriter.writeUntypedField("rfcTableFields", this.rfcTableFields);
-        jsonWriter.writeUntypedField("rfcTableOptions", this.rfcTableOptions);
-        jsonWriter.writeUntypedField("batchSize", this.batchSize);
-        jsonWriter.writeUntypedField("customRfcReadTableFunctionModule", this.customRfcReadTableFunctionModule);
-        jsonWriter.writeUntypedField("sapDataColumnDelimiter", this.sapDataColumnDelimiter);
-        jsonWriter.writeUntypedField("partitionOption", this.partitionOption);
+        if (this.rowCount != null) {
+            jsonWriter.writeUntypedField("rowCount", this.rowCount);
+        }
+        if (this.rowSkips != null) {
+            jsonWriter.writeUntypedField("rowSkips", this.rowSkips);
+        }
+        if (this.rfcTableFields != null) {
+            jsonWriter.writeUntypedField("rfcTableFields", this.rfcTableFields);
+        }
+        if (this.rfcTableOptions != null) {
+            jsonWriter.writeUntypedField("rfcTableOptions", this.rfcTableOptions);
+        }
+        if (this.batchSize != null) {
+            jsonWriter.writeUntypedField("batchSize", this.batchSize);
+        }
+        if (this.customRfcReadTableFunctionModule != null) {
+            jsonWriter.writeUntypedField("customRfcReadTableFunctionModule", this.customRfcReadTableFunctionModule);
+        }
+        if (this.sapDataColumnDelimiter != null) {
+            jsonWriter.writeUntypedField("sapDataColumnDelimiter", this.sapDataColumnDelimiter);
+        }
+        if (this.partitionOption != null) {
+            jsonWriter.writeUntypedField("partitionOption", this.partitionOption);
+        }
         jsonWriter.writeJsonField("partitionSettings", this.partitionSettings);
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
@@ -370,6 +433,7 @@ public final class SapTableSource extends TabularSource {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SapTableSource.
      */
+    @Generated
     public static SapTableSource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SapTableSource deserializedSapTableSource = new SapTableSource();

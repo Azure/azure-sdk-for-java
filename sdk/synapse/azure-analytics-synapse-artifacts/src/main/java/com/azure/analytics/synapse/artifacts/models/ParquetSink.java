@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,21 +21,25 @@ public final class ParquetSink extends CopySink {
     /*
      * Copy sink type.
      */
+    @Generated
     private String type = "ParquetSink";
 
     /*
      * Parquet store settings.
      */
+    @Generated
     private StoreWriteSettings storeSettings;
 
     /*
      * Parquet format settings.
      */
+    @Generated
     private ParquetWriteSettings formatSettings;
 
     /**
      * Creates an instance of ParquetSink class.
      */
+    @Generated
     public ParquetSink() {
     }
 
@@ -43,6 +48,7 @@ public final class ParquetSink extends CopySink {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -53,6 +59,7 @@ public final class ParquetSink extends CopySink {
      * 
      * @return the storeSettings value.
      */
+    @Generated
     public StoreWriteSettings getStoreSettings() {
         return this.storeSettings;
     }
@@ -63,6 +70,7 @@ public final class ParquetSink extends CopySink {
      * @param storeSettings the storeSettings value to set.
      * @return the ParquetSink object itself.
      */
+    @Generated
     public ParquetSink setStoreSettings(StoreWriteSettings storeSettings) {
         this.storeSettings = storeSettings;
         return this;
@@ -73,6 +81,7 @@ public final class ParquetSink extends CopySink {
      * 
      * @return the formatSettings value.
      */
+    @Generated
     public ParquetWriteSettings getFormatSettings() {
         return this.formatSettings;
     }
@@ -83,6 +92,7 @@ public final class ParquetSink extends CopySink {
      * @param formatSettings the formatSettings value to set.
      * @return the ParquetSink object itself.
      */
+    @Generated
     public ParquetSink setFormatSettings(ParquetWriteSettings formatSettings) {
         this.formatSettings = formatSettings;
         return this;
@@ -91,6 +101,7 @@ public final class ParquetSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ParquetSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
@@ -100,6 +111,7 @@ public final class ParquetSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ParquetSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
@@ -109,6 +121,7 @@ public final class ParquetSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ParquetSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
@@ -118,6 +131,7 @@ public final class ParquetSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ParquetSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
@@ -127,6 +141,7 @@ public final class ParquetSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ParquetSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -136,14 +151,25 @@ public final class ParquetSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
-        jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
-        jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
-        jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getWriteBatchSize() != null) {
+            jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
+        }
+        if (getWriteBatchTimeout() != null) {
+            jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
+        }
+        if (getSinkRetryCount() != null) {
+            jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
+        }
+        if (getSinkRetryWait() != null) {
+            jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeJsonField("storeSettings", this.storeSettings);
         jsonWriter.writeJsonField("formatSettings", this.formatSettings);
@@ -163,6 +189,7 @@ public final class ParquetSink extends CopySink {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ParquetSink.
      */
+    @Generated
     public static ParquetSink fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ParquetSink deserializedParquetSink = new ParquetSink();

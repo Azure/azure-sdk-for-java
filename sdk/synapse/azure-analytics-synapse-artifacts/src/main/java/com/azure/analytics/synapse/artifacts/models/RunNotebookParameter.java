@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class RunNotebookParameter implements JsonSerializable<RunNotebookP
     /*
      * Parameter type.
      */
+    @Generated
     private String type;
 
     /*
      * Parameter value.
      */
+    @Generated
     private Object value;
 
     /**
      * Creates an instance of RunNotebookParameter class.
      */
+    @Generated
     public RunNotebookParameter() {
     }
 
@@ -37,6 +41,7 @@ public final class RunNotebookParameter implements JsonSerializable<RunNotebookP
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -47,6 +52,7 @@ public final class RunNotebookParameter implements JsonSerializable<RunNotebookP
      * @param type the type value to set.
      * @return the RunNotebookParameter object itself.
      */
+    @Generated
     public RunNotebookParameter setType(String type) {
         this.type = type;
         return this;
@@ -57,6 +63,7 @@ public final class RunNotebookParameter implements JsonSerializable<RunNotebookP
      * 
      * @return the value value.
      */
+    @Generated
     public Object getValue() {
         return this.value;
     }
@@ -67,6 +74,7 @@ public final class RunNotebookParameter implements JsonSerializable<RunNotebookP
      * @param value the value value to set.
      * @return the RunNotebookParameter object itself.
      */
+    @Generated
     public RunNotebookParameter setValue(Object value) {
         this.value = value;
         return this;
@@ -75,11 +83,14 @@ public final class RunNotebookParameter implements JsonSerializable<RunNotebookP
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("value", this.value);
+        if (this.value != null) {
+            jsonWriter.writeUntypedField("value", this.value);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -91,6 +102,7 @@ public final class RunNotebookParameter implements JsonSerializable<RunNotebookP
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the RunNotebookParameter.
      */
+    @Generated
     public static RunNotebookParameter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RunNotebookParameter deserializedRunNotebookParameter = new RunNotebookParameter();

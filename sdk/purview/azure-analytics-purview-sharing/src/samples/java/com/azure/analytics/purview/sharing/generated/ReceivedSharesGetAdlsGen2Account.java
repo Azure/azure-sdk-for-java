@@ -17,10 +17,10 @@ public class ReceivedSharesGetAdlsGen2Account {
             = new ReceivedSharesClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("accountName.purview.azure.com/share")
                 .buildClient();
-        // BEGIN:com.azure.analytics.purview.sharing.generated.receivedsharesgetreceivedshare.receivedsharesgetadlsgen2account
+        // BEGIN:com.azure.analytics.purview.sharing.generated.received-shares-get-received-share.received-shares-get-adls-gen2account
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response
             = receivedSharesClient.getReceivedShareWithResponse("0D67B9C8-A6C6-4990-9EDE-12EA059D3002", requestOptions);
-        // END:com.azure.analytics.purview.sharing.generated.receivedsharesgetreceivedshare.receivedsharesgetadlsgen2account
+        // END:com.azure.analytics.purview.sharing.generated.received-shares-get-received-share.received-shares-get-adls-gen2account
     }
 }

@@ -53,12 +53,12 @@ public class AdministrationCustomizations extends Customization {
         // Make some implementation methods public to facilitate calling LROs:
         // KeyVaultAdministrationClientImpl
         packageCustomization.getClass("KeyVaultAdministrationClientImpl").customizeAst(ast ->
-            ast.getClassByName("KeyVaultAdministrationClientImpl").ifPresent(clazz -> makeAllMethodsPublic(clazz,
-                "fullBackupWithResponseAsync", "fullBackupWithResponse", "preFullBackupWithResponseAsync",
-                "preFullBackupWithResponse", "preFullRestoreOperationWithResponseAsync",
-                "preFullRestoreOperationWithResponse", "fullRestoreOperationWithResponseAsync",
-                "fullRestoreOperationWithResponse", "selectiveKeyRestoreOperationWithResponseAsync",
-                "selectiveKeyRestoreOperationWithResponse")));
+            ast.getClassByName("KeyVaultAdministrationClientImpl").ifPresent(clazz ->
+                makeAllMethodsPublic(clazz, "fullBackupWithResponseAsync", "fullBackupWithResponse",
+                    "preFullBackupWithResponseAsync", "preFullBackupWithResponse",
+                    "preFullRestoreOperationWithResponseAsync", "preFullRestoreOperationWithResponse",
+                    "fullRestoreOperationWithResponseAsync", "fullRestoreOperationWithResponse",
+                    "selectiveKeyRestoreOperationWithResponseAsync", "selectiveKeyRestoreOperationWithResponse")));
 
         // RoleAssignmentsImpl
         packageCustomization.getClass("RoleAssignmentsImpl").customizeAst(ast ->
@@ -77,34 +77,39 @@ public class AdministrationCustomizations extends Customization {
         }
     }
 
-    private static void customizeKeyVaultRoleScope(LibraryCustomization libraryCustomization) {
-        libraryCustomization.getClass("com.azure.security.keyvault.administration.models", "KeyVaultRoleScope")
-            .customizeAst(ast -> ast.addImport(IllegalArgumentException.class)
-                .addImport(URL.class)
-                .addImport(MalformedURLException.class)
-                .getClassByName("KeyVaultRoleScope").ifPresent(clazz -> {
-                    clazz.addMethod("fromUrl", Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC)
-                        .setType("KeyVaultRoleScope")
-                        .addParameter("String", "url")
-                        .setJavadocComment(new Javadoc(parseText("Creates of finds a {@link KeyVaultRoleScope} from its string representation."))
-                            .addBlockTag("param", "url", "A string representing a URL containing the name of the scope to look for.")
-                            .addBlockTag("return", "The corresponding {@link KeyVaultRoleScope}.")
-                            .addBlockTag("throws", "IllegalArgumentException", "If the given {@code url} is malformed."))
-                        .setBody(StaticJavaParser.parseBlock("{ try { return fromString(new URL(url).getPath()); }"
-                            + "catch (MalformedURLException e) { throw new IllegalArgumentException(e); } }"));
+    private static void customizeKeyVaultRoleScope(LibraryCustomization customization) {
+        customization.getClass("com.azure.security.keyvault.administration.models", "KeyVaultRoleScope")
+            .customizeAst(ast ->
+                ast.addImport(IllegalArgumentException.class)
+                    .addImport(URL.class)
+                    .addImport(MalformedURLException.class)
+                    .getClassByName("KeyVaultRoleScope")
+                    .ifPresent(clazz -> {
+                        clazz.addMethod("fromUrl", Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC)
+                            .setType("KeyVaultRoleScope")
+                            .addParameter("String", "url")
+                            .setJavadocComment(new Javadoc(
+                                parseText("Creates of finds a {@link KeyVaultRoleScope} from its string representation."))
+                                .addBlockTag("param", "url", "A string representing a URL containing the name of the scope to look for.")
+                                .addBlockTag("return", "The corresponding {@link KeyVaultRoleScope}.")
+                                .addBlockTag("throws", "IllegalArgumentException", "If the given {@code url} is malformed."))
+                            .setBody(StaticJavaParser.parseBlock("{ try { return fromString(new URL(url).getPath()); }"
+                                + "catch (MalformedURLException e) { throw new IllegalArgumentException(e); } }"));
 
-                    clazz.addMethod("fromUrl", Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC)
-                        .setType("KeyVaultRoleScope")
-                        .addParameter("URL", "url")
-                        .setJavadocComment(new Javadoc(parseText("Creates of finds a {@link KeyVaultRoleScope} from its string representation."))
-                            .addBlockTag("param", "url", "A URL containing the name of the scope to look for.")
-                            .addBlockTag("return", "The corresponding {@link KeyVaultRoleScope}."))
-                        .setBody(StaticJavaParser.parseBlock("{ return fromString(url.getPath()); }"));
-                }));
+                        clazz.addMethod("fromUrl", Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC)
+                            .setType("KeyVaultRoleScope")
+                            .addParameter("URL", "url")
+                            .setJavadocComment(new Javadoc(
+                                parseText("Creates of finds a {@link KeyVaultRoleScope} from its string representation."))
+                                .addBlockTag("param", "url", "A URL containing the name of the scope to look for.")
+                                .addBlockTag("return", "The corresponding {@link KeyVaultRoleScope}."))
+                            .setBody(StaticJavaParser.parseBlock("{ return fromString(url.getPath()); }"));
+                    }));
     }
 
-    private static void customizeServiceVersion(LibraryCustomization libraryCustomization) {
+    private static void customizeServiceVersion(LibraryCustomization customization) {
         CompilationUnit compilationUnit = new CompilationUnit();
+
         compilationUnit.addOrphanComment(new LineComment(" Copyright (c) Microsoft Corporation. All rights reserved."));
         compilationUnit.addOrphanComment(new LineComment(" Licensed under the MIT License."));
         compilationUnit.addOrphanComment(new LineComment(" Code generated by Microsoft (R) TypeSpec Code Generator."));
@@ -116,7 +121,7 @@ public class AdministrationCustomizations extends Customization {
             .addImplementedType("ServiceVersion")
             .setJavadocComment("The versions of Azure Key Vault supported by this client library.");
 
-        for (String version : Arrays.asList("7.2", "7.3", "7.4", "7.5", "7.6-preview.2")) {
+        for (String version : Arrays.asList("7.2", "7.3", "7.4", "7.5", "7.6")) {
             enumDeclaration.addEnumConstant("V" + version.replace('.', '_').replace('-', '_').toUpperCase())
                 .setJavadocComment("Service version {@code " + version + "}.")
                 .addArgument(new StringLiteralExpr(version));
@@ -124,7 +129,8 @@ public class AdministrationCustomizations extends Customization {
 
         enumDeclaration.addField("String", "version", Modifier.Keyword.PRIVATE, Modifier.Keyword.FINAL);
 
-        enumDeclaration.addConstructor().addParameter("String", "version")
+        enumDeclaration.addConstructor()
+            .addParameter("String", "version")
             .setBody(StaticJavaParser.parseBlock("{ this.version = version; }"));
 
         enumDeclaration.addMethod("getVersion", Modifier.Keyword.PUBLIC)
@@ -135,19 +141,20 @@ public class AdministrationCustomizations extends Customization {
 
         enumDeclaration.addMethod("getLatest", Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC)
             .setType("KeyVaultAdministrationServiceVersion")
-            .setJavadocComment(new Javadoc(parseText("Gets the latest service version supported by this client library."))
+            .setJavadocComment(new Javadoc(
+                parseText("Gets the latest service version supported by this client library."))
                 .addBlockTag("return", "The latest {@link KeyVaultAdministrationServiceVersion}."))
-            .setBody(StaticJavaParser.parseBlock("{ return V7_6_PREVIEW_2; }"));
+            .setBody(StaticJavaParser.parseBlock("{ return V7_6; }"));
 
-        libraryCustomization.getRawEditor()
+        customization.getRawEditor()
             .addFile("src/main/java/com/azure/security/keyvault/administration/KeyVaultAdministrationServiceVersion.java",
                 compilationUnit.toString());
 
         for (String impl : Arrays.asList("KeyVaultAdministrationClientImpl", "RoleAssignmentsImpl", "RoleDefinitionsImpl")) {
             String fileName = "src/main/java/com/azure/security/keyvault/administration/implementation/" + impl + ".java";
-            String fileContent = libraryCustomization.getRawEditor().getFileContent(fileName);
+            String fileContent = customization.getRawEditor().getFileContent(fileName);
             fileContent = fileContent.replace("KeyVaultServiceVersion", "KeyVaultAdministrationServiceVersion");
-            libraryCustomization.getRawEditor().replaceFile(fileName, fileContent);
+            customization.getRawEditor().replaceFile(fileName, fileContent);
         }
     }
 
@@ -515,20 +522,14 @@ public class AdministrationCustomizations extends Customization {
                 " * String blobStorageUrl = &quot;https:&#47;&#47;myaccount.blob.core.windows.net&#47;myContainer&quot;;",
                 " * String sasToken = &quot;&lt;sas-token&gt;&quot;;",
                 " *",
-                " * SyncPoller&lt;KeyVaultBackupOperation, String&gt; preBackupPoller = client.beginPreBackup&#40;blobStorageUrl, sasToken&#41;;",
+                " * SyncPoller&lt;KeyVaultBackupOperation, Void&gt; preBackupPoller = client.beginPreBackup&#40;blobStorageUrl, sasToken&#41;;",
                 " * PollResponse&lt;KeyVaultBackupOperation&gt; pollResponse = preBackupPoller.poll&#40;&#41;;",
                 " *",
                 " * System.out.printf&#40;&quot;The current status of the operation is: %s.%n&quot;, pollResponse.getStatus&#40;&#41;&#41;;",
                 " *",
                 " * PollResponse&lt;KeyVaultBackupOperation&gt; finalPollResponse = preBackupPoller.waitForCompletion&#40;&#41;;",
                 " *",
-                " * if &#40;finalPollResponse.getStatus&#40;&#41; == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41; &#123;",
-                " *     System.out.printf&#40;&quot;Pre-backup check completed successfully.%n&quot;&#41;;",
-                " * &#125; else &#123;",
-                " *     KeyVaultBackupOperation operation = preBackupPoller.poll&#40;&#41;.getValue&#40;&#41;;",
-                " *",
-                " *     System.out.printf&#40;&quot;Pre-backup check failed with error: %s.%n&quot;, operation.getError&#40;&#41;.getMessage&#40;&#41;&#41;;",
-                " * &#125;",
+                " * System.out.printf&#40;&quot;Pre-backup check completed with status: %s.%n&quot;, finalPollResponse.getStatus&#40;&#41;&#41;;",
                 " * </pre>",
                 " * <!-- end com.azure.security.keyvault.administration.KeyVaultBackupClient.beginPreBackup#String-String -->",
                 " *",
@@ -594,21 +595,14 @@ public class AdministrationCustomizations extends Customization {
                 " * String folderUrl = &quot;https:&#47;&#47;myaccount.blob.core.windows.net&#47;myContainer&#47;mhsm-myaccount-2020090117323313&quot;;",
                 " * String sasToken = &quot;&lt;sas-token&gt;&quot;;",
                 " *",
-                " * SyncPoller&lt;KeyVaultRestoreOperation, KeyVaultRestoreResult&gt; preRestorePoller =",
-                " *     client.beginPreRestore&#40;folderUrl, sasToken&#41;;",
+                " * SyncPoller&lt;KeyVaultRestoreOperation, Void&gt; preRestorePoller = client.beginPreRestore&#40;folderUrl, sasToken&#41;;",
                 " * PollResponse&lt;KeyVaultRestoreOperation&gt; pollResponse = preRestorePoller.poll&#40;&#41;;",
                 " *",
                 " * System.out.printf&#40;&quot;The current status of the operation is: %s.%n&quot;, pollResponse.getStatus&#40;&#41;&#41;;",
                 " *",
                 " * PollResponse&lt;KeyVaultRestoreOperation&gt; finalPollResponse = preRestorePoller.waitForCompletion&#40;&#41;;",
                 " *",
-                " * if &#40;finalPollResponse.getStatus&#40;&#41; == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41; &#123;",
-                " *     System.out.printf&#40;&quot;Pre-restore check completed successfully.%n&quot;&#41;;",
-                " * &#125; else &#123;",
-                " *     KeyVaultRestoreOperation operation = preRestorePoller.poll&#40;&#41;.getValue&#40;&#41;;",
-                " *",
-                " *     System.out.printf&#40;&quot;Pre-restore check failed with error: %s.%n&quot;, operation.getError&#40;&#41;.getMessage&#40;&#41;&#41;;",
-                " * &#125;",
+                " * System.out.printf&#40;&quot;Pre-restore check completed with status: %s.%n&quot;, finalPollResponse.getStatus&#40;&#41;&#41;;",
                 " * </pre>",
                 " * <!-- end com.azure.security.keyvault.administration.KeyVaultBackupClient.beginPreRestore#String-String -->",
                 " *",

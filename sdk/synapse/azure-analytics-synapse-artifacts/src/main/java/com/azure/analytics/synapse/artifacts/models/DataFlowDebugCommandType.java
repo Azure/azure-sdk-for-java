@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class DataFlowDebugCommandType extends ExpandableStringEnum<DataFlo
     /**
      * Static value executePreviewQuery for DataFlowDebugCommandType.
      */
+    @Generated
     public static final DataFlowDebugCommandType EXECUTE_PREVIEW_QUERY = fromString("executePreviewQuery");
 
     /**
      * Static value executeStatisticsQuery for DataFlowDebugCommandType.
      */
+    @Generated
     public static final DataFlowDebugCommandType EXECUTE_STATISTICS_QUERY = fromString("executeStatisticsQuery");
 
     /**
      * Static value executeExpressionQuery for DataFlowDebugCommandType.
      */
+    @Generated
     public static final DataFlowDebugCommandType EXECUTE_EXPRESSION_QUERY = fromString("executeExpressionQuery");
 
     /**
@@ -31,6 +35,7 @@ public final class DataFlowDebugCommandType extends ExpandableStringEnum<DataFlo
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DataFlowDebugCommandType() {
     }
@@ -41,6 +46,7 @@ public final class DataFlowDebugCommandType extends ExpandableStringEnum<DataFlo
      * @param name a name to look for.
      * @return the corresponding DataFlowDebugCommandType.
      */
+    @Generated
     public static DataFlowDebugCommandType fromString(String name) {
         return fromString(name, DataFlowDebugCommandType.class);
     }
@@ -50,6 +56,7 @@ public final class DataFlowDebugCommandType extends ExpandableStringEnum<DataFlo
      * 
      * @return known DataFlowDebugCommandType values.
      */
+    @Generated
     public static Collection<DataFlowDebugCommandType> values() {
         return values(DataFlowDebugCommandType.class);
     }

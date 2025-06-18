@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,21 +22,25 @@ public final class CredentialReference implements JsonSerializable<CredentialRef
     /*
      * Credential reference type.
      */
+    @Generated
     private CredentialReferenceType type;
 
     /*
      * Reference credential name.
      */
+    @Generated
     private String referenceName;
 
     /*
      * Credential reference type.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of CredentialReference class.
      */
+    @Generated
     public CredentialReference() {
     }
 
@@ -44,6 +49,7 @@ public final class CredentialReference implements JsonSerializable<CredentialRef
      * 
      * @return the type value.
      */
+    @Generated
     public CredentialReferenceType getType() {
         return this.type;
     }
@@ -54,6 +60,7 @@ public final class CredentialReference implements JsonSerializable<CredentialRef
      * @param type the type value to set.
      * @return the CredentialReference object itself.
      */
+    @Generated
     public CredentialReference setType(CredentialReferenceType type) {
         this.type = type;
         return this;
@@ -64,6 +71,7 @@ public final class CredentialReference implements JsonSerializable<CredentialRef
      * 
      * @return the referenceName value.
      */
+    @Generated
     public String getReferenceName() {
         return this.referenceName;
     }
@@ -74,6 +82,7 @@ public final class CredentialReference implements JsonSerializable<CredentialRef
      * @param referenceName the referenceName value to set.
      * @return the CredentialReference object itself.
      */
+    @Generated
     public CredentialReference setReferenceName(String referenceName) {
         this.referenceName = referenceName;
         return this;
@@ -84,6 +93,7 @@ public final class CredentialReference implements JsonSerializable<CredentialRef
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -94,6 +104,7 @@ public final class CredentialReference implements JsonSerializable<CredentialRef
      * @param additionalProperties the additionalProperties value to set.
      * @return the CredentialReference object itself.
      */
+    @Generated
     public CredentialReference setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -102,6 +113,7 @@ public final class CredentialReference implements JsonSerializable<CredentialRef
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -124,6 +136,7 @@ public final class CredentialReference implements JsonSerializable<CredentialRef
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CredentialReference.
      */
+    @Generated
     public static CredentialReference fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CredentialReference deserializedCredentialReference = new CredentialReference();

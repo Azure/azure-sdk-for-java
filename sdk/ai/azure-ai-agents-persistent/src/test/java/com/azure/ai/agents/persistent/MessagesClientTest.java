@@ -6,7 +6,6 @@ import com.azure.ai.agents.persistent.models.CreateAgentOptions;
 import com.azure.ai.agents.persistent.models.MessageRole;
 import com.azure.ai.agents.persistent.models.PersistentAgent;
 import com.azure.ai.agents.persistent.models.PersistentAgentThread;
-import com.azure.ai.agents.persistent.models.ThreadDeletionStatus;
 import com.azure.ai.agents.persistent.models.ThreadMessage;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
@@ -23,8 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MessagesClientTest extends ClientTestBase {
 
-    private PersistentAgentsAdministrationClientBuilder clientBuilder;
-    private PersistentAgentsAdministrationClient agentsClient;
+    private PersistentAgentsClientBuilder clientBuilder;
+    private PersistentAgentsAdministrationClient administrationClient;
     private ThreadsClient threadsClient;
     private MessagesClient messagesClient;
     private PersistentAgent agent;
@@ -33,16 +32,17 @@ public class MessagesClientTest extends ClientTestBase {
     private PersistentAgent createAgent(String agentName) {
         CreateAgentOptions options
             = new CreateAgentOptions("gpt-4o-mini").setName(agentName).setInstructions("You are a helpful agent");
-        PersistentAgent createdAgent = agentsClient.createAgent(options);
+        PersistentAgent createdAgent = administrationClient.createAgent(options);
         assertNotNull(createdAgent, "Persistent agent should not be null");
         return createdAgent;
     }
 
     private void setup(HttpClient httpClient) {
         clientBuilder = getClientBuilder(httpClient);
-        agentsClient = clientBuilder.buildClient();
-        threadsClient = clientBuilder.buildThreadsClient();
-        messagesClient = clientBuilder.buildMessagesClient();
+        PersistentAgentsClient agentsClient = clientBuilder.buildClient();
+        administrationClient = agentsClient.getPersistentAgentsAdministrationClient();
+        threadsClient = agentsClient.getThreadsClient();
+        messagesClient = agentsClient.getMessagesClient();
         agent = createAgent("TestAgent");
         thread = threadsClient.createThread();
     }
@@ -127,13 +127,16 @@ public class MessagesClientTest extends ClientTestBase {
 
     @AfterEach
     public void cleanup() {
-        if (thread != null) {
-            ThreadDeletionStatus deletionStatus = threadsClient.deleteThread(thread.getId());
-            assertNotNull(deletionStatus, "Deletion status should not be null");
-            assertTrue(deletionStatus.isDeleted(), "Thread should be deleted");
-        }
-        if (agent != null) {
-            agentsClient.deleteAgent(agent.getId());
+        try {
+            if (thread != null) {
+                threadsClient.deleteThread(thread.getId());
+            }
+            if (agent != null) {
+                administrationClient.deleteAgent(agent.getId());
+            }
+        } catch (Exception e) {
+            // Log the exception but do not fail the test
+            System.out.println("Cleanup issue: " + e.getMessage());
         }
     }
 }

@@ -61,7 +61,7 @@ public final class RunNotebooksImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ArtifactsClientRunNo")
+    @ServiceInterface(name = "ArtifactsClientRunNotebooks")
     public interface RunNotebooksService {
         @Put("/notebooks/runs/{runId}")
         @ExpectedResponses({ 202 })

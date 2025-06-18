@@ -23,7 +23,6 @@ import static com.github.javaparser.javadoc.description.JavadocDescription.parse
 public class SecretsCustomizations extends Customization {
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
-        // Remove unnecessary files.
         removeFiles(libraryCustomization.getRawEditor());
         customizeServiceVersion(libraryCustomization);
         customizeModuleInfo(libraryCustomization.getRawEditor());
@@ -37,7 +36,7 @@ public class SecretsCustomizations extends Customization {
         editor.removeFile("src/main/java/com/azure/security/keyvault/secrets/SecretClientBuilder.java");
     }
 
-    private static void customizeServiceVersion(LibraryCustomization libraryCustomization) {
+    private static void customizeServiceVersion(LibraryCustomization customization) {
         CompilationUnit compilationUnit = new CompilationUnit();
         compilationUnit.addOrphanComment(new LineComment(" Copyright (c) Microsoft Corporation. All rights reserved."));
         compilationUnit.addOrphanComment(new LineComment(" Licensed under the MIT License."));
@@ -50,7 +49,7 @@ public class SecretsCustomizations extends Customization {
             .addImplementedType("ServiceVersion")
             .setJavadocComment("The versions of Azure Key Vault Secrets supported by this client library.");
 
-        for (String version : Arrays.asList("7.0", "7.1", "7.2", "7.3", "7.4", "7.5", "7.6-preview.2")) {
+        for (String version : Arrays.asList("7.0", "7.1", "7.2", "7.3", "7.4", "7.5", "7.6")) {
             enumDeclaration.addEnumConstant("V" + version.replace('.', '_').replace('-', '_').toUpperCase())
                 .setJavadocComment("Service version {@code " + version + "}.")
                 .addArgument(new StringLiteralExpr(version));
@@ -71,16 +70,16 @@ public class SecretsCustomizations extends Customization {
             .setType("SecretServiceVersion")
             .setJavadocComment(new Javadoc(parseText("Gets the latest service version supported by this client library."))
                 .addBlockTag("return", "The latest {@link SecretServiceVersion}."))
-            .setBody(StaticJavaParser.parseBlock("{ return V7_6_PREVIEW_2; }"));
+            .setBody(StaticJavaParser.parseBlock("{ return V7_6; }"));
 
-        libraryCustomization.getRawEditor()
+        customization.getRawEditor()
             .addFile("src/main/java/com/azure/security/keyvault/secrets/SecretServiceVersion.java",
                 compilationUnit.toString());
 
         String fileName = "src/main/java/com/azure/security/keyvault/secrets/implementation/SecretClientImpl.java";
-        String fileContent = libraryCustomization.getRawEditor().getFileContent(fileName);
+        String fileContent = customization.getRawEditor().getFileContent(fileName);
         fileContent = fileContent.replace("KeyVaultServiceVersion", "SecretServiceVersion");
-        libraryCustomization.getRawEditor().replaceFile(fileName, fileContent);
+        customization.getRawEditor().replaceFile(fileName, fileContent);
     }
 
     private static void customizeModuleInfo(Editor editor) {

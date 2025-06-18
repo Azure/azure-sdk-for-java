@@ -4,7 +4,11 @@
 
 ### Features Added
 
-- Supported `beginDeleteByResourceGroup` and `beginDeleteById` in `NetworkInterfaces`.
+- Supported `listByResourceGroup(String, Context)`, `getPrimaryNetworkInterface(Context)`, `beginDeleteByResourceGroup` and `beginDeleteById` in `NetworkInterfaces`.
+- Supported `getByResourceGroup(String, String, Context)` in `ApplicationSecurityGroups`.
+- Supported `getByResourceGroup(String, String, Context)` in `NetworkSecurityGroups`.
+- Supported `getByResourceGroup(String, String, Context)` in `Networks`.
+- Supported `listAssociatedApplicationSecurityGroups(Context)` in `NicIpConfigurationBase`.
 
 ### Breaking Changes
 

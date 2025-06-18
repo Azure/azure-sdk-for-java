@@ -641,7 +641,9 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
              * @param context the {@link Context} of the request
              * @return the accepted create operation
              */
-            Accepted<Disk> beginCreate(Context context);
+            default Accepted<Disk> beginCreate(Context context) {
+                throw new UnsupportedOperationException("[beginCreate(Context)] is not supported in " + getClass());
+            }
         }
     }
 
