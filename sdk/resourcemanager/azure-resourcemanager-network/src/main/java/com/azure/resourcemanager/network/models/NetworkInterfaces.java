@@ -108,7 +108,9 @@ public interface NetworkInterfaces
      * @param context the {@link Context} of the request
      * @return the accepted deleting operation
      */
-    Accepted<Void> beginDeleteById(String id, Context context);
+    default Accepted<Void> beginDeleteById(String id, Context context) {
+        throw new UnsupportedOperationException("[beginDeleteById(String, Context)] is not supported in " + getClass());
+    }
 
     /**
      * Begins deleting a virtual machine from Azure, identifying it by its name and its resource group.
@@ -127,7 +129,10 @@ public interface NetworkInterfaces
      * @param context the {@link Context} of the request
      * @return the accepted deleting operation
      */
-    Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, Context context);
+    default Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, Context context) {
+        throw new UnsupportedOperationException(
+            "[beginDeleteByResourceGroup(String, String, Context)] is not supported in " + getClass());
+    }
 
     /**
      * Lists resources of the specified type in the specified resource group.
@@ -136,5 +141,8 @@ public interface NetworkInterfaces
      * @param context the {@link Context} of the request
      * @return the list of resources
      */
-    PagedIterable<NetworkInterface> listByResourceGroup(String resourceGroupName, Context context);
+    default PagedIterable<NetworkInterface> listByResourceGroup(String resourceGroupName, Context context) {
+        throw new UnsupportedOperationException(
+            "[listByResourceGroup(String, Context)] is not supported in " + getClass());
+    }
 }
