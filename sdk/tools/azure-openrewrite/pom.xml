@@ -222,14 +222,12 @@
           <version>2.10.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;dependency} -->
           <scope>test</scope>
         </dependency>
-        <!-- Dependency not available in Maven Central - would need to be built locally
         <dependency>
           <groupId>com.azure.v2</groupId>
           <artifactId>azure-core</artifactId>
-          <version>2.0.0-beta.1</version>
+          <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.v2:azure-core;dependency} -->
           <scope>test</scope>
         </dependency>
-        -->
       </dependencies>
     </profile>
 
@@ -314,14 +312,12 @@
           <version>1.0.0-beta.10</version> <!-- {x-version-update;io.clientcore:core;dependency} -->
           <scope>provided</scope>
         </dependency>
-        <!-- Dependency not available in Maven Central - would need to be built locally
         <dependency>
           <groupId>com.azure.v2</groupId>
           <artifactId>azure-core</artifactId>
-          <version>2.0.0-beta.1</version>
+          <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.v2:azure-core;dependency} -->
           <scope>provided</scope>
         </dependency>
-        -->
       </dependencies>
     </profile>
   </profiles>
