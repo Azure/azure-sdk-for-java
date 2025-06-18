@@ -69,7 +69,7 @@ public final class CallMediasImpl {
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AzureCommunicationCa")
+    @ServiceInterface(name = "AzureCommunicationCallAutomationServiceCallMedias")
     public interface CallMediasService {
         @Post("/calling/callConnections/{callConnectionId}:play")
         @ExpectedResponses({ 202 })

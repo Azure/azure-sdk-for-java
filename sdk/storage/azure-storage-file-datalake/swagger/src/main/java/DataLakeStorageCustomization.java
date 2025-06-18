@@ -111,12 +111,6 @@ public class DataLakeStorageCustomization extends Customization {
 
         PackageCustomization implementation = customization.getPackage("com.azure.storage.file.datalake.implementation");
         updateImplToMapInternalException(implementation);
-
-        // Fix to a bug where OffsetDateTime is no longer added as an import to generated service clients.
-        // This should be removed once the bug is Autorest Java is fixed.
-        for (String name : Arrays.asList("FileSystemsImpl", "PathsImpl")) {
-            implementation.getClass(name).customizeAst(ast -> ast.addImport(OffsetDateTime.class));
-        }
     }
 
     /**

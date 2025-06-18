@@ -58,7 +58,7 @@ public final class KqlScriptsImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ArtifactsClientKqlSc")
+    @ServiceInterface(name = "ArtifactsClientKqlScripts")
     public interface KqlScriptsService {
         @Get("/kqlScripts")
         @ExpectedResponses({ 200 })

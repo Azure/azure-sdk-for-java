@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.accesscontrol.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,41 +23,49 @@ public final class SynapseRoleDefinition implements JsonSerializable<SynapseRole
     /*
      * Role Definition ID
      */
+    @Generated
     private UUID id;
 
     /*
      * Name of the Synapse role
      */
+    @Generated
     private String name;
 
     /*
      * Is a built-in role or not
      */
+    @Generated
     private Boolean isBuiltIn;
 
     /*
      * Description for the Synapse role
      */
+    @Generated
     private String description;
 
     /*
      * Permissions for the Synapse role
      */
+    @Generated
     private List<SynapseRbacPermission> permissions;
 
     /*
      * Allowed scopes for the Synapse role
      */
+    @Generated
     private List<String> scopes;
 
     /*
      * Availability of the Synapse role
      */
+    @Generated
     private String availabilityStatus;
 
     /**
      * Creates an instance of SynapseRoleDefinition class.
      */
+    @Generated
     public SynapseRoleDefinition() {
     }
 
@@ -65,6 +74,7 @@ public final class SynapseRoleDefinition implements JsonSerializable<SynapseRole
      * 
      * @return the id value.
      */
+    @Generated
     public UUID getId() {
         return this.id;
     }
@@ -75,6 +85,7 @@ public final class SynapseRoleDefinition implements JsonSerializable<SynapseRole
      * @param id the id value to set.
      * @return the SynapseRoleDefinition object itself.
      */
+    @Generated
     public SynapseRoleDefinition setId(UUID id) {
         this.id = id;
         return this;
@@ -85,6 +96,7 @@ public final class SynapseRoleDefinition implements JsonSerializable<SynapseRole
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -95,6 +107,7 @@ public final class SynapseRoleDefinition implements JsonSerializable<SynapseRole
      * @param name the name value to set.
      * @return the SynapseRoleDefinition object itself.
      */
+    @Generated
     public SynapseRoleDefinition setName(String name) {
         this.name = name;
         return this;
@@ -105,6 +118,7 @@ public final class SynapseRoleDefinition implements JsonSerializable<SynapseRole
      * 
      * @return the isBuiltIn value.
      */
+    @Generated
     public Boolean isBuiltIn() {
         return this.isBuiltIn;
     }
@@ -115,6 +129,7 @@ public final class SynapseRoleDefinition implements JsonSerializable<SynapseRole
      * @param isBuiltIn the isBuiltIn value to set.
      * @return the SynapseRoleDefinition object itself.
      */
+    @Generated
     public SynapseRoleDefinition setIsBuiltIn(Boolean isBuiltIn) {
         this.isBuiltIn = isBuiltIn;
         return this;
@@ -125,6 +140,7 @@ public final class SynapseRoleDefinition implements JsonSerializable<SynapseRole
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -135,6 +151,7 @@ public final class SynapseRoleDefinition implements JsonSerializable<SynapseRole
      * @param description the description value to set.
      * @return the SynapseRoleDefinition object itself.
      */
+    @Generated
     public SynapseRoleDefinition setDescription(String description) {
         this.description = description;
         return this;
@@ -145,6 +162,7 @@ public final class SynapseRoleDefinition implements JsonSerializable<SynapseRole
      * 
      * @return the permissions value.
      */
+    @Generated
     public List<SynapseRbacPermission> getPermissions() {
         return this.permissions;
     }
@@ -155,6 +173,7 @@ public final class SynapseRoleDefinition implements JsonSerializable<SynapseRole
      * @param permissions the permissions value to set.
      * @return the SynapseRoleDefinition object itself.
      */
+    @Generated
     public SynapseRoleDefinition setPermissions(List<SynapseRbacPermission> permissions) {
         this.permissions = permissions;
         return this;
@@ -165,6 +184,7 @@ public final class SynapseRoleDefinition implements JsonSerializable<SynapseRole
      * 
      * @return the scopes value.
      */
+    @Generated
     public List<String> getScopes() {
         return this.scopes;
     }
@@ -175,6 +195,7 @@ public final class SynapseRoleDefinition implements JsonSerializable<SynapseRole
      * @param scopes the scopes value to set.
      * @return the SynapseRoleDefinition object itself.
      */
+    @Generated
     public SynapseRoleDefinition setScopes(List<String> scopes) {
         this.scopes = scopes;
         return this;
@@ -185,6 +206,7 @@ public final class SynapseRoleDefinition implements JsonSerializable<SynapseRole
      * 
      * @return the availabilityStatus value.
      */
+    @Generated
     public String getAvailabilityStatus() {
         return this.availabilityStatus;
     }
@@ -195,6 +217,7 @@ public final class SynapseRoleDefinition implements JsonSerializable<SynapseRole
      * @param availabilityStatus the availabilityStatus value to set.
      * @return the SynapseRoleDefinition object itself.
      */
+    @Generated
     public SynapseRoleDefinition setAvailabilityStatus(String availabilityStatus) {
         this.availabilityStatus = availabilityStatus;
         return this;
@@ -203,6 +226,7 @@ public final class SynapseRoleDefinition implements JsonSerializable<SynapseRole
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -224,6 +248,7 @@ public final class SynapseRoleDefinition implements JsonSerializable<SynapseRole
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SynapseRoleDefinition.
      */
+    @Generated
     public static SynapseRoleDefinition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SynapseRoleDefinition deserializedSynapseRoleDefinition = new SynapseRoleDefinition();

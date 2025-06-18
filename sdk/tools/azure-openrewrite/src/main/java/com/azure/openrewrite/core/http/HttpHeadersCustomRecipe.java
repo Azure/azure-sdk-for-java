@@ -68,7 +68,7 @@ public class HttpHeadersCustomRecipe extends Recipe {
                 }
 
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpHeaders put(java.lang.String, java.lang.String)");
-                if (methodMatcher.matches(visitedMethodInvocation, true)) {
+                if (methodMatcher.matches(visitedMethodInvocation)) {
                     replacementTemplate = templateBuilder.getJavaTemplateBuilder("set(HttpHeaderName.fromString(#{any(java.lang.String)}), #{any(java.lang.String)})")
                         .imports("io.clientcore.core.http.models.HttpHeaderName")
                         .build();
@@ -102,7 +102,7 @@ public class HttpHeadersCustomRecipe extends Recipe {
                 }
 
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpHeaders get(java.lang.String)");
-                if (methodMatcher.matches(visitedMethodInvocation, true)) {
+                if (methodMatcher.matches(visitedMethodInvocation)) {
                     replacementTemplate = templateBuilder.getJavaTemplateBuilder("get(HttpHeaderName.fromString(#{any(java.lang.String)}))")
                         .imports("io.clientcore.core.http.models.HttpHeaderName")
                         .build();
@@ -112,7 +112,7 @@ public class HttpHeadersCustomRecipe extends Recipe {
                 }
 
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpHeaders remove(java.lang.String)");
-                if (methodMatcher.matches(visitedMethodInvocation, true)) {
+                if (methodMatcher.matches(visitedMethodInvocation)) {
                     replacementTemplate = templateBuilder.getJavaTemplateBuilder("remove(HttpHeaderName.fromString(#{any(java.lang.String)}))")
                         .imports("io.clientcore.core.http.models.HttpHeaderName")
                         .build();
@@ -122,7 +122,7 @@ public class HttpHeadersCustomRecipe extends Recipe {
                 }
 
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpHeaders getValue(java.lang.String)");
-                if (methodMatcher.matches(visitedMethodInvocation, true)) {
+                if (methodMatcher.matches(visitedMethodInvocation)) {
                     replacementTemplate = templateBuilder.getJavaTemplateBuilder("getValue(HttpHeaderName.fromString(#{any(java.lang.String)}))")
                         .imports("io.clientcore.core.http.models.HttpHeaderName")
                         .build();
@@ -132,7 +132,7 @@ public class HttpHeadersCustomRecipe extends Recipe {
                 }
 
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpHeaders getValues(java.lang.String)");
-                if (methodMatcher.matches(visitedMethodInvocation, true)) {
+                if (methodMatcher.matches(visitedMethodInvocation)) {
                     replacementTemplate = templateBuilder.getJavaTemplateBuilder("getValues(HttpHeaderName.fromString(#{any(java.lang.String)}))")
                         .imports("io.clientcore.core.http.models.HttpHeaderName")
                         .build();

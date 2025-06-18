@@ -57,7 +57,7 @@ public final class GenerateAwsTemplatesClientImpl implements GenerateAwsTemplate
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "HybridConnectivityMg")
+    @ServiceInterface(name = "HybridConnectivityMgmtClientGenerateAwsTemplates")
     public interface GenerateAwsTemplatesService {
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.HybridConnectivity/generateAwsTemplate")
         @ExpectedResponses({ 200 })

@@ -21,7 +21,8 @@ public final class ChatParticipantConverter {
         ChatParticipant chatParticipant = new ChatParticipant()
             .setCommunicationIdentifier(CommunicationIdentifierConverter.convert(obj.getCommunicationIdentifier()))
             .setDisplayName(obj.getDisplayName())
-            .setShareHistoryTime(obj.getShareHistoryTime());
+            .setShareHistoryTime(obj.getShareHistoryTime())
+            .setMetadata(obj.getMetadata());
 
         return chatParticipant;
     }
@@ -38,7 +39,8 @@ public final class ChatParticipantConverter {
             = new com.azure.communication.chat.implementation.models.ChatParticipant()
                 .setCommunicationIdentifier(CommunicationIdentifierConverter.convert(obj.getCommunicationIdentifier()))
                 .setDisplayName(obj.getDisplayName())
-                .setShareHistoryTime(obj.getShareHistoryTime());
+                .setShareHistoryTime(obj.getShareHistoryTime())
+                .setMetadata(obj.getMetadata());
 
         return chatParticipant;
     }

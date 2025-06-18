@@ -18,11 +18,11 @@ public class TaskRequestUpdate {
             = new TaskStatusClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
-        // BEGIN:com.azure.analytics.purview.workflow.generated.taskstatusupdate.taskrequestupdate
+        // BEGIN:com.azure.analytics.purview.workflow.generated.task-status-update.task-request-update
         BinaryData taskUpdateCommand = BinaryData.fromString("{\"comment\":\"Thanks!\",\"newStatus\":\"InProgress\"}");
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response = taskStatusClient.updateWithResponse("d5bd0215-df84-4245-8e18-3a8f012be376",
             taskUpdateCommand, requestOptions);
-        // END:com.azure.analytics.purview.workflow.generated.taskstatusupdate.taskrequestupdate
+        // END:com.azure.analytics.purview.workflow.generated.task-status-update.task-request-update
     }
 }

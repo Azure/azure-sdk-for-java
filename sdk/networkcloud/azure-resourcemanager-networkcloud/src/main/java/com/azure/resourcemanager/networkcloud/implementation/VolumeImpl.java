@@ -47,6 +47,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         }
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public ExtendedLocation extendedLocation() {
         return this.innerModel().extendedLocation();
     }
@@ -108,6 +112,14 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     private String volumeName;
 
+    private String createIfMatch;
+
+    private String createIfNoneMatch;
+
+    private String updateIfMatch;
+
+    private String updateIfNoneMatch;
+
     private VolumePatchParameters updateVolumeUpdateParameters;
 
     public VolumeImpl withExistingResourceGroup(String resourceGroupName) {
@@ -118,14 +130,16 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     public Volume create() {
         this.innerObject = serviceManager.serviceClient()
             .getVolumes()
-            .createOrUpdate(resourceGroupName, volumeName, this.innerModel(), Context.NONE);
+            .createOrUpdate(resourceGroupName, volumeName, this.innerModel(), createIfMatch, createIfNoneMatch,
+                Context.NONE);
         return this;
     }
 
     public Volume create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getVolumes()
-            .createOrUpdate(resourceGroupName, volumeName, this.innerModel(), context);
+            .createOrUpdate(resourceGroupName, volumeName, this.innerModel(), createIfMatch, createIfNoneMatch,
+                context);
         return this;
     }
 
@@ -133,9 +147,13 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         this.innerObject = new VolumeInner();
         this.serviceManager = serviceManager;
         this.volumeName = name;
+        this.createIfMatch = null;
+        this.createIfNoneMatch = null;
     }
 
     public VolumeImpl update() {
+        this.updateIfMatch = null;
+        this.updateIfNoneMatch = null;
         this.updateVolumeUpdateParameters = new VolumePatchParameters();
         return this;
     }
@@ -143,7 +161,8 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     public Volume apply() {
         this.innerObject = serviceManager.serviceClient()
             .getVolumes()
-            .updateWithResponse(resourceGroupName, volumeName, updateVolumeUpdateParameters, Context.NONE)
+            .updateWithResponse(resourceGroupName, volumeName, updateIfMatch, updateIfNoneMatch,
+                updateVolumeUpdateParameters, Context.NONE)
             .getValue();
         return this;
     }
@@ -151,7 +170,8 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     public Volume apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getVolumes()
-            .updateWithResponse(resourceGroupName, volumeName, updateVolumeUpdateParameters, context)
+            .updateWithResponse(resourceGroupName, volumeName, updateIfMatch, updateIfNoneMatch,
+                updateVolumeUpdateParameters, context)
             .getValue();
         return this;
     }
@@ -209,7 +229,27 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         }
     }
 
+    public VolumeImpl withIfMatch(String ifMatch) {
+        if (isInCreateMode()) {
+            this.createIfMatch = ifMatch;
+            return this;
+        } else {
+            this.updateIfMatch = ifMatch;
+            return this;
+        }
+    }
+
+    public VolumeImpl withIfNoneMatch(String ifNoneMatch) {
+        if (isInCreateMode()) {
+            this.createIfNoneMatch = ifNoneMatch;
+            return this;
+        } else {
+            this.updateIfNoneMatch = ifNoneMatch;
+            return this;
+        }
+    }
+
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

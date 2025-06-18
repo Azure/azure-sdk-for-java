@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class LinkTableRequestTargetDistributionOptions
     /*
      * Target table distribution type
      */
+    @Generated
     private String type;
 
     /*
      * Target table distribution column
      */
+    @Generated
     private String distributionColumn;
 
     /**
      * Creates an instance of LinkTableRequestTargetDistributionOptions class.
      */
+    @Generated
     public LinkTableRequestTargetDistributionOptions() {
     }
 
@@ -38,6 +42,7 @@ public final class LinkTableRequestTargetDistributionOptions
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -48,6 +53,7 @@ public final class LinkTableRequestTargetDistributionOptions
      * @param type the type value to set.
      * @return the LinkTableRequestTargetDistributionOptions object itself.
      */
+    @Generated
     public LinkTableRequestTargetDistributionOptions setType(String type) {
         this.type = type;
         return this;
@@ -58,6 +64,7 @@ public final class LinkTableRequestTargetDistributionOptions
      * 
      * @return the distributionColumn value.
      */
+    @Generated
     public String getDistributionColumn() {
         return this.distributionColumn;
     }
@@ -68,6 +75,7 @@ public final class LinkTableRequestTargetDistributionOptions
      * @param distributionColumn the distributionColumn value to set.
      * @return the LinkTableRequestTargetDistributionOptions object itself.
      */
+    @Generated
     public LinkTableRequestTargetDistributionOptions setDistributionColumn(String distributionColumn) {
         this.distributionColumn = distributionColumn;
         return this;
@@ -76,6 +84,7 @@ public final class LinkTableRequestTargetDistributionOptions
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class LinkTableRequestTargetDistributionOptions
      * it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the LinkTableRequestTargetDistributionOptions.
      */
+    @Generated
     public static LinkTableRequestTargetDistributionOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LinkTableRequestTargetDistributionOptions deserializedLinkTableRequestTargetDistributionOptions

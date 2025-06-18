@@ -58,7 +58,7 @@ public final class Queries {
      * REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureLogAnalyticsQue")
+    @ServiceInterface(name = "AzureLogAnalyticsQueries")
     public interface QueriesService {
         @Get("/workspaces/{workspaceId}/query")
         @ExpectedResponses({ 200 })

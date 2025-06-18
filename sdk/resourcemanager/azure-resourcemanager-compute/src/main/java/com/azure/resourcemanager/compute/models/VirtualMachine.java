@@ -2202,7 +2202,9 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
              * @param context the {@link Context} of the request
              * @return the accepted create operation
              */
-            Accepted<VirtualMachine> beginCreate(Context context);
+            default Accepted<VirtualMachine> beginCreate(Context context) {
+                throw new UnsupportedOperationException("[beginCreate(Context)] is not supported in " + getClass());
+            }
         }
     }
 

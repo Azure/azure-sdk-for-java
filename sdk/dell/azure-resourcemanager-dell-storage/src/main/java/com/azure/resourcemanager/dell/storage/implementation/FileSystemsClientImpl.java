@@ -72,7 +72,7 @@ public final class FileSystemsClientImpl implements FileSystemsClient {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DellStorageMgmtClien")
+    @ServiceInterface(name = "DellStorageMgmtClientFileSystems")
     public interface FileSystemsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dell.Storage/filesystems/{filesystemName}")

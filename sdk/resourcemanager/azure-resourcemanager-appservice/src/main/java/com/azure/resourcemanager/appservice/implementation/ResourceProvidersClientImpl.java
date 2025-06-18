@@ -32,6 +32,7 @@ import com.azure.resourcemanager.appservice.fluent.models.AseRegionInner;
 import com.azure.resourcemanager.appservice.fluent.models.BillingMeterInner;
 import com.azure.resourcemanager.appservice.fluent.models.CustomHostnameSitesInner;
 import com.azure.resourcemanager.appservice.fluent.models.DeploymentLocationsInner;
+import com.azure.resourcemanager.appservice.fluent.models.DnlResourceNameAvailabilityInner;
 import com.azure.resourcemanager.appservice.fluent.models.GeoRegionInner;
 import com.azure.resourcemanager.appservice.fluent.models.IdentifierInner;
 import com.azure.resourcemanager.appservice.fluent.models.NameIdentifierInner;
@@ -48,6 +49,7 @@ import com.azure.resourcemanager.appservice.models.BillingMeterCollection;
 import com.azure.resourcemanager.appservice.models.CsmMoveResourceEnvelope;
 import com.azure.resourcemanager.appservice.models.CustomHostnameSitesCollection;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
+import com.azure.resourcemanager.appservice.models.DnlResourceNameAvailabilityRequest;
 import com.azure.resourcemanager.appservice.models.GeoRegionCollection;
 import com.azure.resourcemanager.appservice.models.IdentifierCollection;
 import com.azure.resourcemanager.appservice.models.PremierAddOnOfferCollection;
@@ -189,6 +191,16 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") NameIdentifierInner nameIdentifier, @HeaderParam("Accept") String accept,
             Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Web/locations/{location}/checknameavailability")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<Response<DnlResourceNameAvailabilityInner>> regionalCheckNameAvailability(
+            @HostParam("$host") String endpoint, @PathParam("location") String location,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") DnlResourceNameAvailabilityRequest request,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/premieraddonoffers")
@@ -1800,6 +1812,132 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     public PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostname(NameIdentifierInner nameIdentifier,
         Context context) {
         return new PagedIterable<>(listSiteIdentifiersAssignedToHostnameAsync(nameIdentifier, context));
+    }
+
+    /**
+     * Check if a resource name is available for DNL sites.
+     * 
+     * @param location The location parameter.
+     * @param request Name availability request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information regarding availability of a resource name for DNL apps with regionalized default hostnames
+     * along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DnlResourceNameAvailabilityInner>>
+        regionalCheckNameAvailabilityWithResponseAsync(String location, DnlResourceNameAvailabilityRequest request) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (request == null) {
+            return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
+        } else {
+            request.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.regionalCheckNameAvailability(this.client.getEndpoint(), location,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), request, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Check if a resource name is available for DNL sites.
+     * 
+     * @param location The location parameter.
+     * @param request Name availability request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information regarding availability of a resource name for DNL apps with regionalized default hostnames
+     * along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<DnlResourceNameAvailabilityInner>> regionalCheckNameAvailabilityWithResponseAsync(
+        String location, DnlResourceNameAvailabilityRequest request, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (request == null) {
+            return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
+        } else {
+            request.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.regionalCheckNameAvailability(this.client.getEndpoint(), location,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), request, accept, context);
+    }
+
+    /**
+     * Check if a resource name is available for DNL sites.
+     * 
+     * @param location The location parameter.
+     * @param request Name availability request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information regarding availability of a resource name for DNL apps with regionalized default hostnames on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DnlResourceNameAvailabilityInner> regionalCheckNameAvailabilityAsync(String location,
+        DnlResourceNameAvailabilityRequest request) {
+        return regionalCheckNameAvailabilityWithResponseAsync(location, request)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Check if a resource name is available for DNL sites.
+     * 
+     * @param location The location parameter.
+     * @param request Name availability request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information regarding availability of a resource name for DNL apps with regionalized default hostnames
+     * along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DnlResourceNameAvailabilityInner> regionalCheckNameAvailabilityWithResponse(String location,
+        DnlResourceNameAvailabilityRequest request, Context context) {
+        return regionalCheckNameAvailabilityWithResponseAsync(location, request, context).block();
+    }
+
+    /**
+     * Check if a resource name is available for DNL sites.
+     * 
+     * @param location The location parameter.
+     * @param request Name availability request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information regarding availability of a resource name for DNL apps with regionalized default hostnames.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DnlResourceNameAvailabilityInner regionalCheckNameAvailability(String location,
+        DnlResourceNameAvailabilityRequest request) {
+        return regionalCheckNameAvailabilityWithResponse(location, request, Context.NONE).getValue();
     }
 
     /**

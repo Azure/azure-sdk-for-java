@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,93 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0 (2025-06-16)
+
+- Azure Resource Manager DnsResolver client library for Java. This package contains Microsoft Azure SDK for DnsResolver Management SDK. DNS Resolver Client. Package tag package-2025-05. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.DnsResolverPolicyVirtualNetworkLink` was added
+
+* `models.DnsSecurityRuleAction` was added
+
+* `models.DnsResolverPolicyListResult` was added
+
+* `models.DnsSecurityRule$UpdateStages` was added
+
+* `models.DnsResolverPolicyVirtualNetworkLink$DefinitionStages` was added
+
+* `models.DnsSecurityRule$Definition` was added
+
+* `models.DnsResolverDomainList` was added
+
+* `models.DnsResolverPolicyVirtualNetworkLink$Definition` was added
+
+* `models.DnsResolverDomainListResult` was added
+
+* `models.DnsResolverPolicies` was added
+
+* `models.DnsResolverDomainList$DefinitionStages` was added
+
+* `models.DnsSecurityRule$Update` was added
+
+* `models.DnsResolverPolicyVirtualNetworkLink$Update` was added
+
+* `models.DnsSecurityRuleListResult` was added
+
+* `models.ActionType` was added
+
+* `models.DnsResolverPolicyVirtualNetworkLinks` was added
+
+* `models.DnsSecurityRule` was added
+
+* `models.DnsResolverPolicy$DefinitionStages` was added
+
+* `models.DnsSecurityRulePatch` was added
+
+* `models.DnsResolverDomainLists` was added
+
+* `models.DnsResolverDomainListPatch` was added
+
+* `models.Action` was added
+
+* `models.DnsSecurityRuleState` was added
+
+* `models.DnsSecurityRules` was added
+
+* `models.DnsResolverPolicyPatch` was added
+
+* `models.DnsSecurityRule$DefinitionStages` was added
+
+* `models.DnsResolverDomainListBulk` was added
+
+* `models.DnsResolverDomainList$Definition` was added
+
+* `models.DnsResolverPolicyVirtualNetworkLinkListResult` was added
+
+* `models.DnsResolverPolicy$Update` was added
+
+* `models.DnsResolverDomainList$UpdateStages` was added
+
+* `models.DnsResolverDomainList$Update` was added
+
+* `models.DnsResolverPolicyVirtualNetworkLink$UpdateStages` was added
+
+* `models.DnsResolverPolicy$UpdateStages` was added
+
+* `models.DnsResolverPolicyVirtualNetworkLinkPatch` was added
+
+* `models.DnsResolverPolicy$Definition` was added
+
+* `models.DnsResolverPolicy` was added
+
+#### `DnsResolverManager` was modified
+
+* `dnsSecurityRules()` was added
+* `dnsResolverPolicyVirtualNetworkLinks()` was added
+* `dnsResolverDomainLists()` was added
+* `dnsResolverPolicies()` was added
 
 ## 1.0.0 (2025-01-02)
 

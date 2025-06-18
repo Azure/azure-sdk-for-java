@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class OraclePartitionOption extends ExpandableStringEnum<OraclePart
     /**
      * Static value None for OraclePartitionOption.
      */
+    @Generated
     public static final OraclePartitionOption NONE = fromString("None");
 
     /**
      * Static value PhysicalPartitionsOfTable for OraclePartitionOption.
      */
+    @Generated
     public static final OraclePartitionOption PHYSICAL_PARTITIONS_OF_TABLE = fromString("PhysicalPartitionsOfTable");
 
     /**
      * Static value DynamicRange for OraclePartitionOption.
      */
+    @Generated
     public static final OraclePartitionOption DYNAMIC_RANGE = fromString("DynamicRange");
 
     /**
@@ -31,6 +35,7 @@ public final class OraclePartitionOption extends ExpandableStringEnum<OraclePart
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public OraclePartitionOption() {
     }
@@ -41,6 +46,7 @@ public final class OraclePartitionOption extends ExpandableStringEnum<OraclePart
      * @param name a name to look for.
      * @return the corresponding OraclePartitionOption.
      */
+    @Generated
     public static OraclePartitionOption fromString(String name) {
         return fromString(name, OraclePartitionOption.class);
     }
@@ -50,6 +56,7 @@ public final class OraclePartitionOption extends ExpandableStringEnum<OraclePart
      * 
      * @return known OraclePartitionOption values.
      */
+    @Generated
     public static Collection<OraclePartitionOption> values() {
         return values(OraclePartitionOption.class);
     }

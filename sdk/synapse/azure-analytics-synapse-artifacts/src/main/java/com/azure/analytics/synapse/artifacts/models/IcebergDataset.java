@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,16 +22,19 @@ public class IcebergDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "Iceberg";
 
     /*
      * The location of the iceberg storage. Setting a file name is not allowed for iceberg format.
      */
+    @Generated
     private DatasetLocation location;
 
     /**
      * Creates an instance of IcebergDataset class.
      */
+    @Generated
     public IcebergDataset() {
     }
 
@@ -39,6 +43,7 @@ public class IcebergDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -50,6 +55,7 @@ public class IcebergDataset extends Dataset {
      * 
      * @return the location value.
      */
+    @Generated
     public DatasetLocation getLocation() {
         return this.location;
     }
@@ -61,6 +67,7 @@ public class IcebergDataset extends Dataset {
      * @param location the location value to set.
      * @return the IcebergDataset object itself.
      */
+    @Generated
     public IcebergDataset setLocation(DatasetLocation location) {
         this.location = location;
         return this;
@@ -69,6 +76,7 @@ public class IcebergDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public IcebergDataset setDescription(String description) {
         super.setDescription(description);
@@ -78,6 +86,7 @@ public class IcebergDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public IcebergDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -87,6 +96,7 @@ public class IcebergDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public IcebergDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -96,6 +106,7 @@ public class IcebergDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public IcebergDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -105,6 +116,7 @@ public class IcebergDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public IcebergDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -114,6 +126,7 @@ public class IcebergDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public IcebergDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -123,6 +136,7 @@ public class IcebergDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public IcebergDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -132,13 +146,18 @@ public class IcebergDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
@@ -165,6 +184,7 @@ public class IcebergDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the IcebergDataset.
      */
+    @Generated
     public static IcebergDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             IcebergDataset deserializedIcebergDataset = new IcebergDataset();
