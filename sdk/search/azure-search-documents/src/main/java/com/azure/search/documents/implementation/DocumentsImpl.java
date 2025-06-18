@@ -70,7 +70,7 @@ public final class DocumentsImpl {
      * REST calls.
      */
     @Host("{endpoint}/indexes('{indexName}')")
-    @ServiceInterface(name = "SearchIndexClientDoc")
+    @ServiceInterface(name = "SearchIndexClientDocuments")
     public interface DocumentsService {
 
         @Get("/docs/$count")

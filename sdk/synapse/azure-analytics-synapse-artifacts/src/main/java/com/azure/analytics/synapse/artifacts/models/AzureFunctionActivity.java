@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,17 +22,20 @@ public class AzureFunctionActivity extends ExecutionActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "AzureFunctionActivity";
 
     /*
      * Rest API method for target endpoint.
      */
+    @Generated
     private AzureFunctionActivityMethod method;
 
     /*
      * Name of the Function that the Azure Function Activity will call. Type: string (or Expression with resultType
      * string)
      */
+    @Generated
     private Object functionName;
 
     /*
@@ -39,17 +43,20 @@ public class AzureFunctionActivity extends ExecutionActivity {
      * "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private Object headers;
 
     /*
      * Represents the payload that will be sent to the endpoint. Required for POST/PUT method, not allowed for GET
      * method Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object body;
 
     /**
      * Creates an instance of AzureFunctionActivity class.
      */
+    @Generated
     public AzureFunctionActivity() {
     }
 
@@ -58,6 +65,7 @@ public class AzureFunctionActivity extends ExecutionActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -68,6 +76,7 @@ public class AzureFunctionActivity extends ExecutionActivity {
      * 
      * @return the method value.
      */
+    @Generated
     public AzureFunctionActivityMethod getMethod() {
         return this.method;
     }
@@ -78,6 +87,7 @@ public class AzureFunctionActivity extends ExecutionActivity {
      * @param method the method value to set.
      * @return the AzureFunctionActivity object itself.
      */
+    @Generated
     public AzureFunctionActivity setMethod(AzureFunctionActivityMethod method) {
         this.method = method;
         return this;
@@ -89,6 +99,7 @@ public class AzureFunctionActivity extends ExecutionActivity {
      * 
      * @return the functionName value.
      */
+    @Generated
     public Object getFunctionName() {
         return this.functionName;
     }
@@ -100,6 +111,7 @@ public class AzureFunctionActivity extends ExecutionActivity {
      * @param functionName the functionName value to set.
      * @return the AzureFunctionActivity object itself.
      */
+    @Generated
     public AzureFunctionActivity setFunctionName(Object functionName) {
         this.functionName = functionName;
         return this;
@@ -112,6 +124,7 @@ public class AzureFunctionActivity extends ExecutionActivity {
      * 
      * @return the headers value.
      */
+    @Generated
     public Object getHeaders() {
         return this.headers;
     }
@@ -124,6 +137,7 @@ public class AzureFunctionActivity extends ExecutionActivity {
      * @param headers the headers value to set.
      * @return the AzureFunctionActivity object itself.
      */
+    @Generated
     public AzureFunctionActivity setHeaders(Object headers) {
         this.headers = headers;
         return this;
@@ -135,6 +149,7 @@ public class AzureFunctionActivity extends ExecutionActivity {
      * 
      * @return the body value.
      */
+    @Generated
     public Object getBody() {
         return this.body;
     }
@@ -146,6 +161,7 @@ public class AzureFunctionActivity extends ExecutionActivity {
      * @param body the body value to set.
      * @return the AzureFunctionActivity object itself.
      */
+    @Generated
     public AzureFunctionActivity setBody(Object body) {
         this.body = body;
         return this;
@@ -154,6 +170,7 @@ public class AzureFunctionActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureFunctionActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -163,6 +180,7 @@ public class AzureFunctionActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureFunctionActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
@@ -172,6 +190,7 @@ public class AzureFunctionActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureFunctionActivity setName(String name) {
         super.setName(name);
@@ -181,6 +200,7 @@ public class AzureFunctionActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureFunctionActivity setDescription(String description) {
         super.setDescription(description);
@@ -190,6 +210,7 @@ public class AzureFunctionActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureFunctionActivity setState(ActivityState state) {
         super.setState(state);
@@ -199,6 +220,7 @@ public class AzureFunctionActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureFunctionActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -208,6 +230,7 @@ public class AzureFunctionActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureFunctionActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -217,6 +240,7 @@ public class AzureFunctionActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureFunctionActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -226,6 +250,7 @@ public class AzureFunctionActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -244,8 +269,12 @@ public class AzureFunctionActivity extends ExecutionActivity {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeStringField("method", this.method == null ? null : this.method.toString());
             jsonWriter.writeUntypedField("functionName", this.functionName);
-            jsonWriter.writeUntypedField("headers", this.headers);
-            jsonWriter.writeUntypedField("body", this.body);
+            if (this.headers != null) {
+                jsonWriter.writeUntypedField("headers", this.headers);
+            }
+            if (this.body != null) {
+                jsonWriter.writeUntypedField("body", this.body);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -265,6 +294,7 @@ public class AzureFunctionActivity extends ExecutionActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureFunctionActivity.
      */
+    @Generated
     public static AzureFunctionActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureFunctionActivity deserializedAzureFunctionActivity = new AzureFunctionActivity();

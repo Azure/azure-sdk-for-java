@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class Pagination implements JsonSerializable<Pagination> {
     /*
      * The nextLink property.
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of Pagination class.
      */
+    @Generated
     public Pagination() {
     }
 
@@ -32,6 +35,7 @@ public final class Pagination implements JsonSerializable<Pagination> {
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -42,6 +46,7 @@ public final class Pagination implements JsonSerializable<Pagination> {
      * @param nextLink the nextLink value to set.
      * @return the Pagination object itself.
      */
+    @Generated
     public Pagination setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
@@ -50,6 +55,7 @@ public final class Pagination implements JsonSerializable<Pagination> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +71,7 @@ public final class Pagination implements JsonSerializable<Pagination> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the Pagination.
      */
+    @Generated
     public static Pagination fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Pagination deserializedPagination = new Pagination();

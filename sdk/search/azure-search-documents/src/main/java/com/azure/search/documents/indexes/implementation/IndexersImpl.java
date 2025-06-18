@@ -64,7 +64,7 @@ public final class IndexersImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "SearchServiceClientI")
+    @ServiceInterface(name = "SearchServiceClientIndexers")
     public interface IndexersService {
         @Post("/indexers('{indexerName}')/search.reset")
         @ExpectedResponses({ 204 })

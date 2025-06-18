@@ -33,7 +33,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the asynchronous PersistentAgentsClient type.
+ * Initializes a new instance of the asynchronous Threads type.
  */
 @ServiceClient(builder = PersistentAgentsClientBuilder.class, isAsync = true)
 public final class ThreadsAsyncClient {

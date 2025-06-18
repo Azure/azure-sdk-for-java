@@ -28,7 +28,8 @@ public class FilesClientTest extends ClientTestBase {
 
     private void setup(HttpClient httpClient) {
         clientBuilder = getClientBuilder(httpClient);
-        filesClient = clientBuilder.buildFilesClient();
+        PersistentAgentsClient agentsClient = clientBuilder.buildClient();
+        filesClient = agentsClient.getFilesClient();
         uploadedFiles = new ArrayList<>();
     }
 
