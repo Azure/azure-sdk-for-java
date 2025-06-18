@@ -77,9 +77,9 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     oneESTemplateTag: ${{ parameters.oneESTemplateTag }}
-    ${{ if eq(parameters.ReleaseToDevOpsOnly, 'true') }}:
+    ${{ if eq(parameters.ReleaseToDevOpsOnly, true) }}:
       PublicFeedUrl: 'https://pkgs.dev.azure.com/azure-sdk/public/_packaging/storage-staging/maven/v1'
-    ${{ if eq(parameters.AutoApproveRelease, 'true') }}:
+    ${{ if eq(parameters.AutoApproveRelease, true) }}:
       PublicPublishEnvironment: none
     ServiceDirectory: template
     ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
