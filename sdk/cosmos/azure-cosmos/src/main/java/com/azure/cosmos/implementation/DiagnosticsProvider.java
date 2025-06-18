@@ -1536,11 +1536,19 @@ public final class DiagnosticsProvider {
                 context);
             tracer.setAttribute(
                 "db.cosmosdb.sub_status_code",
-                Integer.toString(cosmosCtx.getSubStatusCode()),
+                cosmosCtx.getSubStatusCode(),
+                context);
+            tracer.setAttribute(
+                "azure.cosmosdb.response.sub_status_code",
+                cosmosCtx.getSubStatusCode(),
                 context);
             tracer.setAttribute(
                 "db.cosmosdb.request_charge",
-                Float.toString(cosmosCtx.getTotalRequestCharge()),
+                (double) cosmosCtx.getTotalRequestCharge(),
+                context);
+            tracer.setAttribute(
+                "azure.cosmosdb.operation.request_charge",
+                (double) cosmosCtx.getTotalRequestCharge(),
                 context);
             tracer.setAttribute("db.cosmosdb.request_content_length",cosmosCtx.getMaxRequestPayloadSizeInBytes(), context);
             tracer.setAttribute("db.cosmosdb.max_response_content_length_bytes",cosmosCtx.getMaxResponsePayloadSizeInBytes(), context);
