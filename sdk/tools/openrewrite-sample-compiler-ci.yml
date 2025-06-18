@@ -21,6 +21,12 @@ pr:
       - /sdk/tools/azure-openrewrite/
       - /sdk/tools/azure-openrewrite-compiler-maven-plugin/
 
+parameters:
+  - name: release_azureopenrewritecompilermavenplugin
+    displayName: azure-openrewrite-compiler-maven-plugin
+    type: boolean
+    default: false
+
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
