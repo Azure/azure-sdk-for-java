@@ -314,7 +314,8 @@ public class StorageImplUtils {
 
             // Handle HEAD requests specifically by inserting the error code into the message if the body is empty.
             if (response.getRequest() != null
-                && response.getRequest().getHttpMethod() == HttpMethod.HEAD
+                && response.getRequest().getHttpMethod() != null
+                && response.getRequest().getHttpMethod().equals(HttpMethod.HEAD)
                 && errorCode != null) {
                 int indexOfEmptyBody = message.indexOf("(empty body)");
                 if (indexOfEmptyBody >= 0) {
