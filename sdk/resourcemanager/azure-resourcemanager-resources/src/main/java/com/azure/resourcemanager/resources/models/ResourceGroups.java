@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
@@ -47,10 +48,30 @@ public interface ResourceGroups
      * Begins deleting a resource group from Azure, identifying it by its name.
      *
      * @param name the resource group name
+     * @param context the {@link Context} of the request
+     * @return the accepted deleting operation
+     */
+    Accepted<Void> beginDeleteByName(String name, Context context);
+
+    /**
+     * Begins deleting a resource group from Azure, identifying it by its name.
+     *
+     * @param name the resource group name
      * @param forceDeletionResourceTypes resource types for force deletion
      * @return the accepted deleting operation
      */
     Accepted<Void> beginDeleteByName(String name, Collection<ForceDeletionResourceType> forceDeletionResourceTypes);
+
+    /**
+     * Begins deleting a resource group from Azure, identifying it by its name.
+     *
+     * @param name the resource group name
+     * @param forceDeletionResourceTypes resource types for force deletion
+     * @param context the {@link Context} of the request
+     * @return the accepted deleting operation
+     */
+    Accepted<Void> beginDeleteByName(String name, Collection<ForceDeletionResourceType> forceDeletionResourceTypes,
+        Context context);
 
     /**
      * Deletes a resource from Azure, identifying it by its resource name.
