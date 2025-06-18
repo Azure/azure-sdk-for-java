@@ -45,12 +45,6 @@ class KafkaOAuth2AuthenticateCallbackHandlerTest {
     private static final String TOKEN_CREDENTIAL_RESOLVER_FIELD_NAME = "tokenCredentialResolver";
     @Test
     void testTokenCredentialShouldConfig() {
-        TokenCredential tokenCredential = new TokenCredential() {
-            @Override
-            public AccessToken getTokenSync(TokenRequestContext tokenRequestContext) {
-                return null;
-            }
-        };
         Map<String, Object> configs = new HashMap<>();
         configs.put(BOOTSTRAP_SERVERS_CONFIG, KAFKA_BOOTSTRAP_SERVER);
         configs.put(AZURE_TOKEN_CREDENTIAL, tokenCredential);
