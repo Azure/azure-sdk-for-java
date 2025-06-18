@@ -61,6 +61,12 @@ parameters:
   - name: EnvVars
     type: object
     default: {}
+  - name: PublicFeedUrl
+    type: string
+    default: 'maven.org'
+  - name: PublicPublishEnvironment
+    type: string
+    default: 'package-publish`
 
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
@@ -152,7 +158,6 @@ extends:
                     - ${{ if ne(artifact.releaseInBatch, 'false') }}:
                         - ${{ artifact }}
               TestPipeline: ${{ parameters.TestPipeline }}
-              # This where the MavenBreakGlassApprovers is set for the release tasks.
-              ${{ if and(in(variables['Build.Reason'], 'Manual', ''), eq(parameters.ReleaseDependsOnLiveTests, 'false')) }}:
-                Environment: 'MavenBreakGlassApprovers'
+              PublicFeedUrl: ${{ parameters.PublicFeed }}
+              PublicPublishEnvironment: ${{ parameters.PublicPublishEnvironment }}
 
