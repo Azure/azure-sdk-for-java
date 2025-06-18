@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,33 +23,39 @@ public class StoreWriteSettings implements JsonSerializable<StoreWriteSettings> 
     /*
      * The write setting type.
      */
+    @Generated
     private String type = "StoreWriteSettings";
 
     /*
      * The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType
      * integer).
      */
+    @Generated
     private Object maxConcurrentConnections;
 
     /*
      * The type of copy behavior for copy sink.
      */
+    @Generated
     private Object copyBehavior;
 
     /*
      * Specify the custom metadata to be added to sink data. Type: array of objects (or Expression with resultType array
      * of objects).
      */
+    @Generated
     private List<MetadataItem> metadata;
 
     /*
      * Connector write settings.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of StoreWriteSettings class.
      */
+    @Generated
     public StoreWriteSettings() {
     }
 
@@ -57,6 +64,7 @@ public class StoreWriteSettings implements JsonSerializable<StoreWriteSettings> 
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -67,6 +75,7 @@ public class StoreWriteSettings implements JsonSerializable<StoreWriteSettings> 
      * 
      * @return the maxConcurrentConnections value.
      */
+    @Generated
     public Object getMaxConcurrentConnections() {
         return this.maxConcurrentConnections;
     }
@@ -78,6 +87,7 @@ public class StoreWriteSettings implements JsonSerializable<StoreWriteSettings> 
      * @param maxConcurrentConnections the maxConcurrentConnections value to set.
      * @return the StoreWriteSettings object itself.
      */
+    @Generated
     public StoreWriteSettings setMaxConcurrentConnections(Object maxConcurrentConnections) {
         this.maxConcurrentConnections = maxConcurrentConnections;
         return this;
@@ -88,6 +98,7 @@ public class StoreWriteSettings implements JsonSerializable<StoreWriteSettings> 
      * 
      * @return the copyBehavior value.
      */
+    @Generated
     public Object getCopyBehavior() {
         return this.copyBehavior;
     }
@@ -98,6 +109,7 @@ public class StoreWriteSettings implements JsonSerializable<StoreWriteSettings> 
      * @param copyBehavior the copyBehavior value to set.
      * @return the StoreWriteSettings object itself.
      */
+    @Generated
     public StoreWriteSettings setCopyBehavior(Object copyBehavior) {
         this.copyBehavior = copyBehavior;
         return this;
@@ -109,6 +121,7 @@ public class StoreWriteSettings implements JsonSerializable<StoreWriteSettings> 
      * 
      * @return the metadata value.
      */
+    @Generated
     public List<MetadataItem> getMetadata() {
         return this.metadata;
     }
@@ -120,6 +133,7 @@ public class StoreWriteSettings implements JsonSerializable<StoreWriteSettings> 
      * @param metadata the metadata value to set.
      * @return the StoreWriteSettings object itself.
      */
+    @Generated
     public StoreWriteSettings setMetadata(List<MetadataItem> metadata) {
         this.metadata = metadata;
         return this;
@@ -130,6 +144,7 @@ public class StoreWriteSettings implements JsonSerializable<StoreWriteSettings> 
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -140,6 +155,7 @@ public class StoreWriteSettings implements JsonSerializable<StoreWriteSettings> 
      * @param additionalProperties the additionalProperties value to set.
      * @return the StoreWriteSettings object itself.
      */
+    @Generated
     public StoreWriteSettings setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -148,12 +164,17 @@ public class StoreWriteSettings implements JsonSerializable<StoreWriteSettings> 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("maxConcurrentConnections", this.maxConcurrentConnections);
-        jsonWriter.writeUntypedField("copyBehavior", this.copyBehavior);
+        if (this.maxConcurrentConnections != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", this.maxConcurrentConnections);
+        }
+        if (this.copyBehavior != null) {
+            jsonWriter.writeUntypedField("copyBehavior", this.copyBehavior);
+        }
         jsonWriter.writeArrayField("metadata", this.metadata, (writer, element) -> writer.writeJson(element));
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
@@ -171,6 +192,7 @@ public class StoreWriteSettings implements JsonSerializable<StoreWriteSettings> 
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the StoreWriteSettings.
      */
+    @Generated
     public static StoreWriteSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -208,6 +230,7 @@ public class StoreWriteSettings implements JsonSerializable<StoreWriteSettings> 
         });
     }
 
+    @Generated
     static StoreWriteSettings fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             StoreWriteSettings deserializedStoreWriteSettings = new StoreWriteSettings();

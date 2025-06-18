@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,26 +22,31 @@ public class Db2TableDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "Db2Table";
 
     /*
      * This property will be retired. Please consider using schema + table properties instead.
      */
+    @Generated
     private Object tableName;
 
     /*
      * The Db2 schema name. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object schemaTypePropertiesSchema;
 
     /*
      * The Db2 table name. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object table;
 
     /**
      * Creates an instance of Db2TableDataset class.
      */
+    @Generated
     public Db2TableDataset() {
     }
 
@@ -49,6 +55,7 @@ public class Db2TableDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -60,6 +67,7 @@ public class Db2TableDataset extends Dataset {
      * 
      * @return the tableName value.
      */
+    @Generated
     public Object getTableName() {
         return this.tableName;
     }
@@ -71,6 +79,7 @@ public class Db2TableDataset extends Dataset {
      * @param tableName the tableName value to set.
      * @return the Db2TableDataset object itself.
      */
+    @Generated
     public Db2TableDataset setTableName(Object tableName) {
         this.tableName = tableName;
         return this;
@@ -82,6 +91,7 @@ public class Db2TableDataset extends Dataset {
      * 
      * @return the schemaTypePropertiesSchema value.
      */
+    @Generated
     public Object getSchemaTypePropertiesSchema() {
         return this.schemaTypePropertiesSchema;
     }
@@ -93,6 +103,7 @@ public class Db2TableDataset extends Dataset {
      * @param schemaTypePropertiesSchema the schemaTypePropertiesSchema value to set.
      * @return the Db2TableDataset object itself.
      */
+    @Generated
     public Db2TableDataset setSchemaTypePropertiesSchema(Object schemaTypePropertiesSchema) {
         this.schemaTypePropertiesSchema = schemaTypePropertiesSchema;
         return this;
@@ -103,6 +114,7 @@ public class Db2TableDataset extends Dataset {
      * 
      * @return the table value.
      */
+    @Generated
     public Object getTable() {
         return this.table;
     }
@@ -113,6 +125,7 @@ public class Db2TableDataset extends Dataset {
      * @param table the table value to set.
      * @return the Db2TableDataset object itself.
      */
+    @Generated
     public Db2TableDataset setTable(Object table) {
         this.table = table;
         return this;
@@ -121,6 +134,7 @@ public class Db2TableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Db2TableDataset setDescription(String description) {
         super.setDescription(description);
@@ -130,6 +144,7 @@ public class Db2TableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Db2TableDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -139,6 +154,7 @@ public class Db2TableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Db2TableDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -148,6 +164,7 @@ public class Db2TableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Db2TableDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -157,6 +174,7 @@ public class Db2TableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Db2TableDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -166,6 +184,7 @@ public class Db2TableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Db2TableDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -175,6 +194,7 @@ public class Db2TableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Db2TableDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -184,22 +204,33 @@ public class Db2TableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
         jsonWriter.writeStringField("type", this.type);
         if (tableName != null || schemaTypePropertiesSchema != null || table != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("tableName", this.tableName);
-            jsonWriter.writeUntypedField("schema", this.schemaTypePropertiesSchema);
-            jsonWriter.writeUntypedField("table", this.table);
+            if (this.tableName != null) {
+                jsonWriter.writeUntypedField("tableName", this.tableName);
+            }
+            if (this.schemaTypePropertiesSchema != null) {
+                jsonWriter.writeUntypedField("schema", this.schemaTypePropertiesSchema);
+            }
+            if (this.table != null) {
+                jsonWriter.writeUntypedField("table", this.table);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -219,6 +250,7 @@ public class Db2TableDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Db2TableDataset.
      */
+    @Generated
     public static Db2TableDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Db2TableDataset deserializedDb2TableDataset = new Db2TableDataset();

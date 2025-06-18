@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,29 +23,34 @@ public class SwitchActivity extends ControlActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "Switch";
 
     /*
      * An expression that would evaluate to a string or integer. This is used to determine the block of activities in
      * cases that will be executed.
      */
+    @Generated
     private Expression on;
 
     /*
      * List of cases that correspond to expected values of the 'on' property. This is an optional property and if not
      * provided, the activity will execute activities provided in defaultActivities.
      */
+    @Generated
     private List<SwitchCase> cases;
 
     /*
      * List of activities to execute if no case condition is satisfied. This is an optional property and if not
      * provided, the activity will exit without any action.
      */
+    @Generated
     private List<Activity> defaultActivities;
 
     /**
      * Creates an instance of SwitchActivity class.
      */
+    @Generated
     public SwitchActivity() {
     }
 
@@ -53,6 +59,7 @@ public class SwitchActivity extends ControlActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -64,6 +71,7 @@ public class SwitchActivity extends ControlActivity {
      * 
      * @return the on value.
      */
+    @Generated
     public Expression getOn() {
         return this.on;
     }
@@ -75,6 +83,7 @@ public class SwitchActivity extends ControlActivity {
      * @param on the on value to set.
      * @return the SwitchActivity object itself.
      */
+    @Generated
     public SwitchActivity setOn(Expression on) {
         this.on = on;
         return this;
@@ -86,6 +95,7 @@ public class SwitchActivity extends ControlActivity {
      * 
      * @return the cases value.
      */
+    @Generated
     public List<SwitchCase> getCases() {
         return this.cases;
     }
@@ -97,6 +107,7 @@ public class SwitchActivity extends ControlActivity {
      * @param cases the cases value to set.
      * @return the SwitchActivity object itself.
      */
+    @Generated
     public SwitchActivity setCases(List<SwitchCase> cases) {
         this.cases = cases;
         return this;
@@ -108,6 +119,7 @@ public class SwitchActivity extends ControlActivity {
      * 
      * @return the defaultActivities value.
      */
+    @Generated
     public List<Activity> getDefaultActivities() {
         return this.defaultActivities;
     }
@@ -119,6 +131,7 @@ public class SwitchActivity extends ControlActivity {
      * @param defaultActivities the defaultActivities value to set.
      * @return the SwitchActivity object itself.
      */
+    @Generated
     public SwitchActivity setDefaultActivities(List<Activity> defaultActivities) {
         this.defaultActivities = defaultActivities;
         return this;
@@ -127,6 +140,7 @@ public class SwitchActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SwitchActivity setName(String name) {
         super.setName(name);
@@ -136,6 +150,7 @@ public class SwitchActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SwitchActivity setDescription(String description) {
         super.setDescription(description);
@@ -145,6 +160,7 @@ public class SwitchActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SwitchActivity setState(ActivityState state) {
         super.setState(state);
@@ -154,6 +170,7 @@ public class SwitchActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SwitchActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -163,6 +180,7 @@ public class SwitchActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SwitchActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -172,6 +190,7 @@ public class SwitchActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SwitchActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -181,6 +200,7 @@ public class SwitchActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -218,6 +238,7 @@ public class SwitchActivity extends ControlActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SwitchActivity.
      */
+    @Generated
     public static SwitchActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SwitchActivity deserializedSwitchActivity = new SwitchActivity();

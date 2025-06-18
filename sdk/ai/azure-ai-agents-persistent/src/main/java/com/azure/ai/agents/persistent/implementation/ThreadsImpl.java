@@ -4,7 +4,7 @@
 
 package com.azure.ai.agents.persistent.implementation;
 
-import com.azure.ai.agents.persistent.AgentsServiceVersion;
+import com.azure.ai.agents.persistent.PersistentAgentsServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -23,6 +23,10 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
@@ -33,13 +37,15 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in Threads.
+ * Initializes a new instance of the Threads type.
  */
 public final class ThreadsImpl {
     /**
@@ -48,35 +54,110 @@ public final class ThreadsImpl {
     private final ThreadsService service;
 
     /**
-     * The service client containing this operation class.
+     * Project endpoint in the form of:
+     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
      */
-    private final PersistentAgentsAdministrationClientImpl client;
+    private final String endpoint;
 
     /**
-     * Initializes an instance of ThreadsImpl.
+     * Gets Project endpoint in the form of:
+     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
      * 
-     * @param client the instance of the service client containing this operation class.
+     * @return the endpoint value.
      */
-    ThreadsImpl(PersistentAgentsAdministrationClientImpl client) {
-        this.service = RestProxy.create(ThreadsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
+    public String getEndpoint() {
+        return this.endpoint;
     }
+
+    /**
+     * Service version.
+     */
+    private final PersistentAgentsServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
      * 
      * @return the serviceVersion value.
      */
-    public AgentsServiceVersion getServiceVersion() {
-        return client.getServiceVersion();
+    public PersistentAgentsServiceVersion getServiceVersion() {
+        return this.serviceVersion;
     }
 
     /**
-     * The interface defining all the services for PersistentAgentsAdministrationClientThreads to be used by the proxy
-     * service to perform REST calls.
+     * The HTTP pipeline to send requests through.
+     */
+    private final HttpPipeline httpPipeline;
+
+    /**
+     * Gets The HTTP pipeline to send requests through.
+     * 
+     * @return the httpPipeline value.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return this.httpPipeline;
+    }
+
+    /**
+     * The serializer to serialize an object into a string.
+     */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     * 
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
+    /**
+     * Initializes an instance of Threads client.
+     * 
+     * @param endpoint Project endpoint in the form of:
+     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
+     * @param serviceVersion Service version.
+     */
+    public ThreadsImpl(String endpoint, PersistentAgentsServiceVersion serviceVersion) {
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
+    }
+
+    /**
+     * Initializes an instance of Threads client.
+     * 
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param endpoint Project endpoint in the form of:
+     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
+     * @param serviceVersion Service version.
+     */
+    public ThreadsImpl(HttpPipeline httpPipeline, String endpoint, PersistentAgentsServiceVersion serviceVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
+    }
+
+    /**
+     * Initializes an instance of Threads client.
+     * 
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param endpoint Project endpoint in the form of:
+     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
+     * @param serviceVersion Service version.
+     */
+    public ThreadsImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
+        PersistentAgentsServiceVersion serviceVersion) {
+        this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
+        this.endpoint = endpoint;
+        this.serviceVersion = serviceVersion;
+        this.service = RestProxy.create(ThreadsService.class, this.httpPipeline, this.getSerializerAdapter());
+    }
+
+    /**
+     * The interface defining all the services for Threads to be used by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PersistentAgentsAdministrationClientThreads")
+    @ServiceInterface(name = "Threads")
     public interface ThreadsService {
         @Post("/threads")
         @ExpectedResponses({ 200 })
@@ -170,7 +251,7 @@ public final class ThreadsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> deleteThread(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> deleteThreadInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("threadId") String threadId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -180,7 +261,7 @@ public final class ThreadsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> deleteThreadSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> deleteThreadInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("threadId") String threadId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
@@ -326,9 +407,8 @@ public final class ThreadsImpl {
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.createThread(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-                contentType, accept, createThreadRequest, requestOptions, context));
+        return FluxUtil.withContext(context -> service.createThread(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), contentType, accept, createThreadRequest, requestOptions, context));
     }
 
     /**
@@ -471,8 +551,8 @@ public final class ThreadsImpl {
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createThreadSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            contentType, accept, createThreadRequest, requestOptions, Context.NONE);
+        return service.createThreadSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
+            createThreadRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -561,8 +641,8 @@ public final class ThreadsImpl {
     private Mono<PagedResponse<BinaryData>> listThreadsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listThreads(this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .withContext(context -> service.listThreads(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
     }
@@ -737,8 +817,8 @@ public final class ThreadsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listThreadsSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listThreadsSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listThreadsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
     }
@@ -898,8 +978,8 @@ public final class ThreadsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getThreadWithResponseAsync(String threadId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getThread(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), threadId, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getThread(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), threadId, accept, requestOptions, context));
     }
 
     /**
@@ -970,8 +1050,8 @@ public final class ThreadsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getThreadWithResponse(String threadId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getThreadSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), threadId,
-            accept, requestOptions, Context.NONE);
+        return service.getThreadSync(this.getEndpoint(), this.getServiceVersion().getVersion(), threadId, accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -1098,8 +1178,8 @@ public final class ThreadsImpl {
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.updateThread(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+        return FluxUtil
+            .withContext(context -> service.updateThread(this.getEndpoint(), this.getServiceVersion().getVersion(),
                 threadId, contentType, accept, updateThreadRequest, requestOptions, context));
     }
 
@@ -1226,8 +1306,8 @@ public final class ThreadsImpl {
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateThreadSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            threadId, contentType, accept, updateThreadRequest, requestOptions, Context.NONE);
+        return service.updateThreadSync(this.getEndpoint(), this.getServiceVersion().getVersion(), threadId,
+            contentType, accept, updateThreadRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -1254,10 +1334,11 @@ public final class ThreadsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteThreadWithResponseAsync(String threadId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> deleteThreadInternalWithResponseAsync(String threadId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteThread(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), threadId, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.deleteThreadInternal(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), threadId, accept, requestOptions, context));
     }
 
     /**
@@ -1283,10 +1364,10 @@ public final class ThreadsImpl {
      * @return the status of a thread deletion operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteThreadWithResponse(String threadId, RequestOptions requestOptions) {
+    public Response<BinaryData> deleteThreadInternalWithResponse(String threadId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteThreadSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            threadId, accept, requestOptions, Context.NONE);
+        return service.deleteThreadInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), threadId,
+            accept, requestOptions, Context.NONE);
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

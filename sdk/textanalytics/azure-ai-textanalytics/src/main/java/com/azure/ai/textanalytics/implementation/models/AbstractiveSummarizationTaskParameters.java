@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,16 +19,19 @@ public final class AbstractiveSummarizationTaskParameters extends AbstractiveSum
     /*
      * The modelVersion property.
      */
+    @Generated
     private String modelVersion;
 
     /*
      * The loggingOptOut property.
      */
+    @Generated
     private Boolean loggingOptOut;
 
     /**
      * Creates an instance of AbstractiveSummarizationTaskParameters class.
      */
+    @Generated
     public AbstractiveSummarizationTaskParameters() {
     }
 
@@ -36,6 +40,7 @@ public final class AbstractiveSummarizationTaskParameters extends AbstractiveSum
      * 
      * @return the modelVersion value.
      */
+    @Generated
     public String getModelVersion() {
         return this.modelVersion;
     }
@@ -46,6 +51,7 @@ public final class AbstractiveSummarizationTaskParameters extends AbstractiveSum
      * @param modelVersion the modelVersion value to set.
      * @return the AbstractiveSummarizationTaskParameters object itself.
      */
+    @Generated
     public AbstractiveSummarizationTaskParameters setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
         return this;
@@ -56,6 +62,7 @@ public final class AbstractiveSummarizationTaskParameters extends AbstractiveSum
      * 
      * @return the loggingOptOut value.
      */
+    @Generated
     public Boolean isLoggingOptOut() {
         return this.loggingOptOut;
     }
@@ -66,6 +73,7 @@ public final class AbstractiveSummarizationTaskParameters extends AbstractiveSum
      * @param loggingOptOut the loggingOptOut value to set.
      * @return the AbstractiveSummarizationTaskParameters object itself.
      */
+    @Generated
     public AbstractiveSummarizationTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
         this.loggingOptOut = loggingOptOut;
         return this;
@@ -74,6 +82,7 @@ public final class AbstractiveSummarizationTaskParameters extends AbstractiveSum
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AbstractiveSummarizationTaskParameters setSentenceCount(Integer sentenceCount) {
         super.setSentenceCount(sentenceCount);
@@ -83,6 +92,7 @@ public final class AbstractiveSummarizationTaskParameters extends AbstractiveSum
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AbstractiveSummarizationTaskParameters setStringIndexType(StringIndexType stringIndexType) {
         super.setStringIndexType(stringIndexType);
@@ -92,6 +102,7 @@ public final class AbstractiveSummarizationTaskParameters extends AbstractiveSum
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -111,6 +122,7 @@ public final class AbstractiveSummarizationTaskParameters extends AbstractiveSum
      * it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AbstractiveSummarizationTaskParameters.
      */
+    @Generated
     public static AbstractiveSummarizationTaskParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AbstractiveSummarizationTaskParameters deserializedAbstractiveSummarizationTaskParameters

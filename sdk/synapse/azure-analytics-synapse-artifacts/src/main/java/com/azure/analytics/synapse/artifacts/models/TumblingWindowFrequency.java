@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class TumblingWindowFrequency extends ExpandableStringEnum<Tumbling
     /**
      * Static value Minute for TumblingWindowFrequency.
      */
+    @Generated
     public static final TumblingWindowFrequency MINUTE = fromString("Minute");
 
     /**
      * Static value Hour for TumblingWindowFrequency.
      */
+    @Generated
     public static final TumblingWindowFrequency HOUR = fromString("Hour");
 
     /**
      * Static value Month for TumblingWindowFrequency.
      */
+    @Generated
     public static final TumblingWindowFrequency MONTH = fromString("Month");
 
     /**
@@ -31,6 +35,7 @@ public final class TumblingWindowFrequency extends ExpandableStringEnum<Tumbling
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public TumblingWindowFrequency() {
     }
@@ -41,6 +46,7 @@ public final class TumblingWindowFrequency extends ExpandableStringEnum<Tumbling
      * @param name a name to look for.
      * @return the corresponding TumblingWindowFrequency.
      */
+    @Generated
     public static TumblingWindowFrequency fromString(String name) {
         return fromString(name, TumblingWindowFrequency.class);
     }
@@ -50,6 +56,7 @@ public final class TumblingWindowFrequency extends ExpandableStringEnum<Tumbling
      * 
      * @return known TumblingWindowFrequency values.
      */
+    @Generated
     public static Collection<TumblingWindowFrequency> values() {
         return values(TumblingWindowFrequency.class);
     }

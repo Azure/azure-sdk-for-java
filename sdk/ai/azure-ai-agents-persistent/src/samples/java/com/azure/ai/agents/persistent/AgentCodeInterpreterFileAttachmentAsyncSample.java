@@ -2,14 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.ai.agents.persistent;
 
-import com.azure.ai.agents.persistent.implementation.models.FileDetails;
-import com.azure.ai.agents.persistent.implementation.models.UploadFileRequest;
 import com.azure.ai.agents.persistent.models.CodeInterpreterToolDefinition;
 import com.azure.ai.agents.persistent.models.CreateAgentOptions;
 import com.azure.ai.agents.persistent.models.CreateRunOptions;
+import com.azure.ai.agents.persistent.models.FileDetails;
 import com.azure.ai.agents.persistent.models.FilePurpose;
 import com.azure.ai.agents.persistent.models.MessageAttachment;
 import com.azure.ai.agents.persistent.models.MessageRole;
+import com.azure.ai.agents.persistent.models.UploadFileRequest;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -34,15 +34,16 @@ public class AgentCodeInterpreterFileAttachmentAsyncSample {
             Path htmlFile = getFile("sample.html");
 
             // Initialize async clients
-            PersistentAgentsAdministrationClientBuilder clientBuilder = new PersistentAgentsAdministrationClientBuilder()
+            PersistentAgentsClientBuilder clientBuilder = new PersistentAgentsClientBuilder()
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
                 .credential(new DefaultAzureCredentialBuilder().build());
-            
-            PersistentAgentsAdministrationAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
-            ThreadsAsyncClient threadsAsyncClient = clientBuilder.buildThreadsAsyncClient();
-            MessagesAsyncClient messagesAsyncClient = clientBuilder.buildMessagesAsyncClient();
-            RunsAsyncClient runsAsyncClient = clientBuilder.buildRunsAsyncClient();
-            FilesAsyncClient filesAsyncClient = clientBuilder.buildFilesAsyncClient();
+
+            PersistentAgentsAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
+            PersistentAgentsAdministrationAsyncClient administrationAsyncClient = agentsAsyncClient.getPersistentAgentsAdministrationAsyncClient();
+            ThreadsAsyncClient threadsAsyncClient = agentsAsyncClient.getThreadsAsyncClient();
+            MessagesAsyncClient messagesAsyncClient = agentsAsyncClient.getMessagesAsyncClient();
+            RunsAsyncClient runsAsyncClient = agentsAsyncClient.getRunsAsyncClient();
+            FilesAsyncClient filesAsyncClient = agentsAsyncClient.getFilesAsyncClient();
 
             // Track resources for cleanup
             AtomicReference<String> agentId = new AtomicReference<>();
@@ -65,7 +66,7 @@ public class AgentCodeInterpreterFileAttachmentAsyncSample {
 
             // Build reactive chain
             Mono.zip(
-                agentsAsyncClient.createAgent(createAgentOptions),
+                administrationAsyncClient.createAgent(createAgentOptions),
                 filesAsyncClient.uploadFile(uploadFileRequest)
             ).flatMap(tuple -> {
                 // Store resources for cleanup
@@ -116,7 +117,7 @@ public class AgentCodeInterpreterFileAttachmentAsyncSample {
             .doFinally(signalType -> {
                 // Clean up resources
                 System.out.println("Cleaning up resources...");
-                cleanUpResources(threadId, threadsAsyncClient, agentId, agentsAsyncClient);
+                cleanUpResources(threadId, threadsAsyncClient, agentId, administrationAsyncClient);
                 
                 // Delete the file if it was created
                 if (fileId.get() != null) {

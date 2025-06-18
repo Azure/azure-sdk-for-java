@@ -5,6 +5,7 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,26 +20,31 @@ public final class TagWriteableProperties implements JsonSerializable<TagWriteab
     /*
      * Delete enabled
      */
+    @Generated
     private Boolean deleteEnabled;
 
     /*
      * Write enabled
      */
+    @Generated
     private Boolean writeEnabled;
 
     /*
      * List enabled
      */
+    @Generated
     private Boolean listEnabled;
 
     /*
      * Read enabled
      */
+    @Generated
     private Boolean readEnabled;
 
     /**
      * Creates an instance of TagWriteableProperties class.
      */
+    @Generated
     public TagWriteableProperties() {
     }
 
@@ -47,6 +53,7 @@ public final class TagWriteableProperties implements JsonSerializable<TagWriteab
      * 
      * @return the deleteEnabled value.
      */
+    @Generated
     public Boolean isDeleteEnabled() {
         return this.deleteEnabled;
     }
@@ -57,6 +64,7 @@ public final class TagWriteableProperties implements JsonSerializable<TagWriteab
      * @param deleteEnabled the deleteEnabled value to set.
      * @return the TagWriteableProperties object itself.
      */
+    @Generated
     public TagWriteableProperties setDeleteEnabled(Boolean deleteEnabled) {
         this.deleteEnabled = deleteEnabled;
         return this;
@@ -67,6 +75,7 @@ public final class TagWriteableProperties implements JsonSerializable<TagWriteab
      * 
      * @return the writeEnabled value.
      */
+    @Generated
     public Boolean isWriteEnabled() {
         return this.writeEnabled;
     }
@@ -77,6 +86,7 @@ public final class TagWriteableProperties implements JsonSerializable<TagWriteab
      * @param writeEnabled the writeEnabled value to set.
      * @return the TagWriteableProperties object itself.
      */
+    @Generated
     public TagWriteableProperties setWriteEnabled(Boolean writeEnabled) {
         this.writeEnabled = writeEnabled;
         return this;
@@ -87,6 +97,7 @@ public final class TagWriteableProperties implements JsonSerializable<TagWriteab
      * 
      * @return the listEnabled value.
      */
+    @Generated
     public Boolean isListEnabled() {
         return this.listEnabled;
     }
@@ -97,6 +108,7 @@ public final class TagWriteableProperties implements JsonSerializable<TagWriteab
      * @param listEnabled the listEnabled value to set.
      * @return the TagWriteableProperties object itself.
      */
+    @Generated
     public TagWriteableProperties setListEnabled(Boolean listEnabled) {
         this.listEnabled = listEnabled;
         return this;
@@ -107,6 +119,7 @@ public final class TagWriteableProperties implements JsonSerializable<TagWriteab
      * 
      * @return the readEnabled value.
      */
+    @Generated
     public Boolean isReadEnabled() {
         return this.readEnabled;
     }
@@ -117,6 +130,7 @@ public final class TagWriteableProperties implements JsonSerializable<TagWriteab
      * @param readEnabled the readEnabled value to set.
      * @return the TagWriteableProperties object itself.
      */
+    @Generated
     public TagWriteableProperties setReadEnabled(Boolean readEnabled) {
         this.readEnabled = readEnabled;
         return this;
@@ -125,6 +139,7 @@ public final class TagWriteableProperties implements JsonSerializable<TagWriteab
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -143,6 +158,7 @@ public final class TagWriteableProperties implements JsonSerializable<TagWriteab
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the TagWriteableProperties.
      */
+    @Generated
     public static TagWriteableProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TagWriteableProperties deserializedTagWriteableProperties = new TagWriteableProperties();

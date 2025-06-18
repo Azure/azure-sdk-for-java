@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,21 +22,25 @@ public class AppendVariableActivity extends ControlActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "AppendVariable";
 
     /*
      * Name of the variable whose value needs to be appended to.
      */
+    @Generated
     private String variableName;
 
     /*
      * Value to be appended. Could be a static value or Expression
      */
+    @Generated
     private Object value;
 
     /**
      * Creates an instance of AppendVariableActivity class.
      */
+    @Generated
     public AppendVariableActivity() {
     }
 
@@ -44,6 +49,7 @@ public class AppendVariableActivity extends ControlActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -54,6 +60,7 @@ public class AppendVariableActivity extends ControlActivity {
      * 
      * @return the variableName value.
      */
+    @Generated
     public String getVariableName() {
         return this.variableName;
     }
@@ -64,6 +71,7 @@ public class AppendVariableActivity extends ControlActivity {
      * @param variableName the variableName value to set.
      * @return the AppendVariableActivity object itself.
      */
+    @Generated
     public AppendVariableActivity setVariableName(String variableName) {
         this.variableName = variableName;
         return this;
@@ -74,6 +82,7 @@ public class AppendVariableActivity extends ControlActivity {
      * 
      * @return the value value.
      */
+    @Generated
     public Object getValue() {
         return this.value;
     }
@@ -84,6 +93,7 @@ public class AppendVariableActivity extends ControlActivity {
      * @param value the value value to set.
      * @return the AppendVariableActivity object itself.
      */
+    @Generated
     public AppendVariableActivity setValue(Object value) {
         this.value = value;
         return this;
@@ -92,6 +102,7 @@ public class AppendVariableActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AppendVariableActivity setName(String name) {
         super.setName(name);
@@ -101,6 +112,7 @@ public class AppendVariableActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AppendVariableActivity setDescription(String description) {
         super.setDescription(description);
@@ -110,6 +122,7 @@ public class AppendVariableActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AppendVariableActivity setState(ActivityState state) {
         super.setState(state);
@@ -119,6 +132,7 @@ public class AppendVariableActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AppendVariableActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -128,6 +142,7 @@ public class AppendVariableActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AppendVariableActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -137,6 +152,7 @@ public class AppendVariableActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AppendVariableActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -146,6 +162,7 @@ public class AppendVariableActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -161,7 +178,9 @@ public class AppendVariableActivity extends ControlActivity {
         if (variableName != null || value != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeStringField("variableName", this.variableName);
-            jsonWriter.writeUntypedField("value", this.value);
+            if (this.value != null) {
+                jsonWriter.writeUntypedField("value", this.value);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -181,6 +200,7 @@ public class AppendVariableActivity extends ControlActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AppendVariableActivity.
      */
+    @Generated
     public static AppendVariableActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AppendVariableActivity deserializedAppendVariableActivity = new AppendVariableActivity();

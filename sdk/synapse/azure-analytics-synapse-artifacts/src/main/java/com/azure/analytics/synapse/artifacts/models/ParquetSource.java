@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,27 +21,32 @@ public final class ParquetSource extends CopySource {
     /*
      * Copy source type.
      */
+    @Generated
     private String type = "ParquetSource";
 
     /*
      * Parquet store settings.
      */
+    @Generated
     private StoreReadSettings storeSettings;
 
     /*
      * Parquet format settings.
      */
+    @Generated
     private ParquetReadSettings formatSettings;
 
     /*
      * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
      * Expression with resultType array of objects).
      */
+    @Generated
     private Object additionalColumns;
 
     /**
      * Creates an instance of ParquetSource class.
      */
+    @Generated
     public ParquetSource() {
     }
 
@@ -49,6 +55,7 @@ public final class ParquetSource extends CopySource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -59,6 +66,7 @@ public final class ParquetSource extends CopySource {
      * 
      * @return the storeSettings value.
      */
+    @Generated
     public StoreReadSettings getStoreSettings() {
         return this.storeSettings;
     }
@@ -69,6 +77,7 @@ public final class ParquetSource extends CopySource {
      * @param storeSettings the storeSettings value to set.
      * @return the ParquetSource object itself.
      */
+    @Generated
     public ParquetSource setStoreSettings(StoreReadSettings storeSettings) {
         this.storeSettings = storeSettings;
         return this;
@@ -79,6 +88,7 @@ public final class ParquetSource extends CopySource {
      * 
      * @return the formatSettings value.
      */
+    @Generated
     public ParquetReadSettings getFormatSettings() {
         return this.formatSettings;
     }
@@ -89,6 +99,7 @@ public final class ParquetSource extends CopySource {
      * @param formatSettings the formatSettings value to set.
      * @return the ParquetSource object itself.
      */
+    @Generated
     public ParquetSource setFormatSettings(ParquetReadSettings formatSettings) {
         this.formatSettings = formatSettings;
         return this;
@@ -100,6 +111,7 @@ public final class ParquetSource extends CopySource {
      * 
      * @return the additionalColumns value.
      */
+    @Generated
     public Object getAdditionalColumns() {
         return this.additionalColumns;
     }
@@ -111,6 +123,7 @@ public final class ParquetSource extends CopySource {
      * @param additionalColumns the additionalColumns value to set.
      * @return the ParquetSource object itself.
      */
+    @Generated
     public ParquetSource setAdditionalColumns(Object additionalColumns) {
         this.additionalColumns = additionalColumns;
         return this;
@@ -119,6 +132,7 @@ public final class ParquetSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ParquetSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
@@ -128,6 +142,7 @@ public final class ParquetSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ParquetSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
@@ -137,6 +152,7 @@ public final class ParquetSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ParquetSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -146,16 +162,25 @@ public final class ParquetSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getSourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        }
+        if (getSourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeJsonField("storeSettings", this.storeSettings);
         jsonWriter.writeJsonField("formatSettings", this.formatSettings);
-        jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        if (this.additionalColumns != null) {
+            jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -172,6 +197,7 @@ public final class ParquetSource extends CopySource {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ParquetSource.
      */
+    @Generated
     public static ParquetSource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ParquetSource deserializedParquetSource = new ParquetSource();

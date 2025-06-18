@@ -100,6 +100,19 @@ public final class ToolResources implements JsonSerializable<ToolResources> {
     }
 
     /**
+     * Set the azureAISearch property: Resources to be used by the `azure_ai_search` tool consisting of index IDs and
+     * names.
+     *
+     * @param azureAISearch the azureAISearch value to set.
+     * @return the ToolResources object itself.
+     */
+    @Generated
+    public ToolResources setAzureAISearch(AzureAISearchToolResource azureAISearch) {
+        this.azureAISearch = azureAISearch;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -139,18 +152,5 @@ public final class ToolResources implements JsonSerializable<ToolResources> {
             }
             return deserializedToolResources;
         });
-    }
-
-    /**
-     * Set the azureAISearch property: Resources to be used by the `azure_ai_search` tool consisting of index IDs and
-     * names.
-     *
-     * @param azureAISearch the azureAISearch value to set.
-     * @return the ToolResources object itself.
-     */
-    @Generated
-    public ToolResources setAzureAISearch(AzureAISearchToolResource azureAISearch) {
-        this.azureAISearch = azureAISearch;
-        return this;
     }
 }

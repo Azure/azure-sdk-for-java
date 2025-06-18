@@ -77,7 +77,7 @@ public final class CallConnectionsImpl {
      * the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AzureCommunicationCa")
+    @ServiceInterface(name = "AzureCommunicationCallAutomationServiceCallConnections")
     public interface CallConnectionsService {
         @Get("/calling/callConnections/{callConnectionId}")
         @ExpectedResponses({ 200 })

@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,11 +20,13 @@ public final class HealthcareResult extends PreBuiltResult {
     /*
      * The documents property.
      */
+    @Generated
     private List<HealthcareResultDocumentsItem> documents;
 
     /**
      * Creates an instance of HealthcareResult class.
      */
+    @Generated
     public HealthcareResult() {
     }
 
@@ -32,6 +35,7 @@ public final class HealthcareResult extends PreBuiltResult {
      * 
      * @return the documents value.
      */
+    @Generated
     public List<HealthcareResultDocumentsItem> getDocuments() {
         return this.documents;
     }
@@ -42,6 +46,7 @@ public final class HealthcareResult extends PreBuiltResult {
      * @param documents the documents value to set.
      * @return the HealthcareResult object itself.
      */
+    @Generated
     public HealthcareResult setDocuments(List<HealthcareResultDocumentsItem> documents) {
         this.documents = documents;
         return this;
@@ -50,6 +55,7 @@ public final class HealthcareResult extends PreBuiltResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HealthcareResult setErrors(List<DocumentError> errors) {
         super.setErrors(errors);
@@ -59,6 +65,7 @@ public final class HealthcareResult extends PreBuiltResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HealthcareResult setStatistics(RequestStatistics statistics) {
         super.setStatistics(statistics);
@@ -68,6 +75,7 @@ public final class HealthcareResult extends PreBuiltResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HealthcareResult setModelVersion(String modelVersion) {
         super.setModelVersion(modelVersion);
@@ -77,6 +85,7 @@ public final class HealthcareResult extends PreBuiltResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -96,6 +105,7 @@ public final class HealthcareResult extends PreBuiltResult {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the HealthcareResult.
      */
+    @Generated
     public static HealthcareResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HealthcareResult deserializedHealthcareResult = new HealthcareResult();

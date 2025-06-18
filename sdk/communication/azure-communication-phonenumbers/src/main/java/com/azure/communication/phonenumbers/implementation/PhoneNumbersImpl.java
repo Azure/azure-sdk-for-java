@@ -92,7 +92,7 @@ public final class PhoneNumbersImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PhoneNumberAdminClie")
+    @ServiceInterface(name = "PhoneNumberAdminClientPhoneNumbers")
     public interface PhoneNumbersService {
         @Get("/availablePhoneNumbers/countries/{countryCode}/areaCodes")
         @ExpectedResponses({ 200 })
