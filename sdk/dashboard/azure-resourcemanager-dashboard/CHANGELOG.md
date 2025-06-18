@@ -1,14 +1,187 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (2025-06-18)
 
-### Features Added
+- Azure Resource Manager Dashboard client library for Java. This package contains Microsoft Azure SDK for Dashboard Management SDK. The Microsoft.Dashboard Rest API spec. Package api-version 2024-11-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.GrafanasUpdateResponse` was removed
 
-### Other Changes
+#### `models.GrafanasUpdateHeaders` was removed
+
+#### `models.ManagedPrivateEndpointModelListResponse` was removed
+
+#### `models.ManagedGrafanaListResponse` was removed
+
+#### `models.ManagedPrivateEndpoints` was removed
+
+#### `models.StartTlsPolicy` was removed
+
+#### `models.PrivateEndpointConnectionListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.PrivateLinkResourceListResult` was removed
+
+#### `models.Grafanas` was removed
+
+#### `models.DeterministicOutboundIp` was removed
+
+#### `models.Smtp` was modified
+
+* `startTlsPolicy()` was removed
+* `withStartTlsPolicy(models.StartTlsPolicy)` was removed
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+
+#### `models.SaasSubscriptionDetails` was modified
+
+* `withTerm(models.SubscriptionTerm)` was removed
+* `withPlanId(java.lang.String)` was removed
+* `withPublisherId(java.lang.String)` was removed
+* `withOfferId(java.lang.String)` was removed
+
+#### `models.MarketplaceTrialQuota` was modified
+
+* `withTrialStartAt(java.time.OffsetDateTime)` was removed
+* `withTrialEndAt(java.time.OffsetDateTime)` was removed
+* `withGrafanaResourceId(java.lang.String)` was removed
+* `withAvailablePromotion(models.AvailablePromotion)` was removed
+
+#### `models.ManagedPrivateEndpointModel` was modified
+
+* `privateLinkServicePrivateIp()` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+
+#### `DashboardManager` was modified
+
+* `managedPrivateEndpoints()` was removed
+* `grafanas()` was removed
+
+#### `models.ManagedGrafanaProperties` was modified
+
+* `deterministicOutboundIp()` was removed
+* `withDeterministicOutboundIp(models.DeterministicOutboundIp)` was removed
+
+#### `models.SubscriptionTerm` was modified
+
+* `withEndDate(java.time.OffsetDateTime)` was removed
+* `withStartDate(java.time.OffsetDateTime)` was removed
+* `withTermUnit(java.lang.String)` was removed
+
+#### `models.ManagedGrafanaPropertiesUpdateParameters` was modified
+
+* `deterministicOutboundIp()` was removed
+* `withDeterministicOutboundIp(models.DeterministicOutboundIp)` was removed
+
+### Features Added
+
+* `models.UnifiedAlertingScreenshots` was added
+
+* `implementation.models.IntegrationFabricListResponse` was added
+
+* `models.DeterministicOutboundIP` was added
+
+* `models.ManagedDashboards` was added
+
+* `models.ManagedGrafanas` was added
+
+* `implementation.models.ManagedGrafanaListResponse` was added
+
+* `implementation.models.OperationListResult` was added
+
+* `models.IntegrationFabricProperties` was added
+
+* `implementation.models.ManagedDashboardListResponse` was added
+
+* `implementation.models.ManagedPrivateEndpointModelListResponse` was added
+
+* `models.StartTLSPolicy` was added
+
+* `models.ManagedDashboard$DefinitionStages` was added
+
+* `models.IntegrationFabricPropertiesUpdateParameters` was added
+
+* `models.ManagedPrivateEndpointModels` was added
+
+* `models.IntegrationFabric$DefinitionStages` was added
+
+* `models.Security` was added
+
+* `models.IntegrationFabric$Update` was added
+
+* `models.Users` was added
+
+* `models.ManagedDashboard$UpdateStages` was added
+
+* `models.IntegrationFabric$Definition` was added
+
+* `models.ManagedDashboard` was added
+
+* `models.ManagedDashboard$Definition` was added
+
+* `models.IntegrationFabricUpdateParameters` was added
+
+* `implementation.models.PrivateEndpointConnectionListResult` was added
+
+* `models.IntegrationFabrics` was added
+
+* `models.ManagedDashboardUpdateParameters` was added
+
+* `implementation.models.PrivateLinkResourceListResult` was added
+
+* `models.IntegrationFabric` was added
+
+* `models.Snapshots` was added
+
+* `models.IntegrationFabric$UpdateStages` was added
+
+* `models.ManagedDashboard$Update` was added
+
+#### `models.Smtp` was modified
+
+* `withStartTLSPolicy(models.StartTLSPolicy)` was added
+* `startTLSPolicy()` was added
+
+#### `models.ManagedPrivateEndpointModel` was modified
+
+* `privateLinkServicePrivateIP()` was added
+
+#### `DashboardManager` was modified
+
+* `managedDashboards()` was added
+* `managedGrafanas()` was added
+* `managedPrivateEndpointModels()` was added
+* `integrationFabrics()` was added
+
+#### `models.GrafanaConfigurations` was modified
+
+* `snapshots()` was added
+* `withUsers(models.Users)` was added
+* `unifiedAlertingScreenshots()` was added
+* `security()` was added
+* `users()` was added
+* `withUnifiedAlertingScreenshots(models.UnifiedAlertingScreenshots)` was added
+* `withSecurity(models.Security)` was added
+* `withSnapshots(models.Snapshots)` was added
+
+#### `models.ManagedGrafanaProperties` was modified
+
+* `withDeterministicOutboundIP(models.DeterministicOutboundIP)` was added
+* `deterministicOutboundIP()` was added
+
+#### `models.ManagedGrafanaPropertiesUpdateParameters` was modified
+
+* `withDeterministicOutboundIP(models.DeterministicOutboundIP)` was added
+* `deterministicOutboundIP()` was added
 
 ## 1.1.0 (2024-12-13)
 
