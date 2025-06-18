@@ -97,7 +97,7 @@ public final class TestContextManagerParameterResolver implements ParameterResol
             // There was only a class iteration, return it.
             return classIteration;
         } else {
-            // There was both a class and method iteration, return their multiplcation.
+            // There was both a class and method iteration, return their multiplication.
             return methodIteration * classIteration;
         }
     }
