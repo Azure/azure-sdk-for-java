@@ -134,7 +134,7 @@ public class NettyHttpClientBuilder {
     private Duration readTimeout;
     private Duration responseTimeout;
     private Duration writeTimeout;
-    private HttpProtocolVersion maximumHttpVersion = HttpProtocolVersion.HTTP_2;
+//    private HttpProtocolVersion maximumHttpVersion = HttpProtocolVersion.HTTP_2;
 
     /**
      * Creates a new instance of {@link NettyHttpClientBuilder}.
@@ -261,26 +261,26 @@ public class NettyHttpClientBuilder {
         return this;
     }
 
-    /**
-     * Sets the maximum {@link HttpProtocolVersion HTTP protocol version} that the HTTP client will support.
-     * <p>
-     * By default, the maximum HTTP protocol version is set to {@link HttpProtocolVersion#HTTP_2 HTTP_2}.
-     * <p>
-     * If {@code httpVersion} is null, it will reset the maximum HTTP protocol version to
-     * {@link HttpProtocolVersion#HTTP_2 HTTP_2}.
-     *
-     * @param httpVersion The maximum HTTP protocol version that the HTTP client will support.
-     * @return The updated {@link JdkHttpClientBuilder} object.
-     */
-    public NettyHttpClientBuilder maximumHttpVersion(HttpProtocolVersion httpVersion) {
-        if (httpVersion != null) {
-            this.maximumHttpVersion = httpVersion;
-        } else {
-            this.maximumHttpVersion = HttpProtocolVersion.HTTP_2;
-        }
-
-        return this;
-    }
+//    /**
+//     * Sets the maximum {@link HttpProtocolVersion HTTP protocol version} that the HTTP client will support.
+//     * <p>
+//     * By default, the maximum HTTP protocol version is set to {@link HttpProtocolVersion#HTTP_2 HTTP_2}.
+//     * <p>
+//     * If {@code httpVersion} is null, it will reset the maximum HTTP protocol version to
+//     * {@link HttpProtocolVersion#HTTP_2 HTTP_2}.
+//     *
+//     * @param httpVersion The maximum HTTP protocol version that the HTTP client will support.
+//     * @return The updated {@link JdkHttpClientBuilder} object.
+//     */
+//    public NettyHttpClientBuilder maximumHttpVersion(HttpProtocolVersion httpVersion) {
+//        if (httpVersion != null) {
+//            this.maximumHttpVersion = httpVersion;
+//        } else {
+//            this.maximumHttpVersion = HttpProtocolVersion.HTTP_2;
+//        }
+//
+//        return this;
+//    }
 
     /**
      * Builds the NettyHttpClient.
@@ -313,7 +313,7 @@ public class NettyHttpClientBuilder {
         ProxyOptions buildProxyOptions
             = (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration, true) : proxyOptions;
 
-        return new NettyHttpClient(bootstrap, sslContextModifier, maximumHttpVersion,
+        return new NettyHttpClient(bootstrap, sslContextModifier, HttpProtocolVersion.HTTP_1_1,
             new ChannelInitializationProxyHandler(buildProxyOptions), getTimeoutMillis(readTimeout),
             getTimeoutMillis(responseTimeout), getTimeoutMillis(writeTimeout));
     }
