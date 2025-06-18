@@ -39,7 +39,7 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
     private final AzureCredentialResolver<TokenCredential> externalTokenCredentialResolver;
 
     private AzureCredentialResolver<TokenCredential> tokenCredentialResolver;
-    private Function<TokenCredential, Mono<AzureOAuthBearerToken>> resolveToken;
+    private Function<TokenCredential, AzureOAuthBearerToken> resolveToken;
 
     public KafkaOAuth2AuthenticateCallbackHandler() {
         this(null, null);
@@ -56,7 +56,7 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
             AzureKafkaPropertiesUtils.copyJaasPropertyToAzureProperties(((Password) configs.get(SASL_JAAS_CONFIG)).value(), properties);
         }
         TokenRequestContext request = buildTokenRequestContext(configs);
-        this.resolveToken = tokenCredential -> tokenCredential.getToken(request).map(AzureOAuthBearerToken::new);
+        this.resolveToken = tokenCredential -> new AzureOAuthBearerToken(tokenCredential.getTokenSync(request));
         this.tokenCredentialResolver = new InternalCredentialResolver(externalTokenCredentialResolver, configs);
     }
 
@@ -92,13 +92,8 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
     @Override
     public void handle(Callback[] callbacks) throws UnsupportedCallbackException {
         for (Callback callback : callbacks) {
-            if (callback instanceof OAuthBearerTokenCallback) {
-                OAuthBearerTokenCallback oauthCallback = (OAuthBearerTokenCallback) callback;
-                this.resolveToken
-                    .apply(tokenCredentialResolver.resolve(properties))
-                    .doOnNext(oauthCallback::token)
-                    .doOnError(throwable -> oauthCallback.error("invalid_grant", throwable.getMessage(), null))
-                    .block(ACCESS_TOKEN_REQUEST_BLOCK_TIME);
+            if (callback instanceof OAuthBearerTokenCallback oauthBearerTokenCallback) {
+                oauthBearerTokenCallback.token(this.resolveToken.apply(tokenCredentialResolver.resolve(properties)));
             } else {
                 throw new UnsupportedCallbackException(callback);
             }
