@@ -1,22 +1,28 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 import com.azure.autorest.customization.ClassCustomization;
-import com.azure.autorest.customization.ConstructorCustomization;
 import com.azure.autorest.customization.Customization;
+import com.azure.autorest.customization.Editor;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier;
-import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.Parameter;
-import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.nodeTypes.NodeWithJavadoc;
+import com.github.javaparser.ast.nodeTypes.NodeWithModifiers;
+import com.github.javaparser.javadoc.Javadoc;
 import org.slf4j.Logger;
-import java.util.Arrays;
+
+import java.util.List;
+
+import static com.github.javaparser.javadoc.description.JavadocDescription.parseText;
 
 /**
  * This class contains the customization code to customize the AutoRest generated code for OpenAI.
  */
 public class AppConfigCustomizations extends Customization {
+    private static final String ROOT_FILE_PATH = "src/main/java/com/azure/v2/data/appconfiguration/";
 
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
@@ -24,7 +30,7 @@ public class AppConfigCustomizations extends Customization {
         PackageCustomization appConfigPackages = customization.getPackage("com.azure.v2.data.appconfiguration");
         hideClient(appConfigPackages);
         hideModels(models);
-        renameServiceVersionClassName(appConfigPackages);
+        renameServiceVersionClassName(customization.getRawEditor());
 
 //        customizeKeyValueFilter(models.getClass("ConfigurationSettingsFilter"));
 //        customizeKeyValueFields(models.getClass("SettingFields"));
@@ -33,101 +39,98 @@ public class AppConfigCustomizations extends Customization {
 
     private void hideModels(PackageCustomization models) {
         // TODO: move both 'Key' and 'KeyValue' class to implementation package
-        models
-            .getClass("Key")
-            .setModifier(0);
-        models
-            .getClass("KeyValue")
-            .setModifier(0);
+        makeClassPackagePrivate(models, "Key");
+        makeClassPackagePrivate(models, "KeyValue");
     }
 
     private void hideClient(PackageCustomization appConfigPackages) {
-        // TODO: move both 'AzureAppConfigurationClient' and 'AzureAppConfigurationClientBuilder' class to implementation package
-        appConfigPackages
-            .getClass("AzureAppConfigurationClient")
-            .setModifier(0);
-        appConfigPackages
-            .getClass("AzureAppConfigurationClientBuilder")
-            .setModifier(0);
+        // TODO: move both 'AzureAppConfigurationClient' and 'AzureAppConfigurationClientBuilder' class to
+        //  implementation package
+        makeClassPackagePrivate(appConfigPackages, "AzureAppConfigurationClient");
+        makeClassPackagePrivate(appConfigPackages, "AzureAppConfigurationClientBuilder");
     }
 
-    private void renameServiceVersionClassName(PackageCustomization appConfigPackages) {
-        appConfigPackages
-            .getClass("AzureAppConfigurationServiceVersion")
-            .rename("ConfigurationServiceVersion");
+    private static void makeClassPackagePrivate(PackageCustomization customization, String className) {
+        customization.getClass(className).customizeAst(ast -> ast.getClassByName(className)
+            .ifPresent(NodeWithModifiers::setModifiers));
+    }
+
+    private void renameServiceVersionClassName(Editor editor) {
+        String serviceVersion = editor.getFileContent(ROOT_FILE_PATH + "AzureAppConfigurationServiceVersion.java")
+            .replace("AzureAppConfigurationServiceVersion", "ConfigurationServiceVersion");
+
+        editor.addFile(ROOT_FILE_PATH + "ConfigurationServiceVersion.java", serviceVersion);
+        editor.removeFile(ROOT_FILE_PATH + "AzureAppConfigurationServiceVersion.java");
+
+        for (String path : List.of("AzureAppConfigurationClientBuilder", "implementation/AzureAppConfigurationClientImpl")) {
+            String fileName = ROOT_FILE_PATH + path + ".java";
+            String fileContent = editor.getFileContent(fileName);
+            fileContent = fileContent.replace("AzureAppConfigurationServiceVersion", "ConfigurationServiceVersion");
+            editor.replaceFile(fileName, fileContent);
+        }
     }
 
     // TODO: LRO is not support yet in codegen-v2, wait for codegen-v2 to support LRO
     // KeyValueFilter is used in LRO and no other place use it, so it is not generate setters.
-    private void customizeKeyValueFilter(ClassCustomization classCustomization) {
-        // Edit javadoc of `setLabel` method
-        classCustomization.getMethod("setLabel")
-            .getJavadoc()
-            .setDescription("Set the label property: Filters {@link ConfigurationSetting} by their label field.");
-        // Edit javadoc of `getKey` method
-        classCustomization.getMethod("getKey")
-            .getJavadoc()
-            .setDescription("Get the key property: Filters {@link ConfigurationSetting} by their key field.");
-        // Edit javadoc of `getLabel` method
-        classCustomization.getMethod("getLabel")
-            .getJavadoc()
-            .setDescription("Get the label property: Filters {@link ConfigurationSetting} by their label field.");
+    private void customizeKeyValueFilter(ClassCustomization customization) {
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+            // Edit javadoc of `setLabel` method
+            clazz.getMethodsByName("setLabel").forEach(method -> replaceDescription(method,
+                "Set the label property: Filters {@link ConfigurationSetting} by their label field."));
+            // Edit javadoc of `getKey` method
+            clazz.getMethodsByName("getKey").forEach(method -> replaceDescription(method,
+                "Get the key property: Filters {@link ConfigurationSetting} by their key field."));
+            // Edit javadoc of `getLabel` method
+            clazz.getMethodsByName("getLabel").forEach(method -> replaceDescription(method,
+                "Get the label property: Filters {@link ConfigurationSetting} by their label field."));
+        }));
     }
 
-    private void customizeSnapshot(ClassCustomization classCustomization) {
-        classCustomization.customizeAst(ast -> {
-            ast.addImport("java.time.Duration");
+    private static void replaceDescription(NodeWithJavadoc<?> node, String newDescription) {
+        node.getJavadoc().ifPresent(javadoc -> {
+            javadoc.getDescription().getElements().clear();
+            javadoc.getDescription().getElements().addAll(parseText(newDescription).getElements());
+            node.setJavadocComment(javadoc);
+        });
+    }
 
-            ast.getClassByName(classCustomization.getClassName()).ifPresent(clazz -> {
+    private void customizeSnapshot(ClassCustomization customization) {
+        customization.customizeAst(ast -> ast.addImport("java.time.Duration")
+            .getClassByName(customization.getClassName()).ifPresent(clazz -> {
                 // Transfer Long to Duration internally
-                clazz.getMethodsByName("getRetentionPeriod").get(0)
-                    .setType("Duration")
-                    .setBody(StaticJavaParser.parseBlock("{ return this.retentionPeriod == null ? null : Duration.ofSeconds(this.retentionPeriod); }"));
+                clazz.getMethodsByName("getRetentionPeriod").forEach(method -> method.setType("Duration")
+                    .setBody(StaticJavaParser.parseBlock("{ return this.retentionPeriod == null ? null : Duration.ofSeconds(this.retentionPeriod); }")));
 
-                clazz.getMethodsByName("setRetentionPeriod").get(0)
+                clazz.getMethodsByName("setRetentionPeriod").forEach(method -> method
                     .setParameter(0, new Parameter().setType("Duration").setName("retentionPeriod"))
-                    .setBody(StaticJavaParser.parseBlock("{ this.retentionPeriod = retentionPeriod == null ? null : retentionPeriod.getSeconds(); return this; }"));
-            });
-        });
+                    .setBody(StaticJavaParser.parseBlock("{ this.retentionPeriod = retentionPeriod == null ? null : retentionPeriod.getSeconds(); return this; }")));
+            }));
     }
 
-    private void customizeKeyValueFields(ClassCustomization classCustomization) {
-        classCustomization.customizeAst(ast -> {
-            // Add imports required by class changes.
-            ast.addImport("java.util.Locale");
+    private void customizeKeyValueFields(ClassCustomization customization) {
+        customization.customizeAst(ast -> ast.addImport("java.util.Locale")
+            .getClassByName(customization.getClassName()).ifPresent(clazz -> {
+                // Modify fromString() method
+                clazz.getMethodsByName("fromString").forEach(method -> method.setJavadocComment(new Javadoc(
+                    parseText("Creates or finds a {@link SettingFields} from its string representation."))
+                    .addBlockTag("param", "name", "a name to look for.")
+                    .addBlockTag("return", "the corresponding {@link SettingFields}")));
 
-            ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
+                // Add class-level javadoc
+                clazz.setJavadocComment(new Javadoc(
+                    parseText("Fields in {@link ConfigurationSetting} that can be returned from GET queries."))
+                    .addBlockTag("see", "SettingSelector"));
 
-            // Modify fromString() method
-
-            clazz.getMethodsByName("fromString").get(0)
-                .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
-                    "Creates or finds a {@link SettingFields} from its string representation.",
-                    "@param name a name to look for.",
-                    "@return the corresponding {@link SettingFields}"
-                )));
-
-            // Add class-level javadoc
-            clazz.setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
-                "Fields in {@link ConfigurationSetting} that can be returned from GET queries.",
-                "@see SettingSelector"
-            )));
-
-            // Add toStringMapper static new method to SettingFields
-            clazz.addMethod("toStringMapper", Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC).setType("String")
-                .addParameter("SettingFields", "field")
-                .setBody(new BlockStmt(new NodeList<>(StaticJavaParser.parseStatement("return field.toString().toLowerCase(Locale.US);"))))
-                .addAnnotation(Deprecated.class)
-                .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
-                    " * Converts the SettingFields to a string that is usable for HTTP requests and logging.",
-                    " * @param field SettingFields to map.",
-                    " * @return SettingFields as a lowercase string in the US locale.",
-                    " * @deprecated This method is no longer needed. SettingFields is using lower case enum value for the HTTP requests."
-                )));
-        });
-    }
-
-    private static String joinWithNewline(String... lines) {
-        return String.join("\n", lines);
+                // Add toStringMapper static new method to SettingFields
+                clazz.addMethod("toStringMapper", Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC).setType("String")
+                    .addParameter("SettingFields", "field")
+                    .setBody(StaticJavaParser.parseBlock("{ return field.toString().toLowerCase(Locale.US); }"))
+                    .addMarkerAnnotation(Deprecated.class)
+                    .setJavadocComment(new Javadoc(parseText(
+                        "Converts the SettingFields to a string that is usable for HTTP requests and logging."))
+                        .addBlockTag("param", "field", "SettingFields to map.")
+                        .addBlockTag("return", "SettingFields as a lowercase string in the US locale.")
+                        .addBlockTag("deprecated", "This method is no longer needed. SettingFields is using lower case enum value for the HTTP requests."));
+            }));
     }
 }
