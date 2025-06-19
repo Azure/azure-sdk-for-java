@@ -37,11 +37,12 @@ public final class AgentImageInputFileSample {
     public static void main(String[] args) throws IOException, URISyntaxException {
         PersistentAgentsClientBuilder clientBuilder = new PersistentAgentsClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build());
-        PersistentAgentsAdministrationClient agentsClient = clientBuilder.buildPersistentAgentsAdministrationClient();
-        ThreadsClient threadsClient = clientBuilder.buildThreadsClient();
-        MessagesClient messagesClient = clientBuilder.buildMessagesClient();
-        RunsClient runsClient = clientBuilder.buildRunsClient();
-        FilesClient filesClient = clientBuilder.buildFilesClient();
+        PersistentAgentsClient agentsClient = clientBuilder.buildClient();
+        PersistentAgentsAdministrationClient administrationClient = agentsClient.getPersistentAgentsAdministrationClient();
+        ThreadsClient threadsClient = agentsClient.getThreadsClient();
+        MessagesClient messagesClient = agentsClient.getMessagesClient();
+        RunsClient runsClient = agentsClient.getRunsClient();
+        FilesClient filesClient = agentsClient.getFilesClient();
 
         Path file = getFile("sample_image.jpg");
 
@@ -61,7 +62,7 @@ public final class AgentImageInputFileSample {
         CreateAgentOptions createAgentOptions = new CreateAgentOptions("gpt-4o")
             .setName(agentName)
             .setInstructions("You are a helpful agent");
-        PersistentAgent agent = agentsClient.createAgent(createAgentOptions);
+        PersistentAgent agent = administrationClient.createAgent(createAgentOptions);
 
         PersistentAgentThread thread = threadsClient.createThread();
         ThreadMessage createdMessage = messagesClient.createMessage(
@@ -82,7 +83,7 @@ public final class AgentImageInputFileSample {
         } finally {
             //cleanup
             threadsClient.deleteThread(thread.getId());
-            agentsClient.deleteAgent(agent.getId());
+            administrationClient.deleteAgent(agent.getId());
         }
     }
 

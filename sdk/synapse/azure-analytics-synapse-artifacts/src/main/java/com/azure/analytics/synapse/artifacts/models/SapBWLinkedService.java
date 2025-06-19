@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,44 +22,52 @@ public class SapBWLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "SapBW";
 
     /*
      * Host name of the SAP BW instance. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object server;
 
     /*
      * System number of the BW system. (Usually a two-digit decimal number represented as a string.) Type: string (or
      * Expression with resultType string).
      */
+    @Generated
     private Object systemNumber;
 
     /*
      * Client ID of the client on the BW system. (Usually a three-digit decimal number represented as a string) Type:
      * string (or Expression with resultType string).
      */
+    @Generated
     private Object clientId;
 
     /*
      * Username to access the SAP BW server. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object userName;
 
     /*
      * Password to access the SAP BW server.
      */
+    @Generated
     private SecretBase password;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of SapBWLinkedService class.
      */
+    @Generated
     public SapBWLinkedService() {
     }
 
@@ -67,6 +76,7 @@ public class SapBWLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -77,6 +87,7 @@ public class SapBWLinkedService extends LinkedService {
      * 
      * @return the server value.
      */
+    @Generated
     public Object getServer() {
         return this.server;
     }
@@ -87,6 +98,7 @@ public class SapBWLinkedService extends LinkedService {
      * @param server the server value to set.
      * @return the SapBWLinkedService object itself.
      */
+    @Generated
     public SapBWLinkedService setServer(Object server) {
         this.server = server;
         return this;
@@ -98,6 +110,7 @@ public class SapBWLinkedService extends LinkedService {
      * 
      * @return the systemNumber value.
      */
+    @Generated
     public Object getSystemNumber() {
         return this.systemNumber;
     }
@@ -109,6 +122,7 @@ public class SapBWLinkedService extends LinkedService {
      * @param systemNumber the systemNumber value to set.
      * @return the SapBWLinkedService object itself.
      */
+    @Generated
     public SapBWLinkedService setSystemNumber(Object systemNumber) {
         this.systemNumber = systemNumber;
         return this;
@@ -120,6 +134,7 @@ public class SapBWLinkedService extends LinkedService {
      * 
      * @return the clientId value.
      */
+    @Generated
     public Object getClientId() {
         return this.clientId;
     }
@@ -131,6 +146,7 @@ public class SapBWLinkedService extends LinkedService {
      * @param clientId the clientId value to set.
      * @return the SapBWLinkedService object itself.
      */
+    @Generated
     public SapBWLinkedService setClientId(Object clientId) {
         this.clientId = clientId;
         return this;
@@ -142,6 +158,7 @@ public class SapBWLinkedService extends LinkedService {
      * 
      * @return the userName value.
      */
+    @Generated
     public Object getUserName() {
         return this.userName;
     }
@@ -153,6 +170,7 @@ public class SapBWLinkedService extends LinkedService {
      * @param userName the userName value to set.
      * @return the SapBWLinkedService object itself.
      */
+    @Generated
     public SapBWLinkedService setUserName(Object userName) {
         this.userName = userName;
         return this;
@@ -163,6 +181,7 @@ public class SapBWLinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -173,6 +192,7 @@ public class SapBWLinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the SapBWLinkedService object itself.
      */
+    @Generated
     public SapBWLinkedService setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -184,6 +204,7 @@ public class SapBWLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -195,6 +216,7 @@ public class SapBWLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SapBWLinkedService object itself.
      */
+    @Generated
     public SapBWLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -203,6 +225,7 @@ public class SapBWLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapBWLinkedService setVersion(String version) {
         super.setVersion(version);
@@ -212,6 +235,7 @@ public class SapBWLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapBWLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -221,6 +245,7 @@ public class SapBWLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapBWLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -230,6 +255,7 @@ public class SapBWLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapBWLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -239,6 +265,7 @@ public class SapBWLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapBWLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -248,6 +275,7 @@ public class SapBWLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -267,9 +295,13 @@ public class SapBWLinkedService extends LinkedService {
             jsonWriter.writeUntypedField("server", this.server);
             jsonWriter.writeUntypedField("systemNumber", this.systemNumber);
             jsonWriter.writeUntypedField("clientId", this.clientId);
-            jsonWriter.writeUntypedField("userName", this.userName);
+            if (this.userName != null) {
+                jsonWriter.writeUntypedField("userName", this.userName);
+            }
             jsonWriter.writeJsonField("password", this.password);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -289,6 +321,7 @@ public class SapBWLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SapBWLinkedService.
      */
+    @Generated
     public static SapBWLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SapBWLinkedService deserializedSapBWLinkedService = new SapBWLinkedService();

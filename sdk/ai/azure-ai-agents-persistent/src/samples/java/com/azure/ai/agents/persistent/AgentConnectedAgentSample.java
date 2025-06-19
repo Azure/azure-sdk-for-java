@@ -27,16 +27,17 @@ public final class AgentConnectedAgentSample {
 
         PersistentAgentsClientBuilder clientBuilder = new PersistentAgentsClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build());
-        PersistentAgentsAdministrationClient agentsClient = clientBuilder.buildPersistentAgentsAdministrationClient();
-        ThreadsClient threadsClient = clientBuilder.buildThreadsClient();
-        MessagesClient messagesClient = clientBuilder.buildMessagesClient();
-        RunsClient runsClient = clientBuilder.buildRunsClient();
+        PersistentAgentsClient agentsClient = clientBuilder.buildClient();
+        PersistentAgentsAdministrationClient administrationClient = agentsClient.getPersistentAgentsAdministrationClient();
+        ThreadsClient threadsClient = agentsClient.getThreadsClient();
+        MessagesClient messagesClient = agentsClient.getMessagesClient();
+        RunsClient runsClient = agentsClient.getRunsClient();
 
         String connectedAgentName = "stock_price_bot";
         CreateAgentOptions connectedAgentCreateOptions = new CreateAgentOptions("gpt-4o-mini")
             .setName(connectedAgentName)
             .setInstructions("Your job is to get the stock price of a company. Just return $391.85 EOD 27-Apr-2025");
-        PersistentAgent connectedAgent = agentsClient.createAgent(connectedAgentCreateOptions);
+        PersistentAgent connectedAgent = administrationClient.createAgent(connectedAgentCreateOptions);
 
         ConnectedAgentToolDefinition connectedAgentToolDefinition = new ConnectedAgentToolDefinition(
             new ConnectedAgentDetails(connectedAgent.getId(), connectedAgent.getName(), "Gets the stock price of a company"));
@@ -48,7 +49,7 @@ public final class AgentConnectedAgentSample {
             .setTools(Arrays.asList(connectedAgentToolDefinition));
         RequestOptions requestOptions = new RequestOptions()
             .setHeader("x-ms-enable-preview", "true");
-        PersistentAgent agent = agentsClient.createAgentWithResponse(BinaryData.fromObject(createAgentRequest), requestOptions)
+        PersistentAgent agent = administrationClient.createAgentWithResponse(BinaryData.fromObject(createAgentRequest), requestOptions)
             .getValue().toObject(PersistentAgent.class);
 
         PersistentAgentThread thread = threadsClient.createThread();
@@ -70,7 +71,7 @@ public final class AgentConnectedAgentSample {
         } finally {
             //cleanup
             threadsClient.deleteThread(thread.getId());
-            agentsClient.deleteAgent(agent.getId());
+            administrationClient.deleteAgent(agent.getId());
         }
     }
 }

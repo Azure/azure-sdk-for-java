@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,16 +22,19 @@ public final class CustomDataSourceLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "CustomDataSource";
 
     /*
      * Custom linked service properties.
      */
+    @Generated
     private Object typeProperties;
 
     /**
      * Creates an instance of CustomDataSourceLinkedService class.
      */
+    @Generated
     public CustomDataSourceLinkedService() {
     }
 
@@ -39,6 +43,7 @@ public final class CustomDataSourceLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -49,6 +54,7 @@ public final class CustomDataSourceLinkedService extends LinkedService {
      * 
      * @return the typeProperties value.
      */
+    @Generated
     public Object getTypeProperties() {
         return this.typeProperties;
     }
@@ -59,6 +65,7 @@ public final class CustomDataSourceLinkedService extends LinkedService {
      * @param typeProperties the typeProperties value to set.
      * @return the CustomDataSourceLinkedService object itself.
      */
+    @Generated
     public CustomDataSourceLinkedService setTypeProperties(Object typeProperties) {
         this.typeProperties = typeProperties;
         return this;
@@ -67,6 +74,7 @@ public final class CustomDataSourceLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CustomDataSourceLinkedService setVersion(String version) {
         super.setVersion(version);
@@ -76,6 +84,7 @@ public final class CustomDataSourceLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CustomDataSourceLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -85,6 +94,7 @@ public final class CustomDataSourceLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CustomDataSourceLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -94,6 +104,7 @@ public final class CustomDataSourceLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CustomDataSourceLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -103,6 +114,7 @@ public final class CustomDataSourceLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CustomDataSourceLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -112,6 +124,7 @@ public final class CustomDataSourceLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -139,6 +152,7 @@ public final class CustomDataSourceLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CustomDataSourceLinkedService.
      */
+    @Generated
     public static CustomDataSourceLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CustomDataSourceLinkedService deserializedCustomDataSourceLinkedService

@@ -200,7 +200,7 @@ public final class ServiceBusManagementClientImpl {
      * REST calls.
      */
     @Host("https://{endpoint}")
-    @ServiceInterface(name = "ServiceBusManagement")
+    @ServiceInterface(name = "ServiceBusManagementClient")
     public interface ServiceBusManagementClientService {
         @Get("/{topicName}/subscriptions")
         @ExpectedResponses({ 200 })

@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class MessagesClientTest extends ClientTestBase {
 
     private PersistentAgentsClientBuilder clientBuilder;
-    private PersistentAgentsAdministrationClient agentsClient;
+    private PersistentAgentsAdministrationClient administrationClient;
     private ThreadsClient threadsClient;
     private MessagesClient messagesClient;
     private PersistentAgent agent;
@@ -32,16 +32,17 @@ public class MessagesClientTest extends ClientTestBase {
     private PersistentAgent createAgent(String agentName) {
         CreateAgentOptions options
             = new CreateAgentOptions("gpt-4o-mini").setName(agentName).setInstructions("You are a helpful agent");
-        PersistentAgent createdAgent = agentsClient.createAgent(options);
+        PersistentAgent createdAgent = administrationClient.createAgent(options);
         assertNotNull(createdAgent, "Persistent agent should not be null");
         return createdAgent;
     }
 
     private void setup(HttpClient httpClient) {
         clientBuilder = getClientBuilder(httpClient);
-        agentsClient = clientBuilder.buildPersistentAgentsAdministrationClient();
-        threadsClient = clientBuilder.buildThreadsClient();
-        messagesClient = clientBuilder.buildMessagesClient();
+        PersistentAgentsClient agentsClient = clientBuilder.buildClient();
+        administrationClient = agentsClient.getPersistentAgentsAdministrationClient();
+        threadsClient = agentsClient.getThreadsClient();
+        messagesClient = agentsClient.getMessagesClient();
         agent = createAgent("TestAgent");
         thread = threadsClient.createThread();
     }
@@ -131,7 +132,7 @@ public class MessagesClientTest extends ClientTestBase {
                 threadsClient.deleteThread(thread.getId());
             }
             if (agent != null) {
-                agentsClient.deleteAgent(agent.getId());
+                administrationClient.deleteAgent(agent.getId());
             }
         } catch (Exception e) {
             // Log the exception but do not fail the test

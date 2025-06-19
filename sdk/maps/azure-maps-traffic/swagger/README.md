@@ -45,7 +45,7 @@ title: TrafficClient
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/maps/data-plane/Traffic/preview/1.0/traffic.json
 namespace: com.azure.maps.traffic
 java: true
-use: '@autorest/java@4.1.50'
+use: '@autorest/java@4.1.52'
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
 payload-flattening-threshold: 0
@@ -63,7 +63,6 @@ custom-types-subpackage: models
 custom-types: TileFormat,TrafficFlowTileStyle,TileIndex,DelayMagnitude,IconCategory,IncidentDetailStyle,IncidentGeometryType,ProjectionStandard,SpeedUnit,TileFormat,TrafficFlowSegmentStyle,TrafficFlowTileStyle,TrafficIncidentTileStyle,TrafficIncidentPointOfInterest,TrafficFlowSegmentData,TrafficFlowSegmentDataPropertiesCoordinates,TrafficIncidentViewport,TrafficIncidentViewportResponse,TrafficState,MapsPoint,TrafficIncidentDetail
 customization-class: src/main/java/TrafficCustomization.java
 no-custom-headers: true
-use-eclipse-language-server: false
 ```
 
 ### Create definition TrafficFlowSegmentDataPropertiesCoordinates

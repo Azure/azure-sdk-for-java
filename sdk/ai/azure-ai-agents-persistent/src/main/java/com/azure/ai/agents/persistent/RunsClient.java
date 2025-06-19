@@ -38,7 +38,7 @@ import java.util.stream.StreamSupport;
 import reactor.core.publisher.Flux;
 
 /**
- * Initializes a new instance of the synchronous PersistentAgentsClient type.
+ * Initializes a new instance of the synchronous Runs type.
  */
 @ServiceClient(builder = PersistentAgentsClientBuilder.class)
 public final class RunsClient {

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,96 +22,115 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
     /*
      * The livyInfo property.
      */
+    @Generated
     private SparkBatchJobState livyInfo;
 
     /*
      * The batch name.
      */
+    @Generated
     private String name;
 
     /*
      * The workspace name.
      */
+    @Generated
     private String workspaceName;
 
     /*
      * The Spark pool name.
      */
+    @Generated
     private String sparkPoolName;
 
     /*
      * The submitter name.
      */
+    @Generated
     private String submitterName;
 
     /*
      * The submitter identifier.
      */
+    @Generated
     private String submitterId;
 
     /*
      * The artifact identifier.
      */
+    @Generated
     private String artifactId;
 
     /*
      * The job type.
      */
+    @Generated
     private SparkJobType jobType;
 
     /*
      * The Spark batch job result.
      */
+    @Generated
     private SparkBatchJobResultType result;
 
     /*
      * The scheduler information.
      */
+    @Generated
     private SparkScheduler scheduler;
 
     /*
      * The plugin information.
      */
+    @Generated
     private SparkServicePlugin plugin;
 
     /*
      * The error information.
      */
+    @Generated
     private List<SparkServiceError> errors;
 
     /*
      * The tags.
      */
+    @Generated
     private Map<String, String> tags;
 
     /*
      * The session Id.
      */
+    @Generated
     private int id;
 
     /*
      * The application id of this session
      */
+    @Generated
     private String appId;
 
     /*
      * The detailed application info.
      */
+    @Generated
     private Map<String, String> appInfo;
 
     /*
      * The batch state
      */
+    @Generated
     private LivyStates state;
 
     /*
      * The log lines.
      */
+    @Generated
     private List<String> logLines;
 
     /**
      * Creates an instance of SparkBatchJob class.
      */
+    @Generated
     public SparkBatchJob() {
     }
 
@@ -119,6 +139,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * 
      * @return the livyInfo value.
      */
+    @Generated
     public SparkBatchJobState getLivyInfo() {
         return this.livyInfo;
     }
@@ -129,6 +150,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * @param livyInfo the livyInfo value to set.
      * @return the SparkBatchJob object itself.
      */
+    @Generated
     public SparkBatchJob setLivyInfo(SparkBatchJobState livyInfo) {
         this.livyInfo = livyInfo;
         return this;
@@ -139,6 +161,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -149,6 +172,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * @param name the name value to set.
      * @return the SparkBatchJob object itself.
      */
+    @Generated
     public SparkBatchJob setName(String name) {
         this.name = name;
         return this;
@@ -159,6 +183,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * 
      * @return the workspaceName value.
      */
+    @Generated
     public String getWorkspaceName() {
         return this.workspaceName;
     }
@@ -169,6 +194,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * @param workspaceName the workspaceName value to set.
      * @return the SparkBatchJob object itself.
      */
+    @Generated
     public SparkBatchJob setWorkspaceName(String workspaceName) {
         this.workspaceName = workspaceName;
         return this;
@@ -179,6 +205,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * 
      * @return the sparkPoolName value.
      */
+    @Generated
     public String getSparkPoolName() {
         return this.sparkPoolName;
     }
@@ -189,6 +216,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * @param sparkPoolName the sparkPoolName value to set.
      * @return the SparkBatchJob object itself.
      */
+    @Generated
     public SparkBatchJob setSparkPoolName(String sparkPoolName) {
         this.sparkPoolName = sparkPoolName;
         return this;
@@ -199,6 +227,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * 
      * @return the submitterName value.
      */
+    @Generated
     public String getSubmitterName() {
         return this.submitterName;
     }
@@ -209,6 +238,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * @param submitterName the submitterName value to set.
      * @return the SparkBatchJob object itself.
      */
+    @Generated
     public SparkBatchJob setSubmitterName(String submitterName) {
         this.submitterName = submitterName;
         return this;
@@ -219,6 +249,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * 
      * @return the submitterId value.
      */
+    @Generated
     public String getSubmitterId() {
         return this.submitterId;
     }
@@ -229,6 +260,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * @param submitterId the submitterId value to set.
      * @return the SparkBatchJob object itself.
      */
+    @Generated
     public SparkBatchJob setSubmitterId(String submitterId) {
         this.submitterId = submitterId;
         return this;
@@ -239,6 +271,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * 
      * @return the artifactId value.
      */
+    @Generated
     public String getArtifactId() {
         return this.artifactId;
     }
@@ -249,6 +282,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * @param artifactId the artifactId value to set.
      * @return the SparkBatchJob object itself.
      */
+    @Generated
     public SparkBatchJob setArtifactId(String artifactId) {
         this.artifactId = artifactId;
         return this;
@@ -259,6 +293,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * 
      * @return the jobType value.
      */
+    @Generated
     public SparkJobType getJobType() {
         return this.jobType;
     }
@@ -269,6 +304,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * @param jobType the jobType value to set.
      * @return the SparkBatchJob object itself.
      */
+    @Generated
     public SparkBatchJob setJobType(SparkJobType jobType) {
         this.jobType = jobType;
         return this;
@@ -279,6 +315,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * 
      * @return the result value.
      */
+    @Generated
     public SparkBatchJobResultType getResult() {
         return this.result;
     }
@@ -289,6 +326,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * @param result the result value to set.
      * @return the SparkBatchJob object itself.
      */
+    @Generated
     public SparkBatchJob setResult(SparkBatchJobResultType result) {
         this.result = result;
         return this;
@@ -299,6 +337,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * 
      * @return the scheduler value.
      */
+    @Generated
     public SparkScheduler getScheduler() {
         return this.scheduler;
     }
@@ -309,6 +348,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * @param scheduler the scheduler value to set.
      * @return the SparkBatchJob object itself.
      */
+    @Generated
     public SparkBatchJob setScheduler(SparkScheduler scheduler) {
         this.scheduler = scheduler;
         return this;
@@ -319,6 +359,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * 
      * @return the plugin value.
      */
+    @Generated
     public SparkServicePlugin getPlugin() {
         return this.plugin;
     }
@@ -329,6 +370,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * @param plugin the plugin value to set.
      * @return the SparkBatchJob object itself.
      */
+    @Generated
     public SparkBatchJob setPlugin(SparkServicePlugin plugin) {
         this.plugin = plugin;
         return this;
@@ -339,6 +381,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * 
      * @return the errors value.
      */
+    @Generated
     public List<SparkServiceError> getErrors() {
         return this.errors;
     }
@@ -349,6 +392,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * @param errors the errors value to set.
      * @return the SparkBatchJob object itself.
      */
+    @Generated
     public SparkBatchJob setErrors(List<SparkServiceError> errors) {
         this.errors = errors;
         return this;
@@ -359,6 +403,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * 
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> getTags() {
         return this.tags;
     }
@@ -369,6 +414,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * @param tags the tags value to set.
      * @return the SparkBatchJob object itself.
      */
+    @Generated
     public SparkBatchJob setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
@@ -379,6 +425,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * 
      * @return the id value.
      */
+    @Generated
     public int getId() {
         return this.id;
     }
@@ -389,6 +436,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * @param id the id value to set.
      * @return the SparkBatchJob object itself.
      */
+    @Generated
     public SparkBatchJob setId(int id) {
         this.id = id;
         return this;
@@ -399,6 +447,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * 
      * @return the appId value.
      */
+    @Generated
     public String getAppId() {
         return this.appId;
     }
@@ -409,6 +458,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * @param appId the appId value to set.
      * @return the SparkBatchJob object itself.
      */
+    @Generated
     public SparkBatchJob setAppId(String appId) {
         this.appId = appId;
         return this;
@@ -419,6 +469,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * 
      * @return the appInfo value.
      */
+    @Generated
     public Map<String, String> getAppInfo() {
         return this.appInfo;
     }
@@ -429,6 +480,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * @param appInfo the appInfo value to set.
      * @return the SparkBatchJob object itself.
      */
+    @Generated
     public SparkBatchJob setAppInfo(Map<String, String> appInfo) {
         this.appInfo = appInfo;
         return this;
@@ -439,6 +491,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * 
      * @return the state value.
      */
+    @Generated
     public LivyStates getState() {
         return this.state;
     }
@@ -449,6 +502,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * @param state the state value to set.
      * @return the SparkBatchJob object itself.
      */
+    @Generated
     public SparkBatchJob setState(LivyStates state) {
         this.state = state;
         return this;
@@ -459,6 +513,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * 
      * @return the logLines value.
      */
+    @Generated
     public List<String> getLogLines() {
         return this.logLines;
     }
@@ -469,6 +524,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * @param logLines the logLines value to set.
      * @return the SparkBatchJob object itself.
      */
+    @Generated
     public SparkBatchJob setLogLines(List<String> logLines) {
         this.logLines = logLines;
         return this;
@@ -477,6 +533,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -510,6 +567,7 @@ public final class SparkBatchJob implements JsonSerializable<SparkBatchJob> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SparkBatchJob.
      */
+    @Generated
     public static SparkBatchJob fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SparkBatchJob deserializedSparkBatchJob = new SparkBatchJob();

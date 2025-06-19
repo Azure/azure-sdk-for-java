@@ -30,7 +30,7 @@ autorest
 ``` yaml
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/applicationinsights/data-plane/Monitor.Exporters/preview/v2.1/swagger.json
 java: true
-use: '@autorest/java@4.1.50'
+use: '@autorest/java@4.1.52'
 output-folder: ../
 models-subpackage: implementation.models
 namespace: com.azure.monitor.opentelemetry.exporter
@@ -38,7 +38,6 @@ license-header: MICROSOFT_MIT_SMALL
 generate-client-as-impl: true
 artifact-id: azure-monitor-opentelemetry-exporter
 customization-class: src/main/java/MonitorOpenTelemetryExporterCustomizations.java
-use-eclipse-language-server: false
 directive:
     - rename-model:
         from: TrackResponse

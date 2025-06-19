@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class SuppressCondition implements JsonSerializable<SuppressConditi
     /*
      * min point number, value range : [1, +∞)
      */
+    @Generated
     private int minNumber;
 
     /*
      * min point ratio, value range : (0, 100]
      */
+    @Generated
     private double minRatio;
 
     /**
      * Creates an instance of SuppressCondition class.
      */
+    @Generated
     public SuppressCondition() {
     }
 
@@ -37,6 +41,7 @@ public final class SuppressCondition implements JsonSerializable<SuppressConditi
      * 
      * @return the minNumber value.
      */
+    @Generated
     public int getMinNumber() {
         return this.minNumber;
     }
@@ -47,6 +52,7 @@ public final class SuppressCondition implements JsonSerializable<SuppressConditi
      * @param minNumber the minNumber value to set.
      * @return the SuppressCondition object itself.
      */
+    @Generated
     public SuppressCondition setMinNumber(int minNumber) {
         this.minNumber = minNumber;
         return this;
@@ -57,6 +63,7 @@ public final class SuppressCondition implements JsonSerializable<SuppressConditi
      * 
      * @return the minRatio value.
      */
+    @Generated
     public double getMinRatio() {
         return this.minRatio;
     }
@@ -67,6 +74,7 @@ public final class SuppressCondition implements JsonSerializable<SuppressConditi
      * @param minRatio the minRatio value to set.
      * @return the SuppressCondition object itself.
      */
+    @Generated
     public SuppressCondition setMinRatio(double minRatio) {
         this.minRatio = minRatio;
         return this;
@@ -75,6 +83,7 @@ public final class SuppressCondition implements JsonSerializable<SuppressConditi
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class SuppressCondition implements JsonSerializable<SuppressConditi
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SuppressCondition.
      */
+    @Generated
     public static SuppressCondition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SuppressCondition deserializedSuppressCondition = new SuppressCondition();

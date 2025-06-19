@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class RunsAsyncClientTest extends ClientTestBase {
 
     private PersistentAgentsClientBuilder clientBuilder;
-    private PersistentAgentsAdministrationAsyncClient agentsAsyncClient;
+    private PersistentAgentsAdministrationAsyncClient administrationAsyncClient;
     private ThreadsAsyncClient threadsAsyncClient;
     private RunsAsyncClient runsAsyncClient;
     private PersistentAgent agent;
@@ -34,14 +34,15 @@ public class RunsAsyncClientTest extends ClientTestBase {
 
     private void createTestAgent(HttpClient httpClient) {
         clientBuilder = getClientBuilder(httpClient);
-        agentsAsyncClient = clientBuilder.buildPersistentAgentsAdministrationAsyncClient();
-        threadsAsyncClient = clientBuilder.buildThreadsAsyncClient();
-        runsAsyncClient = clientBuilder.buildRunsAsyncClient();
+        PersistentAgentsAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
+        administrationAsyncClient = agentsAsyncClient.getPersistentAgentsAdministrationAsyncClient();
+        threadsAsyncClient = agentsAsyncClient.getThreadsAsyncClient();
+        runsAsyncClient = agentsAsyncClient.getRunsAsyncClient();
 
         CreateAgentOptions options
             = new CreateAgentOptions("gpt-4o-mini").setName("TestAgent").setInstructions("You are a helpful agent");
 
-        StepVerifier.create(agentsAsyncClient.createAgent(options)).assertNext(createdAgent -> {
+        StepVerifier.create(administrationAsyncClient.createAgent(options)).assertNext(createdAgent -> {
             assertNotNull(createdAgent, "Persistent agent should not be null");
             agent = createdAgent;
         }).verifyComplete();
@@ -181,8 +182,8 @@ public class RunsAsyncClientTest extends ClientTestBase {
         if (thread != null && threadsAsyncClient != null) {
             threadsAsyncClient.deleteThread(thread.getId()).block(Duration.ofSeconds(30));
         }
-        if (agent != null && agentsAsyncClient != null) {
-            agentsAsyncClient.deleteAgent(agent.getId()).block(Duration.ofSeconds(30));
+        if (agent != null && administrationAsyncClient != null) {
+            administrationAsyncClient.deleteAgent(agent.getId()).block(Duration.ofSeconds(30));
         }
     }
 }

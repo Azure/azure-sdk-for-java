@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,21 +20,19 @@ public final class ServicePrincipalInKVCredential extends DataSourceCredential {
     /*
      * Type of data source credential
      */
+    @Generated
     private DataSourceCredentialType dataSourceCredentialType = DataSourceCredentialType.SERVICE_PRINCIPAL_IN_KV;
 
     /*
      * The parameters property.
      */
+    @Generated
     private ServicePrincipalInKVParam parameters;
-
-    /*
-     * Unique id of data source credential
-     */
-    private UUID dataSourceCredentialId;
 
     /**
      * Creates an instance of ServicePrincipalInKVCredential class.
      */
+    @Generated
     public ServicePrincipalInKVCredential() {
     }
 
@@ -42,6 +41,7 @@ public final class ServicePrincipalInKVCredential extends DataSourceCredential {
      * 
      * @return the dataSourceCredentialType value.
      */
+    @Generated
     @Override
     public DataSourceCredentialType getDataSourceCredentialType() {
         return this.dataSourceCredentialType;
@@ -52,6 +52,7 @@ public final class ServicePrincipalInKVCredential extends DataSourceCredential {
      * 
      * @return the parameters value.
      */
+    @Generated
     public ServicePrincipalInKVParam getParameters() {
         return this.parameters;
     }
@@ -62,24 +63,16 @@ public final class ServicePrincipalInKVCredential extends DataSourceCredential {
      * @param parameters the parameters value to set.
      * @return the ServicePrincipalInKVCredential object itself.
      */
+    @Generated
     public ServicePrincipalInKVCredential setParameters(ServicePrincipalInKVParam parameters) {
         this.parameters = parameters;
         return this;
     }
 
     /**
-     * Get the dataSourceCredentialId property: Unique id of data source credential.
-     * 
-     * @return the dataSourceCredentialId value.
-     */
-    @Override
-    public UUID getDataSourceCredentialId() {
-        return this.dataSourceCredentialId;
-    }
-
-    /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ServicePrincipalInKVCredential setDataSourceCredentialName(String dataSourceCredentialName) {
         super.setDataSourceCredentialName(dataSourceCredentialName);
@@ -89,6 +82,7 @@ public final class ServicePrincipalInKVCredential extends DataSourceCredential {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ServicePrincipalInKVCredential setDataSourceCredentialDescription(String dataSourceCredentialDescription) {
         super.setDataSourceCredentialDescription(dataSourceCredentialDescription);
@@ -98,6 +92,7 @@ public final class ServicePrincipalInKVCredential extends DataSourceCredential {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -118,6 +113,7 @@ public final class ServicePrincipalInKVCredential extends DataSourceCredential {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ServicePrincipalInKVCredential.
      */
+    @Generated
     public static ServicePrincipalInKVCredential fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ServicePrincipalInKVCredential deserializedServicePrincipalInKVCredential
@@ -129,8 +125,8 @@ public final class ServicePrincipalInKVCredential extends DataSourceCredential {
                 if ("dataSourceCredentialName".equals(fieldName)) {
                     deserializedServicePrincipalInKVCredential.setDataSourceCredentialName(reader.getString());
                 } else if ("dataSourceCredentialId".equals(fieldName)) {
-                    deserializedServicePrincipalInKVCredential.dataSourceCredentialId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                    deserializedServicePrincipalInKVCredential.setDataSourceCredentialId(
+                        reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
                 } else if ("dataSourceCredentialDescription".equals(fieldName)) {
                     deserializedServicePrincipalInKVCredential.setDataSourceCredentialDescription(reader.getString());
                 } else if ("parameters".equals(fieldName)) {

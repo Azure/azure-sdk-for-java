@@ -22,11 +22,11 @@ public final class AgentAdditionalMessageAsyncSample {
         PersistentAgentsClientBuilder clientBuilder = new PersistentAgentsClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build());
-        
-        PersistentAgentsAdministrationAsyncClient agentsAsyncClient = clientBuilder.buildPersistentAgentsAdministrationAsyncClient();
-        ThreadsAsyncClient threadsAsyncClient = clientBuilder.buildThreadsAsyncClient();
-        MessagesAsyncClient messagesAsyncClient = clientBuilder.buildMessagesAsyncClient();
-        RunsAsyncClient runsAsyncClient = clientBuilder.buildRunsAsyncClient();
+        PersistentAgentsAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
+        PersistentAgentsAdministrationAsyncClient administrationAsyncClient = agentsAsyncClient.getPersistentAgentsAdministrationAsyncClient();
+        ThreadsAsyncClient threadsAsyncClient = agentsAsyncClient.getThreadsAsyncClient();
+        MessagesAsyncClient messagesAsyncClient = agentsAsyncClient.getMessagesAsyncClient();
+        RunsAsyncClient runsAsyncClient = agentsAsyncClient.getRunsAsyncClient();
 
         String agentName = "additional_message_example_async";
         CreateAgentOptions createAgentOptions = new CreateAgentOptions("gpt-4o-mini")
@@ -39,7 +39,7 @@ public final class AgentAdditionalMessageAsyncSample {
         AtomicReference<String> threadId = new AtomicReference<>();
         
         // Create full reactive chain to showcase reactive programming
-        agentsAsyncClient.createAgent(createAgentOptions)
+        administrationAsyncClient.createAgent(createAgentOptions)
             .flatMap(agent -> {
                 System.out.println("Created agent: " + agent.getId());
                 agentId.set(agent.getId());
@@ -94,7 +94,7 @@ public final class AgentAdditionalMessageAsyncSample {
                 
                 // Clean up agent if created
                 if (agentId.get() != null) {
-                    agentsAsyncClient.deleteAgent(agentId.get())
+                    administrationAsyncClient.deleteAgent(agentId.get())
                         .doOnSuccess(ignored -> System.out.println("Agent deleted: " + agentId.get()))
                         .doOnError(error -> System.err.println("Failed to delete agent: " + error.getMessage()))
                         .subscribe();

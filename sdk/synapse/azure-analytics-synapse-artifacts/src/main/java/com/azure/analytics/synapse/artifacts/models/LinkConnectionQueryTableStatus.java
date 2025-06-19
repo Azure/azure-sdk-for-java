@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class LinkConnectionQueryTableStatus implements JsonSerializable<Li
     /*
      * Link tables' status
      */
+    @Generated
     private List<LinkTableStatus> value;
 
     /*
      * Continuation token to query table status
      */
+    @Generated
     private Object continuationToken;
 
     /**
      * Creates an instance of LinkConnectionQueryTableStatus class.
      */
+    @Generated
     public LinkConnectionQueryTableStatus() {
     }
 
@@ -38,6 +42,7 @@ public final class LinkConnectionQueryTableStatus implements JsonSerializable<Li
      * 
      * @return the value value.
      */
+    @Generated
     public List<LinkTableStatus> getValue() {
         return this.value;
     }
@@ -48,6 +53,7 @@ public final class LinkConnectionQueryTableStatus implements JsonSerializable<Li
      * @param value the value value to set.
      * @return the LinkConnectionQueryTableStatus object itself.
      */
+    @Generated
     public LinkConnectionQueryTableStatus setValue(List<LinkTableStatus> value) {
         this.value = value;
         return this;
@@ -58,6 +64,7 @@ public final class LinkConnectionQueryTableStatus implements JsonSerializable<Li
      * 
      * @return the continuationToken value.
      */
+    @Generated
     public Object getContinuationToken() {
         return this.continuationToken;
     }
@@ -68,6 +75,7 @@ public final class LinkConnectionQueryTableStatus implements JsonSerializable<Li
      * @param continuationToken the continuationToken value to set.
      * @return the LinkConnectionQueryTableStatus object itself.
      */
+    @Generated
     public LinkConnectionQueryTableStatus setContinuationToken(Object continuationToken) {
         this.continuationToken = continuationToken;
         return this;
@@ -76,11 +84,14 @@ public final class LinkConnectionQueryTableStatus implements JsonSerializable<Li
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeUntypedField("continuationToken", this.continuationToken);
+        if (this.continuationToken != null) {
+            jsonWriter.writeUntypedField("continuationToken", this.continuationToken);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -92,6 +103,7 @@ public final class LinkConnectionQueryTableStatus implements JsonSerializable<Li
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the LinkConnectionQueryTableStatus.
      */
+    @Generated
     public static LinkConnectionQueryTableStatus fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LinkConnectionQueryTableStatus deserializedLinkConnectionQueryTableStatus

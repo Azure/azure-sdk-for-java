@@ -27,7 +27,7 @@ autorest --java
 ``` yaml
 java: true
 output-folder: ..\
-use: '@autorest/java@4.1.50'
+use: '@autorest/java@4.1.52'
 tag: package-2023-10
 require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/5797d78f04cd8ca773be82d2c99a3294009b3f0a/specification/communication/data-plane/Identity/readme.md
 add-context-parameter: true
@@ -46,7 +46,6 @@ service-interface-as-public: true
 context-client-method-parameter: true
 enable-sync-stack: true
 stream-style-serialization: true
-use-eclipse-language-server: false
 directive:
 - rename-model:
     from: TeamsUserExchangeTokenRequest

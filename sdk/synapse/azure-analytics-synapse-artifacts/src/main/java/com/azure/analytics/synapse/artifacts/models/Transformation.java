@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,31 +20,37 @@ public class Transformation implements JsonSerializable<Transformation> {
     /*
      * Transformation name.
      */
+    @Generated
     private String name;
 
     /*
      * Transformation description.
      */
+    @Generated
     private String description;
 
     /*
      * Dataset reference.
      */
+    @Generated
     private DatasetReference dataset;
 
     /*
      * Linked service reference.
      */
+    @Generated
     private LinkedServiceReference linkedService;
 
     /*
      * Flowlet Reference
      */
+    @Generated
     private DataFlowReference flowlet;
 
     /**
      * Creates an instance of Transformation class.
      */
+    @Generated
     public Transformation() {
     }
 
@@ -52,6 +59,7 @@ public class Transformation implements JsonSerializable<Transformation> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -62,6 +70,7 @@ public class Transformation implements JsonSerializable<Transformation> {
      * @param name the name value to set.
      * @return the Transformation object itself.
      */
+    @Generated
     public Transformation setName(String name) {
         this.name = name;
         return this;
@@ -72,6 +81,7 @@ public class Transformation implements JsonSerializable<Transformation> {
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -82,6 +92,7 @@ public class Transformation implements JsonSerializable<Transformation> {
      * @param description the description value to set.
      * @return the Transformation object itself.
      */
+    @Generated
     public Transformation setDescription(String description) {
         this.description = description;
         return this;
@@ -92,6 +103,7 @@ public class Transformation implements JsonSerializable<Transformation> {
      * 
      * @return the dataset value.
      */
+    @Generated
     public DatasetReference getDataset() {
         return this.dataset;
     }
@@ -102,6 +114,7 @@ public class Transformation implements JsonSerializable<Transformation> {
      * @param dataset the dataset value to set.
      * @return the Transformation object itself.
      */
+    @Generated
     public Transformation setDataset(DatasetReference dataset) {
         this.dataset = dataset;
         return this;
@@ -112,6 +125,7 @@ public class Transformation implements JsonSerializable<Transformation> {
      * 
      * @return the linkedService value.
      */
+    @Generated
     public LinkedServiceReference getLinkedService() {
         return this.linkedService;
     }
@@ -122,6 +136,7 @@ public class Transformation implements JsonSerializable<Transformation> {
      * @param linkedService the linkedService value to set.
      * @return the Transformation object itself.
      */
+    @Generated
     public Transformation setLinkedService(LinkedServiceReference linkedService) {
         this.linkedService = linkedService;
         return this;
@@ -132,6 +147,7 @@ public class Transformation implements JsonSerializable<Transformation> {
      * 
      * @return the flowlet value.
      */
+    @Generated
     public DataFlowReference getFlowlet() {
         return this.flowlet;
     }
@@ -142,6 +158,7 @@ public class Transformation implements JsonSerializable<Transformation> {
      * @param flowlet the flowlet value to set.
      * @return the Transformation object itself.
      */
+    @Generated
     public Transformation setFlowlet(DataFlowReference flowlet) {
         this.flowlet = flowlet;
         return this;
@@ -150,6 +167,7 @@ public class Transformation implements JsonSerializable<Transformation> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -170,6 +188,7 @@ public class Transformation implements JsonSerializable<Transformation> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Transformation.
      */
+    @Generated
     public static Transformation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Transformation deserializedTransformation = new Transformation();
