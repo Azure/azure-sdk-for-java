@@ -562,9 +562,6 @@ public interface CosmosDBAccount extends GroupableResource<CosmosManager, Databa
         interface WithAutomaticFailover {
             /**
              * Disables automatic failover.
-             * Enables automatic failover of the write region in the rare event that the region is unavailable due to an outage.
-             * Automatic failover will result in a new write region for the account and is chosen based on the failover
-             * priorities configured for the account.
              *
              * @return the next stage of the definition
              */
@@ -811,7 +808,7 @@ public interface CosmosDBAccount extends GroupableResource<CosmosManager, Databa
             }
 
             /**
-             * Disables automatic failover of the write region.
+             * Disables automatic failover.
              *
              * @return the next stage of the update
              */

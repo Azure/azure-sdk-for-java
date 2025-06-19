@@ -173,7 +173,8 @@
           "code": "java.class.nonPublicPartOfAPI",
           "new": "(class|enum|interface) org\\.conscrypt\\..*",
           "justification": "skip check for third party files."
-        },        {
+        },
+        {
           "regex": true,
           "code": "java\\.method\\.addedToInterface",
           "new": "method .* com\\.azure\\.resourcemanager\\.(?!appplatform|appservice|authorization|cdn|compute|containerinstance|containerregistry|containerservice|cosmos|dns|eventhubs|keyvault|monitor|msi|network|privatedns|redis|resources|search|servicebus|sql|storage|trafficmanager).*",
