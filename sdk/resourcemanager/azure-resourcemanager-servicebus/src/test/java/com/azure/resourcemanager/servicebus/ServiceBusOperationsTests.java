@@ -387,12 +387,8 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
             Assertions.assertNotEquals(nsRuleKeys.primaryKey(), primaryKey);
         }
 
-        NamespaceAuthorizationRule nsRule2 = namespace
-                .authorizationRules()
-                .define("rule2")
-                .withListeningEnabled()
-                .withSendingEnabled()
-                .create();
+        NamespaceAuthorizationRule nsRule2
+            = namespace.authorizationRules().define("rule2").withListeningEnabled().withSendingEnabled().create();
         Assertions.assertNotNull(nsRule2.rights());
         Assertions.assertTrue(nsRule2.rights().contains(AccessRights.LISTEN));
         Assertions.assertTrue(nsRule2.rights().contains(AccessRights.SEND));
@@ -405,7 +401,8 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
         Assertions.assertNotNull(queue);
         Assertions.assertNotNull(queue.innerModel());
 
-        QueueAuthorizationRule qRule = queue.authorizationRules().define("rule1").withListeningEnabled().withSendingEnabled().create();
+        QueueAuthorizationRule qRule
+            = queue.authorizationRules().define("rule1").withListeningEnabled().withSendingEnabled().create();
         Assertions.assertNotNull(qRule);
         Assertions.assertTrue(qRule.rights().contains(AccessRights.LISTEN));
         Assertions.assertTrue(qRule.rights().contains(AccessRights.SEND));
@@ -430,7 +427,8 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
         Topic topic = topicsInNamespace.iterator().next();
         Assertions.assertNotNull(topic);
         Assertions.assertNotNull(topic.innerModel());
-        TopicAuthorizationRule tRule = topic.authorizationRules().define("rule2").withListeningEnabled().withSendingEnabled().create();
+        TopicAuthorizationRule tRule
+            = topic.authorizationRules().define("rule2").withListeningEnabled().withSendingEnabled().create();
         Assertions.assertNotNull(tRule);
         Assertions.assertTrue(tRule.rights().contains(AccessRights.LISTEN));
         Assertions.assertTrue(tRule.rights().contains(AccessRights.SEND));

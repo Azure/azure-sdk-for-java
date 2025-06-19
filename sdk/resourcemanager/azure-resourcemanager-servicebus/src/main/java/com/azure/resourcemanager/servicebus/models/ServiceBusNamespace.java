@@ -201,7 +201,8 @@ public interface ServiceBusNamespace extends GroupableResource<ServiceBusManager
          */
         interface WithCreate extends Creatable<ServiceBusNamespace>, Resource.DefinitionWithTags<WithCreate>,
             ServiceBusNamespace.DefinitionStages.WithSku, ServiceBusNamespace.DefinitionStages.WithQueue,
-            ServiceBusNamespace.DefinitionStages.WithTopic, ServiceBusNamespace.DefinitionStages.WithAuthorizationRule, ServiceBusNamespace.DefinitionStages.WithLocalAuth {
+            ServiceBusNamespace.DefinitionStages.WithTopic, ServiceBusNamespace.DefinitionStages.WithAuthorizationRule,
+            ServiceBusNamespace.DefinitionStages.WithLocalAuth {
         }
     }
 
@@ -210,7 +211,8 @@ public interface ServiceBusNamespace extends GroupableResource<ServiceBusManager
      */
     interface Update extends Appliable<ServiceBusNamespace>, Resource.UpdateWithTags<Update>,
         ServiceBusNamespace.UpdateStages.WithSku, ServiceBusNamespace.UpdateStages.WithQueue,
-        ServiceBusNamespace.UpdateStages.WithTopic, ServiceBusNamespace.UpdateStages.WithAuthorizationRule, ServiceBusNamespace.UpdateStages.WithLocalAuth {
+        ServiceBusNamespace.UpdateStages.WithTopic, ServiceBusNamespace.UpdateStages.WithAuthorizationRule,
+        ServiceBusNamespace.UpdateStages.WithLocalAuth {
     }
 
     /**

@@ -44,7 +44,8 @@ public interface QueueAuthorizationRule
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<QueueAuthorizationRule>, AuthorizationRule.DefinitionStages.WithListenOrSendOrManage<QueueAuthorizationRule.DefinitionStages.WithCreate> {
+        interface WithCreate extends Creatable<QueueAuthorizationRule>,
+            AuthorizationRule.DefinitionStages.WithListenOrSendOrManage<QueueAuthorizationRule.DefinitionStages.WithCreate> {
         }
     }
 
