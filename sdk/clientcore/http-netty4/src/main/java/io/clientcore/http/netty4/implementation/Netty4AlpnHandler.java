@@ -10,9 +10,13 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http2.Http2FrameCodec;
 import io.netty.handler.codec.http2.Http2FrameCodecBuilder;
 import io.netty.handler.codec.http2.Http2MultiplexHandler;
+import io.netty.handler.codec.http2.Http2StreamChannel;
+import io.netty.handler.codec.http2.Http2StreamChannelBootstrap;
 import io.netty.handler.flush.FlushConsolidationHandler;
 import io.netty.handler.ssl.ApplicationProtocolNames;
 import io.netty.handler.ssl.ApplicationProtocolNegotiationHandler;
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GenericFutureListener;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
@@ -66,16 +70,28 @@ public final class Netty4AlpnHandler extends ApplicationProtocolNegotiationHandl
             pipeline.addAfter(Netty4HandlerNames.HTTP_2_CODEC, Netty4HandlerNames.HTTP_2_MULTIPLEX,
                 http2MultiplexHandler);
 
-            sendHttp2Request(request, ctx.channel(), addProgressAndTimeoutHandler, errorReference)
-                .addListener((ChannelFutureListener) sendListener -> {
-                    if (!sendListener.isSuccess()) {
-                        setOrSuppressError(errorReference, sendListener.cause());
-                        sendListener.channel().close();
+            new Http2StreamChannelBootstrap(ctx.channel()).open()
+                .addListener((GenericFutureListener<? extends Future<Http2StreamChannel>>) future -> {
+                    Http2StreamChannel streamChannel = future.get();
+                    if (!future.isSuccess()) {
+                        setOrSuppressError(errorReference, future.cause());
+                        streamChannel.close();
                         latch.countDown();
-                    } else {
-                        sendListener.channel().read();
+                        return;
                     }
+
+                    sendHttp2Request(request, streamChannel, addProgressAndTimeoutHandler, errorReference)
+                        .addListener((ChannelFutureListener) sendListener -> {
+                            if (!sendListener.isSuccess()) {
+                                setOrSuppressError(errorReference, sendListener.cause());
+                                sendListener.channel().close();
+                                latch.countDown();
+                            } else {
+                                sendListener.channel().read();
+                            }
+                        });
                 });
+
         } else if (ApplicationProtocolNames.HTTP_1_1.equals(protocol)) {
             ctx.pipeline().addAfter(Netty4HandlerNames.SSL, Netty4HandlerNames.HTTP_1_1_CODEC, createCodec());
 

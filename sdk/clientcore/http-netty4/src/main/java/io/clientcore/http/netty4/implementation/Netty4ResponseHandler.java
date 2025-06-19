@@ -77,7 +77,7 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         setOrSuppressError(errorReference, cause);
         latch.countDown();
     }
@@ -175,9 +175,5 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
         responseReference.set(new ResponseStateInfo(ctx.channel(), complete, statusCode, headers, eagerContent,
             ResponseBodyHandling.getBodyHandling(request, headers)));
         latch.countDown();
-    }
-
-    private enum BodyHandling {
-        IGNORE, STREAM, BUFFER
     }
 }

@@ -166,9 +166,7 @@ class NettyHttpClient implements HttpClient {
                     channel.pipeline().addLast(Netty4HandlerNames.SSL, ssl.newHandler(channel.alloc(), host, port));
                     channel.pipeline()
                         .addLast(Netty4HandlerNames.SSL_INITIALIZER, new Netty4SslInitializationHandler());
-                }
 
-                if (isHttps) {
                     channel.pipeline()
                         .addLast(new Netty4AlpnHandler(request, addProgressAndTimeoutHandler, errorReference, latch));
                 }
