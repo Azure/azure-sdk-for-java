@@ -5,34 +5,30 @@
 package com.azure.communication.chat.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Map;
 
 /**
  * Chat thread.
  */
 @Fluent
-public final class ChatThreadProperties implements JsonSerializable<ChatThreadProperties> {
+public final class ChatThreadProperties {
     /*
      * Chat thread id.
      */
+    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * Chat thread topic.
      */
+    @JsonProperty(value = "topic", required = true)
     private String topic;
 
     /*
      * The timestamp when the chat thread was created. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
+    @JsonProperty(value = "createdOn", required = true)
     private OffsetDateTime createdOn;
 
     /*
@@ -40,23 +36,14 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
      * Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may
      * be set which must match the kind enum value.
      */
+    @JsonProperty(value = "createdByCommunicationIdentifier", required = true)
     private CommunicationIdentifierModel createdByCommunicationIdentifier;
 
     /*
      * The timestamp when the chat thread was deleted. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
+    @JsonProperty(value = "deletedOn")
     private OffsetDateTime deletedOn;
-
-    /*
-     * Contextual metadata for the thread. The metadata consists of name/value pairs. The total size of all metadata
-     * pairs can be up to 1KB in size.
-     */
-    private Map<String, String> metadata;
-
-    /*
-     * Data retention policy for auto deletion.
-     */
-    private ChatRetentionPolicy retentionPolicy;
 
     /**
      * Creates an instance of ChatThreadProperties class.
@@ -128,8 +115,8 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
 
     /**
      * Get the createdByCommunicationIdentifier property: Identifies a participant in Azure Communication services. A
-     * participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart from
-     * kind and rawId, at most one further property may be set which must match the kind enum value.
+     * participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart
+     * from kind and rawId, at most one further property may be set which must match the kind enum value.
      * 
      * @return the createdByCommunicationIdentifier value.
      */
@@ -139,8 +126,8 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
 
     /**
      * Set the createdByCommunicationIdentifier property: Identifies a participant in Azure Communication services. A
-     * participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart from
-     * kind and rawId, at most one further property may be set which must match the kind enum value.
+     * participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart
+     * from kind and rawId, at most one further property may be set which must match the kind enum value.
      * 
      * @param createdByCommunicationIdentifier the createdByCommunicationIdentifier value to set.
      * @return the ChatThreadProperties object itself.
@@ -171,108 +158,5 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
     public ChatThreadProperties setDeletedOn(OffsetDateTime deletedOn) {
         this.deletedOn = deletedOn;
         return this;
-    }
-
-    /**
-     * Get the metadata property: Contextual metadata for the thread. The metadata consists of name/value pairs. The
-     * total size of all metadata pairs can be up to 1KB in size.
-     * 
-     * @return the metadata value.
-     */
-    public Map<String, String> getMetadata() {
-        return this.metadata;
-    }
-
-    /**
-     * Set the metadata property: Contextual metadata for the thread. The metadata consists of name/value pairs. The
-     * total size of all metadata pairs can be up to 1KB in size.
-     * 
-     * @param metadata the metadata value to set.
-     * @return the ChatThreadProperties object itself.
-     */
-    public ChatThreadProperties setMetadata(Map<String, String> metadata) {
-        this.metadata = metadata;
-        return this;
-    }
-
-    /**
-     * Get the retentionPolicy property: Data retention policy for auto deletion.
-     * 
-     * @return the retentionPolicy value.
-     */
-    public ChatRetentionPolicy getRetentionPolicy() {
-        return this.retentionPolicy;
-    }
-
-    /**
-     * Set the retentionPolicy property: Data retention policy for auto deletion.
-     * 
-     * @param retentionPolicy the retentionPolicy value to set.
-     * @return the ChatThreadProperties object itself.
-     */
-    public ChatThreadProperties setRetentionPolicy(ChatRetentionPolicy retentionPolicy) {
-        this.retentionPolicy = retentionPolicy;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("topic", this.topic);
-        jsonWriter.writeStringField("createdOn",
-            this.createdOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdOn));
-        jsonWriter.writeJsonField("createdByCommunicationIdentifier", this.createdByCommunicationIdentifier);
-        jsonWriter.writeStringField("deletedOn",
-            this.deletedOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deletedOn));
-        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("retentionPolicy", this.retentionPolicy);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ChatThreadProperties from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ChatThreadProperties if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ChatThreadProperties.
-     */
-    public static ChatThreadProperties fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ChatThreadProperties deserializedChatThreadProperties = new ChatThreadProperties();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("id".equals(fieldName)) {
-                    deserializedChatThreadProperties.id = reader.getString();
-                } else if ("topic".equals(fieldName)) {
-                    deserializedChatThreadProperties.topic = reader.getString();
-                } else if ("createdOn".equals(fieldName)) {
-                    deserializedChatThreadProperties.createdOn = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("createdByCommunicationIdentifier".equals(fieldName)) {
-                    deserializedChatThreadProperties.createdByCommunicationIdentifier
-                        = CommunicationIdentifierModel.fromJson(reader);
-                } else if ("deletedOn".equals(fieldName)) {
-                    deserializedChatThreadProperties.deletedOn = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("metadata".equals(fieldName)) {
-                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
-                    deserializedChatThreadProperties.metadata = metadata;
-                } else if ("retentionPolicy".equals(fieldName)) {
-                    deserializedChatThreadProperties.retentionPolicy = ChatRetentionPolicy.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedChatThreadProperties;
-        });
     }
 }

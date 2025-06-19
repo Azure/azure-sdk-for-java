@@ -5,33 +5,18 @@
 package com.azure.communication.chat.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Request payload for updating a chat thread.
  */
 @Fluent
-public final class UpdateChatThreadOptions implements JsonSerializable<UpdateChatThreadOptions> {
+public final class UpdateChatThreadOptions {
     /*
      * Chat thread topic.
      */
+    @JsonProperty(value = "topic")
     private String topic;
-
-    /*
-     * Contextual metadata for the thread. The metadata consists of name/value pairs. The total size of all metadata
-     * pairs can be up to 1KB in size.
-     */
-    private Map<String, String> metadata;
-
-    /*
-     * Data retention policy for auto deletion.
-     */
-    private ChatRetentionPolicy retentionPolicy;
 
     /**
      * Creates an instance of UpdateChatThreadOptions class.
@@ -40,107 +25,22 @@ public final class UpdateChatThreadOptions implements JsonSerializable<UpdateCha
     }
 
     /**
-     * Gets the topic property: Chat thread topic.
-     *
-     * @return the topic.
+     * Get the topic property: Chat thread topic.
+     * 
+     * @return the topic value.
      */
     public String getTopic() {
         return this.topic;
     }
 
     /**
-     * Sets the topic property: Chat thread topic.
-     *
+     * Set the topic property: Chat thread topic.
+     * 
      * @param topic the topic value to set.
      * @return the UpdateChatThreadOptions object itself.
      */
     public UpdateChatThreadOptions setTopic(String topic) {
         this.topic = topic;
         return this;
-    }
-
-    /**
-     * Gets the metadata property: Contextual metadata for the thread. The metadata consists of name/value pairs. The
-     * total size of all metadata pairs can be up to 1KB in size.
-     *
-     * @return the metadata.
-     */
-    public Map<String, String> getMetadata() {
-        return this.metadata;
-    }
-
-    /**
-     * Sets the metadata property: Contextual metadata for the thread. The metadata consists of name/value pairs. The
-     * total size of all metadata pairs can be up to 1KB in size.
-     *
-     * @param metadata the metadata value to set.
-     * @return the UpdateChatThreadOptions object itself.
-     */
-    public UpdateChatThreadOptions setMetadata(Map<String, String> metadata) {
-        this.metadata = metadata;
-        return this;
-    }
-
-    /**
-     * Gets the retentionPolicy property: Data retention policy for auto deletion.
-     *
-     * @return the retentionPolicy.
-     */
-    public ChatRetentionPolicy getRetentionPolicy() {
-        return this.retentionPolicy;
-    }
-
-    /**
-     * Sets the retentionPolicy property: Data retention policy for auto deletion.
-     *
-     * @param retentionPolicy the retentionPolicy value to set.
-     * @return the UpdateChatThreadOptions object itself.
-     */
-    public UpdateChatThreadOptions setRetentionPolicy(ChatRetentionPolicy retentionPolicy) {
-        this.retentionPolicy = retentionPolicy;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("topic", this.topic);
-        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("retentionPolicy", this.retentionPolicy);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of UpdateChatThreadOptions from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of UpdateChatThreadOptions if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the UpdateChatThreadOptions.
-     */
-    public static UpdateChatThreadOptions fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            UpdateChatThreadOptions deserializedUpdateChatThreadOptions = new UpdateChatThreadOptions();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("topic".equals(fieldName)) {
-                    deserializedUpdateChatThreadOptions.topic = reader.getString();
-                } else if ("metadata".equals(fieldName)) {
-                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
-                    deserializedUpdateChatThreadOptions.metadata = metadata;
-                } else if ("retentionPolicy".equals(fieldName)) {
-                    deserializedUpdateChatThreadOptions.retentionPolicy = ChatRetentionPolicy.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedUpdateChatThreadOptions;
-        });
     }
 }

@@ -4,16 +4,11 @@
 package com.azure.communication.chat;
 
 import com.azure.communication.chat.implementation.ChatOptionsProvider;
-import com.azure.communication.chat.models.ChatParticipant;
-import com.azure.communication.chat.models.ChatRetentionPolicy;
 import com.azure.communication.chat.models.ChatThreadItem;
 import com.azure.communication.chat.models.ChatThreadProperties;
 import com.azure.communication.chat.models.CreateChatThreadOptions;
 import com.azure.communication.chat.models.CreateChatThreadResult;
 import com.azure.communication.chat.models.ListChatThreadsOptions;
-import com.azure.communication.chat.models.NoneRetentionPolicy;
-import com.azure.communication.chat.models.ThreadCreationDateRetentionPolicy;
-
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.communication.identity.models.CommunicationTokenScope;
@@ -21,15 +16,15 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.annotation.LiveOnly;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -86,46 +81,6 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void canCreateThreadWithParticipantsHavingMetadata(HttpClient httpClient) {
-        // Arrange
-        setupTest(httpClient, "canCreateThreadWithParticipantsHavingMetadata");
-
-        Map<String, String> metadata = new HashMap<>();
-        metadata.put("key1", "val1");
-        metadata.put("key2", "val2");
-
-        CreateChatThreadOptions threadRequest = ChatOptionsProvider
-            .createThreadOptionsWithMemberMetadata(firstThreadMember.getId(), secondThreadMember.getId(), metadata);
-
-        // Act & Assert
-        StepVerifier.create(client.createChatThread(threadRequest)).assertNext(result -> {
-            assertNotNull(result);
-            assertNotNull(result.getChatThread());
-            String threadId = result.getChatThread().getId();
-            assertNotNull(threadId);
-            assertEquals(0, result.getInvalidParticipants().size());
-
-            // Verify the participants and their metadata
-            PagedIterable<ChatParticipant> participants
-                = new PagedIterable<>(client.getChatThreadClient(threadId).listParticipants());
-
-            // Expect exactly two participants, each with metadata
-            List<ChatParticipant> list = new ArrayList<>();
-            participants.forEach(list::add);
-            assertEquals(2, list.size(), "Should have exactly two participants");
-
-            for (ChatParticipant p : list) {
-                Map<String, String> resMeta = p.getMetadata();
-                assertNotNull(resMeta, "Participant metadata should not be null");
-                assertEquals(2, resMeta.size(), "Metadata size should match");
-                assertEquals("val1", resMeta.get("key1"), "key1 should round-trip");
-                assertEquals("val2", resMeta.get("key2"), "key2 should round-trip");
-            }
-        }).verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canCreateThreadWithResponse(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canCreateThreadWithResponse");
@@ -143,78 +98,44 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void canCreateThreadWithMetadata(HttpClient httpClient) {
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
+    public void canRepeatCreateThread(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient, "canCreateThreadWithMetadata");
-        Map<String, String> metadata = new HashMap<>();
-        metadata.put("key1", "val1");
-        metadata.put("key2", "val2");
-
+        setupTest(httpClient, "canRepeatCreateThread");
+        UUID uuid = UUID.randomUUID();
         CreateChatThreadOptions threadRequest
-            = ChatOptionsProvider.createThreadOptions(firstThreadMember.getId(), secondThreadMember.getId());
-        threadRequest.setMetadata(metadata);
+            = ChatOptionsProvider.createThreadOptions(firstThreadMember.getId(), secondThreadMember.getId())
+                .setIdempotencyToken(uuid.toString());
+
+        Response<CreateChatThreadResult> response1 = client.createChatThreadWithResponse(threadRequest).block();
+        assertNotNull(response1.getValue());
+        assertNotNull(response1.getValue().getChatThread());
+        assertNotNull(response1.getValue().getChatThread().getId());
+
+        String expectedThreadId = response1.getValue().getChatThread().getId();
 
         // Act & Assert
-        StepVerifier.create(client.createChatThreadWithResponse(threadRequest)).assertNext(chatThreadClientResponse -> {
-            CreateChatThreadResult result = chatThreadClientResponse.getValue();
+        StepVerifier.create(client.createChatThreadWithResponse(threadRequest)).assertNext(response2 -> {
+            CreateChatThreadResult result = response2.getValue();
             assertNotNull(result);
             assertNotNull(result.getChatThread());
             assertNotNull(result.getChatThread().getId());
+            assertEquals(expectedThreadId, result.getChatThread().getId());
+        }).verifyComplete();
 
-            // Verify metadata round-trip
-            Map<String, String> resMetadata = result.getChatThread().getMetadata();
-            assertNotNull(resMetadata, "Metadata should not be null");
-            assertEquals(2, resMetadata.size(), "Metadata size should match");
-            assertEquals("val1", resMetadata.get("key1"), "key1 should round-trip correctly");
-            assertEquals("val2", resMetadata.get("key2"), "key2 should round-trip correctly");
+        threadRequest.setIdempotencyToken(UUID.randomUUID().toString());
+        StepVerifier.create(client.createChatThreadWithResponse(threadRequest)).assertNext(response3 -> {
+            CreateChatThreadResult result = response3.getValue();
+            assertNotNull(result);
+            assertNotNull(result.getChatThread());
+            assertNotNull(result.getChatThread().getId());
+            assertNotEquals(expectedThreadId, result.getChatThread().getId());
         }).verifyComplete();
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void canCreateThreadWithNoneRetentionPolicy(HttpClient httpClient) {
-        // Arrange
-        setupTest(httpClient, "canCreateThreadWithNoneRetentionPolicy");
-        CreateChatThreadOptions threadRequest
-            = ChatOptionsProvider.createThreadOptions(firstThreadMember.getId(), secondThreadMember.getId());
-        threadRequest.setRetentionPolicy(new NoneRetentionPolicy());
-
-        // Act & Assert
-        StepVerifier.create(client.createChatThreadWithResponse(threadRequest)).assertNext(chatThreadClientResponse -> {
-            CreateChatThreadResult result = chatThreadClientResponse.getValue();
-            assertNotNull(result);
-            assertNotNull(result.getChatThread());
-            assertNotNull(result.getChatThread().getId());
-            assertNotNull(result.getChatThread().getRetentionPolicy());
-            assertEquals("none", result.getChatThread().getRetentionPolicy().getKind().getValue());
-        }).verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void canCreateThreadWithThreadCreationDateRetentionPolicy(HttpClient httpClient) {
-        // Arrange
-        setupTest(httpClient, "canCreateThreadWithThreadCreationDateRetentionPolicy");
-        CreateChatThreadOptions threadRequest
-            = ChatOptionsProvider.createThreadOptions(firstThreadMember.getId(), secondThreadMember.getId());
-        threadRequest.setRetentionPolicy(new ThreadCreationDateRetentionPolicy().setDeleteThreadAfterDays(45));
-
-        // Act & Assert
-        StepVerifier.create(client.createChatThreadWithResponse(threadRequest)).assertNext(chatThreadClientResponse -> {
-            CreateChatThreadResult result = chatThreadClientResponse.getValue();
-            assertNotNull(result);
-            assertNotNull(result.getChatThread());
-            assertNotNull(result.getChatThread().getId());
-            ChatRetentionPolicy chatRetentionPolicy = result.getChatThread().getRetentionPolicy();
-            assertNotNull(chatRetentionPolicy);
-            assertEquals("threadCreationDate", chatRetentionPolicy.getKind().getValue());
-            ThreadCreationDateRetentionPolicy datePolicy = (ThreadCreationDateRetentionPolicy) chatRetentionPolicy;
-            assertEquals(45, datePolicy.getDeleteThreadAfterDays());
-        }).verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canCreateNewThreadWithoutSettingRepeatabilityID(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canCreateNewThreadWithoutSettingRepeatabilityID");
@@ -281,6 +202,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canGetExistingChatThread(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canGetExistingChatThread");
@@ -301,6 +223,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canGetExistingChatThreadWithResponse(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canGetExistingChatThreadWithResponse");
@@ -322,6 +245,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canDeleteChatThread(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canDeleteChatThread");
@@ -340,6 +264,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canDeleteChatThreadWithResponse(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canDeleteChatThreadWithResponse");

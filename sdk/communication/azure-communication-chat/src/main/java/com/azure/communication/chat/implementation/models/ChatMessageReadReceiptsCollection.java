@@ -5,26 +5,24 @@
 package com.azure.communication.chat.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
  * A paged collection of chat message read receipts.
  */
 @Fluent
-public final class ChatMessageReadReceiptsCollection implements JsonSerializable<ChatMessageReadReceiptsCollection> {
+public final class ChatMessageReadReceiptsCollection {
     /*
      * Collection of chat message read receipts.
      */
+    @JsonProperty(value = "value", required = true)
     private List<ChatMessageReadReceipt> value;
 
     /*
      * If there are more chat message read receipts that can be retrieved, the next link will be populated.
      */
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -54,54 +52,12 @@ public final class ChatMessageReadReceiptsCollection implements JsonSerializable
     }
 
     /**
-     * Get the nextLink property: If there are more chat message read receipts that can be retrieved, the next link will
-     * be populated.
+     * Get the nextLink property: If there are more chat message read receipts that can be retrieved, the next link
+     * will be populated.
      * 
      * @return the nextLink value.
      */
     public String getNextLink() {
         return this.nextLink;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ChatMessageReadReceiptsCollection from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ChatMessageReadReceiptsCollection if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ChatMessageReadReceiptsCollection.
-     */
-    public static ChatMessageReadReceiptsCollection fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ChatMessageReadReceiptsCollection deserializedChatMessageReadReceiptsCollection
-                = new ChatMessageReadReceiptsCollection();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("value".equals(fieldName)) {
-                    List<ChatMessageReadReceipt> value
-                        = reader.readArray(reader1 -> ChatMessageReadReceipt.fromJson(reader1));
-                    deserializedChatMessageReadReceiptsCollection.value = value;
-                } else if ("nextLink".equals(fieldName)) {
-                    deserializedChatMessageReadReceiptsCollection.nextLink = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedChatMessageReadReceiptsCollection;
-        });
     }
 }

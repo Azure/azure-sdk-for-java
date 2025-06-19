@@ -28,9 +28,7 @@ public final class CreateChatThreadOptionsConverter {
                 .setParticipants(obj.getParticipants()
                     .stream()
                     .map(member -> ChatParticipantConverter.convert(member))
-                    .collect(Collectors.toList()))
-                .setMetadata(obj.getMetadata())
-                .setRetentionPolicy(ChatRetentionPolicyConverter.convertToImpl(obj.getRetentionPolicy()));
+                    .collect(Collectors.toList()));
 
         return createChatThreadOptions;
     }
