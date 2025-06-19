@@ -36,7 +36,7 @@ public interface NamespaceAuthorizationRule
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<NamespaceAuthorizationRule> {
+        interface WithCreate extends AuthorizationRule.DefinitionStages.WithListenOrSendOrManage<WithCreate>, Creatable<NamespaceAuthorizationRule> {
         }
     }
 

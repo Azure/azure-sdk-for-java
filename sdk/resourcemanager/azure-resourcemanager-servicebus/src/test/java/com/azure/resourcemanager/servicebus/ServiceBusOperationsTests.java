@@ -356,7 +356,10 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
             .withNewQueue(queueName, 1024)
             .withNewTopic(topicName, 1024)
             .withNewManageRule(nsRuleName)
+            .disableLocalAuth()
             .create();
+
+        Assertions.assertTrue(namespace.localAuthDisabled());
         // Lookup ns authorization rule
         //
         PagedIterable<NamespaceAuthorizationRule> rulesInNamespace = namespace.authorizationRules().list();
@@ -383,6 +386,16 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
         if (!isPlaybackMode()) {
             Assertions.assertNotEquals(nsRuleKeys.primaryKey(), primaryKey);
         }
+
+        NamespaceAuthorizationRule nsRule2 = namespace
+                .authorizationRules()
+                .define("rule2")
+                .withListeningEnabled()
+                .withSendingEnabled()
+                .create();
+        Assertions.assertNotNull(nsRule2.rights());
+        Assertions.assertTrue(nsRule2.rights().contains(AccessRights.LISTEN));
+        Assertions.assertTrue(nsRule2.rights().contains(AccessRights.SEND));
         // Lookup queue & operate on auth rules
         //
         PagedIterable<Queue> queuesInNamespace = namespace.queues().list();
@@ -392,11 +405,12 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
         Assertions.assertNotNull(queue);
         Assertions.assertNotNull(queue.innerModel());
 
-        QueueAuthorizationRule qRule = queue.authorizationRules().define("rule1").withListeningEnabled().create();
+        QueueAuthorizationRule qRule = queue.authorizationRules().define("rule1").withListeningEnabled().withSendingEnabled().create();
         Assertions.assertNotNull(qRule);
-        Assertions.assertNotNull(qRule.rights().contains(AccessRights.LISTEN));
+        Assertions.assertTrue(qRule.rights().contains(AccessRights.LISTEN));
+        Assertions.assertTrue(qRule.rights().contains(AccessRights.SEND));
         qRule = qRule.update().withManagementEnabled().apply();
-        Assertions.assertNotNull(qRule.rights().contains(AccessRights.MANAGE));
+        Assertions.assertTrue(qRule.rights().contains(AccessRights.MANAGE));
         PagedIterable<QueueAuthorizationRule> rulesInQueue = queue.authorizationRules().list();
         Assertions.assertTrue(TestUtilities.getSize(rulesInQueue) > 0);
         boolean foundQRule = false;
@@ -416,11 +430,12 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
         Topic topic = topicsInNamespace.iterator().next();
         Assertions.assertNotNull(topic);
         Assertions.assertNotNull(topic.innerModel());
-        TopicAuthorizationRule tRule = topic.authorizationRules().define("rule2").withSendingEnabled().create();
+        TopicAuthorizationRule tRule = topic.authorizationRules().define("rule2").withListeningEnabled().withSendingEnabled().create();
         Assertions.assertNotNull(tRule);
-        Assertions.assertNotNull(tRule.rights().contains(AccessRights.SEND));
+        Assertions.assertTrue(tRule.rights().contains(AccessRights.LISTEN));
+        Assertions.assertTrue(tRule.rights().contains(AccessRights.SEND));
         tRule = tRule.update().withManagementEnabled().apply();
-        Assertions.assertNotNull(tRule.rights().contains(AccessRights.MANAGE));
+        Assertions.assertTrue(tRule.rights().contains(AccessRights.MANAGE));
         PagedIterable<TopicAuthorizationRule> rulesInTopic = topic.authorizationRules().list();
         Assertions.assertTrue(TestUtilities.getSize(rulesInTopic) > 0);
         boolean foundTRule = false;
