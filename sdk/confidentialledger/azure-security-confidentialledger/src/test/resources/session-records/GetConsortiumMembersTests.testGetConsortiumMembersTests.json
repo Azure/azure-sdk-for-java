@@ -1,0 +1,44 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.confidential-ledger.core.azure.com/ledgerIdentity/java-sdk-live-tests-ledger?api-version=2022-05-13",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-security-confidentialledger/1.1.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "88962c21-74d2-4471-80e6-6e296fe4841d"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-machineName" : "identityservice-74474fbb54-jt9mc",
+      "Server" : "Kestrel",
+      "x-ms-image-digest" : "sha256:99312b48a4a36c2a35a64344ef1a7d53831ef6d94f7f4dbde1c0e95b272869e2",
+      "x-ms-image-tag" : "1.0.02181.52-650996ff8a6192801b2212d88c07f72145942d6f",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"ledgerTlsCertificate\":\"-----BEGIN CERTIFICATE-----\\nMIIBezCCASGgAwIBAgIRAKLZijU4vM4pdXBFECX9udEwCgYIKoZIzj0EAwIwFjEU\\nMBIGA1UEAwwLQ0NGIE5ldHdvcmswHhcNMjMwMzAxMTM1NDU5WhcNMjMwNTMwMTM1\\nNDU4WjAWMRQwEgYDVQQDDAtDQ0YgTmV0d29yazBZMBMGByqGSM49AgEGCCqGSM49\\nAwEHA0IABMEG2833BvKMjevK2yR4iNnbmLVxFCfUOSAMEihqiq/YQGRuuQgdjDE9\\nPlAeW3768OgMRx5k8EomiwA1CFJRhJWjUDBOMAwGA1UdEwQFMAMBAf8wHQYDVR0O\\nBBYEFOr/ulXMbmxjEG4+VqP7GLIQr81gMB8GA1UdIwQYMBaAFOr/ulXMbmxjEG4+\\nVqP7GLIQr81gMAoGCCqGSM49BAMCA0gAMEUCIQC5M+E/wBy0wBx+5b+avIm4IML7\\nj/H/n54VbAPbkd3xxAIgYvb4at1tOSYV8w3p3N4geyXcsQSZazMHv+Yywtlto/I=\\n-----END CERTIFICATE-----\\n\",\"ledgerId\":\"java-sdk-live-tests-ledger\"}",
+      "Date" : "Wed, 01 Mar 2023 14:31:12 GMT",
+      "x-ms-client-request-id" : "88962c21-74d2-4471-80e6-6e296fe4841d",
+      "x-ms-correlation-request-id" : "8943eaa1-2696-4a6f-b042-ff0b450ad17b",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.confidential-ledger.azure.com/app/governance/members?api-version=2022-05-13",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-security-confidentialledger/1.1.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "46991415-3160-4934-af6c-55d35f0b180b"
+    },
+    "Response" : {
+      "content-length" : "856",
+      "content-type" : "application/json",
+      "retry-after" : "0",
+      "x-ms-ccf-transaction-id" : "2.38",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "2070896418",
+      "Body" : "{\"members\":[{\"certificate\":\"-----BEGIN CERTIFICATE-----\\nMIIB9zCCAX2gAwIBAgIQP4aCB5msR/+IyvtMbPevuDAKBggqhkjOPQQDAzAgMR4w\\nHAYDVQQDExVDQ0YgR292ZXJub3IgSWRlbnRpdHkwHhcNMjMwMzAxMTM0NDA0WhcN\\nMjMwNjAxMTM1NDA0WjAgMR4wHAYDVQQDExVDQ0YgR292ZXJub3IgSWRlbnRpdHkw\\ndjAQBgcqhkjOPQIBBgUrgQQAIgNiAAQp2+w0MXLS3rx5YDYWiRYgzY5jLfyyBVNh\\n/ywU2DOJT8YDjfx0Yl7S3Uhhsf6ZDUvF4AFnCSkcx11w4SdWHb1Re6YcaV86L1Ke\\nQwnZjyqN+cIFZ+yiAHPoVCbDBoV7Lp2jfDB6MA4GA1UdDwEB/wQEAwIHgDAJBgNV\\nHRMEAjAAMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAfBgNVHSMEGDAW\\ngBQ0lEgsdXc1Hdb6A0gmrbwbi/NtoTAdBgNVHQ4EFgQUNJRILHV3NR3W+gNIJq28\\nG4vzbaEwCgYIKoZIzj0EAwMDaAAwZQIwV/lBkL6wtl2kHKM/rdEWXsgY8upVLhkv\\nFCgoYLZPL89UpuHloeKn0Gyzp3DXmgqQAjEAzWgIA2I67K1ACaIZHRmoZc7Ip3CG\\nwqA/W/HSFiwr0KyadFWCqJoUR89fswfbIi1c\\n-----END CERTIFICATE-----\",\"id\":\"658b50157f0654ba6d86cd89968726978f9e50f89e310d9d2b4e168167f0ee72\"}]}",
+      "x-ms-client-request-id" : "46991415-3160-4934-af6c-55d35f0b180b"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
