@@ -5,7 +5,6 @@
 package com.azure.data.appconfiguration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -24,55 +23,46 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
     /*
      * The key of the key-value.
      */
-    @Generated
     private String key;
 
     /*
      * The label the key-value belongs to.
      */
-    @Generated
     private String label;
 
     /*
      * The content type of the value stored within the key-value.
      */
-    @Generated
     private String contentType;
 
     /*
      * The value of the key-value.
      */
-    @Generated
     private String value;
 
     /*
      * A date representing the last time the key-value was modified.
      */
-    @Generated
     private OffsetDateTime lastModified;
 
     /*
      * The tags of the key-value
      */
-    @Generated
     private Map<String, String> tags;
 
     /*
      * Indicates whether the key-value is locked.
      */
-    @Generated
     private Boolean locked;
 
     /*
      * A value representing the current state of the resource.
      */
-    @Generated
     private String etag;
 
     /**
      * Creates an instance of KeyValue class.
      */
-    @Generated
     public KeyValue() {
     }
 
@@ -81,7 +71,6 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
      * 
      * @return the key value.
      */
-    @Generated
     public String getKey() {
         return this.key;
     }
@@ -92,7 +81,6 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
      * @param key the key value to set.
      * @return the KeyValue object itself.
      */
-    @Generated
     public KeyValue setKey(String key) {
         this.key = key;
         return this;
@@ -103,7 +91,6 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
      * 
      * @return the label value.
      */
-    @Generated
     public String getLabel() {
         return this.label;
     }
@@ -114,7 +101,6 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
      * @param label the label value to set.
      * @return the KeyValue object itself.
      */
-    @Generated
     public KeyValue setLabel(String label) {
         this.label = label;
         return this;
@@ -125,7 +111,6 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
      * 
      * @return the contentType value.
      */
-    @Generated
     public String getContentType() {
         return this.contentType;
     }
@@ -136,7 +121,6 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
      * @param contentType the contentType value to set.
      * @return the KeyValue object itself.
      */
-    @Generated
     public KeyValue setContentType(String contentType) {
         this.contentType = contentType;
         return this;
@@ -147,7 +131,6 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
      * 
      * @return the value value.
      */
-    @Generated
     public String getValue() {
         return this.value;
     }
@@ -158,7 +141,6 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
      * @param value the value value to set.
      * @return the KeyValue object itself.
      */
-    @Generated
     public KeyValue setValue(String value) {
         this.value = value;
         return this;
@@ -169,7 +151,6 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
      * 
      * @return the lastModified value.
      */
-    @Generated
     public OffsetDateTime getLastModified() {
         return this.lastModified;
     }
@@ -180,7 +161,6 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
      * @param lastModified the lastModified value to set.
      * @return the KeyValue object itself.
      */
-    @Generated
     public KeyValue setLastModified(OffsetDateTime lastModified) {
         this.lastModified = lastModified;
         return this;
@@ -191,7 +171,6 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
      * 
      * @return the tags value.
      */
-    @Generated
     public Map<String, String> getTags() {
         return this.tags;
     }
@@ -202,7 +181,6 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
      * @param tags the tags value to set.
      * @return the KeyValue object itself.
      */
-    @Generated
     public KeyValue setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
@@ -213,7 +191,6 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
      * 
      * @return the locked value.
      */
-    @Generated
     public Boolean isLocked() {
         return this.locked;
     }
@@ -224,7 +201,6 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
      * @param locked the locked value to set.
      * @return the KeyValue object itself.
      */
-    @Generated
     public KeyValue setLocked(Boolean locked) {
         this.locked = locked;
         return this;
@@ -235,7 +211,6 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
      * 
      * @return the etag value.
      */
-    @Generated
     public String getEtag() {
         return this.etag;
     }
@@ -246,7 +221,6 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
      * @param etag the etag value to set.
      * @return the KeyValue object itself.
      */
-    @Generated
     public KeyValue setEtag(String etag) {
         this.etag = etag;
         return this;
@@ -255,7 +229,6 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -279,7 +252,6 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the KeyValue.
      */
-    @Generated
     public static KeyValue fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             KeyValue deserializedKeyValue = new KeyValue();
