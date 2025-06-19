@@ -1,5 +1,16 @@
 # Release History
 
+## 12.29.1 (2025-06-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
+- Upgraded `azure-storage-blob` from `12.30.0` to version `12.30.1`.
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+
+
 ## 12.29.0 (2025-03-11)
 
 ### Features Added
