@@ -28,7 +28,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-translation-document</artifactId>
-    <version>1.1.0-beta.1</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -52,7 +52,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.15.3</version>
+    <version>1.14.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -517,5 +517,5 @@ For details on contributing to this repository, see the [contributing guide](htt
 [sample_getSupportedFormats]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/translation/azure-ai-translation-document/src/samples/java/com/azure/ai/translation/document/GetSupportedFormats.java
 [azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
 [wiki_identity]: https://learn.microsoft.com/azure/developer/java/sdk/identity
-[aad_authorization]: https://learn.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
+[aad_authorization]: https://docs.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
 [managed_identities_for_document_translation]: https://learn.microsoft.com/azure/ai-services/translator/document-translation/how-to-guides/create-use-managed-identities
