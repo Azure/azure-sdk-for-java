@@ -72,7 +72,7 @@ public final class WebPubSubsImpl {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AzureWebPubSubServiceRestApiWebPubSubs")
+    @ServiceInterface(name = "AzureWebPubSubServic")
     public interface WebPubSubsService {
         @Post("/api/hubs/{hub}/:addToGroups")
         @ExpectedResponses({ 200 })
@@ -560,9 +560,7 @@ public final class WebPubSubsImpl {
      * <pre>
      * {@code
      * {
-     *     groups (Optional): [
-     *         String (Optional)
-     *     ]
+     *     groups: Iterable<String> (Optional)
      *     filter: String (Optional)
      * }
      * }
@@ -582,10 +580,11 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> addConnectionsToGroupsWithResponseAsync(String hub, BinaryData groupsToAdd,
         RequestOptions requestOptions) {
         if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (groupsToAdd == null) {
-            return Mono.error(new IllegalArgumentException("Parameter groupsToAdd is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter groupsToAdd is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.addConnectionsToGroups(this.client.getEndpoint(), hub,
@@ -599,9 +598,7 @@ public final class WebPubSubsImpl {
      * <pre>
      * {@code
      * {
-     *     groups (Optional): [
-     *         String (Optional)
-     *     ]
+     *     groups: Iterable<String> (Optional)
      *     filter: String (Optional)
      * }
      * }
@@ -656,7 +653,7 @@ public final class WebPubSubsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> closeAllConnectionsWithResponseAsync(String hub, RequestOptions requestOptions) {
         if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.closeAllConnections(this.client.getEndpoint(), hub,
@@ -734,7 +731,7 @@ public final class WebPubSubsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> generateClientTokenWithResponseAsync(String hub, RequestOptions requestOptions) {
         if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
         return FluxUtil.withContext(context -> service.generateClientToken(this.client.getEndpoint(), hub,
@@ -794,9 +791,7 @@ public final class WebPubSubsImpl {
      * <pre>
      * {@code
      * {
-     *     groups (Optional): [
-     *         String (Optional)
-     *     ]
+     *     groups: Iterable<String> (Optional)
      *     filter: String (Optional)
      * }
      * }
@@ -816,10 +811,11 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> removeConnectionsFromGroupsWithResponseAsync(String hub, BinaryData groupsToRemove,
         RequestOptions requestOptions) {
         if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (groupsToRemove == null) {
-            return Mono.error(new IllegalArgumentException("Parameter groupsToRemove is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter groupsToRemove is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.removeConnectionsFromGroups(this.client.getEndpoint(), hub,
@@ -833,9 +829,7 @@ public final class WebPubSubsImpl {
      * <pre>
      * {@code
      * {
-     *     groups (Optional): [
-     *         String (Optional)
-     *     ]
+     *     groups: Iterable<String> (Optional)
      *     filter: String (Optional)
      * }
      * }
@@ -906,13 +900,15 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> sendToAllWithResponseAsync(String hub, String contentType, BinaryData message,
         RequestOptions requestOptions) {
         if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (contentType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
         }
         if (message == null) {
-            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.sendToAll(this.client.getEndpoint(), hub,
@@ -998,10 +994,11 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> closeConnectionWithResponseAsync(String hub, String connectionId,
         RequestOptions requestOptions) {
         if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (connectionId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.closeConnection(this.client.getEndpoint(), hub, connectionId,
@@ -1065,10 +1062,11 @@ public final class WebPubSubsImpl {
     public Mono<Response<Boolean>> connectionExistsWithResponseAsync(String hub, String connectionId,
         RequestOptions requestOptions) {
         if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (connectionId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
         return FluxUtil.withContext(context -> service.connectionExists(this.client.getEndpoint(), hub, connectionId,
             this.client.getServiceVersion().getVersion(), requestOptions, context));
@@ -1144,16 +1142,19 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> sendToConnectionWithResponseAsync(String hub, String connectionId, String contentType,
         BinaryData message, RequestOptions requestOptions) {
         if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (connectionId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
         if (contentType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
         }
         if (message == null) {
-            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.sendToConnection(this.client.getEndpoint(), hub, connectionId,
@@ -1233,10 +1234,11 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> removeConnectionFromAllGroupsWithResponseAsync(String hub, String connectionId,
         RequestOptions requestOptions) {
         if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (connectionId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.removeConnectionFromAllGroups(this.client.getEndpoint(), hub,
@@ -1294,10 +1296,10 @@ public final class WebPubSubsImpl {
     public Mono<Response<Boolean>> groupExistsWithResponseAsync(String hub, String group,
         RequestOptions requestOptions) {
         if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (group == null) {
-            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter group is required and cannot be null."));
         }
         return FluxUtil.withContext(context -> service.groupExists(this.client.getEndpoint(), hub, group,
             this.client.getServiceVersion().getVersion(), requestOptions, context));
@@ -1360,10 +1362,10 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> closeGroupConnectionsWithResponseAsync(String hub, String group,
         RequestOptions requestOptions) {
         if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (group == null) {
-            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter group is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.closeGroupConnections(this.client.getEndpoint(), hub, group,
@@ -1446,16 +1448,18 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> sendToGroupWithResponseAsync(String hub, String group, String contentType,
         BinaryData message, RequestOptions requestOptions) {
         if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (group == null) {
-            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter group is required and cannot be null."));
         }
         if (contentType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
         }
         if (message == null) {
-            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.sendToGroup(this.client.getEndpoint(), hub, group,
@@ -1539,13 +1543,14 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> removeConnectionFromGroupWithResponseAsync(String hub, String group,
         String connectionId, RequestOptions requestOptions) {
         if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (group == null) {
-            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter group is required and cannot be null."));
         }
         if (connectionId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.removeConnectionFromGroup(this.client.getEndpoint(), hub, group,
@@ -1602,13 +1607,14 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> addConnectionToGroupWithResponseAsync(String hub, String group, String connectionId,
         RequestOptions requestOptions) {
         if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (group == null) {
-            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter group is required and cannot be null."));
         }
         if (connectionId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.addConnectionToGroup(this.client.getEndpoint(), hub, group,
@@ -1675,13 +1681,15 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> revokePermissionWithResponseAsync(String hub, String permission, String connectionId,
         RequestOptions requestOptions) {
         if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (permission == null) {
-            return Mono.error(new IllegalArgumentException("Parameter permission is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter permission is required and cannot be null."));
         }
         if (connectionId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.revokePermission(this.client.getEndpoint(), hub, permission,
@@ -1765,13 +1773,15 @@ public final class WebPubSubsImpl {
     public Mono<Response<Boolean>> checkPermissionWithResponseAsync(String hub, String permission, String connectionId,
         RequestOptions requestOptions) {
         if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (permission == null) {
-            return Mono.error(new IllegalArgumentException("Parameter permission is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter permission is required and cannot be null."));
         }
         if (connectionId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
         return FluxUtil.withContext(context -> service.checkPermission(this.client.getEndpoint(), hub, permission,
             connectionId, this.client.getServiceVersion().getVersion(), requestOptions, context));
@@ -1853,13 +1863,15 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> grantPermissionWithResponseAsync(String hub, String permission, String connectionId,
         RequestOptions requestOptions) {
         if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (permission == null) {
-            return Mono.error(new IllegalArgumentException("Parameter permission is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter permission is required and cannot be null."));
         }
         if (connectionId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.grantPermission(this.client.getEndpoint(), hub, permission,
@@ -1932,10 +1944,11 @@ public final class WebPubSubsImpl {
     public Mono<Response<Boolean>> userExistsWithResponseAsync(String hub, String userId,
         RequestOptions requestOptions) {
         if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (userId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
         return FluxUtil.withContext(context -> service.userExists(this.client.getEndpoint(), hub, userId,
             this.client.getServiceVersion().getVersion(), requestOptions, context));
@@ -1999,10 +2012,11 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> closeUserConnectionsWithResponseAsync(String hub, String userId,
         RequestOptions requestOptions) {
         if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (userId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.closeUserConnections(this.client.getEndpoint(), hub, userId,
@@ -2084,16 +2098,19 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> sendToUserWithResponseAsync(String hub, String userId, String contentType,
         BinaryData message, RequestOptions requestOptions) {
         if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (userId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
         if (contentType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
         }
         if (message == null) {
-            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.sendToUser(this.client.getEndpoint(), hub, userId,
@@ -2175,10 +2192,11 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> removeUserFromAllGroupsWithResponseAsync(String hub, String userId,
         RequestOptions requestOptions) {
         if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (userId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.removeUserFromAllGroups(this.client.getEndpoint(), hub, userId,
@@ -2231,13 +2249,14 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> removeUserFromGroupWithResponseAsync(String hub, String group, String userId,
         RequestOptions requestOptions) {
         if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (group == null) {
-            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter group is required and cannot be null."));
         }
         if (userId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.removeUserFromGroup(this.client.getEndpoint(), hub, group,
@@ -2294,13 +2313,14 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> addUserToGroupWithResponseAsync(String hub, String group, String userId,
         RequestOptions requestOptions) {
         if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (group == null) {
-            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter group is required and cannot be null."));
         }
         if (userId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.addUserToGroup(this.client.getEndpoint(), hub, group, userId,
