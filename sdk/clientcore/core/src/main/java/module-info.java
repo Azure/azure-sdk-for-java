@@ -14,7 +14,6 @@ module io.clientcore.core {
     exports io.clientcore.core.annotations;
     exports io.clientcore.core.credentials;
     exports io.clientcore.core.credentials.oauth;
-    exports io.clientcore.core.http;
     exports io.clientcore.core.http.annotations;
     exports io.clientcore.core.http.client;
     exports io.clientcore.core.http.models;
