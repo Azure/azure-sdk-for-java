@@ -32,7 +32,7 @@ public class ImageGenerationAsyncSample {
         OpenAIClientAsync client = clientBuilder.build();
 
         // Example usage of the client to generate images
-        String prompt = "Golder Retriever dog smiling when running on flower field";
+        String prompt = "Golden Retriever dog smiling when running on flower field";
         int numberOfImages = 1;
 
         ImageGenerateParams params = ImageGenerateParams.builder()
