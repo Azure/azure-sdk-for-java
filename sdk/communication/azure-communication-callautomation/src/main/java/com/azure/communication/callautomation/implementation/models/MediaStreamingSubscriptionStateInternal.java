@@ -4,7 +4,6 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,19 +15,16 @@ public final class MediaStreamingSubscriptionStateInternal
     /**
      * Static value disabled for MediaStreamingSubscriptionStateInternal.
      */
-    @Generated
     public static final MediaStreamingSubscriptionStateInternal DISABLED = fromString("disabled");
 
     /**
      * Static value inactive for MediaStreamingSubscriptionStateInternal.
      */
-    @Generated
     public static final MediaStreamingSubscriptionStateInternal INACTIVE = fromString("inactive");
 
     /**
      * Static value active for MediaStreamingSubscriptionStateInternal.
      */
-    @Generated
     public static final MediaStreamingSubscriptionStateInternal ACTIVE = fromString("active");
 
     /**
@@ -36,7 +32,6 @@ public final class MediaStreamingSubscriptionStateInternal
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public MediaStreamingSubscriptionStateInternal() {
     }
@@ -47,7 +42,6 @@ public final class MediaStreamingSubscriptionStateInternal
      * @param name a name to look for.
      * @return the corresponding MediaStreamingSubscriptionStateInternal.
      */
-    @Generated
     public static MediaStreamingSubscriptionStateInternal fromString(String name) {
         return fromString(name, MediaStreamingSubscriptionStateInternal.class);
     }
@@ -57,7 +51,6 @@ public final class MediaStreamingSubscriptionStateInternal
      * 
      * @return known MediaStreamingSubscriptionStateInternal values.
      */
-    @Generated
     public static Collection<MediaStreamingSubscriptionStateInternal> values() {
         return values(MediaStreamingSubscriptionStateInternal.class);
     }

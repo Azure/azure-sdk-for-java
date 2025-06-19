@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,19 +19,16 @@ public final class CancelAddParticipantResponse implements JsonSerializable<Canc
     /*
      * Invitation ID used to cancel the add participant action.
      */
-    @Generated
     private String invitationId;
 
     /*
      * The operation context provided by client.
      */
-    @Generated
     private String operationContext;
 
     /**
      * Creates an instance of CancelAddParticipantResponse class.
      */
-    @Generated
     public CancelAddParticipantResponse() {
     }
 
@@ -41,7 +37,6 @@ public final class CancelAddParticipantResponse implements JsonSerializable<Canc
      * 
      * @return the invitationId value.
      */
-    @Generated
     public String getInvitationId() {
         return this.invitationId;
     }
@@ -52,7 +47,6 @@ public final class CancelAddParticipantResponse implements JsonSerializable<Canc
      * @param invitationId the invitationId value to set.
      * @return the CancelAddParticipantResponse object itself.
      */
-    @Generated
     public CancelAddParticipantResponse setInvitationId(String invitationId) {
         this.invitationId = invitationId;
         return this;
@@ -63,7 +57,6 @@ public final class CancelAddParticipantResponse implements JsonSerializable<Canc
      * 
      * @return the operationContext value.
      */
-    @Generated
     public String getOperationContext() {
         return this.operationContext;
     }
@@ -74,7 +67,6 @@ public final class CancelAddParticipantResponse implements JsonSerializable<Canc
      * @param operationContext the operationContext value to set.
      * @return the CancelAddParticipantResponse object itself.
      */
-    @Generated
     public CancelAddParticipantResponse setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
@@ -83,7 +75,6 @@ public final class CancelAddParticipantResponse implements JsonSerializable<Canc
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -100,7 +91,6 @@ public final class CancelAddParticipantResponse implements JsonSerializable<Canc
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the CancelAddParticipantResponse.
      */
-    @Generated
     public static CancelAddParticipantResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CancelAddParticipantResponse deserializedCancelAddParticipantResponse = new CancelAddParticipantResponse();

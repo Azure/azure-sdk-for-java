@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,26 +20,22 @@ public final class InterruptAudioAndAnnounceRequest implements JsonSerializable<
     /*
      * The source of the audio to be played.
      */
-    @Generated
     private List<PlaySourceInternal> playSources;
 
     /*
      * The list of call participants play provided audio to.
      * Plays to everyone in the call when not provided.
      */
-    @Generated
     private CommunicationIdentifierModel playTo;
 
     /*
      * The value to identify context of the operation.
      */
-    @Generated
     private String operationContext;
 
     /**
      * Creates an instance of InterruptAudioAndAnnounceRequest class.
      */
-    @Generated
     public InterruptAudioAndAnnounceRequest() {
     }
 
@@ -49,7 +44,6 @@ public final class InterruptAudioAndAnnounceRequest implements JsonSerializable<
      * 
      * @return the playSources value.
      */
-    @Generated
     public List<PlaySourceInternal> getPlaySources() {
         return this.playSources;
     }
@@ -60,7 +54,6 @@ public final class InterruptAudioAndAnnounceRequest implements JsonSerializable<
      * @param playSources the playSources value to set.
      * @return the InterruptAudioAndAnnounceRequest object itself.
      */
-    @Generated
     public InterruptAudioAndAnnounceRequest setPlaySources(List<PlaySourceInternal> playSources) {
         this.playSources = playSources;
         return this;
@@ -72,7 +65,6 @@ public final class InterruptAudioAndAnnounceRequest implements JsonSerializable<
      * 
      * @return the playTo value.
      */
-    @Generated
     public CommunicationIdentifierModel getPlayTo() {
         return this.playTo;
     }
@@ -84,7 +76,6 @@ public final class InterruptAudioAndAnnounceRequest implements JsonSerializable<
      * @param playTo the playTo value to set.
      * @return the InterruptAudioAndAnnounceRequest object itself.
      */
-    @Generated
     public InterruptAudioAndAnnounceRequest setPlayTo(CommunicationIdentifierModel playTo) {
         this.playTo = playTo;
         return this;
@@ -95,7 +86,6 @@ public final class InterruptAudioAndAnnounceRequest implements JsonSerializable<
      * 
      * @return the operationContext value.
      */
-    @Generated
     public String getOperationContext() {
         return this.operationContext;
     }
@@ -106,7 +96,6 @@ public final class InterruptAudioAndAnnounceRequest implements JsonSerializable<
      * @param operationContext the operationContext value to set.
      * @return the InterruptAudioAndAnnounceRequest object itself.
      */
-    @Generated
     public InterruptAudioAndAnnounceRequest setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
@@ -115,7 +104,6 @@ public final class InterruptAudioAndAnnounceRequest implements JsonSerializable<
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -134,7 +122,6 @@ public final class InterruptAudioAndAnnounceRequest implements JsonSerializable<
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the InterruptAudioAndAnnounceRequest.
      */
-    @Generated
     public static InterruptAudioAndAnnounceRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             InterruptAudioAndAnnounceRequest deserializedInterruptAudioAndAnnounceRequest

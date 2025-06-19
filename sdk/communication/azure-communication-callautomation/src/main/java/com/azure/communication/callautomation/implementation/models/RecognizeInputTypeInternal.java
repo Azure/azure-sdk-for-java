@@ -4,7 +4,6 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,25 +14,21 @@ public final class RecognizeInputTypeInternal extends ExpandableStringEnum<Recog
     /**
      * Static value dtmf for RecognizeInputTypeInternal.
      */
-    @Generated
     public static final RecognizeInputTypeInternal DTMF = fromString("dtmf");
 
     /**
      * Static value speech for RecognizeInputTypeInternal.
      */
-    @Generated
     public static final RecognizeInputTypeInternal SPEECH = fromString("speech");
 
     /**
      * Static value speechOrDtmf for RecognizeInputTypeInternal.
      */
-    @Generated
     public static final RecognizeInputTypeInternal SPEECH_OR_DTMF = fromString("speechOrDtmf");
 
     /**
      * Static value choices for RecognizeInputTypeInternal.
      */
-    @Generated
     public static final RecognizeInputTypeInternal CHOICES = fromString("choices");
 
     /**
@@ -41,7 +36,6 @@ public final class RecognizeInputTypeInternal extends ExpandableStringEnum<Recog
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public RecognizeInputTypeInternal() {
     }
@@ -52,7 +46,6 @@ public final class RecognizeInputTypeInternal extends ExpandableStringEnum<Recog
      * @param name a name to look for.
      * @return the corresponding RecognizeInputTypeInternal.
      */
-    @Generated
     public static RecognizeInputTypeInternal fromString(String name) {
         return fromString(name, RecognizeInputTypeInternal.class);
     }
@@ -62,7 +55,6 @@ public final class RecognizeInputTypeInternal extends ExpandableStringEnum<Recog
      * 
      * @return known RecognizeInputTypeInternal values.
      */
-    @Generated
     public static Collection<RecognizeInputTypeInternal> values() {
         return values(RecognizeInputTypeInternal.class);
     }

@@ -29,10 +29,10 @@ autorest README.md --java --v4
 ### Code generation settings
 
 ``` yaml
-tag: package-2024-09-01-preview
-use: '@autorest/java@4.1.52'
+tag: package-2025-05-15
+use: '@autorest/java@4.1.29'
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/d1bedfa9c084a2e3f9cbeb075c532d691c3c0095/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/d87c0a3d1abbd1d1aa1b487d99e77769b6895ef4/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -158,11 +158,17 @@ directive:
     from: MediaStreamingOptions
     to: MediaStreamingOptionsInternal
 - rename-model:
+    from: WebSocketMediaStreamingOptions
+    to: WebSocketMediaStreamingOptionsInternal
+- rename-model:
     from: MediaStreamingSubscription
     to: MediaStreamingSubscriptionInternal
 - rename-model:
     from: TranscriptionSubscription
     to: TranscriptionSubscriptionInternal
+- rename-model:
+    from: WebSocketTranscriptionOptions
+    to: WebSocketTranscriptionOptionsInternal
 - rename-model:
     from: DtmfOptions
     to: DtmfOptionsInternal
@@ -411,24 +417,14 @@ directive:
     $.name = "MediaStreamingContentTypeInternal";
 ```
 
-### Rename MediaStreamingTransportType to MediaStreamingTransportTypeInternal
+### Rename StreamingTransportType to StreamingTransportTypeInternal
 
 ``` yaml
 directive:
 - from: swagger-document
-  where: $.definitions.MediaStreamingTransportType["x-ms-enum"]
+  where: $.definitions.StreamingTransportType["x-ms-enum"]
   transform: >
-    $.name = "MediaStreamingTransportTypeInternal";
-```
-
-### Rename TranscriptionTransportType to TranscriptionTransportTypeInternal
-
-``` yaml
-directive:
-- from: swagger-document
-  where: $.definitions.TranscriptionTransportType["x-ms-enum"]
-  transform: >
-    $.name = "TranscriptionTransportTypeInternal";
+    $.name = "StreamingTransportTypeInternal";
 ```
 
 ### Rename RecognitionType to RecognitionTypeInternal
@@ -559,18 +555,4 @@ directive:
   where: $.definitions.AudioFormat["x-ms-enum"]
   transform: >
     $.name = "AudioFormatInternal";
-```
-
-### Configure participantRawId to skip path encoding
-
-getParticipant participantRawId is not encoded which results HMAC failures on the backend, to fix the issue, currently
-overriding the getParticipant signature and sending the participantRawId as encoded
-This needs to be fixed in the GA release
-
-``` yaml
-directive:
-- from: swagger-document
-  where: $.paths["/calling/callConnections/{callConnectionId}/participants/{participantRawId}"].get.parameters
-  transform: >
-    $.find(param => param.name === "participantRawId")["x-ms-skip-url-encoding"] = true;
 ```
