@@ -26,7 +26,9 @@ public final class ThreadCreationDateRetentionPolicy extends ChatRetentionPolicy
     private int deleteThreadAfterDays;
 
     /**
-     * Creates an instance of ThreadCreationDateRetentionPolicy class.
+     * Creates an instance of ThreadCreationDateRetentionPolicy.
+     *
+     * @param deleteThreadAfterDays Number of days after creation to delete the thread.
      */
     public ThreadCreationDateRetentionPolicy(int deleteThreadAfterDays) {
         this.deleteThreadAfterDays = deleteThreadAfterDays;
