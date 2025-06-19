@@ -257,6 +257,10 @@ class BatchClientTestBase extends TestProxyTestBase {
         return batchClient.poolExists(poolId);
     }
 
+    static Mono<Boolean> poolExists(BatchAsyncClient batchAsyncClient, String poolId) {
+        return batchAsyncClient.poolExists(poolId);
+    }
+
     static BlobContainerClient createBlobContainer(String storageAccountName, String storageAccountKey,
         String containerName) throws BlobStorageException {
         // Create storage credential from name and key
