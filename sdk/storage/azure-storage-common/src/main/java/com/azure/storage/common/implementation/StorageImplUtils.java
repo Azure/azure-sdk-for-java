@@ -330,11 +330,15 @@ public class StorageImplUtils {
              * Note : This is currently supported only for blob package.
              */
             if (errorCode == null && headerName == null) {
-                errorCode = extractXmlTagValue(message, "Code");
-                headerName = extractXmlTagValue(message, "HeaderName");
-                if (Constants.HeaderConstants.INVALID_HEADER_VALUE.equals(errorCode)
-                    && Constants.HeaderConstants.VERSION.equalsIgnoreCase(headerName)) {
-                    return Constants.INVALID_VERSION_HEADER_MESSAGE + message;
+                try {
+                    errorCode = extractXmlTagValue(message, "Code");
+                    headerName = extractXmlTagValue(message, "HeaderName");
+                    if (Constants.HeaderConstants.INVALID_HEADER_VALUE.equals(errorCode)
+                        && Constants.HeaderConstants.VERSION.equalsIgnoreCase(headerName)) {
+                        return Constants.INVALID_VERSION_HEADER_MESSAGE + message;
+                    }
+                } catch (Exception e) {
+                    return message;
                 }
             }
         }
