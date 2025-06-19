@@ -8,8 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
-import com.azure.messaging.servicebus.administration.implementation.models.MessageCountDetails;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRuleImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.MessageCountDetailsImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionImpl;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -26,7 +27,7 @@ import static com.azure.messaging.servicebus.implementation.MessageUtils.toPrimi
  */
 @Fluent
 public final class QueueProperties {
-    private final QueueDescription description;
+    private final QueueDescriptionImpl description;
     private final List<AuthorizationRule> authorizationRules;
     private String queueName;
 
@@ -34,9 +35,8 @@ public final class QueueProperties {
         // This is used by classes in different packages to get access to private and package-private methods.
         EntityHelper.setQueueAccessor(new EntityHelper.QueueAccessor() {
             @Override
-            public QueueDescription toImplementation(QueueProperties queue,
-                List<com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRule> rules) {
-                final QueueDescription description = new QueueDescription().setAccessedAt(queue.getAccessedAt())
+            public QueueDescriptionImpl toImplementation(QueueProperties queue, List<AuthorizationRuleImpl> rules) {
+                final QueueDescriptionImpl description = new QueueDescriptionImpl().setAccessedAt(queue.getAccessedAt())
                     .setAutoDeleteOnIdle(queue.getAutoDeleteOnIdle())
                     .setCreatedAt(queue.getCreatedAt())
                     .setDeadLetteringOnMessageExpiration(queue.isDeadLetteringOnMessageExpiration())
@@ -73,7 +73,7 @@ public final class QueueProperties {
             }
 
             @Override
-            public QueueProperties toModel(QueueDescription queueDescription) {
+            public QueueProperties toModel(QueueDescriptionImpl queueDescription) {
                 return new QueueProperties(queueDescription);
             }
 
@@ -85,11 +85,11 @@ public final class QueueProperties {
     }
 
     /**
-     * Creates a queue using a {@link QueueDescription}.
+     * Creates a queue using a {@link QueueDescriptionImpl}.
      *
      * @param description The queue to use.
      */
-    QueueProperties(QueueDescription description) {
+    QueueProperties(QueueDescriptionImpl description) {
         this.description = description;
         this.authorizationRules = description.getAuthorizationRules()
             .stream()
@@ -473,7 +473,7 @@ public final class QueueProperties {
      *
      * @return the messageCountDetails value.
      */
-    MessageCountDetails getMessageCountDetails() {
+    MessageCountDetailsImpl getMessageCountDetails() {
         return description.getMessageCountDetails();
     }
 

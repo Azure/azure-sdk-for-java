@@ -28,11 +28,11 @@ import com.azure.messaging.servicebus.administration.implementation.EntitiesImpl
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
 import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementClientImpl;
 import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementSerializer;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBody;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBodyContent;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescription;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntry;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeed;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBodyContentImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBodyImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntryImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeedImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionImpl;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -75,11 +75,11 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestProxyTestBa
 
         // Act & Assert
         StepVerifier.create(entityClient.getWithResponseAsync(queueName, true, Context.NONE)).assertNext(response -> {
-            final QueueDescriptionEntry deserialize = deserialize(response, QueueDescriptionEntry.class);
+            final QueueDescriptionEntryImpl deserialize = deserialize(response, QueueDescriptionEntryImpl.class);
             assertNotNull(deserialize);
             assertNotNull(deserialize.getContent());
 
-            final QueueDescription properties = deserialize.getContent().getQueueDescription();
+            final QueueDescriptionImpl properties = deserialize.getContent().getQueueDescription();
             assertNotNull(properties);
             assertFalse(properties.getLockDuration().isZero());
         }).expectComplete().verify(DEFAULT_TIMEOUT);
@@ -97,10 +97,10 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestProxyTestBa
 
         final String queueName = testResourceNamer.randomName("test", 7);
         final CreateQueueOptions options = new CreateQueueOptions().setMaxDeliveryCount(15);
-        final QueueDescription queueProperties = EntityHelper.getQueueDescription(options);
-        final CreateQueueBody createEntity = new CreateQueueBody();
-        final CreateQueueBodyContent content
-            = new CreateQueueBodyContent().setType("application/xml").setQueueDescription(queueProperties);
+        final QueueDescriptionImpl queueProperties = EntityHelper.getQueueDescription(options);
+        final CreateQueueBodyImpl createEntity = new CreateQueueBodyImpl();
+        final CreateQueueBodyContentImpl content
+            = new CreateQueueBodyContentImpl().setType("application/xml").setQueueDescription(queueProperties);
         createEntity.setContent(content);
 
         LOGGER.info("Creating queue: {}", queueName);
@@ -108,7 +108,7 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestProxyTestBa
         // Act & Assert
         StepVerifier.create(entityClient.putWithResponseAsync(queueName, createEntity, null, Context.NONE))
             .assertNext(response -> {
-                QueueDescriptionEntry entry = deserialize(response, QueueDescriptionEntry.class);
+                QueueDescriptionEntryImpl entry = deserialize(response, QueueDescriptionEntryImpl.class);
 
                 assertNotNull(entry);
                 assertNotNull(entry.getContent().getQueueDescription());
@@ -129,10 +129,10 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestProxyTestBa
 
         final String queueName = testResourceNamer.randomName("test", 7);
         final CreateQueueOptions description = new CreateQueueOptions().setMaxDeliveryCount(15);
-        final QueueDescription queueProperties = EntityHelper.getQueueDescription(description);
-        final CreateQueueBody createEntity = new CreateQueueBody();
-        final CreateQueueBodyContent content
-            = new CreateQueueBodyContent().setType("application/xml").setQueueDescription(queueProperties);
+        final QueueDescriptionImpl queueProperties = EntityHelper.getQueueDescription(description);
+        final CreateQueueBodyImpl createEntity = new CreateQueueBodyImpl();
+        final CreateQueueBodyContentImpl content
+            = new CreateQueueBodyContentImpl().setType("application/xml").setQueueDescription(queueProperties);
         createEntity.setContent(content);
 
         LOGGER.info("Creating queue: {}", queueName);
@@ -163,8 +163,8 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestProxyTestBa
         final Response<Object> response
             = entityClient.getWithResponseAsync(queueName, true, Context.NONE).block(Duration.ofSeconds(30));
         assertNotNull(response);
-        final QueueDescriptionEntry deserialize = deserialize(response, QueueDescriptionEntry.class);
-        final QueueDescription properties = deserialize.getContent().getQueueDescription();
+        final QueueDescriptionEntryImpl deserialize = deserialize(response, QueueDescriptionEntryImpl.class);
+        final QueueDescriptionImpl properties = deserialize.getContent().getQueueDescription();
 
         final int maxDeliveryCount = properties.getMaxDeliveryCount();
         final int newDeliveryCount = maxDeliveryCount + 5;
@@ -177,13 +177,14 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestProxyTestBa
         properties.setLockDuration(newLockDuration);
         properties.setAutoDeleteOnIdle(autoDeleteOnIdle);
 
-        CreateQueueBody updated = new CreateQueueBody()
-            .setContent(new CreateQueueBodyContent().setQueueDescription(properties).setType("application/xml"));
+        CreateQueueBodyImpl updated = new CreateQueueBodyImpl()
+            .setContent(new CreateQueueBodyContentImpl().setQueueDescription(properties).setType("application/xml"));
 
         // Act & Assert
         StepVerifier.create(entityClient.putWithResponseAsync(queueName, updated, "*", Context.NONE))
             .assertNext(update -> {
-                final QueueDescriptionEntry updatedProperties = deserialize(update, QueueDescriptionEntry.class);
+                final QueueDescriptionEntryImpl updatedProperties
+                    = deserialize(update, QueueDescriptionEntryImpl.class);
                 assertNotNull(updatedProperties);
             })
             .expectComplete()
@@ -203,7 +204,7 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestProxyTestBa
         // Act & Assert
         StepVerifier.create(managementClient.listEntitiesWithResponseAsync(entityType, 0, 100, Context.NONE))
             .assertNext(response -> {
-                QueueDescriptionFeed deserialize = deserialize(response, QueueDescriptionFeed.class);
+                QueueDescriptionFeedImpl deserialize = deserialize(response, QueueDescriptionFeedImpl.class);
 
                 assertNotNull(deserialize);
                 assertNotNull(deserialize.getEntry());

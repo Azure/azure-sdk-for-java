@@ -6,7 +6,7 @@ package com.azure.messaging.servicebus.administration.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
-import com.azure.messaging.servicebus.administration.implementation.models.MessageCountDetails;
+import com.azure.messaging.servicebus.administration.implementation.models.MessageCountDetailsImpl;
 
 import java.time.OffsetDateTime;
 import java.util.Objects;
@@ -47,7 +47,7 @@ public class QueueRuntimeProperties {
         this.createdAt = queueProperties.getCreatedAt();
         this.updatedAt = queueProperties.getUpdatedAt();
 
-        final MessageCountDetails details = queueProperties.getMessageCountDetails();
+        final MessageCountDetailsImpl details = queueProperties.getMessageCountDetails();
         this.activeMessageCount = details != null ? details.getActiveMessageCount() : 0;
         this.deadLetterMessageCount = details != null ? details.getDeadLetterMessageCount() : 0;
         this.scheduledMessageCount = details != null ? details.getScheduledMessageCount() : 0;

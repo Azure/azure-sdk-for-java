@@ -4,7 +4,6 @@
 
 package com.azure.messaging.servicebus.administration.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,19 +14,16 @@ public final class AccessRights extends ExpandableStringEnum<AccessRights> {
     /**
      * Static value Manage for AccessRights.
      */
-    @Generated
     public static final AccessRights MANAGE = fromString("Manage");
 
     /**
      * Static value Send for AccessRights.
      */
-    @Generated
     public static final AccessRights SEND = fromString("Send");
 
     /**
      * Static value Listen for AccessRights.
      */
-    @Generated
     public static final AccessRights LISTEN = fromString("Listen");
 
     /**
@@ -35,7 +31,6 @@ public final class AccessRights extends ExpandableStringEnum<AccessRights> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public AccessRights() {
     }
@@ -46,7 +41,6 @@ public final class AccessRights extends ExpandableStringEnum<AccessRights> {
      * @param name a name to look for.
      * @return the corresponding AccessRights.
      */
-    @Generated
     public static AccessRights fromString(String name) {
         return fromString(name, AccessRights.class);
     }
@@ -56,7 +50,6 @@ public final class AccessRights extends ExpandableStringEnum<AccessRights> {
      * 
      * @return known AccessRights values.
      */
-    @Generated
     public static Collection<AccessRights> values() {
         return values(AccessRights.class);
     }
