@@ -5,7 +5,7 @@
 package com.azure.storage.queue.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,13 +21,11 @@ public final class QueueServiceStatistics implements XmlSerializable<QueueServic
     /*
      * Geo-Replication information for the Secondary Storage Service
      */
-    @Generated
     private GeoReplication geoReplication;
 
     /**
      * Creates an instance of QueueServiceStatistics class.
      */
-    @Generated
     public QueueServiceStatistics() {
     }
 
@@ -36,7 +34,6 @@ public final class QueueServiceStatistics implements XmlSerializable<QueueServic
      * 
      * @return the geoReplication value.
      */
-    @Generated
     public GeoReplication getGeoReplication() {
         return this.geoReplication;
     }
@@ -47,23 +44,19 @@ public final class QueueServiceStatistics implements XmlSerializable<QueueServic
      * @param geoReplication the geoReplication value to set.
      * @return the QueueServiceStatistics object itself.
      */
-    @Generated
     public QueueServiceStatistics setGeoReplication(GeoReplication geoReplication) {
         this.geoReplication = geoReplication;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "QueueServiceStatistics" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QueueServiceStatistics" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeXml(this.geoReplication, "GeoReplication");
         return xmlWriter.writeEndElement();
@@ -77,7 +70,6 @@ public final class QueueServiceStatistics implements XmlSerializable<QueueServic
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the QueueServiceStatistics.
      */
-    @Generated
     public static QueueServiceStatistics fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -92,11 +84,10 @@ public final class QueueServiceStatistics implements XmlSerializable<QueueServic
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the QueueServiceStatistics.
      */
-    @Generated
     public static QueueServiceStatistics fromXml(XmlReader xmlReader, String rootElementName)
         throws XMLStreamException {
         String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "QueueServiceStatistics" : rootElementName;
+            = CoreUtils.isNullOrEmpty(rootElementName) ? "QueueServiceStatistics" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             QueueServiceStatistics deserializedQueueServiceStatistics = new QueueServiceStatistics();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

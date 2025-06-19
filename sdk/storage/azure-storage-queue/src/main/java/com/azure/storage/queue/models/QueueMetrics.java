@@ -5,7 +5,7 @@
 package com.azure.storage.queue.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,31 +21,26 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
     /*
      * The version of Storage Analytics to configure.
      */
-    @Generated
     private String version;
 
     /*
      * Indicates whether metrics are enabled for the Queue service.
      */
-    @Generated
     private boolean enabled;
 
     /*
      * Indicates whether metrics should generate summary statistics for called API operations.
      */
-    @Generated
     private Boolean includeApis;
 
     /*
      * the retention policy
      */
-    @Generated
     private QueueRetentionPolicy retentionPolicy;
 
     /**
      * Creates an instance of QueueMetrics class.
      */
-    @Generated
     public QueueMetrics() {
     }
 
@@ -54,7 +49,6 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
      * 
      * @return the version value.
      */
-    @Generated
     public String getVersion() {
         return this.version;
     }
@@ -65,7 +59,6 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
      * @param version the version value to set.
      * @return the QueueMetrics object itself.
      */
-    @Generated
     public QueueMetrics setVersion(String version) {
         this.version = version;
         return this;
@@ -76,7 +69,6 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
      * 
      * @return the enabled value.
      */
-    @Generated
     public boolean isEnabled() {
         return this.enabled;
     }
@@ -87,7 +79,6 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
      * @param enabled the enabled value to set.
      * @return the QueueMetrics object itself.
      */
-    @Generated
     public QueueMetrics setEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
@@ -99,7 +90,6 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
      * 
      * @return the includeApis value.
      */
-    @Generated
     public Boolean isIncludeApis() {
         return this.includeApis;
     }
@@ -111,7 +101,6 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
      * @param includeApis the includeApis value to set.
      * @return the QueueMetrics object itself.
      */
-    @Generated
     public QueueMetrics setIncludeApis(Boolean includeApis) {
         this.includeApis = includeApis;
         return this;
@@ -122,7 +111,6 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
      * 
      * @return the retentionPolicy value.
      */
-    @Generated
     public QueueRetentionPolicy getRetentionPolicy() {
         return this.retentionPolicy;
     }
@@ -133,22 +121,19 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the QueueMetrics object itself.
      */
-    @Generated
     public QueueMetrics setRetentionPolicy(QueueRetentionPolicy retentionPolicy) {
         this.retentionPolicy = retentionPolicy;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "QueueMetrics" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QueueMetrics" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Version", this.version);
         xmlWriter.writeBooleanElement("Enabled", this.enabled);
@@ -165,7 +150,6 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the QueueMetrics.
      */
-    @Generated
     public static QueueMetrics fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -180,10 +164,8 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the QueueMetrics.
      */
-    @Generated
     public static QueueMetrics fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "QueueMetrics" : rootElementName;
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QueueMetrics" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             QueueMetrics deserializedQueueMetrics = new QueueMetrics();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

@@ -71,7 +71,7 @@ public final class ServicesImpl {
      * REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureQueueStorageServices")
+    @ServiceInterface(name = "AzureQueueStorageSer")
     public interface ServicesService {
 
         @Put("/")
@@ -1388,7 +1388,7 @@ public final class ServicesImpl {
     public PagedIterable<QueueItem> listQueuesSegment(String prefix, String marker, Integer maxresults,
         List<String> include, Integer timeout, String requestId) {
         return new PagedIterable<>(
-            () -> listQueuesSegmentSinglePage(prefix, marker, maxresults, include, timeout, requestId),
+            () -> listQueuesSegmentSinglePage(prefix, marker, maxresults, include, timeout, requestId, Context.NONE),
             nextLink -> listQueuesSegmentNextSinglePage(nextLink, requestId));
     }
 
@@ -1553,9 +1553,8 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QueueItem> listQueuesSegmentNoCustomHeaders(String prefix, String marker, Integer maxresults,
         List<String> include, Integer timeout, String requestId) {
-        return new PagedIterable<>(
-            () -> listQueuesSegmentNoCustomHeadersSinglePage(prefix, marker, maxresults, include, timeout, requestId),
-            nextLink -> listQueuesSegmentNextSinglePage(nextLink, requestId));
+        return new PagedIterable<>(() -> listQueuesSegmentNoCustomHeadersSinglePage(prefix, marker, maxresults, include,
+            timeout, requestId, Context.NONE), nextLink -> listQueuesSegmentNextSinglePage(nextLink, requestId));
     }
 
     /**

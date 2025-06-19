@@ -4,7 +4,7 @@
 
 package com.azure.storage.queue.implementation.models;
 
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -38,16 +38,14 @@ public final class QueueMessageItemInternalWrapper implements XmlSerializable<Qu
         return queueMessagesList;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "QueueMessagesList" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QueueMessagesList" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         if (queueMessagesList != null) {
             for (QueueMessageItemInternal element : queueMessagesList) {
@@ -57,15 +55,13 @@ public final class QueueMessageItemInternalWrapper implements XmlSerializable<Qu
         return xmlWriter.writeEndElement();
     }
 
-    @Generated
     public static QueueMessageItemInternalWrapper fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
 
-    @Generated
     public static QueueMessageItemInternalWrapper fromXml(XmlReader xmlReader, String rootElementName)
         throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "QueueMessagesList" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QueueMessagesList" : rootElementName;
         return xmlReader.readObject(rootElementName, reader -> {
             List<QueueMessageItemInternal> items = null;
 

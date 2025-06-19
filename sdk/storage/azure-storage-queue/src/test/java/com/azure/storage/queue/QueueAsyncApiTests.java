@@ -14,7 +14,6 @@ import com.azure.storage.queue.models.QueueAudience;
 import com.azure.storage.queue.models.QueueErrorCode;
 import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -883,21 +882,5 @@ public class QueueAsyncApiTests extends QueueTestBase {
             .buildAsyncClient();
 
         StepVerifier.create(aadQueue.getProperties()).assertNext(r -> assertNotNull(r)).verifyComplete();
-    }
-
-    @Test
-    @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2025-07-05")
-    public void getSetAccessPolicyOAuth() {
-        // Arrange
-        QueueServiceAsyncClient service = getOAuthQueueAsyncServiceClient();
-        Mono<Boolean> createQueue = queueAsyncClient.createIfNotExists();
-        queueAsyncClient = service.getQueueAsyncClient(queueName);
-
-        StepVerifier
-            .create(createQueue.then(queueAsyncClient.getAccessPolicy()
-                .collectList()
-                .flatMap(identifiers -> queueAsyncClient.setAccessPolicy(identifiers).then(Mono.just(identifiers)))))
-            .assertNext(Assertions::assertNotNull)
-            .verifyComplete();
     }
 }
