@@ -11,6 +11,7 @@ import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -76,22 +77,6 @@ public final class IngestionUsingDataCollectionRulesClientBuilder
     }
 
     /*
-     * The HTTP client used to send the request.
-     */
-    @Generated
-    private HttpClient httpClient;
-
-    /**
-     * {@inheritDoc}.
-     */
-    @Generated
-    @Override
-    public IngestionUsingDataCollectionRulesClientBuilder httpClient(HttpClient httpClient) {
-        this.httpClient = httpClient;
-        return this;
-    }
-
-    /*
      * The HTTP pipeline to send requests through.
      */
     @Generated
@@ -104,9 +89,25 @@ public final class IngestionUsingDataCollectionRulesClientBuilder
     @Override
     public IngestionUsingDataCollectionRulesClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
-            LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
         this.pipeline = pipeline;
+        return this;
+    }
+
+    /*
+     * The HTTP client used to send the request.
+     */
+    @Generated
+    private HttpClient httpClient;
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Generated
+    @Override
+    public IngestionUsingDataCollectionRulesClientBuilder httpClient(HttpClient httpClient) {
+        this.httpClient = httpClient;
         return this;
     }
 
@@ -261,20 +262,12 @@ public final class IngestionUsingDataCollectionRulesClientBuilder
      */
     @Generated
     private IngestionUsingDataCollectionRulesClientImpl buildInnerClient() {
-        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         IngestionUsingDataCollectionRulesServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : IngestionUsingDataCollectionRulesServiceVersion.getLatest();
         IngestionUsingDataCollectionRulesClientImpl client = new IngestionUsingDataCollectionRulesClientImpl(
             localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
         return client;
-    }
-
-    @Generated
-    private void validateClient() {
-        // This method is invoked from 'buildInnerClient'/'buildClient' method.
-        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
-        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
     }
 
     @Generated
@@ -290,8 +283,10 @@ public final class IngestionUsingDataCollectionRulesClientBuilder
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
-        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
-        if (headers != null) {
+        HttpHeaders headers = new HttpHeaders();
+        localClientOptions.getHeaders()
+            .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
+        if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
         this.pipelinePolicies.stream()
@@ -345,7 +340,7 @@ public final class IngestionUsingDataCollectionRulesClientBuilder
     private LogsIngestionAudience audience;
 
     /**
-     * Sets the audience.
+     * Sets The audience.
      *
      * @param audience the audience indicating the authorization scope of log ingestion clients.
      * @return the IngestionUsingDataCollectionRulesClientBuilder.

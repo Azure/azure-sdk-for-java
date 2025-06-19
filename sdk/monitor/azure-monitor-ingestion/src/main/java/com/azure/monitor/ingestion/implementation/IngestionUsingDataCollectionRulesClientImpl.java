@@ -152,7 +152,7 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "IngestionUsingDataCollectionRulesClient")
+    @ServiceInterface(name = "IngestionUsingDataCo")
     public interface IngestionUsingDataCollectionRulesClientService {
         @Post("/dataCollectionRules/{ruleId}/streams/{stream}")
         @ExpectedResponses({ 204 })
@@ -181,23 +181,39 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
      * Ingestion API used to directly ingest data using Data Collection Rules
      * 
      * See error response code and error response message for more detail.
-     * <p><strong>Header Parameters</strong></p>
+     * <p>
+     * <strong>Header Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Encoding</td><td>String</td><td>No</td><td>gzip</td></tr>
-     * <tr><td>x-ms-client-request-id</td><td>String</td><td>No</td><td>Client request Id</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>Content-Encoding</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>gzip</td>
+     * </tr>
+     * <tr>
+     * <td>x-ms-client-request-id</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Client request Id</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * [
      *     Object (Required)
      * ]
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param ruleId The immutable Id of the Data Collection Rule resource.
      * @param stream The streamDeclaration name as defined in the Data Collection Rule.
@@ -213,13 +229,16 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
     public Mono<Response<Void>> uploadWithResponseAsync(String ruleId, String stream, BinaryData body,
         RequestOptions requestOptions) {
         if (ruleId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter ruleId is required and cannot be null."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("Parameter ruleId is required and cannot be null."));
         }
         if (stream == null) {
-            return Mono.error(new IllegalArgumentException("Parameter stream is required and cannot be null."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("Parameter stream is required and cannot be null."));
         }
         if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("Parameter body is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.upload(this.getEndpoint(), ruleId, stream,
@@ -230,23 +249,39 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
      * Ingestion API used to directly ingest data using Data Collection Rules
      * 
      * See error response code and error response message for more detail.
-     * <p><strong>Header Parameters</strong></p>
+     * <p>
+     * <strong>Header Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Encoding</td><td>String</td><td>No</td><td>gzip</td></tr>
-     * <tr><td>x-ms-client-request-id</td><td>String</td><td>No</td><td>Client request Id</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>Content-Encoding</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>gzip</td>
+     * </tr>
+     * <tr>
+     * <td>x-ms-client-request-id</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Client request Id</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * [
      *     Object (Required)
      * ]
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param ruleId The immutable Id of the Data Collection Rule resource.
      * @param stream The streamDeclaration name as defined in the Data Collection Rule.
@@ -262,15 +297,16 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
     public Response<Void> uploadWithResponse(String ruleId, String stream, BinaryData body,
         RequestOptions requestOptions) {
         if (ruleId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter ruleId is required and cannot be null."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("Parameter ruleId is required and cannot be null."));
         }
         if (stream == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter stream is required and cannot be null."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("Parameter stream is required and cannot be null."));
         }
         if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("Parameter body is required and cannot be null."));
         }
         final String accept = "application/json";
         return service.uploadSync(this.getEndpoint(), ruleId, stream, this.getServiceVersion().getVersion(), body,
