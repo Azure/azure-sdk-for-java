@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package io.clientcore.http.netty4.implementation;
 
+import io.clientcore.core.utils.IOExceptionCheckedConsumer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufHolder;
 import io.netty.channel.ChannelHandlerContext;
@@ -10,6 +11,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.util.ReferenceCountUtil;
 
+import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.function.Consumer;
 
@@ -19,7 +21,7 @@ import java.util.function.Consumer;
  */
 public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandlerAdapter {
     private final CountDownLatch latch;
-    private final Consumer<ByteBuf> byteBufConsumer;
+    private final IOExceptionCheckedConsumer<ByteBuf> byteBufConsumer;
 
     private boolean lastRead;
     private Throwable exception;
@@ -30,7 +32,7 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
      * @param latch The latch to count down when the response is fully read, or an exception occurs.
      * @param byteBufConsumer The consumer to process the {@link ByteBuf ByteBufs} as they are read.
      */
-    public Netty4EagerConsumeChannelHandler(CountDownLatch latch, Consumer<ByteBuf> byteBufConsumer) {
+    public Netty4EagerConsumeChannelHandler(CountDownLatch latch, IOExceptionCheckedConsumer<ByteBuf> byteBufConsumer) {
         this.latch = latch;
         this.byteBufConsumer = byteBufConsumer;
     }
@@ -47,7 +49,7 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
         if (buf != null && buf.isReadable()) {
             try {
                 byteBufConsumer.accept(buf);
-            } catch (RuntimeException ex) {
+            } catch (IOException | RuntimeException ex) {
                 ReferenceCountUtil.release(buf);
                 ctx.close();
                 return;
