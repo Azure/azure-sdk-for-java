@@ -2014,10 +2014,7 @@ public class ContainerApiTests extends BlobTestBase {
         BlobServiceClient serviceClient
             = instrument(new BlobServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
                 .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
-                .httpClient(HttpClient.createDefault())
-                .pipeline(new HttpPipelineBuilder().policies(new InvalidServiceVersionPipelinePolicy())
-                    .httpClient(HttpClient.createDefault())
-                    .build())).buildClient();
+                .addPolicy(new InvalidServiceVersionPipelinePolicy())).buildClient();
 
         BlobContainerClient containerClient = serviceClient.getBlobContainerClient(generateContainerName());
 

@@ -2145,10 +2145,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         BlobServiceAsyncClient serviceAsyncClient
             = instrument(new BlobServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
                 .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
-                .httpClient(HttpClient.createDefault())
-                .pipeline(new HttpPipelineBuilder().policies(new InvalidServiceVersionPipelinePolicy())
-                    .httpClient(HttpClient.createDefault())
-                    .build())).buildAsyncClient();
+                .addPolicy(new InvalidServiceVersionPipelinePolicy())).buildAsyncClient();
 
         BlobContainerAsyncClient containerAsyncClient
             = serviceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
