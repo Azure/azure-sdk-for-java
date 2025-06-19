@@ -4,5 +4,7 @@
 
 <suppressions>
   <suppress files="com.azure.mixedreality.remoterendering.implementation.RemoteRenderingsImpl.java" checks="MissingJavadocMethodCheck" />
+  <suppress files="com.azure.mixedreality.remoterendering.implementation.MixedRealityRemoteRenderingImplBuilder.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.mixedreality.remoterendering.implementation.MixedRealityRemoteRenderingImplBuilder.java" checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" />
+  <suppress files="com.azure.mixedreality.remoterendering.implementation.MixedRealityRemoteRenderingImplBuilder.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
 </suppressions>
