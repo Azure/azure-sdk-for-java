@@ -695,7 +695,7 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#allApiImageClient")
     public void testImageGeneration(String apiType, String apiVersion, String testModel) {
         client = createAsyncClient(apiType, apiVersion);
-        String prompt = "Golder Retriever dog smiling when running on flower field";
+        String prompt = "Golden Retriever dog smiling when running on flower field";
         ImageGenerateParams params = createImageGenerateParams(testModel, prompt);
         Optional<List<Image>> images = client.images().generate(params).join().data();
         assertImageGeneration(images);
