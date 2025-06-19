@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,14 +19,12 @@ public final class EntitiesResultDocumentsItem extends EntitiesDocumentResult {
     /**
      * Creates an instance of EntitiesResultDocumentsItem class.
      */
-    @Generated
     public EntitiesResultDocumentsItem() {
     }
 
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public EntitiesResultDocumentsItem setEntities(List<Entity> entities) {
         super.setEntities(entities);
@@ -37,7 +34,6 @@ public final class EntitiesResultDocumentsItem extends EntitiesDocumentResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public EntitiesResultDocumentsItem setId(String id) {
         super.setId(id);
@@ -47,7 +43,6 @@ public final class EntitiesResultDocumentsItem extends EntitiesDocumentResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public EntitiesResultDocumentsItem setWarnings(List<DocumentWarning> warnings) {
         super.setWarnings(warnings);
@@ -57,7 +52,6 @@ public final class EntitiesResultDocumentsItem extends EntitiesDocumentResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public EntitiesResultDocumentsItem setStatistics(DocumentStatistics statistics) {
         super.setStatistics(statistics);
@@ -67,7 +61,6 @@ public final class EntitiesResultDocumentsItem extends EntitiesDocumentResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -87,7 +80,6 @@ public final class EntitiesResultDocumentsItem extends EntitiesDocumentResult {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the EntitiesResultDocumentsItem.
      */
-    @Generated
     public static EntitiesResultDocumentsItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             EntitiesResultDocumentsItem deserializedEntitiesResultDocumentsItem = new EntitiesResultDocumentsItem();
