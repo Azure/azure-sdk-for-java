@@ -16,10 +16,14 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.SyncAsyncExtension;
+import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.DateTimeRfc1123;
+
+import reactor.core.publisher.Mono;
+
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +32,10 @@ import static java.time.OffsetDateTime.now;
 
 public class SharedKeyTests extends BatchClientTestBase {
     private static BatchClient batchClientWithSharedKey;
-    private final String sharedKeyPoolId = "SharedKey-testpool";
+    private static BatchAsyncClient batchAsyncClientWithSharedKey;
+    private final String sharedKeyPoolPrefix = "SharedKey-testpool";
     private final String vmSize = "STANDARD_D1_V2";
-    private final String nodeAgentSkuId = "batch.node.ubuntu 18.04";
+    private final String nodeAgentSkuId = "batch.node.windows amd64";
 
     @Override
     protected void beforeTest() {
@@ -38,28 +43,35 @@ public class SharedKeyTests extends BatchClientTestBase {
         AzureNamedKeyCredential sharedKeyCred = getSharedKeyCredentials();
         batchClientBuilder.credential(sharedKeyCred);
         batchClientWithSharedKey = batchClientBuilder.buildClient();
+        batchAsyncClientWithSharedKey = batchClientBuilder.buildAsyncClient();
     }
 
-    @Test
+    @SyncAsyncTest
     public void testPoolCRUD() {
+        // Generate a jobId that is unique per test mode (sync vs async)
+        String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
+        String poolId = sharedKeyPoolPrefix + "-" + testModeSuffix;
         try {
             /*
              * Creating Pool
-             * */
-            BatchVmImageReference imgRef = new BatchVmImageReference().setPublisher("Canonical")
-                .setOffer("UbuntuServer")
-                .setSku("18.04-LTS")
-                .setVersion("latest");
+             */
+            BatchVmImageReference imgRef = new BatchVmImageReference().setPublisher("microsoftwindowsserver")
+                .setOffer("windowsserver")
+                .setSku("2022-datacenter-smalldisk-g2");
 
             VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, nodeAgentSkuId);
 
-            BatchPoolCreateParameters poolCreateParameters = new BatchPoolCreateParameters(sharedKeyPoolId, vmSize);
+            BatchPoolCreateParameters poolCreateParameters = new BatchPoolCreateParameters(poolId, vmSize);
             poolCreateParameters.setTargetDedicatedNodes(2)
                 .setVirtualMachineConfiguration(configuration)
                 .setTargetNodeCommunicationMode(BatchNodeCommunicationMode.DEFAULT);
 
-            Response<Void> response
-                = batchClientWithSharedKey.createPoolWithResponse(BinaryData.fromObject(poolCreateParameters), null);
+            Response<Void> response = SyncAsyncExtension.execute(
+                () -> batchClientWithSharedKey.createPoolWithResponse(BinaryData.fromObject(poolCreateParameters),
+                    null),
+                () -> batchAsyncClientWithSharedKey.createPoolWithResponse(BinaryData.fromObject(poolCreateParameters),
+                    null));
+
             String authorizationValue = response.getRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
             Assertions.assertTrue(authorizationValue.contains("SharedKey"),
                 "Test is not using SharedKey authentication");
@@ -67,9 +79,13 @@ public class SharedKeyTests extends BatchClientTestBase {
             /*
              * Getting Pool
              */
-            Assertions.assertTrue(poolExists(batchClientWithSharedKey, sharedKeyPoolId));
-            BatchPool pool = batchClientWithSharedKey.getPool(sharedKeyPoolId);
-            Assertions.assertEquals(pool.getId(), sharedKeyPoolId);
+            boolean exists = SyncAsyncExtension.execute(() -> poolExists(batchClientWithSharedKey, poolId),
+                () -> poolExists(batchAsyncClientWithSharedKey, poolId));
+            Assertions.assertTrue(exists, "Pool should exist after creation");
+
+            BatchPool pool = SyncAsyncExtension.execute(() -> batchClientWithSharedKey.getPool(poolId),
+                () -> batchAsyncClientWithSharedKey.getPool(poolId));
+            Assertions.assertEquals(pool.getId(), poolId);
             Assertions.assertEquals(pool.getVirtualMachineConfiguration().getNodeAgentSkuId(), nodeAgentSkuId);
             Assertions.assertEquals(vmSize.toLowerCase(), pool.getVmSize().toLowerCase());
 
@@ -84,9 +100,12 @@ public class SharedKeyTests extends BatchClientTestBase {
 
             poolReplaceParameters.setTargetNodeCommunicationMode(BatchNodeCommunicationMode.SIMPLIFIED);
 
-            batchClientWithSharedKey.replacePoolProperties(sharedKeyPoolId, poolReplaceParameters);
+            SyncAsyncExtension.execute(
+                () -> batchClientWithSharedKey.replacePoolProperties(poolId, poolReplaceParameters),
+                () -> batchAsyncClientWithSharedKey.replacePoolProperties(poolId, poolReplaceParameters));
 
-            pool = batchClientWithSharedKey.getPool(sharedKeyPoolId);
+            pool = SyncAsyncExtension.execute(() -> batchClientWithSharedKey.getPool(poolId),
+                () -> batchAsyncClientWithSharedKey.getPool(poolId));
             Assertions.assertEquals(BatchNodeCommunicationMode.SIMPLIFIED, pool.getTargetNodeCommunicationMode());
             List<BatchMetadataItem> metadata = pool.getMetadata();
             Assertions.assertTrue(metadata.size() == 1 && metadata.get(0).getName().equals("foo"));
@@ -99,8 +118,11 @@ public class SharedKeyTests extends BatchClientTestBase {
             BatchPoolUpdateParameters poolUpdateParameters
                 = new BatchPoolUpdateParameters().setMetadata(updatedMetadata)
                     .setTargetNodeCommunicationMode(BatchNodeCommunicationMode.CLASSIC);
-            Response<Void> updatePoolResponse = batchClientWithSharedKey.updatePoolWithResponse(sharedKeyPoolId,
-                BinaryData.fromObject(poolUpdateParameters), null);
+            Response<Void> updatePoolResponse = SyncAsyncExtension.execute(
+                () -> batchClientWithSharedKey.updatePoolWithResponse(poolId,
+                    BinaryData.fromObject(poolUpdateParameters), null),
+                () -> batchAsyncClientWithSharedKey.updatePoolWithResponse(poolId,
+                    BinaryData.fromObject(poolUpdateParameters), null));;
             HttpRequest updatePoolRequest = updatePoolResponse.getRequest();
             HttpHeader ocpDateHeader = updatePoolRequest.getHeaders().get(HttpHeaderName.fromString("ocp-date"));
             Assertions.assertNull(ocpDateHeader);
@@ -112,12 +134,12 @@ public class SharedKeyTests extends BatchClientTestBase {
 
             /*
             * Get Pool With ocp-Date header
-            * */
+            */
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.setHeader(HttpHeaderName.fromString("ocp-date"), new DateTimeRfc1123(now()).toString());
             Response<BinaryData> poolGetResponse
-                = batchClientWithSharedKey.getPoolWithResponse(sharedKeyPoolId, requestOptions);
-
+                = SyncAsyncExtension.execute(() -> batchClientWithSharedKey.getPoolWithResponse(poolId, requestOptions),
+                    () -> batchAsyncClientWithSharedKey.getPoolWithResponse(poolId, requestOptions));
             HttpRequest getPoolRequest = poolGetResponse.getRequest();
             ocpDateHeader = getPoolRequest.getHeaders().get(HttpHeaderName.fromString("ocp-date"));
             Assertions.assertNotNull(ocpDateHeader);
@@ -135,10 +157,9 @@ public class SharedKeyTests extends BatchClientTestBase {
         } finally {
             /*
              * Deleting Pool
-             * */
-
-            batchClientWithSharedKey.deletePool(sharedKeyPoolId);
+             */
+            SyncAsyncExtension.execute(() -> batchClientWithSharedKey.deletePool(poolId),
+                () -> batchAsyncClientWithSharedKey.deletePool(poolId));
         }
-
     }
 }
