@@ -9,7 +9,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
@@ -1368,10 +1367,8 @@ public class ShareApiTests extends FileShareTestBase {
         assertNotNull(infoPermission);
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
-    @LiveOnly
     @Test
-    public void audienceErrorBearerChallengeRetry() {
+    public void audienceError() {
         primaryShareClient.create();
         ShareClient aadShareClient = getOAuthShareClientBuilder(new ShareClientBuilder()).shareName(shareName)
             .shareTokenIntent(ShareTokenIntent.BACKUP)
@@ -1382,7 +1379,9 @@ public class ShareApiTests extends FileShareTestBase {
             + "1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-"
             + "188441444-3053964)S:NO_ACCESS_CONTROL";
 
-        assertNotNull(aadShareClient.createPermission(permission));
+        ShareStorageException e
+            = assertThrows(ShareStorageException.class, () -> aadShareClient.createPermission(permission));
+        assertEquals(ShareErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
     }
 
     @Test
