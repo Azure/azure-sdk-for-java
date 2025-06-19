@@ -18,12 +18,6 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.developer.loadtesting.models.LoadTestingAppComponent;
-import com.azure.developer.loadtesting.models.ResourceMetric;
-import com.azure.developer.loadtesting.models.TestAppComponents;
-import com.azure.developer.loadtesting.models.TestRunAppComponents;
-import com.azure.developer.loadtesting.models.TestRunServerMetricsConfiguration;
-import com.azure.developer.loadtesting.models.TestServerMetricsConfiguration;
 import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.identity.AzureDeveloperCliCredentialBuilder;
 import com.azure.identity.AzurePipelinesCredentialBuilder;
@@ -45,28 +39,16 @@ class LoadTestingClientTestBase extends TestProxyTestBase {
 
     protected final String existingTestId
         = Configuration.getGlobalConfiguration().get("EXISTING_TEST_ID", "11111111-1234-1234-1234-123456789012");
-    protected final String existingTestProfileId = Configuration.getGlobalConfiguration()
-        .get("EXISTING_TEST_PROFILE_ID", "11112222-1234-1234-1234-123456789012");
-    protected final String existingTestProfileIdAsync = Configuration.getGlobalConfiguration()
-        .get("EXISTING_TEST_PROFILE_ID_ASYNC", "11112222-1234-1234-1234-123456789012");
     protected final String newTestId
         = Configuration.getGlobalConfiguration().get("NEW_TEST_ID", "22222222-1234-1234-1234-123456789012");
     protected final String newTestIdAsync
-        = Configuration.getGlobalConfiguration().get("NEW_TEST_ID_ASYNC", "22222222-1234-1234-1234-123456789012");
-    protected final String newTestProfileId
-        = Configuration.getGlobalConfiguration().get("NEW_TEST_PROFILE_ID", "22224444-1234-1234-1234-123456789012");
-    protected final String newTestProfileIdAsync = Configuration.getGlobalConfiguration()
-        .get("NEW_TEST_PROFILE_ID_ASYNC", "22224444-1234-1234-1234-123456789012");
+        = Configuration.getGlobalConfiguration().get("NEW_TEST_ID", "22223333-1234-1234-1234-123456789012");
     protected final String newTestRunId
         = Configuration.getGlobalConfiguration().get("NEW_TEST_RUN_ID", "33333333-1234-1234-1234-123456789012");
     protected final String newTestRunIdAsync
-        = Configuration.getGlobalConfiguration().get("NEW_TEST_RUN_ID_ASYNC", "44444444-1234-1234-1234-123456789012");
-    protected final String newTestProfileRunId
-        = Configuration.getGlobalConfiguration().get("NEW_TEST_PROFILE_RUN_ID", "55555555-1234-1234-1234-123456789012");
-    protected final String newTestProfileRunIdAsync = Configuration.getGlobalConfiguration()
-        .get("NEW_TEST_PROFILE_RUN_ID_ASYNC", "66666666-1234-1234-1234-123456789012");
+        = Configuration.getGlobalConfiguration().get("NEW_TEST_RUN_ID_2", "44444444-1234-1234-1234-123456789012");
     protected final String uploadJmxFileName
-        = Configuration.getGlobalConfiguration().get("UPLOAD_JMX_FILE_NAME", "sample.jmx");
+        = Configuration.getGlobalConfiguration().get("UPLOAD_JMX_FILE_NAME", "sample-JMX-file.jmx");
     protected final String uploadCsvFileName
         = Configuration.getGlobalConfiguration().get("UPLOAD_CSV_FILE_NAME", "additional-data.csv");
     protected final String defaultAppComponentResourceId = Configuration.getGlobalConfiguration()
@@ -74,9 +56,6 @@ class LoadTestingClientTestBase extends TestProxyTestBase {
             "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource");
     protected final String defaultServerMetricId = Configuration.getGlobalConfiguration()
         .get("SERVER_METRIC_ID",
-            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource/providers/microsoft.insights/metricdefinitions/requests/duration");
-    protected final String targetResourceId = Configuration.getGlobalConfiguration()
-        .get("TARGET_RESOURCE_ID",
             "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource/providers/microsoft.insights/metricdefinitions/requests/duration");
 
     @Override
@@ -147,66 +126,6 @@ class LoadTestingClientTestBase extends TestProxyTestBase {
         serverMetricsMap.put("metrics", metricsMap);
 
         return serverMetricsMap;
-    }
-
-    protected TestAppComponents getTestAppComponents() {
-        LoadTestingAppComponent appComponent
-            = new LoadTestingAppComponent().setResourceType("microsoft.insights/components")
-                .setResourceName("contoso-sampleapp")
-                .setDisplayName("Performance_LoadTest_Insights")
-                .setKind("web");
-        Map<String, LoadTestingAppComponent> appCompMap = new HashMap<>();
-        appCompMap.put(defaultAppComponentResourceId, appComponent);
-
-        TestAppComponents appComponents = new TestAppComponents().setComponents(appCompMap);
-
-        return appComponents;
-    }
-
-    protected TestRunAppComponents getTestRunAppComponents() {
-        LoadTestingAppComponent appComponent
-            = new LoadTestingAppComponent().setResourceType("microsoft.insights/components")
-                .setResourceName("contoso-sampleapp")
-                .setDisplayName("Performance_LoadTest_Insights")
-                .setKind("web");
-        Map<String, LoadTestingAppComponent> appCompMap = new HashMap<>();
-        appCompMap.put(defaultAppComponentResourceId, appComponent);
-
-        TestRunAppComponents appComponents = new TestRunAppComponents().setComponents(appCompMap);
-
-        return appComponents;
-    }
-
-    protected TestServerMetricsConfiguration getTestServerMetricsConfiguration() {
-
-        ResourceMetric metric = new ResourceMetric().setResourceId(defaultServerMetricId)
-            .setMetricNamespace("microsoft.insights/components")
-            .setName("requests/duration")
-            .setAggregation("Average")
-            .setResourceType("microsoft.insights/components");
-        Map<String, ResourceMetric> metricsMap = new HashMap<>();
-        metricsMap.put(defaultServerMetricId, metric);
-
-        TestServerMetricsConfiguration serverMetricsConfiguration
-            = new TestServerMetricsConfiguration().setMetrics(metricsMap);
-
-        return serverMetricsConfiguration;
-    }
-
-    protected TestRunServerMetricsConfiguration getTestRunServerMetricsConfiguration() {
-
-        ResourceMetric metric = new ResourceMetric().setResourceId(defaultServerMetricId)
-            .setMetricNamespace("microsoft.insights/components")
-            .setName("requests/duration")
-            .setAggregation("Average")
-            .setResourceType("microsoft.insights/components");
-        Map<String, ResourceMetric> metricsMap = new HashMap<>();
-        metricsMap.put(defaultServerMetricId, metric);
-
-        TestRunServerMetricsConfiguration serverMetricsConfiguration
-            = new TestRunServerMetricsConfiguration().setMetrics(metricsMap);
-
-        return serverMetricsConfiguration;
     }
 
     private TokenCredential getTokenCredential() {
