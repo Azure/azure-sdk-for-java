@@ -83,7 +83,7 @@ public final class CustomModelsImpl {
      * perform REST calls.
      */
     @Host("{endpoint}/formrecognizer/{ApiVersion}")
-    @ServiceInterface(name = "FormRecognizerClient")
+    @ServiceInterface(name = "FormRecognizerClientCustomModels")
     public interface CustomModelsService {
         @Post("/custom/models")
         @ExpectedResponses({ 201 })

@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class SqlScriptType extends ExpandableStringEnum<SqlScriptType> {
     /**
      * Static value SqlQuery for SqlScriptType.
      */
+    @Generated
     public static final SqlScriptType SQL_QUERY = fromString("SqlQuery");
 
     /**
@@ -21,6 +23,7 @@ public final class SqlScriptType extends ExpandableStringEnum<SqlScriptType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SqlScriptType() {
     }
@@ -31,6 +34,7 @@ public final class SqlScriptType extends ExpandableStringEnum<SqlScriptType> {
      * @param name a name to look for.
      * @return the corresponding SqlScriptType.
      */
+    @Generated
     public static SqlScriptType fromString(String name) {
         return fromString(name, SqlScriptType.class);
     }
@@ -40,6 +44,7 @@ public final class SqlScriptType extends ExpandableStringEnum<SqlScriptType> {
      * 
      * @return known SqlScriptType values.
      */
+    @Generated
     public static Collection<SqlScriptType> values() {
         return values(SqlScriptType.class);
     }

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,21 +22,25 @@ public final class DataFlowDebugPackageDebugSettings implements JsonSerializable
     /*
      * Source setting for data flow debug.
      */
+    @Generated
     private List<DataFlowSourceSetting> sourceSettings;
 
     /*
      * Data flow parameters.
      */
+    @Generated
     private Map<String, Object> parameters;
 
     /*
      * Parameters for dataset.
      */
+    @Generated
     private Object datasetParameters;
 
     /**
      * Creates an instance of DataFlowDebugPackageDebugSettings class.
      */
+    @Generated
     public DataFlowDebugPackageDebugSettings() {
     }
 
@@ -44,6 +49,7 @@ public final class DataFlowDebugPackageDebugSettings implements JsonSerializable
      * 
      * @return the sourceSettings value.
      */
+    @Generated
     public List<DataFlowSourceSetting> getSourceSettings() {
         return this.sourceSettings;
     }
@@ -54,6 +60,7 @@ public final class DataFlowDebugPackageDebugSettings implements JsonSerializable
      * @param sourceSettings the sourceSettings value to set.
      * @return the DataFlowDebugPackageDebugSettings object itself.
      */
+    @Generated
     public DataFlowDebugPackageDebugSettings setSourceSettings(List<DataFlowSourceSetting> sourceSettings) {
         this.sourceSettings = sourceSettings;
         return this;
@@ -64,6 +71,7 @@ public final class DataFlowDebugPackageDebugSettings implements JsonSerializable
      * 
      * @return the parameters value.
      */
+    @Generated
     public Map<String, Object> getParameters() {
         return this.parameters;
     }
@@ -74,6 +82,7 @@ public final class DataFlowDebugPackageDebugSettings implements JsonSerializable
      * @param parameters the parameters value to set.
      * @return the DataFlowDebugPackageDebugSettings object itself.
      */
+    @Generated
     public DataFlowDebugPackageDebugSettings setParameters(Map<String, Object> parameters) {
         this.parameters = parameters;
         return this;
@@ -84,6 +93,7 @@ public final class DataFlowDebugPackageDebugSettings implements JsonSerializable
      * 
      * @return the datasetParameters value.
      */
+    @Generated
     public Object getDatasetParameters() {
         return this.datasetParameters;
     }
@@ -94,6 +104,7 @@ public final class DataFlowDebugPackageDebugSettings implements JsonSerializable
      * @param datasetParameters the datasetParameters value to set.
      * @return the DataFlowDebugPackageDebugSettings object itself.
      */
+    @Generated
     public DataFlowDebugPackageDebugSettings setDatasetParameters(Object datasetParameters) {
         this.datasetParameters = datasetParameters;
         return this;
@@ -102,13 +113,16 @@ public final class DataFlowDebugPackageDebugSettings implements JsonSerializable
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("sourceSettings", this.sourceSettings,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeUntyped(element));
-        jsonWriter.writeUntypedField("datasetParameters", this.datasetParameters);
+        if (this.datasetParameters != null) {
+            jsonWriter.writeUntypedField("datasetParameters", this.datasetParameters);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -120,6 +134,7 @@ public final class DataFlowDebugPackageDebugSettings implements JsonSerializable
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DataFlowDebugPackageDebugSettings.
      */
+    @Generated
     public static DataFlowDebugPackageDebugSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataFlowDebugPackageDebugSettings deserializedDataFlowDebugPackageDebugSettings

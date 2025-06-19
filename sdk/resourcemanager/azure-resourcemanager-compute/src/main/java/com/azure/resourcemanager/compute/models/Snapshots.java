@@ -71,7 +71,9 @@ public interface Snapshots extends SupportsCreating<Snapshot.DefinitionStages.Bl
      * @param id the resource ID of the snapshot to delete
      * @return the accepted deleting operation
      */
-    Accepted<Void> beginDeleteById(String id);
+    default Accepted<Void> beginDeleteById(String id) {
+        throw new UnsupportedOperationException("[beginDeleteById(String)] is not supported in " + getClass());
+    }
 
     /**
      * Begins deleting a snapshot from Azure, identifying it by its resource ID.
@@ -80,7 +82,9 @@ public interface Snapshots extends SupportsCreating<Snapshot.DefinitionStages.Bl
      * @param context the {@link Context} of the request
      * @return the accepted deleting operation
      */
-    Accepted<Void> beginDeleteById(String id, Context context);
+    default Accepted<Void> beginDeleteById(String id, Context context) {
+        throw new UnsupportedOperationException("[beginDeleteById(String, Context)] is not supported in " + getClass());
+    }
 
     /**
      * Begins deleting a snapshot from Azure, identifying it by its name and its resource group.
@@ -89,7 +93,10 @@ public interface Snapshots extends SupportsCreating<Snapshot.DefinitionStages.Bl
      * @param name the snapshot name
      * @return the accepted deleting operation
      */
-    Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name);
+    default Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name) {
+        throw new UnsupportedOperationException(
+            "[beginDeleteByResourceGroup(String, String)] is not supported in " + getClass());
+    }
 
     /**
      * Begins deleting a snapshot from Azure, identifying it by its name and its resource group.
@@ -99,5 +106,8 @@ public interface Snapshots extends SupportsCreating<Snapshot.DefinitionStages.Bl
      * @param context the {@link Context} of the request
      * @return the accepted deleting operation
      */
-    Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, Context context);
+    default Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, Context context) {
+        throw new UnsupportedOperationException(
+            "[beginDeleteByResource(String, String, Context)] is not supported in " + getClass());
+    }
 }

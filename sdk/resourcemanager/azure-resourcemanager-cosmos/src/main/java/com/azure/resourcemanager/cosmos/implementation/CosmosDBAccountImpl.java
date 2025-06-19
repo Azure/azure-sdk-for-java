@@ -323,6 +323,11 @@ class CosmosDBAccountImpl
     }
 
     @Override
+    public boolean automaticFailoverEnabled() {
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().enableAutomaticFailover());
+    }
+
+    @Override
     public CosmosDBAccountImpl withKind(DatabaseAccountKind kind) {
         this.innerModel().withKind(kind);
         return this;
@@ -798,6 +803,18 @@ class CosmosDBAccountImpl
     @Override
     public CosmosDBAccountImpl disableLocalAuth() {
         this.innerModel().withDisableLocalAuth(true);
+        return this;
+    }
+
+    @Override
+    public CosmosDBAccountImpl enableAutomaticFailover() {
+        this.innerModel().withEnableAutomaticFailover(true);
+        return this;
+    }
+
+    @Override
+    public CosmosDBAccountImpl disableAutomaticFailover() {
+        this.innerModel().withEnableAutomaticFailover(false);
         return this;
     }
 

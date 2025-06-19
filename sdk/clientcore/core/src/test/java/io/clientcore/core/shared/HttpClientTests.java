@@ -117,6 +117,15 @@ public abstract class HttpClientTests {
         return false;
     }
 
+    /**
+     * Flag indicating if testing is using HTTP/2.
+     *
+     * @return Whether the test is using HTTP/2.
+     */
+    protected boolean isHttp2() {
+        return false;
+    }
+
     private String getRequestUri() {
         return getServerUri(isSecure());
     }
@@ -599,8 +608,9 @@ public abstract class HttpClientTests {
             new HttpRequest().setMethod(HttpMethod.PUT).setUri(uri).setHeaders(headers).setBody(body), json -> {
                 assertEquals(String.class, json.data().getClass());
                 assertEquals("test", json.data());
-                assertEquals(ContentType.APPLICATION_OCTET_STREAM, json.getHeaderValue("Content-Type"));
-                assertEquals("4", json.getHeaderValue("Content-Length"));
+                assertEquals(ContentType.APPLICATION_OCTET_STREAM,
+                    json.getHeaderValue(isHttp2() ? "content-type" : "Content-Type"));
+                assertEquals("4", json.getHeaderValue(isHttp2() ? "content-length" : "Content-Length"));
             });
     }
 

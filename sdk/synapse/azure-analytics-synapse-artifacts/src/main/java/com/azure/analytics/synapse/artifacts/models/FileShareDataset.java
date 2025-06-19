@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,47 +22,56 @@ public class FileShareDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "FileShare";
 
     /*
      * The path of the on-premises file system. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object folderPath;
 
     /*
      * The name of the on-premises file system. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object fileName;
 
     /*
      * The start of file's modified datetime. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object modifiedDatetimeStart;
 
     /*
      * The end of file's modified datetime. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object modifiedDatetimeEnd;
 
     /*
      * The format of the files.
      */
+    @Generated
     private DatasetStorageFormat format;
 
     /*
      * Specify a filter to be used to select a subset of files in the folderPath rather than all files. Type: string (or
      * Expression with resultType string).
      */
+    @Generated
     private Object fileFilter;
 
     /*
      * The data compression method used for the file system.
      */
+    @Generated
     private DatasetCompression compression;
 
     /**
      * Creates an instance of FileShareDataset class.
      */
+    @Generated
     public FileShareDataset() {
     }
 
@@ -70,6 +80,7 @@ public class FileShareDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -81,6 +92,7 @@ public class FileShareDataset extends Dataset {
      * 
      * @return the folderPath value.
      */
+    @Generated
     public Object getFolderPath() {
         return this.folderPath;
     }
@@ -92,6 +104,7 @@ public class FileShareDataset extends Dataset {
      * @param folderPath the folderPath value to set.
      * @return the FileShareDataset object itself.
      */
+    @Generated
     public FileShareDataset setFolderPath(Object folderPath) {
         this.folderPath = folderPath;
         return this;
@@ -103,6 +116,7 @@ public class FileShareDataset extends Dataset {
      * 
      * @return the fileName value.
      */
+    @Generated
     public Object getFileName() {
         return this.fileName;
     }
@@ -114,6 +128,7 @@ public class FileShareDataset extends Dataset {
      * @param fileName the fileName value to set.
      * @return the FileShareDataset object itself.
      */
+    @Generated
     public FileShareDataset setFileName(Object fileName) {
         this.fileName = fileName;
         return this;
@@ -125,6 +140,7 @@ public class FileShareDataset extends Dataset {
      * 
      * @return the modifiedDatetimeStart value.
      */
+    @Generated
     public Object getModifiedDatetimeStart() {
         return this.modifiedDatetimeStart;
     }
@@ -136,6 +152,7 @@ public class FileShareDataset extends Dataset {
      * @param modifiedDatetimeStart the modifiedDatetimeStart value to set.
      * @return the FileShareDataset object itself.
      */
+    @Generated
     public FileShareDataset setModifiedDatetimeStart(Object modifiedDatetimeStart) {
         this.modifiedDatetimeStart = modifiedDatetimeStart;
         return this;
@@ -147,6 +164,7 @@ public class FileShareDataset extends Dataset {
      * 
      * @return the modifiedDatetimeEnd value.
      */
+    @Generated
     public Object getModifiedDatetimeEnd() {
         return this.modifiedDatetimeEnd;
     }
@@ -158,6 +176,7 @@ public class FileShareDataset extends Dataset {
      * @param modifiedDatetimeEnd the modifiedDatetimeEnd value to set.
      * @return the FileShareDataset object itself.
      */
+    @Generated
     public FileShareDataset setModifiedDatetimeEnd(Object modifiedDatetimeEnd) {
         this.modifiedDatetimeEnd = modifiedDatetimeEnd;
         return this;
@@ -168,6 +187,7 @@ public class FileShareDataset extends Dataset {
      * 
      * @return the format value.
      */
+    @Generated
     public DatasetStorageFormat getFormat() {
         return this.format;
     }
@@ -178,6 +198,7 @@ public class FileShareDataset extends Dataset {
      * @param format the format value to set.
      * @return the FileShareDataset object itself.
      */
+    @Generated
     public FileShareDataset setFormat(DatasetStorageFormat format) {
         this.format = format;
         return this;
@@ -189,6 +210,7 @@ public class FileShareDataset extends Dataset {
      * 
      * @return the fileFilter value.
      */
+    @Generated
     public Object getFileFilter() {
         return this.fileFilter;
     }
@@ -200,6 +222,7 @@ public class FileShareDataset extends Dataset {
      * @param fileFilter the fileFilter value to set.
      * @return the FileShareDataset object itself.
      */
+    @Generated
     public FileShareDataset setFileFilter(Object fileFilter) {
         this.fileFilter = fileFilter;
         return this;
@@ -210,6 +233,7 @@ public class FileShareDataset extends Dataset {
      * 
      * @return the compression value.
      */
+    @Generated
     public DatasetCompression getCompression() {
         return this.compression;
     }
@@ -220,6 +244,7 @@ public class FileShareDataset extends Dataset {
      * @param compression the compression value to set.
      * @return the FileShareDataset object itself.
      */
+    @Generated
     public FileShareDataset setCompression(DatasetCompression compression) {
         this.compression = compression;
         return this;
@@ -228,6 +253,7 @@ public class FileShareDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FileShareDataset setDescription(String description) {
         super.setDescription(description);
@@ -237,6 +263,7 @@ public class FileShareDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FileShareDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -246,6 +273,7 @@ public class FileShareDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FileShareDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -255,6 +283,7 @@ public class FileShareDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FileShareDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -264,6 +293,7 @@ public class FileShareDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FileShareDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -273,6 +303,7 @@ public class FileShareDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FileShareDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -282,6 +313,7 @@ public class FileShareDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FileShareDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -291,13 +323,18 @@ public class FileShareDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
@@ -310,12 +347,22 @@ public class FileShareDataset extends Dataset {
             || fileFilter != null
             || compression != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("folderPath", this.folderPath);
-            jsonWriter.writeUntypedField("fileName", this.fileName);
-            jsonWriter.writeUntypedField("modifiedDatetimeStart", this.modifiedDatetimeStart);
-            jsonWriter.writeUntypedField("modifiedDatetimeEnd", this.modifiedDatetimeEnd);
+            if (this.folderPath != null) {
+                jsonWriter.writeUntypedField("folderPath", this.folderPath);
+            }
+            if (this.fileName != null) {
+                jsonWriter.writeUntypedField("fileName", this.fileName);
+            }
+            if (this.modifiedDatetimeStart != null) {
+                jsonWriter.writeUntypedField("modifiedDatetimeStart", this.modifiedDatetimeStart);
+            }
+            if (this.modifiedDatetimeEnd != null) {
+                jsonWriter.writeUntypedField("modifiedDatetimeEnd", this.modifiedDatetimeEnd);
+            }
             jsonWriter.writeJsonField("format", this.format);
-            jsonWriter.writeUntypedField("fileFilter", this.fileFilter);
+            if (this.fileFilter != null) {
+                jsonWriter.writeUntypedField("fileFilter", this.fileFilter);
+            }
             jsonWriter.writeJsonField("compression", this.compression);
             jsonWriter.writeEndObject();
         }
@@ -336,6 +383,7 @@ public class FileShareDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the FileShareDataset.
      */
+    @Generated
     public static FileShareDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             FileShareDataset deserializedFileShareDataset = new FileShareDataset();

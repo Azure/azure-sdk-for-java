@@ -7,8 +7,9 @@
   <groupId>com.azure.v2</groupId>
   <artifactId>azure-storage-service</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.0</version><!-- Need not change for every release-->
+  <version>2.0.0</version><!-- Need not change for every release-->
   <modules>
     <module>azure-storage-blob</module>
+    <module>azure-storage-perf</module>
   </modules>
 </project>

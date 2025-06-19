@@ -36,7 +36,6 @@ public class JdkHttpClientBuilderIT {
     private static final String PROXY_PASSWORD = "bar";
     private static final String PROXY_USER_INFO = PROXY_USERNAME + ":" + PROXY_PASSWORD + "@";
     private static final String SERVICE_ENDPOINT = "/default";
-    private static final TestConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
     private static LocalTestServer server;
     private static SimpleBasicAuthHttpProxyServer proxyServer;
@@ -44,7 +43,7 @@ public class JdkHttpClientBuilderIT {
 
     @BeforeAll
     public static void startTestServer() {
-        server = new LocalTestServer((req, resp, requestBody) -> {
+        server = new LocalTestServer(HttpProtocolVersion.HTTP_1_1, false, (req, resp, requestBody) -> {
             if ("GET".equalsIgnoreCase(req.getMethod()) && SERVICE_ENDPOINT.equals(req.getServletPath())) {
                 resp.setStatus(200);
             } else {

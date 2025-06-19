@@ -1,5 +1,5 @@
 directory: specification/keyvault/Security.KeyVault.Administration
-commit: fb9d32d1bddf171eb777b33ff7fb7dd30a8771da
+commit: 82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43
 repo: Azure/azure-rest-api-specs
 additionalDirectories:
 - specification/keyvault/Security.KeyVault.BackupRestore/

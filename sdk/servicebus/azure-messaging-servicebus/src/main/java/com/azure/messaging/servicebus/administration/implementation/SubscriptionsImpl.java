@@ -56,7 +56,7 @@ public final class SubscriptionsImpl {
      * service to perform REST calls.
      */
     @Host("https://{endpoint}")
-    @ServiceInterface(name = "ServiceBusManagement")
+    @ServiceInterface(name = "ServiceBusManagementClientSubscriptions")
     public interface SubscriptionsService {
         @Get("/{topicName}/subscriptions/{subscriptionName}")
         @ExpectedResponses({ 200 })
