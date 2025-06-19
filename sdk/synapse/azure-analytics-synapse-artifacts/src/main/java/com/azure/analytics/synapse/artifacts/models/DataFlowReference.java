@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,31 +22,37 @@ public final class DataFlowReference implements JsonSerializable<DataFlowReferen
     /*
      * Data flow reference type.
      */
+    @Generated
     private DataFlowReferenceType type;
 
     /*
      * Reference data flow name.
      */
+    @Generated
     private String referenceName;
 
     /*
      * Reference data flow parameters from dataset.
      */
+    @Generated
     private Object datasetParameters;
 
     /*
      * Data flow parameters
      */
+    @Generated
     private Map<String, Object> parameters;
 
     /*
      * Data flow reference type.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of DataFlowReference class.
      */
+    @Generated
     public DataFlowReference() {
     }
 
@@ -54,6 +61,7 @@ public final class DataFlowReference implements JsonSerializable<DataFlowReferen
      * 
      * @return the type value.
      */
+    @Generated
     public DataFlowReferenceType getType() {
         return this.type;
     }
@@ -64,6 +72,7 @@ public final class DataFlowReference implements JsonSerializable<DataFlowReferen
      * @param type the type value to set.
      * @return the DataFlowReference object itself.
      */
+    @Generated
     public DataFlowReference setType(DataFlowReferenceType type) {
         this.type = type;
         return this;
@@ -74,6 +83,7 @@ public final class DataFlowReference implements JsonSerializable<DataFlowReferen
      * 
      * @return the referenceName value.
      */
+    @Generated
     public String getReferenceName() {
         return this.referenceName;
     }
@@ -84,6 +94,7 @@ public final class DataFlowReference implements JsonSerializable<DataFlowReferen
      * @param referenceName the referenceName value to set.
      * @return the DataFlowReference object itself.
      */
+    @Generated
     public DataFlowReference setReferenceName(String referenceName) {
         this.referenceName = referenceName;
         return this;
@@ -94,6 +105,7 @@ public final class DataFlowReference implements JsonSerializable<DataFlowReferen
      * 
      * @return the datasetParameters value.
      */
+    @Generated
     public Object getDatasetParameters() {
         return this.datasetParameters;
     }
@@ -104,6 +116,7 @@ public final class DataFlowReference implements JsonSerializable<DataFlowReferen
      * @param datasetParameters the datasetParameters value to set.
      * @return the DataFlowReference object itself.
      */
+    @Generated
     public DataFlowReference setDatasetParameters(Object datasetParameters) {
         this.datasetParameters = datasetParameters;
         return this;
@@ -114,6 +127,7 @@ public final class DataFlowReference implements JsonSerializable<DataFlowReferen
      * 
      * @return the parameters value.
      */
+    @Generated
     public Map<String, Object> getParameters() {
         return this.parameters;
     }
@@ -124,6 +138,7 @@ public final class DataFlowReference implements JsonSerializable<DataFlowReferen
      * @param parameters the parameters value to set.
      * @return the DataFlowReference object itself.
      */
+    @Generated
     public DataFlowReference setParameters(Map<String, Object> parameters) {
         this.parameters = parameters;
         return this;
@@ -134,6 +149,7 @@ public final class DataFlowReference implements JsonSerializable<DataFlowReferen
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -144,6 +160,7 @@ public final class DataFlowReference implements JsonSerializable<DataFlowReferen
      * @param additionalProperties the additionalProperties value to set.
      * @return the DataFlowReference object itself.
      */
+    @Generated
     public DataFlowReference setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -152,12 +169,15 @@ public final class DataFlowReference implements JsonSerializable<DataFlowReferen
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("referenceName", this.referenceName);
-        jsonWriter.writeUntypedField("datasetParameters", this.datasetParameters);
+        if (this.datasetParameters != null) {
+            jsonWriter.writeUntypedField("datasetParameters", this.datasetParameters);
+        }
         jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeUntyped(element));
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
@@ -176,6 +196,7 @@ public final class DataFlowReference implements JsonSerializable<DataFlowReferen
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DataFlowReference.
      */
+    @Generated
     public static DataFlowReference fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataFlowReference deserializedDataFlowReference = new DataFlowReference();

@@ -59,7 +59,7 @@ public final class Metrics {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureMonitorMetricsD")
+    @ServiceInterface(name = "AzureMonitorMetricsDataAPIMetrics")
     public interface MetricsService {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/metrics")
         @ExpectedResponses({ 200 })

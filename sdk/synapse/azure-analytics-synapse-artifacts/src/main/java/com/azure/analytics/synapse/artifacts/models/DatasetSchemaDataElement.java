@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,21 +22,25 @@ public final class DatasetSchemaDataElement implements JsonSerializable<DatasetS
     /*
      * Name of the schema column. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object name;
 
     /*
      * Type of the schema column. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object type;
 
     /*
      * Columns that define the physical type schema of the dataset.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of DatasetSchemaDataElement class.
      */
+    @Generated
     public DatasetSchemaDataElement() {
     }
 
@@ -44,6 +49,7 @@ public final class DatasetSchemaDataElement implements JsonSerializable<DatasetS
      * 
      * @return the name value.
      */
+    @Generated
     public Object getName() {
         return this.name;
     }
@@ -54,6 +60,7 @@ public final class DatasetSchemaDataElement implements JsonSerializable<DatasetS
      * @param name the name value to set.
      * @return the DatasetSchemaDataElement object itself.
      */
+    @Generated
     public DatasetSchemaDataElement setName(Object name) {
         this.name = name;
         return this;
@@ -64,6 +71,7 @@ public final class DatasetSchemaDataElement implements JsonSerializable<DatasetS
      * 
      * @return the type value.
      */
+    @Generated
     public Object getType() {
         return this.type;
     }
@@ -74,6 +82,7 @@ public final class DatasetSchemaDataElement implements JsonSerializable<DatasetS
      * @param type the type value to set.
      * @return the DatasetSchemaDataElement object itself.
      */
+    @Generated
     public DatasetSchemaDataElement setType(Object type) {
         this.type = type;
         return this;
@@ -84,6 +93,7 @@ public final class DatasetSchemaDataElement implements JsonSerializable<DatasetS
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -94,6 +104,7 @@ public final class DatasetSchemaDataElement implements JsonSerializable<DatasetS
      * @param additionalProperties the additionalProperties value to set.
      * @return the DatasetSchemaDataElement object itself.
      */
+    @Generated
     public DatasetSchemaDataElement setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -102,11 +113,16 @@ public final class DatasetSchemaDataElement implements JsonSerializable<DatasetS
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("name", this.name);
-        jsonWriter.writeUntypedField("type", this.type);
+        if (this.name != null) {
+            jsonWriter.writeUntypedField("name", this.name);
+        }
+        if (this.type != null) {
+            jsonWriter.writeUntypedField("type", this.type);
+        }
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -123,6 +139,7 @@ public final class DatasetSchemaDataElement implements JsonSerializable<DatasetS
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DatasetSchemaDataElement.
      */
+    @Generated
     public static DatasetSchemaDataElement fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DatasetSchemaDataElement deserializedDatasetSchemaDataElement = new DatasetSchemaDataElement();

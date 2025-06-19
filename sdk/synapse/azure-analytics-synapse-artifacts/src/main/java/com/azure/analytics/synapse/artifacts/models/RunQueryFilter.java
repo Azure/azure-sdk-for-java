@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,21 +23,25 @@ public final class RunQueryFilter implements JsonSerializable<RunQueryFilter> {
      * RunEnd and Status; to query activity runs are ActivityName, ActivityRunStart, ActivityRunEnd, ActivityType and
      * Status, and to query trigger runs are TriggerName, TriggerRunTimestamp and Status.
      */
+    @Generated
     private RunQueryFilterOperand operand;
 
     /*
      * Operator to be used for filter.
      */
+    @Generated
     private RunQueryFilterOperator operator;
 
     /*
      * List of filter values.
      */
+    @Generated
     private List<String> values;
 
     /**
      * Creates an instance of RunQueryFilter class.
      */
+    @Generated
     public RunQueryFilter() {
     }
 
@@ -48,6 +53,7 @@ public final class RunQueryFilter implements JsonSerializable<RunQueryFilter> {
      * 
      * @return the operand value.
      */
+    @Generated
     public RunQueryFilterOperand getOperand() {
         return this.operand;
     }
@@ -61,6 +67,7 @@ public final class RunQueryFilter implements JsonSerializable<RunQueryFilter> {
      * @param operand the operand value to set.
      * @return the RunQueryFilter object itself.
      */
+    @Generated
     public RunQueryFilter setOperand(RunQueryFilterOperand operand) {
         this.operand = operand;
         return this;
@@ -71,6 +78,7 @@ public final class RunQueryFilter implements JsonSerializable<RunQueryFilter> {
      * 
      * @return the operator value.
      */
+    @Generated
     public RunQueryFilterOperator getOperator() {
         return this.operator;
     }
@@ -81,6 +89,7 @@ public final class RunQueryFilter implements JsonSerializable<RunQueryFilter> {
      * @param operator the operator value to set.
      * @return the RunQueryFilter object itself.
      */
+    @Generated
     public RunQueryFilter setOperator(RunQueryFilterOperator operator) {
         this.operator = operator;
         return this;
@@ -91,6 +100,7 @@ public final class RunQueryFilter implements JsonSerializable<RunQueryFilter> {
      * 
      * @return the values value.
      */
+    @Generated
     public List<String> getValues() {
         return this.values;
     }
@@ -101,6 +111,7 @@ public final class RunQueryFilter implements JsonSerializable<RunQueryFilter> {
      * @param values the values value to set.
      * @return the RunQueryFilter object itself.
      */
+    @Generated
     public RunQueryFilter setValues(List<String> values) {
         this.values = values;
         return this;
@@ -109,6 +120,7 @@ public final class RunQueryFilter implements JsonSerializable<RunQueryFilter> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -127,6 +139,7 @@ public final class RunQueryFilter implements JsonSerializable<RunQueryFilter> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RunQueryFilter.
      */
+    @Generated
     public static RunQueryFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RunQueryFilter deserializedRunQueryFilter = new RunQueryFilter();

@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class DataFeedDimension implements JsonSerializable<DataFeedDimensi
     /*
      * dimension name
      */
+    @Generated
     private String dimensionName;
 
     /*
      * dimension display name
      */
+    @Generated
     private String dimensionDisplayName;
 
     /**
      * Creates an instance of DataFeedDimension class.
      */
+    @Generated
     public DataFeedDimension() {
     }
 
@@ -37,6 +41,7 @@ public final class DataFeedDimension implements JsonSerializable<DataFeedDimensi
      * 
      * @return the dimensionName value.
      */
+    @Generated
     public String getDimensionName() {
         return this.dimensionName;
     }
@@ -47,6 +52,7 @@ public final class DataFeedDimension implements JsonSerializable<DataFeedDimensi
      * @param dimensionName the dimensionName value to set.
      * @return the DataFeedDimension object itself.
      */
+    @Generated
     public DataFeedDimension setDimensionName(String dimensionName) {
         this.dimensionName = dimensionName;
         return this;
@@ -57,6 +63,7 @@ public final class DataFeedDimension implements JsonSerializable<DataFeedDimensi
      * 
      * @return the dimensionDisplayName value.
      */
+    @Generated
     public String getDimensionDisplayName() {
         return this.dimensionDisplayName;
     }
@@ -67,6 +74,7 @@ public final class DataFeedDimension implements JsonSerializable<DataFeedDimensi
      * @param dimensionDisplayName the dimensionDisplayName value to set.
      * @return the DataFeedDimension object itself.
      */
+    @Generated
     public DataFeedDimension setDimensionDisplayName(String dimensionDisplayName) {
         this.dimensionDisplayName = dimensionDisplayName;
         return this;
@@ -75,6 +83,7 @@ public final class DataFeedDimension implements JsonSerializable<DataFeedDimensi
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class DataFeedDimension implements JsonSerializable<DataFeedDimensi
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DataFeedDimension.
      */
+    @Generated
     public static DataFeedDimension fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataFeedDimension deserializedDataFeedDimension = new DataFeedDimension();

@@ -17,9 +17,9 @@ public class SystemScanRulesetsListAll {
             = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{Endpoint}")
                 .buildSystemScanRulesetsClient();
-        // BEGIN:com.azure.analytics.purview.scanning.generated.systemscanrulesetslistall.systemscanrulesetslistall
+        // BEGIN:com.azure.analytics.purview.scanning.generated.system-scan-rulesets-list-all.system-scan-rulesets-list-all
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response = systemScanRulesetsClient.listAll(requestOptions);
-        // END:com.azure.analytics.purview.scanning.generated.systemscanrulesetslistall.systemscanrulesetslistall
+        // END:com.azure.analytics.purview.scanning.generated.system-scan-rulesets-list-all.system-scan-rulesets-list-all
     }
 }

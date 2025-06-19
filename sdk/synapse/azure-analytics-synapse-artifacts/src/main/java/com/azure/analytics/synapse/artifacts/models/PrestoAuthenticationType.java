@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class PrestoAuthenticationType extends ExpandableStringEnum<PrestoA
     /**
      * Static value Anonymous for PrestoAuthenticationType.
      */
+    @Generated
     public static final PrestoAuthenticationType ANONYMOUS = fromString("Anonymous");
 
     /**
      * Static value LDAP for PrestoAuthenticationType.
      */
+    @Generated
     public static final PrestoAuthenticationType LDAP = fromString("LDAP");
 
     /**
@@ -26,6 +29,7 @@ public final class PrestoAuthenticationType extends ExpandableStringEnum<PrestoA
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PrestoAuthenticationType() {
     }
@@ -36,6 +40,7 @@ public final class PrestoAuthenticationType extends ExpandableStringEnum<PrestoA
      * @param name a name to look for.
      * @return the corresponding PrestoAuthenticationType.
      */
+    @Generated
     public static PrestoAuthenticationType fromString(String name) {
         return fromString(name, PrestoAuthenticationType.class);
     }
@@ -45,6 +50,7 @@ public final class PrestoAuthenticationType extends ExpandableStringEnum<PrestoA
      * 
      * @return known PrestoAuthenticationType values.
      */
+    @Generated
     public static Collection<PrestoAuthenticationType> values() {
         return values(PrestoAuthenticationType.class);
     }

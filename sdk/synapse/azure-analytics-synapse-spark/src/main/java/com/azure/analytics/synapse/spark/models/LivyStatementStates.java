@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.spark.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,31 +15,37 @@ public final class LivyStatementStates extends ExpandableStringEnum<LivyStatemen
     /**
      * Static value waiting for LivyStatementStates.
      */
+    @Generated
     public static final LivyStatementStates WAITING = fromString("waiting");
 
     /**
      * Static value running for LivyStatementStates.
      */
+    @Generated
     public static final LivyStatementStates RUNNING = fromString("running");
 
     /**
      * Static value available for LivyStatementStates.
      */
+    @Generated
     public static final LivyStatementStates AVAILABLE = fromString("available");
 
     /**
      * Static value error for LivyStatementStates.
      */
+    @Generated
     public static final LivyStatementStates ERROR = fromString("error");
 
     /**
      * Static value cancelling for LivyStatementStates.
      */
+    @Generated
     public static final LivyStatementStates CANCELLING = fromString("cancelling");
 
     /**
      * Static value cancelled for LivyStatementStates.
      */
+    @Generated
     public static final LivyStatementStates CANCELLED = fromString("cancelled");
 
     /**
@@ -46,6 +53,7 @@ public final class LivyStatementStates extends ExpandableStringEnum<LivyStatemen
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public LivyStatementStates() {
     }
@@ -56,6 +64,7 @@ public final class LivyStatementStates extends ExpandableStringEnum<LivyStatemen
      * @param name a name to look for.
      * @return the corresponding LivyStatementStates.
      */
+    @Generated
     public static LivyStatementStates fromString(String name) {
         return fromString(name, LivyStatementStates.class);
     }
@@ -65,6 +74,7 @@ public final class LivyStatementStates extends ExpandableStringEnum<LivyStatemen
      * 
      * @return known LivyStatementStates values.
      */
+    @Generated
     public static Collection<LivyStatementStates> values() {
         return values(LivyStatementStates.class);
     }

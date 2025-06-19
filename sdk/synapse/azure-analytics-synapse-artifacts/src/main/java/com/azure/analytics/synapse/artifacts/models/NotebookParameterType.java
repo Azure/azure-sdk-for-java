@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class NotebookParameterType extends ExpandableStringEnum<NotebookPa
     /**
      * Static value string for NotebookParameterType.
      */
+    @Generated
     public static final NotebookParameterType STRING = fromString("string");
 
     /**
      * Static value int for NotebookParameterType.
      */
+    @Generated
     public static final NotebookParameterType INT = fromString("int");
 
     /**
      * Static value float for NotebookParameterType.
      */
+    @Generated
     public static final NotebookParameterType FLOAT = fromString("float");
 
     /**
      * Static value bool for NotebookParameterType.
      */
+    @Generated
     public static final NotebookParameterType BOOL = fromString("bool");
 
     /**
@@ -36,6 +41,7 @@ public final class NotebookParameterType extends ExpandableStringEnum<NotebookPa
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public NotebookParameterType() {
     }
@@ -46,6 +52,7 @@ public final class NotebookParameterType extends ExpandableStringEnum<NotebookPa
      * @param name a name to look for.
      * @return the corresponding NotebookParameterType.
      */
+    @Generated
     public static NotebookParameterType fromString(String name) {
         return fromString(name, NotebookParameterType.class);
     }
@@ -55,6 +62,7 @@ public final class NotebookParameterType extends ExpandableStringEnum<NotebookPa
      * 
      * @return known NotebookParameterType values.
      */
+    @Generated
     public static Collection<NotebookParameterType> values() {
         return values(NotebookParameterType.class);
     }

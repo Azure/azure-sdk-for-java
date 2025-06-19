@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class TeradataPartitionOption extends ExpandableStringEnum<Teradata
     /**
      * Static value None for TeradataPartitionOption.
      */
+    @Generated
     public static final TeradataPartitionOption NONE = fromString("None");
 
     /**
      * Static value Hash for TeradataPartitionOption.
      */
+    @Generated
     public static final TeradataPartitionOption HASH = fromString("Hash");
 
     /**
      * Static value DynamicRange for TeradataPartitionOption.
      */
+    @Generated
     public static final TeradataPartitionOption DYNAMIC_RANGE = fromString("DynamicRange");
 
     /**
@@ -31,6 +35,7 @@ public final class TeradataPartitionOption extends ExpandableStringEnum<Teradata
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public TeradataPartitionOption() {
     }
@@ -41,6 +46,7 @@ public final class TeradataPartitionOption extends ExpandableStringEnum<Teradata
      * @param name a name to look for.
      * @return the corresponding TeradataPartitionOption.
      */
+    @Generated
     public static TeradataPartitionOption fromString(String name) {
         return fromString(name, TeradataPartitionOption.class);
     }
@@ -50,6 +56,7 @@ public final class TeradataPartitionOption extends ExpandableStringEnum<Teradata
      * 
      * @return known TeradataPartitionOption values.
      */
+    @Generated
     public static Collection<TeradataPartitionOption> values() {
         return values(TeradataPartitionOption.class);
     }

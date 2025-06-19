@@ -89,6 +89,27 @@ public interface HybridComputeManagementClient {
     ExtensionMetadatasClient getExtensionMetadatas();
 
     /**
+     * Gets the ExtensionMetadataV2sClient object to access its operations.
+     * 
+     * @return the ExtensionMetadataV2sClient object.
+     */
+    ExtensionMetadataV2sClient getExtensionMetadataV2s();
+
+    /**
+     * Gets the ExtensionTypesClient object to access its operations.
+     * 
+     * @return the ExtensionTypesClient object.
+     */
+    ExtensionTypesClient getExtensionTypes();
+
+    /**
+     * Gets the ExtensionPublishersClient object to access its operations.
+     * 
+     * @return the ExtensionPublishersClient object.
+     */
+    ExtensionPublishersClient getExtensionPublishers();
+
+    /**
      * Gets the OperationsClient object to access its operations.
      * 
      * @return the OperationsClient object.

@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,26 +15,31 @@ public final class EventSubscriptionStatus extends ExpandableStringEnum<EventSub
     /**
      * Static value Enabled for EventSubscriptionStatus.
      */
+    @Generated
     public static final EventSubscriptionStatus ENABLED = fromString("Enabled");
 
     /**
      * Static value Provisioning for EventSubscriptionStatus.
      */
+    @Generated
     public static final EventSubscriptionStatus PROVISIONING = fromString("Provisioning");
 
     /**
      * Static value Deprovisioning for EventSubscriptionStatus.
      */
+    @Generated
     public static final EventSubscriptionStatus DEPROVISIONING = fromString("Deprovisioning");
 
     /**
      * Static value Disabled for EventSubscriptionStatus.
      */
+    @Generated
     public static final EventSubscriptionStatus DISABLED = fromString("Disabled");
 
     /**
      * Static value Unknown for EventSubscriptionStatus.
      */
+    @Generated
     public static final EventSubscriptionStatus UNKNOWN = fromString("Unknown");
 
     /**
@@ -41,6 +47,7 @@ public final class EventSubscriptionStatus extends ExpandableStringEnum<EventSub
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public EventSubscriptionStatus() {
     }
@@ -51,6 +58,7 @@ public final class EventSubscriptionStatus extends ExpandableStringEnum<EventSub
      * @param name a name to look for.
      * @return the corresponding EventSubscriptionStatus.
      */
+    @Generated
     public static EventSubscriptionStatus fromString(String name) {
         return fromString(name, EventSubscriptionStatus.class);
     }
@@ -60,6 +68,7 @@ public final class EventSubscriptionStatus extends ExpandableStringEnum<EventSub
      * 
      * @return known EventSubscriptionStatus values.
      */
+    @Generated
     public static Collection<EventSubscriptionStatus> values() {
         return values(EventSubscriptionStatus.class);
     }

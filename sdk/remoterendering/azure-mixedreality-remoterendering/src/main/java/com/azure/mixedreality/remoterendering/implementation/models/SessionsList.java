@@ -4,6 +4,7 @@
 
 package com.azure.mixedreality.remoterendering.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,12 +21,14 @@ public final class SessionsList implements JsonSerializable<SessionsList> {
     /*
      * The list of rendering sessions. Does not include sessions in 'Stopped' state.
      */
+    @Generated
     private final List<SessionProperties> sessions;
 
     /*
      * If more rendering sessions are available this field will contain a URL where the next batch of sessions can be
      * requested. This URL will need the same authentication as all calls to the Azure Remote Rendering API.
      */
+    @Generated
     private String nextLink;
 
     /**
@@ -33,6 +36,7 @@ public final class SessionsList implements JsonSerializable<SessionsList> {
      * 
      * @param sessions the sessions value to set.
      */
+    @Generated
     public SessionsList(List<SessionProperties> sessions) {
         this.sessions = sessions;
     }
@@ -42,6 +46,7 @@ public final class SessionsList implements JsonSerializable<SessionsList> {
      * 
      * @return the sessions value.
      */
+    @Generated
     public List<SessionProperties> getSessions() {
         return this.sessions;
     }
@@ -53,6 +58,7 @@ public final class SessionsList implements JsonSerializable<SessionsList> {
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -60,6 +66,7 @@ public final class SessionsList implements JsonSerializable<SessionsList> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -76,6 +83,7 @@ public final class SessionsList implements JsonSerializable<SessionsList> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SessionsList.
      */
+    @Generated
     public static SessionsList fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean sessionsFound = false;

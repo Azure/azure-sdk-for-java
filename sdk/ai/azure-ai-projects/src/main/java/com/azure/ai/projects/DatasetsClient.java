@@ -88,7 +88,7 @@ public final class DatasetsClient {
      *
      * @param name The name of the resource.
      * @param version The specific version id of the DatasetVersion to operate on.
-     * @param body Parameters for the action.
+     * @param pendingUploadRequest The pending upload request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -98,9 +98,9 @@ public final class DatasetsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> pendingUploadWithResponse(String name, String version, BinaryData body,
+    public Response<BinaryData> pendingUploadWithResponse(String name, String version, BinaryData pendingUploadRequest,
         RequestOptions requestOptions) {
-        return this.serviceClient.pendingUploadWithResponse(name, version, body, requestOptions);
+        return this.serviceClient.pendingUploadWithResponse(name, version, pendingUploadRequest, requestOptions);
     }
 
     /**
@@ -143,7 +143,7 @@ public final class DatasetsClient {
      *
      * @param name The name of the resource.
      * @param version The specific version id of the DatasetVersion to operate on.
-     * @param body Parameters for the action.
+     * @param pendingUploadRequest The pending upload request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -154,10 +154,11 @@ public final class DatasetsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PendingUploadResponse pendingUpload(String name, String version, PendingUploadRequest body) {
+    public PendingUploadResponse pendingUpload(String name, String version, PendingUploadRequest pendingUploadRequest) {
         // Generated convenience method for pendingUploadWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return pendingUploadWithResponse(name, version, BinaryData.fromObject(body), requestOptions).getValue()
+        return pendingUploadWithResponse(name, version, BinaryData.fromObject(pendingUploadRequest), requestOptions)
+            .getValue()
             .toObject(PendingUploadResponse.class);
     }
 
@@ -426,8 +427,8 @@ public final class DatasetsClient {
      * </pre>
      *
      * @param name The name of the resource.
-     * @param version The specific version id of the DatasetVersion to create or replace.
-     * @param body The definition of the DatasetVersion to create or update.
+     * @param version The specific version id of the DatasetVersion to create or update.
+     * @param datasetVersion The DatasetVersion to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -437,9 +438,10 @@ public final class DatasetsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateDatasetVersionWithResponse(String name, String version, BinaryData body,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateDatasetVersionWithResponse(name, version, body, requestOptions);
+    public Response<BinaryData> createOrUpdateDatasetVersionWithResponse(String name, String version,
+        BinaryData datasetVersion, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateDatasetVersionWithResponse(name, version, datasetVersion,
+            requestOptions);
     }
 
     /**
@@ -527,8 +529,8 @@ public final class DatasetsClient {
      * Create a new or update an existing DatasetVersion with the given version id.
      *
      * @param name The name of the resource.
-     * @param version The specific version id of the DatasetVersion to create or replace.
-     * @param body The definition of the DatasetVersion to create or update.
+     * @param version The specific version id of the DatasetVersion to create or update.
+     * @param datasetVersion The DatasetVersion to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -539,15 +541,16 @@ public final class DatasetsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatasetVersion createOrUpdateDatasetVersion(String name, String version, DatasetVersion body) {
+    public DatasetVersion createOrUpdateDatasetVersion(String name, String version, DatasetVersion datasetVersion) {
         // Generated convenience method for createOrUpdateDatasetVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getDatasetVersionAccessor().prepareModelForJsonMergePatch(body, true);
-        BinaryData bodyInBinaryData = BinaryData.fromObject(body);
+        JsonMergePatchHelper.getDatasetVersionAccessor().prepareModelForJsonMergePatch(datasetVersion, true);
+        BinaryData datasetVersionInBinaryData = BinaryData.fromObject(datasetVersion);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        bodyInBinaryData.getLength();
-        JsonMergePatchHelper.getDatasetVersionAccessor().prepareModelForJsonMergePatch(body, false);
-        return createOrUpdateDatasetVersionWithResponse(name, version, bodyInBinaryData, requestOptions).getValue()
+        datasetVersionInBinaryData.getLength();
+        JsonMergePatchHelper.getDatasetVersionAccessor().prepareModelForJsonMergePatch(datasetVersion, false);
+        return createOrUpdateDatasetVersionWithResponse(name, version, datasetVersionInBinaryData, requestOptions)
+            .getValue()
             .toObject(DatasetVersion.class);
     }
 }

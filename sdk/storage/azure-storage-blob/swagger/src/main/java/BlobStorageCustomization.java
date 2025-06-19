@@ -157,16 +157,6 @@ public class BlobStorageCustomization extends Customization {
                     method.setJavadocComment(baseJavadoc);
                 });
             }));
-
-        // Fix for a bug introduced in Autorest Java, this customization should be removed once fixed.
-        for (String name : Arrays.asList("BlobsDownloadHeaders", "BlobsGetPropertiesHeaders", "BlobsQueryHeaders", "ContainersGetPropertiesHeaders")) {
-            // Issue is in handing of header collections in the constructor that takes HttpHeaders.
-            // ".getValue()" was appended to "header.getName()", which isn't a valid call. Remove the "getValue()" call.
-            implementationModels.getClass(name).customizeAst(ast -> ast.getClassByName(name)
-                .flatMap(clazz -> clazz.getConstructorByParameterTypes("HttpHeaders"))
-                .ifPresent(ctor -> ctor.setBody(StaticJavaParser.parseBlock(ctor.getBody().toString()
-                    .replace("header.getName().getValue()", "header.getName()")))));
-        }
     }
 
     private static void modifyReturnExpression(MethodDeclaration method, Function<String, String> modifier) {

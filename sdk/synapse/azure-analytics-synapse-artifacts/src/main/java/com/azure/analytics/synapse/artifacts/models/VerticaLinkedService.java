@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,47 +22,56 @@ public class VerticaLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "Vertica";
 
     /*
      * An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
+    @Generated
     private Object connectionString;
 
     /*
      * Server name for connection. Type: string.
      */
+    @Generated
     private Object server;
 
     /*
      * The port for the connection. Type: integer.
      */
+    @Generated
     private Object port;
 
     /*
      * Username for authentication. Type: string.
      */
+    @Generated
     private Object uid;
 
     /*
      * Database name for connection. Type: string.
      */
+    @Generated
     private Object database;
 
     /*
      * The Azure key vault secret reference of password in connection string.
      */
+    @Generated
     private AzureKeyVaultSecretReference pwd;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of VerticaLinkedService class.
      */
+    @Generated
     public VerticaLinkedService() {
     }
 
@@ -70,6 +80,7 @@ public class VerticaLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -81,6 +92,7 @@ public class VerticaLinkedService extends LinkedService {
      * 
      * @return the connectionString value.
      */
+    @Generated
     public Object getConnectionString() {
         return this.connectionString;
     }
@@ -92,6 +104,7 @@ public class VerticaLinkedService extends LinkedService {
      * @param connectionString the connectionString value to set.
      * @return the VerticaLinkedService object itself.
      */
+    @Generated
     public VerticaLinkedService setConnectionString(Object connectionString) {
         this.connectionString = connectionString;
         return this;
@@ -102,6 +115,7 @@ public class VerticaLinkedService extends LinkedService {
      * 
      * @return the server value.
      */
+    @Generated
     public Object getServer() {
         return this.server;
     }
@@ -112,6 +126,7 @@ public class VerticaLinkedService extends LinkedService {
      * @param server the server value to set.
      * @return the VerticaLinkedService object itself.
      */
+    @Generated
     public VerticaLinkedService setServer(Object server) {
         this.server = server;
         return this;
@@ -122,6 +137,7 @@ public class VerticaLinkedService extends LinkedService {
      * 
      * @return the port value.
      */
+    @Generated
     public Object getPort() {
         return this.port;
     }
@@ -132,6 +148,7 @@ public class VerticaLinkedService extends LinkedService {
      * @param port the port value to set.
      * @return the VerticaLinkedService object itself.
      */
+    @Generated
     public VerticaLinkedService setPort(Object port) {
         this.port = port;
         return this;
@@ -142,6 +159,7 @@ public class VerticaLinkedService extends LinkedService {
      * 
      * @return the uid value.
      */
+    @Generated
     public Object getUid() {
         return this.uid;
     }
@@ -152,6 +170,7 @@ public class VerticaLinkedService extends LinkedService {
      * @param uid the uid value to set.
      * @return the VerticaLinkedService object itself.
      */
+    @Generated
     public VerticaLinkedService setUid(Object uid) {
         this.uid = uid;
         return this;
@@ -162,6 +181,7 @@ public class VerticaLinkedService extends LinkedService {
      * 
      * @return the database value.
      */
+    @Generated
     public Object getDatabase() {
         return this.database;
     }
@@ -172,6 +192,7 @@ public class VerticaLinkedService extends LinkedService {
      * @param database the database value to set.
      * @return the VerticaLinkedService object itself.
      */
+    @Generated
     public VerticaLinkedService setDatabase(Object database) {
         this.database = database;
         return this;
@@ -182,6 +203,7 @@ public class VerticaLinkedService extends LinkedService {
      * 
      * @return the pwd value.
      */
+    @Generated
     public AzureKeyVaultSecretReference getPwd() {
         return this.pwd;
     }
@@ -192,6 +214,7 @@ public class VerticaLinkedService extends LinkedService {
      * @param pwd the pwd value to set.
      * @return the VerticaLinkedService object itself.
      */
+    @Generated
     public VerticaLinkedService setPwd(AzureKeyVaultSecretReference pwd) {
         this.pwd = pwd;
         return this;
@@ -203,6 +226,7 @@ public class VerticaLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -214,6 +238,7 @@ public class VerticaLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the VerticaLinkedService object itself.
      */
+    @Generated
     public VerticaLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -222,6 +247,7 @@ public class VerticaLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public VerticaLinkedService setVersion(String version) {
         super.setVersion(version);
@@ -231,6 +257,7 @@ public class VerticaLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public VerticaLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -240,6 +267,7 @@ public class VerticaLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public VerticaLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -249,6 +277,7 @@ public class VerticaLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public VerticaLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -258,6 +287,7 @@ public class VerticaLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public VerticaLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -267,6 +297,7 @@ public class VerticaLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -284,13 +315,25 @@ public class VerticaLinkedService extends LinkedService {
             || pwd != null
             || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("connectionString", this.connectionString);
-            jsonWriter.writeUntypedField("server", this.server);
-            jsonWriter.writeUntypedField("port", this.port);
-            jsonWriter.writeUntypedField("uid", this.uid);
-            jsonWriter.writeUntypedField("database", this.database);
+            if (this.connectionString != null) {
+                jsonWriter.writeUntypedField("connectionString", this.connectionString);
+            }
+            if (this.server != null) {
+                jsonWriter.writeUntypedField("server", this.server);
+            }
+            if (this.port != null) {
+                jsonWriter.writeUntypedField("port", this.port);
+            }
+            if (this.uid != null) {
+                jsonWriter.writeUntypedField("uid", this.uid);
+            }
+            if (this.database != null) {
+                jsonWriter.writeUntypedField("database", this.database);
+            }
             jsonWriter.writeJsonField("pwd", this.pwd);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -309,6 +352,7 @@ public class VerticaLinkedService extends LinkedService {
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the VerticaLinkedService.
      */
+    @Generated
     public static VerticaLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             VerticaLinkedService deserializedVerticaLinkedService = new VerticaLinkedService();
