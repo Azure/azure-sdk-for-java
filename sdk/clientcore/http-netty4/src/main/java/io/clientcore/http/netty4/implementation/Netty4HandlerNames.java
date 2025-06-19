@@ -38,9 +38,9 @@ public final class Netty4HandlerNames {
     public static final String SSL_INITIALIZER = "clientcore.sslinitializer";
 
     /**
-     * Name for the {@link Netty4H2OrHttp11Handler}.
+     * Name for the {@link Netty4AlpnHandler}.
      */
-    public static final String HTTP_VERSION_PICKER = "clientcore.httpversionpicker";
+    public static final String ALPN = "clientcore.alpn";
 
     /**
      * Name for the HTTP/1.1 {@link HttpClientCodec}
@@ -75,7 +75,7 @@ public final class Netty4HandlerNames {
     /**
      * Name for the {@link Netty4ResponseHandler}.
      */
-    public static final String RESPONSE = "clientcore.response";
+    public static final String HTTP_1_1_RESPONSE = "clientcore.http11response";
 
     /**
      * Name for the {@link Netty4EagerConsumeChannelHandler}.

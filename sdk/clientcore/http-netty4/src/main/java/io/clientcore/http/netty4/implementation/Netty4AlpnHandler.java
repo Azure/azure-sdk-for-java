@@ -33,6 +33,7 @@ import static io.clientcore.http.netty4.implementation.Netty4Utility.setOrSuppre
 public final class Netty4AlpnHandler extends ApplicationProtocolNegotiationHandler {
     private final HttpRequest request;
     private final boolean addProgressAndTimeoutHandler;
+    private final AtomicReference<ResponseStateInfo> responseReference;
     private final AtomicReference<Throwable> errorReference;
     private final CountDownLatch latch;
 
@@ -45,10 +46,12 @@ public final class Netty4AlpnHandler extends ApplicationProtocolNegotiationHandl
      * @param latch A CountDownLatch that will be released once the request completes.
      */
     public Netty4AlpnHandler(HttpRequest request, boolean addProgressAndTimeoutHandler,
-        AtomicReference<Throwable> errorReference, CountDownLatch latch) {
+        AtomicReference<ResponseStateInfo> responseReference, AtomicReference<Throwable> errorReference,
+        CountDownLatch latch) {
         super(ApplicationProtocolNames.HTTP_1_1);
         this.request = request;
         this.addProgressAndTimeoutHandler = addProgressAndTimeoutHandler;
+        this.responseReference = responseReference;
         this.errorReference = errorReference;
         this.latch = latch;
     }
@@ -93,7 +96,17 @@ public final class Netty4AlpnHandler extends ApplicationProtocolNegotiationHandl
                 });
 
         } else if (ApplicationProtocolNames.HTTP_1_1.equals(protocol)) {
-            ctx.pipeline().addAfter(Netty4HandlerNames.SSL, Netty4HandlerNames.HTTP_1_1_CODEC, createCodec());
+            if (addProgressAndTimeoutHandler) {
+                ctx.pipeline().addAfter(Netty4HandlerNames.PROGRESS_AND_TIMEOUT, Netty4HandlerNames.HTTP_1_1_RESPONSE,
+                    new Netty4ResponseHandler(request, responseReference, errorReference, latch));
+                ctx.pipeline().addBefore(Netty4HandlerNames.PROGRESS_AND_TIMEOUT, Netty4HandlerNames.HTTP_1_1_CODEC,
+                    createCodec());
+            } else {
+                ctx.pipeline().addAfter(Netty4HandlerNames.SSL, Netty4HandlerNames.HTTP_1_1_RESPONSE,
+                    new Netty4ResponseHandler(request, responseReference, errorReference, latch));
+                ctx.pipeline().addBefore(Netty4HandlerNames.HTTP_1_1_RESPONSE, Netty4HandlerNames.HTTP_1_1_CODEC,
+                    createCodec());
+            }
 
             sendHttp11Request(request, ctx.channel(), addProgressAndTimeoutHandler, errorReference)
                 .addListener((ChannelFutureListener) sendListener -> {

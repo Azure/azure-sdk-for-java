@@ -168,7 +168,8 @@ class NettyHttpClient implements HttpClient {
                         .addLast(Netty4HandlerNames.SSL_INITIALIZER, new Netty4SslInitializationHandler());
 
                     channel.pipeline()
-                        .addLast(new Netty4AlpnHandler(request, addProgressAndTimeoutHandler, errorReference, latch));
+                        .addLast(new Netty4AlpnHandler(request, addProgressAndTimeoutHandler, responseReference,
+                            errorReference, latch));
                 }
             }
         });
@@ -199,10 +200,6 @@ class NettyHttpClient implements HttpClient {
                     .addLast(Netty4HandlerNames.PROGRESS_AND_TIMEOUT, new Netty4ProgressAndTimeoutHandler(
                         progressReporter, writeTimeoutMillis, responseTimeoutMillis, readTimeoutMillis));
             }
-
-            Netty4ResponseHandler responseHandler
-                = new Netty4ResponseHandler(request, responseReference, errorReference, latch);
-            channel.pipeline().addLast(Netty4HandlerNames.RESPONSE, responseHandler);
 
             Throwable earlyError = errorReference.get();
             if (earlyError != null) {
@@ -235,12 +232,17 @@ class NettyHttpClient implements HttpClient {
             } else {
                 // If there isn't an SslHandler, we can send the request immediately.
                 // Add the HTTP/1.1 codec, as we only support HTTP/2 when using SSL ALPN.
+                Netty4ResponseHandler responseHandler
+                    = new Netty4ResponseHandler(request, responseReference, errorReference, latch);
+                channel.pipeline().addLast(Netty4HandlerNames.HTTP_1_1_RESPONSE, responseHandler);
+
                 HttpClientCodec codec = createCodec();
                 if (addProgressAndTimeoutHandler) {
                     channel.pipeline()
                         .addBefore(Netty4HandlerNames.PROGRESS_AND_TIMEOUT, Netty4HandlerNames.HTTP_1_1_CODEC, codec);
                 } else {
-                    channel.pipeline().addBefore(Netty4HandlerNames.RESPONSE, Netty4HandlerNames.HTTP_1_1_CODEC, codec);
+                    channel.pipeline().addBefore(Netty4HandlerNames.HTTP_1_1_RESPONSE,
+                        Netty4HandlerNames.HTTP_1_1_CODEC, codec);
                 }
 
                 sendHttp11Request(request, channel, addProgressAndTimeoutHandler, errorReference)

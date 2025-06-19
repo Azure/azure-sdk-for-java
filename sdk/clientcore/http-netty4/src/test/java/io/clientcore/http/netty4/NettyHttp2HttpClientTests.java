@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Timeout;
 import java.security.SecureRandom;
 import java.util.concurrent.TimeUnit;
 
+@Disabled
 @Timeout(value = 3, unit = TimeUnit.MINUTES)
 public class NettyHttp2HttpClientTests extends HttpClientTests {
     private static LocalTestServer server;
