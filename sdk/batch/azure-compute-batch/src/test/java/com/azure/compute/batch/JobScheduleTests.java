@@ -74,107 +74,100 @@ public class JobScheduleTests extends BatchClientTestBase {
             () -> batchAsyncClient
                 .createJobSchedule(new BatchJobScheduleCreateParameters(jobScheduleId, schedule, spec)));
 
-        try {
-            // GET
-            Boolean exists = SyncAsyncExtension.execute(() -> batchClient.jobScheduleExists(jobScheduleId),
-                () -> batchAsyncClient.jobScheduleExists(jobScheduleId));
-            Assertions.assertTrue(exists);
+        // GET
+        Boolean exists = SyncAsyncExtension.execute(() -> batchClient.jobScheduleExists(jobScheduleId),
+            () -> batchAsyncClient.jobScheduleExists(jobScheduleId));
+        Assertions.assertTrue(exists);
 
-            final BatchJobSchedule[] jobScheduleHolder = new BatchJobSchedule[1];
+        final BatchJobSchedule[] jobScheduleHolder = new BatchJobSchedule[1];
 
-            jobScheduleHolder[0] = SyncAsyncExtension.execute(() -> batchClient.getJobSchedule(jobScheduleId),
-                () -> batchAsyncClient.getJobSchedule(jobScheduleId));
-            Assertions.assertNotNull(jobScheduleHolder[0]);
-            Assertions.assertEquals(jobScheduleId, jobScheduleHolder[0].getId());
-            Assertions.assertEquals((Integer) 100, jobScheduleHolder[0].getJobSpecification().getPriority());
+        jobScheduleHolder[0] = SyncAsyncExtension.execute(() -> batchClient.getJobSchedule(jobScheduleId),
+            () -> batchAsyncClient.getJobSchedule(jobScheduleId));
+        Assertions.assertNotNull(jobScheduleHolder[0]);
+        Assertions.assertEquals(jobScheduleId, jobScheduleHolder[0].getId());
+        Assertions.assertEquals((Integer) 100, jobScheduleHolder[0].getJobSpecification().getPriority());
 
-            //This case will only hold true during live mode as recorded job schedule time will be in the past.
-            //Hence, this assertion should only run in Record/Live mode.
-            if (getTestMode() == TestMode.RECORD) {
-                Assertions.assertTrue(jobScheduleHolder[0].getSchedule().getDoNotRunAfter().isAfter(now()));
+        //This case will only hold true during live mode as recorded job schedule time will be in the past.
+        //Hence, this assertion should only run in Record/Live mode.
+        if (getTestMode() == TestMode.RECORD) {
+            Assertions.assertTrue(jobScheduleHolder[0].getSchedule().getDoNotRunAfter().isAfter(now()));
+        }
+
+        // LIST
+        BatchJobSchedulesListOptions listOptions = new BatchJobSchedulesListOptions();
+        listOptions.setFilter(String.format("id eq '%s'", jobScheduleId));
+
+        Iterable<BatchJobSchedule> jobSchedules
+            = SyncAsyncExtension.execute(() -> batchClient.listJobSchedules(listOptions),
+                () -> Mono.fromCallable(() -> batchAsyncClient.listJobSchedules(listOptions).toIterable()));
+
+        Assertions.assertNotNull(jobSchedules);
+
+        boolean found = false;
+        for (BatchJobSchedule batchJobSchedule : jobSchedules) {
+            if (batchJobSchedule.getId().equals(jobScheduleId)) {
+                found = true;
+                break;
             }
+        }
+        Assertions.assertTrue(found);
 
-            // LIST
-            BatchJobSchedulesListOptions listOptions = new BatchJobSchedulesListOptions();
-            listOptions.setFilter(String.format("id eq '%s'", jobScheduleId));
+        // REPLACE
+        List<BatchMetadataItem> metadataList = new ArrayList<>();
+        metadataList.add(new BatchMetadataItem("name1", "value1"));
+        metadataList.add(new BatchMetadataItem("name2", "value2"));
 
-            Iterable<BatchJobSchedule> jobSchedules
-                = SyncAsyncExtension.execute(() -> batchClient.listJobSchedules(listOptions),
-                    () -> Mono.fromCallable(() -> batchAsyncClient.listJobSchedules(listOptions).toIterable()));
+        jobScheduleHolder[0].setMetadata(metadataList);
 
-            Assertions.assertNotNull(jobSchedules);
+        SyncAsyncExtension.execute(() -> batchClient.replaceJobSchedule(jobScheduleId, jobScheduleHolder[0]),
+            () -> batchAsyncClient.replaceJobSchedule(jobScheduleId, jobScheduleHolder[0]));
 
-            boolean found = false;
-            for (BatchJobSchedule batchJobSchedule : jobSchedules) {
-                if (batchJobSchedule.getId().equals(jobScheduleId)) {
-                    found = true;
-                    break;
-                }
-            }
-            Assertions.assertTrue(found);
+        jobScheduleHolder[0] = SyncAsyncExtension.execute(() -> batchClient.getJobSchedule(jobScheduleId),
+            () -> batchAsyncClient.getJobSchedule(jobScheduleId));
+        Assertions.assertEquals(2, jobScheduleHolder[0].getMetadata().size());
+        Assertions.assertEquals("value2", jobScheduleHolder[0].getMetadata().get(1).getValue());
 
-            // REPLACE
-            List<BatchMetadataItem> metadataList = new ArrayList<>();
-            metadataList.add(new BatchMetadataItem("name1", "value1"));
-            metadataList.add(new BatchMetadataItem("name2", "value2"));
+        // UPDATE
+        LinkedList<BatchMetadataItem> metadata = new LinkedList<>();
+        metadata.add(new BatchMetadataItem("key1", "value1"));
+        BatchJobScheduleUpdateParameters updateParams = new BatchJobScheduleUpdateParameters().setMetadata(metadata);
 
-            jobScheduleHolder[0].setMetadata(metadataList);
+        SyncAsyncExtension.execute(() -> batchClient.updateJobSchedule(jobScheduleId, updateParams),
+            () -> batchAsyncClient.updateJobSchedule(jobScheduleId, updateParams));
 
-            SyncAsyncExtension.execute(() -> batchClient.replaceJobSchedule(jobScheduleId, jobScheduleHolder[0]),
-                () -> batchAsyncClient.replaceJobSchedule(jobScheduleId, jobScheduleHolder[0]));
+        jobScheduleHolder[0] = SyncAsyncExtension.execute(() -> batchClient.getJobSchedule(jobScheduleId),
+            () -> batchAsyncClient.getJobSchedule(jobScheduleId));
+        Assertions.assertEquals(1, jobScheduleHolder[0].getMetadata().size());
+        Assertions.assertEquals("key1", jobScheduleHolder[0].getMetadata().get(0).getName());
+        Assertions.assertEquals((Integer) 100, jobScheduleHolder[0].getJobSpecification().getPriority());
 
-            jobScheduleHolder[0] = SyncAsyncExtension.execute(() -> batchClient.getJobSchedule(jobScheduleId),
-                () -> batchAsyncClient.getJobSchedule(jobScheduleId));
-            Assertions.assertEquals(2, jobScheduleHolder[0].getMetadata().size());
-            Assertions.assertEquals("value2", jobScheduleHolder[0].getMetadata().get(1).getValue());
-
-            // UPDATE
-            LinkedList<BatchMetadataItem> metadata = new LinkedList<>();
-            metadata.add(new BatchMetadataItem("key1", "value1"));
-            BatchJobScheduleUpdateParameters updateParams
-                = new BatchJobScheduleUpdateParameters().setMetadata(metadata);
-
-            SyncAsyncExtension.execute(() -> batchClient.updateJobSchedule(jobScheduleId, updateParams),
-                () -> batchAsyncClient.updateJobSchedule(jobScheduleId, updateParams));
-
-            jobScheduleHolder[0] = SyncAsyncExtension.execute(() -> batchClient.getJobSchedule(jobScheduleId),
-                () -> batchAsyncClient.getJobSchedule(jobScheduleId));
-            Assertions.assertEquals(1, jobScheduleHolder[0].getMetadata().size());
-            Assertions.assertEquals("key1", jobScheduleHolder[0].getMetadata().get(0).getName());
-            Assertions.assertEquals((Integer) 100, jobScheduleHolder[0].getJobSpecification().getPriority());
-
-            // DELETE using LRO
-            SyncPoller<BatchJobSchedule, Void> poller = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(
-                () -> batchClient.beginDeleteJobSchedule(jobScheduleId),
+        // DELETE
+        SyncPoller<BatchJobSchedule, Void> poller = setPlaybackSyncPollerPollInterval(
+            SyncAsyncExtension.execute(() -> batchClient.beginDeleteJobSchedule(jobScheduleId),
                 () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJobSchedule(jobScheduleId).getSyncPoller())));
 
-            PollResponse<BatchJobSchedule> initialResponse = poller.poll();
-            if (initialResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
-                BatchJobSchedule jobScheduleDuringPoll = initialResponse.getValue();
-                Assertions.assertNotNull(jobScheduleDuringPoll, "Expected job schedule data during polling");
-                Assertions.assertEquals(jobScheduleId, jobScheduleDuringPoll.getId());
-                Assertions.assertEquals(BatchJobScheduleState.DELETING, jobScheduleDuringPoll.getState());
-            }
-
-            poller.waitForCompletion();
-
-            PollResponse<BatchJobSchedule> finalResponse = poller.poll();
-            Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, finalResponse.getStatus());
-            Assertions.assertNull(finalResponse.getValue(),
-                "Expected final result to be null after successful deletion.");
-
-            try {
-                SyncAsyncExtension.execute(() -> batchClient.getJobSchedule(jobScheduleId),
-                    () -> batchAsyncClient.getJobSchedule(jobScheduleId));
-                Assertions.fail("Expected job schedule to be deleted.");
-            } catch (HttpResponseException ex) {
-                Assertions.assertEquals(404, ex.getResponse().getStatusCode());
-            }
-
-            sleepIfRunningAgainstService(1000);
-        } finally {
-            // No cleanup needed — already deleted via LRO
+        PollResponse<BatchJobSchedule> initialResponse = poller.poll();
+        if (initialResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+            BatchJobSchedule jobScheduleDuringPoll = initialResponse.getValue();
+            Assertions.assertNotNull(jobScheduleDuringPoll, "Expected job schedule data during polling");
+            Assertions.assertEquals(jobScheduleId, jobScheduleDuringPoll.getId());
+            Assertions.assertEquals(BatchJobScheduleState.DELETING, jobScheduleDuringPoll.getState());
         }
+
+        poller.waitForCompletion();
+
+        PollResponse<BatchJobSchedule> finalResponse = poller.poll();
+        Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, finalResponse.getStatus());
+        Assertions.assertNull(finalResponse.getValue(), "Expected final result to be null after successful deletion.");
+
+        try {
+            SyncAsyncExtension.execute(() -> batchClient.getJobSchedule(jobScheduleId),
+                () -> batchAsyncClient.getJobSchedule(jobScheduleId));
+            Assertions.fail("Expected job schedule to be deleted.");
+        } catch (HttpResponseException ex) {
+            Assertions.assertEquals(404, ex.getResponse().getStatusCode());
+        }
+
     }
 
     @SyncAsyncTest
@@ -220,7 +213,7 @@ public class JobScheduleTests extends BatchClientTestBase {
                 () -> batchAsyncClient.getJobSchedule(jobScheduleId));
             Assertions.assertEquals(BatchJobScheduleState.ACTIVE, jobSchedule.getState());
 
-            // TERMINATE with LRO
+            // TERMINATE
             SyncPoller<BatchJobSchedule, BatchJobSchedule> terminatePoller = setPlaybackSyncPollerPollInterval(
                 SyncAsyncExtension.execute(() -> batchClient.beginTerminateJobSchedule(jobScheduleId), () -> Mono
                     .fromCallable(() -> batchAsyncClient.beginTerminateJobSchedule(jobScheduleId).getSyncPoller())));
@@ -230,24 +223,17 @@ public class JobScheduleTests extends BatchClientTestBase {
             Assertions.assertNotNull(jobSchedule);
             Assertions.assertEquals(BatchJobScheduleState.COMPLETED, jobSchedule.getState());
 
-            // DELETE
-            SyncAsyncExtension.execute(() -> {
-                batchClient.deleteJobSchedule(jobScheduleId);
-                return null;
-            }, () -> batchAsyncClient.deleteJobSchedule(jobScheduleId).then());
-
-            sleepIfRunningAgainstService(2000);
-
-            try {
-                SyncAsyncExtension.execute(() -> batchClient.getJobSchedule(jobScheduleId),
-                    () -> batchAsyncClient.getJobSchedule(jobScheduleId));
-                Assertions.fail("Expected job schedule to be deleted.");
-            } catch (HttpResponseException err) {
-                Assertions.assertEquals(404, err.getResponse().getStatusCode());
-            }
-
         } finally {
-            // No need to clean up — deletion verified above
+            // DELETE
+            try {
+                SyncPoller<BatchJobSchedule, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+                    SyncAsyncExtension.execute(() -> batchClient.beginDeleteJobSchedule(jobScheduleId), () -> Mono
+                        .fromCallable(() -> batchAsyncClient.beginDeleteJobSchedule(jobScheduleId).getSyncPoller())));
+
+                deletePoller.waitForCompletion();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
