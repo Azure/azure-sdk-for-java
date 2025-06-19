@@ -8,6 +8,7 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.utils.IOExceptionCheckedConsumer;
 import io.clientcore.core.utils.SharedExecutorService;
 import io.clientcore.http.netty4.NettyHttpClientProvider;
 import io.clientcore.http.netty4.TestUtils;
@@ -26,7 +27,6 @@ import org.junit.jupiter.api.parallel.Isolated;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
 import java.util.Collection;
@@ -38,7 +38,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -93,20 +92,14 @@ public class HttpResponseDrainsBufferTests {
     @Test
     public void closeHttpResponseWithConsumingPartialBody() {
         runScenario(response -> {
-            try {
-                response.getValue().toStream().read(new byte[1024]);
-                response.close();
-            } catch (IOException ex) {
-                throw new UncheckedIOException(ex);
-            }
+            response.getValue().toStream().read(new byte[1024]);
+            response.close();
         });
     }
 
     @Test
     public void closeHttpResponseWithConsumingPartialWrite() {
-        runScenario(response -> {
-            response.getValue().writeTo(new ThrowingWritableByteChannel());
-        });
+        runScenario(response -> response.getValue().writeTo(new ThrowingWritableByteChannel()));
     }
 
     private static final class ThrowingWritableByteChannel implements WritableByteChannel {
@@ -156,13 +149,11 @@ public class HttpResponseDrainsBufferTests {
                 }
 
                 TestUtils.assertArraysEqual(LONG_BODY, outputStream.toByteArray());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             }
         });
     }
 
-    private void runScenario(Consumer<Response<BinaryData>> responseConsumer) {
+    private void runScenario(IOExceptionCheckedConsumer<Response<BinaryData>> responseConsumer) {
         try {
             HttpClient httpClient = new NettyHttpClientProvider().getSharedInstance();
 

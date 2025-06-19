@@ -70,7 +70,7 @@ public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAda
         if (buf != null && buf.isReadable()) {
             try {
                 byteBufConsumer.accept(buf);
-            } catch (IOException ex) {
+            } catch (IOException | RuntimeException ex) {
                 ReferenceCountUtil.release(buf);
                 ctx.close();
                 return;

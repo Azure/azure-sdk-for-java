@@ -49,7 +49,7 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
         if (buf != null && buf.isReadable()) {
             try {
                 byteBufConsumer.accept(buf);
-            } catch (IOException ex) {
+            } catch (IOException | RuntimeException ex) {
                 ReferenceCountUtil.release(buf);
                 ctx.close();
                 return;
