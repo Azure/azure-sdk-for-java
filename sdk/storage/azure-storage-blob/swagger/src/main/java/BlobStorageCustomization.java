@@ -3,6 +3,7 @@
 
 import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
+import com.azure.autorest.customization.JavadocCustomization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.ParseProblemException;
@@ -18,13 +19,11 @@ import com.github.javaparser.ast.stmt.TryStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.Type;
 import com.github.javaparser.javadoc.Javadoc;
-import com.github.javaparser.javadoc.JavadocBlockTag;
 import com.github.javaparser.javadoc.description.JavadocDescription;
 import org.slf4j.Logger;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 
 /**
  * Customization class for Blob Storage.
@@ -32,6 +31,7 @@ import java.util.function.Function;
 public class BlobStorageCustomization extends Customization {
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
+
         // Implementation models customizations
         PackageCustomization implementationModels = customization.getPackage("com.azure.storage.blob.implementation.models");
 
@@ -42,89 +42,80 @@ public class BlobStorageCustomization extends Customization {
             ast.addImport("com.azure.storage.blob.implementation.models.PageListHelper");
 
             ast.getClassByName("PageList").ifPresent(clazz -> {
+
                 clazz.getMethodsByName("getNextMarker").forEach(method -> method.setModifiers(Modifier.Keyword.PRIVATE));
                 clazz.getMethodsByName("setNextMarker").forEach(method -> method.setModifiers(Modifier.Keyword.PRIVATE));
 
                 // Add Accessor to PageList
                 clazz.setMembers(clazz.getMembers()
-                    .addFirst(StaticJavaParser.parseBodyDeclaration("static {"
-                        + "PageListHelper.setAccessor(new PageListHelper.PageListAccessor() {"
-                        + "    @Override"
-                        + "    public String getNextMarker(PageList pageList) {"
-                        + "        return pageList.getNextMarker();"
-                        + "    }"
-                        + "    @Override"
-                        + "    public PageList setNextMarker(PageList pageList, String marker) {"
-                        + "        return pageList.setNextMarker(marker);"
-                        + "    }"
-                        + "}); }")));
+                    .addFirst(StaticJavaParser.parseBodyDeclaration(String.join("\n", "static {",
+                        "    PageListHelper.setAccessor(new PageListHelper.PageListAccessor() {",
+                        "        @Override",
+                        "        public String getNextMarker(PageList pageList) {",
+                        "            return pageList.getNextMarker();",
+                        "        }",
+                        "",
+                        "        @Override",
+                        "        public PageList setNextMarker(PageList pageList, String marker) {",
+                        "            return pageList.setNextMarker(marker);",
+                        "        }",
+                        "    });",
+                        "}"))));
             });
         });
 
-        models.getClass("BlobContainerEncryptionScope").customizeAst(ast -> ast.getClassByName("BlobContainerEncryptionScope")
-            .ifPresent(clazz -> clazz.getMethodsByName("isEncryptionScopeOverridePrevented").forEach(method -> {
-                method.setType("boolean");
-                // Wrap the existing return expression (ex, if "return foo;", "foo" is the expression) with
-                // "Boolean.TRUE.equals".
-                modifyReturnExpression(method, exprString -> "Boolean.TRUE.equals(" + exprString + ")");
-            })));
+        ClassCustomization blobContainerEncryptionScope = models.getClass("BlobContainerEncryptionScope");
+        blobContainerEncryptionScope.getMethod("isEncryptionScopeOverridePrevented")
+            .setReturnType("boolean", "return Boolean.TRUE.equals(%s);", true);
 
-        models.getClass("BlobContainerItemProperties").customizeAst(ast -> ast.getClassByName("BlobContainerItemProperties")
-            .ifPresent(clazz -> {
-                clazz.getMethodsByName("isEncryptionScopeOverridePrevented").forEach(method -> {
-                    method.setType("boolean");
-                    // Wrap the existing return expression (ex, if "return foo;", "foo" is the expression) with
-                    // "Boolean.TRUE.equals".
-                    modifyReturnExpression(method, exprString -> "Boolean.TRUE.equals(" + exprString + ")");
-                });
-
-                clazz.getMethodsByName("setIsImmutableStorageWithVersioningEnabled")
-                    .forEach(method -> method.setName("setImmutableStorageWithVersioningEnabled"));
-
-                clazz.getMethodsByName("setEncryptionScopeOverridePrevented")
-                    .forEach(method -> method.getParameter(0).setType("boolean"));
-            }));
+        ClassCustomization blobContainerItemProperties = models.getClass("BlobContainerItemProperties");
+        blobContainerItemProperties.getMethod("isEncryptionScopeOverridePrevented")
+            .setReturnType("boolean", "return Boolean.TRUE.equals(%s);", true);
+        blobContainerItemProperties.getMethod("setIsImmutableStorageWithVersioningEnabled")
+            .rename("setImmutableStorageWithVersioningEnabled");
+        blobContainerItemProperties.getMethod("setEncryptionScopeOverridePrevented")
+            .replaceParameters("boolean encryptionScopeOverridePrevented");
 
         // Block - Generator
-        models.getClass("Block").customizeAst(ast -> ast.getClassByName("Block").ifPresent(clazz -> {
-            clazz.getMethodsByName("getSizeInt").forEach(method -> method.setName("getSize")
-                .addMarkerAnnotation("Deprecated")
-                .setType("int")
-                .setBody(StaticJavaParser.parseBlock("{ return (int) this.sizeLong; }"))
-                .getJavadoc().ifPresent(javadoc -> method.setJavadocComment(javadoc
-                    .addBlockTag("deprecated", "Use {@link #getSizeLong()}"))));
+        ClassCustomization block = models.getClass("Block");
 
-            clazz.getMethodsByName("setSizeInt").forEach(method -> {
-                method.setName("setSize")
-                    .addMarkerAnnotation("Deprecated")
-                    .getJavadoc().ifPresent(javadoc -> method.setJavadocComment(javadoc
-                        .addBlockTag("deprecated", "Use {@link #setSizeLong(long)}")));
+        block.getMethod("getSizeInt")
+            .rename("getSize")
+            .addAnnotation("@Deprecated")
+            .setReturnType("int", "return (int) this.sizeLong; // return %s;", true)
+            .getJavadoc()
+            .setDeprecated("Use {@link #getSizeLong()}");
 
-                // Update the return from "this" to "this.setSizeLong(sizeInt)"
-                modifyReturnExpression(method, exprString -> exprString + ".setSizeLong(sizeInt)");
-            });
-        }));
+        block.getMethod("setSizeInt")
+            .rename("setSize")
+            .addAnnotation("@Deprecated")
+            .setReturnType("Block", "return %s.setSizeLong((long) sizeInt);", true)
+            .getJavadoc()
+            .setDeprecated("Use {@link #setSizeLong(long)}");
 
         // BlobErrorCode
         // Fix typo
         String blobErrorCodeFile = "src/main/java/com/azure/storage/blob/models/BlobErrorCode.java";
         String blobErrorCodeFileContent = customization.getRawEditor().getFileContent(blobErrorCodeFile);
-        blobErrorCodeFileContent = blobErrorCodeFileContent.replace("SnaphotOperationRateExceeded", "SnapshotOperationRateExceeded");
+        blobErrorCodeFileContent = blobErrorCodeFileContent.replaceAll("SnaphotOperationRateExceeded", "SnapshotOperationRateExceeded");
         customization.getRawEditor().replaceFile(blobErrorCodeFile, blobErrorCodeFileContent);
         // deprecate
-        models.getClass("BlobErrorCode").customizeAst(ast -> ast.getClassByName("BlobErrorCode").ifPresent(clazz -> {
-            clazz.getFieldByName("SNAPHOT_OPERATION_RATE_EXCEEDED").ifPresent(field -> field.addMarkerAnnotation("Deprecated")
-                .getJavadoc().ifPresent(javadoc -> field.setJavadocComment(javadoc
-                    .addBlockTag("deprecated", "Please use {@link BlobErrorCode#SNAPSHOT_OPERATION_RATE_EXCEEDED}"))));
+        ClassCustomization blobErrorCode = models.getClass("BlobErrorCode");
+        blobErrorCode.getConstant("SNAPHOT_OPERATION_RATE_EXCEEDED")
+            .addAnnotation("@Deprecated")
+            .getJavadoc()
+            .setDeprecated("Please use {@link BlobErrorCode#SNAPSHOT_OPERATION_RATE_EXCEEDED}");
 
-            clazz.getFieldByName("INCREMENTAL_COPY_OF_ERALIER_VERSION_SNAPSHOT_NOT_ALLOWED").ifPresent(field ->
-                field.addMarkerAnnotation("Deprecated").getJavadoc().ifPresent(javadoc -> field.setJavadocComment(
-                    javadoc.addBlockTag("deprecated",
-                        "Please use {@link BlobErrorCode#INCREMENTAL_COPY_OF_EARLIER_VERSION_SNAPSHOT_NOT_ALLOWED}"))));
-        }));
+        blobErrorCode.getConstant("INCREMENTAL_COPY_OF_ERALIER_VERSION_SNAPSHOT_NOT_ALLOWED")
+            .addAnnotation("@Deprecated")
+            .getJavadoc()
+            .setDeprecated("Please use {@link BlobErrorCode#INCREMENTAL_COPY_OF_EARLIER_VERSION_SNAPSHOT_NOT_ALLOWED}");
 
         //QueryFormat
         customizeQueryFormat(implementationModels.getClass("QueryFormat"));
+
+        //BlobSignedIdentifierWrapper
+        customizeBlobSignedIdentifierWrapper(implementationModels.getClass("BlobSignedIdentifierWrapper"));
 
         updateImplToMapInternalException(customization.getPackage("com.azure.storage.blob.implementation"));
 
@@ -138,34 +129,6 @@ public class BlobStorageCustomization extends Customization {
                     .addBlockTag("param", "queryType", "the queryType value to set.")
                     .addBlockTag("return", "the QueryRequest object itself."));
         }));
-
-        implementationModels.getClass("BlobSignedIdentifierWrapper").customizeAst(ast -> ast.getClassByName("BlobSignedIdentifierWrapper")
-            .ifPresent(clazz -> {
-                Javadoc baseJavadoc = new Javadoc(JavadocDescription.parseText("Reads an instance of BlobSignedIdentifierWrapper from the XmlReader."))
-                    .addBlockTag("param", "xmlReader", "The XmlReader being read.")
-                    .addBlockTag("return", "An instance of BlobSignedIdentifierWrapper if the XmlReader was pointing "
-                        + "to an instance of it, or null if it was pointing to XML null.")
-                    .addBlockTag("throws", "XMLStreamException", "If an error occurs while reading the BlobSignedIdentifierWrapper.");
-
-                clazz.getMethodsBySignature("fromXml", "XmlReader")
-                    .forEach(method -> method.setJavadocComment(baseJavadoc));
-
-                clazz.getMethodsBySignature("fromXml", "XmlReader", "String").forEach(method -> {
-                    baseJavadoc.getBlockTags().add(1, JavadocBlockTag.createParamBlockTag("rootElementName",
-                        "Optional root element name to override the default defined by the model. Used to support "
-                            + "cases where the model can deserialize from different root element names."));
-                    method.setJavadocComment(baseJavadoc);
-                });
-            }));
-    }
-
-    private static void modifyReturnExpression(MethodDeclaration method, Function<String, String> modifier) {
-        method.getBody().flatMap(body -> body.getStatements().stream().filter(Statement::isReturnStmt)
-                .map(Statement::asReturnStmt).findFirst())
-            .ifPresent(statement -> {
-                String replace = modifier.apply(statement.getExpression().get().toString());
-                statement.setExpression(StaticJavaParser.parseExpression(replace));
-            });
     }
 
     private static void customizeQueryFormat(ClassCustomization classCustomization) {
@@ -175,6 +138,24 @@ public class BlobStorageCustomization extends Customization {
         fileContent = fileContent.replace("deserializedQueryFormat.parquetTextConfiguration = reader.null;",
             "deserializedQueryFormat.parquetTextConfiguration = new Object();\nxmlReader.skipElement();");
         classCustomization.getEditor().replaceFile(classCustomization.getFileName(), fileContent);
+    }
+
+    private static void customizeBlobSignedIdentifierWrapper(ClassCustomization classCustomization) {
+        JavadocCustomization javadocfromXml = classCustomization.getMethod("fromXml(XmlReader xmlReader)").getJavadoc();
+        javadocfromXml.setDescription("Reads an instance of BlobSignedIdentifierWrapper from the XmlReader.");
+        javadocfromXml.setParam("xmlReader", "The XmlReader being read.");
+        javadocfromXml.setReturn("An instance of BlobSignedIdentifierWrapper if the XmlReader was pointing to an " +
+            "instance of it, or null if it was pointing to XML null.");
+        javadocfromXml.addThrows("XMLStreamException", "If an error occurs while reading the BlobSignedIdentifierWrapper.");
+
+        JavadocCustomization javadocfromXmlWithRoot = classCustomization.getMethod("fromXml(XmlReader xmlReader, String rootElementName)").getJavadoc();
+        javadocfromXmlWithRoot.setDescription("Reads an instance of BlobSignedIdentifierWrapper from the XmlReader.");
+        javadocfromXmlWithRoot.setParam("xmlReader", "The XmlReader being read.");
+        javadocfromXmlWithRoot.setParam("rootElementName", "Optional root element name to override the default defined " +
+            "by the model. Used to support cases where the model can deserialize from different root element names.");
+        javadocfromXmlWithRoot.setReturn("An instance of BlobSignedIdentifierWrapper if the XmlReader was pointing to an " +
+            "instance of it, or null if it was pointing to XML null.");
+        javadocfromXmlWithRoot.addThrows("XMLStreamException", "If an error occurs while reading the BlobSignedIdentifierWrapper.");
     }
 
     /**

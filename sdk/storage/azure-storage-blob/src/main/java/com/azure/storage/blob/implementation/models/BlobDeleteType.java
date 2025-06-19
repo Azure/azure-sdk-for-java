@@ -4,7 +4,6 @@
 
 package com.azure.storage.blob.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,7 +14,6 @@ public final class BlobDeleteType extends ExpandableStringEnum<BlobDeleteType> {
     /**
      * Static value Permanent for BlobDeleteType.
      */
-    @Generated
     public static final BlobDeleteType PERMANENT = fromString("Permanent");
 
     /**
@@ -23,7 +21,6 @@ public final class BlobDeleteType extends ExpandableStringEnum<BlobDeleteType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public BlobDeleteType() {
     }
@@ -34,7 +31,6 @@ public final class BlobDeleteType extends ExpandableStringEnum<BlobDeleteType> {
      * @param name a name to look for.
      * @return the corresponding BlobDeleteType.
      */
-    @Generated
     public static BlobDeleteType fromString(String name) {
         return fromString(name, BlobDeleteType.class);
     }
@@ -44,7 +40,6 @@ public final class BlobDeleteType extends ExpandableStringEnum<BlobDeleteType> {
      * 
      * @return known BlobDeleteType values.
      */
-    @Generated
     public static Collection<BlobDeleteType> values() {
         return values(BlobDeleteType.class);
     }

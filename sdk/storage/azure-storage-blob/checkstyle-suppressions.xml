@@ -30,7 +30,7 @@
   <suppress files="com.azure.storage.blob.implementation.util.BlobSasImplUtil.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
   <suppress files="com.azure.storage.blob.specialized.BlobOutputStream.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
   <suppress files="com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy.java" checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck" />
-  <suppress files="com.azure.storage.blob.implementation.util.BlobSasImplUtil.java" checks="com.azure.tools.checkstyle.checks.JavadocFormatting" />
+  <suppress files="com.azure.storage.blob.implementation.util.BlobSasImplUtil.java" checks="com.azure.tools.checkstyle.checks.JavaDocFormatting" />
   <suppress files="com.azure.storage.blob.implementation.util.BuilderHelper.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
   <suppress files="com.azure.storage.blob.implementation.util.ModelHelper.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
   <suppress files="com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder.java" checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" />

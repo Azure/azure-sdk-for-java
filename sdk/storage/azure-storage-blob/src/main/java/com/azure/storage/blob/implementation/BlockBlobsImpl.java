@@ -42,7 +42,6 @@ import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.BlockLookupList;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
-import com.azure.storage.blob.models.FileShareTokenIntent;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -80,7 +79,7 @@ public final class BlockBlobsImpl {
      * REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureBlobStorageBlockBlobs")
+    @ServiceInterface(name = "AzureBlobStorageBloc")
     public interface BlockBlobsService {
 
         @Put("/{containerName}/{blob}")
@@ -322,7 +321,6 @@ public final class BlockBlobsImpl {
             @HeaderParam("x-ms-copy-source-blob-properties") Boolean copySourceBlobProperties,
             @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
             @HeaderParam("x-ms-copy-source-tag-option") BlobCopySourceTagsMode copySourceTags,
-            @HeaderParam("x-ms-file-request-intent") FileShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{containerName}/{blob}")
@@ -360,7 +358,6 @@ public final class BlockBlobsImpl {
             @HeaderParam("x-ms-copy-source-blob-properties") Boolean copySourceBlobProperties,
             @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
             @HeaderParam("x-ms-copy-source-tag-option") BlobCopySourceTagsMode copySourceTags,
-            @HeaderParam("x-ms-file-request-intent") FileShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{containerName}/{blob}")
@@ -398,7 +395,6 @@ public final class BlockBlobsImpl {
             @HeaderParam("x-ms-copy-source-blob-properties") Boolean copySourceBlobProperties,
             @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
             @HeaderParam("x-ms-copy-source-tag-option") BlobCopySourceTagsMode copySourceTags,
-            @HeaderParam("x-ms-file-request-intent") FileShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{containerName}/{blob}")
@@ -436,7 +432,6 @@ public final class BlockBlobsImpl {
             @HeaderParam("x-ms-copy-source-blob-properties") Boolean copySourceBlobProperties,
             @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
             @HeaderParam("x-ms-copy-source-tag-option") BlobCopySourceTagsMode copySourceTags,
-            @HeaderParam("x-ms-file-request-intent") FileShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{containerName}/{blob}")
@@ -573,7 +568,6 @@ public final class BlockBlobsImpl {
             @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
             @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
-            @HeaderParam("x-ms-file-request-intent") FileShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{containerName}/{blob}")
@@ -596,7 +590,6 @@ public final class BlockBlobsImpl {
             @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
             @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
-            @HeaderParam("x-ms-file-request-intent") FileShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{containerName}/{blob}")
@@ -619,7 +612,6 @@ public final class BlockBlobsImpl {
             @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
             @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
-            @HeaderParam("x-ms-file-request-intent") FileShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{containerName}/{blob}")
@@ -642,7 +634,6 @@ public final class BlockBlobsImpl {
             @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
             @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
-            @HeaderParam("x-ms-file-request-intent") FileShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{containerName}/{blob}")
@@ -2225,7 +2216,6 @@ public final class BlockBlobsImpl {
      * copy source.
      * @param copySourceTags Optional, default 'replace'. Indicates if source tags should be copied or replaced with the
      * tags specified by x-ms-tags.
-     * @param fileRequestIntent Valid value is backup.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
@@ -2242,15 +2232,14 @@ public final class BlockBlobsImpl {
         String ifTags, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
         String sourceIfMatch, String sourceIfNoneMatch, String sourceIfTags, String requestId, byte[] sourceContentMD5,
         String blobTagsString, Boolean copySourceBlobProperties, String copySourceAuthorization,
-        BlobCopySourceTagsMode copySourceTags, FileShareTokenIntent fileRequestIntent, BlobHttpHeaders blobHttpHeaders,
-        CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
+        BlobCopySourceTagsMode copySourceTags, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam) {
         return FluxUtil
             .withContext(context -> putBlobFromUrlWithResponseAsync(containerName, blob, contentLength, copySource,
                 timeout, transactionalContentMD5, metadata, leaseId, tier, ifModifiedSince, ifUnmodifiedSince, ifMatch,
                 ifNoneMatch, ifTags, sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch,
                 sourceIfTags, requestId, sourceContentMD5, blobTagsString, copySourceBlobProperties,
-                copySourceAuthorization, copySourceTags, fileRequestIntent, blobHttpHeaders, cpkInfo,
-                encryptionScopeParam, context))
+                copySourceAuthorization, copySourceTags, blobHttpHeaders, cpkInfo, encryptionScopeParam, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2303,7 +2292,6 @@ public final class BlockBlobsImpl {
      * copy source.
      * @param copySourceTags Optional, default 'replace'. Indicates if source tags should be copied or replaced with the
      * tags specified by x-ms-tags.
-     * @param fileRequestIntent Valid value is backup.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
@@ -2321,8 +2309,8 @@ public final class BlockBlobsImpl {
         String ifTags, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
         String sourceIfMatch, String sourceIfNoneMatch, String sourceIfTags, String requestId, byte[] sourceContentMD5,
         String blobTagsString, Boolean copySourceBlobProperties, String copySourceAuthorization,
-        BlobCopySourceTagsMode copySourceTags, FileShareTokenIntent fileRequestIntent, BlobHttpHeaders blobHttpHeaders,
-        CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
+        BlobCopySourceTagsMode copySourceTags, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam, Context context) {
         final String blobType = "BlockBlob";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -2394,7 +2382,7 @@ public final class BlockBlobsImpl {
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSinceConverted,
                 sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, sourceIfTags,
                 this.client.getVersion(), requestId, sourceContentMD5Converted, blobTagsString, copySource,
-                copySourceBlobProperties, copySourceAuthorization, copySourceTags, fileRequestIntent, accept, context)
+                copySourceBlobProperties, copySourceAuthorization, copySourceTags, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2447,7 +2435,6 @@ public final class BlockBlobsImpl {
      * copy source.
      * @param copySourceTags Optional, default 'replace'. Indicates if source tags should be copied or replaced with the
      * tags specified by x-ms-tags.
-     * @param fileRequestIntent Valid value is backup.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
@@ -2463,13 +2450,13 @@ public final class BlockBlobsImpl {
         String ifTags, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
         String sourceIfMatch, String sourceIfNoneMatch, String sourceIfTags, String requestId, byte[] sourceContentMD5,
         String blobTagsString, Boolean copySourceBlobProperties, String copySourceAuthorization,
-        BlobCopySourceTagsMode copySourceTags, FileShareTokenIntent fileRequestIntent, BlobHttpHeaders blobHttpHeaders,
-        CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
+        BlobCopySourceTagsMode copySourceTags, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam) {
         return putBlobFromUrlWithResponseAsync(containerName, blob, contentLength, copySource, timeout,
             transactionalContentMD5, metadata, leaseId, tier, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch,
             ifTags, sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, sourceIfTags,
             requestId, sourceContentMD5, blobTagsString, copySourceBlobProperties, copySourceAuthorization,
-            copySourceTags, fileRequestIntent, blobHttpHeaders, cpkInfo, encryptionScopeParam)
+            copySourceTags, blobHttpHeaders, cpkInfo, encryptionScopeParam)
                 .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
@@ -2523,7 +2510,6 @@ public final class BlockBlobsImpl {
      * copy source.
      * @param copySourceTags Optional, default 'replace'. Indicates if source tags should be copied or replaced with the
      * tags specified by x-ms-tags.
-     * @param fileRequestIntent Valid value is backup.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
@@ -2540,13 +2526,13 @@ public final class BlockBlobsImpl {
         String ifTags, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
         String sourceIfMatch, String sourceIfNoneMatch, String sourceIfTags, String requestId, byte[] sourceContentMD5,
         String blobTagsString, Boolean copySourceBlobProperties, String copySourceAuthorization,
-        BlobCopySourceTagsMode copySourceTags, FileShareTokenIntent fileRequestIntent, BlobHttpHeaders blobHttpHeaders,
-        CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
+        BlobCopySourceTagsMode copySourceTags, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam, Context context) {
         return putBlobFromUrlWithResponseAsync(containerName, blob, contentLength, copySource, timeout,
             transactionalContentMD5, metadata, leaseId, tier, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch,
             ifTags, sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, sourceIfTags,
             requestId, sourceContentMD5, blobTagsString, copySourceBlobProperties, copySourceAuthorization,
-            copySourceTags, fileRequestIntent, blobHttpHeaders, cpkInfo, encryptionScopeParam, context)
+            copySourceTags, blobHttpHeaders, cpkInfo, encryptionScopeParam, context)
                 .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
@@ -2600,7 +2586,6 @@ public final class BlockBlobsImpl {
      * copy source.
      * @param copySourceTags Optional, default 'replace'. Indicates if source tags should be copied or replaced with the
      * tags specified by x-ms-tags.
-     * @param fileRequestIntent Valid value is backup.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
@@ -2617,15 +2602,14 @@ public final class BlockBlobsImpl {
         OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch,
         String sourceIfNoneMatch, String sourceIfTags, String requestId, byte[] sourceContentMD5, String blobTagsString,
         Boolean copySourceBlobProperties, String copySourceAuthorization, BlobCopySourceTagsMode copySourceTags,
-        FileShareTokenIntent fileRequestIntent, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo,
-        EncryptionScope encryptionScopeParam) {
+        BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
         return FluxUtil
             .withContext(context -> putBlobFromUrlNoCustomHeadersWithResponseAsync(containerName, blob, contentLength,
                 copySource, timeout, transactionalContentMD5, metadata, leaseId, tier, ifModifiedSince,
                 ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSince, sourceIfUnmodifiedSince,
                 sourceIfMatch, sourceIfNoneMatch, sourceIfTags, requestId, sourceContentMD5, blobTagsString,
-                copySourceBlobProperties, copySourceAuthorization, copySourceTags, fileRequestIntent, blobHttpHeaders,
-                cpkInfo, encryptionScopeParam, context))
+                copySourceBlobProperties, copySourceAuthorization, copySourceTags, blobHttpHeaders, cpkInfo,
+                encryptionScopeParam, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2678,7 +2662,6 @@ public final class BlockBlobsImpl {
      * copy source.
      * @param copySourceTags Optional, default 'replace'. Indicates if source tags should be copied or replaced with the
      * tags specified by x-ms-tags.
-     * @param fileRequestIntent Valid value is backup.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
@@ -2696,8 +2679,7 @@ public final class BlockBlobsImpl {
         OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch,
         String sourceIfNoneMatch, String sourceIfTags, String requestId, byte[] sourceContentMD5, String blobTagsString,
         Boolean copySourceBlobProperties, String copySourceAuthorization, BlobCopySourceTagsMode copySourceTags,
-        FileShareTokenIntent fileRequestIntent, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo,
-        EncryptionScope encryptionScopeParam, Context context) {
+        BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
         final String blobType = "BlockBlob";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -2769,7 +2751,7 @@ public final class BlockBlobsImpl {
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSinceConverted,
                 sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, sourceIfTags,
                 this.client.getVersion(), requestId, sourceContentMD5Converted, blobTagsString, copySource,
-                copySourceBlobProperties, copySourceAuthorization, copySourceTags, fileRequestIntent, accept, context)
+                copySourceBlobProperties, copySourceAuthorization, copySourceTags, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2822,7 +2804,6 @@ public final class BlockBlobsImpl {
      * copy source.
      * @param copySourceTags Optional, default 'replace'. Indicates if source tags should be copied or replaced with the
      * tags specified by x-ms-tags.
-     * @param fileRequestIntent Valid value is backup.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
@@ -2840,8 +2821,7 @@ public final class BlockBlobsImpl {
         OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch,
         String sourceIfNoneMatch, String sourceIfTags, String requestId, byte[] sourceContentMD5, String blobTagsString,
         Boolean copySourceBlobProperties, String copySourceAuthorization, BlobCopySourceTagsMode copySourceTags,
-        FileShareTokenIntent fileRequestIntent, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo,
-        EncryptionScope encryptionScopeParam, Context context) {
+        BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
         try {
             final String blobType = "BlockBlob";
             final String accept = "application/xml";
@@ -2913,7 +2893,7 @@ public final class BlockBlobsImpl {
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSinceConverted,
                 sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, sourceIfTags,
                 this.client.getVersion(), requestId, sourceContentMD5Converted, blobTagsString, copySource,
-                copySourceBlobProperties, copySourceAuthorization, copySourceTags, fileRequestIntent, accept, context);
+                copySourceBlobProperties, copySourceAuthorization, copySourceTags, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -2968,7 +2948,6 @@ public final class BlockBlobsImpl {
      * copy source.
      * @param copySourceTags Optional, default 'replace'. Indicates if source tags should be copied or replaced with the
      * tags specified by x-ms-tags.
-     * @param fileRequestIntent Valid value is backup.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
@@ -2983,13 +2962,13 @@ public final class BlockBlobsImpl {
         String ifTags, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
         String sourceIfMatch, String sourceIfNoneMatch, String sourceIfTags, String requestId, byte[] sourceContentMD5,
         String blobTagsString, Boolean copySourceBlobProperties, String copySourceAuthorization,
-        BlobCopySourceTagsMode copySourceTags, FileShareTokenIntent fileRequestIntent, BlobHttpHeaders blobHttpHeaders,
-        CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
+        BlobCopySourceTagsMode copySourceTags, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam) {
         putBlobFromUrlWithResponse(containerName, blob, contentLength, copySource, timeout, transactionalContentMD5,
             metadata, leaseId, tier, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags,
             sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, sourceIfTags, requestId,
             sourceContentMD5, blobTagsString, copySourceBlobProperties, copySourceAuthorization, copySourceTags,
-            fileRequestIntent, blobHttpHeaders, cpkInfo, encryptionScopeParam, Context.NONE);
+            blobHttpHeaders, cpkInfo, encryptionScopeParam, Context.NONE);
     }
 
     /**
@@ -3041,7 +3020,6 @@ public final class BlockBlobsImpl {
      * copy source.
      * @param copySourceTags Optional, default 'replace'. Indicates if source tags should be copied or replaced with the
      * tags specified by x-ms-tags.
-     * @param fileRequestIntent Valid value is backup.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
@@ -3059,8 +3037,7 @@ public final class BlockBlobsImpl {
         OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch,
         String sourceIfNoneMatch, String sourceIfTags, String requestId, byte[] sourceContentMD5, String blobTagsString,
         Boolean copySourceBlobProperties, String copySourceAuthorization, BlobCopySourceTagsMode copySourceTags,
-        FileShareTokenIntent fileRequestIntent, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo,
-        EncryptionScope encryptionScopeParam, Context context) {
+        BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
         try {
             final String blobType = "BlockBlob";
             final String accept = "application/xml";
@@ -3132,7 +3109,7 @@ public final class BlockBlobsImpl {
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSinceConverted,
                 sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, sourceIfTags,
                 this.client.getVersion(), requestId, sourceContentMD5Converted, blobTagsString, copySource,
-                copySourceBlobProperties, copySourceAuthorization, copySourceTags, fileRequestIntent, accept, context);
+                copySourceBlobProperties, copySourceAuthorization, copySourceTags, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -3941,7 +3918,6 @@ public final class BlockBlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      * copy source.
-     * @param fileRequestIntent Valid value is backup.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3954,13 +3930,13 @@ public final class BlockBlobsImpl {
         String containerName, String blob, String blockId, long contentLength, String sourceUrl, String sourceRange,
         byte[] sourceContentMD5, byte[] sourceContentcrc64, Integer timeout, String leaseId,
         OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch,
-        String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
-        FileShareTokenIntent fileRequestIntent, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
+        String sourceIfNoneMatch, String requestId, String copySourceAuthorization, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam) {
         return FluxUtil
             .withContext(context -> stageBlockFromURLWithResponseAsync(containerName, blob, blockId, contentLength,
                 sourceUrl, sourceRange, sourceContentMD5, sourceContentcrc64, timeout, leaseId, sourceIfModifiedSince,
-                sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization,
-                fileRequestIntent, cpkInfo, encryptionScopeParam, context))
+                sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, cpkInfo,
+                encryptionScopeParam, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -3993,7 +3969,6 @@ public final class BlockBlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      * copy source.
-     * @param fileRequestIntent Valid value is backup.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
@@ -4007,9 +3982,8 @@ public final class BlockBlobsImpl {
         String containerName, String blob, String blockId, long contentLength, String sourceUrl, String sourceRange,
         byte[] sourceContentMD5, byte[] sourceContentcrc64, Integer timeout, String leaseId,
         OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch,
-        String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
-        FileShareTokenIntent fileRequestIntent, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam,
-        Context context) {
+        String sourceIfNoneMatch, String requestId, String copySourceAuthorization, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam, Context context) {
         final String comp = "block";
         final String accept = "application/xml";
         String encryptionKeyInternal = null;
@@ -4043,7 +4017,7 @@ public final class BlockBlobsImpl {
                 sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted, timeout, encryptionKey,
                 encryptionKeySha256, encryptionAlgorithm, encryptionScope, leaseId, sourceIfModifiedSinceConverted,
                 sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, this.client.getVersion(), requestId,
-                copySourceAuthorization, fileRequestIntent, accept, context)
+                copySourceAuthorization, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -4076,7 +4050,6 @@ public final class BlockBlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      * copy source.
-     * @param fileRequestIntent Valid value is backup.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4089,63 +4062,10 @@ public final class BlockBlobsImpl {
         String sourceUrl, String sourceRange, byte[] sourceContentMD5, byte[] sourceContentcrc64, Integer timeout,
         String leaseId, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
         String sourceIfMatch, String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
-        FileShareTokenIntent fileRequestIntent, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
+        CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
         return stageBlockFromURLWithResponseAsync(containerName, blob, blockId, contentLength, sourceUrl, sourceRange,
             sourceContentMD5, sourceContentcrc64, timeout, leaseId, sourceIfModifiedSince, sourceIfUnmodifiedSince,
-            sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, fileRequestIntent, cpkInfo,
-            encryptionScopeParam).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-                .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * The Stage Block operation creates a new block to be committed as part of a blob where the contents are read from
-     * a URL.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param blockId A valid Base64 string value that identifies the block. Prior to encoding, the string must be less
-     * than or equal to 64 bytes in size. For a given blob, the length of the value specified for the blockid parameter
-     * must be the same size for each block.
-     * @param contentLength The length of the request.
-     * @param sourceUrl Specify a URL to the copy source.
-     * @param sourceRange Bytes of source data in the specified range.
-     * @param sourceContentMD5 Specify the md5 calculated for the range of bytes that must be read from the copy source.
-     * @param sourceContentcrc64 Specify the crc64 calculated for the range of bytes that must be read from the copy
-     * source.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param sourceIfModifiedSince Specify this header value to operate only on a blob if it has been modified since
-     * the specified date/time.
-     * @param sourceIfUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified
-     * since the specified date/time.
-     * @param sourceIfMatch Specify an ETag value to operate only on blobs with a matching value.
-     * @param sourceIfNoneMatch Specify an ETag value to operate only on blobs without a matching value.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
-     * copy source.
-     * @param fileRequestIntent Valid value is backup.
-     * @param cpkInfo Parameter group.
-     * @param encryptionScopeParam Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> stageBlockFromURLAsync(String containerName, String blob, String blockId, long contentLength,
-        String sourceUrl, String sourceRange, byte[] sourceContentMD5, byte[] sourceContentcrc64, Integer timeout,
-        String leaseId, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
-        String sourceIfMatch, String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
-        FileShareTokenIntent fileRequestIntent, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam,
-        Context context) {
-        return stageBlockFromURLWithResponseAsync(containerName, blob, blockId, contentLength, sourceUrl, sourceRange,
-            sourceContentMD5, sourceContentcrc64, timeout, leaseId, sourceIfModifiedSince, sourceIfUnmodifiedSince,
-            sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, fileRequestIntent, cpkInfo,
-            encryptionScopeParam, context)
+            sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, cpkInfo, encryptionScopeParam)
                 .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
@@ -4179,7 +4099,56 @@ public final class BlockBlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      * copy source.
-     * @param fileRequestIntent Valid value is backup.
+     * @param cpkInfo Parameter group.
+     * @param encryptionScopeParam Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> stageBlockFromURLAsync(String containerName, String blob, String blockId, long contentLength,
+        String sourceUrl, String sourceRange, byte[] sourceContentMD5, byte[] sourceContentcrc64, Integer timeout,
+        String leaseId, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
+        String sourceIfMatch, String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
+        CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
+        return stageBlockFromURLWithResponseAsync(containerName, blob, blockId, contentLength, sourceUrl, sourceRange,
+            sourceContentMD5, sourceContentcrc64, timeout, leaseId, sourceIfModifiedSince, sourceIfUnmodifiedSince,
+            sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, cpkInfo, encryptionScopeParam,
+            context).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * The Stage Block operation creates a new block to be committed as part of a blob where the contents are read from
+     * a URL.
+     *
+     * @param containerName The container name.
+     * @param blob The blob name.
+     * @param blockId A valid Base64 string value that identifies the block. Prior to encoding, the string must be less
+     * than or equal to 64 bytes in size. For a given blob, the length of the value specified for the blockid parameter
+     * must be the same size for each block.
+     * @param contentLength The length of the request.
+     * @param sourceUrl Specify a URL to the copy source.
+     * @param sourceRange Bytes of source data in the specified range.
+     * @param sourceContentMD5 Specify the md5 calculated for the range of bytes that must be read from the copy source.
+     * @param sourceContentcrc64 Specify the crc64 calculated for the range of bytes that must be read from the copy
+     * source.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param sourceIfModifiedSince Specify this header value to operate only on a blob if it has been modified since
+     * the specified date/time.
+     * @param sourceIfUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified
+     * since the specified date/time.
+     * @param sourceIfMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param sourceIfNoneMatch Specify an ETag value to operate only on blobs without a matching value.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
+     * copy source.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4192,13 +4161,12 @@ public final class BlockBlobsImpl {
         String blockId, long contentLength, String sourceUrl, String sourceRange, byte[] sourceContentMD5,
         byte[] sourceContentcrc64, Integer timeout, String leaseId, OffsetDateTime sourceIfModifiedSince,
         OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch, String requestId,
-        String copySourceAuthorization, FileShareTokenIntent fileRequestIntent, CpkInfo cpkInfo,
-        EncryptionScope encryptionScopeParam) {
+        String copySourceAuthorization, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
         return FluxUtil
             .withContext(context -> stageBlockFromURLNoCustomHeadersWithResponseAsync(containerName, blob, blockId,
                 contentLength, sourceUrl, sourceRange, sourceContentMD5, sourceContentcrc64, timeout, leaseId,
                 sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, requestId,
-                copySourceAuthorization, fileRequestIntent, cpkInfo, encryptionScopeParam, context))
+                copySourceAuthorization, cpkInfo, encryptionScopeParam, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -4231,7 +4199,6 @@ public final class BlockBlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      * copy source.
-     * @param fileRequestIntent Valid value is backup.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
@@ -4245,8 +4212,7 @@ public final class BlockBlobsImpl {
         String blockId, long contentLength, String sourceUrl, String sourceRange, byte[] sourceContentMD5,
         byte[] sourceContentcrc64, Integer timeout, String leaseId, OffsetDateTime sourceIfModifiedSince,
         OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch, String requestId,
-        String copySourceAuthorization, FileShareTokenIntent fileRequestIntent, CpkInfo cpkInfo,
-        EncryptionScope encryptionScopeParam, Context context) {
+        String copySourceAuthorization, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
         final String comp = "block";
         final String accept = "application/xml";
         String encryptionKeyInternal = null;
@@ -4280,7 +4246,7 @@ public final class BlockBlobsImpl {
                 sourceUrl, sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted, timeout, encryptionKey,
                 encryptionKeySha256, encryptionAlgorithm, encryptionScope, leaseId, sourceIfModifiedSinceConverted,
                 sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, this.client.getVersion(), requestId,
-                copySourceAuthorization, fileRequestIntent, accept, context)
+                copySourceAuthorization, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -4313,7 +4279,6 @@ public final class BlockBlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      * copy source.
-     * @param fileRequestIntent Valid value is backup.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
@@ -4327,8 +4292,7 @@ public final class BlockBlobsImpl {
         String blob, String blockId, long contentLength, String sourceUrl, String sourceRange, byte[] sourceContentMD5,
         byte[] sourceContentcrc64, Integer timeout, String leaseId, OffsetDateTime sourceIfModifiedSince,
         OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch, String requestId,
-        String copySourceAuthorization, FileShareTokenIntent fileRequestIntent, CpkInfo cpkInfo,
-        EncryptionScope encryptionScopeParam, Context context) {
+        String copySourceAuthorization, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
         try {
             final String comp = "block";
             final String accept = "application/xml";
@@ -4362,7 +4326,7 @@ public final class BlockBlobsImpl {
                 contentLength, sourceUrl, sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted, timeout,
                 encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, leaseId,
                 sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch,
-                this.client.getVersion(), requestId, copySourceAuthorization, fileRequestIntent, accept, context);
+                this.client.getVersion(), requestId, copySourceAuthorization, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -4397,7 +4361,6 @@ public final class BlockBlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      * copy source.
-     * @param fileRequestIntent Valid value is backup.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4409,11 +4372,11 @@ public final class BlockBlobsImpl {
         String sourceUrl, String sourceRange, byte[] sourceContentMD5, byte[] sourceContentcrc64, Integer timeout,
         String leaseId, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
         String sourceIfMatch, String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
-        FileShareTokenIntent fileRequestIntent, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
+        CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
         stageBlockFromURLWithResponse(containerName, blob, blockId, contentLength, sourceUrl, sourceRange,
             sourceContentMD5, sourceContentcrc64, timeout, leaseId, sourceIfModifiedSince, sourceIfUnmodifiedSince,
-            sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, fileRequestIntent, cpkInfo,
-            encryptionScopeParam, Context.NONE);
+            sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, cpkInfo, encryptionScopeParam,
+            Context.NONE);
     }
 
     /**
@@ -4445,7 +4408,6 @@ public final class BlockBlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      * copy source.
-     * @param fileRequestIntent Valid value is backup.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
@@ -4459,8 +4421,7 @@ public final class BlockBlobsImpl {
         String blockId, long contentLength, String sourceUrl, String sourceRange, byte[] sourceContentMD5,
         byte[] sourceContentcrc64, Integer timeout, String leaseId, OffsetDateTime sourceIfModifiedSince,
         OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch, String requestId,
-        String copySourceAuthorization, FileShareTokenIntent fileRequestIntent, CpkInfo cpkInfo,
-        EncryptionScope encryptionScopeParam, Context context) {
+        String copySourceAuthorization, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
         try {
             final String comp = "block";
             final String accept = "application/xml";
@@ -4494,7 +4455,7 @@ public final class BlockBlobsImpl {
                 blockId, contentLength, sourceUrl, sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted,
                 timeout, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, leaseId,
                 sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch,
-                this.client.getVersion(), requestId, copySourceAuthorization, fileRequestIntent, accept, context);
+                this.client.getVersion(), requestId, copySourceAuthorization, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
