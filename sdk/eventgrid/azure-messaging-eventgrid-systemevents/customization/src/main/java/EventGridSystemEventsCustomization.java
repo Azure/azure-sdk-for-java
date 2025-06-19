@@ -39,8 +39,6 @@ public class EventGridSystemEventsCustomization extends Customization {
 
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
-        customizeModuleInfo(customization);
-
         PackageCustomization systemEvent = customization.getPackage("com.azure.messaging.eventgrid.systemevents" +
             ".models");
         // Manual listing of classes in the package until a bug is fixed in TypeSpec Java.
@@ -164,26 +162,6 @@ public class EventGridSystemEventsCustomization extends Customization {
         customizeAcsMessageEventDataAndInheritingClasses(systemEvent);
     }
 
-
-    /**
-     * Customize the module-info.java file. This is necessary due to having a models subpackage logically; we
-     * end up with an export for a package with no types, so we remove the export.
-     *
-     * @param customization The LibraryCustomization object.
-     */
-    public void customizeModuleInfo(LibraryCustomization customization) {
-
-        Editor editor = customization.getRawEditor();
-        List<String> lines = editor.getFileLines("src/main/java/module-info.java");
-        StringBuilder sb = new StringBuilder();
-        lines.forEach(line -> {
-            if (!line.trim().equals("exports com.azure.messaging.eventgrid.systemevents;")) {
-                sb.append(line).append('\n');
-            }
-        });
-        editor.replaceFile("src/main/java/module-info.java", sb.toString());
-    }
-
     public void customizeAcsRouterEvents(PackageCustomization customization) {
         customization.getClass("AcsRouterWorkerSelector").customizeAst(ast -> ast.getClassByName("AcsRouterWorkerSelector")
             .ifPresent(clazz -> clazz.getMethodsByName("getTimeToLive").forEach(m -> m.setType(Duration.class)
@@ -263,5 +241,4 @@ public class EventGridSystemEventsCustomization extends Customization {
         }
         return result.toUpperCase();
     }
-
 }

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,16 +22,19 @@ public final class SqlScriptMetadata implements JsonSerializable<SqlScriptMetada
     /*
      * The language of the SQL script.
      */
+    @Generated
     private String language;
 
     /*
      * The metadata of the SQL script.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of SqlScriptMetadata class.
      */
+    @Generated
     public SqlScriptMetadata() {
     }
 
@@ -39,6 +43,7 @@ public final class SqlScriptMetadata implements JsonSerializable<SqlScriptMetada
      * 
      * @return the language value.
      */
+    @Generated
     public String getLanguage() {
         return this.language;
     }
@@ -49,6 +54,7 @@ public final class SqlScriptMetadata implements JsonSerializable<SqlScriptMetada
      * @param language the language value to set.
      * @return the SqlScriptMetadata object itself.
      */
+    @Generated
     public SqlScriptMetadata setLanguage(String language) {
         this.language = language;
         return this;
@@ -59,6 +65,7 @@ public final class SqlScriptMetadata implements JsonSerializable<SqlScriptMetada
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -69,6 +76,7 @@ public final class SqlScriptMetadata implements JsonSerializable<SqlScriptMetada
      * @param additionalProperties the additionalProperties value to set.
      * @return the SqlScriptMetadata object itself.
      */
+    @Generated
     public SqlScriptMetadata setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -77,6 +85,7 @@ public final class SqlScriptMetadata implements JsonSerializable<SqlScriptMetada
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -97,6 +106,7 @@ public final class SqlScriptMetadata implements JsonSerializable<SqlScriptMetada
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SqlScriptMetadata.
      */
+    @Generated
     public static SqlScriptMetadata fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SqlScriptMetadata deserializedSqlScriptMetadata = new SqlScriptMetadata();

@@ -86,7 +86,7 @@ public final class ServicesImpl {
      * REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureBlobStorageServ")
+    @ServiceInterface(name = "AzureBlobStorageServices")
     public interface ServicesService {
 
         @Put("/")

@@ -22,7 +22,7 @@ public final class CloudServicesNetworksGetByResourceGroupWithResponseMockTests 
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"extendedLocation\":{\"name\":\"j\",\"type\":\"bajbuscgduusi\"},\"properties\":{\"additionalEgressEndpoints\":[{\"category\":\"lev\",\"endpoints\":[{\"domainName\":\"clujyx\"},{\"domainName\":\"yxlzgs\"},{\"domainName\":\"gkzz\"},{\"domainName\":\"taf\"}]},{\"category\":\"bzf\",\"endpoints\":[{\"domainName\":\"vwmbjlzqsczpg\"},{\"domainName\":\"dwnapf\"},{\"domainName\":\"qwowftptnuw\"},{\"domainName\":\"tkschgcgqyhl\"}]},{\"category\":\"seyqrhvyeldotjv\",\"endpoints\":[{\"domainName\":\"wiswskukjtasbvw\"},{\"domainName\":\"spkxkdt\"},{\"domainName\":\"fkndl\"},{\"domainName\":\"vtwknvgmmbugt\"}]}],\"associatedResourceIds\":[\"tmqa\",\"kueatgroeshoy\",\"zcbyfq\"],\"clusterId\":\"faoytehqpuv\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"mtdwcky\",\"enableDefaultEgressEndpoints\":\"False\",\"enabledEgressEndpoints\":[{\"category\":\"n\",\"endpoints\":[{\"domainName\":\"ljdjuskbrreqy\"},{\"domainName\":\"kceysfaqegplw\"},{\"domainName\":\"ysh\"}]}],\"hybridAksClustersAssociatedIds\":[\"kvb\"],\"interfaceName\":\"kqusybwptda\",\"provisioningState\":\"Provisioning\",\"virtualMachinesAssociatedIds\":[\"lf\"]},\"location\":\"ymtpo\",\"tags\":{\"r\":\"naz\",\"qalsxkd\":\"hzr\",\"vessm\":\"wqapfgsdp\",\"dqq\":\"hhkuuip\"},\"id\":\"tekva\",\"name\":\"blhtjq\",\"type\":\"qyv\"}";
+            = "{\"etag\":\"oj\",\"extendedLocation\":{\"name\":\"cxzrzdcgdzben\",\"type\":\"ibcawetzqddtjw\"},\"properties\":{\"additionalEgressEndpoints\":[{\"category\":\"zn\",\"endpoints\":[{\"domainName\":\"tuatmzwcj\"},{\"domainName\":\"nc\"},{\"domainName\":\"tjzmi\"},{\"domainName\":\"vgbgatzuuvbxng\"}]}],\"associatedResourceIds\":[\"wggahttzlswvaj\",\"fu\"],\"clusterId\":\"x\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"asunwqrjzfrgq\",\"enableDefaultEgressEndpoints\":\"True\",\"enabledEgressEndpoints\":[{\"category\":\"mbuocnjrohmbp\",\"endpoints\":[{\"domainName\":\"yx\"},{\"domainName\":\"meblyd\"},{\"domainName\":\"vkfkmr\"},{\"domainName\":\"cxneh\"}]},{\"category\":\"sm\",\"endpoints\":[{\"domainName\":\"dlfp\"},{\"domainName\":\"apucygvo\"},{\"domainName\":\"vyuns\"},{\"domainName\":\"xlghieegj\"}]},{\"category\":\"gvvpasek\",\"endpoints\":[{\"domainName\":\"buxantuyg\"},{\"domainName\":\"hgaqipirpiwrq\"},{\"domainName\":\"fulopmjnlexwhcb\"}]},{\"category\":\"pibkephuu\",\"endpoints\":[{\"domainName\":\"rctat\"},{\"domainName\":\"yintqpbrlcy\"},{\"domainName\":\"duczkgof\"}]}],\"hybridAksClustersAssociatedIds\":[\"srucvcrrpcjtt\",\"st\"],\"interfaceName\":\"eaqnrmvvfkoxm\",\"provisioningState\":\"Failed\",\"virtualMachinesAssociatedIds\":[\"uidvrmazlpdwwex\",\"mzvlazipbh\",\"wvqsgny\"]},\"location\":\"uzivensrpmeyyvp\",\"tags\":{\"ksrf\":\"tlbijpzg\"},\"id\":\"fvolmknbnxwcd\",\"name\":\"mmpvf\",\"type\":\"awz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,16 +32,17 @@ public final class CloudServicesNetworksGetByResourceGroupWithResponseMockTests 
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CloudServicesNetwork response = manager.cloudServicesNetworks()
-            .getByResourceGroupWithResponse("vjuqdbrxmrgchb", "pxkiyf", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("fiqwoy", "qvapcohhoucq", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ymtpo", response.location());
-        Assertions.assertEquals("naz", response.tags().get("r"));
-        Assertions.assertEquals("j", response.extendedLocation().name());
-        Assertions.assertEquals("bajbuscgduusi", response.extendedLocation().type());
-        Assertions.assertEquals("lev", response.additionalEgressEndpoints().get(0).category());
-        Assertions.assertEquals("clujyx", response.additionalEgressEndpoints().get(0).endpoints().get(0).domainName());
-        Assertions.assertEquals(CloudServicesNetworkEnableDefaultEgressEndpoints.FALSE,
+        Assertions.assertEquals("uzivensrpmeyyvp", response.location());
+        Assertions.assertEquals("tlbijpzg", response.tags().get("ksrf"));
+        Assertions.assertEquals("cxzrzdcgdzben", response.extendedLocation().name());
+        Assertions.assertEquals("ibcawetzqddtjw", response.extendedLocation().type());
+        Assertions.assertEquals("zn", response.additionalEgressEndpoints().get(0).category());
+        Assertions.assertEquals("tuatmzwcj",
+            response.additionalEgressEndpoints().get(0).endpoints().get(0).domainName());
+        Assertions.assertEquals(CloudServicesNetworkEnableDefaultEgressEndpoints.TRUE,
             response.enableDefaultEgressEndpoints());
     }
 }

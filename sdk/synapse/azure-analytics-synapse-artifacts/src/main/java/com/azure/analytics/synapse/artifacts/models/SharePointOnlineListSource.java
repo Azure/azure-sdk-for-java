@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,23 +21,27 @@ public final class SharePointOnlineListSource extends CopySource {
     /*
      * Copy source type.
      */
+    @Generated
     private String type = "SharePointOnlineListSource";
 
     /*
      * The OData query to filter the data in SharePoint Online list. For example, "$top=1". Type: string (or Expression
      * with resultType string).
      */
+    @Generated
     private Object query;
 
     /*
      * The wait time to get a response from SharePoint Online. Default value is 5 minutes (00:05:00). Type: string (or
      * Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
+    @Generated
     private Object httpRequestTimeout;
 
     /**
      * Creates an instance of SharePointOnlineListSource class.
      */
+    @Generated
     public SharePointOnlineListSource() {
     }
 
@@ -45,6 +50,7 @@ public final class SharePointOnlineListSource extends CopySource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -56,6 +62,7 @@ public final class SharePointOnlineListSource extends CopySource {
      * 
      * @return the query value.
      */
+    @Generated
     public Object getQuery() {
         return this.query;
     }
@@ -67,6 +74,7 @@ public final class SharePointOnlineListSource extends CopySource {
      * @param query the query value to set.
      * @return the SharePointOnlineListSource object itself.
      */
+    @Generated
     public SharePointOnlineListSource setQuery(Object query) {
         this.query = query;
         return this;
@@ -79,6 +87,7 @@ public final class SharePointOnlineListSource extends CopySource {
      * 
      * @return the httpRequestTimeout value.
      */
+    @Generated
     public Object getHttpRequestTimeout() {
         return this.httpRequestTimeout;
     }
@@ -91,6 +100,7 @@ public final class SharePointOnlineListSource extends CopySource {
      * @param httpRequestTimeout the httpRequestTimeout value to set.
      * @return the SharePointOnlineListSource object itself.
      */
+    @Generated
     public SharePointOnlineListSource setHttpRequestTimeout(Object httpRequestTimeout) {
         this.httpRequestTimeout = httpRequestTimeout;
         return this;
@@ -99,6 +109,7 @@ public final class SharePointOnlineListSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SharePointOnlineListSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
@@ -108,6 +119,7 @@ public final class SharePointOnlineListSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SharePointOnlineListSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
@@ -117,6 +129,7 @@ public final class SharePointOnlineListSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SharePointOnlineListSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -126,15 +139,26 @@ public final class SharePointOnlineListSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getSourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        }
+        if (getSourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("query", this.query);
-        jsonWriter.writeUntypedField("httpRequestTimeout", this.httpRequestTimeout);
+        if (this.query != null) {
+            jsonWriter.writeUntypedField("query", this.query);
+        }
+        if (this.httpRequestTimeout != null) {
+            jsonWriter.writeUntypedField("httpRequestTimeout", this.httpRequestTimeout);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -151,6 +175,7 @@ public final class SharePointOnlineListSource extends CopySource {
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SharePointOnlineListSource.
      */
+    @Generated
     public static SharePointOnlineListSource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SharePointOnlineListSource deserializedSharePointOnlineListSource = new SharePointOnlineListSource();

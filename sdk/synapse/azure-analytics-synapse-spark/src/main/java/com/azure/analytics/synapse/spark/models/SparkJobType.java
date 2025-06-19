@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.spark.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class SparkJobType extends ExpandableStringEnum<SparkJobType> {
     /**
      * Static value SparkBatch for SparkJobType.
      */
+    @Generated
     public static final SparkJobType SPARK_BATCH = fromString("SparkBatch");
 
     /**
      * Static value SparkSession for SparkJobType.
      */
+    @Generated
     public static final SparkJobType SPARK_SESSION = fromString("SparkSession");
 
     /**
@@ -26,6 +29,7 @@ public final class SparkJobType extends ExpandableStringEnum<SparkJobType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SparkJobType() {
     }
@@ -36,6 +40,7 @@ public final class SparkJobType extends ExpandableStringEnum<SparkJobType> {
      * @param name a name to look for.
      * @return the corresponding SparkJobType.
      */
+    @Generated
     public static SparkJobType fromString(String name) {
         return fromString(name, SparkJobType.class);
     }
@@ -45,6 +50,7 @@ public final class SparkJobType extends ExpandableStringEnum<SparkJobType> {
      * 
      * @return known SparkJobType values.
      */
+    @Generated
     public static Collection<SparkJobType> values() {
         return values(SparkJobType.class);
     }

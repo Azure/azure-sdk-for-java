@@ -7,8 +7,8 @@ package com.azure.resourcemanager.appconfiguration.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appconfiguration.AppConfigurationManager;
 import com.azure.resourcemanager.appconfiguration.models.OperationDefinition;
@@ -29,13 +29,13 @@ public final class OperationsListMockTests {
         AppConfigurationManager manager = AppConfigurationManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<OperationDefinition> response
             = manager.operations().list("xbldtlwwrlkdmtn", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("ok", response.iterator().next().name());
-        Assertions.assertEquals(false, response.iterator().next().isDataAction());
+        Assertions.assertFalse(response.iterator().next().isDataAction());
         Assertions.assertEquals("gsyocogj", response.iterator().next().display().resource());
         Assertions.assertEquals("dtbnnha", response.iterator().next().display().operation());
         Assertions.assertEquals("ocrkvcikh", response.iterator().next().display().description());
@@ -76,13 +76,12 @@ public final class OperationsListMockTests {
                 .metricSpecifications()
                 .get(0)
                 .internalMetricName());
-        Assertions.assertEquals(true,
-            response.iterator()
-                .next()
-                .properties()
-                .serviceSpecification()
-                .metricSpecifications()
-                .get(0)
-                .fillGapWithZero());
+        Assertions.assertTrue(response.iterator()
+            .next()
+            .properties()
+            .serviceSpecification()
+            .metricSpecifications()
+            .get(0)
+            .fillGapWithZero());
     }
 }
