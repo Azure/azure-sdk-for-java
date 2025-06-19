@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,19 +21,16 @@ public final class ContainerRegistryEventSource implements JsonSerializable<Cont
      * The IP or hostname and the port of the registry node that generated the event. Generally, this will be resolved
      * by os.Hostname() along with the running port.
      */
-    @Generated
     private String addr;
 
     /*
      * The running instance of an application. Changes after each restart.
      */
-    @Generated
     private String instanceID;
 
     /**
      * Creates an instance of ContainerRegistryEventSource class.
      */
-    @Generated
     public ContainerRegistryEventSource() {
     }
 
@@ -44,7 +40,6 @@ public final class ContainerRegistryEventSource implements JsonSerializable<Cont
      * 
      * @return the addr value.
      */
-    @Generated
     public String getAddr() {
         return this.addr;
     }
@@ -56,7 +51,6 @@ public final class ContainerRegistryEventSource implements JsonSerializable<Cont
      * @param addr the addr value to set.
      * @return the ContainerRegistryEventSource object itself.
      */
-    @Generated
     public ContainerRegistryEventSource setAddr(String addr) {
         this.addr = addr;
         return this;
@@ -67,7 +61,6 @@ public final class ContainerRegistryEventSource implements JsonSerializable<Cont
      * 
      * @return the instanceID value.
      */
-    @Generated
     public String getInstanceID() {
         return this.instanceID;
     }
@@ -78,7 +71,6 @@ public final class ContainerRegistryEventSource implements JsonSerializable<Cont
      * @param instanceID the instanceID value to set.
      * @return the ContainerRegistryEventSource object itself.
      */
-    @Generated
     public ContainerRegistryEventSource setInstanceID(String instanceID) {
         this.instanceID = instanceID;
         return this;
@@ -87,7 +79,6 @@ public final class ContainerRegistryEventSource implements JsonSerializable<Cont
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -104,7 +95,6 @@ public final class ContainerRegistryEventSource implements JsonSerializable<Cont
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ContainerRegistryEventSource.
      */
-    @Generated
     public static ContainerRegistryEventSource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ContainerRegistryEventSource deserializedContainerRegistryEventSource = new ContainerRegistryEventSource();

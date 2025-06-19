@@ -4,7 +4,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -27,73 +26,61 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
     /*
      * The tenant ID of the resource.
      */
-    @Generated
     private String tenantId;
 
     /*
      * The subscription ID of the resource.
      */
-    @Generated
     private String subscriptionId;
 
     /*
      * The resource group of the resource.
      */
-    @Generated
     private String resourceGroup;
 
     /*
      * The resource provider performing the operation.
      */
-    @Generated
     private String resourceProvider;
 
     /*
      * The URI of the resource in the operation.
      */
-    @Generated
     private String resourceUri;
 
     /*
      * The operation that was performed.
      */
-    @Generated
     private String operationName;
 
     /*
      * The status of the operation.
      */
-    @Generated
     private String status;
 
     /*
      * The requested authorization for the operation.
      */
-    @Generated
     private ResourceAuthorization authorization;
 
     /*
      * The properties of the claims.
      */
-    @Generated
     private Map<String, String> claims;
 
     /*
      * An operation ID used for troubleshooting.
      */
-    @Generated
     private String correlationId;
 
     /*
      * The details of the operation.
      */
-    @Generated
     private ResourceHttpRequest httpRequest;
 
     /**
      * Creates an instance of ResourceWriteCancelEventData class.
      */
-    @Generated
     public ResourceWriteCancelEventData() {
     }
 
@@ -102,7 +89,6 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
      *
      * @return the tenantId value.
      */
-    @Generated
     public String getTenantId() {
         return this.tenantId;
     }
@@ -113,7 +99,6 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
      * @param tenantId the tenantId value to set.
      * @return the ResourceWriteCancelEventData object itself.
      */
-    @Generated
     public ResourceWriteCancelEventData setTenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
@@ -124,7 +109,6 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
      *
      * @return the subscriptionId value.
      */
-    @Generated
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
@@ -135,7 +119,6 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
      * @param subscriptionId the subscriptionId value to set.
      * @return the ResourceWriteCancelEventData object itself.
      */
-    @Generated
     public ResourceWriteCancelEventData setSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
@@ -146,7 +129,6 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
      *
      * @return the resourceGroup value.
      */
-    @Generated
     public String getResourceGroup() {
         return this.resourceGroup;
     }
@@ -157,7 +139,6 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
      * @param resourceGroup the resourceGroup value to set.
      * @return the ResourceWriteCancelEventData object itself.
      */
-    @Generated
     public ResourceWriteCancelEventData setResourceGroup(String resourceGroup) {
         this.resourceGroup = resourceGroup;
         return this;
@@ -168,7 +149,6 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
      *
      * @return the resourceProvider value.
      */
-    @Generated
     public String getResourceProvider() {
         return this.resourceProvider;
     }
@@ -179,7 +159,6 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
      * @param resourceProvider the resourceProvider value to set.
      * @return the ResourceWriteCancelEventData object itself.
      */
-    @Generated
     public ResourceWriteCancelEventData setResourceProvider(String resourceProvider) {
         this.resourceProvider = resourceProvider;
         return this;
@@ -190,7 +169,6 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
      *
      * @return the resourceUri value.
      */
-    @Generated
     public String getResourceUri() {
         return this.resourceUri;
     }
@@ -201,7 +179,6 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
      * @param resourceUri the resourceUri value to set.
      * @return the ResourceWriteCancelEventData object itself.
      */
-    @Generated
     public ResourceWriteCancelEventData setResourceUri(String resourceUri) {
         this.resourceUri = resourceUri;
         return this;
@@ -212,7 +189,6 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
      *
      * @return the operationName value.
      */
-    @Generated
     public String getOperationName() {
         return this.operationName;
     }
@@ -223,7 +199,6 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
      * @param operationName the operationName value to set.
      * @return the ResourceWriteCancelEventData object itself.
      */
-    @Generated
     public ResourceWriteCancelEventData setOperationName(String operationName) {
         this.operationName = operationName;
         return this;
@@ -234,7 +209,6 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
      *
      * @return the status value.
      */
-    @Generated
     public String getStatus() {
         return this.status;
     }
@@ -245,7 +219,6 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
      * @param status the status value to set.
      * @return the ResourceWriteCancelEventData object itself.
      */
-    @Generated
     public ResourceWriteCancelEventData setStatus(String status) {
         this.status = status;
         return this;
@@ -256,7 +229,6 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
      *
      * @return the authorization value.
      */
-    @Generated
     public ResourceAuthorization getResourceAuthorization() {
         return this.authorization;
     }
@@ -267,7 +239,6 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
      * @param authorization the authorization value to set.
      * @return the ResourceWriteCancelEventData object itself.
      */
-    @Generated
     public ResourceWriteCancelEventData setResourceAuthorization(ResourceAuthorization authorization) {
         this.authorization = authorization;
         return this;
@@ -278,7 +249,6 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
      *
      * @return the claims value.
      */
-    @Generated
     public Map<String, String> getResourceClaims() {
         return this.claims;
     }
@@ -289,7 +259,6 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
      * @param claims the claims value to set.
      * @return the ResourceWriteCancelEventData object itself.
      */
-    @Generated
     public ResourceWriteCancelEventData setResourceClaims(Map<String, String> claims) {
         this.claims = claims;
         return this;
@@ -300,7 +269,6 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
      *
      * @return the correlationId value.
      */
-    @Generated
     public String getCorrelationId() {
         return this.correlationId;
     }
@@ -311,7 +279,6 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
      * @param correlationId the correlationId value to set.
      * @return the ResourceWriteCancelEventData object itself.
      */
-    @Generated
     public ResourceWriteCancelEventData setCorrelationId(String correlationId) {
         this.correlationId = correlationId;
         return this;
@@ -322,7 +289,6 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
      *
      * @return the httpRequest value.
      */
-    @Generated
     public ResourceHttpRequest getResourceHttpRequest() {
         return this.httpRequest;
     }
@@ -333,7 +299,6 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
      * @param httpRequest the httpRequest value to set.
      * @return the ResourceWriteCancelEventData object itself.
      */
-    @Generated
     public ResourceWriteCancelEventData setResourceHttpRequest(ResourceHttpRequest httpRequest) {
         this.httpRequest = httpRequest;
         return this;
@@ -342,7 +307,6 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -368,7 +332,6 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ResourceWriteCancelEventData.
      */
-    @Generated
     public static ResourceWriteCancelEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ResourceWriteCancelEventData deserializedResourceWriteCancelEventData = new ResourceWriteCancelEventData();

@@ -4,7 +4,6 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,13 +14,11 @@ public final class EventGridMqttClientState extends ExpandableStringEnum<EventGr
     /**
      * Static value Enabled for EventGridMqttClientState.
      */
-    @Generated
     public static final EventGridMqttClientState ENABLED = fromString("Enabled");
 
     /**
      * Static value Disabled for EventGridMqttClientState.
      */
-    @Generated
     public static final EventGridMqttClientState DISABLED = fromString("Disabled");
 
     /**
@@ -29,7 +26,6 @@ public final class EventGridMqttClientState extends ExpandableStringEnum<EventGr
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public EventGridMqttClientState() {
     }
@@ -40,7 +36,6 @@ public final class EventGridMqttClientState extends ExpandableStringEnum<EventGr
      * @param name a name to look for.
      * @return the corresponding EventGridMqttClientState.
      */
-    @Generated
     public static EventGridMqttClientState fromString(String name) {
         return fromString(name, EventGridMqttClientState.class);
     }
@@ -50,7 +45,6 @@ public final class EventGridMqttClientState extends ExpandableStringEnum<EventGr
      * 
      * @return known EventGridMqttClientState values.
      */
-    @Generated
     public static Collection<EventGridMqttClientState> values() {
         return values(EventGridMqttClientState.class);
     }

@@ -4,7 +4,6 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,31 +14,26 @@ public final class AcsCallParticipantKind extends ExpandableStringEnum<AcsCallPa
     /**
      * Call participant role is an attendee.
      */
-    @Generated
     public static final AcsCallParticipantKind ATTENDEE = fromString("Attendee");
 
     /**
      * Call participant role is presenter.
      */
-    @Generated
     public static final AcsCallParticipantKind PRESENTER = fromString("Presenter");
 
     /**
      * Call participant role is consumer.
      */
-    @Generated
     public static final AcsCallParticipantKind CONSUMER = fromString("Consumer");
 
     /**
      * Call participant role is collaborator.
      */
-    @Generated
     public static final AcsCallParticipantKind COLLABORATOR = fromString("Collaborator");
 
     /**
      * Call participant role is organizer.
      */
-    @Generated
     public static final AcsCallParticipantKind ORGANIZER = fromString("Organizer");
 
     /**
@@ -47,7 +41,6 @@ public final class AcsCallParticipantKind extends ExpandableStringEnum<AcsCallPa
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public AcsCallParticipantKind() {
     }
@@ -58,7 +51,6 @@ public final class AcsCallParticipantKind extends ExpandableStringEnum<AcsCallPa
      * @param name a name to look for.
      * @return the corresponding AcsCallParticipantKind.
      */
-    @Generated
     public static AcsCallParticipantKind fromString(String name) {
         return fromString(name, AcsCallParticipantKind.class);
     }
@@ -68,7 +60,6 @@ public final class AcsCallParticipantKind extends ExpandableStringEnum<AcsCallPa
      * 
      * @return known AcsCallParticipantKind values.
      */
-    @Generated
     public static Collection<AcsCallParticipantKind> values() {
         return values(AcsCallParticipantKind.class);
     }

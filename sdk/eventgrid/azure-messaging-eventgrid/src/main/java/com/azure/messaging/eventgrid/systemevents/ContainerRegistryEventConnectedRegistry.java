@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,13 +20,11 @@ public final class ContainerRegistryEventConnectedRegistry
     /*
      * The name of the connected registry that generated this event.
      */
-    @Generated
     private String name;
 
     /**
      * Creates an instance of ContainerRegistryEventConnectedRegistry class.
      */
-    @Generated
     public ContainerRegistryEventConnectedRegistry() {
     }
 
@@ -36,7 +33,6 @@ public final class ContainerRegistryEventConnectedRegistry
      * 
      * @return the name value.
      */
-    @Generated
     public String getName() {
         return this.name;
     }
@@ -47,7 +43,6 @@ public final class ContainerRegistryEventConnectedRegistry
      * @param name the name value to set.
      * @return the ContainerRegistryEventConnectedRegistry object itself.
      */
-    @Generated
     public ContainerRegistryEventConnectedRegistry setName(String name) {
         this.name = name;
         return this;
@@ -56,7 +51,6 @@ public final class ContainerRegistryEventConnectedRegistry
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -72,7 +66,6 @@ public final class ContainerRegistryEventConnectedRegistry
      * it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ContainerRegistryEventConnectedRegistry.
      */
-    @Generated
     public static ContainerRegistryEventConnectedRegistry fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ContainerRegistryEventConnectedRegistry deserializedContainerRegistryEventConnectedRegistry

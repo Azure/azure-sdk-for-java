@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,25 +20,21 @@ public final class AcsRouterQueueDetails implements JsonSerializable<AcsRouterQu
     /*
      * Router Queue Id
      */
-    @Generated
     private String id;
 
     /*
      * Router Queue Name
      */
-    @Generated
     private String name;
 
     /*
      * Router Queue Labels
      */
-    @Generated
     private Map<String, String> labels;
 
     /**
      * Creates an instance of AcsRouterQueueDetails class.
      */
-    @Generated
     public AcsRouterQueueDetails() {
     }
 
@@ -48,7 +43,6 @@ public final class AcsRouterQueueDetails implements JsonSerializable<AcsRouterQu
      * 
      * @return the id value.
      */
-    @Generated
     public String getId() {
         return this.id;
     }
@@ -59,7 +53,6 @@ public final class AcsRouterQueueDetails implements JsonSerializable<AcsRouterQu
      * @param id the id value to set.
      * @return the AcsRouterQueueDetails object itself.
      */
-    @Generated
     public AcsRouterQueueDetails setId(String id) {
         this.id = id;
         return this;
@@ -70,7 +63,6 @@ public final class AcsRouterQueueDetails implements JsonSerializable<AcsRouterQu
      * 
      * @return the name value.
      */
-    @Generated
     public String getName() {
         return this.name;
     }
@@ -81,7 +73,6 @@ public final class AcsRouterQueueDetails implements JsonSerializable<AcsRouterQu
      * @param name the name value to set.
      * @return the AcsRouterQueueDetails object itself.
      */
-    @Generated
     public AcsRouterQueueDetails setName(String name) {
         this.name = name;
         return this;
@@ -92,7 +83,6 @@ public final class AcsRouterQueueDetails implements JsonSerializable<AcsRouterQu
      * 
      * @return the labels value.
      */
-    @Generated
     public Map<String, String> getLabels() {
         return this.labels;
     }
@@ -103,7 +93,6 @@ public final class AcsRouterQueueDetails implements JsonSerializable<AcsRouterQu
      * @param labels the labels value to set.
      * @return the AcsRouterQueueDetails object itself.
      */
-    @Generated
     public AcsRouterQueueDetails setLabels(Map<String, String> labels) {
         this.labels = labels;
         return this;
@@ -112,7 +101,6 @@ public final class AcsRouterQueueDetails implements JsonSerializable<AcsRouterQu
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -130,7 +118,6 @@ public final class AcsRouterQueueDetails implements JsonSerializable<AcsRouterQu
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AcsRouterQueueDetails.
      */
-    @Generated
     public static AcsRouterQueueDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsRouterQueueDetails deserializedAcsRouterQueueDetails = new AcsRouterQueueDetails();

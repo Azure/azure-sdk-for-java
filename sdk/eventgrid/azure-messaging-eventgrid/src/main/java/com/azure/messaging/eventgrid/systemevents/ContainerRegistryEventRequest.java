@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,39 +19,33 @@ public final class ContainerRegistryEventRequest implements JsonSerializable<Con
     /*
      * The ID of the request that initiated the event.
      */
-    @Generated
     private String id;
 
     /*
      * The IP or hostname and possibly port of the client connection that initiated the event. This is the RemoteAddr
      * from the standard http request.
      */
-    @Generated
     private String addr;
 
     /*
      * The externally accessible hostname of the registry instance, as specified by the http host header on incoming
      * requests.
      */
-    @Generated
     private String host;
 
     /*
      * The request method that generated the event.
      */
-    @Generated
     private String method;
 
     /*
      * The user agent header of the request.
      */
-    @Generated
     private String useragent;
 
     /**
      * Creates an instance of ContainerRegistryEventRequest class.
      */
-    @Generated
     public ContainerRegistryEventRequest() {
     }
 
@@ -61,7 +54,6 @@ public final class ContainerRegistryEventRequest implements JsonSerializable<Con
      * 
      * @return the id value.
      */
-    @Generated
     public String getId() {
         return this.id;
     }
@@ -72,7 +64,6 @@ public final class ContainerRegistryEventRequest implements JsonSerializable<Con
      * @param id the id value to set.
      * @return the ContainerRegistryEventRequest object itself.
      */
-    @Generated
     public ContainerRegistryEventRequest setId(String id) {
         this.id = id;
         return this;
@@ -84,7 +75,6 @@ public final class ContainerRegistryEventRequest implements JsonSerializable<Con
      * 
      * @return the addr value.
      */
-    @Generated
     public String getAddr() {
         return this.addr;
     }
@@ -96,7 +86,6 @@ public final class ContainerRegistryEventRequest implements JsonSerializable<Con
      * @param addr the addr value to set.
      * @return the ContainerRegistryEventRequest object itself.
      */
-    @Generated
     public ContainerRegistryEventRequest setAddr(String addr) {
         this.addr = addr;
         return this;
@@ -108,7 +97,6 @@ public final class ContainerRegistryEventRequest implements JsonSerializable<Con
      * 
      * @return the host value.
      */
-    @Generated
     public String getHost() {
         return this.host;
     }
@@ -120,7 +108,6 @@ public final class ContainerRegistryEventRequest implements JsonSerializable<Con
      * @param host the host value to set.
      * @return the ContainerRegistryEventRequest object itself.
      */
-    @Generated
     public ContainerRegistryEventRequest setHost(String host) {
         this.host = host;
         return this;
@@ -131,7 +118,6 @@ public final class ContainerRegistryEventRequest implements JsonSerializable<Con
      * 
      * @return the method value.
      */
-    @Generated
     public String getMethod() {
         return this.method;
     }
@@ -142,7 +128,6 @@ public final class ContainerRegistryEventRequest implements JsonSerializable<Con
      * @param method the method value to set.
      * @return the ContainerRegistryEventRequest object itself.
      */
-    @Generated
     public ContainerRegistryEventRequest setMethod(String method) {
         this.method = method;
         return this;
@@ -153,7 +138,6 @@ public final class ContainerRegistryEventRequest implements JsonSerializable<Con
      * 
      * @return the useragent value.
      */
-    @Generated
     public String getUseragent() {
         return this.useragent;
     }
@@ -164,7 +148,6 @@ public final class ContainerRegistryEventRequest implements JsonSerializable<Con
      * @param useragent the useragent value to set.
      * @return the ContainerRegistryEventRequest object itself.
      */
-    @Generated
     public ContainerRegistryEventRequest setUseragent(String useragent) {
         this.useragent = useragent;
         return this;
@@ -173,7 +156,6 @@ public final class ContainerRegistryEventRequest implements JsonSerializable<Con
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -193,7 +175,6 @@ public final class ContainerRegistryEventRequest implements JsonSerializable<Con
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ContainerRegistryEventRequest.
      */
-    @Generated
     public static ContainerRegistryEventRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ContainerRegistryEventRequest deserializedContainerRegistryEventRequest

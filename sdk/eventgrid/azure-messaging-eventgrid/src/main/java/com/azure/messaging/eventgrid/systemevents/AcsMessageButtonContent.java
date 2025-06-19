@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,19 +19,16 @@ public final class AcsMessageButtonContent implements JsonSerializable<AcsMessag
     /*
      * The Text of the button
      */
-    @Generated
     private String text;
 
     /*
      * The Payload of the button which was clicked by the user, setup by the business
      */
-    @Generated
     private String payload;
 
     /**
      * Creates an instance of AcsMessageButtonContent class.
      */
-    @Generated
     public AcsMessageButtonContent() {
     }
 
@@ -41,7 +37,6 @@ public final class AcsMessageButtonContent implements JsonSerializable<AcsMessag
      * 
      * @return the text value.
      */
-    @Generated
     public String getText() {
         return this.text;
     }
@@ -52,7 +47,6 @@ public final class AcsMessageButtonContent implements JsonSerializable<AcsMessag
      * @param text the text value to set.
      * @return the AcsMessageButtonContent object itself.
      */
-    @Generated
     public AcsMessageButtonContent setText(String text) {
         this.text = text;
         return this;
@@ -63,7 +57,6 @@ public final class AcsMessageButtonContent implements JsonSerializable<AcsMessag
      * 
      * @return the payload value.
      */
-    @Generated
     public String getPayload() {
         return this.payload;
     }
@@ -74,7 +67,6 @@ public final class AcsMessageButtonContent implements JsonSerializable<AcsMessag
      * @param payload the payload value to set.
      * @return the AcsMessageButtonContent object itself.
      */
-    @Generated
     public AcsMessageButtonContent setPayload(String payload) {
         this.payload = payload;
         return this;
@@ -83,7 +75,6 @@ public final class AcsMessageButtonContent implements JsonSerializable<AcsMessag
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -100,7 +91,6 @@ public final class AcsMessageButtonContent implements JsonSerializable<AcsMessag
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AcsMessageButtonContent.
      */
-    @Generated
     public static AcsMessageButtonContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsMessageButtonContent deserializedAcsMessageButtonContent = new AcsMessageButtonContent();

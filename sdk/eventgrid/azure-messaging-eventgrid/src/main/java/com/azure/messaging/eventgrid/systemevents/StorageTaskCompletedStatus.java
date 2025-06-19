@@ -4,7 +4,6 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,13 +14,11 @@ public final class StorageTaskCompletedStatus extends ExpandableStringEnum<Stora
     /**
      * Static value Succeeded for StorageTaskCompletedStatus.
      */
-    @Generated
     public static final StorageTaskCompletedStatus SUCCEEDED = fromString("Succeeded");
 
     /**
      * Static value Failed for StorageTaskCompletedStatus.
      */
-    @Generated
     public static final StorageTaskCompletedStatus FAILED = fromString("Failed");
 
     /**
@@ -29,7 +26,6 @@ public final class StorageTaskCompletedStatus extends ExpandableStringEnum<Stora
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public StorageTaskCompletedStatus() {
     }
@@ -40,7 +36,6 @@ public final class StorageTaskCompletedStatus extends ExpandableStringEnum<Stora
      * @param name a name to look for.
      * @return the corresponding StorageTaskCompletedStatus.
      */
-    @Generated
     public static StorageTaskCompletedStatus fromString(String name) {
         return fromString(name, StorageTaskCompletedStatus.class);
     }
@@ -50,7 +45,6 @@ public final class StorageTaskCompletedStatus extends ExpandableStringEnum<Stora
      * 
      * @return known StorageTaskCompletedStatus values.
      */
-    @Generated
     public static Collection<StorageTaskCompletedStatus> values() {
         return values(StorageTaskCompletedStatus.class);
     }

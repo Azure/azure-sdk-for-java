@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -24,13 +23,11 @@ public final class ApiManagementExpiredGatewayTokenProperties
     /*
      * Timestamp when the gateway token has expired.
      */
-    @Generated
     private OffsetDateTime expiresOn;
 
     /**
      * Creates an instance of ApiManagementExpiredGatewayTokenProperties class.
      */
-    @Generated
     public ApiManagementExpiredGatewayTokenProperties() {
     }
 
@@ -39,7 +36,6 @@ public final class ApiManagementExpiredGatewayTokenProperties
      * 
      * @return the expiresOn value.
      */
-    @Generated
     public OffsetDateTime getExpiresOn() {
         return this.expiresOn;
     }
@@ -50,7 +46,6 @@ public final class ApiManagementExpiredGatewayTokenProperties
      * @param expiresOn the expiresOn value to set.
      * @return the ApiManagementExpiredGatewayTokenProperties object itself.
      */
-    @Generated
     public ApiManagementExpiredGatewayTokenProperties setExpiresOn(OffsetDateTime expiresOn) {
         this.expiresOn = expiresOn;
         return this;
@@ -59,7 +54,6 @@ public final class ApiManagementExpiredGatewayTokenProperties
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -76,7 +70,6 @@ public final class ApiManagementExpiredGatewayTokenProperties
      * of it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ApiManagementExpiredGatewayTokenProperties.
      */
-    @Generated
     public static ApiManagementExpiredGatewayTokenProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ApiManagementExpiredGatewayTokenProperties deserializedApiManagementExpiredGatewayTokenProperties

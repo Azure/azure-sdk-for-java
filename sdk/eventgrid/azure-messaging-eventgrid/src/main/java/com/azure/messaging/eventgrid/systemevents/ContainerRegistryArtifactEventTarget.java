@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,49 +20,41 @@ public final class ContainerRegistryArtifactEventTarget
     /*
      * The MIME type of the artifact.
      */
-    @Generated
     private String mediaType;
 
     /*
      * The size in bytes of the artifact.
      */
-    @Generated
     private Long size;
 
     /*
      * The digest of the artifact.
      */
-    @Generated
     private String digest;
 
     /*
      * The repository name of the artifact.
      */
-    @Generated
     private String repository;
 
     /*
      * The tag of the artifact.
      */
-    @Generated
     private String tag;
 
     /*
      * The name of the artifact.
      */
-    @Generated
     private String name;
 
     /*
      * The version of the artifact.
      */
-    @Generated
     private String version;
 
     /**
      * Creates an instance of ContainerRegistryArtifactEventTarget class.
      */
-    @Generated
     public ContainerRegistryArtifactEventTarget() {
     }
 
@@ -72,7 +63,6 @@ public final class ContainerRegistryArtifactEventTarget
      * 
      * @return the mediaType value.
      */
-    @Generated
     public String getMediaType() {
         return this.mediaType;
     }
@@ -83,7 +73,6 @@ public final class ContainerRegistryArtifactEventTarget
      * @param mediaType the mediaType value to set.
      * @return the ContainerRegistryArtifactEventTarget object itself.
      */
-    @Generated
     public ContainerRegistryArtifactEventTarget setMediaType(String mediaType) {
         this.mediaType = mediaType;
         return this;
@@ -94,7 +83,6 @@ public final class ContainerRegistryArtifactEventTarget
      * 
      * @return the size value.
      */
-    @Generated
     public Long getSize() {
         return this.size;
     }
@@ -105,7 +93,6 @@ public final class ContainerRegistryArtifactEventTarget
      * @param size the size value to set.
      * @return the ContainerRegistryArtifactEventTarget object itself.
      */
-    @Generated
     public ContainerRegistryArtifactEventTarget setSize(Long size) {
         this.size = size;
         return this;
@@ -116,7 +103,6 @@ public final class ContainerRegistryArtifactEventTarget
      * 
      * @return the digest value.
      */
-    @Generated
     public String getDigest() {
         return this.digest;
     }
@@ -127,7 +113,6 @@ public final class ContainerRegistryArtifactEventTarget
      * @param digest the digest value to set.
      * @return the ContainerRegistryArtifactEventTarget object itself.
      */
-    @Generated
     public ContainerRegistryArtifactEventTarget setDigest(String digest) {
         this.digest = digest;
         return this;
@@ -138,7 +123,6 @@ public final class ContainerRegistryArtifactEventTarget
      * 
      * @return the repository value.
      */
-    @Generated
     public String getRepository() {
         return this.repository;
     }
@@ -149,7 +133,6 @@ public final class ContainerRegistryArtifactEventTarget
      * @param repository the repository value to set.
      * @return the ContainerRegistryArtifactEventTarget object itself.
      */
-    @Generated
     public ContainerRegistryArtifactEventTarget setRepository(String repository) {
         this.repository = repository;
         return this;
@@ -160,7 +143,6 @@ public final class ContainerRegistryArtifactEventTarget
      * 
      * @return the tag value.
      */
-    @Generated
     public String getTag() {
         return this.tag;
     }
@@ -171,7 +153,6 @@ public final class ContainerRegistryArtifactEventTarget
      * @param tag the tag value to set.
      * @return the ContainerRegistryArtifactEventTarget object itself.
      */
-    @Generated
     public ContainerRegistryArtifactEventTarget setTag(String tag) {
         this.tag = tag;
         return this;
@@ -182,7 +163,6 @@ public final class ContainerRegistryArtifactEventTarget
      * 
      * @return the name value.
      */
-    @Generated
     public String getName() {
         return this.name;
     }
@@ -193,7 +173,6 @@ public final class ContainerRegistryArtifactEventTarget
      * @param name the name value to set.
      * @return the ContainerRegistryArtifactEventTarget object itself.
      */
-    @Generated
     public ContainerRegistryArtifactEventTarget setName(String name) {
         this.name = name;
         return this;
@@ -204,7 +183,6 @@ public final class ContainerRegistryArtifactEventTarget
      * 
      * @return the version value.
      */
-    @Generated
     public String getVersion() {
         return this.version;
     }
@@ -215,7 +193,6 @@ public final class ContainerRegistryArtifactEventTarget
      * @param version the version value to set.
      * @return the ContainerRegistryArtifactEventTarget object itself.
      */
-    @Generated
     public ContainerRegistryArtifactEventTarget setVersion(String version) {
         this.version = version;
         return this;
@@ -224,7 +201,6 @@ public final class ContainerRegistryArtifactEventTarget
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -246,7 +222,6 @@ public final class ContainerRegistryArtifactEventTarget
      * or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ContainerRegistryArtifactEventTarget.
      */
-    @Generated
     public static ContainerRegistryArtifactEventTarget fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ContainerRegistryArtifactEventTarget deserializedContainerRegistryArtifactEventTarget

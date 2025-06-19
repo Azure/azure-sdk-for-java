@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,19 +19,16 @@ public final class AcsCallParticipantProperties implements JsonSerializable<AcsC
     /*
      * The communication identifier of the call ended by
      */
-    @Generated
     private CommunicationIdentifierModel communicationIdentifier;
 
     /*
      * The role of participant user.
      */
-    @Generated
     private AcsCallParticipantKind role;
 
     /**
      * Creates an instance of AcsCallParticipantProperties class.
      */
-    @Generated
     public AcsCallParticipantProperties() {
     }
 
@@ -41,7 +37,6 @@ public final class AcsCallParticipantProperties implements JsonSerializable<AcsC
      * 
      * @return the communicationIdentifier value.
      */
-    @Generated
     public CommunicationIdentifierModel getCommunicationIdentifier() {
         return this.communicationIdentifier;
     }
@@ -52,7 +47,6 @@ public final class AcsCallParticipantProperties implements JsonSerializable<AcsC
      * @param communicationIdentifier the communicationIdentifier value to set.
      * @return the AcsCallParticipantProperties object itself.
      */
-    @Generated
     public AcsCallParticipantProperties
         setCommunicationIdentifier(CommunicationIdentifierModel communicationIdentifier) {
         this.communicationIdentifier = communicationIdentifier;
@@ -64,7 +58,6 @@ public final class AcsCallParticipantProperties implements JsonSerializable<AcsC
      * 
      * @return the role value.
      */
-    @Generated
     public AcsCallParticipantKind getRole() {
         return this.role;
     }
@@ -75,7 +68,6 @@ public final class AcsCallParticipantProperties implements JsonSerializable<AcsC
      * @param role the role value to set.
      * @return the AcsCallParticipantProperties object itself.
      */
-    @Generated
     public AcsCallParticipantProperties setRole(AcsCallParticipantKind role) {
         this.role = role;
         return this;
@@ -84,7 +76,6 @@ public final class AcsCallParticipantProperties implements JsonSerializable<AcsC
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -101,7 +92,6 @@ public final class AcsCallParticipantProperties implements JsonSerializable<AcsC
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AcsCallParticipantProperties.
      */
-    @Generated
     public static AcsCallParticipantProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsCallParticipantProperties deserializedAcsCallParticipantProperties = new AcsCallParticipantProperties();

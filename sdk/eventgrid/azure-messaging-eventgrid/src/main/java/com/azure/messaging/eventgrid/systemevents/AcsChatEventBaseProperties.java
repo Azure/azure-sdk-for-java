@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,25 +19,21 @@ public class AcsChatEventBaseProperties implements JsonSerializable<AcsChatEvent
     /*
      * The communication identifier of the target user
      */
-    @Generated
     private CommunicationIdentifierModel recipientCommunicationIdentifier;
 
     /*
      * The transaction id will be used as co-relation vector
      */
-    @Generated
     private String transactionId;
 
     /*
      * The chat thread id
      */
-    @Generated
     private String threadId;
 
     /**
      * Creates an instance of AcsChatEventBaseProperties class.
      */
-    @Generated
     public AcsChatEventBaseProperties() {
     }
 
@@ -47,7 +42,6 @@ public class AcsChatEventBaseProperties implements JsonSerializable<AcsChatEvent
      * 
      * @return the recipientCommunicationIdentifier value.
      */
-    @Generated
     public CommunicationIdentifierModel getRecipientCommunicationIdentifier() {
         return this.recipientCommunicationIdentifier;
     }
@@ -58,7 +52,6 @@ public class AcsChatEventBaseProperties implements JsonSerializable<AcsChatEvent
      * @param recipientCommunicationIdentifier the recipientCommunicationIdentifier value to set.
      * @return the AcsChatEventBaseProperties object itself.
      */
-    @Generated
     public AcsChatEventBaseProperties
         setRecipientCommunicationIdentifier(CommunicationIdentifierModel recipientCommunicationIdentifier) {
         this.recipientCommunicationIdentifier = recipientCommunicationIdentifier;
@@ -70,7 +63,6 @@ public class AcsChatEventBaseProperties implements JsonSerializable<AcsChatEvent
      * 
      * @return the transactionId value.
      */
-    @Generated
     public String getTransactionId() {
         return this.transactionId;
     }
@@ -81,7 +73,6 @@ public class AcsChatEventBaseProperties implements JsonSerializable<AcsChatEvent
      * @param transactionId the transactionId value to set.
      * @return the AcsChatEventBaseProperties object itself.
      */
-    @Generated
     public AcsChatEventBaseProperties setTransactionId(String transactionId) {
         this.transactionId = transactionId;
         return this;
@@ -92,7 +83,6 @@ public class AcsChatEventBaseProperties implements JsonSerializable<AcsChatEvent
      * 
      * @return the threadId value.
      */
-    @Generated
     public String getThreadId() {
         return this.threadId;
     }
@@ -103,7 +93,6 @@ public class AcsChatEventBaseProperties implements JsonSerializable<AcsChatEvent
      * @param threadId the threadId value to set.
      * @return the AcsChatEventBaseProperties object itself.
      */
-    @Generated
     public AcsChatEventBaseProperties setThreadId(String threadId) {
         this.threadId = threadId;
         return this;
@@ -112,7 +101,6 @@ public class AcsChatEventBaseProperties implements JsonSerializable<AcsChatEvent
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -130,7 +118,6 @@ public class AcsChatEventBaseProperties implements JsonSerializable<AcsChatEvent
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AcsChatEventBaseProperties.
      */
-    @Generated
     public static AcsChatEventBaseProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsChatEventBaseProperties deserializedAcsChatEventBaseProperties = new AcsChatEventBaseProperties();

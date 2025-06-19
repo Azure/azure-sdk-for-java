@@ -4,7 +4,6 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,19 +14,16 @@ public final class StorageLifecycleCompletionStatus extends ExpandableStringEnum
     /**
      * Static value Completed for StorageLifecycleCompletionStatus.
      */
-    @Generated
     public static final StorageLifecycleCompletionStatus COMPLETED = fromString("Completed");
 
     /**
      * Static value CompletedWithError for StorageLifecycleCompletionStatus.
      */
-    @Generated
     public static final StorageLifecycleCompletionStatus COMPLETED_WITH_ERROR = fromString("CompletedWithError");
 
     /**
      * Static value Incomplete for StorageLifecycleCompletionStatus.
      */
-    @Generated
     public static final StorageLifecycleCompletionStatus INCOMPLETE = fromString("Incomplete");
 
     /**
@@ -35,7 +31,6 @@ public final class StorageLifecycleCompletionStatus extends ExpandableStringEnum
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public StorageLifecycleCompletionStatus() {
     }
@@ -46,7 +41,6 @@ public final class StorageLifecycleCompletionStatus extends ExpandableStringEnum
      * @param name a name to look for.
      * @return the corresponding StorageLifecycleCompletionStatus.
      */
-    @Generated
     public static StorageLifecycleCompletionStatus fromString(String name) {
         return fromString(name, StorageLifecycleCompletionStatus.class);
     }
@@ -56,7 +50,6 @@ public final class StorageLifecycleCompletionStatus extends ExpandableStringEnum
      * 
      * @return known StorageLifecycleCompletionStatus values.
      */
-    @Generated
     public static Collection<StorageLifecycleCompletionStatus> values() {
         return values(StorageLifecycleCompletionStatus.class);
     }

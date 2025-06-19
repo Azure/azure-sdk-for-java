@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,62 +19,52 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
     /*
      * Authentication type used for this device: either SAS, SelfSigned, or CertificateAuthority.
      */
-    @Generated
     private String authenticationType;
 
     /*
      * Count of cloud to device messages sent to this device.
      */
-    @Generated
     private Float cloudToDeviceMessageCount;
 
     /*
      * Whether the device is connected or disconnected.
      */
-    @Generated
     private String connectionState;
 
     /*
      * The unique identifier of the device twin.
      */
-    @Generated
     private String deviceId;
 
     /*
      * A piece of information that describes the content of the device twin. Each etag is guaranteed to be unique per
      * device twin.
      */
-    @Generated
     private String etag;
 
     /*
      * The ISO8601 timestamp of the last activity.
      */
-    @Generated
     private String lastActivityTime;
 
     /*
      * Properties JSON element.
      */
-    @Generated
     private DeviceTwinInfoProperties properties;
 
     /*
      * Whether the device twin is enabled or disabled.
      */
-    @Generated
     private String status;
 
     /*
      * The ISO8601 timestamp of the last device twin status update.
      */
-    @Generated
     private String statusUpdateTime;
 
     /*
      * An integer that is incremented by one each time the device twin is updated.
      */
-    @Generated
     private Float version;
 
     /*
@@ -83,13 +72,11 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
      * certificate store. The thumbprint is dynamically generated using the SHA1 algorithm, and does not physically
      * exist in the certificate.
      */
-    @Generated
     private DeviceTwinInfoX509Thumbprint x509Thumbprint;
 
     /**
      * Creates an instance of DeviceTwinInfo class.
      */
-    @Generated
     public DeviceTwinInfo() {
     }
 
@@ -99,7 +86,6 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
      * 
      * @return the authenticationType value.
      */
-    @Generated
     public String getAuthenticationType() {
         return this.authenticationType;
     }
@@ -111,7 +97,6 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
      * @param authenticationType the authenticationType value to set.
      * @return the DeviceTwinInfo object itself.
      */
-    @Generated
     public DeviceTwinInfo setAuthenticationType(String authenticationType) {
         this.authenticationType = authenticationType;
         return this;
@@ -122,7 +107,6 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
      * 
      * @return the cloudToDeviceMessageCount value.
      */
-    @Generated
     public Float getCloudToDeviceMessageCount() {
         return this.cloudToDeviceMessageCount;
     }
@@ -133,7 +117,6 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
      * @param cloudToDeviceMessageCount the cloudToDeviceMessageCount value to set.
      * @return the DeviceTwinInfo object itself.
      */
-    @Generated
     public DeviceTwinInfo setCloudToDeviceMessageCount(Float cloudToDeviceMessageCount) {
         this.cloudToDeviceMessageCount = cloudToDeviceMessageCount;
         return this;
@@ -144,7 +127,6 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
      * 
      * @return the connectionState value.
      */
-    @Generated
     public String getConnectionState() {
         return this.connectionState;
     }
@@ -155,7 +137,6 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
      * @param connectionState the connectionState value to set.
      * @return the DeviceTwinInfo object itself.
      */
-    @Generated
     public DeviceTwinInfo setConnectionState(String connectionState) {
         this.connectionState = connectionState;
         return this;
@@ -166,7 +147,6 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
      * 
      * @return the deviceId value.
      */
-    @Generated
     public String getDeviceId() {
         return this.deviceId;
     }
@@ -177,7 +157,6 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
      * @param deviceId the deviceId value to set.
      * @return the DeviceTwinInfo object itself.
      */
-    @Generated
     public DeviceTwinInfo setDeviceId(String deviceId) {
         this.deviceId = deviceId;
         return this;
@@ -189,7 +168,6 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
      * 
      * @return the etag value.
      */
-    @Generated
     public String getEtag() {
         return this.etag;
     }
@@ -201,7 +179,6 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
      * @param etag the etag value to set.
      * @return the DeviceTwinInfo object itself.
      */
-    @Generated
     public DeviceTwinInfo setEtag(String etag) {
         this.etag = etag;
         return this;
@@ -212,7 +189,6 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
      * 
      * @return the lastActivityTime value.
      */
-    @Generated
     public String getLastActivityTime() {
         return this.lastActivityTime;
     }
@@ -223,7 +199,6 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
      * @param lastActivityTime the lastActivityTime value to set.
      * @return the DeviceTwinInfo object itself.
      */
-    @Generated
     public DeviceTwinInfo setLastActivityTime(String lastActivityTime) {
         this.lastActivityTime = lastActivityTime;
         return this;
@@ -234,7 +209,6 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
      * 
      * @return the properties value.
      */
-    @Generated
     public DeviceTwinInfoProperties getProperties() {
         return this.properties;
     }
@@ -245,7 +219,6 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
      * @param properties the properties value to set.
      * @return the DeviceTwinInfo object itself.
      */
-    @Generated
     public DeviceTwinInfo setProperties(DeviceTwinInfoProperties properties) {
         this.properties = properties;
         return this;
@@ -256,7 +229,6 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
      * 
      * @return the status value.
      */
-    @Generated
     public String getStatus() {
         return this.status;
     }
@@ -267,7 +239,6 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
      * @param status the status value to set.
      * @return the DeviceTwinInfo object itself.
      */
-    @Generated
     public DeviceTwinInfo setStatus(String status) {
         this.status = status;
         return this;
@@ -278,7 +249,6 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
      * 
      * @return the statusUpdateTime value.
      */
-    @Generated
     public String getStatusUpdateTime() {
         return this.statusUpdateTime;
     }
@@ -289,7 +259,6 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
      * @param statusUpdateTime the statusUpdateTime value to set.
      * @return the DeviceTwinInfo object itself.
      */
-    @Generated
     public DeviceTwinInfo setStatusUpdateTime(String statusUpdateTime) {
         this.statusUpdateTime = statusUpdateTime;
         return this;
@@ -300,7 +269,6 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
      * 
      * @return the version value.
      */
-    @Generated
     public Float getVersion() {
         return this.version;
     }
@@ -311,7 +279,6 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
      * @param version the version value to set.
      * @return the DeviceTwinInfo object itself.
      */
-    @Generated
     public DeviceTwinInfo setVersion(Float version) {
         this.version = version;
         return this;
@@ -324,7 +291,6 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
      * 
      * @return the x509Thumbprint value.
      */
-    @Generated
     public DeviceTwinInfoX509Thumbprint getX509Thumbprint() {
         return this.x509Thumbprint;
     }
@@ -337,7 +303,6 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
      * @param x509Thumbprint the x509Thumbprint value to set.
      * @return the DeviceTwinInfo object itself.
      */
-    @Generated
     public DeviceTwinInfo setX509Thumbprint(DeviceTwinInfoX509Thumbprint x509Thumbprint) {
         this.x509Thumbprint = x509Thumbprint;
         return this;
@@ -346,7 +311,6 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -372,7 +336,6 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the DeviceTwinInfo.
      */
-    @Generated
     public static DeviceTwinInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DeviceTwinInfo deserializedDeviceTwinInfo = new DeviceTwinInfo();

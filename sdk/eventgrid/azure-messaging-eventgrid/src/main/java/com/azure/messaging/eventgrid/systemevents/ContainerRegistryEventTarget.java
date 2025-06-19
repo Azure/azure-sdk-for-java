@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,49 +19,41 @@ public final class ContainerRegistryEventTarget implements JsonSerializable<Cont
     /*
      * The MIME type of the referenced object.
      */
-    @Generated
     private String mediaType;
 
     /*
      * The number of bytes of the content. Same as Length field.
      */
-    @Generated
     private Long size;
 
     /*
      * The digest of the content, as defined by the Registry V2 HTTP API Specification.
      */
-    @Generated
     private String digest;
 
     /*
      * The number of bytes of the content. Same as Size field.
      */
-    @Generated
     private Long length;
 
     /*
      * The repository name.
      */
-    @Generated
     private String repository;
 
     /*
      * The direct URL to the content.
      */
-    @Generated
     private String url;
 
     /*
      * The tag name.
      */
-    @Generated
     private String tag;
 
     /**
      * Creates an instance of ContainerRegistryEventTarget class.
      */
-    @Generated
     public ContainerRegistryEventTarget() {
     }
 
@@ -71,7 +62,6 @@ public final class ContainerRegistryEventTarget implements JsonSerializable<Cont
      * 
      * @return the mediaType value.
      */
-    @Generated
     public String getMediaType() {
         return this.mediaType;
     }
@@ -82,7 +72,6 @@ public final class ContainerRegistryEventTarget implements JsonSerializable<Cont
      * @param mediaType the mediaType value to set.
      * @return the ContainerRegistryEventTarget object itself.
      */
-    @Generated
     public ContainerRegistryEventTarget setMediaType(String mediaType) {
         this.mediaType = mediaType;
         return this;
@@ -93,7 +82,6 @@ public final class ContainerRegistryEventTarget implements JsonSerializable<Cont
      * 
      * @return the size value.
      */
-    @Generated
     public Long getSize() {
         return this.size;
     }
@@ -104,7 +92,6 @@ public final class ContainerRegistryEventTarget implements JsonSerializable<Cont
      * @param size the size value to set.
      * @return the ContainerRegistryEventTarget object itself.
      */
-    @Generated
     public ContainerRegistryEventTarget setSize(Long size) {
         this.size = size;
         return this;
@@ -115,7 +102,6 @@ public final class ContainerRegistryEventTarget implements JsonSerializable<Cont
      * 
      * @return the digest value.
      */
-    @Generated
     public String getDigest() {
         return this.digest;
     }
@@ -126,7 +112,6 @@ public final class ContainerRegistryEventTarget implements JsonSerializable<Cont
      * @param digest the digest value to set.
      * @return the ContainerRegistryEventTarget object itself.
      */
-    @Generated
     public ContainerRegistryEventTarget setDigest(String digest) {
         this.digest = digest;
         return this;
@@ -137,7 +122,6 @@ public final class ContainerRegistryEventTarget implements JsonSerializable<Cont
      * 
      * @return the length value.
      */
-    @Generated
     public Long getLength() {
         return this.length;
     }
@@ -148,7 +132,6 @@ public final class ContainerRegistryEventTarget implements JsonSerializable<Cont
      * @param length the length value to set.
      * @return the ContainerRegistryEventTarget object itself.
      */
-    @Generated
     public ContainerRegistryEventTarget setLength(Long length) {
         this.length = length;
         return this;
@@ -159,7 +142,6 @@ public final class ContainerRegistryEventTarget implements JsonSerializable<Cont
      * 
      * @return the repository value.
      */
-    @Generated
     public String getRepository() {
         return this.repository;
     }
@@ -170,7 +152,6 @@ public final class ContainerRegistryEventTarget implements JsonSerializable<Cont
      * @param repository the repository value to set.
      * @return the ContainerRegistryEventTarget object itself.
      */
-    @Generated
     public ContainerRegistryEventTarget setRepository(String repository) {
         this.repository = repository;
         return this;
@@ -181,7 +162,6 @@ public final class ContainerRegistryEventTarget implements JsonSerializable<Cont
      * 
      * @return the url value.
      */
-    @Generated
     public String getUrl() {
         return this.url;
     }
@@ -192,7 +172,6 @@ public final class ContainerRegistryEventTarget implements JsonSerializable<Cont
      * @param url the url value to set.
      * @return the ContainerRegistryEventTarget object itself.
      */
-    @Generated
     public ContainerRegistryEventTarget setUrl(String url) {
         this.url = url;
         return this;
@@ -203,7 +182,6 @@ public final class ContainerRegistryEventTarget implements JsonSerializable<Cont
      * 
      * @return the tag value.
      */
-    @Generated
     public String getTag() {
         return this.tag;
     }
@@ -214,7 +192,6 @@ public final class ContainerRegistryEventTarget implements JsonSerializable<Cont
      * @param tag the tag value to set.
      * @return the ContainerRegistryEventTarget object itself.
      */
-    @Generated
     public ContainerRegistryEventTarget setTag(String tag) {
         this.tag = tag;
         return this;
@@ -223,7 +200,6 @@ public final class ContainerRegistryEventTarget implements JsonSerializable<Cont
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -245,7 +221,6 @@ public final class ContainerRegistryEventTarget implements JsonSerializable<Cont
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ContainerRegistryEventTarget.
      */
-    @Generated
     public static ContainerRegistryEventTarget fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ContainerRegistryEventTarget deserializedContainerRegistryEventTarget = new ContainerRegistryEventTarget();

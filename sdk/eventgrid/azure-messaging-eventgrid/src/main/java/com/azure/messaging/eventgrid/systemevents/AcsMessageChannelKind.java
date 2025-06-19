@@ -4,7 +4,6 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,7 +14,6 @@ public final class AcsMessageChannelKind extends ExpandableStringEnum<AcsMessage
     /**
      * Updated message channel type is Whatsapp.
      */
-    @Generated
     public static final AcsMessageChannelKind WHATSAPP = fromString("whatsapp");
 
     /**
@@ -23,7 +21,6 @@ public final class AcsMessageChannelKind extends ExpandableStringEnum<AcsMessage
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public AcsMessageChannelKind() {
     }
@@ -34,7 +31,6 @@ public final class AcsMessageChannelKind extends ExpandableStringEnum<AcsMessage
      * @param name a name to look for.
      * @return the corresponding AcsMessageChannelKind.
      */
-    @Generated
     public static AcsMessageChannelKind fromString(String name) {
         return fromString(name, AcsMessageChannelKind.class);
     }
@@ -44,7 +40,6 @@ public final class AcsMessageChannelKind extends ExpandableStringEnum<AcsMessage
      * 
      * @return known AcsMessageChannelKind values.
      */
-    @Generated
     public static Collection<AcsMessageChannelKind> values() {
         return values(AcsMessageChannelKind.class);
     }

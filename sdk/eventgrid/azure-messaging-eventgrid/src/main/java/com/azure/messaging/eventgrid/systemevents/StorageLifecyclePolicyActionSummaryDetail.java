@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,25 +20,21 @@ public final class StorageLifecyclePolicyActionSummaryDetail
     /*
      * Total number of objects to be acted on by this action.
      */
-    @Generated
     private Long totalObjectsCount;
 
     /*
      * Number of success operations of this action.
      */
-    @Generated
     private Long successCount;
 
     /*
      * Error messages of this action if any.
      */
-    @Generated
     private String errorList;
 
     /**
      * Creates an instance of StorageLifecyclePolicyActionSummaryDetail class.
      */
-    @Generated
     public StorageLifecyclePolicyActionSummaryDetail() {
     }
 
@@ -48,7 +43,6 @@ public final class StorageLifecyclePolicyActionSummaryDetail
      * 
      * @return the totalObjectsCount value.
      */
-    @Generated
     public Long getTotalObjectsCount() {
         return this.totalObjectsCount;
     }
@@ -59,7 +53,6 @@ public final class StorageLifecyclePolicyActionSummaryDetail
      * @param totalObjectsCount the totalObjectsCount value to set.
      * @return the StorageLifecyclePolicyActionSummaryDetail object itself.
      */
-    @Generated
     public StorageLifecyclePolicyActionSummaryDetail setTotalObjectsCount(Long totalObjectsCount) {
         this.totalObjectsCount = totalObjectsCount;
         return this;
@@ -70,7 +63,6 @@ public final class StorageLifecyclePolicyActionSummaryDetail
      * 
      * @return the successCount value.
      */
-    @Generated
     public Long getSuccessCount() {
         return this.successCount;
     }
@@ -81,7 +73,6 @@ public final class StorageLifecyclePolicyActionSummaryDetail
      * @param successCount the successCount value to set.
      * @return the StorageLifecyclePolicyActionSummaryDetail object itself.
      */
-    @Generated
     public StorageLifecyclePolicyActionSummaryDetail setSuccessCount(Long successCount) {
         this.successCount = successCount;
         return this;
@@ -92,7 +83,6 @@ public final class StorageLifecyclePolicyActionSummaryDetail
      * 
      * @return the errorList value.
      */
-    @Generated
     public String getErrorList() {
         return this.errorList;
     }
@@ -103,7 +93,6 @@ public final class StorageLifecyclePolicyActionSummaryDetail
      * @param errorList the errorList value to set.
      * @return the StorageLifecyclePolicyActionSummaryDetail object itself.
      */
-    @Generated
     public StorageLifecyclePolicyActionSummaryDetail setErrorList(String errorList) {
         this.errorList = errorList;
         return this;
@@ -112,7 +101,6 @@ public final class StorageLifecyclePolicyActionSummaryDetail
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -130,7 +118,6 @@ public final class StorageLifecyclePolicyActionSummaryDetail
      * it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the StorageLifecyclePolicyActionSummaryDetail.
      */
-    @Generated
     public static StorageLifecyclePolicyActionSummaryDetail fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             StorageLifecyclePolicyActionSummaryDetail deserializedStorageLifecyclePolicyActionSummaryDetail

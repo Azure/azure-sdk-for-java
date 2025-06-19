@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,7 +19,6 @@ public final class MapsGeofenceGeometry implements JsonSerializable<MapsGeofence
     /*
      * ID of the device.
      */
-    @Generated
     private String deviceId;
 
     /*
@@ -31,38 +29,32 @@ public final class MapsGeofenceGeometry implements JsonSerializable<MapsGeofence
      * border,then the value is -999. A value of 999 means that there is great confidence the coordinate is well outside
      * the geofence. A value of -999 means that there is great confidence the coordinate is well within the geofence.
      */
-    @Generated
     private Float distance;
 
     /*
      * The unique ID for the geofence geometry.
      */
-    @Generated
     private String geometryId;
 
     /*
      * Latitude of the nearest point of the geometry.
      */
-    @Generated
     private Float nearestLat;
 
     /*
      * Longitude of the nearest point of the geometry.
      */
-    @Generated
     private Float nearestLon;
 
     /*
      * The unique id returned from user upload service when uploading a geofence. Will not be included in geofencing
      * post API.
      */
-    @Generated
     private String udId;
 
     /**
      * Creates an instance of MapsGeofenceGeometry class.
      */
-    @Generated
     public MapsGeofenceGeometry() {
     }
 
@@ -71,7 +63,6 @@ public final class MapsGeofenceGeometry implements JsonSerializable<MapsGeofence
      * 
      * @return the deviceId value.
      */
-    @Generated
     public String getDeviceId() {
         return this.deviceId;
     }
@@ -82,7 +73,6 @@ public final class MapsGeofenceGeometry implements JsonSerializable<MapsGeofence
      * @param deviceId the deviceId value to set.
      * @return the MapsGeofenceGeometry object itself.
      */
-    @Generated
     public MapsGeofenceGeometry setDeviceId(String deviceId) {
         this.deviceId = deviceId;
         return this;
@@ -99,7 +89,6 @@ public final class MapsGeofenceGeometry implements JsonSerializable<MapsGeofence
      * 
      * @return the distance value.
      */
-    @Generated
     public Float getDistance() {
         return this.distance;
     }
@@ -116,7 +105,6 @@ public final class MapsGeofenceGeometry implements JsonSerializable<MapsGeofence
      * @param distance the distance value to set.
      * @return the MapsGeofenceGeometry object itself.
      */
-    @Generated
     public MapsGeofenceGeometry setDistance(Float distance) {
         this.distance = distance;
         return this;
@@ -127,7 +115,6 @@ public final class MapsGeofenceGeometry implements JsonSerializable<MapsGeofence
      * 
      * @return the geometryId value.
      */
-    @Generated
     public String getGeometryId() {
         return this.geometryId;
     }
@@ -138,7 +125,6 @@ public final class MapsGeofenceGeometry implements JsonSerializable<MapsGeofence
      * @param geometryId the geometryId value to set.
      * @return the MapsGeofenceGeometry object itself.
      */
-    @Generated
     public MapsGeofenceGeometry setGeometryId(String geometryId) {
         this.geometryId = geometryId;
         return this;
@@ -149,7 +135,6 @@ public final class MapsGeofenceGeometry implements JsonSerializable<MapsGeofence
      * 
      * @return the nearestLat value.
      */
-    @Generated
     public Float getNearestLat() {
         return this.nearestLat;
     }
@@ -160,7 +145,6 @@ public final class MapsGeofenceGeometry implements JsonSerializable<MapsGeofence
      * @param nearestLat the nearestLat value to set.
      * @return the MapsGeofenceGeometry object itself.
      */
-    @Generated
     public MapsGeofenceGeometry setNearestLat(Float nearestLat) {
         this.nearestLat = nearestLat;
         return this;
@@ -171,7 +155,6 @@ public final class MapsGeofenceGeometry implements JsonSerializable<MapsGeofence
      * 
      * @return the nearestLon value.
      */
-    @Generated
     public Float getNearestLon() {
         return this.nearestLon;
     }
@@ -182,7 +165,6 @@ public final class MapsGeofenceGeometry implements JsonSerializable<MapsGeofence
      * @param nearestLon the nearestLon value to set.
      * @return the MapsGeofenceGeometry object itself.
      */
-    @Generated
     public MapsGeofenceGeometry setNearestLon(Float nearestLon) {
         this.nearestLon = nearestLon;
         return this;
@@ -194,7 +176,6 @@ public final class MapsGeofenceGeometry implements JsonSerializable<MapsGeofence
      * 
      * @return the udId value.
      */
-    @Generated
     public String getUdId() {
         return this.udId;
     }
@@ -206,7 +187,6 @@ public final class MapsGeofenceGeometry implements JsonSerializable<MapsGeofence
      * @param udId the udId value to set.
      * @return the MapsGeofenceGeometry object itself.
      */
-    @Generated
     public MapsGeofenceGeometry setUdId(String udId) {
         this.udId = udId;
         return this;
@@ -215,7 +195,6 @@ public final class MapsGeofenceGeometry implements JsonSerializable<MapsGeofence
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -236,7 +215,6 @@ public final class MapsGeofenceGeometry implements JsonSerializable<MapsGeofence
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the MapsGeofenceGeometry.
      */
-    @Generated
     public static MapsGeofenceGeometry fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MapsGeofenceGeometry deserializedMapsGeofenceGeometry = new MapsGeofenceGeometry();
