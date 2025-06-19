@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-queue</artifactId>
-  <version>12.25.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
+  <version>12.25.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
 
   <name>Microsoft Azure client library for Queue Storage</name>
   <description>This module contains client library for Microsoft Azure Queue Storage.</description>
@@ -66,23 +66,23 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.55.3</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.55.4</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.15.11</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.15.12</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.29.0</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.29.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.29.0</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.29.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
       <classifier>tests</classifier>
       <type>test-jar</type>
       <scope>test</scope>
@@ -90,13 +90,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.27.0-beta.8</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.27.0-beta.9</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.15.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.16.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
