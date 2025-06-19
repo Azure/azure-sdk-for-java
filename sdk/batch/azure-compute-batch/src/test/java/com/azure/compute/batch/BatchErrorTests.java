@@ -4,19 +4,19 @@ package com.azure.compute.batch;
 
 import com.azure.compute.batch.models.*;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.test.SyncAsyncExtension;
+import com.azure.core.test.annotation.SyncAsyncTest;
 
 public class BatchErrorTests extends BatchClientTestBase {
 
-    @Test
+    @SyncAsyncTest
     public void testResizeErrorCases() {
         try {
-
-            BatchPoolResizeParameters resizeParameters = new BatchPoolResizeParameters();
-            batchClient.resizePool("fakepool", resizeParameters);
+            BatchPoolResizeParameters emptyResizeParams = new BatchPoolResizeParameters();
+            SyncAsyncExtension.execute(() -> batchClient.resizePool("fakepool-sync", emptyResizeParams),
+                () -> batchAsyncClient.resizePool("fakepool-async", emptyResizeParams));
         } catch (HttpResponseException err) {
-
             BatchError error = BatchError.fromException(err);
             Assertions.assertNotNull(error);
             Assertions.assertEquals("MissingRequiredProperty", error.getCode());
@@ -27,11 +27,11 @@ public class BatchErrorTests extends BatchClientTestBase {
         }
 
         try {
-
-            batchClient.resizePool("fakepool",
-                new BatchPoolResizeParameters().setTargetDedicatedNodes(1).setTargetLowPriorityNodes(1));
+            BatchPoolResizeParameters resizeParams
+                = new BatchPoolResizeParameters().setTargetDedicatedNodes(1).setTargetLowPriorityNodes(1);
+            SyncAsyncExtension.execute(() -> batchClient.resizePool("fakepool-sync", resizeParams),
+                () -> batchAsyncClient.resizePool("fakepool-async", resizeParams));
         } catch (HttpResponseException err) {
-
             BatchError error = BatchError.fromException(err);
             Assertions.assertNotNull(error);
             Assertions.assertEquals("PoolNotFound", error.getCode());
