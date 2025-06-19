@@ -11,30 +11,31 @@ import io.clientcore.core.shared.InsecureTrustManager;
 import io.clientcore.core.shared.LocalTestServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Timeout;
 
 import java.security.SecureRandom;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Reactor Netty {@link HttpClientTests} with https.
- * Some request logic branches out if it's https like file uploads.
- */
+@Disabled("Support will be added in the future, in another PR.")
 @Timeout(value = 3, unit = TimeUnit.MINUTES)
-public class NettyHttpClientHttpClientWithHttpsTests extends HttpClientTests {
+public class NettyHttp2HttpClientTests extends HttpClientTests {
     private static LocalTestServer server;
 
     private static final HttpClient HTTP_CLIENT_INSTANCE;
 
     static {
-        HTTP_CLIENT_INSTANCE = new NettyHttpClientBuilder() //.maximumHttpVersion(HttpProtocolVersion.HTTP_1_1)
-            .sslContextModifier(ssl -> ssl.trustManager(new InsecureTrustManager()).secureRandom(new SecureRandom()))
+        HTTP_CLIENT_INSTANCE = new NettyHttpClientBuilder()
+            .sslContextModifier(
+                builder -> builder.trustManager(new InsecureTrustManager()).secureRandom(new SecureRandom()))
+            //.maximumHttpVersion(HttpProtocolVersion.HTTP_2)
             .build();
     }
 
     @BeforeAll
     public static void startTestServer() {
-        server = HttpClientTestsServer.getHttpClientTestsServer(HttpProtocolVersion.HTTP_1_1, true);
+        server = HttpClientTestsServer.getHttpClientTestsServer(HttpProtocolVersion.HTTP_2, true);
+
         server.start();
     }
 
@@ -46,6 +47,16 @@ public class NettyHttpClientHttpClientWithHttpsTests extends HttpClientTests {
     }
 
     @Override
+    protected boolean isHttp2() {
+        return true;
+    }
+
+    @Override
+    protected boolean isSecure() {
+        return true;
+    }
+
+    @Override
     @Deprecated
     protected int getPort() {
         return server.getPort();
@@ -53,12 +64,7 @@ public class NettyHttpClientHttpClientWithHttpsTests extends HttpClientTests {
 
     @Override
     protected String getServerUri(boolean secure) {
-        return secure ? server.getHttpsUri() : server.getUri();
-    }
-
-    @Override
-    protected boolean isSecure() {
-        return true;
+        return server.getHttpsUri();
     }
 
     @Override

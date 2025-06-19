@@ -13,6 +13,7 @@ import io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON
 import io.clientcore.annotation.processor.test.implementation.models.OperationError;
 import io.clientcore.annotation.processor.test.implementation.models.ServiceError;
 import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.http.client.HttpProtocolVersion;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
@@ -103,7 +104,7 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @BeforeAll
     public static void startTestServer() {
-        server = HttpClientTestsServer.getHttpClientTestsServer();
+        server = HttpClientTestsServer.getHttpClientTestsServer(HttpProtocolVersion.HTTP_1_1, false);
 
         server.start();
     }
@@ -173,7 +174,7 @@ public class TestInterfaceServiceClientGenerationTests {
 
         ParameterizedHostService service
             = ParameterizedHostService.getNewInstance(pipeline);
-        final byte[] result = service.getByteArray("http", "localhost:" + server.getHttpPort(), 100);
+        final byte[] result = service.getByteArray("http", "localhost:" + server.getPort(), 100);
 
         assertNotNull(result);
         assertEquals(100, result.length);
@@ -187,7 +188,7 @@ public class TestInterfaceServiceClientGenerationTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
 
         byte[] result = HostEdgeCase1Service.getNewInstance(pipeline)
-            .getByteArray("http://localhost:" + server.getHttpPort(), 100);
+            .getByteArray("http://localhost:" + server.getPort(), 100);
 
         assertNotNull(result);
         assertEquals(100, result.length);
@@ -201,7 +202,7 @@ public class TestInterfaceServiceClientGenerationTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
 
         byte[] result = HostEdgeCase2Service.getNewInstance(pipeline)
-            .getByteArray("http://localhost:" + server.getHttpPort(), 100);
+            .getByteArray("http://localhost:" + server.getPort(), 100);
 
         assertNotNull(result);
         assertEquals(100, result.length);
@@ -1908,11 +1909,11 @@ public class TestInterfaceServiceClientGenerationTests {
      * @return The URI the server is using.
      */
     private String getServerUri(boolean secure) {
-        return secure ? server.getHttpsUri() : server.getHttpUri();
+        return secure ? server.getHttpsUri() : server.getUri();
     }
 
     private int getPort() {
-        return server.getHttpPort();
+        return server.getPort();
     }
 
     private String getRequestScheme() {
