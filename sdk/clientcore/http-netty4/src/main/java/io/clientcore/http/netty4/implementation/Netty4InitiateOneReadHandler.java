@@ -2,15 +2,17 @@
 // Licensed under the MIT License.
 package io.clientcore.http.netty4.implementation;
 
+import io.clientcore.core.utils.IOExceptionCheckedConsumer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufHolder;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandler;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.LastHttpContent;
+import io.netty.util.ReferenceCountUtil;
 
+import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
-import java.util.function.Consumer;
 
 /**
  * {@link ChannelInboundHandler} that initiates one read request any time data is needed. Even though it is a single
@@ -18,8 +20,7 @@ import java.util.function.Consumer;
  * this handler need to support multiple channelRead, if this isn't done data may be lost.
  */
 public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAdapter {
-    private final Consumer<ByteBuf> byteBufConsumer;
-
+    private final IOExceptionCheckedConsumer<ByteBuf> byteBufConsumer;
     private CountDownLatch latch;
 
     private boolean lastRead;
@@ -35,7 +36,7 @@ public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAda
      * @param latch The latch to count down when the channel read completes.
      * @param byteBufConsumer The consumer to process the {@link ByteBuf ByteBufs} as they are read.
      */
-    public Netty4InitiateOneReadHandler(CountDownLatch latch, Consumer<ByteBuf> byteBufConsumer) {
+    public Netty4InitiateOneReadHandler(CountDownLatch latch, IOExceptionCheckedConsumer<ByteBuf> byteBufConsumer) {
         this.latch = latch;
         this.byteBufConsumer = byteBufConsumer;
     }
@@ -67,7 +68,13 @@ public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAda
         }
 
         if (buf != null && buf.isReadable()) {
-            byteBufConsumer.accept(buf);
+            try {
+                byteBufConsumer.accept(buf);
+            } catch (IOException | RuntimeException ex) {
+                ReferenceCountUtil.release(buf);
+                ctx.close();
+                return;
+            }
         }
 
         lastRead = msg instanceof LastHttpContent;
