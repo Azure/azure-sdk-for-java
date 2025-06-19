@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
-import com.azure.messaging.servicebus.administration.implementation.models.EntityAvailabilityStatus;
-import com.azure.messaging.servicebus.administration.implementation.models.MessageCountDetails;
-import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.EntityAvailabilityStatusImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.MessageCountDetailsImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionImpl;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -26,18 +26,18 @@ import static com.azure.messaging.servicebus.implementation.MessageUtils.toPrimi
  */
 @Fluent
 public final class SubscriptionProperties {
-    private final SubscriptionDescription description;
+    private final SubscriptionDescriptionImpl description;
 
     static {
         // This is used by classes in different packages to get access to private and package-private methods.
         EntityHelper.setSubscriptionAccessor(new EntityHelper.SubscriptionAccessor() {
             @Override
-            public SubscriptionProperties toModel(SubscriptionDescription description) {
+            public SubscriptionProperties toModel(SubscriptionDescriptionImpl description) {
                 return new SubscriptionProperties(description);
             }
 
             @Override
-            public SubscriptionDescription toImplementation(SubscriptionProperties subscription) {
+            public SubscriptionDescriptionImpl toImplementation(SubscriptionProperties subscription) {
                 return subscription.description;
             }
 
@@ -61,7 +61,7 @@ public final class SubscriptionProperties {
      *
      * @param description Options used to create a subscription.
      */
-    SubscriptionProperties(SubscriptionDescription description) {
+    SubscriptionProperties(SubscriptionDescriptionImpl description) {
         Objects.requireNonNull(description, "'description' cannot be null.");
         this.description = description;
     }
@@ -346,7 +346,7 @@ public final class SubscriptionProperties {
      *
      * @return the messageCountDetails value.
      */
-    MessageCountDetails getMessageCountDetails() {
+    MessageCountDetailsImpl getMessageCountDetails() {
         return description.getMessageCountDetails();
     }
 
@@ -419,7 +419,7 @@ public final class SubscriptionProperties {
      *
      * @return the entityAvailabilityStatus value.
      */
-    EntityAvailabilityStatus getEntityAvailabilityStatus() {
+    EntityAvailabilityStatusImpl getEntityAvailabilityStatus() {
         return description.getEntityAvailabilityStatus();
     }
 }

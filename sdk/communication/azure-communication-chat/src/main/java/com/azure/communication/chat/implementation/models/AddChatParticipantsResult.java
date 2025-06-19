@@ -5,21 +5,18 @@
 package com.azure.communication.chat.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
  * Result of the add chat participants operation.
  */
 @Immutable
-public final class AddChatParticipantsResult implements JsonSerializable<AddChatParticipantsResult> {
+public final class AddChatParticipantsResult {
     /*
      * The participants that failed to be added to the chat thread.
      */
+    @JsonProperty(value = "invalidParticipants", access = JsonProperty.Access.WRITE_ONLY)
     private List<CommunicationError> invalidParticipants;
 
     /**
@@ -35,42 +32,5 @@ public final class AddChatParticipantsResult implements JsonSerializable<AddChat
      */
     public List<CommunicationError> getInvalidParticipants() {
         return this.invalidParticipants;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AddChatParticipantsResult from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AddChatParticipantsResult if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AddChatParticipantsResult.
-     */
-    public static AddChatParticipantsResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AddChatParticipantsResult deserializedAddChatParticipantsResult = new AddChatParticipantsResult();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("invalidParticipants".equals(fieldName)) {
-                    List<CommunicationError> invalidParticipants
-                        = reader.readArray(reader1 -> CommunicationError.fromJson(reader1));
-                    deserializedAddChatParticipantsResult.invalidParticipants = invalidParticipants;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedAddChatParticipantsResult;
-        });
     }
 }

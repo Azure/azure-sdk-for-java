@@ -266,11 +266,11 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             assertEquals(ruleName, contents.getName());
 
             assertNotNull(contents.getAction());
-            assertInstanceOf(SqlRuleAction.class, contents.getAction());
+            assertTrue(contents.getAction() instanceof SqlRuleAction);
             assertEquals(action.getSqlExpression(), ((SqlRuleAction) contents.getAction()).getSqlExpression());
 
             assertNotNull(contents.getFilter());
-            assertInstanceOf(FalseRuleFilter.class, contents.getFilter());
+            assertTrue(contents.getFilter() instanceof FalseRuleFilter);
 
         }).expectComplete().verify(DEFAULT_TIMEOUT);
     }
@@ -288,8 +288,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
         // Act & Assert
         StepVerifier.create(client.createRule(topicName, subscriptionName, ruleName)).assertNext(contents -> {
             assertEquals(ruleName, contents.getName());
-            assertInstanceOf(TrueRuleFilter.class, contents.getFilter());
-            assertInstanceOf(EmptyRuleAction.class, contents.getAction());
+            assertTrue(contents.getFilter() instanceof TrueRuleFilter);
+            assertTrue(contents.getAction() instanceof EmptyRuleAction);
         }).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
@@ -319,12 +319,13 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
                 assertEquals(ruleName, contents.getName());
 
                 assertNotNull(contents.getFilter());
+                assertTrue(contents.getFilter() instanceof SqlRuleFilter);
 
-                final SqlRuleFilter actualFilter = assertInstanceOf(SqlRuleFilter.class, contents.getFilter());
+                final SqlRuleFilter actualFilter = (SqlRuleFilter) contents.getFilter();
                 assertEquals(filter.getSqlExpression(), actualFilter.getSqlExpression());
 
                 assertNotNull(contents.getAction());
-                assertInstanceOf(EmptyRuleAction.class, contents.getAction());
+                assertTrue(contents.getAction() instanceof EmptyRuleAction);
             })
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
@@ -374,7 +375,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
                 .flatMap(s -> client.getRule(topicName, subscriptionName, ruleName)))
             .assertNext(rule -> {
                 assertEquals(ruleName, rule.getName());
-                assertInstanceOf(SqlRuleFilter.class, rule.getFilter());
+                assertTrue(rule.getFilter() instanceof SqlRuleFilter);
                 assertEquals("color='red'", ((SqlRuleFilter) rule.getFilter()).getSqlExpression());
             })
             .expectComplete()
@@ -708,10 +709,10 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             assertNotNull(contents);
             assertEquals(ruleName, contents.getName());
             assertNotNull(contents.getFilter());
-            assertInstanceOf(TrueRuleFilter.class, contents.getFilter());
+            assertTrue(contents.getFilter() instanceof TrueRuleFilter);
 
             assertNotNull(contents.getAction());
-            assertInstanceOf(EmptyRuleAction.class, contents.getAction());
+            assertTrue(contents.getAction() instanceof EmptyRuleAction);
         }).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
@@ -862,7 +863,9 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
 
         // Act & Assert
         StepVerifier.create(client.getTopic(topicName)).consumeErrorWith(error -> {
-            final ResourceNotFoundException notFoundError = assertInstanceOf(ResourceNotFoundException.class, error);
+            assertTrue(error instanceof ResourceNotFoundException);
+
+            final ResourceNotFoundException notFoundError = (ResourceNotFoundException) error;
             final HttpResponse response = notFoundError.getResponse();
 
             assertNotNull(response);
@@ -972,10 +975,10 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
         StepVerifier.create(client.listRules(topicName, subscriptionName)).assertNext(response -> {
             assertEquals(ruleName, response.getName());
             assertNotNull(response.getFilter());
-            assertInstanceOf(TrueRuleFilter.class, response.getFilter());
+            assertTrue(response.getFilter() instanceof TrueRuleFilter);
 
             assertNotNull(response.getAction());
-            assertInstanceOf(EmptyRuleAction.class, response.getAction());
+            assertTrue(response.getAction() instanceof EmptyRuleAction);
         }).thenCancel().verify(DEFAULT_TIMEOUT);
     }
 
@@ -1048,10 +1051,10 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             assertNotNull(contents);
             assertEquals(ruleName, contents.getName());
 
-            assertInstanceOf(SqlRuleFilter.class, contents.getFilter());
+            assertTrue(contents.getFilter() instanceof SqlRuleFilter);
             assertEquals(expectedFilter.getSqlExpression(), ((SqlRuleFilter) contents.getFilter()).getSqlExpression());
 
-            assertInstanceOf(SqlRuleAction.class, contents.getAction());
+            assertTrue(contents.getAction() instanceof SqlRuleAction);
             assertEquals(expectedAction.getSqlExpression(), ((SqlRuleAction) contents.getAction()).getSqlExpression());
         }).expectComplete().verify(DEFAULT_TIMEOUT);
     }

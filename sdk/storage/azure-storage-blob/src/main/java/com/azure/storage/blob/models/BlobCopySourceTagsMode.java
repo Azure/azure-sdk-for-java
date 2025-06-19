@@ -4,7 +4,6 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,13 +14,11 @@ public final class BlobCopySourceTagsMode extends ExpandableStringEnum<BlobCopyS
     /**
      * Static value REPLACE for BlobCopySourceTagsMode.
      */
-    @Generated
     public static final BlobCopySourceTagsMode REPLACE = fromString("REPLACE");
 
     /**
      * Static value COPY for BlobCopySourceTagsMode.
      */
-    @Generated
     public static final BlobCopySourceTagsMode COPY = fromString("COPY");
 
     /**
@@ -29,7 +26,6 @@ public final class BlobCopySourceTagsMode extends ExpandableStringEnum<BlobCopyS
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public BlobCopySourceTagsMode() {
     }
@@ -40,7 +36,6 @@ public final class BlobCopySourceTagsMode extends ExpandableStringEnum<BlobCopyS
      * @param name a name to look for.
      * @return the corresponding BlobCopySourceTagsMode.
      */
-    @Generated
     public static BlobCopySourceTagsMode fromString(String name) {
         return fromString(name, BlobCopySourceTagsMode.class);
     }
@@ -50,7 +45,6 @@ public final class BlobCopySourceTagsMode extends ExpandableStringEnum<BlobCopyS
      * 
      * @return known BlobCopySourceTagsMode values.
      */
-    @Generated
     public static Collection<BlobCopySourceTagsMode> values() {
         return values(BlobCopySourceTagsMode.class);
     }

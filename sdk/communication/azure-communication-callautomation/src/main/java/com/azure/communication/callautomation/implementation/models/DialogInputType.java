@@ -4,7 +4,6 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,13 +14,11 @@ public final class DialogInputType extends ExpandableStringEnum<DialogInputType>
     /**
      * Static value powerVirtualAgents for DialogInputType.
      */
-    @Generated
     public static final DialogInputType POWER_VIRTUAL_AGENTS = fromString("powerVirtualAgents");
 
     /**
      * Static value azureOpenAI for DialogInputType.
      */
-    @Generated
     public static final DialogInputType AZURE_OPEN_AI = fromString("azureOpenAI");
 
     /**
@@ -29,7 +26,6 @@ public final class DialogInputType extends ExpandableStringEnum<DialogInputType>
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public DialogInputType() {
     }
@@ -40,7 +36,6 @@ public final class DialogInputType extends ExpandableStringEnum<DialogInputType>
      * @param name a name to look for.
      * @return the corresponding DialogInputType.
      */
-    @Generated
     public static DialogInputType fromString(String name) {
         return fromString(name, DialogInputType.class);
     }
@@ -50,7 +45,6 @@ public final class DialogInputType extends ExpandableStringEnum<DialogInputType>
      * 
      * @return known DialogInputType values.
      */
-    @Generated
     public static Collection<DialogInputType> values() {
         return values(DialogInputType.class);
     }

@@ -4,7 +4,6 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,31 +14,26 @@ public final class StorageBlobAccessTier extends ExpandableStringEnum<StorageBlo
     /**
      * The blob is in access tier Hot.
      */
-    @Generated
     public static final StorageBlobAccessTier HOT = fromString("Hot");
 
     /**
      * The blob is in access tier Cool.
      */
-    @Generated
     public static final StorageBlobAccessTier COOL = fromString("Cool");
 
     /**
      * The blob is in access tier Cold.
      */
-    @Generated
     public static final StorageBlobAccessTier COLD = fromString("Cold");
 
     /**
      * The blob is in access tier Archive.
      */
-    @Generated
     public static final StorageBlobAccessTier ARCHIVE = fromString("Archive");
 
     /**
      * The blob is in access tier Default(Inferred).
      */
-    @Generated
     public static final StorageBlobAccessTier DEFAULT = fromString("Default");
 
     /**
@@ -47,7 +41,6 @@ public final class StorageBlobAccessTier extends ExpandableStringEnum<StorageBlo
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public StorageBlobAccessTier() {
     }
@@ -58,7 +51,6 @@ public final class StorageBlobAccessTier extends ExpandableStringEnum<StorageBlo
      * @param name a name to look for.
      * @return the corresponding StorageBlobAccessTier.
      */
-    @Generated
     public static StorageBlobAccessTier fromString(String name) {
         return fromString(name, StorageBlobAccessTier.class);
     }
@@ -68,7 +60,6 @@ public final class StorageBlobAccessTier extends ExpandableStringEnum<StorageBlo
      * 
      * @return known StorageBlobAccessTier values.
      */
-    @Generated
     public static Collection<StorageBlobAccessTier> values() {
         return values(StorageBlobAccessTier.class);
     }

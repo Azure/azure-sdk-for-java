@@ -5,7 +5,6 @@
 package com.azure.communication.phonenumbers.implementation.models;
 
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,19 +21,16 @@ public final class PhoneNumberAreaCodes implements JsonSerializable<PhoneNumberA
     /*
      * Represents a list of available toll-free area codes.
      */
-    @Generated
     private List<PhoneNumberAreaCode> areaCodes;
 
     /*
      * Represents the URL link to the next page.
      */
-    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of PhoneNumberAreaCodes class.
      */
-    @Generated
     public PhoneNumberAreaCodes() {
     }
 
@@ -43,7 +39,6 @@ public final class PhoneNumberAreaCodes implements JsonSerializable<PhoneNumberA
      * 
      * @return the areaCodes value.
      */
-    @Generated
     public List<PhoneNumberAreaCode> getAreaCodes() {
         return this.areaCodes;
     }
@@ -53,7 +48,6 @@ public final class PhoneNumberAreaCodes implements JsonSerializable<PhoneNumberA
      * 
      * @return the nextLink value.
      */
-    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -61,7 +55,6 @@ public final class PhoneNumberAreaCodes implements JsonSerializable<PhoneNumberA
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -77,7 +70,6 @@ public final class PhoneNumberAreaCodes implements JsonSerializable<PhoneNumberA
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PhoneNumberAreaCodes.
      */
-    @Generated
     public static PhoneNumberAreaCodes fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PhoneNumberAreaCodes deserializedPhoneNumberAreaCodes = new PhoneNumberAreaCodes();

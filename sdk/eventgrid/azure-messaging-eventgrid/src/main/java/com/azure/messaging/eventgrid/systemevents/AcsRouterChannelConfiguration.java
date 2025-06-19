@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,25 +19,21 @@ public final class AcsRouterChannelConfiguration implements JsonSerializable<Acs
     /*
      * Channel ID for Router Job
      */
-    @Generated
     private String channelId;
 
     /*
      * Capacity Cost Per Job for Router Job
      */
-    @Generated
     private Integer capacityCostPerJob;
 
     /*
      * Max Number of Jobs for Router Job
      */
-    @Generated
     private Integer maxNumberOfJobs;
 
     /**
      * Creates an instance of AcsRouterChannelConfiguration class.
      */
-    @Generated
     public AcsRouterChannelConfiguration() {
     }
 
@@ -47,7 +42,6 @@ public final class AcsRouterChannelConfiguration implements JsonSerializable<Acs
      * 
      * @return the channelId value.
      */
-    @Generated
     public String getChannelId() {
         return this.channelId;
     }
@@ -58,7 +52,6 @@ public final class AcsRouterChannelConfiguration implements JsonSerializable<Acs
      * @param channelId the channelId value to set.
      * @return the AcsRouterChannelConfiguration object itself.
      */
-    @Generated
     public AcsRouterChannelConfiguration setChannelId(String channelId) {
         this.channelId = channelId;
         return this;
@@ -69,7 +62,6 @@ public final class AcsRouterChannelConfiguration implements JsonSerializable<Acs
      * 
      * @return the capacityCostPerJob value.
      */
-    @Generated
     public Integer getCapacityCostPerJob() {
         return this.capacityCostPerJob;
     }
@@ -80,7 +72,6 @@ public final class AcsRouterChannelConfiguration implements JsonSerializable<Acs
      * @param capacityCostPerJob the capacityCostPerJob value to set.
      * @return the AcsRouterChannelConfiguration object itself.
      */
-    @Generated
     public AcsRouterChannelConfiguration setCapacityCostPerJob(Integer capacityCostPerJob) {
         this.capacityCostPerJob = capacityCostPerJob;
         return this;
@@ -91,7 +82,6 @@ public final class AcsRouterChannelConfiguration implements JsonSerializable<Acs
      * 
      * @return the maxNumberOfJobs value.
      */
-    @Generated
     public Integer getMaxNumberOfJobs() {
         return this.maxNumberOfJobs;
     }
@@ -102,7 +92,6 @@ public final class AcsRouterChannelConfiguration implements JsonSerializable<Acs
      * @param maxNumberOfJobs the maxNumberOfJobs value to set.
      * @return the AcsRouterChannelConfiguration object itself.
      */
-    @Generated
     public AcsRouterChannelConfiguration setMaxNumberOfJobs(Integer maxNumberOfJobs) {
         this.maxNumberOfJobs = maxNumberOfJobs;
         return this;
@@ -111,7 +100,6 @@ public final class AcsRouterChannelConfiguration implements JsonSerializable<Acs
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -129,7 +117,6 @@ public final class AcsRouterChannelConfiguration implements JsonSerializable<Acs
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AcsRouterChannelConfiguration.
      */
-    @Generated
     public static AcsRouterChannelConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsRouterChannelConfiguration deserializedAcsRouterChannelConfiguration

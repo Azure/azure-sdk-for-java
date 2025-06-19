@@ -5,7 +5,6 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 
 /**
  * Parameter group.
@@ -15,13 +14,11 @@ public final class LeaseAccessConditions {
     /*
      * If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      */
-    @Generated
     private String leaseId;
 
     /**
      * Creates an instance of LeaseAccessConditions class.
      */
-    @Generated
     public LeaseAccessConditions() {
     }
 
@@ -31,7 +28,6 @@ public final class LeaseAccessConditions {
      * 
      * @return the leaseId value.
      */
-    @Generated
     public String getLeaseId() {
         return this.leaseId;
     }
@@ -43,7 +39,6 @@ public final class LeaseAccessConditions {
      * @param leaseId the leaseId value to set.
      * @return the LeaseAccessConditions object itself.
      */
-    @Generated
     public LeaseAccessConditions setLeaseId(String leaseId) {
         this.leaseId = leaseId;
         return this;

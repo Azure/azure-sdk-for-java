@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRuleImpl;
 
 import java.security.SecureRandom;
 import java.time.OffsetDateTime;
@@ -101,8 +102,7 @@ public final class SharedAccessAuthorizationRule implements AuthorizationRule {
      *
      * @param implementation Implementation model.
      */
-    SharedAccessAuthorizationRule(
-        com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRule implementation) {
+    SharedAccessAuthorizationRule(AuthorizationRuleImpl implementation) {
         this.keyName = implementation.getKeyName();
         this.primaryKey = implementation.getPrimaryKey();
         this.secondaryKey = implementation.getSecondaryKey();

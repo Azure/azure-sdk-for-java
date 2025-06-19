@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,19 +20,16 @@ public final class ApiManagementGatewayProperties implements JsonSerializable<Ap
      * Id of Gateway that is used to deploy the gateway to get the configuration for. This is the ARM resource ID
      * referenced in the Azure API Management instance.
      */
-    @Generated
     private String gatewayId;
 
     /*
      * Unique instance ID of the deployed gateway
      */
-    @Generated
     private String instanceId;
 
     /**
      * Creates an instance of ApiManagementGatewayProperties class.
      */
-    @Generated
     public ApiManagementGatewayProperties() {
     }
 
@@ -43,7 +39,6 @@ public final class ApiManagementGatewayProperties implements JsonSerializable<Ap
      * 
      * @return the gatewayId value.
      */
-    @Generated
     public String getGatewayId() {
         return this.gatewayId;
     }
@@ -55,7 +50,6 @@ public final class ApiManagementGatewayProperties implements JsonSerializable<Ap
      * @param gatewayId the gatewayId value to set.
      * @return the ApiManagementGatewayProperties object itself.
      */
-    @Generated
     public ApiManagementGatewayProperties setGatewayId(String gatewayId) {
         this.gatewayId = gatewayId;
         return this;
@@ -66,7 +60,6 @@ public final class ApiManagementGatewayProperties implements JsonSerializable<Ap
      * 
      * @return the instanceId value.
      */
-    @Generated
     public String getInstanceId() {
         return this.instanceId;
     }
@@ -77,7 +70,6 @@ public final class ApiManagementGatewayProperties implements JsonSerializable<Ap
      * @param instanceId the instanceId value to set.
      * @return the ApiManagementGatewayProperties object itself.
      */
-    @Generated
     public ApiManagementGatewayProperties setInstanceId(String instanceId) {
         this.instanceId = instanceId;
         return this;
@@ -86,7 +78,6 @@ public final class ApiManagementGatewayProperties implements JsonSerializable<Ap
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -103,7 +94,6 @@ public final class ApiManagementGatewayProperties implements JsonSerializable<Ap
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ApiManagementGatewayProperties.
      */
-    @Generated
     public static ApiManagementGatewayProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ApiManagementGatewayProperties deserializedApiManagementGatewayProperties

@@ -5,7 +5,6 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 
 /**
@@ -17,14 +16,12 @@ public final class BlobHttpHeaders {
      * Optional. Sets the blob's cache control. If specified, this property is stored with the blob and returned with a
      * read request.
      */
-    @Generated
     private String cacheControl;
 
     /*
      * Optional. Sets the blob's content type. If specified, this property is stored with the blob and returned with a
      * read request.
      */
-    @Generated
     private String contentType;
 
     /*
@@ -32,33 +29,28 @@ public final class BlobHttpHeaders {
      * blocks were validated when each was uploaded. The value does not need to be base64 encoded as the SDK will
      * perform the encoding.
      */
-    @Generated
     private byte[] contentMd5;
 
     /*
      * Optional. Sets the blob's content encoding. If specified, this property is stored with the blob and returned with
      * a read request.
      */
-    @Generated
     private String contentEncoding;
 
     /*
      * Optional. Set the blob's content language. If specified, this property is stored with the blob and returned with
      * a read request.
      */
-    @Generated
     private String contentLanguage;
 
     /*
      * Optional. Sets the blob's Content-Disposition header.
      */
-    @Generated
     private String contentDisposition;
 
     /**
      * Creates an instance of BlobHttpHeaders class.
      */
-    @Generated
     public BlobHttpHeaders() {
     }
 
@@ -68,7 +60,6 @@ public final class BlobHttpHeaders {
      * 
      * @return the cacheControl value.
      */
-    @Generated
     public String getCacheControl() {
         return this.cacheControl;
     }
@@ -80,7 +71,6 @@ public final class BlobHttpHeaders {
      * @param cacheControl the cacheControl value to set.
      * @return the BlobHttpHeaders object itself.
      */
-    @Generated
     public BlobHttpHeaders setCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
         return this;
@@ -92,7 +82,6 @@ public final class BlobHttpHeaders {
      * 
      * @return the contentType value.
      */
-    @Generated
     public String getContentType() {
         return this.contentType;
     }
@@ -104,7 +93,6 @@ public final class BlobHttpHeaders {
      * @param contentType the contentType value to set.
      * @return the BlobHttpHeaders object itself.
      */
-    @Generated
     public BlobHttpHeaders setContentType(String contentType) {
         this.contentType = contentType;
         return this;
@@ -117,7 +105,6 @@ public final class BlobHttpHeaders {
      * 
      * @return the contentMd5 value.
      */
-    @Generated
     public byte[] getContentMd5() {
         return CoreUtils.clone(this.contentMd5);
     }
@@ -130,7 +117,6 @@ public final class BlobHttpHeaders {
      * @param contentMd5 the contentMd5 value to set.
      * @return the BlobHttpHeaders object itself.
      */
-    @Generated
     public BlobHttpHeaders setContentMd5(byte[] contentMd5) {
         this.contentMd5 = CoreUtils.clone(contentMd5);
         return this;
@@ -142,7 +128,6 @@ public final class BlobHttpHeaders {
      * 
      * @return the contentEncoding value.
      */
-    @Generated
     public String getContentEncoding() {
         return this.contentEncoding;
     }
@@ -154,7 +139,6 @@ public final class BlobHttpHeaders {
      * @param contentEncoding the contentEncoding value to set.
      * @return the BlobHttpHeaders object itself.
      */
-    @Generated
     public BlobHttpHeaders setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
         return this;
@@ -166,7 +150,6 @@ public final class BlobHttpHeaders {
      * 
      * @return the contentLanguage value.
      */
-    @Generated
     public String getContentLanguage() {
         return this.contentLanguage;
     }
@@ -178,7 +161,6 @@ public final class BlobHttpHeaders {
      * @param contentLanguage the contentLanguage value to set.
      * @return the BlobHttpHeaders object itself.
      */
-    @Generated
     public BlobHttpHeaders setContentLanguage(String contentLanguage) {
         this.contentLanguage = contentLanguage;
         return this;
@@ -189,7 +171,6 @@ public final class BlobHttpHeaders {
      * 
      * @return the contentDisposition value.
      */
-    @Generated
     public String getContentDisposition() {
         return this.contentDisposition;
     }
@@ -200,7 +181,6 @@ public final class BlobHttpHeaders {
      * @param contentDisposition the contentDisposition value to set.
      * @return the BlobHttpHeaders object itself.
      */
-    @Generated
     public BlobHttpHeaders setContentDisposition(String contentDisposition) {
         this.contentDisposition = contentDisposition;
         return this;

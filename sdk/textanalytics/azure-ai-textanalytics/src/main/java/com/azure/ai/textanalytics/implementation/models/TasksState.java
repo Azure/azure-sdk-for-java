@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,13 +19,11 @@ public class TasksState implements JsonSerializable<TasksState> {
     /*
      * The tasks property.
      */
-    @Generated
     private TasksStateTasks tasks;
 
     /**
      * Creates an instance of TasksState class.
      */
-    @Generated
     public TasksState() {
     }
 
@@ -35,7 +32,6 @@ public class TasksState implements JsonSerializable<TasksState> {
      * 
      * @return the tasks value.
      */
-    @Generated
     public TasksStateTasks getTasks() {
         return this.tasks;
     }
@@ -46,7 +42,6 @@ public class TasksState implements JsonSerializable<TasksState> {
      * @param tasks the tasks value to set.
      * @return the TasksState object itself.
      */
-    @Generated
     public TasksState setTasks(TasksStateTasks tasks) {
         this.tasks = tasks;
         return this;
@@ -55,7 +50,6 @@ public class TasksState implements JsonSerializable<TasksState> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -72,7 +66,6 @@ public class TasksState implements JsonSerializable<TasksState> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TasksState.
      */
-    @Generated
     public static TasksState fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TasksState deserializedTasksState = new TasksState();

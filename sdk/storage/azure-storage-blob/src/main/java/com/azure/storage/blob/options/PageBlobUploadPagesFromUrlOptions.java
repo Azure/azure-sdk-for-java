@@ -6,7 +6,6 @@ package com.azure.storage.blob.options;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpAuthorization;
 import com.azure.core.util.CoreUtils;
-import com.azure.storage.blob.models.FileShareTokenIntent;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageRange;
@@ -23,7 +22,6 @@ public final class PageBlobUploadPagesFromUrlOptions {
     private PageBlobRequestConditions destinationRequestConditions;
     private BlobRequestConditions sourceRequestConditions;
     private HttpAuthorization sourceAuthorization;
-    private FileShareTokenIntent sourceShareTokenIntent;
 
     /**
      * Creates a new instance of {@link PageBlobUploadPagesFromUrlOptions}.
@@ -153,28 +151,6 @@ public final class PageBlobUploadPagesFromUrlOptions {
      */
     public PageBlobUploadPagesFromUrlOptions setSourceAuthorization(HttpAuthorization sourceAuthorization) {
         this.sourceAuthorization = sourceAuthorization;
-        return this;
-    }
-
-    /**
-     * Optional, only applicable (but required) when the source is Azure Storage Files and using token authentication.
-     * Gets the intent of the request.
-     *
-     * @return the {@link FileShareTokenIntent} for the file share.
-     */
-    public FileShareTokenIntent getSourceShareTokenIntent() {
-        return sourceShareTokenIntent;
-    }
-
-    /**
-     * Optional, only applicable (but required) when the source is Azure Storage Files and using token authentication.
-     * Sets the intent of the request.
-     *
-     * @param sourceShareTokenIntent Used to indicate the intent of the request.
-     * @return The updated options.
-     */
-    public PageBlobUploadPagesFromUrlOptions setSourceShareTokenIntent(FileShareTokenIntent sourceShareTokenIntent) {
-        this.sourceShareTokenIntent = sourceShareTokenIntent;
         return this;
     }
 }

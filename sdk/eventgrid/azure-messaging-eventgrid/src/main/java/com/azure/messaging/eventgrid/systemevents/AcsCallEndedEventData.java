@@ -4,7 +4,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,25 +19,21 @@ public final class AcsCallEndedEventData extends AcsCallingEventProperties {
     /*
      * The communication identifier of the user who was disconnected
      */
-    @Generated
     private AcsCallEndedByProperties endedBy;
 
     /*
      * The reason for ending the call.
      */
-    @Generated
     private AcsCallEndReasonProperties reason;
 
     /*
      * Duration of the call in seconds.
      */
-    @Generated
     private Float callDurationInSeconds;
 
     /**
      * Creates an instance of AcsCallEndedEventData class.
      */
-    @Generated
     public AcsCallEndedEventData() {
     }
 
@@ -47,7 +42,6 @@ public final class AcsCallEndedEventData extends AcsCallingEventProperties {
      *
      * @return the endedBy value.
      */
-    @Generated
     public AcsCallEndedByProperties getEndedBy() {
         return this.endedBy;
     }
@@ -58,7 +52,6 @@ public final class AcsCallEndedEventData extends AcsCallingEventProperties {
      * @param endedBy the endedBy value to set.
      * @return the AcsCallEndedEventData object itself.
      */
-    @Generated
     public AcsCallEndedEventData setEndedBy(AcsCallEndedByProperties endedBy) {
         this.endedBy = endedBy;
         return this;
@@ -69,7 +62,6 @@ public final class AcsCallEndedEventData extends AcsCallingEventProperties {
      *
      * @return the reason value.
      */
-    @Generated
     public AcsCallEndReasonProperties getReason() {
         return this.reason;
     }
@@ -80,18 +72,16 @@ public final class AcsCallEndedEventData extends AcsCallingEventProperties {
      * @param reason the reason value to set.
      * @return the AcsCallEndedEventData object itself.
      */
-    @Generated
     public AcsCallEndedEventData setReason(AcsCallEndReasonProperties reason) {
         this.reason = reason;
         return this;
     }
 
     /**
-     * Get the callDuration property: Duration of the call in seconds.
+     * Get the callDuration property:Duration of the call in seconds.
      *
      * @return the callDuration value.
      */
-    @Generated
     public Duration getCallDuration() {
         if (this.callDurationInSeconds != null) {
             return Duration.ofNanos((long) (this.callDurationInSeconds * 1000_000_000L));
@@ -105,7 +95,6 @@ public final class AcsCallEndedEventData extends AcsCallingEventProperties {
      * @param callDuration the callDuration value to set.
      * @return the AcsCallEndedEventData object itself.
      */
-    @Generated
     public AcsCallEndedEventData setCallDuration(Duration callDuration) {
         if (callDuration != null) {
             this.callDurationInSeconds = callDuration.toNanos() / 1_000_000_000f;
@@ -118,7 +107,6 @@ public final class AcsCallEndedEventData extends AcsCallingEventProperties {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AcsCallEndedEventData setStartedBy(AcsCallParticipantProperties startedBy) {
         super.setStartedBy(startedBy);
@@ -128,7 +116,6 @@ public final class AcsCallEndedEventData extends AcsCallingEventProperties {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AcsCallEndedEventData setServerCallId(String serverCallId) {
         super.setServerCallId(serverCallId);
@@ -138,7 +125,6 @@ public final class AcsCallEndedEventData extends AcsCallingEventProperties {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AcsCallEndedEventData setGroup(AcsCallGroupProperties group) {
         super.setGroup(group);
@@ -148,7 +134,6 @@ public final class AcsCallEndedEventData extends AcsCallingEventProperties {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AcsCallEndedEventData setRoom(AcsCallRoomProperties room) {
         super.setRoom(room);
@@ -158,7 +143,6 @@ public final class AcsCallEndedEventData extends AcsCallingEventProperties {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AcsCallEndedEventData setIsTwoParty(Boolean isTwoParty) {
         super.setIsTwoParty(isTwoParty);
@@ -168,7 +152,6 @@ public final class AcsCallEndedEventData extends AcsCallingEventProperties {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AcsCallEndedEventData setCorrelationId(String correlationId) {
         super.setCorrelationId(correlationId);
@@ -178,7 +161,6 @@ public final class AcsCallEndedEventData extends AcsCallingEventProperties {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AcsCallEndedEventData setIsRoomsCall(Boolean isRoomsCall) {
         super.setIsRoomsCall(isRoomsCall);
@@ -188,7 +170,6 @@ public final class AcsCallEndedEventData extends AcsCallingEventProperties {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -214,7 +195,6 @@ public final class AcsCallEndedEventData extends AcsCallingEventProperties {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsCallEndedEventData.
      */
-    @Generated
     public static AcsCallEndedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsCallEndedEventData deserializedAcsCallEndedEventData = new AcsCallEndedEventData();

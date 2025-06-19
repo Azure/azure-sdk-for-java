@@ -10,7 +10,6 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
-import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.share.models.NfsFileType;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
@@ -1720,10 +1719,8 @@ public class DirectoryApiTests extends FileShareTestBase {
         assertTrue(aadDirClient.exists());
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
-    @LiveOnly
     @Test
-    public void audienceErrorBearerChallengeRetry() {
+    public void audienceError() {
         String dirName = generatePathName();
         ShareDirectoryClient dirClient = directoryBuilderHelper(shareName, dirName).buildDirectoryClient();
         dirClient.create();
@@ -1732,7 +1729,8 @@ public class DirectoryApiTests extends FileShareTestBase {
                 .audience(ShareAudience.createShareServiceAccountAudience("badAudience")));
 
         ShareDirectoryClient aadDirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName);
-        assertNotNull(aadDirClient.exists());
+        ShareStorageException e = assertThrows(ShareStorageException.class, aadDirClient::exists);
+        assertEquals(ShareErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
     }
 
     @Test

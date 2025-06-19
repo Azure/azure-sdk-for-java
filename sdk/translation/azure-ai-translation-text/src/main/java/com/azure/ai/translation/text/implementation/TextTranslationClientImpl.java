@@ -154,7 +154,7 @@ public final class TextTranslationClientImpl {
      * calls.
      */
     @Host("{Endpoint}")
-    @ServiceInterface(name = "TextTranslationClient")
+    @ServiceInterface(name = "TextTranslationClien")
     public interface TextTranslationClientService {
         @Get("/languages")
         @ExpectedResponses({ 200 })

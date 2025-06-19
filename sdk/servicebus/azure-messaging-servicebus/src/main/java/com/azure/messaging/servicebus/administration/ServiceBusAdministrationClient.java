@@ -22,18 +22,18 @@ import com.azure.messaging.servicebus.administration.implementation.EntitiesImpl
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
 import com.azure.messaging.servicebus.administration.implementation.RulesImpl;
 import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementClientImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBody;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateRuleBody;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBody;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateTopicBody;
-import com.azure.messaging.servicebus.administration.implementation.models.NamespacePropertiesEntry;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeed;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionEntry;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionFeed;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBodyImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateRuleBodyImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBodyImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateTopicBodyImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.NamespacePropertiesEntryImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeedImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionEntryImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionFeedImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
-import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionEntry;
-import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionFeed;
-import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionFeed;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionEntryImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionFeedImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionFeedImpl;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
@@ -241,7 +241,7 @@ public final class ServiceBusAdministrationClient {
         }
 
         final Context contextWithHeaders = enableSyncContext(context);
-        final CreateQueueBody createEntity = converter.getCreateQueueBody(queueOptions, contextWithHeaders);
+        final CreateQueueBodyImpl createEntity = converter.getCreateQueueBody(queueOptions, contextWithHeaders);
 
         final Response<Object> response = executeAndThrowException(
             () -> entityClient.putWithResponse(queueName, createEntity, null, contextWithHeaders));
@@ -318,9 +318,9 @@ public final class ServiceBusAdministrationClient {
             throw LOGGER.logExceptionAsError(new NullPointerException("'ruleOptions' cannot be null."));
         }
 
-        final CreateRuleBody createEntity = converter.getCreateRuleBody(ruleName, ruleOptions);
+        final CreateRuleBodyImpl createEntity = converter.getCreateRuleBody(ruleName, ruleOptions);
 
-        final Response<RuleDescriptionEntry> response = executeAndThrowException(() -> managementClient.getRules()
+        final Response<RuleDescriptionEntryImpl> response = executeAndThrowException(() -> managementClient.getRules()
             .putWithResponse(topicName, subscriptionName, ruleName, createEntity, null, enableSyncContext(context)));
 
         return converter.getRulePropertiesSimpleResponse(response);
@@ -452,10 +452,10 @@ public final class ServiceBusAdministrationClient {
         }
 
         final Context contextWithHeaders = converter.getContext(context);
-        final CreateSubscriptionBody createEntity
+        final CreateSubscriptionBodyImpl createEntity
             = converter.getCreateSubscriptionBody(subscriptionOptions, ruleName, ruleOptions, contextWithHeaders);
 
-        final Response<SubscriptionDescriptionEntry> response
+        final Response<SubscriptionDescriptionEntryImpl> response
             = executeAndThrowException(() -> managementClient.getSubscriptions()
                 .putWithResponse(topicName, subscriptionName, createEntity, null, contextWithHeaders));
 
@@ -526,7 +526,7 @@ public final class ServiceBusAdministrationClient {
             throw LOGGER.logExceptionAsError(new NullPointerException("'topicOptions' cannot be null."));
         }
 
-        final CreateTopicBody createEntity
+        final CreateTopicBodyImpl createEntity
             = converter.getCreateTopicBody(EntityHelper.getTopicDescription(topicOptions));
 
         final Response<Object> response = executeAndThrowException(
@@ -614,7 +614,7 @@ public final class ServiceBusAdministrationClient {
         converter.validateSubscriptionName(subscriptionName);
         converter.validateRuleName(ruleName);
 
-        final Response<RuleDescriptionEntry> response = executeAndThrowException(
+        final Response<RuleDescriptionEntryImpl> response = executeAndThrowException(
             () -> rulesClient.deleteWithResponse(topicName, subscriptionName, ruleName, enableSyncContext(context)));
 
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
@@ -655,7 +655,7 @@ public final class ServiceBusAdministrationClient {
     public Response<Void> deleteSubscriptionWithResponse(String topicName, String subscriptionName, Context context) {
         converter.validateSubscriptionName(subscriptionName);
         converter.validateTopicName(topicName);
-        final Response<SubscriptionDescriptionEntry> response
+        final Response<SubscriptionDescriptionEntryImpl> response
             = executeAndThrowException(() -> managementClient.getSubscriptions()
                 .deleteWithResponse(topicName, subscriptionName, enableSyncContext(context)));
 
@@ -843,10 +843,10 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NamespaceProperties> getNamespacePropertiesWithResponse(Context context) {
-        final Response<NamespacePropertiesEntry> response = executeAndThrowException(
+        final Response<NamespacePropertiesEntryImpl> response = executeAndThrowException(
             () -> managementClient.getNamespaces().getWithResponse(enableSyncContext(context)));
 
-        final NamespacePropertiesEntry entry = response.getValue();
+        final NamespacePropertiesEntryImpl entry = response.getValue();
         if (entry == null || entry.getContent() == null) {
             throw LOGGER.logExceptionAsError(
                 new AzureException("There was no content inside namespace response. Entry: " + response));
@@ -888,7 +888,7 @@ public final class ServiceBusAdministrationClient {
     public Response<RuleProperties> getRuleWithResponse(String topicName, String subscriptionName, String ruleName,
         Context context) {
 
-        final Response<RuleDescriptionEntry> response = executeAndThrowException(
+        final Response<RuleDescriptionEntryImpl> response = executeAndThrowException(
             () -> rulesClient.getWithResponse(topicName, subscriptionName, ruleName, true, enableSyncContext(context)));
 
         return converter.getRulePropertiesSimpleResponse(response);
@@ -936,7 +936,7 @@ public final class ServiceBusAdministrationClient {
         converter.validateTopicName(topicName);
         converter.validateSubscriptionName(subscriptionName);
 
-        Response<SubscriptionDescriptionEntry> response
+        Response<SubscriptionDescriptionEntryImpl> response
             = executeAndThrowException(() -> managementClient.getSubscriptions()
                 .getWithResponse(topicName, subscriptionName, true, enableSyncContext(context)));
 
@@ -1204,8 +1204,8 @@ public final class ServiceBusAdministrationClient {
     private PagedResponse<QueueProperties> listQueues(int skip, Context context) {
         final Response<Object> response = executeAndThrowException(() -> managementClient
             .listEntitiesWithResponse(QUEUES_ENTITY_TYPE, skip, NUMBER_OF_ELEMENTS, enableSyncContext(context)));
-        final Response<QueueDescriptionFeed> feedResponse = converter.deserializeQueueFeed(response);
-        final QueueDescriptionFeed feed = feedResponse.getValue();
+        final Response<QueueDescriptionFeedImpl> feedResponse = converter.deserializeQueueFeed(response);
+        final QueueDescriptionFeedImpl feed = feedResponse.getValue();
 
         if (feed == null) {
             LOGGER.warning("Could not deserialize QueueDescriptionFeed. skip {}, top: {}", skip, NUMBER_OF_ELEMENTS);
@@ -1267,9 +1267,9 @@ public final class ServiceBusAdministrationClient {
 
     private PagedResponse<RuleProperties> listRules(String topicName, String subscriptionName, int skip,
         Context context) {
-        final Response<RuleDescriptionFeed> response = executeAndThrowException(() -> managementClient
+        final Response<RuleDescriptionFeedImpl> response = executeAndThrowException(() -> managementClient
             .listRulesWithResponse(topicName, subscriptionName, skip, NUMBER_OF_ELEMENTS, enableSyncContext(context)));
-        final RuleDescriptionFeed feed = response.getValue();
+        final RuleDescriptionFeedImpl feed = response.getValue();
 
         if (feed == null) {
             LOGGER.warning("Could not deserialize RuleDescriptionFeed. skip {}, top: {}", skip, NUMBER_OF_ELEMENTS);
@@ -1327,9 +1327,9 @@ public final class ServiceBusAdministrationClient {
     }
 
     private PagedResponse<SubscriptionProperties> listSubscriptions(String topicName, int skip, Context context) {
-        final Response<SubscriptionDescriptionFeed> response = executeAndThrowException(() -> managementClient
+        final Response<SubscriptionDescriptionFeedImpl> response = executeAndThrowException(() -> managementClient
             .listSubscriptionsWithResponse(topicName, skip, NUMBER_OF_ELEMENTS, enableSyncContext(context)));
-        final SubscriptionDescriptionFeed feed = response.getValue();
+        final SubscriptionDescriptionFeedImpl feed = response.getValue();
 
         if (feed == null) {
             LOGGER.warning("Could not deserialize SubscriptionDescriptionFeed. skip {}, top: {}", skip,
@@ -1386,8 +1386,8 @@ public final class ServiceBusAdministrationClient {
     private PagedResponse<TopicProperties> listTopics(int skip, Context context) {
         final Response<Object> response = executeAndThrowException(() -> managementClient
             .listEntitiesWithResponse(TOPICS_ENTITY_TYPE, skip, NUMBER_OF_ELEMENTS, enableSyncContext(context)));
-        final Response<TopicDescriptionFeed> feedResponse = converter.deserializeTopicFeed(response);
-        final TopicDescriptionFeed feed = feedResponse.getValue();
+        final Response<TopicDescriptionFeedImpl> feedResponse = converter.deserializeTopicFeed(response);
+        final TopicDescriptionFeedImpl feed = feedResponse.getValue();
 
         if (feed == null) {
             LOGGER.warning("Could not deserialize TopicDescriptionFeed. skip {}, top: {}", skip, NUMBER_OF_ELEMENTS);
@@ -1478,7 +1478,7 @@ public final class ServiceBusAdministrationClient {
         }
 
         final Context contextWithHeaders = enableSyncContext(context);
-        final CreateQueueBody createEntity = converter.getUpdateQueueBody(queue, contextWithHeaders);
+        final CreateQueueBodyImpl createEntity = converter.getUpdateQueueBody(queue, contextWithHeaders);
 
         // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
         final Response<Object> response = executeAndThrowException(
@@ -1545,7 +1545,7 @@ public final class ServiceBusAdministrationClient {
             throw LOGGER.logExceptionAsError(new NullPointerException("'rule' cannot be null"));
         }
 
-        final Response<RuleDescriptionEntry> response = executeAndThrowException(() -> managementClient.getRules()
+        final Response<RuleDescriptionEntryImpl> response = executeAndThrowException(() -> managementClient.getRules()
             .putWithResponse(topicName, subscriptionName, rule.getName(), converter.getUpdateRuleBody(rule), "*",
                 enableSyncContext(context)));
 
@@ -1631,10 +1631,10 @@ public final class ServiceBusAdministrationClient {
 
         final Context contextWithHeaders = enableSyncContext(context);
         final String topicName = subscription.getTopicName();
-        final CreateSubscriptionBody createEntity
+        final CreateSubscriptionBodyImpl createEntity
             = converter.getUpdateSubscriptionBody(subscription, contextWithHeaders);
 
-        final Response<SubscriptionDescriptionEntry> response
+        final Response<SubscriptionDescriptionEntryImpl> response
             = executeAndThrowException(() -> managementClient.getSubscriptions()
                 .putWithResponse(topicName, subscription.getSubscriptionName(), createEntity, "*", contextWithHeaders));
 
@@ -1715,7 +1715,7 @@ public final class ServiceBusAdministrationClient {
         if (topic == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'topic' cannot be null"));
         }
-        final CreateTopicBody createEntity = converter.getUpdateTopicBody(topic);
+        final CreateTopicBodyImpl createEntity = converter.getUpdateTopicBody(topic);
 
         // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
         final Response<Object> response = executeAndThrowException(

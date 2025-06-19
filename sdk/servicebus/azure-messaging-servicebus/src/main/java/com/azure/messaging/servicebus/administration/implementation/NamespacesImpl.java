@@ -18,7 +18,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.messaging.servicebus.administration.implementation.models.NamespacePropertiesEntry;
+import com.azure.messaging.servicebus.administration.implementation.models.NamespacePropertiesEntryImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
 import reactor.core.publisher.Mono;
 
@@ -52,18 +52,18 @@ public final class NamespacesImpl {
      * to perform REST calls.
      */
     @Host("https://{endpoint}")
-    @ServiceInterface(name = "ServiceBusManagementClientNamespaces")
+    @ServiceInterface(name = "ServiceBusManagement")
     public interface NamespacesService {
         @Get("/$namespaceinfo")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Mono<Response<NamespacePropertiesEntry>> get(@HostParam("endpoint") String endpoint,
+        Mono<Response<NamespacePropertiesEntryImpl>> get(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/$namespaceinfo")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Response<NamespacePropertiesEntry> getSync(@HostParam("endpoint") String endpoint,
+        Response<NamespacePropertiesEntryImpl> getSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
@@ -78,7 +78,7 @@ public final class NamespacesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<NamespacePropertiesEntry>> getWithResponseAsync() {
+    public Mono<Response<NamespacePropertiesEntryImpl>> getWithResponseAsync() {
         return FluxUtil.withContext(context -> getWithResponseAsync(context));
     }
 
@@ -95,7 +95,7 @@ public final class NamespacesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<NamespacePropertiesEntry>> getWithResponseAsync(Context context) {
+    public Mono<Response<NamespacePropertiesEntryImpl>> getWithResponseAsync(Context context) {
         final String accept = "application/xml, application/atom+xml";
         return service.get(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
     }
@@ -110,7 +110,7 @@ public final class NamespacesImpl {
      * @return the details about the Service Bus namespace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NamespacePropertiesEntry> getAsync() {
+    public Mono<NamespacePropertiesEntryImpl> getAsync() {
         return getWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -126,7 +126,7 @@ public final class NamespacesImpl {
      * @return the details about the Service Bus namespace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NamespacePropertiesEntry> getAsync(Context context) {
+    public Mono<NamespacePropertiesEntryImpl> getAsync(Context context) {
         return getWithResponseAsync(context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -142,7 +142,7 @@ public final class NamespacesImpl {
      * @return the details about the Service Bus namespace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NamespacePropertiesEntry> getWithResponse(Context context) {
+    public Response<NamespacePropertiesEntryImpl> getWithResponse(Context context) {
         final String accept = "application/xml, application/atom+xml";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
     }
@@ -157,7 +157,7 @@ public final class NamespacesImpl {
      * @return the details about the Service Bus namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NamespacePropertiesEntry get() {
+    public NamespacePropertiesEntryImpl get() {
         return getWithResponse(Context.NONE).getValue();
     }
 }

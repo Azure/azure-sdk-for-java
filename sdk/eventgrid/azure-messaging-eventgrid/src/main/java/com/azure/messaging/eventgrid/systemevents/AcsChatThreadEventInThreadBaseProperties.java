@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -22,19 +21,16 @@ public class AcsChatThreadEventInThreadBaseProperties extends AcsChatEventInThre
     /*
      * The original creation time of the thread
      */
-    @Generated
     private OffsetDateTime createTime;
 
     /*
      * The version of the thread
      */
-    @Generated
     private Long version;
 
     /**
      * Creates an instance of AcsChatThreadEventInThreadBaseProperties class.
      */
-    @Generated
     public AcsChatThreadEventInThreadBaseProperties() {
     }
 
@@ -43,7 +39,6 @@ public class AcsChatThreadEventInThreadBaseProperties extends AcsChatEventInThre
      * 
      * @return the createTime value.
      */
-    @Generated
     public OffsetDateTime getCreateTime() {
         return this.createTime;
     }
@@ -54,7 +49,6 @@ public class AcsChatThreadEventInThreadBaseProperties extends AcsChatEventInThre
      * @param createTime the createTime value to set.
      * @return the AcsChatThreadEventInThreadBaseProperties object itself.
      */
-    @Generated
     public AcsChatThreadEventInThreadBaseProperties setCreateTime(OffsetDateTime createTime) {
         this.createTime = createTime;
         return this;
@@ -65,7 +59,6 @@ public class AcsChatThreadEventInThreadBaseProperties extends AcsChatEventInThre
      * 
      * @return the version value.
      */
-    @Generated
     public Long getVersion() {
         return this.version;
     }
@@ -76,7 +69,6 @@ public class AcsChatThreadEventInThreadBaseProperties extends AcsChatEventInThre
      * @param version the version value to set.
      * @return the AcsChatThreadEventInThreadBaseProperties object itself.
      */
-    @Generated
     public AcsChatThreadEventInThreadBaseProperties setVersion(Long version) {
         this.version = version;
         return this;
@@ -85,7 +77,6 @@ public class AcsChatThreadEventInThreadBaseProperties extends AcsChatEventInThre
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AcsChatThreadEventInThreadBaseProperties setTransactionId(String transactionId) {
         super.setTransactionId(transactionId);
@@ -95,7 +86,6 @@ public class AcsChatThreadEventInThreadBaseProperties extends AcsChatEventInThre
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AcsChatThreadEventInThreadBaseProperties setThreadId(String threadId) {
         super.setThreadId(threadId);
@@ -105,7 +95,6 @@ public class AcsChatThreadEventInThreadBaseProperties extends AcsChatEventInThre
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -126,7 +115,6 @@ public class AcsChatThreadEventInThreadBaseProperties extends AcsChatEventInThre
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsChatThreadEventInThreadBaseProperties.
      */
-    @Generated
     public static AcsChatThreadEventInThreadBaseProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsChatThreadEventInThreadBaseProperties deserializedAcsChatThreadEventInThreadBaseProperties

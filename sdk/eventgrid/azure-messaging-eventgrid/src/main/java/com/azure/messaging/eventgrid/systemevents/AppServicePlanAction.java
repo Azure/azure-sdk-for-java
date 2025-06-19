@@ -4,7 +4,6 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,7 +14,6 @@ public final class AppServicePlanAction extends ExpandableStringEnum<AppServiceP
     /**
      * App Service plan is being updated.
      */
-    @Generated
     public static final AppServicePlanAction UPDATED = fromString("Updated");
 
     /**
@@ -23,7 +21,6 @@ public final class AppServicePlanAction extends ExpandableStringEnum<AppServiceP
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public AppServicePlanAction() {
     }
@@ -34,7 +31,6 @@ public final class AppServicePlanAction extends ExpandableStringEnum<AppServiceP
      * @param name a name to look for.
      * @return the corresponding AppServicePlanAction.
      */
-    @Generated
     public static AppServicePlanAction fromString(String name) {
         return fromString(name, AppServicePlanAction.class);
     }
@@ -44,7 +40,6 @@ public final class AppServicePlanAction extends ExpandableStringEnum<AppServiceP
      * 
      * @return known AppServicePlanAction values.
      */
-    @Generated
     public static Collection<AppServicePlanAction> values() {
         return values(AppServicePlanAction.class);
     }

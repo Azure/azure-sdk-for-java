@@ -65,7 +65,6 @@ import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
-import com.azure.storage.blob.models.FileShareTokenIntent;
 import com.azure.storage.blob.models.RehydratePriority;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -104,7 +103,7 @@ public final class BlobsImpl {
      * calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureBlobStorageBlobs")
+    @ServiceInterface(name = "AzureBlobStorageBlob")
     public interface BlobsService {
 
         @Get("/{containerName}/{blob}")
@@ -1164,7 +1163,6 @@ public final class BlobsImpl {
             @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
             @HeaderParam("x-ms-encryption-scope") String encryptionScope,
             @HeaderParam("x-ms-copy-source-tag-option") BlobCopySourceTagsMode copySourceTags,
-            @HeaderParam("x-ms-file-request-intent") FileShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{containerName}/{blob}")
@@ -1192,7 +1190,6 @@ public final class BlobsImpl {
             @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
             @HeaderParam("x-ms-encryption-scope") String encryptionScope,
             @HeaderParam("x-ms-copy-source-tag-option") BlobCopySourceTagsMode copySourceTags,
-            @HeaderParam("x-ms-file-request-intent") FileShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{containerName}/{blob}")
@@ -1220,7 +1217,6 @@ public final class BlobsImpl {
             @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
             @HeaderParam("x-ms-encryption-scope") String encryptionScope,
             @HeaderParam("x-ms-copy-source-tag-option") BlobCopySourceTagsMode copySourceTags,
-            @HeaderParam("x-ms-file-request-intent") FileShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{containerName}/{blob}")
@@ -1248,7 +1244,6 @@ public final class BlobsImpl {
             @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
             @HeaderParam("x-ms-encryption-scope") String encryptionScope,
             @HeaderParam("x-ms-copy-source-tag-option") BlobCopySourceTagsMode copySourceTags,
-            @HeaderParam("x-ms-file-request-intent") FileShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{containerName}/{blob}")
@@ -8473,7 +8468,6 @@ public final class BlobsImpl {
      * copy source.
      * @param copySourceTags Optional, default 'replace'. Indicates if source tags should be copied or replaced with the
      * tags specified by x-ms-tags.
-     * @param fileRequestIntent Valid value is backup.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -8488,14 +8482,13 @@ public final class BlobsImpl {
         String ifNoneMatch, String ifTags, String leaseId, String requestId, byte[] sourceContentMD5,
         String blobTagsString, OffsetDateTime immutabilityPolicyExpiry,
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold, String copySourceAuthorization,
-        BlobCopySourceTagsMode copySourceTags, FileShareTokenIntent fileRequestIntent,
-        EncryptionScope encryptionScopeParam) {
+        BlobCopySourceTagsMode copySourceTags, EncryptionScope encryptionScopeParam) {
         return FluxUtil
             .withContext(context -> copyFromURLWithResponseAsync(containerName, blob, copySource, timeout, metadata,
                 tier, sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, ifModifiedSince,
                 ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, leaseId, requestId, sourceContentMD5, blobTagsString,
                 immutabilityPolicyExpiry, immutabilityPolicyMode, legalHold, copySourceAuthorization, copySourceTags,
-                fileRequestIntent, encryptionScopeParam, context))
+                encryptionScopeParam, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -8543,7 +8536,6 @@ public final class BlobsImpl {
      * copy source.
      * @param copySourceTags Optional, default 'replace'. Indicates if source tags should be copied or replaced with the
      * tags specified by x-ms-tags.
-     * @param fileRequestIntent Valid value is backup.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -8559,8 +8551,7 @@ public final class BlobsImpl {
         String ifNoneMatch, String ifTags, String leaseId, String requestId, byte[] sourceContentMD5,
         String blobTagsString, OffsetDateTime immutabilityPolicyExpiry,
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold, String copySourceAuthorization,
-        BlobCopySourceTagsMode copySourceTags, FileShareTokenIntent fileRequestIntent,
-        EncryptionScope encryptionScopeParam, Context context) {
+        BlobCopySourceTagsMode copySourceTags, EncryptionScope encryptionScopeParam, Context context) {
         final String xMsRequiresSync = "true";
         final String accept = "application/xml";
         String encryptionScopeInternal = null;
@@ -8585,7 +8576,7 @@ public final class BlobsImpl {
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, copySource, leaseId,
                 this.client.getVersion(), requestId, sourceContentMD5Converted, blobTagsString,
                 immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold, copySourceAuthorization,
-                encryptionScope, copySourceTags, fileRequestIntent, accept, context)
+                encryptionScope, copySourceTags, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -8633,7 +8624,6 @@ public final class BlobsImpl {
      * copy source.
      * @param copySourceTags Optional, default 'replace'. Indicates if source tags should be copied or replaced with the
      * tags specified by x-ms-tags.
-     * @param fileRequestIntent Valid value is backup.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -8647,14 +8637,12 @@ public final class BlobsImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, String leaseId, String requestId, byte[] sourceContentMD5, String blobTagsString,
         OffsetDateTime immutabilityPolicyExpiry, BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold,
-        String copySourceAuthorization, BlobCopySourceTagsMode copySourceTags, FileShareTokenIntent fileRequestIntent,
-        EncryptionScope encryptionScopeParam) {
+        String copySourceAuthorization, BlobCopySourceTagsMode copySourceTags, EncryptionScope encryptionScopeParam) {
         return copyFromURLWithResponseAsync(containerName, blob, copySource, timeout, metadata, tier,
             sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, leaseId, requestId, sourceContentMD5, blobTagsString,
             immutabilityPolicyExpiry, immutabilityPolicyMode, legalHold, copySourceAuthorization, copySourceTags,
-            fileRequestIntent, encryptionScopeParam)
-                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+            encryptionScopeParam).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
 
@@ -8702,7 +8690,6 @@ public final class BlobsImpl {
      * copy source.
      * @param copySourceTags Optional, default 'replace'. Indicates if source tags should be copied or replaced with the
      * tags specified by x-ms-tags.
-     * @param fileRequestIntent Valid value is backup.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -8717,13 +8704,13 @@ public final class BlobsImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, String leaseId, String requestId, byte[] sourceContentMD5, String blobTagsString,
         OffsetDateTime immutabilityPolicyExpiry, BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold,
-        String copySourceAuthorization, BlobCopySourceTagsMode copySourceTags, FileShareTokenIntent fileRequestIntent,
-        EncryptionScope encryptionScopeParam, Context context) {
+        String copySourceAuthorization, BlobCopySourceTagsMode copySourceTags, EncryptionScope encryptionScopeParam,
+        Context context) {
         return copyFromURLWithResponseAsync(containerName, blob, copySource, timeout, metadata, tier,
             sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, leaseId, requestId, sourceContentMD5, blobTagsString,
             immutabilityPolicyExpiry, immutabilityPolicyMode, legalHold, copySourceAuthorization, copySourceTags,
-            fileRequestIntent, encryptionScopeParam, context)
+            encryptionScopeParam, context)
                 .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
@@ -8772,7 +8759,6 @@ public final class BlobsImpl {
      * copy source.
      * @param copySourceTags Optional, default 'replace'. Indicates if source tags should be copied or replaced with the
      * tags specified by x-ms-tags.
-     * @param fileRequestIntent Valid value is backup.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -8787,14 +8773,13 @@ public final class BlobsImpl {
         String ifNoneMatch, String ifTags, String leaseId, String requestId, byte[] sourceContentMD5,
         String blobTagsString, OffsetDateTime immutabilityPolicyExpiry,
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold, String copySourceAuthorization,
-        BlobCopySourceTagsMode copySourceTags, FileShareTokenIntent fileRequestIntent,
-        EncryptionScope encryptionScopeParam) {
+        BlobCopySourceTagsMode copySourceTags, EncryptionScope encryptionScopeParam) {
         return FluxUtil
             .withContext(context -> copyFromURLNoCustomHeadersWithResponseAsync(containerName, blob, copySource,
                 timeout, metadata, tier, sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatch,
                 sourceIfNoneMatch, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, leaseId, requestId,
                 sourceContentMD5, blobTagsString, immutabilityPolicyExpiry, immutabilityPolicyMode, legalHold,
-                copySourceAuthorization, copySourceTags, fileRequestIntent, encryptionScopeParam, context))
+                copySourceAuthorization, copySourceTags, encryptionScopeParam, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -8842,7 +8827,6 @@ public final class BlobsImpl {
      * copy source.
      * @param copySourceTags Optional, default 'replace'. Indicates if source tags should be copied or replaced with the
      * tags specified by x-ms-tags.
-     * @param fileRequestIntent Valid value is backup.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -8858,8 +8842,7 @@ public final class BlobsImpl {
         String ifNoneMatch, String ifTags, String leaseId, String requestId, byte[] sourceContentMD5,
         String blobTagsString, OffsetDateTime immutabilityPolicyExpiry,
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold, String copySourceAuthorization,
-        BlobCopySourceTagsMode copySourceTags, FileShareTokenIntent fileRequestIntent,
-        EncryptionScope encryptionScopeParam, Context context) {
+        BlobCopySourceTagsMode copySourceTags, EncryptionScope encryptionScopeParam, Context context) {
         final String xMsRequiresSync = "true";
         final String accept = "application/xml";
         String encryptionScopeInternal = null;
@@ -8884,7 +8867,7 @@ public final class BlobsImpl {
                 sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 copySource, leaseId, this.client.getVersion(), requestId, sourceContentMD5Converted, blobTagsString,
                 immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold, copySourceAuthorization,
-                encryptionScope, copySourceTags, fileRequestIntent, accept, context)
+                encryptionScope, copySourceTags, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -8932,7 +8915,6 @@ public final class BlobsImpl {
      * copy source.
      * @param copySourceTags Optional, default 'replace'. Indicates if source tags should be copied or replaced with the
      * tags specified by x-ms-tags.
-     * @param fileRequestIntent Valid value is backup.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -8948,8 +8930,7 @@ public final class BlobsImpl {
         String ifNoneMatch, String ifTags, String leaseId, String requestId, byte[] sourceContentMD5,
         String blobTagsString, OffsetDateTime immutabilityPolicyExpiry,
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold, String copySourceAuthorization,
-        BlobCopySourceTagsMode copySourceTags, FileShareTokenIntent fileRequestIntent,
-        EncryptionScope encryptionScopeParam, Context context) {
+        BlobCopySourceTagsMode copySourceTags, EncryptionScope encryptionScopeParam, Context context) {
         try {
             final String xMsRequiresSync = "true";
             final String accept = "application/xml";
@@ -8974,7 +8955,7 @@ public final class BlobsImpl {
                 sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 copySource, leaseId, this.client.getVersion(), requestId, sourceContentMD5Converted, blobTagsString,
                 immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold, copySourceAuthorization,
-                encryptionScope, copySourceTags, fileRequestIntent, accept, context);
+                encryptionScope, copySourceTags, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -9024,7 +9005,6 @@ public final class BlobsImpl {
      * copy source.
      * @param copySourceTags Optional, default 'replace'. Indicates if source tags should be copied or replaced with the
      * tags specified by x-ms-tags.
-     * @param fileRequestIntent Valid value is backup.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -9037,13 +9017,12 @@ public final class BlobsImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, String leaseId, String requestId, byte[] sourceContentMD5, String blobTagsString,
         OffsetDateTime immutabilityPolicyExpiry, BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold,
-        String copySourceAuthorization, BlobCopySourceTagsMode copySourceTags, FileShareTokenIntent fileRequestIntent,
-        EncryptionScope encryptionScopeParam) {
+        String copySourceAuthorization, BlobCopySourceTagsMode copySourceTags, EncryptionScope encryptionScopeParam) {
         copyFromURLWithResponse(containerName, blob, copySource, timeout, metadata, tier, sourceIfModifiedSince,
             sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, ifModifiedSince, ifUnmodifiedSince, ifMatch,
             ifNoneMatch, ifTags, leaseId, requestId, sourceContentMD5, blobTagsString, immutabilityPolicyExpiry,
-            immutabilityPolicyMode, legalHold, copySourceAuthorization, copySourceTags, fileRequestIntent,
-            encryptionScopeParam, Context.NONE);
+            immutabilityPolicyMode, legalHold, copySourceAuthorization, copySourceTags, encryptionScopeParam,
+            Context.NONE);
     }
 
     /**
@@ -9090,7 +9069,6 @@ public final class BlobsImpl {
      * copy source.
      * @param copySourceTags Optional, default 'replace'. Indicates if source tags should be copied or replaced with the
      * tags specified by x-ms-tags.
-     * @param fileRequestIntent Valid value is backup.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9105,8 +9083,8 @@ public final class BlobsImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, String leaseId, String requestId, byte[] sourceContentMD5, String blobTagsString,
         OffsetDateTime immutabilityPolicyExpiry, BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold,
-        String copySourceAuthorization, BlobCopySourceTagsMode copySourceTags, FileShareTokenIntent fileRequestIntent,
-        EncryptionScope encryptionScopeParam, Context context) {
+        String copySourceAuthorization, BlobCopySourceTagsMode copySourceTags, EncryptionScope encryptionScopeParam,
+        Context context) {
         try {
             final String xMsRequiresSync = "true";
             final String accept = "application/xml";
@@ -9131,8 +9109,7 @@ public final class BlobsImpl {
                 sourceIfMatch, sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
                 ifNoneMatch, ifTags, copySource, leaseId, this.client.getVersion(), requestId,
                 sourceContentMD5Converted, blobTagsString, immutabilityPolicyExpiryConverted, immutabilityPolicyMode,
-                legalHold, copySourceAuthorization, encryptionScope, copySourceTags, fileRequestIntent, accept,
-                context);
+                legalHold, copySourceAuthorization, encryptionScope, copySourceTags, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }

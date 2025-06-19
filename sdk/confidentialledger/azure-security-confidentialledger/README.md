@@ -21,7 +21,7 @@ portfolio, Azure Confidential Ledger runs in SGX enclaves. It is built on Micros
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-security-confidentialledger</artifactId>
-  <version>1.1.0-beta.1</version>
+  <version>1.0.29</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -49,7 +49,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.15.3</version>
+    <version>1.5.4</version>
 </dependency>
 ```
 
@@ -115,10 +115,10 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [product_documentation]: https://aka.ms/confidentialledger-servicedocs
 [ledger_base_client_class]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/confidentialledger/azure-security-confidentialledger/src/main/java/com/azure/security/confidentialledger/LedgerBaseClient.java
 [azure_portal]: https://portal.azure.com
-[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[package]: https://central.sonatype.com/artifact/com.azure/azure-security-confidentialledger
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[package]: https://mvnrepository.com/artifact/com.azure/azure-security-confidentialledger
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/README.md
-[azure_resource_manager]: https://learn.microsoft.com/azure/azure-resource-manager/
+[azure_resource_manager]: https://docs.microsoft.com/azure/azure-resource-manager/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#defaultazurecredential
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
@@ -128,4 +128,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc_contact]: mailto:opencode@microsoft.com
 
 
-
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fconfidentialledger%2Fazure-security-confidentialledger%2FREADME.png)

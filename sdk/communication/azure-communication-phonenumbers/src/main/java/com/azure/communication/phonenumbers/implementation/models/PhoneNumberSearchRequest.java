@@ -8,7 +8,6 @@ import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,38 +23,31 @@ public final class PhoneNumberSearchRequest implements JsonSerializable<PhoneNum
     /*
      * The type of phone numbers to search for, e.g. geographic, or tollFree.
      */
-    @Generated
     private PhoneNumberType phoneNumberType;
 
     /*
-     * The assignment type of the phone numbers to search for. A phone number can be assigned to a person, or to an
-     * application.
+     * The assignment type of the phone numbers to search for. A phone number can be assigned to a person, or to an application.
      */
-    @Generated
     private PhoneNumberAssignmentType assignmentType;
 
     /*
      * Capabilities of a phone number.
      */
-    @Generated
     private PhoneNumberCapabilities capabilities;
 
     /*
      * The area code of the desired phone number, e.g. 425.
      */
-    @Generated
     private String areaCode;
 
     /*
      * The quantity of desired phone numbers. The default value is 1.
      */
-    @Generated
     private Integer quantity;
 
     /**
      * Creates an instance of PhoneNumberSearchRequest class.
      */
-    @Generated
     public PhoneNumberSearchRequest() {
     }
 
@@ -64,7 +56,6 @@ public final class PhoneNumberSearchRequest implements JsonSerializable<PhoneNum
      * 
      * @return the phoneNumberType value.
      */
-    @Generated
     public PhoneNumberType getPhoneNumberType() {
         return this.phoneNumberType;
     }
@@ -75,7 +66,6 @@ public final class PhoneNumberSearchRequest implements JsonSerializable<PhoneNum
      * @param phoneNumberType the phoneNumberType value to set.
      * @return the PhoneNumberSearchRequest object itself.
      */
-    @Generated
     public PhoneNumberSearchRequest setPhoneNumberType(PhoneNumberType phoneNumberType) {
         this.phoneNumberType = phoneNumberType;
         return this;
@@ -87,7 +77,6 @@ public final class PhoneNumberSearchRequest implements JsonSerializable<PhoneNum
      * 
      * @return the assignmentType value.
      */
-    @Generated
     public PhoneNumberAssignmentType getAssignmentType() {
         return this.assignmentType;
     }
@@ -99,7 +88,6 @@ public final class PhoneNumberSearchRequest implements JsonSerializable<PhoneNum
      * @param assignmentType the assignmentType value to set.
      * @return the PhoneNumberSearchRequest object itself.
      */
-    @Generated
     public PhoneNumberSearchRequest setAssignmentType(PhoneNumberAssignmentType assignmentType) {
         this.assignmentType = assignmentType;
         return this;
@@ -110,7 +98,6 @@ public final class PhoneNumberSearchRequest implements JsonSerializable<PhoneNum
      * 
      * @return the capabilities value.
      */
-    @Generated
     public PhoneNumberCapabilities getCapabilities() {
         return this.capabilities;
     }
@@ -121,7 +108,6 @@ public final class PhoneNumberSearchRequest implements JsonSerializable<PhoneNum
      * @param capabilities the capabilities value to set.
      * @return the PhoneNumberSearchRequest object itself.
      */
-    @Generated
     public PhoneNumberSearchRequest setCapabilities(PhoneNumberCapabilities capabilities) {
         this.capabilities = capabilities;
         return this;
@@ -132,7 +118,6 @@ public final class PhoneNumberSearchRequest implements JsonSerializable<PhoneNum
      * 
      * @return the areaCode value.
      */
-    @Generated
     public String getAreaCode() {
         return this.areaCode;
     }
@@ -143,7 +128,6 @@ public final class PhoneNumberSearchRequest implements JsonSerializable<PhoneNum
      * @param areaCode the areaCode value to set.
      * @return the PhoneNumberSearchRequest object itself.
      */
-    @Generated
     public PhoneNumberSearchRequest setAreaCode(String areaCode) {
         this.areaCode = areaCode;
         return this;
@@ -154,7 +138,6 @@ public final class PhoneNumberSearchRequest implements JsonSerializable<PhoneNum
      * 
      * @return the quantity value.
      */
-    @Generated
     public Integer getQuantity() {
         return this.quantity;
     }
@@ -165,7 +148,6 @@ public final class PhoneNumberSearchRequest implements JsonSerializable<PhoneNum
      * @param quantity the quantity value to set.
      * @return the PhoneNumberSearchRequest object itself.
      */
-    @Generated
     public PhoneNumberSearchRequest setQuantity(Integer quantity) {
         this.quantity = quantity;
         return this;
@@ -174,7 +156,6 @@ public final class PhoneNumberSearchRequest implements JsonSerializable<PhoneNum
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -197,7 +178,6 @@ public final class PhoneNumberSearchRequest implements JsonSerializable<PhoneNum
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PhoneNumberSearchRequest.
      */
-    @Generated
     public static PhoneNumberSearchRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PhoneNumberSearchRequest deserializedPhoneNumberSearchRequest = new PhoneNumberSearchRequest();

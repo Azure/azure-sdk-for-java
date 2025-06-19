@@ -58,7 +58,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-monitor-ingestion</artifactId>
-    <version>1.3.0-beta.1</version>
+    <version>1.2.10</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -77,7 +77,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.15.3</version>
+    <version>1.13.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -250,4 +250,4 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 [log_analytics_workspace]: https://learn.microsoft.com//azure/azure-monitor/logs/log-analytics-workspace-overview
 [logging]: https://learn.microsoft.com//azure/developer/java/sdk/logging-overview
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-ingestion/src/samples/java/com/azure/monitor/ingestion
-
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fmonitor%2Fazure-monitor-ingestion%2FREADME.png)

@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,13 +19,11 @@ public final class DeviceTwinMetadata implements JsonSerializable<DeviceTwinMeta
     /*
      * The ISO8601 timestamp of the last time the properties were updated.
      */
-    @Generated
     private String lastUpdated;
 
     /**
      * Creates an instance of DeviceTwinMetadata class.
      */
-    @Generated
     public DeviceTwinMetadata() {
     }
 
@@ -35,7 +32,6 @@ public final class DeviceTwinMetadata implements JsonSerializable<DeviceTwinMeta
      * 
      * @return the lastUpdated value.
      */
-    @Generated
     public String getLastUpdated() {
         return this.lastUpdated;
     }
@@ -46,7 +42,6 @@ public final class DeviceTwinMetadata implements JsonSerializable<DeviceTwinMeta
      * @param lastUpdated the lastUpdated value to set.
      * @return the DeviceTwinMetadata object itself.
      */
-    @Generated
     public DeviceTwinMetadata setLastUpdated(String lastUpdated) {
         this.lastUpdated = lastUpdated;
         return this;
@@ -55,7 +50,6 @@ public final class DeviceTwinMetadata implements JsonSerializable<DeviceTwinMeta
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -71,7 +65,6 @@ public final class DeviceTwinMetadata implements JsonSerializable<DeviceTwinMeta
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the DeviceTwinMetadata.
      */
-    @Generated
     public static DeviceTwinMetadata fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DeviceTwinMetadata deserializedDeviceTwinMetadata = new DeviceTwinMetadata();

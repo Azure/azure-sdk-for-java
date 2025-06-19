@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,13 +21,11 @@ public final class DeviceConnectionStateEventInfo implements JsonSerializable<De
      * larger number because both in ASCII and HEX numbers come after alphabets. If you are converting the string to
      * hex, then the number is a 256 bit number.
      */
-    @Generated
     private String sequenceNumber;
 
     /**
      * Creates an instance of DeviceConnectionStateEventInfo class.
      */
-    @Generated
     public DeviceConnectionStateEventInfo() {
     }
 
@@ -39,7 +36,6 @@ public final class DeviceConnectionStateEventInfo implements JsonSerializable<De
      * 
      * @return the sequenceNumber value.
      */
-    @Generated
     public String getSequenceNumber() {
         return this.sequenceNumber;
     }
@@ -52,7 +48,6 @@ public final class DeviceConnectionStateEventInfo implements JsonSerializable<De
      * @param sequenceNumber the sequenceNumber value to set.
      * @return the DeviceConnectionStateEventInfo object itself.
      */
-    @Generated
     public DeviceConnectionStateEventInfo setSequenceNumber(String sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
         return this;
@@ -61,7 +56,6 @@ public final class DeviceConnectionStateEventInfo implements JsonSerializable<De
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -77,7 +71,6 @@ public final class DeviceConnectionStateEventInfo implements JsonSerializable<De
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DeviceConnectionStateEventInfo.
      */
-    @Generated
     public static DeviceConnectionStateEventInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DeviceConnectionStateEventInfo deserializedDeviceConnectionStateEventInfo

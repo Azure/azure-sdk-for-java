@@ -84,14 +84,6 @@ public class QueueTestBase extends TestProxyTestBase {
             .queueName(getRandomName(60));
     }
 
-    protected QueueServiceClient getOAuthQueueServiceClient() {
-        return getOAuthServiceClientBuilder().buildClient();
-    }
-
-    protected QueueServiceAsyncClient getOAuthQueueAsyncServiceClient() {
-        return getOAuthServiceClientBuilder().buildAsyncClient();
-    }
-
     protected QueueServiceClientBuilder getOAuthServiceClientBuilder() {
         QueueServiceClientBuilder builder
             = new QueueServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getQueueEndpoint());

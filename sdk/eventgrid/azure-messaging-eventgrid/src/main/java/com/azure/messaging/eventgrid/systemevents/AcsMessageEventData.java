@@ -4,7 +4,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
@@ -25,31 +24,26 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
     /*
      * The message sender
      */
-    @Generated
     private String from;
 
     /*
      * The message recipient
      */
-    @Generated
     private String to;
 
     /*
      * The time message was received
      */
-    @Generated
     private OffsetDateTime receivedTimestamp;
 
     /*
      * The channel event error
      */
-    @Generated
     private AcsMessageChannelEventError error;
 
     /**
      * Creates an instance of AcsMessageEventData class.
      */
-    @Generated
     public AcsMessageEventData() {
     }
 
@@ -58,7 +52,6 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
      *
      * @return the from value.
      */
-    @Generated
     public String getFrom() {
         return this.from;
     }
@@ -69,7 +62,6 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
      * @param from the from value to set.
      * @return the AcsMessageEventData object itself.
      */
-    @Generated
     public AcsMessageEventData setFrom(String from) {
         this.from = from;
         return this;
@@ -80,7 +72,6 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
      *
      * @return the to value.
      */
-    @Generated
     public String getTo() {
         return this.to;
     }
@@ -91,7 +82,6 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
      * @param to the to value to set.
      * @return the AcsMessageEventData object itself.
      */
-    @Generated
     public AcsMessageEventData setTo(String to) {
         this.to = to;
         return this;
@@ -102,7 +92,6 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
      *
      * @return the receivedTimestamp value.
      */
-    @Generated
     public OffsetDateTime getReceivedTimestamp() {
         return this.receivedTimestamp;
     }
@@ -113,7 +102,6 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
      * @param receivedTimestamp the receivedTimestamp value to set.
      * @return the AcsMessageEventData object itself.
      */
-    @Generated
     public AcsMessageEventData setReceivedTimestamp(OffsetDateTime receivedTimestamp) {
         this.receivedTimestamp = receivedTimestamp;
         return this;
@@ -124,7 +112,6 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
      *
      * @return the error value.
      */
-    @Generated
     public ResponseError getError() {
         return new ResponseError(this.error.getChannelCode(), this.error.getChannelMessage());
     }
@@ -134,7 +121,6 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
      *
      * @param error The error value to set
      */
-    @Generated
     void setError(AcsMessageChannelEventError error) {
         this.error = error;
     }
@@ -142,7 +128,6 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -165,7 +150,6 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsMessageEventData.
      */
-    @Generated
     public static AcsMessageEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsMessageEventData deserializedAcsMessageEventData = new AcsMessageEventData();

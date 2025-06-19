@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,19 +19,11 @@ public final class CallIntelligenceOptionsInternal implements JsonSerializable<C
     /*
      * The identifier of the Cognitive Service resource assigned to this call.
      */
-    @Generated
     private String cognitiveServicesEndpoint;
-
-    /*
-     * A backup identifier of the Cognitive Service resource assigned to this call.
-     */
-    @Generated
-    private String backupCognitiveServicesEndpoint;
 
     /**
      * Creates an instance of CallIntelligenceOptionsInternal class.
      */
-    @Generated
     public CallIntelligenceOptionsInternal() {
     }
 
@@ -42,7 +33,6 @@ public final class CallIntelligenceOptionsInternal implements JsonSerializable<C
      * 
      * @return the cognitiveServicesEndpoint value.
      */
-    @Generated
     public String getCognitiveServicesEndpoint() {
         return this.cognitiveServicesEndpoint;
     }
@@ -54,45 +44,18 @@ public final class CallIntelligenceOptionsInternal implements JsonSerializable<C
      * @param cognitiveServicesEndpoint the cognitiveServicesEndpoint value to set.
      * @return the CallIntelligenceOptionsInternal object itself.
      */
-    @Generated
     public CallIntelligenceOptionsInternal setCognitiveServicesEndpoint(String cognitiveServicesEndpoint) {
         this.cognitiveServicesEndpoint = cognitiveServicesEndpoint;
         return this;
     }
 
     /**
-     * Get the backupCognitiveServicesEndpoint property: A backup identifier of the Cognitive Service resource assigned
-     * to this call.
-     * 
-     * @return the backupCognitiveServicesEndpoint value.
-     */
-    @Generated
-    public String getBackupCognitiveServicesEndpoint() {
-        return this.backupCognitiveServicesEndpoint;
-    }
-
-    /**
-     * Set the backupCognitiveServicesEndpoint property: A backup identifier of the Cognitive Service resource assigned
-     * to this call.
-     * 
-     * @param backupCognitiveServicesEndpoint the backupCognitiveServicesEndpoint value to set.
-     * @return the CallIntelligenceOptionsInternal object itself.
-     */
-    @Generated
-    public CallIntelligenceOptionsInternal setBackupCognitiveServicesEndpoint(String backupCognitiveServicesEndpoint) {
-        this.backupCognitiveServicesEndpoint = backupCognitiveServicesEndpoint;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("cognitiveServicesEndpoint", this.cognitiveServicesEndpoint);
-        jsonWriter.writeStringField("backupCognitiveServicesEndpoint", this.backupCognitiveServicesEndpoint);
         return jsonWriter.writeEndObject();
     }
 
@@ -104,7 +67,6 @@ public final class CallIntelligenceOptionsInternal implements JsonSerializable<C
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the CallIntelligenceOptionsInternal.
      */
-    @Generated
     public static CallIntelligenceOptionsInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CallIntelligenceOptionsInternal deserializedCallIntelligenceOptionsInternal
@@ -115,8 +77,6 @@ public final class CallIntelligenceOptionsInternal implements JsonSerializable<C
 
                 if ("cognitiveServicesEndpoint".equals(fieldName)) {
                     deserializedCallIntelligenceOptionsInternal.cognitiveServicesEndpoint = reader.getString();
-                } else if ("backupCognitiveServicesEndpoint".equals(fieldName)) {
-                    deserializedCallIntelligenceOptionsInternal.backupCognitiveServicesEndpoint = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

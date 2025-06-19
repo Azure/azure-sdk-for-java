@@ -4,7 +4,6 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,38 +14,32 @@ public final class AcsEmailDeliveryReportStatus extends ExpandableStringEnum<Acs
     /**
      * Hard bounce detected while sending the email.
      */
-    @Generated
     public static final AcsEmailDeliveryReportStatus BOUNCED = fromString("Bounced");
 
     /**
      * The email was delivered.
      */
-    @Generated
     public static final AcsEmailDeliveryReportStatus DELIVERED = fromString("Delivered");
 
     /**
      * The email failed to be delivered.
      */
-    @Generated
     public static final AcsEmailDeliveryReportStatus FAILED = fromString("Failed");
 
     /**
      * The message was identified spam and was rejected or blocked (not quarantined).
      */
-    @Generated
     public static final AcsEmailDeliveryReportStatus FILTERED_SPAM = fromString("FilteredSpam");
 
     /**
      * The message was quarantined (as spam, bulk mail, or phishing). For more information, see Quarantined email
      * messages in EOP (EXCHANGE ONLINE PROTECTION).
      */
-    @Generated
     public static final AcsEmailDeliveryReportStatus QUARANTINED = fromString("Quarantined");
 
     /**
      * The email was suppressed.
      */
-    @Generated
     public static final AcsEmailDeliveryReportStatus SUPPRESSED = fromString("Suppressed");
 
     /**
@@ -54,7 +47,6 @@ public final class AcsEmailDeliveryReportStatus extends ExpandableStringEnum<Acs
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public AcsEmailDeliveryReportStatus() {
     }
@@ -65,7 +57,6 @@ public final class AcsEmailDeliveryReportStatus extends ExpandableStringEnum<Acs
      * @param name a name to look for.
      * @return the corresponding AcsEmailDeliveryReportStatus.
      */
-    @Generated
     public static AcsEmailDeliveryReportStatus fromString(String name) {
         return fromString(name, AcsEmailDeliveryReportStatus.class);
     }
@@ -75,7 +66,6 @@ public final class AcsEmailDeliveryReportStatus extends ExpandableStringEnum<Acs
      * 
      * @return known AcsEmailDeliveryReportStatus values.
      */
-    @Generated
     public static Collection<AcsEmailDeliveryReportStatus> values() {
         return values(AcsEmailDeliveryReportStatus.class);
     }

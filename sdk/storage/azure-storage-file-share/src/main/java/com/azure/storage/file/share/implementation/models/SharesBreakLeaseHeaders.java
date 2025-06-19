@@ -5,7 +5,6 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
@@ -19,49 +18,41 @@ public final class SharesBreakLeaseHeaders {
     /*
      * The x-ms-version property.
      */
-    @Generated
     private String xMsVersion;
 
     /*
      * The ETag property.
      */
-    @Generated
     private String eTag;
 
     /*
      * The x-ms-lease-time property.
      */
-    @Generated
     private Integer xMsLeaseTime;
 
     /*
      * The x-ms-lease-id property.
      */
-    @Generated
     private String xMsLeaseId;
 
     /*
      * The Last-Modified property.
      */
-    @Generated
     private DateTimeRfc1123 lastModified;
 
     /*
      * The x-ms-request-id property.
      */
-    @Generated
     private String xMsRequestId;
 
     /*
      * The x-ms-client-request-id property.
      */
-    @Generated
     private String xMsClientRequestId;
 
     /*
      * The Date property.
      */
-    @Generated
     private DateTimeRfc1123 date;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
@@ -82,23 +73,17 @@ public final class SharesBreakLeaseHeaders {
         String xMsLeaseTime = rawHeaders.getValue(X_MS_LEASE_TIME);
         if (xMsLeaseTime != null) {
             this.xMsLeaseTime = Integer.parseInt(xMsLeaseTime);
-        } else {
-            this.xMsLeaseTime = null;
         }
         this.xMsLeaseId = rawHeaders.getValue(X_MS_LEASE_ID);
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
-        } else {
-            this.lastModified = null;
         }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
-        } else {
-            this.date = null;
         }
     }
 
@@ -107,7 +92,6 @@ public final class SharesBreakLeaseHeaders {
      * 
      * @return the xMsVersion value.
      */
-    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -118,7 +102,6 @@ public final class SharesBreakLeaseHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the SharesBreakLeaseHeaders object itself.
      */
-    @Generated
     public SharesBreakLeaseHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -129,7 +112,6 @@ public final class SharesBreakLeaseHeaders {
      * 
      * @return the eTag value.
      */
-    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -140,7 +122,6 @@ public final class SharesBreakLeaseHeaders {
      * @param eTag the eTag value to set.
      * @return the SharesBreakLeaseHeaders object itself.
      */
-    @Generated
     public SharesBreakLeaseHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -151,7 +132,6 @@ public final class SharesBreakLeaseHeaders {
      * 
      * @return the xMsLeaseTime value.
      */
-    @Generated
     public Integer getXMsLeaseTime() {
         return this.xMsLeaseTime;
     }
@@ -162,7 +142,6 @@ public final class SharesBreakLeaseHeaders {
      * @param xMsLeaseTime the xMsLeaseTime value to set.
      * @return the SharesBreakLeaseHeaders object itself.
      */
-    @Generated
     public SharesBreakLeaseHeaders setXMsLeaseTime(Integer xMsLeaseTime) {
         this.xMsLeaseTime = xMsLeaseTime;
         return this;
@@ -173,7 +152,6 @@ public final class SharesBreakLeaseHeaders {
      * 
      * @return the xMsLeaseId value.
      */
-    @Generated
     public String getXMsLeaseId() {
         return this.xMsLeaseId;
     }
@@ -184,7 +162,6 @@ public final class SharesBreakLeaseHeaders {
      * @param xMsLeaseId the xMsLeaseId value to set.
      * @return the SharesBreakLeaseHeaders object itself.
      */
-    @Generated
     public SharesBreakLeaseHeaders setXMsLeaseId(String xMsLeaseId) {
         this.xMsLeaseId = xMsLeaseId;
         return this;
@@ -195,7 +172,6 @@ public final class SharesBreakLeaseHeaders {
      * 
      * @return the lastModified value.
      */
-    @Generated
     public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
@@ -209,7 +185,6 @@ public final class SharesBreakLeaseHeaders {
      * @param lastModified the lastModified value to set.
      * @return the SharesBreakLeaseHeaders object itself.
      */
-    @Generated
     public SharesBreakLeaseHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
@@ -224,7 +199,6 @@ public final class SharesBreakLeaseHeaders {
      * 
      * @return the xMsRequestId value.
      */
-    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -235,7 +209,6 @@ public final class SharesBreakLeaseHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the SharesBreakLeaseHeaders object itself.
      */
-    @Generated
     public SharesBreakLeaseHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -246,7 +219,6 @@ public final class SharesBreakLeaseHeaders {
      * 
      * @return the xMsClientRequestId value.
      */
-    @Generated
     public String getXMsClientRequestId() {
         return this.xMsClientRequestId;
     }
@@ -257,7 +229,6 @@ public final class SharesBreakLeaseHeaders {
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the SharesBreakLeaseHeaders object itself.
      */
-    @Generated
     public SharesBreakLeaseHeaders setXMsClientRequestId(String xMsClientRequestId) {
         this.xMsClientRequestId = xMsClientRequestId;
         return this;
@@ -268,7 +239,6 @@ public final class SharesBreakLeaseHeaders {
      * 
      * @return the date value.
      */
-    @Generated
     public OffsetDateTime getDate() {
         if (this.date == null) {
             return null;
@@ -282,7 +252,6 @@ public final class SharesBreakLeaseHeaders {
      * @param date the date value to set.
      * @return the SharesBreakLeaseHeaders object itself.
      */
-    @Generated
     public SharesBreakLeaseHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;

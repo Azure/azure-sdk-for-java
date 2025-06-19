@@ -84,7 +84,7 @@ public final class SharesImpl {
      * REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureFileStorageShares")
+    @ServiceInterface(name = "AzureFileStorageShar")
     public interface SharesService {
 
         @Put("/{shareName}")

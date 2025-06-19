@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,25 +19,21 @@ public final class AzureTableParameter implements JsonSerializable<AzureTablePar
     /*
      * The connection string of this Azure Table
      */
-    @Generated
     private String connectionString;
 
     /*
      * A table name in this Azure Table
      */
-    @Generated
     private String table;
 
     /*
      * The statement to query this table. Please find syntax and details from Azure Table documents.
      */
-    @Generated
     private String query;
 
     /**
      * Creates an instance of AzureTableParameter class.
      */
-    @Generated
     public AzureTableParameter() {
     }
 
@@ -47,7 +42,6 @@ public final class AzureTableParameter implements JsonSerializable<AzureTablePar
      * 
      * @return the connectionString value.
      */
-    @Generated
     public String getConnectionString() {
         return this.connectionString;
     }
@@ -58,7 +52,6 @@ public final class AzureTableParameter implements JsonSerializable<AzureTablePar
      * @param connectionString the connectionString value to set.
      * @return the AzureTableParameter object itself.
      */
-    @Generated
     public AzureTableParameter setConnectionString(String connectionString) {
         this.connectionString = connectionString;
         return this;
@@ -69,7 +62,6 @@ public final class AzureTableParameter implements JsonSerializable<AzureTablePar
      * 
      * @return the table value.
      */
-    @Generated
     public String getTable() {
         return this.table;
     }
@@ -80,7 +72,6 @@ public final class AzureTableParameter implements JsonSerializable<AzureTablePar
      * @param table the table value to set.
      * @return the AzureTableParameter object itself.
      */
-    @Generated
     public AzureTableParameter setTable(String table) {
         this.table = table;
         return this;
@@ -92,7 +83,6 @@ public final class AzureTableParameter implements JsonSerializable<AzureTablePar
      * 
      * @return the query value.
      */
-    @Generated
     public String getQuery() {
         return this.query;
     }
@@ -104,16 +94,11 @@ public final class AzureTableParameter implements JsonSerializable<AzureTablePar
      * @param query the query value to set.
      * @return the AzureTableParameter object itself.
      */
-    @Generated
     public AzureTableParameter setQuery(String query) {
         this.query = query;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -132,7 +117,6 @@ public final class AzureTableParameter implements JsonSerializable<AzureTablePar
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureTableParameter.
      */
-    @Generated
     public static AzureTableParameter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureTableParameter deserializedAzureTableParameter = new AzureTableParameter();

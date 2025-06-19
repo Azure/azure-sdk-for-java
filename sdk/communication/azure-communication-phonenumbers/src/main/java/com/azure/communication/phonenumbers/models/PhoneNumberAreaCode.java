@@ -4,7 +4,6 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,13 +19,11 @@ public final class PhoneNumberAreaCode implements JsonSerializable<PhoneNumberAr
     /*
      * An area code.
      */
-    @Generated
     private String areaCode;
 
     /**
      * Creates an instance of PhoneNumberAreaCode class.
      */
-    @Generated
     public PhoneNumberAreaCode() {
     }
 
@@ -35,7 +32,6 @@ public final class PhoneNumberAreaCode implements JsonSerializable<PhoneNumberAr
      * 
      * @return the areaCode value.
      */
-    @Generated
     public String getAreaCode() {
         return this.areaCode;
     }
@@ -43,7 +39,6 @@ public final class PhoneNumberAreaCode implements JsonSerializable<PhoneNumberAr
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -58,7 +53,6 @@ public final class PhoneNumberAreaCode implements JsonSerializable<PhoneNumberAr
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the PhoneNumberAreaCode.
      */
-    @Generated
     public static PhoneNumberAreaCode fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PhoneNumberAreaCode deserializedPhoneNumberAreaCode = new PhoneNumberAreaCode();

@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,25 +20,21 @@ public final class AcsChatThreadParticipantProperties implements JsonSerializabl
     /*
      * The name of the user
      */
-    @Generated
     private String displayName;
 
     /*
      * The communication identifier of the user
      */
-    @Generated
     private CommunicationIdentifierModel participantCommunicationIdentifier;
 
     /*
      * The metadata of the user
      */
-    @Generated
     private Map<String, String> metadata;
 
     /**
      * Creates an instance of AcsChatThreadParticipantProperties class.
      */
-    @Generated
     public AcsChatThreadParticipantProperties() {
     }
 
@@ -48,7 +43,6 @@ public final class AcsChatThreadParticipantProperties implements JsonSerializabl
      * 
      * @return the displayName value.
      */
-    @Generated
     public String getDisplayName() {
         return this.displayName;
     }
@@ -59,7 +53,6 @@ public final class AcsChatThreadParticipantProperties implements JsonSerializabl
      * @param displayName the displayName value to set.
      * @return the AcsChatThreadParticipantProperties object itself.
      */
-    @Generated
     public AcsChatThreadParticipantProperties setDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
@@ -70,7 +63,6 @@ public final class AcsChatThreadParticipantProperties implements JsonSerializabl
      * 
      * @return the participantCommunicationIdentifier value.
      */
-    @Generated
     public CommunicationIdentifierModel getParticipantCommunicationIdentifier() {
         return this.participantCommunicationIdentifier;
     }
@@ -81,7 +73,6 @@ public final class AcsChatThreadParticipantProperties implements JsonSerializabl
      * @param participantCommunicationIdentifier the participantCommunicationIdentifier value to set.
      * @return the AcsChatThreadParticipantProperties object itself.
      */
-    @Generated
     public AcsChatThreadParticipantProperties
         setParticipantCommunicationIdentifier(CommunicationIdentifierModel participantCommunicationIdentifier) {
         this.participantCommunicationIdentifier = participantCommunicationIdentifier;
@@ -93,7 +84,6 @@ public final class AcsChatThreadParticipantProperties implements JsonSerializabl
      * 
      * @return the metadata value.
      */
-    @Generated
     public Map<String, String> getMetadata() {
         return this.metadata;
     }
@@ -104,7 +94,6 @@ public final class AcsChatThreadParticipantProperties implements JsonSerializabl
      * @param metadata the metadata value to set.
      * @return the AcsChatThreadParticipantProperties object itself.
      */
-    @Generated
     public AcsChatThreadParticipantProperties setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
@@ -113,7 +102,6 @@ public final class AcsChatThreadParticipantProperties implements JsonSerializabl
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -132,7 +120,6 @@ public final class AcsChatThreadParticipantProperties implements JsonSerializabl
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsChatThreadParticipantProperties.
      */
-    @Generated
     public static AcsChatThreadParticipantProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsChatThreadParticipantProperties deserializedAcsChatThreadParticipantProperties

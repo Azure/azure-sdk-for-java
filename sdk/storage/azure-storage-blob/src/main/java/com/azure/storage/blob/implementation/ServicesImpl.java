@@ -86,7 +86,7 @@ public final class ServicesImpl {
      * REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureBlobStorageServices")
+    @ServiceInterface(name = "AzureBlobStorageServ")
     public interface ServicesService {
 
         @Put("/")
@@ -1578,8 +1578,9 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BlobContainerItem> listBlobContainersSegment(String prefix, String marker, Integer maxresults,
         List<ListBlobContainersIncludeType> listBlobContainersIncludeType, Integer timeout, String requestId) {
-        return new PagedIterable<>(() -> listBlobContainersSegmentSinglePage(prefix, marker, maxresults,
-            listBlobContainersIncludeType, timeout, requestId),
+        return new PagedIterable<>(
+            () -> listBlobContainersSegmentSinglePage(prefix, marker, maxresults, listBlobContainersIncludeType,
+                timeout, requestId, Context.NONE),
             nextLink -> listBlobContainersSegmentNextSinglePage(nextLink, requestId));
     }
 
@@ -1749,7 +1750,7 @@ public final class ServicesImpl {
         String requestId) {
         return new PagedIterable<>(
             () -> listBlobContainersSegmentNoCustomHeadersSinglePage(prefix, marker, maxresults,
-                listBlobContainersIncludeType, timeout, requestId),
+                listBlobContainersIncludeType, timeout, requestId, Context.NONE),
             nextLink -> listBlobContainersSegmentNextSinglePage(nextLink, requestId));
     }
 

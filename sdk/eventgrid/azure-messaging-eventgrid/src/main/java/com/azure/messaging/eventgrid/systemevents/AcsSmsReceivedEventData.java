@@ -4,7 +4,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -22,25 +21,21 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
     /*
      * The SMS content
      */
-    @Generated
     private String message;
 
     /*
      * The time at which the SMS was received
      */
-    @Generated
     private OffsetDateTime receivedTimestamp;
 
     /*
      * Number of segments in the message
      */
-    @Generated
     private Integer segmentCount;
 
     /**
      * Creates an instance of AcsSmsReceivedEventData class.
      */
-    @Generated
     public AcsSmsReceivedEventData() {
     }
 
@@ -49,7 +44,6 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
      *
      * @return the message value.
      */
-    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -60,7 +54,6 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
      * @param message the message value to set.
      * @return the AcsSmsReceivedEventData object itself.
      */
-    @Generated
     public AcsSmsReceivedEventData setMessage(String message) {
         this.message = message;
         return this;
@@ -71,7 +64,6 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
      *
      * @return the receivedTimestamp value.
      */
-    @Generated
     public OffsetDateTime getReceivedTimestamp() {
         return this.receivedTimestamp;
     }
@@ -82,7 +74,6 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
      * @param receivedTimestamp the receivedTimestamp value to set.
      * @return the AcsSmsReceivedEventData object itself.
      */
-    @Generated
     public AcsSmsReceivedEventData setReceivedTimestamp(OffsetDateTime receivedTimestamp) {
         this.receivedTimestamp = receivedTimestamp;
         return this;
@@ -93,7 +84,6 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
      *
      * @return the segmentCount value.
      */
-    @Generated
     public Integer getSegmentCount() {
         return this.segmentCount;
     }
@@ -104,7 +94,6 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
      * @param segmentCount the segmentCount value to set.
      * @return the AcsSmsReceivedEventData object itself.
      */
-    @Generated
     public AcsSmsReceivedEventData setSegmentCount(Integer segmentCount) {
         this.segmentCount = segmentCount;
         return this;
@@ -113,7 +102,6 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AcsSmsReceivedEventData setMessageId(String messageId) {
         super.setMessageId(messageId);
@@ -123,7 +111,6 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AcsSmsReceivedEventData setFrom(String from) {
         super.setFrom(from);
@@ -133,7 +120,6 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AcsSmsReceivedEventData setTo(String to) {
         super.setTo(to);
@@ -143,7 +129,6 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -168,7 +153,6 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsSmsReceivedEventData.
      */
-    @Generated
     public static AcsSmsReceivedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsSmsReceivedEventData deserializedAcsSmsReceivedEventData = new AcsSmsReceivedEventData();

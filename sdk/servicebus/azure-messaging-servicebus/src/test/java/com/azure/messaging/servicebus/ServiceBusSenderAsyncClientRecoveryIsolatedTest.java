@@ -712,7 +712,7 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
         }
 
         <T> StepVerifier.Step<T> create(Supplier<Mono<T>> scenarioSupplier) {
-            return StepVerifier.withVirtualTime(scenarioSupplier, () -> scheduler, Integer.MAX_VALUE);
+            return StepVerifier.withVirtualTime(scenarioSupplier, () -> scheduler, 0);
         }
 
         @Override

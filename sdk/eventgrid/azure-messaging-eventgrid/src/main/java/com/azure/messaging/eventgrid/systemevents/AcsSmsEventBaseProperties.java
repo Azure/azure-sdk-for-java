@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,25 +19,21 @@ public class AcsSmsEventBaseProperties implements JsonSerializable<AcsSmsEventBa
     /*
      * The identity of the SMS message
      */
-    @Generated
     private String messageId;
 
     /*
      * The identity of SMS message sender
      */
-    @Generated
     private String from;
 
     /*
      * The identity of SMS message receiver
      */
-    @Generated
     private String to;
 
     /**
      * Creates an instance of AcsSmsEventBaseProperties class.
      */
-    @Generated
     public AcsSmsEventBaseProperties() {
     }
 
@@ -47,7 +42,6 @@ public class AcsSmsEventBaseProperties implements JsonSerializable<AcsSmsEventBa
      * 
      * @return the messageId value.
      */
-    @Generated
     public String getMessageId() {
         return this.messageId;
     }
@@ -58,7 +52,6 @@ public class AcsSmsEventBaseProperties implements JsonSerializable<AcsSmsEventBa
      * @param messageId the messageId value to set.
      * @return the AcsSmsEventBaseProperties object itself.
      */
-    @Generated
     public AcsSmsEventBaseProperties setMessageId(String messageId) {
         this.messageId = messageId;
         return this;
@@ -69,7 +62,6 @@ public class AcsSmsEventBaseProperties implements JsonSerializable<AcsSmsEventBa
      * 
      * @return the from value.
      */
-    @Generated
     public String getFrom() {
         return this.from;
     }
@@ -80,7 +72,6 @@ public class AcsSmsEventBaseProperties implements JsonSerializable<AcsSmsEventBa
      * @param from the from value to set.
      * @return the AcsSmsEventBaseProperties object itself.
      */
-    @Generated
     public AcsSmsEventBaseProperties setFrom(String from) {
         this.from = from;
         return this;
@@ -91,7 +82,6 @@ public class AcsSmsEventBaseProperties implements JsonSerializable<AcsSmsEventBa
      * 
      * @return the to value.
      */
-    @Generated
     public String getTo() {
         return this.to;
     }
@@ -102,7 +92,6 @@ public class AcsSmsEventBaseProperties implements JsonSerializable<AcsSmsEventBa
      * @param to the to value to set.
      * @return the AcsSmsEventBaseProperties object itself.
      */
-    @Generated
     public AcsSmsEventBaseProperties setTo(String to) {
         this.to = to;
         return this;
@@ -111,7 +100,6 @@ public class AcsSmsEventBaseProperties implements JsonSerializable<AcsSmsEventBa
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -130,7 +118,6 @@ public class AcsSmsEventBaseProperties implements JsonSerializable<AcsSmsEventBa
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsSmsEventBaseProperties.
      */
-    @Generated
     public static AcsSmsEventBaseProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsSmsEventBaseProperties deserializedAcsSmsEventBaseProperties = new AcsSmsEventBaseProperties();

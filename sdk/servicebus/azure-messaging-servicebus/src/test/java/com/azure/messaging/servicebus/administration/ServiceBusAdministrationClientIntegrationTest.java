@@ -57,7 +57,6 @@ import static com.azure.messaging.servicebus.TestUtils.getTopicBaseName;
 import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClientIntegrationTest.configure;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -281,11 +280,11 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertEquals(ruleName, actual.getName());
         assertNotNull(actual.getAction());
 
-        assertInstanceOf(SqlRuleAction.class, actual.getAction());
+        assertTrue(actual.getAction() instanceof SqlRuleAction);
         assertEquals(action.getSqlExpression(), ((SqlRuleAction) actual.getAction()).getSqlExpression());
 
         assertNotNull(actual.getFilter());
-        assertInstanceOf(FalseRuleFilter.class, actual.getFilter());
+        assertTrue(actual.getFilter() instanceof FalseRuleFilter);
     }
 
     @Test
@@ -298,8 +297,8 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
 
         final RuleProperties rule = client.createRule(topicName, subscriptionName, ruleName);
         assertEquals(ruleName, rule.getName());
-        assertInstanceOf(TrueRuleFilter.class, rule.getFilter());
-        assertInstanceOf(EmptyRuleAction.class, rule.getAction());
+        assertTrue(rule.getFilter() instanceof TrueRuleFilter);
+        assertTrue(rule.getAction() instanceof EmptyRuleAction);
     }
 
     @Test
@@ -324,13 +323,13 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertEquals(ruleName, contents.getName());
 
         assertNotNull(contents.getFilter());
-        assertInstanceOf(SqlRuleFilter.class, contents.getFilter());
+        assertTrue(contents.getFilter() instanceof SqlRuleFilter);
 
         final SqlRuleFilter actualFilter = (SqlRuleFilter) contents.getFilter();
         assertEquals(filter.getSqlExpression(), actualFilter.getSqlExpression());
 
         assertNotNull(contents.getAction());
-        assertInstanceOf(EmptyRuleAction.class, contents.getAction());
+        assertTrue(contents.getAction() instanceof EmptyRuleAction);
     }
 
     @Test
@@ -339,8 +338,9 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         final CreateQueueOptions options = new CreateQueueOptions();
         final ServiceBusAdministrationClient client = getClient();
 
-        assertThrows(ResourceExistsException.class, () -> client.createQueue(queueName, options),
-            "Queue exists exception not thrown when creating a queue with existing name");
+        ResourceExistsException exception
+            = assertThrows(ResourceExistsException.class, () -> client.createQueue(queueName, options),
+                "Queue exists exception not thrown when creating a queue with existing name");
     }
 
     @Test
@@ -349,8 +349,9 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         final String subscriptionName = getSubscriptionBaseName();
         final ServiceBusAdministrationClient client = getClient();
 
-        assertThrows(ResourceExistsException.class, () -> client.createSubscription(topicName, subscriptionName),
-            "Queue exists exception not thrown when creating a queue with existing name");
+        ResourceExistsException exception
+            = assertThrows(ResourceExistsException.class, () -> client.createSubscription(topicName, subscriptionName),
+                "Queue exists exception not thrown when creating a queue with existing name");
     }
 
     @Test
@@ -398,10 +399,10 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertNotNull(rule);
         assertEquals(ruleName, rule.getName());
 
-        assertInstanceOf(SqlRuleFilter.class, rule.getFilter());
+        assertTrue(rule.getFilter() instanceof SqlRuleFilter);
         assertEquals(expectedFilter.getSqlExpression(), ((SqlRuleFilter) rule.getFilter()).getSqlExpression());
 
-        assertInstanceOf(SqlRuleAction.class, rule.getAction());
+        assertTrue(rule.getAction() instanceof SqlRuleAction);
         assertEquals(expectedAction.getSqlExpression(), ((SqlRuleAction) rule.getAction()).getSqlExpression());
     }
 
@@ -641,7 +642,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         final String topicName = getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = getEntityName(getSubscriptionBaseName(), 2);
 
-        assertThrows(ClientAuthenticationException.class,
+        ClientAuthenticationException exception = assertThrows(ClientAuthenticationException.class,
             () -> client.getSubscriptionRuntimeProperties(topicName, subscriptionName),
             "Subscription runtime properties accessible by unauthorized client! This should not be possible.");
     }
@@ -663,10 +664,10 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertNotNull(contents);
         assertEquals(ruleName, contents.getName());
         assertNotNull(contents.getFilter());
-        assertInstanceOf(SqlRuleFilter.class, contents.getFilter());
+        assertTrue(contents.getFilter() instanceof SqlRuleFilter);
 
         assertNotNull(contents.getAction());
-        assertInstanceOf(EmptyRuleAction.class, contents.getAction());
+        assertTrue(contents.getAction() instanceof EmptyRuleAction);
     }
 
     @Test
@@ -785,7 +786,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         queueProperties.forEach(queueDescription -> {
             assertNotNull(queueDescription.getName());
             assertTrue(queueDescription.getMaxDeliveryCount() > 0);
-            assertSame(EntityStatus.ACTIVE, queueDescription.getStatus());
+            assertSame(queueDescription.getStatus(), EntityStatus.ACTIVE);
         });
         assertTrue(queueProperties.stream().findAny().isPresent());
     }
@@ -834,9 +835,9 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
 
         assertEquals(ruleName, rule.getName());
         assertNotNull(rule.getFilter());
-        assertInstanceOf(SqlRuleFilter.class, rule.getFilter());
+        assertTrue(rule.getFilter() instanceof SqlRuleFilter);
         assertNotNull(rule.getAction());
-        assertInstanceOf(EmptyRuleAction.class, rule.getAction());
+        assertTrue(rule.getAction() instanceof EmptyRuleAction);
     }
 
     //endregion

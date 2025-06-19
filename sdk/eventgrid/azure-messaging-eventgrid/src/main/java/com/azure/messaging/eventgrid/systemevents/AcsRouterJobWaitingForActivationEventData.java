@@ -4,7 +4,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -24,37 +23,31 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
     /*
      * Router Job Waiting For Activation Priority
      */
-    @Generated
     private Integer priority;
 
     /*
      * Router Job Waiting For Activation Worker Selector Expired
      */
-    @Generated
     private List<AcsRouterWorkerSelector> expiredAttachedWorkerSelectors;
 
     /*
      * Router Job Waiting For Activation Requested Worker Selector Expired
      */
-    @Generated
     private List<AcsRouterWorkerSelector> expiredRequestedWorkerSelectors;
 
     /*
      * Router Job Waiting For Activation Scheduled Time in UTC
      */
-    @Generated
     private OffsetDateTime scheduledOn;
 
     /*
      * Router Job Waiting For Activation Unavailable For Matching
      */
-    @Generated
     private boolean unavailableForMatching;
 
     /**
      * Creates an instance of AcsRouterJobWaitingForActivationEventData class.
      */
-    @Generated
     public AcsRouterJobWaitingForActivationEventData() {
     }
 
@@ -63,7 +56,6 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
      *
      * @return the priority value.
      */
-    @Generated
     public Integer getPriority() {
         return this.priority;
     }
@@ -74,7 +66,6 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
      * @param priority the priority value to set.
      * @return the AcsRouterJobWaitingForActivationEventData object itself.
      */
-    @Generated
     public AcsRouterJobWaitingForActivationEventData setPriority(Integer priority) {
         this.priority = priority;
         return this;
@@ -85,7 +76,6 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
      *
      * @return the expiredAttachedWorkerSelectors value.
      */
-    @Generated
     public List<AcsRouterWorkerSelector> getExpiredAttachedWorkerSelectors() {
         return this.expiredAttachedWorkerSelectors;
     }
@@ -96,7 +86,6 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
      * @param expiredAttachedWorkerSelectors the expiredAttachedWorkerSelectors value to set.
      * @return the AcsRouterJobWaitingForActivationEventData object itself.
      */
-    @Generated
     public AcsRouterJobWaitingForActivationEventData
         setExpiredAttachedWorkerSelectors(List<AcsRouterWorkerSelector> expiredAttachedWorkerSelectors) {
         this.expiredAttachedWorkerSelectors = expiredAttachedWorkerSelectors;
@@ -109,7 +98,6 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
      *
      * @return the expiredRequestedWorkerSelectors value.
      */
-    @Generated
     public List<AcsRouterWorkerSelector> getExpiredRequestedWorkerSelectors() {
         return this.expiredRequestedWorkerSelectors;
     }
@@ -121,7 +109,6 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
      * @param expiredRequestedWorkerSelectors the expiredRequestedWorkerSelectors value to set.
      * @return the AcsRouterJobWaitingForActivationEventData object itself.
      */
-    @Generated
     public AcsRouterJobWaitingForActivationEventData
         setExpiredRequestedWorkerSelectors(List<AcsRouterWorkerSelector> expiredRequestedWorkerSelectors) {
         this.expiredRequestedWorkerSelectors = expiredRequestedWorkerSelectors;
@@ -133,7 +120,6 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
      *
      * @return the scheduledOn value.
      */
-    @Generated
     public OffsetDateTime getScheduledOn() {
         return this.scheduledOn;
     }
@@ -144,7 +130,6 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
      * @param scheduledOn the scheduledOn value to set.
      * @return the AcsRouterJobWaitingForActivationEventData object itself.
      */
-    @Generated
     public AcsRouterJobWaitingForActivationEventData setScheduledOn(OffsetDateTime scheduledOn) {
         this.scheduledOn = scheduledOn;
         return this;
@@ -155,7 +140,6 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
      *
      * @return the unavailableForMatching value.
      */
-    @Generated
     public Boolean isUnavailableForMatching() {
         return this.unavailableForMatching;
     }
@@ -166,7 +150,6 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
      * @param unavailableForMatching the unavailableForMatching value to set.
      * @return the AcsRouterJobWaitingForActivationEventData object itself.
      */
-    @Generated
     public AcsRouterJobWaitingForActivationEventData setUnavailableForMatching(Boolean unavailableForMatching) {
         this.unavailableForMatching = unavailableForMatching;
         return this;
@@ -175,7 +158,6 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AcsRouterJobWaitingForActivationEventData setQueueId(String queueId) {
         super.setQueueId(queueId);
@@ -185,7 +167,6 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AcsRouterJobWaitingForActivationEventData setLabels(Map<String, String> labels) {
         super.setLabels(labels);
@@ -195,7 +176,6 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AcsRouterJobWaitingForActivationEventData setTags(Map<String, String> tags) {
         super.setTags(tags);
@@ -205,7 +185,6 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AcsRouterJobWaitingForActivationEventData setJobId(String jobId) {
         super.setJobId(jobId);
@@ -215,7 +194,6 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AcsRouterJobWaitingForActivationEventData setChannelReference(String channelReference) {
         super.setChannelReference(channelReference);
@@ -225,7 +203,6 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AcsRouterJobWaitingForActivationEventData setChannelId(String channelId) {
         super.setChannelId(channelId);
@@ -235,7 +212,6 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -265,7 +241,6 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsRouterJobWaitingForActivationEventData.
      */
-    @Generated
     public static AcsRouterJobWaitingForActivationEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsRouterJobWaitingForActivationEventData deserializedAcsRouterJobWaitingForActivationEventData

@@ -1,19 +1,14 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.0.29 (2025-06-19)
 
 ### Other Changes
 
-## 1.1.0-beta.1 (2025-04-24)
+#### Dependency Updates
 
-### Features Added
-- User Defined Funtions (UDFs) support in Ledger API.
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
+
 
 ## 1.0.28 (2025-03-24)
 

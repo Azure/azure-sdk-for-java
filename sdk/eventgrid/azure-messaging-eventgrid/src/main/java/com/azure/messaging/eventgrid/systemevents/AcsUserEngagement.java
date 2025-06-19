@@ -4,7 +4,6 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,13 +14,11 @@ public final class AcsUserEngagement extends ExpandableStringEnum<AcsUserEngagem
     /**
      * Static value view for AcsUserEngagement.
      */
-    @Generated
     public static final AcsUserEngagement VIEW = fromString("view");
 
     /**
      * Static value click for AcsUserEngagement.
      */
-    @Generated
     public static final AcsUserEngagement CLICK = fromString("click");
 
     /**
@@ -29,7 +26,6 @@ public final class AcsUserEngagement extends ExpandableStringEnum<AcsUserEngagem
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public AcsUserEngagement() {
     }
@@ -40,7 +36,6 @@ public final class AcsUserEngagement extends ExpandableStringEnum<AcsUserEngagem
      * @param name a name to look for.
      * @return the corresponding AcsUserEngagement.
      */
-    @Generated
     public static AcsUserEngagement fromString(String name) {
         return fromString(name, AcsUserEngagement.class);
     }
@@ -50,7 +45,6 @@ public final class AcsUserEngagement extends ExpandableStringEnum<AcsUserEngagem
      * 
      * @return known AcsUserEngagement values.
      */
-    @Generated
     public static Collection<AcsUserEngagement> values() {
         return values(AcsUserEngagement.class);
     }

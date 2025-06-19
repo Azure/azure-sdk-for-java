@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,49 +19,41 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
     /*
      * The call participant who initiated the call.
      */
-    @Generated
     private AcsCallParticipantProperties startedBy;
 
     /*
      * The callId of the server
      */
-    @Generated
     private String serverCallId;
 
     /*
      * The group metadata
      */
-    @Generated
     private AcsCallGroupProperties group;
 
     /*
      * The group metadata
      */
-    @Generated
     private AcsCallRoomProperties room;
 
     /*
      * Is two-party in calling event.
      */
-    @Generated
     private Boolean isTwoParty;
 
     /*
      * The correlation ID of the calling event
      */
-    @Generated
     private String correlationId;
 
     /*
      * Is the calling event a room call.
      */
-    @Generated
     private Boolean isRoomsCall;
 
     /**
      * Creates an instance of AcsCallingEventProperties class.
      */
-    @Generated
     public AcsCallingEventProperties() {
     }
 
@@ -71,7 +62,6 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
      * 
      * @return the startedBy value.
      */
-    @Generated
     public AcsCallParticipantProperties getStartedBy() {
         return this.startedBy;
     }
@@ -82,7 +72,6 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
      * @param startedBy the startedBy value to set.
      * @return the AcsCallingEventProperties object itself.
      */
-    @Generated
     public AcsCallingEventProperties setStartedBy(AcsCallParticipantProperties startedBy) {
         this.startedBy = startedBy;
         return this;
@@ -93,7 +82,6 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
      * 
      * @return the serverCallId value.
      */
-    @Generated
     public String getServerCallId() {
         return this.serverCallId;
     }
@@ -104,7 +92,6 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
      * @param serverCallId the serverCallId value to set.
      * @return the AcsCallingEventProperties object itself.
      */
-    @Generated
     public AcsCallingEventProperties setServerCallId(String serverCallId) {
         this.serverCallId = serverCallId;
         return this;
@@ -115,7 +102,6 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
      * 
      * @return the group value.
      */
-    @Generated
     public AcsCallGroupProperties getGroup() {
         return this.group;
     }
@@ -126,7 +112,6 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
      * @param group the group value to set.
      * @return the AcsCallingEventProperties object itself.
      */
-    @Generated
     public AcsCallingEventProperties setGroup(AcsCallGroupProperties group) {
         this.group = group;
         return this;
@@ -137,7 +122,6 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
      * 
      * @return the room value.
      */
-    @Generated
     public AcsCallRoomProperties getRoom() {
         return this.room;
     }
@@ -148,7 +132,6 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
      * @param room the room value to set.
      * @return the AcsCallingEventProperties object itself.
      */
-    @Generated
     public AcsCallingEventProperties setRoom(AcsCallRoomProperties room) {
         this.room = room;
         return this;
@@ -159,7 +142,6 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
      * 
      * @return the isTwoParty value.
      */
-    @Generated
     public Boolean isTwoParty() {
         return this.isTwoParty;
     }
@@ -170,7 +152,6 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
      * @param isTwoParty the isTwoParty value to set.
      * @return the AcsCallingEventProperties object itself.
      */
-    @Generated
     public AcsCallingEventProperties setIsTwoParty(Boolean isTwoParty) {
         this.isTwoParty = isTwoParty;
         return this;
@@ -181,7 +162,6 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
      * 
      * @return the correlationId value.
      */
-    @Generated
     public String getCorrelationId() {
         return this.correlationId;
     }
@@ -192,7 +172,6 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
      * @param correlationId the correlationId value to set.
      * @return the AcsCallingEventProperties object itself.
      */
-    @Generated
     public AcsCallingEventProperties setCorrelationId(String correlationId) {
         this.correlationId = correlationId;
         return this;
@@ -203,7 +182,6 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
      * 
      * @return the isRoomsCall value.
      */
-    @Generated
     public Boolean isRoomsCall() {
         return this.isRoomsCall;
     }
@@ -214,7 +192,6 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
      * @param isRoomsCall the isRoomsCall value to set.
      * @return the AcsCallingEventProperties object itself.
      */
-    @Generated
     public AcsCallingEventProperties setIsRoomsCall(Boolean isRoomsCall) {
         this.isRoomsCall = isRoomsCall;
         return this;
@@ -223,7 +200,6 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -246,7 +222,6 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsCallingEventProperties.
      */
-    @Generated
     public static AcsCallingEventProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsCallingEventProperties deserializedAcsCallingEventProperties = new AcsCallingEventProperties();

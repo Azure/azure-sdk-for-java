@@ -1,19 +1,15 @@
 # Release History
 
-## 12.26.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 12.25.1 (2025-06-19)
 
 ### Other Changes
 
-## 12.26.0-beta.1 (2025-05-06)
+#### Dependency Updates
 
-### Features Added
-- Added support for service version 2025-07-05.
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
+- Upgraded `azure-storage-common` from `12.29.0` to version `12.29.1`.
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+
 
 ## 12.25.0 (2025-03-11)
 

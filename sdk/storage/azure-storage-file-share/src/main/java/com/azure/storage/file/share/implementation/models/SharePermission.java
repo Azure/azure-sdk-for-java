@@ -5,7 +5,6 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,19 +20,16 @@ public final class SharePermission implements JsonSerializable<SharePermission> 
     /*
      * The permission in the Security Descriptor Definition Language (SDDL).
      */
-    @Generated
     private String permission;
 
     /*
      * The format property.
      */
-    @Generated
     private FilePermissionFormat format;
 
     /**
      * Creates an instance of SharePermission class.
      */
-    @Generated
     public SharePermission() {
     }
 
@@ -42,7 +38,6 @@ public final class SharePermission implements JsonSerializable<SharePermission> 
      * 
      * @return the permission value.
      */
-    @Generated
     public String getPermission() {
         return this.permission;
     }
@@ -53,7 +48,6 @@ public final class SharePermission implements JsonSerializable<SharePermission> 
      * @param permission the permission value to set.
      * @return the SharePermission object itself.
      */
-    @Generated
     public SharePermission setPermission(String permission) {
         this.permission = permission;
         return this;
@@ -64,7 +58,6 @@ public final class SharePermission implements JsonSerializable<SharePermission> 
      * 
      * @return the format value.
      */
-    @Generated
     public FilePermissionFormat getFormat() {
         return this.format;
     }
@@ -75,7 +68,6 @@ public final class SharePermission implements JsonSerializable<SharePermission> 
      * @param format the format value to set.
      * @return the SharePermission object itself.
      */
-    @Generated
     public SharePermission setFormat(FilePermissionFormat format) {
         this.format = format;
         return this;
@@ -84,7 +76,6 @@ public final class SharePermission implements JsonSerializable<SharePermission> 
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -102,7 +93,6 @@ public final class SharePermission implements JsonSerializable<SharePermission> 
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SharePermission.
      */
-    @Generated
     public static SharePermission fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SharePermission deserializedSharePermission = new SharePermission();

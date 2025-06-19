@@ -414,23 +414,15 @@ final class PartitionBasedLoadBalancer {
     private Map<String, PartitionOwnership>
         removeInactivePartitionOwnerships(final Map<String, PartitionOwnership> partitionOwnershipMap) {
         return partitionOwnershipMap.entrySet().stream().filter(entry -> {
-
-            final long nowInMillis = System.currentTimeMillis();
-            final long lastModifiedTimeInMillis = entry.getValue().getLastModifiedTime();
-            long modifiedMillisAgo = (nowInMillis - lastModifiedTimeInMillis);
-            final boolean isActive = (modifiedMillisAgo < inactiveTimeLimitInMillis);
-            final LogLevel logLevel = isActive ? LogLevel.VERBOSE : LogLevel.INFORMATIONAL;
-
-            LOGGER.atLevel(logLevel)
+            long diff = (System.currentTimeMillis() - entry.getValue().getLastModifiedTime()) / 1000;
+            LOGGER.atLevel((diff < inactiveTimeLimitInMillis) ? LogLevel.VERBOSE : LogLevel.INFORMATIONAL)
                 .addKeyValue(PARTITION_ID_KEY, entry.getKey())
                 .addKeyValue(OWNER_ID_KEY, ownerId)
                 .addKeyValue("partitionOwnerId", entry.getValue().getOwnerId())
-                .addKeyValue("lastModifiedTime", lastModifiedTimeInMillis)
-                .addKeyValue("modifiedSecondsAgo", modifiedMillisAgo / 1000d)
-                .addKeyValue("isActive", isActive)
+                .addKeyValue("modifiedSecondsAgo", diff)
                 .log("Detecting inactive ownerships.");
-
-            return (isActive && !CoreUtils.isNullOrEmpty(entry.getValue().getOwnerId()));
+            return (System.currentTimeMillis() - entry.getValue().getLastModifiedTime() < inactiveTimeLimitInMillis)
+                && !CoreUtils.isNullOrEmpty(entry.getValue().getOwnerId());
         }).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 
@@ -464,11 +456,6 @@ final class PartitionBasedLoadBalancer {
                 .addKeyValue(PARTITION_ID_KEY, ownershipRequest.getPartitionId())
                 .log(Messages.FAILED_TO_CLAIM_OWNERSHIP, ex))
             .collectList()
-            .doOnNext(l -> {
-                if (l.isEmpty()) {
-                    LOGGER.atInfo().addKeyValue(OWNER_ID_KEY, ownerId).log("No ownerships were claimed.");
-                }
-            })
             .zipWhen(ownershipList -> checkpointStore
                 .listCheckpoints(fullyQualifiedNamespace, eventHubName, consumerGroupName)
                 .collectMap(checkpoint -> checkpoint.getPartitionId(), Function.identity()))

@@ -5,7 +5,6 @@
 package com.azure.communication.phonenumbers.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -17,30 +16,28 @@ public final class PhoneNumbersSearchAvailablePhoneNumbersHeaders {
     /*
      * The operation-id property.
      */
-    @Generated
     private String operationId;
 
     /*
      * The search-id property.
      */
-    @Generated
     private String searchId;
 
     /*
      * The Operation-Location property.
      */
-    @Generated
     private String operationLocation;
 
     /*
      * The Location property.
      */
-    @Generated
     private String location;
 
     private static final HttpHeaderName OPERATION_ID = HttpHeaderName.fromString("operation-id");
 
     private static final HttpHeaderName SEARCH_ID = HttpHeaderName.fromString("search-id");
+
+    private static final HttpHeaderName OPERATION_LOCATION = HttpHeaderName.fromString("Operation-Location");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -51,7 +48,7 @@ public final class PhoneNumbersSearchAvailablePhoneNumbersHeaders {
     public PhoneNumbersSearchAvailablePhoneNumbersHeaders(HttpHeaders rawHeaders) {
         this.operationId = rawHeaders.getValue(OPERATION_ID);
         this.searchId = rawHeaders.getValue(SEARCH_ID);
-        this.operationLocation = rawHeaders.getValue(HttpHeaderName.OPERATION_LOCATION);
+        this.operationLocation = rawHeaders.getValue(OPERATION_LOCATION);
         this.location = rawHeaders.getValue(HttpHeaderName.LOCATION);
     }
 
@@ -60,7 +57,6 @@ public final class PhoneNumbersSearchAvailablePhoneNumbersHeaders {
      * 
      * @return the operationId value.
      */
-    @Generated
     public String getOperationId() {
         return this.operationId;
     }
@@ -71,7 +67,6 @@ public final class PhoneNumbersSearchAvailablePhoneNumbersHeaders {
      * @param operationId the operationId value to set.
      * @return the PhoneNumbersSearchAvailablePhoneNumbersHeaders object itself.
      */
-    @Generated
     public PhoneNumbersSearchAvailablePhoneNumbersHeaders setOperationId(String operationId) {
         this.operationId = operationId;
         return this;
@@ -82,7 +77,6 @@ public final class PhoneNumbersSearchAvailablePhoneNumbersHeaders {
      * 
      * @return the searchId value.
      */
-    @Generated
     public String getSearchId() {
         return this.searchId;
     }
@@ -93,7 +87,6 @@ public final class PhoneNumbersSearchAvailablePhoneNumbersHeaders {
      * @param searchId the searchId value to set.
      * @return the PhoneNumbersSearchAvailablePhoneNumbersHeaders object itself.
      */
-    @Generated
     public PhoneNumbersSearchAvailablePhoneNumbersHeaders setSearchId(String searchId) {
         this.searchId = searchId;
         return this;
@@ -104,7 +97,6 @@ public final class PhoneNumbersSearchAvailablePhoneNumbersHeaders {
      * 
      * @return the operationLocation value.
      */
-    @Generated
     public String getOperationLocation() {
         return this.operationLocation;
     }
@@ -115,7 +107,6 @@ public final class PhoneNumbersSearchAvailablePhoneNumbersHeaders {
      * @param operationLocation the operationLocation value to set.
      * @return the PhoneNumbersSearchAvailablePhoneNumbersHeaders object itself.
      */
-    @Generated
     public PhoneNumbersSearchAvailablePhoneNumbersHeaders setOperationLocation(String operationLocation) {
         this.operationLocation = operationLocation;
         return this;
@@ -126,7 +117,6 @@ public final class PhoneNumbersSearchAvailablePhoneNumbersHeaders {
      * 
      * @return the location value.
      */
-    @Generated
     public String getLocation() {
         return this.location;
     }
@@ -137,7 +127,6 @@ public final class PhoneNumbersSearchAvailablePhoneNumbersHeaders {
      * @param location the location value to set.
      * @return the PhoneNumbersSearchAvailablePhoneNumbersHeaders object itself.
      */
-    @Generated
     public PhoneNumbersSearchAvailablePhoneNumbersHeaders setLocation(String location) {
         this.location = location;
         return this;

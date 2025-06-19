@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -25,74 +24,62 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
     /*
      * An identifier for the event. The combination of id and source must be unique for each distinct event.
      */
-    @Generated
     private String id;
 
     /*
      * Identifies the context in which an event happened. The combination of id and source must be unique for each
      * distinct event.
      */
-    @Generated
     private String source;
 
     /*
      * Event data specific to the event type.
      */
-    @Generated
     private Object data;
 
     /*
      * Event data specific to the event type, encoded as a base64 string.
      */
-    @Generated
     private byte[] dataBase64;
 
     /*
      * Type of event related to the originating occurrence.
      */
-    @Generated
     private String type;
 
     /*
      * The time (in UTC) the event was generated, in RFC3339 format.
      */
-    @Generated
     private OffsetDateTime time;
 
     /*
      * The version of the CloudEvents specification which the event uses.
      */
-    @Generated
     private String specversion;
 
     /*
      * Identifies the schema that data adheres to.
      */
-    @Generated
     private String dataschema;
 
     /*
      * Content type of data value.
      */
-    @Generated
     private String datacontenttype;
 
     /*
      * This describes the subject of the event in the context of the event producer (identified by source).
      */
-    @Generated
     private String subject;
 
     /*
      * Properties of an event published to an Event Grid topic using the CloudEvent 1.0 Schema
      */
-    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of CloudEvent class.
      */
-    @Generated
     public CloudEvent() {
     }
 
@@ -102,7 +89,6 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      * 
      * @return the id value.
      */
-    @Generated
     public String getId() {
         return this.id;
     }
@@ -114,7 +100,6 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      * @param id the id value to set.
      * @return the CloudEvent object itself.
      */
-    @Generated
     public CloudEvent setId(String id) {
         this.id = id;
         return this;
@@ -126,7 +111,6 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      * 
      * @return the source value.
      */
-    @Generated
     public String getSource() {
         return this.source;
     }
@@ -138,7 +122,6 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      * @param source the source value to set.
      * @return the CloudEvent object itself.
      */
-    @Generated
     public CloudEvent setSource(String source) {
         this.source = source;
         return this;
@@ -149,7 +132,6 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      * 
      * @return the data value.
      */
-    @Generated
     public Object getData() {
         return this.data;
     }
@@ -160,7 +142,6 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      * @param data the data value to set.
      * @return the CloudEvent object itself.
      */
-    @Generated
     public CloudEvent setData(Object data) {
         this.data = data;
         return this;
@@ -171,7 +152,6 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      * 
      * @return the dataBase64 value.
      */
-    @Generated
     public byte[] getDataBase64() {
         return CoreUtils.clone(this.dataBase64);
     }
@@ -182,7 +162,6 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      * @param dataBase64 the dataBase64 value to set.
      * @return the CloudEvent object itself.
      */
-    @Generated
     public CloudEvent setDataBase64(byte[] dataBase64) {
         this.dataBase64 = CoreUtils.clone(dataBase64);
         return this;
@@ -193,7 +172,6 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      * 
      * @return the type value.
      */
-    @Generated
     public String getType() {
         return this.type;
     }
@@ -204,7 +182,6 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      * @param type the type value to set.
      * @return the CloudEvent object itself.
      */
-    @Generated
     public CloudEvent setType(String type) {
         this.type = type;
         return this;
@@ -215,7 +192,6 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      * 
      * @return the time value.
      */
-    @Generated
     public OffsetDateTime getTime() {
         return this.time;
     }
@@ -226,7 +202,6 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      * @param time the time value to set.
      * @return the CloudEvent object itself.
      */
-    @Generated
     public CloudEvent setTime(OffsetDateTime time) {
         this.time = time;
         return this;
@@ -237,7 +212,6 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      * 
      * @return the specversion value.
      */
-    @Generated
     public String getSpecversion() {
         return this.specversion;
     }
@@ -248,7 +222,6 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      * @param specversion the specversion value to set.
      * @return the CloudEvent object itself.
      */
-    @Generated
     public CloudEvent setSpecversion(String specversion) {
         this.specversion = specversion;
         return this;
@@ -259,7 +232,6 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      * 
      * @return the dataschema value.
      */
-    @Generated
     public String getDataschema() {
         return this.dataschema;
     }
@@ -270,7 +242,6 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      * @param dataschema the dataschema value to set.
      * @return the CloudEvent object itself.
      */
-    @Generated
     public CloudEvent setDataschema(String dataschema) {
         this.dataschema = dataschema;
         return this;
@@ -281,7 +252,6 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      * 
      * @return the datacontenttype value.
      */
-    @Generated
     public String getDatacontenttype() {
         return this.datacontenttype;
     }
@@ -292,7 +262,6 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      * @param datacontenttype the datacontenttype value to set.
      * @return the CloudEvent object itself.
      */
-    @Generated
     public CloudEvent setDatacontenttype(String datacontenttype) {
         this.datacontenttype = datacontenttype;
         return this;
@@ -304,7 +273,6 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      * 
      * @return the subject value.
      */
-    @Generated
     public String getSubject() {
         return this.subject;
     }
@@ -316,7 +284,6 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      * @param subject the subject value to set.
      * @return the CloudEvent object itself.
      */
-    @Generated
     public CloudEvent setSubject(String subject) {
         this.subject = subject;
         return this;
@@ -328,7 +295,6 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      * 
      * @return the additionalProperties value.
      */
-    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -340,7 +306,6 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      * @param additionalProperties the additionalProperties value to set.
      * @return the CloudEvent object itself.
      */
-    @Generated
     public CloudEvent setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -349,7 +314,6 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -357,9 +321,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
         jsonWriter.writeStringField("source", this.source);
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("specversion", this.specversion);
-        if (this.data != null) {
-            jsonWriter.writeUntypedField("data", this.data);
-        }
+        jsonWriter.writeUntypedField("data", this.data);
         jsonWriter.writeBinaryField("data_base64", this.dataBase64);
         jsonWriter.writeStringField("time",
             this.time == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.time));
@@ -383,7 +345,6 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CloudEvent.
      */
-    @Generated
     public static CloudEvent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CloudEvent deserializedCloudEvent = new CloudEvent();

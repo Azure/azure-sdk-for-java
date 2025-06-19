@@ -5,7 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -23,25 +23,21 @@ public final class BlockLookupList implements XmlSerializable<BlockLookupList> {
     /*
      * The Committed property.
      */
-    @Generated
     private List<String> committed = new ArrayList<>();
 
     /*
      * The Uncommitted property.
      */
-    @Generated
     private List<String> uncommitted = new ArrayList<>();
 
     /*
      * The Latest property.
      */
-    @Generated
     private List<String> latest = new ArrayList<>();
 
     /**
      * Creates an instance of BlockLookupList class.
      */
-    @Generated
     public BlockLookupList() {
     }
 
@@ -50,7 +46,6 @@ public final class BlockLookupList implements XmlSerializable<BlockLookupList> {
      * 
      * @return the committed value.
      */
-    @Generated
     public List<String> getCommitted() {
         return this.committed;
     }
@@ -61,7 +56,6 @@ public final class BlockLookupList implements XmlSerializable<BlockLookupList> {
      * @param committed the committed value to set.
      * @return the BlockLookupList object itself.
      */
-    @Generated
     public BlockLookupList setCommitted(List<String> committed) {
         this.committed = committed;
         return this;
@@ -72,7 +66,6 @@ public final class BlockLookupList implements XmlSerializable<BlockLookupList> {
      * 
      * @return the uncommitted value.
      */
-    @Generated
     public List<String> getUncommitted() {
         return this.uncommitted;
     }
@@ -83,7 +76,6 @@ public final class BlockLookupList implements XmlSerializable<BlockLookupList> {
      * @param uncommitted the uncommitted value to set.
      * @return the BlockLookupList object itself.
      */
-    @Generated
     public BlockLookupList setUncommitted(List<String> uncommitted) {
         this.uncommitted = uncommitted;
         return this;
@@ -94,7 +86,6 @@ public final class BlockLookupList implements XmlSerializable<BlockLookupList> {
      * 
      * @return the latest value.
      */
-    @Generated
     public List<String> getLatest() {
         return this.latest;
     }
@@ -105,22 +96,19 @@ public final class BlockLookupList implements XmlSerializable<BlockLookupList> {
      * @param latest the latest value to set.
      * @return the BlockLookupList object itself.
      */
-    @Generated
     public BlockLookupList setLatest(List<String> latest) {
         this.latest = latest;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "BlockList" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "BlockList" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         if (this.committed != null) {
             for (String element : this.committed) {
@@ -148,7 +136,6 @@ public final class BlockLookupList implements XmlSerializable<BlockLookupList> {
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the BlockLookupList.
      */
-    @Generated
     public static BlockLookupList fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -163,10 +150,8 @@ public final class BlockLookupList implements XmlSerializable<BlockLookupList> {
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the BlockLookupList.
      */
-    @Generated
     public static BlockLookupList fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "BlockList" : rootElementName;
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "BlockList" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             BlockLookupList deserializedBlockLookupList = new BlockLookupList();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

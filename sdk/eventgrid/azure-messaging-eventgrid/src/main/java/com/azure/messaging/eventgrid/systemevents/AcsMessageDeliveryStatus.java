@@ -4,7 +4,6 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,37 +14,31 @@ public final class AcsMessageDeliveryStatus extends ExpandableStringEnum<AcsMess
     /**
      * Static value read for AcsMessageDeliveryStatus.
      */
-    @Generated
     public static final AcsMessageDeliveryStatus READ = fromString("read");
 
     /**
      * Static value delivered for AcsMessageDeliveryStatus.
      */
-    @Generated
     public static final AcsMessageDeliveryStatus DELIVERED = fromString("delivered");
 
     /**
      * Static value failed for AcsMessageDeliveryStatus.
      */
-    @Generated
     public static final AcsMessageDeliveryStatus FAILED = fromString("failed");
 
     /**
      * Static value sent for AcsMessageDeliveryStatus.
      */
-    @Generated
     public static final AcsMessageDeliveryStatus SENT = fromString("sent");
 
     /**
      * Static value warning for AcsMessageDeliveryStatus.
      */
-    @Generated
     public static final AcsMessageDeliveryStatus WARNING = fromString("warning");
 
     /**
      * Static value unknown for AcsMessageDeliveryStatus.
      */
-    @Generated
     public static final AcsMessageDeliveryStatus UNKNOWN = fromString("unknown");
 
     /**
@@ -53,7 +46,6 @@ public final class AcsMessageDeliveryStatus extends ExpandableStringEnum<AcsMess
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public AcsMessageDeliveryStatus() {
     }
@@ -64,7 +56,6 @@ public final class AcsMessageDeliveryStatus extends ExpandableStringEnum<AcsMess
      * @param name a name to look for.
      * @return the corresponding AcsMessageDeliveryStatus.
      */
-    @Generated
     public static AcsMessageDeliveryStatus fromString(String name) {
         return fromString(name, AcsMessageDeliveryStatus.class);
     }
@@ -74,7 +65,6 @@ public final class AcsMessageDeliveryStatus extends ExpandableStringEnum<AcsMess
      * 
      * @return known AcsMessageDeliveryStatus values.
      */
-    @Generated
     public static Collection<AcsMessageDeliveryStatus> values() {
         return values(AcsMessageDeliveryStatus.class);
     }

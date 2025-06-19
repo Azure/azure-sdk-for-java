@@ -4,7 +4,6 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,19 +14,16 @@ public final class AcsInteractiveReplyKind extends ExpandableStringEnum<AcsInter
     /**
      * Messaged interactive reply type is ButtonReply.
      */
-    @Generated
     public static final AcsInteractiveReplyKind BUTTON_REPLY = fromString("buttonReply");
 
     /**
      * Messaged interactive reply type is ListReply.
      */
-    @Generated
     public static final AcsInteractiveReplyKind LIST_REPLY = fromString("listReply");
 
     /**
      * Messaged interactive reply type is Unknown.
      */
-    @Generated
     public static final AcsInteractiveReplyKind UNKNOWN = fromString("unknown");
 
     /**
@@ -35,7 +31,6 @@ public final class AcsInteractiveReplyKind extends ExpandableStringEnum<AcsInter
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public AcsInteractiveReplyKind() {
     }
@@ -46,7 +41,6 @@ public final class AcsInteractiveReplyKind extends ExpandableStringEnum<AcsInter
      * @param name a name to look for.
      * @return the corresponding AcsInteractiveReplyKind.
      */
-    @Generated
     public static AcsInteractiveReplyKind fromString(String name) {
         return fromString(name, AcsInteractiveReplyKind.class);
     }
@@ -56,7 +50,6 @@ public final class AcsInteractiveReplyKind extends ExpandableStringEnum<AcsInter
      * 
      * @return known AcsInteractiveReplyKind values.
      */
-    @Generated
     public static Collection<AcsInteractiveReplyKind> values() {
         return values(AcsInteractiveReplyKind.class);
     }

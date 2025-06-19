@@ -4,7 +4,6 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,19 +14,16 @@ public final class RecordingKindInternal extends ExpandableStringEnum<RecordingK
     /**
      * Recording initiated by Azure Communication Services.
      */
-    @Generated
     public static final RecordingKindInternal AZURE_COMMUNICATION_SERVICES = fromString("AzureCommunicationServices");
 
     /**
      * Recording initiated by Teams user.
      */
-    @Generated
     public static final RecordingKindInternal TEAMS = fromString("Teams");
 
     /**
      * Recording initiated by Teams compliance policy.
      */
-    @Generated
     public static final RecordingKindInternal TEAMS_COMPLIANCE = fromString("TeamsCompliance");
 
     /**
@@ -35,7 +31,6 @@ public final class RecordingKindInternal extends ExpandableStringEnum<RecordingK
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public RecordingKindInternal() {
     }
@@ -46,7 +41,6 @@ public final class RecordingKindInternal extends ExpandableStringEnum<RecordingK
      * @param name a name to look for.
      * @return the corresponding RecordingKindInternal.
      */
-    @Generated
     public static RecordingKindInternal fromString(String name) {
         return fromString(name, RecordingKindInternal.class);
     }
@@ -56,7 +50,6 @@ public final class RecordingKindInternal extends ExpandableStringEnum<RecordingK
      * 
      * @return known RecordingKindInternal values.
      */
-    @Generated
     public static Collection<RecordingKindInternal> values() {
         return values(RecordingKindInternal.class);
     }

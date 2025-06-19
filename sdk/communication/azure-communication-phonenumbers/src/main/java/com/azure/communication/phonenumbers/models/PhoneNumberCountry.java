@@ -4,7 +4,6 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,19 +19,16 @@ public final class PhoneNumberCountry implements JsonSerializable<PhoneNumberCou
     /*
      * Represents the name of the country.
      */
-    @Generated
     private String localizedName;
 
     /*
      * Represents the abbreviated name of the country.
      */
-    @Generated
     private String countryCode;
 
     /**
      * Creates an instance of PhoneNumberCountry class.
      */
-    @Generated
     public PhoneNumberCountry() {
     }
 
@@ -41,7 +37,6 @@ public final class PhoneNumberCountry implements JsonSerializable<PhoneNumberCou
      * 
      * @return the localizedName value.
      */
-    @Generated
     public String getLocalizedName() {
         return this.localizedName;
     }
@@ -51,7 +46,6 @@ public final class PhoneNumberCountry implements JsonSerializable<PhoneNumberCou
      * 
      * @return the countryCode value.
      */
-    @Generated
     public String getCountryCode() {
         return this.countryCode;
     }
@@ -59,7 +53,6 @@ public final class PhoneNumberCountry implements JsonSerializable<PhoneNumberCou
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -75,7 +68,6 @@ public final class PhoneNumberCountry implements JsonSerializable<PhoneNumberCou
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PhoneNumberCountry.
      */
-    @Generated
     public static PhoneNumberCountry fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PhoneNumberCountry deserializedPhoneNumberCountry = new PhoneNumberCountry();

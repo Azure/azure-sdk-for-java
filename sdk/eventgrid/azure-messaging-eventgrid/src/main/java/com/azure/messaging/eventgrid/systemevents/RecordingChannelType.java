@@ -4,7 +4,6 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,13 +14,11 @@ public final class RecordingChannelType extends ExpandableStringEnum<RecordingCh
     /**
      * Static value Mixed for RecordingChannelType.
      */
-    @Generated
     public static final RecordingChannelType MIXED = fromString("Mixed");
 
     /**
      * Static value Unmixed for RecordingChannelType.
      */
-    @Generated
     public static final RecordingChannelType UNMIXED = fromString("Unmixed");
 
     /**
@@ -29,7 +26,6 @@ public final class RecordingChannelType extends ExpandableStringEnum<RecordingCh
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public RecordingChannelType() {
     }
@@ -40,7 +36,6 @@ public final class RecordingChannelType extends ExpandableStringEnum<RecordingCh
      * @param name a name to look for.
      * @return the corresponding RecordingChannelType.
      */
-    @Generated
     public static RecordingChannelType fromString(String name) {
         return fromString(name, RecordingChannelType.class);
     }
@@ -50,7 +45,6 @@ public final class RecordingChannelType extends ExpandableStringEnum<RecordingCh
      * 
      * @return known RecordingChannelType values.
      */
-    @Generated
     public static Collection<RecordingChannelType> values() {
         return values(RecordingChannelType.class);
     }

@@ -4,7 +4,6 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,13 +14,11 @@ public final class AcsCallEndedByKind extends ExpandableStringEnum<AcsCallEndedB
     /**
      * Call end initiator is a participant.
      */
-    @Generated
     public static final AcsCallEndedByKind PARTICIPANT = fromString("Participant");
 
     /**
      * Call end initiator is the local participant.
      */
-    @Generated
     public static final AcsCallEndedByKind MICROSOFT_INTERNAL = fromString("MicrosoftInternal");
 
     /**
@@ -29,7 +26,6 @@ public final class AcsCallEndedByKind extends ExpandableStringEnum<AcsCallEndedB
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public AcsCallEndedByKind() {
     }
@@ -40,7 +36,6 @@ public final class AcsCallEndedByKind extends ExpandableStringEnum<AcsCallEndedB
      * @param name a name to look for.
      * @return the corresponding AcsCallEndedByKind.
      */
-    @Generated
     public static AcsCallEndedByKind fromString(String name) {
         return fromString(name, AcsCallEndedByKind.class);
     }
@@ -50,7 +45,6 @@ public final class AcsCallEndedByKind extends ExpandableStringEnum<AcsCallEndedB
      * 
      * @return known AcsCallEndedByKind values.
      */
-    @Generated
     public static Collection<AcsCallEndedByKind> values() {
         return values(AcsCallEndedByKind.class);
     }

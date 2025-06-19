@@ -1,21 +1,15 @@
 # Release History
 
-## 1.3.0 (2025-06-20)
+## 1.2.3 (2025-06-19)
 
-### Features Added
-- GA release of the reservations functionality.
-- GA support for automated purchases of phone numbers from countries requiring a do not resell agreement.
-  - For more information, refer to: https://learn.microsoft.com/azure/communication-services/concepts/numbers/sub-eligibility-number-capability
+### Other Changes
 
-## 1.3.0-beta.1 (2025-05-21)
+#### Dependency Updates
 
-### Features Added
+- Upgraded `azure-communication-common` from `1.3.10` to version `1.4.0`.
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
 
-- Adds support for the Browse Available Phone Numbers and Reservations APIs
-  - This adds an alternate way to search and purchase phone numbers that allows customers to select which phone numbers they want to reserve and purchase.
-- Adds support for automated purchases of phone numbers from countries requiring a Do Not Resell agreement.
-  - For more information, refer to: https://learn.microsoft.com/azure/communication-services/concepts/numbers/sub-eligibility-number-capability
-- API version `2025-04-01` is the default.
 
 ## 1.2.2 (2025-03-24)
 

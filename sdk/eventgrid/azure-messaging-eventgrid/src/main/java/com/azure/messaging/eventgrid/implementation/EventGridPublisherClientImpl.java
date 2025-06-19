@@ -122,7 +122,7 @@ public final class EventGridPublisherClientImpl {
      * REST calls.
      */
     @Host("https://{topicHostname}")
-    @ServiceInterface(name = "EventGridPublisherClient")
+    @ServiceInterface(name = "EventGridPublisherCl")
     public interface EventGridPublisherClientService {
 
         @Post("")

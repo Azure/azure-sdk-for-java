@@ -88,11 +88,9 @@ public final class Constants {
     public static final String PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION = "AZURE_STORAGE_SAS_SERVICE_VERSION";
 
     public static final String SAS_SERVICE_VERSION
-        = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2025-07-05");
+        = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2025-05-05");
 
     public static final String ADJUSTED_BLOB_LENGTH_KEY = "adjustedBlobLength";
-
-    public static final String SKIP_ECHO_VALIDATION_KEY = "skipEchoValidation";
 
     private Constants() {
     }
@@ -220,7 +218,7 @@ public final class Constants {
          * @deprecated For SAS Service Version use {@link Constants#SAS_SERVICE_VERSION}.
          */
         @Deprecated
-        public static final String TARGET_STORAGE_VERSION = "2025-07-05";
+        public static final String TARGET_STORAGE_VERSION = "2025-05-05";
 
         /**
          * Error code returned from the service.

@@ -4,7 +4,6 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,25 +14,21 @@ public final class PhoneNumberCapabilityType extends ExpandableStringEnum<PhoneN
     /**
      * Static value none for PhoneNumberCapabilityType.
      */
-    @Generated
     public static final PhoneNumberCapabilityType NONE = fromString("none");
 
     /**
      * Static value inbound for PhoneNumberCapabilityType.
      */
-    @Generated
     public static final PhoneNumberCapabilityType INBOUND = fromString("inbound");
 
     /**
      * Static value outbound for PhoneNumberCapabilityType.
      */
-    @Generated
     public static final PhoneNumberCapabilityType OUTBOUND = fromString("outbound");
 
     /**
      * Static value inbound+outbound for PhoneNumberCapabilityType.
      */
-    @Generated
     public static final PhoneNumberCapabilityType INBOUND_OUTBOUND = fromString("inbound+outbound");
 
     /**
@@ -41,7 +36,6 @@ public final class PhoneNumberCapabilityType extends ExpandableStringEnum<PhoneN
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public PhoneNumberCapabilityType() {
     }
@@ -52,7 +46,6 @@ public final class PhoneNumberCapabilityType extends ExpandableStringEnum<PhoneN
      * @param name a name to look for.
      * @return the corresponding PhoneNumberCapabilityType.
      */
-    @Generated
     public static PhoneNumberCapabilityType fromString(String name) {
         return fromString(name, PhoneNumberCapabilityType.class);
     }
@@ -62,7 +55,6 @@ public final class PhoneNumberCapabilityType extends ExpandableStringEnum<PhoneN
      * 
      * @return known PhoneNumberCapabilityType values.
      */
-    @Generated
     public static Collection<PhoneNumberCapabilityType> values() {
         return values(PhoneNumberCapabilityType.class);
     }

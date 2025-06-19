@@ -3,8 +3,6 @@
 
 package io.clientcore.core.utils;
 
-import io.clientcore.core.serialization.json.JsonWriter;
-
 import java.io.IOException;
 
 /**
@@ -12,8 +10,6 @@ import java.io.IOException;
  *
  * @param <T> First type of the bi-consumer.
  * @param <U> Second type of the bi-consumer.
- *
- * @see JsonWriter
  */
 @FunctionalInterface
 public interface IOExceptionCheckedBiConsumer<T, U> {

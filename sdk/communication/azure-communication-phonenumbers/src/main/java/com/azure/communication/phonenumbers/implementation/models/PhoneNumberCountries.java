@@ -5,7 +5,6 @@
 package com.azure.communication.phonenumbers.implementation.models;
 
 import com.azure.communication.phonenumbers.models.PhoneNumberCountry;
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,19 +21,16 @@ public final class PhoneNumberCountries implements JsonSerializable<PhoneNumberC
     /*
      * Represents the underlying list of countries.
      */
-    @Generated
     private List<PhoneNumberCountry> countries;
 
     /*
      * Represents the URL link to the next page
      */
-    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of PhoneNumberCountries class.
      */
-    @Generated
     public PhoneNumberCountries() {
     }
 
@@ -43,7 +39,6 @@ public final class PhoneNumberCountries implements JsonSerializable<PhoneNumberC
      * 
      * @return the countries value.
      */
-    @Generated
     public List<PhoneNumberCountry> getCountries() {
         return this.countries;
     }
@@ -53,7 +48,6 @@ public final class PhoneNumberCountries implements JsonSerializable<PhoneNumberC
      * 
      * @return the nextLink value.
      */
-    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -61,7 +55,6 @@ public final class PhoneNumberCountries implements JsonSerializable<PhoneNumberC
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -76,7 +69,6 @@ public final class PhoneNumberCountries implements JsonSerializable<PhoneNumberC
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the PhoneNumberCountries.
      */
-    @Generated
     public static PhoneNumberCountries fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PhoneNumberCountries deserializedPhoneNumberCountries = new PhoneNumberCountries();

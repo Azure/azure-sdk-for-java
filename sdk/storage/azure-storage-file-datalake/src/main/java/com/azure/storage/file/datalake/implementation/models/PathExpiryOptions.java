@@ -4,7 +4,6 @@
 
 package com.azure.storage.file.datalake.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,25 +14,21 @@ public final class PathExpiryOptions extends ExpandableStringEnum<PathExpiryOpti
     /**
      * Static value NeverExpire for PathExpiryOptions.
      */
-    @Generated
     public static final PathExpiryOptions NEVER_EXPIRE = fromString("NeverExpire");
 
     /**
      * Static value RelativeToCreation for PathExpiryOptions.
      */
-    @Generated
     public static final PathExpiryOptions RELATIVE_TO_CREATION = fromString("RelativeToCreation");
 
     /**
      * Static value RelativeToNow for PathExpiryOptions.
      */
-    @Generated
     public static final PathExpiryOptions RELATIVE_TO_NOW = fromString("RelativeToNow");
 
     /**
      * Static value Absolute for PathExpiryOptions.
      */
-    @Generated
     public static final PathExpiryOptions ABSOLUTE = fromString("Absolute");
 
     /**
@@ -41,7 +36,6 @@ public final class PathExpiryOptions extends ExpandableStringEnum<PathExpiryOpti
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public PathExpiryOptions() {
     }
@@ -52,7 +46,6 @@ public final class PathExpiryOptions extends ExpandableStringEnum<PathExpiryOpti
      * @param name a name to look for.
      * @return the corresponding PathExpiryOptions.
      */
-    @Generated
     public static PathExpiryOptions fromString(String name) {
         return fromString(name, PathExpiryOptions.class);
     }
@@ -62,7 +55,6 @@ public final class PathExpiryOptions extends ExpandableStringEnum<PathExpiryOpti
      * 
      * @return known PathExpiryOptions values.
      */
-    @Generated
     public static Collection<PathExpiryOptions> values() {
         return values(PathExpiryOptions.class);
     }

@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,25 +19,21 @@ public final class MicrosoftTeamsUserIdentifierModel implements JsonSerializable
     /*
      * The Id of the Microsoft Teams user. If not anonymous, this is the AAD object Id of the user.
      */
-    @Generated
     private String userId;
 
     /*
      * True if the Microsoft Teams user is anonymous. By default false if missing.
      */
-    @Generated
     private Boolean isAnonymous;
 
     /*
      * The cloud that the Microsoft Teams user belongs to. By default 'public' if missing.
      */
-    @Generated
     private CommunicationCloudEnvironmentModel cloud;
 
     /**
      * Creates an instance of MicrosoftTeamsUserIdentifierModel class.
      */
-    @Generated
     public MicrosoftTeamsUserIdentifierModel() {
     }
 
@@ -48,7 +43,6 @@ public final class MicrosoftTeamsUserIdentifierModel implements JsonSerializable
      * 
      * @return the userId value.
      */
-    @Generated
     public String getUserId() {
         return this.userId;
     }
@@ -60,7 +54,6 @@ public final class MicrosoftTeamsUserIdentifierModel implements JsonSerializable
      * @param userId the userId value to set.
      * @return the MicrosoftTeamsUserIdentifierModel object itself.
      */
-    @Generated
     public MicrosoftTeamsUserIdentifierModel setUserId(String userId) {
         this.userId = userId;
         return this;
@@ -71,7 +64,6 @@ public final class MicrosoftTeamsUserIdentifierModel implements JsonSerializable
      * 
      * @return the isAnonymous value.
      */
-    @Generated
     public Boolean isAnonymous() {
         return this.isAnonymous;
     }
@@ -82,7 +74,6 @@ public final class MicrosoftTeamsUserIdentifierModel implements JsonSerializable
      * @param isAnonymous the isAnonymous value to set.
      * @return the MicrosoftTeamsUserIdentifierModel object itself.
      */
-    @Generated
     public MicrosoftTeamsUserIdentifierModel setIsAnonymous(Boolean isAnonymous) {
         this.isAnonymous = isAnonymous;
         return this;
@@ -93,7 +84,6 @@ public final class MicrosoftTeamsUserIdentifierModel implements JsonSerializable
      * 
      * @return the cloud value.
      */
-    @Generated
     public CommunicationCloudEnvironmentModel getCloud() {
         return this.cloud;
     }
@@ -104,7 +94,6 @@ public final class MicrosoftTeamsUserIdentifierModel implements JsonSerializable
      * @param cloud the cloud value to set.
      * @return the MicrosoftTeamsUserIdentifierModel object itself.
      */
-    @Generated
     public MicrosoftTeamsUserIdentifierModel setCloud(CommunicationCloudEnvironmentModel cloud) {
         this.cloud = cloud;
         return this;
@@ -113,7 +102,6 @@ public final class MicrosoftTeamsUserIdentifierModel implements JsonSerializable
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -132,7 +120,6 @@ public final class MicrosoftTeamsUserIdentifierModel implements JsonSerializable
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MicrosoftTeamsUserIdentifierModel.
      */
-    @Generated
     public static MicrosoftTeamsUserIdentifierModel fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MicrosoftTeamsUserIdentifierModel deserializedMicrosoftTeamsUserIdentifierModel

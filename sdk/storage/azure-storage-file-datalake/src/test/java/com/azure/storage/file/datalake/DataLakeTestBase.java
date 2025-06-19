@@ -33,7 +33,6 @@ import com.azure.storage.file.datalake.models.LeaseStateType;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathProperties;
-import com.azure.storage.file.datalake.models.PathSystemProperties;
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient;
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClient;
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder;
@@ -59,7 +58,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
@@ -107,13 +105,6 @@ public class DataLakeTestBase extends TestProxyTestBase {
     protected static final HttpHeaderName X_MS_BLOB_CONTENT_MD5 = HttpHeaderName.fromString("x-ms-blob-content-md5");
     protected static final HttpHeaderName X_MS_CREATION_TIME = HttpHeaderName.fromString("x-ms-creation-time");
     protected static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
-    private static final HttpHeaderName X_MS_META_FOO = HttpHeaderName.fromString("x-ms-meta-foo");
-    private static final HttpHeaderName CONTENT_DISPOSITION = HttpHeaderName.fromString("Content-Disposition");
-    private static final HttpHeaderName CONTENT_ENCODING = HttpHeaderName.fromString("Content-Encoding");
-    private static final HttpHeaderName CONTENT_LANGUAGE = HttpHeaderName.fromString("Content-Language");
-    private static final HttpHeaderName CONTENT_TYPE = HttpHeaderName.fromString("Content-Type");
-    private static final HttpHeaderName CACHE_CONTROL = HttpHeaderName.fromString("Cache-Control");
-    private static final HttpHeaderName ACCEPT_RANGES = HttpHeaderName.fromString("Accept-Ranges");
 
     protected String prefix;
 
@@ -513,22 +504,6 @@ public class DataLakeTestBase extends TestProxyTestBase {
         assertEquals(contentLanguage, response.getValue().getContentLanguage());
         assertEquals(contentType, response.getValue().getContentType());
         assertArraysEqual(contentMD5, response.getValue().getContentMd5());
-    }
-
-    /*
-    This assertation contains headers I have manually determined will not appear when using this API
-     */
-    protected void validateUserDefinedHeadersNotPresent(Response<PathSystemProperties> response) {
-        assertNull(response.getHeaders().get(ACCEPT_RANGES));
-        assertNull(response.getHeaders().get(CACHE_CONTROL));
-        assertNull(response.getHeaders().get(CONTENT_DISPOSITION));
-        assertNull(response.getHeaders().get(CONTENT_ENCODING));
-        assertNull(response.getHeaders().get(CONTENT_LANGUAGE));
-        assertNull(response.getHeaders().get(CONTENT_TYPE));
-        assertNull(response.getHeaders().get(X_MS_LEASE_STATE));
-        assertNull(response.getHeaders().get(X_MS_LEASE_DURATION));
-        assertNull(response.getHeaders().get(X_MS_LEASE_STATUS));
-        assertNull(response.getHeaders().get(X_MS_META_FOO));
     }
 
     protected String setupFileSystemLeaseCondition(DataLakeFileSystemClient fsc, String leaseID) {
