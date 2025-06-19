@@ -569,7 +569,7 @@ public interface CosmosDBAccount extends GroupableResource<CosmosManager, Databa
              * @return the next stage of the definition
              */
             default WithCreate disableAutomaticFailover() {
-                throw new UnsupportedOperationException("[enableAutomaticFailover] is not supported in " + getClass());
+                throw new UnsupportedOperationException("[disableAutomaticFailover] is not supported in " + getClass());
             }
         }
 
