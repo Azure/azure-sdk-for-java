@@ -8,16 +8,12 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClientAsync;
 import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
 import com.openai.credential.BearerTokenCredential;
-import com.openai.models.audio.AudioModel;
-import com.openai.models.audio.transcriptions.TranscriptionCreateParams;
+import com.openai.models.images.ImageGenerateParams;
+import com.openai.models.images.ImageModel;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
+public class ImageGenerationAsyncSample {
 
-public final class AudioTranscriptionsAsyncSample {
-    private AudioTranscriptionsAsyncSample() {}
-
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         // Configures using one of:
         // - The `OPENAI_API_KEY` environment variable
         // - The `AZURE_OPENAI_ENDPOINT` and `AZURE_OPENAI_KEY` environment variables
@@ -35,20 +31,21 @@ public final class AudioTranscriptionsAsyncSample {
         // All code from this line down is general-purpose OpenAI code
         OpenAIClientAsync client = clientBuilder.build();
 
+        // Example usage of the client to generate images
+        String prompt = "Golder Retriever dog smiling when running on flower field";
+        int numberOfImages = 1;
 
-        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-        Path path = Paths.get(classloader.getResource("batman.wav").toURI());
+        ImageGenerateParams params = ImageGenerateParams.builder()
+            .prompt(prompt)
+            .model(ImageModel.DALL_E_3)
+            .n(numberOfImages)
+            .quality(ImageGenerateParams.Quality.HD)
+            .build();
 
-        TranscriptionCreateParams createParams = TranscriptionCreateParams.builder()
-                .file(path)
-                .model(AudioModel.of("whisper"))
-                .build();
-
-        client.audio()
-                .transcriptions()
-                .create(createParams)
-                .thenAccept(response ->
-                        System.out.println(response.asTranscription().text()))
-                .join();
+        // Call the image generation API with the specified parameters
+        client.images()
+            .generate(params)
+            .thenAccept(imagesResponse -> imagesResponse.data().ifPresent(list -> list.forEach(image -> System.out.println("Generated Image URL: " + image.url()))))
+            .join();
     }
 }
