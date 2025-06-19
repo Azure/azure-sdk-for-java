@@ -197,7 +197,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         setupTest(httpClient, "canCreateThreadWithThreadCreationDateRetentionPolicy");
         CreateChatThreadOptions threadRequest
             = ChatOptionsProvider.createThreadOptions(firstThreadMember.getId(), secondThreadMember.getId());
-        threadRequest.setRetentionPolicy(new ThreadCreationDateRetentionPolicy().setDeleteThreadAfterDays(45));
+        threadRequest.setRetentionPolicy(new ThreadCreationDateRetentionPolicy(45));
 
         // Act & Assert
         StepVerifier.create(client.createChatThreadWithResponse(threadRequest)).assertNext(chatThreadClientResponse -> {
