@@ -9,21 +9,21 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
 /**
- * Contains all response data for the purchaseReservation operation.
+ * Contains all response data for the purchasePhoneNumbers operation.
  */
-public final class PhoneNumbersPurchaseReservationResponse
-    extends ResponseBase<PhoneNumbersPurchaseReservationHeaders, Void> {
+public final class PhoneNumbersPurchasePhoneNumbersResponse
+    extends ResponseBase<PhoneNumbersPurchasePhoneNumbersHeaders, Void> {
     /**
-     * Creates an instance of PhoneNumbersPurchaseReservationResponse.
+     * Creates an instance of PhoneNumbersPurchasePhoneNumbersResponse.
      * 
-     * @param request the request which resulted in this PhoneNumbersPurchaseReservationResponse.
+     * @param request the request which resulted in this PhoneNumbersPurchasePhoneNumbersResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public PhoneNumbersPurchaseReservationResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
-        Void value, PhoneNumbersPurchaseReservationHeaders headers) {
+    public PhoneNumbersPurchasePhoneNumbersResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        Void value, PhoneNumbersPurchasePhoneNumbersHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

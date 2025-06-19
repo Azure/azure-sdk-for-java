@@ -5,7 +5,6 @@
 package com.azure.communication.phonenumbers.implementation.models;
 
 import com.azure.communication.phonenumbers.models.PhoneNumberOffering;
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,19 +21,16 @@ public final class OfferingsResponse implements JsonSerializable<OfferingsRespon
     /*
      * Represents the underlying list of offerings.
      */
-    @Generated
     private List<PhoneNumberOffering> phoneNumberOfferings;
 
     /*
      * Represents the URL link to the next page.
      */
-    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of OfferingsResponse class.
      */
-    @Generated
     public OfferingsResponse() {
     }
 
@@ -43,7 +39,6 @@ public final class OfferingsResponse implements JsonSerializable<OfferingsRespon
      * 
      * @return the phoneNumberOfferings value.
      */
-    @Generated
     public List<PhoneNumberOffering> getPhoneNumberOfferings() {
         return this.phoneNumberOfferings;
     }
@@ -53,7 +48,6 @@ public final class OfferingsResponse implements JsonSerializable<OfferingsRespon
      * 
      * @return the nextLink value.
      */
-    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -61,7 +55,6 @@ public final class OfferingsResponse implements JsonSerializable<OfferingsRespon
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -76,7 +69,6 @@ public final class OfferingsResponse implements JsonSerializable<OfferingsRespon
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the OfferingsResponse.
      */
-    @Generated
     public static OfferingsResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             OfferingsResponse deserializedOfferingsResponse = new OfferingsResponse();

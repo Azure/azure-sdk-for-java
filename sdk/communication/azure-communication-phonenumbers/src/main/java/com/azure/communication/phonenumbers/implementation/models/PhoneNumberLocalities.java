@@ -5,7 +5,6 @@
 package com.azure.communication.phonenumbers.implementation.models;
 
 import com.azure.communication.phonenumbers.models.PhoneNumberLocality;
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,19 +21,16 @@ public final class PhoneNumberLocalities implements JsonSerializable<PhoneNumber
     /*
      * Represents the underlying list of localities, e.g. cities or town.
      */
-    @Generated
     private List<PhoneNumberLocality> phoneNumberLocalities;
 
     /*
      * Represents the URL link to the next page.
      */
-    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of PhoneNumberLocalities class.
      */
-    @Generated
     public PhoneNumberLocalities() {
     }
 
@@ -43,7 +39,6 @@ public final class PhoneNumberLocalities implements JsonSerializable<PhoneNumber
      * 
      * @return the phoneNumberLocalities value.
      */
-    @Generated
     public List<PhoneNumberLocality> getPhoneNumberLocalities() {
         return this.phoneNumberLocalities;
     }
@@ -53,7 +48,6 @@ public final class PhoneNumberLocalities implements JsonSerializable<PhoneNumber
      * 
      * @return the nextLink value.
      */
-    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -61,7 +55,6 @@ public final class PhoneNumberLocalities implements JsonSerializable<PhoneNumber
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -76,7 +69,6 @@ public final class PhoneNumberLocalities implements JsonSerializable<PhoneNumber
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the PhoneNumberLocalities.
      */
-    @Generated
     public static PhoneNumberLocalities fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PhoneNumberLocalities deserializedPhoneNumberLocalities = new PhoneNumberLocalities();

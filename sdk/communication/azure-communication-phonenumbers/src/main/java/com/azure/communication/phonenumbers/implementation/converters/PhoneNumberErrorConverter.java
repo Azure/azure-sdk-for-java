@@ -5,9 +5,9 @@ package com.azure.communication.phonenumbers.implementation.converters;
 
 import com.azure.communication.phonenumbers.implementation.models.CommunicationError;
 import com.azure.communication.phonenumbers.models.PhoneNumberError;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A converter between {@link CommunicationError} and
@@ -17,7 +17,7 @@ public final class PhoneNumberErrorConverter {
     /**
      * Maps from {com.azure.communication.phonenumbers.implementation.models.CommunicationError} to {@link PhoneNumberError}.
      * @param communicationError The error to convert
-     *
+     * 
      * @return the converted PhoneNumberError.
      */
     public static PhoneNumberError convert(CommunicationError communicationError) {
@@ -25,18 +25,17 @@ public final class PhoneNumberErrorConverter {
             return null;
         }
 
-        List<PhoneNumberError> details;
+        List<PhoneNumberError> details = new ArrayList<PhoneNumberError>();
+
         if (communicationError.getDetails() != null) {
-            details = new ArrayList<>(communicationError.getDetails().size());
-            for (CommunicationError error : communicationError.getDetails()) {
-                details.add(PhoneNumberErrorConverter.convert(error));
-            }
-        } else {
-            details = new ArrayList<>();
+            details
+                = communicationError.getDetails().stream().map(detail -> convert(detail)).collect(Collectors.toList());
         }
 
-        return new PhoneNumberError(communicationError.getMessage(), communicationError.getCode(),
-            communicationError.getTarget(), details);
+        PhoneNumberError phoneNumberError = new PhoneNumberError(communicationError.getMessage(),
+            communicationError.getCode(), communicationError.getTarget(), details);
+
+        return phoneNumberError;
     }
 
     private PhoneNumberErrorConverter() {

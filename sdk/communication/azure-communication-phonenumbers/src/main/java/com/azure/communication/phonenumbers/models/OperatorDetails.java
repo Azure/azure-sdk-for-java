@@ -4,7 +4,6 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,25 +19,21 @@ public final class OperatorDetails implements JsonSerializable<OperatorDetails> 
     /*
      * Name of the phone operator
      */
-    @Generated
     private String name;
 
     /*
      * Mobile Network Code, 2 or 3 decimal digits that identify mobile networks within a country/region
      */
-    @Generated
     private String mobileNetworkCode;
 
     /*
      * Mobile Country Code, 3 decimal digits that identify a country/region
      */
-    @Generated
     private String mobileCountryCode;
 
     /**
      * Creates an instance of OperatorDetails class.
      */
-    @Generated
     public OperatorDetails() {
     }
 
@@ -47,28 +42,24 @@ public final class OperatorDetails implements JsonSerializable<OperatorDetails> 
      * 
      * @return the name value.
      */
-    @Generated
     public String getName() {
         return this.name;
     }
 
     /**
-     * Get the mobileNetworkCode property: Mobile Network Code, 2 or 3 decimal digits that identify mobile networks
-     * within a country/region.
+     * Get the mobileNetworkCode property: Mobile Network Code.
      * 
      * @return the mobileNetworkCode value.
      */
-    @Generated
     public String getMobileNetworkCode() {
         return this.mobileNetworkCode;
     }
 
     /**
-     * Get the mobileCountryCode property: Mobile Country Code, 3 decimal digits that identify a country/region.
+     * Get the mobileCountryCode property: Mobile Country Code.
      * 
      * @return the mobileCountryCode value.
      */
-    @Generated
     public String getMobileCountryCode() {
         return this.mobileCountryCode;
     }
@@ -76,7 +67,6 @@ public final class OperatorDetails implements JsonSerializable<OperatorDetails> 
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -89,9 +79,9 @@ public final class OperatorDetails implements JsonSerializable<OperatorDetails> 
      * @param jsonReader The JsonReader being read.
      * @return An instance of OperatorDetails if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the OperatorDetails.
      */
-    @Generated
     public static OperatorDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             OperatorDetails deserializedOperatorDetails = new OperatorDetails();

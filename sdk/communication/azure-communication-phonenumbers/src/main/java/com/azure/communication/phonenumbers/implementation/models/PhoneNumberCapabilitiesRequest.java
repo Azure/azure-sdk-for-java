@@ -6,7 +6,6 @@ package com.azure.communication.phonenumbers.implementation.models;
 
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,19 +20,16 @@ public final class PhoneNumberCapabilitiesRequest implements JsonSerializable<Ph
     /*
      * Capability value for calling.
      */
-    @Generated
     private PhoneNumberCapabilityType calling;
 
     /*
      * Capability value for SMS.
      */
-    @Generated
     private PhoneNumberCapabilityType sms;
 
     /**
      * Creates an instance of PhoneNumberCapabilitiesRequest class.
      */
-    @Generated
     public PhoneNumberCapabilitiesRequest() {
     }
 
@@ -42,7 +38,6 @@ public final class PhoneNumberCapabilitiesRequest implements JsonSerializable<Ph
      * 
      * @return the calling value.
      */
-    @Generated
     public PhoneNumberCapabilityType getCalling() {
         return this.calling;
     }
@@ -53,7 +48,6 @@ public final class PhoneNumberCapabilitiesRequest implements JsonSerializable<Ph
      * @param calling the calling value to set.
      * @return the PhoneNumberCapabilitiesRequest object itself.
      */
-    @Generated
     public PhoneNumberCapabilitiesRequest setCalling(PhoneNumberCapabilityType calling) {
         this.calling = calling;
         return this;
@@ -64,7 +58,6 @@ public final class PhoneNumberCapabilitiesRequest implements JsonSerializable<Ph
      * 
      * @return the sms value.
      */
-    @Generated
     public PhoneNumberCapabilityType getSms() {
         return this.sms;
     }
@@ -75,7 +68,6 @@ public final class PhoneNumberCapabilitiesRequest implements JsonSerializable<Ph
      * @param sms the sms value to set.
      * @return the PhoneNumberCapabilitiesRequest object itself.
      */
-    @Generated
     public PhoneNumberCapabilitiesRequest setSms(PhoneNumberCapabilityType sms) {
         this.sms = sms;
         return this;
@@ -84,7 +76,6 @@ public final class PhoneNumberCapabilitiesRequest implements JsonSerializable<Ph
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -101,7 +92,6 @@ public final class PhoneNumberCapabilitiesRequest implements JsonSerializable<Ph
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the PhoneNumberCapabilitiesRequest.
      */
-    @Generated
     public static PhoneNumberCapabilitiesRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PhoneNumberCapabilitiesRequest deserializedPhoneNumberCapabilitiesRequest

@@ -7,8 +7,6 @@ package com.azure.communication.phonenumbers.implementation.models;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperationStatus;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperationType;
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -25,49 +23,41 @@ public final class PhoneNumberRawOperation implements JsonSerializable<PhoneNumb
     /*
      * The type of operation, e.g. Search
      */
-    @Generated
     private PhoneNumberOperationType operationType;
 
     /*
      * Status of operation.
      */
-    @Generated
     private PhoneNumberOperationStatus status;
 
     /*
      * URL for retrieving the result of the operation, if any.
      */
-    @Generated
     private String resourceLocation;
 
     /*
      * The date that the operation was created.
      */
-    @Generated
     private OffsetDateTime createdDateTime;
 
     /*
      * The Communication Services error.
      */
-    @Generated
     private CommunicationError error;
 
     /*
      * Id of operation.
      */
-    @Generated
     private String id;
 
     /*
      * The most recent date that the operation was changed.
      */
-    @Generated
     private OffsetDateTime lastActionDateTime;
 
     /**
      * Creates an instance of PhoneNumberRawOperation class.
      */
-    @Generated
     public PhoneNumberRawOperation() {
     }
 
@@ -76,7 +66,6 @@ public final class PhoneNumberRawOperation implements JsonSerializable<PhoneNumb
      * 
      * @return the operationType value.
      */
-    @Generated
     public PhoneNumberOperationType getOperationType() {
         return this.operationType;
     }
@@ -87,7 +76,6 @@ public final class PhoneNumberRawOperation implements JsonSerializable<PhoneNumb
      * @param operationType the operationType value to set.
      * @return the PhoneNumberRawOperation object itself.
      */
-    @Generated
     public PhoneNumberRawOperation setOperationType(PhoneNumberOperationType operationType) {
         this.operationType = operationType;
         return this;
@@ -98,7 +86,6 @@ public final class PhoneNumberRawOperation implements JsonSerializable<PhoneNumb
      * 
      * @return the status value.
      */
-    @Generated
     public PhoneNumberOperationStatus getStatus() {
         return this.status;
     }
@@ -109,7 +96,6 @@ public final class PhoneNumberRawOperation implements JsonSerializable<PhoneNumb
      * @param status the status value to set.
      * @return the PhoneNumberRawOperation object itself.
      */
-    @Generated
     public PhoneNumberRawOperation setStatus(PhoneNumberOperationStatus status) {
         this.status = status;
         return this;
@@ -120,7 +106,6 @@ public final class PhoneNumberRawOperation implements JsonSerializable<PhoneNumb
      * 
      * @return the resourceLocation value.
      */
-    @Generated
     public String getResourceLocation() {
         return this.resourceLocation;
     }
@@ -131,7 +116,6 @@ public final class PhoneNumberRawOperation implements JsonSerializable<PhoneNumb
      * @param resourceLocation the resourceLocation value to set.
      * @return the PhoneNumberRawOperation object itself.
      */
-    @Generated
     public PhoneNumberRawOperation setResourceLocation(String resourceLocation) {
         this.resourceLocation = resourceLocation;
         return this;
@@ -142,7 +126,6 @@ public final class PhoneNumberRawOperation implements JsonSerializable<PhoneNumb
      * 
      * @return the createdDateTime value.
      */
-    @Generated
     public OffsetDateTime getCreatedDateTime() {
         return this.createdDateTime;
     }
@@ -153,7 +136,6 @@ public final class PhoneNumberRawOperation implements JsonSerializable<PhoneNumb
      * @param createdDateTime the createdDateTime value to set.
      * @return the PhoneNumberRawOperation object itself.
      */
-    @Generated
     public PhoneNumberRawOperation setCreatedDateTime(OffsetDateTime createdDateTime) {
         this.createdDateTime = createdDateTime;
         return this;
@@ -164,7 +146,6 @@ public final class PhoneNumberRawOperation implements JsonSerializable<PhoneNumb
      * 
      * @return the error value.
      */
-    @Generated
     public CommunicationError getError() {
         return this.error;
     }
@@ -175,7 +156,6 @@ public final class PhoneNumberRawOperation implements JsonSerializable<PhoneNumb
      * @param error the error value to set.
      * @return the PhoneNumberRawOperation object itself.
      */
-    @Generated
     public PhoneNumberRawOperation setError(CommunicationError error) {
         this.error = error;
         return this;
@@ -186,7 +166,6 @@ public final class PhoneNumberRawOperation implements JsonSerializable<PhoneNumb
      * 
      * @return the id value.
      */
-    @Generated
     public String getId() {
         return this.id;
     }
@@ -197,7 +176,6 @@ public final class PhoneNumberRawOperation implements JsonSerializable<PhoneNumb
      * @param id the id value to set.
      * @return the PhoneNumberRawOperation object itself.
      */
-    @Generated
     public PhoneNumberRawOperation setId(String id) {
         this.id = id;
         return this;
@@ -208,7 +186,6 @@ public final class PhoneNumberRawOperation implements JsonSerializable<PhoneNumb
      * 
      * @return the lastActionDateTime value.
      */
-    @Generated
     public OffsetDateTime getLastActionDateTime() {
         return this.lastActionDateTime;
     }
@@ -216,7 +193,6 @@ public final class PhoneNumberRawOperation implements JsonSerializable<PhoneNumb
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -239,7 +215,6 @@ public final class PhoneNumberRawOperation implements JsonSerializable<PhoneNumb
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PhoneNumberRawOperation.
      */
-    @Generated
     public static PhoneNumberRawOperation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PhoneNumberRawOperation deserializedPhoneNumberRawOperation = new PhoneNumberRawOperation();
@@ -254,8 +229,8 @@ public final class PhoneNumberRawOperation implements JsonSerializable<PhoneNumb
                     deserializedPhoneNumberRawOperation.status
                         = PhoneNumberOperationStatus.fromString(reader.getString());
                 } else if ("createdDateTime".equals(fieldName)) {
-                    deserializedPhoneNumberRawOperation.createdDateTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedPhoneNumberRawOperation.createdDateTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("id".equals(fieldName)) {
                     deserializedPhoneNumberRawOperation.id = reader.getString();
                 } else if ("resourceLocation".equals(fieldName)) {
@@ -263,8 +238,8 @@ public final class PhoneNumberRawOperation implements JsonSerializable<PhoneNumb
                 } else if ("error".equals(fieldName)) {
                     deserializedPhoneNumberRawOperation.error = CommunicationError.fromJson(reader);
                 } else if ("lastActionDateTime".equals(fieldName)) {
-                    deserializedPhoneNumberRawOperation.lastActionDateTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedPhoneNumberRawOperation.lastActionDateTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

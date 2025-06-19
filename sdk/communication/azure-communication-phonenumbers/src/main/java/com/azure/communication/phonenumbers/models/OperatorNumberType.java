@@ -4,7 +4,6 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,25 +14,21 @@ public final class OperatorNumberType extends ExpandableStringEnum<OperatorNumbe
     /**
      * Static value unknown for OperatorNumberType.
      */
-    @Generated
     public static final OperatorNumberType UNKNOWN = fromString("unknown");
 
     /**
      * Static value other for OperatorNumberType.
      */
-    @Generated
     public static final OperatorNumberType OTHER = fromString("other");
 
     /**
      * Static value geographic for OperatorNumberType.
      */
-    @Generated
     public static final OperatorNumberType GEOGRAPHIC = fromString("geographic");
 
     /**
      * Static value mobile for OperatorNumberType.
      */
-    @Generated
     public static final OperatorNumberType MOBILE = fromString("mobile");
 
     /**
@@ -41,7 +36,6 @@ public final class OperatorNumberType extends ExpandableStringEnum<OperatorNumbe
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public OperatorNumberType() {
     }
@@ -52,7 +46,6 @@ public final class OperatorNumberType extends ExpandableStringEnum<OperatorNumbe
      * @param name a name to look for.
      * @return the corresponding OperatorNumberType.
      */
-    @Generated
     public static OperatorNumberType fromString(String name) {
         return fromString(name, OperatorNumberType.class);
     }
@@ -62,7 +55,6 @@ public final class OperatorNumberType extends ExpandableStringEnum<OperatorNumbe
      * 
      * @return known OperatorNumberType values.
      */
-    @Generated
     public static Collection<OperatorNumberType> values() {
         return values(OperatorNumberType.class);
     }

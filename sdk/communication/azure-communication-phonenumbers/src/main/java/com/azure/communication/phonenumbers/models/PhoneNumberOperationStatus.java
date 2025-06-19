@@ -4,7 +4,6 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,25 +14,21 @@ public final class PhoneNumberOperationStatus extends ExpandableStringEnum<Phone
     /**
      * Static value notStarted for PhoneNumberOperationStatus.
      */
-    @Generated
     public static final PhoneNumberOperationStatus NOT_STARTED = fromString("notStarted");
 
     /**
      * Static value running for PhoneNumberOperationStatus.
      */
-    @Generated
     public static final PhoneNumberOperationStatus RUNNING = fromString("running");
 
     /**
      * Static value succeeded for PhoneNumberOperationStatus.
      */
-    @Generated
     public static final PhoneNumberOperationStatus SUCCEEDED = fromString("succeeded");
 
     /**
      * Static value failed for PhoneNumberOperationStatus.
      */
-    @Generated
     public static final PhoneNumberOperationStatus FAILED = fromString("failed");
 
     /**
@@ -41,7 +36,6 @@ public final class PhoneNumberOperationStatus extends ExpandableStringEnum<Phone
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public PhoneNumberOperationStatus() {
     }
@@ -52,7 +46,6 @@ public final class PhoneNumberOperationStatus extends ExpandableStringEnum<Phone
      * @param name a name to look for.
      * @return the corresponding PhoneNumberOperationStatus.
      */
-    @Generated
     public static PhoneNumberOperationStatus fromString(String name) {
         return fromString(name, PhoneNumberOperationStatus.class);
     }
@@ -62,7 +55,6 @@ public final class PhoneNumberOperationStatus extends ExpandableStringEnum<Phone
      * 
      * @return known PhoneNumberOperationStatus values.
      */
-    @Generated
     public static Collection<PhoneNumberOperationStatus> values() {
         return values(PhoneNumberOperationStatus.class);
     }

@@ -6,7 +6,6 @@ package com.azure.communication.phonenumbers.implementation.models;
 
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,19 +21,16 @@ public final class PurchasedPhoneNumbers implements JsonSerializable<PurchasedPh
     /*
      * Represents a list of phone numbers.
      */
-    @Generated
     private List<PurchasedPhoneNumber> phoneNumbers;
 
     /*
      * Represents the URL link to the next page of phone number results.
      */
-    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of PurchasedPhoneNumbers class.
      */
-    @Generated
     public PurchasedPhoneNumbers() {
     }
 
@@ -43,7 +39,6 @@ public final class PurchasedPhoneNumbers implements JsonSerializable<PurchasedPh
      * 
      * @return the phoneNumbers value.
      */
-    @Generated
     public List<PurchasedPhoneNumber> getPhoneNumbers() {
         return this.phoneNumbers;
     }
@@ -54,7 +49,6 @@ public final class PurchasedPhoneNumbers implements JsonSerializable<PurchasedPh
      * @param phoneNumbers the phoneNumbers value to set.
      * @return the PurchasedPhoneNumbers object itself.
      */
-    @Generated
     public PurchasedPhoneNumbers setPhoneNumbers(List<PurchasedPhoneNumber> phoneNumbers) {
         this.phoneNumbers = phoneNumbers;
         return this;
@@ -65,7 +59,6 @@ public final class PurchasedPhoneNumbers implements JsonSerializable<PurchasedPh
      * 
      * @return the nextLink value.
      */
-    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -76,7 +69,6 @@ public final class PurchasedPhoneNumbers implements JsonSerializable<PurchasedPh
      * @param nextLink the nextLink value to set.
      * @return the PurchasedPhoneNumbers object itself.
      */
-    @Generated
     public PurchasedPhoneNumbers setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
@@ -85,7 +77,6 @@ public final class PurchasedPhoneNumbers implements JsonSerializable<PurchasedPh
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -103,7 +94,6 @@ public final class PurchasedPhoneNumbers implements JsonSerializable<PurchasedPh
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PurchasedPhoneNumbers.
      */
-    @Generated
     public static PurchasedPhoneNumbers fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PurchasedPhoneNumbers deserializedPurchasedPhoneNumbers = new PurchasedPhoneNumbers();

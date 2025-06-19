@@ -4,7 +4,6 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,13 +14,11 @@ public final class PhoneNumberAssignmentType extends ExpandableStringEnum<PhoneN
     /**
      * Static value person for PhoneNumberAssignmentType.
      */
-    @Generated
     public static final PhoneNumberAssignmentType PERSON = fromString("person");
 
     /**
      * Static value application for PhoneNumberAssignmentType.
      */
-    @Generated
     public static final PhoneNumberAssignmentType APPLICATION = fromString("application");
 
     /**
@@ -29,7 +26,6 @@ public final class PhoneNumberAssignmentType extends ExpandableStringEnum<PhoneN
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public PhoneNumberAssignmentType() {
     }
@@ -40,7 +36,6 @@ public final class PhoneNumberAssignmentType extends ExpandableStringEnum<PhoneN
      * @param name a name to look for.
      * @return the corresponding PhoneNumberAssignmentType.
      */
-    @Generated
     public static PhoneNumberAssignmentType fromString(String name) {
         return fromString(name, PhoneNumberAssignmentType.class);
     }
@@ -50,7 +45,6 @@ public final class PhoneNumberAssignmentType extends ExpandableStringEnum<PhoneN
      * 
      * @return known PhoneNumberAssignmentType values.
      */
-    @Generated
     public static Collection<PhoneNumberAssignmentType> values() {
         return values(PhoneNumberAssignmentType.class);
     }

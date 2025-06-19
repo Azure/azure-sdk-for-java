@@ -4,7 +4,6 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,31 +19,26 @@ public final class PhoneNumberOffering implements JsonSerializable<PhoneNumberOf
     /*
      * Represents the number type of the offering.
      */
-    @Generated
     private PhoneNumberType phoneNumberType;
 
     /*
      * Represents the assignment type of the offering.
      */
-    @Generated
     private PhoneNumberAssignmentType assignmentType;
 
     /*
      * Capabilities of a phone number.
      */
-    @Generated
     private PhoneNumberCapabilities availableCapabilities;
 
     /*
      * The incurred cost for a single phone number.
      */
-    @Generated
     private PhoneNumberCost cost;
 
     /**
      * Creates an instance of PhoneNumberOffering class.
      */
-    @Generated
     public PhoneNumberOffering() {
     }
 
@@ -53,7 +47,6 @@ public final class PhoneNumberOffering implements JsonSerializable<PhoneNumberOf
      * 
      * @return the phoneNumberType value.
      */
-    @Generated
     public PhoneNumberType getPhoneNumberType() {
         return this.phoneNumberType;
     }
@@ -63,7 +56,6 @@ public final class PhoneNumberOffering implements JsonSerializable<PhoneNumberOf
      * 
      * @return the assignmentType value.
      */
-    @Generated
     public PhoneNumberAssignmentType getAssignmentType() {
         return this.assignmentType;
     }
@@ -73,7 +65,6 @@ public final class PhoneNumberOffering implements JsonSerializable<PhoneNumberOf
      * 
      * @return the availableCapabilities value.
      */
-    @Generated
     public PhoneNumberCapabilities getAvailableCapabilities() {
         return this.availableCapabilities;
     }
@@ -83,7 +74,6 @@ public final class PhoneNumberOffering implements JsonSerializable<PhoneNumberOf
      * 
      * @return the cost value.
      */
-    @Generated
     public PhoneNumberCost getCost() {
         return this.cost;
     }
@@ -91,7 +81,6 @@ public final class PhoneNumberOffering implements JsonSerializable<PhoneNumberOf
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -107,7 +96,6 @@ public final class PhoneNumberOffering implements JsonSerializable<PhoneNumberOf
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PhoneNumberOffering.
      */
-    @Generated
     public static PhoneNumberOffering fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PhoneNumberOffering deserializedPhoneNumberOffering = new PhoneNumberOffering();
