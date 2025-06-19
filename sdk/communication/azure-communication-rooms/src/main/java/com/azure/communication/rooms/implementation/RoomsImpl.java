@@ -31,10 +31,10 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /**
@@ -62,11 +62,11 @@ public final class RoomsImpl {
     }
 
     /**
-     * The interface defining all the services for AzureCommunicationRoomServiceRooms to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for AzureCommunicationRoomServiceRooms to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AzureCommunicationRoomServiceRooms")
+    @ServiceInterface(name = "AzureCommunicationRo")
     public interface RoomsService {
         @Post("/rooms")
         @ExpectedResponses({ 201 })
@@ -162,7 +162,11 @@ public final class RoomsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RoomModel>> createWithResponseAsync(CreateRoomRequest createRoomRequest) {
-        return FluxUtil.withContext(context -> createWithResponseAsync(createRoomRequest, context));
+        final String accept = "application/json";
+        String repeatabilityRequestId = UUID.randomUUID().toString();
+        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
+        return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
+            createRoomRequest, accept, repeatabilityRequestId, repeatabilityFirstSent, context));
     }
 
     /**
@@ -178,8 +182,10 @@ public final class RoomsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RoomModel>> createWithResponseAsync(CreateRoomRequest createRoomRequest, Context context) {
         final String accept = "application/json";
+        String repeatabilityRequestId = UUID.randomUUID().toString();
+        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
         return service.create(this.client.getEndpoint(), this.client.getApiVersion(), createRoomRequest, accept,
-            CoreUtils.randomUuid().toString(), DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()), context);
+            repeatabilityRequestId, repeatabilityFirstSent, context);
     }
 
     /**
@@ -224,8 +230,10 @@ public final class RoomsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RoomModel> createWithResponse(CreateRoomRequest createRoomRequest, Context context) {
         final String accept = "application/json";
+        String repeatabilityRequestId = UUID.randomUUID().toString();
+        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
         return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(), createRoomRequest, accept,
-            CoreUtils.randomUuid().toString(), DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()), context);
+            repeatabilityRequestId, repeatabilityFirstSent, context);
     }
 
     /**
@@ -346,7 +354,7 @@ public final class RoomsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoomModel> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return new PagedIterable<>(() -> listSinglePage(Context.NONE), nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -374,7 +382,9 @@ public final class RoomsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RoomModel>> getWithResponseAsync(String roomId) {
-        return FluxUtil.withContext(context -> getWithResponseAsync(roomId, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.get(this.client.getEndpoint(), roomId, this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -464,7 +474,9 @@ public final class RoomsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RoomModel>> updateWithResponseAsync(String roomId, UpdateRoomRequest updateRoomRequest) {
-        return FluxUtil.withContext(context -> updateWithResponseAsync(roomId, updateRoomRequest, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(), roomId,
+            this.client.getApiVersion(), updateRoomRequest, accept, context));
     }
 
     /**
@@ -562,7 +574,9 @@ public final class RoomsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String roomId) {
-        return FluxUtil.withContext(context -> deleteWithResponseAsync(roomId, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.delete(this.client.getEndpoint(), roomId, this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -642,7 +656,9 @@ public final class RoomsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -659,7 +675,9 @@ public final class RoomsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -677,7 +695,9 @@ public final class RoomsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -694,7 +714,9 @@ public final class RoomsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
