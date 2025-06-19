@@ -49,6 +49,7 @@ import com.azure.storage.common.test.shared.TestHttpClientType;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.common.test.shared.policy.InvalidServiceVersionPipelinePolicy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -2004,6 +2005,22 @@ public class ContainerApiTests extends BlobTestBase {
         }
         cc = serviceClient.getBlobContainerClient(containerName);
         assertDoesNotThrow(() -> cc.getAccountInfo(null));
+    }
+
+    @Test
+    public void invalidServiceVersion() {
+        BlobServiceClient serviceClient
+            = instrument(new BlobServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+                .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+                .addPolicy(new InvalidServiceVersionPipelinePolicy())).buildClient();
+
+        BlobContainerClient containerClient = serviceClient.getBlobContainerClient(generateContainerName());
+
+        BlobStorageException exception
+            = assertThrows(BlobStorageException.class, () -> containerClient.createIfNotExists());
+
+        assertEquals(400, exception.getStatusCode());
+        assertTrue(exception.getMessage().contains(Constants.INVALID_VERSION_HEADER_MESSAGE));
     }
 
     // TODO: Reintroduce these tests once service starts supporting it.

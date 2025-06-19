@@ -3369,4 +3369,5 @@ class FileApiTests extends FileShareTestBase {
         // Cleanup
         shareClient.delete();
     }
+
 }

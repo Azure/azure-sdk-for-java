@@ -10,10 +10,13 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlToken;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import javax.xml.stream.XMLStreamException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -42,6 +45,7 @@ import java.util.function.Supplier;
 
 import static com.azure.storage.common.Utility.urlDecode;
 import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE_HEADER_NAME;
+import static com.azure.storage.common.implementation.Constants.HeaderConstants.HEADER_NAME;
 
 /**
  * Utility class which is used internally.
@@ -297,24 +301,72 @@ public class StorageImplUtils {
      * @param response The storage service response.
      * @return The converted storage exception message.
      */
+    //TODO (gunjan): Investigate why we do not parse the XML error bodies to pull out the error messages and codes.
     public static String convertStorageExceptionMessage(String message, HttpResponse response) {
         if (response != null) {
+            String errorCode = response.getHeaders().getValue(ERROR_CODE_HEADER_NAME);
+            String headerName = response.getHeaders().getValue(HEADER_NAME);
+
+            // Handle 403 Forbidden responses by appending detailed logging instructions for signature mismatches.
             if (response.getStatusCode() == 403) {
                 return STORAGE_EXCEPTION_LOG_STRING_TO_SIGN_MESSAGE + message;
             }
+
+            // Handle HEAD requests specifically by inserting the error code into the message if the body is empty.
             if (response.getRequest() != null
                 && response.getRequest().getHttpMethod() != null
                 && response.getRequest().getHttpMethod().equals(HttpMethod.HEAD)
-                && response.getHeaders().getValue(ERROR_CODE_HEADER_NAME) != null) {
+                && errorCode != null) {
                 int indexOfEmptyBody = message.indexOf("(empty body)");
                 if (indexOfEmptyBody >= 0) {
-                    return message.substring(0, indexOfEmptyBody)
-                        + response.getHeaders().getValue(ERROR_CODE_HEADER_NAME)
+                    return message.substring(0, indexOfEmptyBody) + errorCode
                         + message.substring(indexOfEmptyBody + 12);
+                }
+            }
+
+            /*
+             * Extract error details from XML when headers are missing to provide meaningful error message
+             * for x-ms-version mismatch issues.
+             * Note : This is currently supported only for blob package.
+             */
+            if (errorCode == null && headerName == null) {
+                try {
+                    errorCode = extractXmlTagValue(message, "Code");
+                    headerName = extractXmlTagValue(message, "HeaderName");
+                    if (Constants.HeaderConstants.INVALID_HEADER_VALUE.equals(errorCode)
+                        && Constants.HeaderConstants.VERSION.equalsIgnoreCase(headerName)) {
+                        return Constants.INVALID_VERSION_HEADER_MESSAGE + message;
+                    }
+                } catch (Exception e) {
+                    return message;
                 }
             }
         }
         return message;
+    }
+
+    private static String extractXmlTagValue(String message, String tag) {
+        if (CoreUtils.isNullOrEmpty(message) || CoreUtils.isNullOrEmpty(tag)) {
+            return null;
+        }
+
+        int xmlStart = message.indexOf("<?xml");
+        if (xmlStart == -1) {
+            return null;
+        }
+
+        try {
+            XmlReader xmlReader = XmlReader.fromString(message.substring(xmlStart));
+            while (xmlReader.nextElement() != XmlToken.END_DOCUMENT) {
+                if (xmlReader.getElementName().getLocalPart().equals(tag)) {
+                    return xmlReader.getStringElement().trim();
+                }
+            }
+        } catch (XMLStreamException e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
     }
 
     /**
