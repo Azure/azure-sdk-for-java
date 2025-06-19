@@ -1,15 +1,5 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 1.0.21 (2025-03-24)
 
 ### Other Changes
@@ -75,13 +65,6 @@
 - Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
 
 
-## 1.1.0-beta.1 (2024-08-14)
-
-### Features Added
-
-- Consumers can now provide a value for the `ContentId` property when sending emails with attachments.
-  This allows consumers to reference attachments in the email body using the `cid` scheme. The `ContentId` property can be set on the `EmailAttachment` object.
-
 ## 1.0.15 (2024-07-26)
 
 ### Other Changes
@@ -132,9 +115,8 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
 - Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
-- Upgraded `azure-communication-common` from `1.3.0` to version `1.3.1`.
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
 
 
 ## 1.0.10 (2024-02-20)
