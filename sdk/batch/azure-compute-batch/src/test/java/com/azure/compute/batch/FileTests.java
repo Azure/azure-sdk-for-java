@@ -166,20 +166,22 @@ public class FileTests extends BatchClientTestBase {
                     = SyncAsyncExtension.execute(() -> batchClient.listNodeFiles(poolId, nodeId, options), () -> Mono
                         .fromCallable(() -> batchAsyncClient.listNodeFiles(poolId, nodeId, options).toIterable()));
 
-                final String[] fileNameHolder = new String[1];
+                String fileName = null;
                 for (BatchNodeFile f : files) {
                     if (f.getName().endsWith("stdout.txt")) {
-                        fileNameHolder[0] = f.getName();
+                        fileName = f.getName();
                         break;
                     }
                 }
-                Assertions.assertNotNull(fileNameHolder[0]);
+                Assertions.assertNotNull(fileName);
+
+                final String finalFileName = fileName;
 
                 // Get node file content
                 BinaryData binaryData = SyncAsyncExtension.execute(
-                    () -> batchClient.getNodeFileWithResponse(poolId, nodeId, fileNameHolder[0], null).getValue(),
+                    () -> batchClient.getNodeFileWithResponse(poolId, nodeId, finalFileName, null).getValue(),
                     () -> Mono.fromCallable(
-                        () -> batchAsyncClient.getNodeFileWithResponse(poolId, nodeId, fileNameHolder[0], null)
+                        () -> batchAsyncClient.getNodeFileWithResponse(poolId, nodeId, finalFileName, null)
                             .block()
                             .getValue()));
 
@@ -187,9 +189,9 @@ public class FileTests extends BatchClientTestBase {
                 Assertions.assertEquals("hello\n", fileContent);
 
                 // Get node file properties
-                BatchFileProperties fileProperties = SyncAsyncExtension.execute(
-                    () -> batchClient.getNodeFileProperties(poolId, nodeId, fileNameHolder[0]),
-                    () -> batchAsyncClient.getNodeFileProperties(poolId, nodeId, fileNameHolder[0]));
+                BatchFileProperties fileProperties
+                    = SyncAsyncExtension.execute(() -> batchClient.getNodeFileProperties(poolId, nodeId, finalFileName),
+                        () -> batchAsyncClient.getNodeFileProperties(poolId, nodeId, finalFileName));
 
                 Assertions.assertEquals(6, fileProperties.getContentLength());
 
