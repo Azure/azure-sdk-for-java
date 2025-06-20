@@ -23,7 +23,7 @@ import io.clientcore.http.netty4.implementation.Netty4ChannelBinaryData;
 import io.clientcore.http.netty4.implementation.Netty4EagerConsumeChannelHandler;
 import io.clientcore.http.netty4.implementation.Netty4HandlerNames;
 import io.clientcore.http.netty4.implementation.Netty4ProgressAndTimeoutHandler;
-import io.clientcore.http.netty4.implementation.Netty4ResponseHandler;
+import io.clientcore.http.netty4.implementation.Netty4Http11ResponseHandler;
 import io.clientcore.http.netty4.implementation.Netty4SslInitializationHandler;
 import io.clientcore.http.netty4.implementation.ResponseBodyHandling;
 import io.clientcore.http.netty4.implementation.ResponseStateInfo;
@@ -33,7 +33,6 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
-import io.netty.handler.codec.http.HttpClientCodec;
 import io.netty.handler.codec.http2.Http2SecurityUtil;
 import io.netty.handler.proxy.ProxyHandler;
 import io.netty.handler.ssl.ApplicationProtocolConfig;
@@ -55,6 +54,8 @@ import java.util.function.Consumer;
 
 import static io.clientcore.core.utils.ServerSentEventUtils.attemptRetry;
 import static io.clientcore.core.utils.ServerSentEventUtils.processTextEventStream;
+import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.HTTP_1_1_RESPONSE;
+import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.PROGRESS_AND_TIMEOUT;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.awaitLatch;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.createCodec;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.sendHttp11Request;
@@ -168,8 +169,7 @@ class NettyHttpClient implements HttpClient {
                         .addLast(Netty4HandlerNames.SSL_INITIALIZER, new Netty4SslInitializationHandler());
 
                     channel.pipeline()
-                        .addLast(new Netty4AlpnHandler(request, addProgressAndTimeoutHandler, responseReference,
-                            errorReference, latch));
+                        .addLast(new Netty4AlpnHandler(request, responseReference, errorReference, latch));
                 }
             }
         });
@@ -197,8 +197,8 @@ class NettyHttpClient implements HttpClient {
             // effectively be a no-op.
             if (addProgressAndTimeoutHandler) {
                 channel.pipeline()
-                    .addLast(Netty4HandlerNames.PROGRESS_AND_TIMEOUT, new Netty4ProgressAndTimeoutHandler(
-                        progressReporter, writeTimeoutMillis, responseTimeoutMillis, readTimeoutMillis));
+                    .addLast(PROGRESS_AND_TIMEOUT, new Netty4ProgressAndTimeoutHandler(progressReporter,
+                        writeTimeoutMillis, responseTimeoutMillis, readTimeoutMillis));
             }
 
             Throwable earlyError = errorReference.get();
@@ -232,20 +232,14 @@ class NettyHttpClient implements HttpClient {
             } else {
                 // If there isn't an SslHandler, we can send the request immediately.
                 // Add the HTTP/1.1 codec, as we only support HTTP/2 when using SSL ALPN.
-                Netty4ResponseHandler responseHandler
-                    = new Netty4ResponseHandler(request, responseReference, errorReference, latch);
-                channel.pipeline().addLast(Netty4HandlerNames.HTTP_1_1_RESPONSE, responseHandler);
+                Netty4Http11ResponseHandler responseHandler
+                    = new Netty4Http11ResponseHandler(request, responseReference, errorReference, latch);
+                channel.pipeline().addLast(HTTP_1_1_RESPONSE, responseHandler);
 
-                HttpClientCodec codec = createCodec();
-                if (addProgressAndTimeoutHandler) {
-                    channel.pipeline()
-                        .addBefore(Netty4HandlerNames.PROGRESS_AND_TIMEOUT, Netty4HandlerNames.HTTP_1_1_CODEC, codec);
-                } else {
-                    channel.pipeline().addBefore(Netty4HandlerNames.HTTP_1_1_RESPONSE,
-                        Netty4HandlerNames.HTTP_1_1_CODEC, codec);
-                }
+                String addBefore = addProgressAndTimeoutHandler ? PROGRESS_AND_TIMEOUT : HTTP_1_1_RESPONSE;
+                channel.pipeline().addBefore(addBefore, Netty4HandlerNames.HTTP_1_1_CODEC, createCodec());
 
-                sendHttp11Request(request, channel, addProgressAndTimeoutHandler, errorReference)
+                sendHttp11Request(request, channel, errorReference)
                     .addListener((ChannelFutureListener) sendListener -> {
                         if (!sendListener.isSuccess()) {
                             setOrSuppressError(errorReference, sendListener.cause());
@@ -288,7 +282,7 @@ class NettyHttpClient implements HttpClient {
                 // We're ignoring the response content.
                 CountDownLatch drainLatch = new CountDownLatch(1);
                 channel.pipeline().addLast(new Netty4EagerConsumeChannelHandler(drainLatch, ignored -> {
-                }));
+                }, info.isHttp2()));
                 channel.config().setAutoRead(true);
                 awaitLatch(drainLatch);
             } else if (bodyHandling == ResponseBodyHandling.STREAM) {
@@ -306,7 +300,7 @@ class NettyHttpClient implements HttpClient {
                     }
                 }
 
-                body = new Netty4ChannelBinaryData(info.getEagerContent(), channel, length);
+                body = new Netty4ChannelBinaryData(info.getEagerContent(), channel, length, info.isHttp2());
             } else {
                 // All cases otherwise assume BUFFER.
                 CountDownLatch drainLatch = new CountDownLatch(1);
@@ -316,7 +310,7 @@ class NettyHttpClient implements HttpClient {
                     } catch (IOException ex) {
                         throw LOGGER.throwableAtError().log(ex, CoreException::from);
                     }
-                }));
+                }, info.isHttp2()));
                 channel.config().setAutoRead(true);
                 awaitLatch(drainLatch);
 

@@ -25,13 +25,13 @@ import static io.clientcore.http.netty4.implementation.Netty4Utility.readByteBuf
 import static io.clientcore.http.netty4.implementation.Netty4Utility.setOrSuppressError;
 
 /**
- * A {@link ChannelInboundHandler} implementation that appropriately handles the response reading from the server based
- * on the information provided from the headers.
+ * A {@link ChannelInboundHandler} implementation that appropriately handles {@code HTTP/1.1} responses by using the
+ * response headers to determine how to read the response from the server.
  * <p>
  * When used with {@code NettyHttpClient} this handler must be added to the pipeline so that the {@link HttpClientCodec}
  * is able to decode the data of the response.
  */
-public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
+public final class Netty4Http11ResponseHandler extends ChannelInboundHandlerAdapter {
     private final HttpRequest request;
     private final AtomicReference<ResponseStateInfo> responseReference;
     private final AtomicReference<Throwable> errorReference;
@@ -49,7 +49,7 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
     private boolean complete;
 
     /**
-     * Creates an instance of {@link Netty4ResponseHandler}.
+     * Creates an instance of {@link Netty4Http11ResponseHandler}.
      *
      * @param request The request that resulted in the response.
      * @param responseReference The reference to the {@link Response} that will be created from the response headers and
@@ -59,7 +59,7 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
      * @param latch The latch to wait for the response to be processed.
      * @throws NullPointerException If {@code request}, {@code responseReference}, or {@code latch} is null.
      */
-    public Netty4ResponseHandler(HttpRequest request, AtomicReference<ResponseStateInfo> responseReference,
+    public Netty4Http11ResponseHandler(HttpRequest request, AtomicReference<ResponseStateInfo> responseReference,
         AtomicReference<Throwable> errorReference, CountDownLatch latch) {
         this.request = Objects.requireNonNull(request,
             "Cannot create an instance of CoreResponseHandler with a null 'request'.");
@@ -126,8 +126,8 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
             started = true;
             HttpResponse response = (HttpResponse) msg;
             this.statusCode = response.status().code();
-            this.headers = (response.headers() instanceof WrappedHttpHeaders)
-                ? ((WrappedHttpHeaders) response.headers()).getCoreHeaders()
+            this.headers = (response.headers() instanceof WrappedHttp11Headers)
+                ? ((WrappedHttp11Headers) response.headers()).getCoreHeaders()
                 : Netty4Utility.convertHeaders(response.headers());
 
             if (msg instanceof FullHttpResponse) {
@@ -173,7 +173,7 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
         }
 
         responseReference.set(new ResponseStateInfo(ctx.channel(), complete, statusCode, headers, eagerContent,
-            ResponseBodyHandling.getBodyHandling(request, headers)));
+            ResponseBodyHandling.getBodyHandling(request, headers), false));
         latch.countDown();
     }
 }

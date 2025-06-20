@@ -6,7 +6,6 @@ import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.netty.handler.codec.DateFormatter;
-import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeaders;
 
 import java.util.AbstractMap;
@@ -22,6 +21,8 @@ import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
+import static io.clientcore.http.netty4.implementation.Netty4Utility.fromPossibleAsciiString;
+
 /**
  * Implementation of Netty's {@link HttpHeaders} wrapping an instance of ClientCore's
  * {@link io.clientcore.core.http.models.HttpHeader}, eliminating the need to convert between the two HTTP header
@@ -31,18 +32,18 @@ import java.util.stream.Collectors;
  * converted to Netty's {@link io.netty.handler.codec.http2.Http2Headers}, a future optimization if we begin seeing
  * more usage of {@code HTTP/2} would be having a similar wrapper for the {@code HTTP/2} headers.
  */
-public final class WrappedHttpHeaders extends HttpHeaders {
-    private static final ClientLogger LOGGER = new ClientLogger(WrappedHttpHeaders.class);
+public final class WrappedHttp11Headers extends HttpHeaders {
+    private static final ClientLogger LOGGER = new ClientLogger(WrappedHttp11Headers.class);
     private io.clientcore.core.http.models.HttpHeaders coreHeaders;
 
     /**
-     * Creates a new instance of {@link WrappedHttpHeaders} wrapping the provided {@code coreHeaders}.
+     * Creates a new instance of {@link WrappedHttp11Headers} wrapping the provided {@code coreHeaders}.
      *
      * @param coreHeaders The ClientCore {@link io.clientcore.core.http.models.HttpHeaders} to wrap providing
      * integration with Netty {@link HttpHeaders}.
      * @throws NullPointerException If {@code coreHeaders} is null.
      */
-    public WrappedHttpHeaders(io.clientcore.core.http.models.HttpHeaders coreHeaders) {
+    public WrappedHttp11Headers(io.clientcore.core.http.models.HttpHeaders coreHeaders) {
         this.coreHeaders = Objects.requireNonNull(coreHeaders, "'coreHeaders' cannot be null.");
     }
 
@@ -301,8 +302,8 @@ public final class WrappedHttpHeaders extends HttpHeaders {
 
     @Override
     public HttpHeaders add(HttpHeaders headers) {
-        if (headers instanceof WrappedHttpHeaders) {
-            coreHeaders.addAll(((WrappedHttpHeaders) headers).coreHeaders);
+        if (headers instanceof WrappedHttp11Headers) {
+            coreHeaders.addAll(((WrappedHttp11Headers) headers).coreHeaders);
             return this;
         } else {
             return super.add(headers);
@@ -355,8 +356,8 @@ public final class WrappedHttpHeaders extends HttpHeaders {
 
     @Override
     public HttpHeaders set(HttpHeaders headers) {
-        if (headers instanceof WrappedHttpHeaders) {
-            coreHeaders = new io.clientcore.core.http.models.HttpHeaders(((WrappedHttpHeaders) headers).coreHeaders);
+        if (headers instanceof WrappedHttp11Headers) {
+            coreHeaders = new io.clientcore.core.http.models.HttpHeaders(((WrappedHttp11Headers) headers).coreHeaders);
         } else {
             super.set(headers);
         }
@@ -366,8 +367,8 @@ public final class WrappedHttpHeaders extends HttpHeaders {
 
     @Override
     public HttpHeaders setAll(HttpHeaders headers) {
-        if (headers instanceof WrappedHttpHeaders) {
-            coreHeaders.setAll(((WrappedHttpHeaders) headers).coreHeaders);
+        if (headers instanceof WrappedHttp11Headers) {
+            coreHeaders.setAll(((WrappedHttp11Headers) headers).coreHeaders);
         } else {
             super.setAll(headers);
         }
@@ -377,7 +378,7 @@ public final class WrappedHttpHeaders extends HttpHeaders {
 
     @Override
     public HttpHeaders copy() {
-        return new WrappedHttpHeaders(new io.clientcore.core.http.models.HttpHeaders(coreHeaders));
+        return new WrappedHttp11Headers(new io.clientcore.core.http.models.HttpHeaders(coreHeaders));
     }
 
     @Override
@@ -396,40 +397,5 @@ public final class WrappedHttpHeaders extends HttpHeaders {
     public HttpHeaders clear() {
         coreHeaders = new io.clientcore.core.http.models.HttpHeaders();
         return this;
-    }
-
-    // Helper method that hot paths some well-known AsciiString HttpHeaderNames that are known to be used by Netty
-    // internally.
-    @SuppressWarnings("deprecation")
-    private static HttpHeaderName fromPossibleAsciiString(CharSequence asciiString) {
-        if (HttpHeaderNames.ACCEPT_ENCODING == asciiString) {
-            return HttpHeaderName.ACCEPT_ENCODING;
-        } else if (HttpHeaderNames.CONNECTION == asciiString) {
-            return HttpHeaderName.CONNECTION;
-        } else if (HttpHeaderNames.CONTENT_ENCODING == asciiString) {
-            return HttpHeaderName.CONTENT_ENCODING;
-        } else if (HttpHeaderNames.CONTENT_LENGTH == asciiString) {
-            return HttpHeaderName.CONTENT_LENGTH;
-        } else if (HttpHeaderNames.CONTENT_TYPE == asciiString) {
-            return HttpHeaderName.CONTENT_TYPE;
-        } else if (HttpHeaderNames.COOKIE == asciiString) {
-            return HttpHeaderName.COOKIE;
-        } else if (HttpHeaderNames.EXPECT == asciiString) {
-            return HttpHeaderName.EXPECT;
-        } else if (HttpHeaderNames.HOST == asciiString) {
-            return HttpHeaderName.HOST;
-        } else if (HttpHeaderNames.KEEP_ALIVE == asciiString) {
-            return HttpHeaderName.KEEP_ALIVE;
-        } else if (HttpHeaderNames.PROXY_AUTHORIZATION == asciiString) {
-            return HttpHeaderName.PROXY_AUTHORIZATION;
-        } else if (HttpHeaderNames.TE == asciiString) {
-            return HttpHeaderName.TE;
-        } else if (HttpHeaderNames.TRAILER == asciiString) {
-            return HttpHeaderName.TRAILER;
-        } else if (HttpHeaderNames.TRANSFER_ENCODING == asciiString) {
-            return HttpHeaderName.TRANSFER_ENCODING;
-        } else {
-            return HttpHeaderName.fromString(asciiString.toString());
-        }
     }
 }

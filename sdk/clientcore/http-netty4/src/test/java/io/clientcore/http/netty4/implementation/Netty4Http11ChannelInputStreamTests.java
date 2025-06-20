@@ -37,11 +37,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Tests {@link Netty4ChannelInputStream}.
  */
 @Timeout(value = 3, unit = TimeUnit.MINUTES)
-public class Netty4ChannelInputStreamTests {
+public class Netty4Http11ChannelInputStreamTests {
     @Test
     public void nullEagerContentResultsInEmptyInitialCurrentBuffer() {
         try (Netty4ChannelInputStream channelInputStream
-            = new Netty4ChannelInputStream(null, createCloseableChannel())) {
+            = new Netty4ChannelInputStream(null, createCloseableChannel(), false)) {
             assertEquals(0, channelInputStream.getCurrentBuffer().length);
         }
     }
@@ -49,7 +49,7 @@ public class Netty4ChannelInputStreamTests {
     @Test
     public void emptyEagerContentResultsInEmptyInitialCurrentBuffer() {
         try (Netty4ChannelInputStream channelInputStream
-            = new Netty4ChannelInputStream(new ByteArrayOutputStream(), createCloseableChannel())) {
+            = new Netty4ChannelInputStream(new ByteArrayOutputStream(), createCloseableChannel(), false)) {
             assertEquals(0, channelInputStream.getCurrentBuffer().length);
         }
     }
@@ -63,7 +63,8 @@ public class Netty4ChannelInputStreamTests {
         eagerContent.write(expected);
 
         // MockChannels aren't active by default, so once the eagerContent is consumed the stream will be done.
-        Netty4ChannelInputStream channelInputStream = new Netty4ChannelInputStream(eagerContent, new MockChannel());
+        Netty4ChannelInputStream channelInputStream
+            = new Netty4ChannelInputStream(eagerContent, new MockChannel(), false);
 
         // Make sure the Netty4ChannelInputStream copied the eager content correctly.
         assertArraysEqual(expected, channelInputStream.getCurrentBuffer());
@@ -95,7 +96,7 @@ public class Netty4ChannelInputStreamTests {
                 handler.channelRead(ctx, wrappedBuffer(expected, 16, 16));
                 handler.channelRead(ctx, LastHttpContent.EMPTY_LAST_CONTENT);
                 handler.channelReadComplete(ctx);
-            }));
+            }), false);
 
         int index = 0;
         byte[] actual = new byte[32];
@@ -117,7 +118,7 @@ public class Netty4ChannelInputStreamTests {
 
         // MockChannels aren't active by default, so once the eagerContent is consumed the stream will be done.
         try (Netty4ChannelInputStream channelInputStream
-            = new Netty4ChannelInputStream(eagerContent, createCloseableChannel())) {
+            = new Netty4ChannelInputStream(eagerContent, createCloseableChannel(), false)) {
             long skipped = channelInputStream.skip(16);
             assertEquals(16, skipped);
 
@@ -140,7 +141,7 @@ public class Netty4ChannelInputStreamTests {
         ThreadLocalRandom.current().nextBytes(expected);
 
         try (Netty4ChannelInputStream channelInputStream
-            = new Netty4ChannelInputStream(null, createChannelThatReads8Kb(expected))) {
+            = new Netty4ChannelInputStream(null, createChannelThatReads8Kb(expected), false)) {
             byte[] actual = new byte[8192];
             int read = channelInputStream.read(actual);
 
@@ -161,7 +162,7 @@ public class Netty4ChannelInputStreamTests {
         ThreadLocalRandom.current().nextBytes(expected);
 
         try (Netty4ChannelInputStream channelInputStream
-            = new Netty4ChannelInputStream(null, createChannelThatReads8Kb(expected))) {
+            = new Netty4ChannelInputStream(null, createChannelThatReads8Kb(expected), false)) {
             long skipped = channelInputStream.skip(8192);
             assertEquals(8192, skipped);
 
@@ -176,7 +177,7 @@ public class Netty4ChannelInputStreamTests {
         AtomicInteger disconnectCount = new AtomicInteger();
 
         new Netty4ChannelInputStream(null,
-            createCloseableChannel(closeCount::incrementAndGet, disconnectCount::incrementAndGet)).close();
+            createCloseableChannel(closeCount::incrementAndGet, disconnectCount::incrementAndGet), false).close();
 
         assertEquals(1, closeCount.get());
     }
@@ -184,7 +185,8 @@ public class Netty4ChannelInputStreamTests {
     @ParameterizedTest
     @MethodSource("errorSupplier")
     public void streamPropagatesErrorFiredInChannel(Throwable expected) {
-        InputStream inputStream = new Netty4ChannelInputStream(null, createPartialReadThenErrorChannel(expected));
+        InputStream inputStream
+            = new Netty4ChannelInputStream(null, createPartialReadThenErrorChannel(expected), false);
 
         Throwable actual = assertThrows(Throwable.class, () -> inputStream.read(new byte[8192]));
 

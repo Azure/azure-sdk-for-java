@@ -73,9 +73,14 @@ public final class Netty4HandlerNames {
     public static final String CHUNKED_WRITER = "clientcore.chunkedwriter";
 
     /**
-     * Name for the {@link Netty4ResponseHandler}.
+     * Name for the {@link Netty4Http11ResponseHandler}.
      */
     public static final String HTTP_1_1_RESPONSE = "clientcore.http11response";
+
+    /**
+     * Name for the {@link Netty4Http2ResponseHandler}.
+     */
+    public static final String HTTP_2_RESPONSE = "clientcore.http2response";
 
     /**
      * Name for the {@link Netty4EagerConsumeChannelHandler}.
