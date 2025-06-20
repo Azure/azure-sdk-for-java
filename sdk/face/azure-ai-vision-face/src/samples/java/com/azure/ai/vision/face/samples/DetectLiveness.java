@@ -10,9 +10,7 @@ import com.azure.ai.vision.face.models.LivenessOperationMode;
 import com.azure.ai.vision.face.models.LivenessSession;
 import com.azure.ai.vision.face.models.LivenessSessionAttempt;
 import com.azure.ai.vision.face.samples.utils.ConfigurationHelper;
-import com.azure.ai.vision.face.samples.utils.Resources;
 import com.azure.ai.vision.face.samples.utils.Utils;
-import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.List;
@@ -41,13 +39,11 @@ public class DetectLiveness {
 
         // Create a liveness session
         CreateLivenessSessionContent parameters = new CreateLivenessSessionContent(LivenessOperationMode.PASSIVE)
-            .setDeviceCorrelationId(UUID.randomUUID().toString())
-            .setAuthTokenTimeToLiveInSeconds(60);
-        BinaryData data = Utils.loadFromFile(Resources.TEST_IMAGE_PATH_DETECTLIVENESS_VERIFYIMAGE);
-        LivenessSession livenessSessionCreationResult = faceSessionClient.createLivenessSession(parameters);
-        String sessionId = livenessSessionCreationResult.getSessionId();
-        logObject("Create a liveness session: ", livenessSessionCreationResult, true);
-        String token = livenessSessionCreationResult.getAuthToken();
+            .setDeviceCorrelationId(UUID.randomUUID().toString());
+
+        LivenessSession livenessSession = faceSessionClient.createLivenessSession(parameters);
+        logObject("Create a liveness session: ", livenessSession, true);
+        String token = livenessSession.getAuthToken();
 
         try {
             // 3. Pass the AuthToken to client device
@@ -58,17 +54,16 @@ public class DetectLiveness {
             waitingForLivenessSessionComplete();
 
             // 8. After client devices perform the action, we can get the result from the following API
-            LivenessSession sessionResult = faceSessionClient.getLivenessSessionResult(livenessSessionCreationResult.getSessionId());
+            LivenessSession sessionResult = faceSessionClient.getLivenessSessionResult(livenessSession.getSessionId());
             logObject("Get liveness session result after client device complete liveness check: ", sessionResult);
 
             // Get the details of all the attempts for liveness check for this sessions
-            LivenessSession results = faceSessionClient.getLivenessSessionResult(sessionResult.getSessionId());
-            List<LivenessSessionAttempt> attempts = results.getResults().getAttempts();
+            List<LivenessSessionAttempt> attempts = sessionResult.getResults().getAttempts();
             logObject("List all livenss session attempts: ", attempts, true);
 
         } finally {
             // Delete this session
-            faceSessionClient.deleteLivenessSession(livenessSessionCreationResult.getSessionId());
+            faceSessionClient.deleteLivenessSession(livenessSession.getSessionId());
         }
     }
 

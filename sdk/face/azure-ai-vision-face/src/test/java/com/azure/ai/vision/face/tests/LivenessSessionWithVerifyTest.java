@@ -51,7 +51,7 @@ public class LivenessSessionWithVerifyTest extends FaceClientTestBase {
         BinaryData imageData = path != null ? Utils.loadFromFile(path) : null;
         VerifyImageFileDetails verifyImageFileDetails = new VerifyImageFileDetails(imageData);
         if (imageData != null) {
-            verifyImageFileDetails.setFilename("vic-test.jpg");
+            verifyImageFileDetails.setFilename("verify.jpg");
         }
         CreateLivenessWithVerifySessionContent content
             = new CreateLivenessWithVerifySessionContent(LivenessOperationMode.PASSIVE, verifyImageFileDetails)
@@ -66,7 +66,7 @@ public class LivenessSessionWithVerifyTest extends FaceClientTestBase {
         BinaryData imageData = path != null ? Utils.loadFromFile(path) : null;
         VerifyImageFileDetails verifyImageFileDetails = new VerifyImageFileDetails(imageData);
         if (imageData != null) {
-            verifyImageFileDetails.setFilename("vic-test.jpg");
+            verifyImageFileDetails.setFilename("verify.jpg");
         }
         CreateLivenessWithVerifySessionContent content
             = new CreateLivenessWithVerifySessionContent(LivenessOperationMode.PASSIVE, verifyImageFileDetails)
@@ -86,7 +86,7 @@ public class LivenessSessionWithVerifyTest extends FaceClientTestBase {
         BinaryData imageData = path != null ? Utils.loadFromFile(path) : null;
         VerifyImageFileDetails verifyImageFileDetails = new VerifyImageFileDetails(imageData);
         if (imageData != null) {
-            verifyImageFileDetails.setFilename("vic-test.jpg");
+            verifyImageFileDetails.setFilename("verify.jpg");
         }
 
         CreateLivenessWithVerifySessionContent content
@@ -95,7 +95,7 @@ public class LivenessSessionWithVerifyTest extends FaceClientTestBase {
                 .setDeviceCorrelationId(uuid) // Set the actual UUID
                 .setAuthTokenTimeToLiveInSeconds(authTokenTimeToLiveInSeconds); // Set valid TTL instead of null
 
-        LivenessWithVerifySession result = createSessionAndVerify(livenessCommands, content);
+        createSessionAndVerify(livenessCommands, content);
     }
 
     @BeforeEach

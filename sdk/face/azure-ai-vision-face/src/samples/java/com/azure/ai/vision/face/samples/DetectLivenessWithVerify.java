@@ -43,17 +43,15 @@ public class DetectLivenessWithVerify {
         BinaryData data = Utils.loadFromFile(Resources.TEST_IMAGE_PATH_DETECTLIVENESS_VERIFYIMAGE);
         VerifyImageFileDetails verifyImageFileDetails = new VerifyImageFileDetails(data);
         CreateLivenessWithVerifySessionContent parameters = new CreateLivenessWithVerifySessionContent(LivenessOperationMode.PASSIVE, verifyImageFileDetails)
-            .setDeviceCorrelationId(UUID.randomUUID().toString())
-            .setAuthTokenTimeToLiveInSeconds(60);
+            .setDeviceCorrelationId(UUID.randomUUID().toString());
 
-        LivenessWithVerifySession livenessSessionCreationResult = faceSessionClient.createLivenessWithVerifySession(parameters);
-        String sessionId = livenessSessionCreationResult.getSessionId();
-        logObject("Create a liveness session: ", livenessSessionCreationResult, true);
-        String token = livenessSessionCreationResult.getAuthToken();
-
+        LivenessWithVerifySession livenessWithVerifySession = faceSessionClient.createLivenessWithVerifySession(parameters);
+        logObject("Create a liveness session: ", livenessWithVerifySession, true);
+        
         try {
             // 3. Pass the AuthToken to client device
             // Client device will process the step 4, 5, 6 in the documentation 'Orchestrate the liveness solution'
+            String token = livenessWithVerifySession.getAuthToken();
             sendTokenToClientDevices(token);
 
             // 7. wait for client device notify us that liveness session completed.
@@ -61,14 +59,14 @@ public class DetectLivenessWithVerify {
 
 
             // 8. After client devices perform the action, we can get the result from the following API
-            LivenessWithVerifySession sessionResult = faceSessionClient.getLivenessWithVerifySessionResult(livenessSessionCreationResult.getSessionId());
+            LivenessWithVerifySession sessionResult = faceSessionClient.getLivenessWithVerifySessionResult(livenessWithVerifySession.getSessionId());
             logObject("Get liveness session result after client device complete liveness check: ", sessionResult);
 
-            LivenessWithVerifySession results = faceSessionClient.getLivenessWithVerifySessionResult(sessionResult.getSessionId());
-            List<LivenessWithVerifySessionAttempt> attempts = results.getResults().getAttempts();
+            List<LivenessWithVerifySessionAttempt> attempts = sessionResult.getResults().getAttempts();
             logObject("List all livenss with verify session attempts: ", attempts, true);
         } finally {
 //             Delete this session
+            String sessionId = livenessWithVerifySession.getSessionId();
             logObject("Delete liveness sessions: " + sessionId);
             faceSessionClient.deleteLivenessWithVerifySession(sessionId);
         }
