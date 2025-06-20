@@ -9,7 +9,7 @@ parameters:
 
 steps:
   - task: PowerShell@2
-    displayName: 'Publish to Java Dev Feed'
+    displayName: 'Publish to DevOps Feed ${{ parameters.RepositoryUrl }}'
     inputs:
       pwsh: true
       workingDirectory: $(Agent.BuildDirectory)
