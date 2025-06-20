@@ -4,6 +4,14 @@
     "releaseStatus" : "GENERAL_AVAILABILITY",
     "snapshot" : false,
     "supportStatus" : "SUPPORTED",
+    "spring-boot-version" : "3.5.2",
+    "spring-cloud-version" : "2025.0.0"
+  },
+  {
+    "current" : false,
+    "releaseStatus" : "GENERAL_AVAILABILITY",
+    "snapshot" : false,
+    "supportStatus" : "END_OF_LIFE",
     "spring-boot-version" : "3.5.0",
     "spring-cloud-version" : "2025.0.0"
   },
@@ -12,6 +20,14 @@
     "releaseStatus" : "GENERAL_AVAILABILITY",
     "snapshot" : false,
     "supportStatus" : "SUPPORTED",
+    "spring-boot-version" : "3.4.7",
+    "spring-cloud-version" : "2024.0.1"
+  },
+  {
+    "current" : false,
+    "releaseStatus" : "GENERAL_AVAILABILITY",
+    "snapshot" : false,
+    "supportStatus" : "END_OF_LIFE",
     "spring-boot-version" : "3.4.6",
     "spring-cloud-version" : "2024.0.1"
   },
@@ -52,6 +68,14 @@
     "releaseStatus" : "GENERAL_AVAILABILITY",
     "snapshot" : false,
     "supportStatus" : "SUPPORTED",
+    "spring-boot-version" : "3.3.13",
+    "spring-cloud-version" : "2023.0.5"
+  },
+  {
+    "current" : false,
+    "releaseStatus" : "GENERAL_AVAILABILITY",
+    "snapshot" : false,
+    "supportStatus" : "END_OF_LIFE",
     "spring-boot-version" : "3.3.12",
     "spring-cloud-version" : "2023.0.5"
   },
