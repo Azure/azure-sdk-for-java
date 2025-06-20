@@ -79,18 +79,16 @@ public class JobScheduleTests extends BatchClientTestBase {
             () -> batchAsyncClient.jobScheduleExists(jobScheduleId));
         Assertions.assertTrue(exists);
 
-        final BatchJobSchedule[] jobScheduleHolder = new BatchJobSchedule[1];
-
-        jobScheduleHolder[0] = SyncAsyncExtension.execute(() -> batchClient.getJobSchedule(jobScheduleId),
-            () -> batchAsyncClient.getJobSchedule(jobScheduleId));
-        Assertions.assertNotNull(jobScheduleHolder[0]);
-        Assertions.assertEquals(jobScheduleId, jobScheduleHolder[0].getId());
-        Assertions.assertEquals((Integer) 100, jobScheduleHolder[0].getJobSpecification().getPriority());
+        BatchJobSchedule originalJobSchedule = SyncAsyncExtension.execute(
+            () -> batchClient.getJobSchedule(jobScheduleId), () -> batchAsyncClient.getJobSchedule(jobScheduleId));
+        Assertions.assertNotNull(originalJobSchedule);
+        Assertions.assertEquals(jobScheduleId, originalJobSchedule.getId());
+        Assertions.assertEquals((Integer) 100, originalJobSchedule.getJobSpecification().getPriority());
 
         //This case will only hold true during live mode as recorded job schedule time will be in the past.
         //Hence, this assertion should only run in Record/Live mode.
         if (getTestMode() == TestMode.RECORD) {
-            Assertions.assertTrue(jobScheduleHolder[0].getSchedule().getDoNotRunAfter().isAfter(now()));
+            Assertions.assertTrue(originalJobSchedule.getSchedule().getDoNotRunAfter().isAfter(now()));
         }
 
         // LIST
@@ -117,15 +115,16 @@ public class JobScheduleTests extends BatchClientTestBase {
         metadataList.add(new BatchMetadataItem("name1", "value1"));
         metadataList.add(new BatchMetadataItem("name2", "value2"));
 
-        jobScheduleHolder[0].setMetadata(metadataList);
+        BatchJobSchedule updatedJobSchedule = originalJobSchedule;
+        updatedJobSchedule.setMetadata(metadataList);
 
-        SyncAsyncExtension.execute(() -> batchClient.replaceJobSchedule(jobScheduleId, jobScheduleHolder[0]),
-            () -> batchAsyncClient.replaceJobSchedule(jobScheduleId, jobScheduleHolder[0]));
+        SyncAsyncExtension.execute(() -> batchClient.replaceJobSchedule(jobScheduleId, updatedJobSchedule),
+            () -> batchAsyncClient.replaceJobSchedule(jobScheduleId, updatedJobSchedule));
 
-        jobScheduleHolder[0] = SyncAsyncExtension.execute(() -> batchClient.getJobSchedule(jobScheduleId),
-            () -> batchAsyncClient.getJobSchedule(jobScheduleId));
-        Assertions.assertEquals(2, jobScheduleHolder[0].getMetadata().size());
-        Assertions.assertEquals("value2", jobScheduleHolder[0].getMetadata().get(1).getValue());
+        BatchJobSchedule jobScheduleAfterReplace = SyncAsyncExtension.execute(
+            () -> batchClient.getJobSchedule(jobScheduleId), () -> batchAsyncClient.getJobSchedule(jobScheduleId));
+        Assertions.assertEquals(2, jobScheduleAfterReplace.getMetadata().size());
+        Assertions.assertEquals("value2", jobScheduleAfterReplace.getMetadata().get(1).getValue());
 
         // UPDATE
         LinkedList<BatchMetadataItem> metadata = new LinkedList<>();
@@ -135,11 +134,11 @@ public class JobScheduleTests extends BatchClientTestBase {
         SyncAsyncExtension.execute(() -> batchClient.updateJobSchedule(jobScheduleId, updateParams),
             () -> batchAsyncClient.updateJobSchedule(jobScheduleId, updateParams));
 
-        jobScheduleHolder[0] = SyncAsyncExtension.execute(() -> batchClient.getJobSchedule(jobScheduleId),
-            () -> batchAsyncClient.getJobSchedule(jobScheduleId));
-        Assertions.assertEquals(1, jobScheduleHolder[0].getMetadata().size());
-        Assertions.assertEquals("key1", jobScheduleHolder[0].getMetadata().get(0).getName());
-        Assertions.assertEquals((Integer) 100, jobScheduleHolder[0].getJobSpecification().getPriority());
+        BatchJobSchedule jobScheduleAfterUpdate = SyncAsyncExtension.execute(
+            () -> batchClient.getJobSchedule(jobScheduleId), () -> batchAsyncClient.getJobSchedule(jobScheduleId));
+        Assertions.assertEquals(1, jobScheduleAfterUpdate.getMetadata().size());
+        Assertions.assertEquals("key1", jobScheduleAfterUpdate.getMetadata().get(0).getName());
+        Assertions.assertEquals((Integer) 100, jobScheduleAfterUpdate.getJobSpecification().getPriority());
 
         // DELETE
         SyncPoller<BatchJobSchedule, Void> poller = setPlaybackSyncPollerPollInterval(
