@@ -3,13 +3,11 @@
 ### 4.72.0-beta.1 (Unreleased)
 
 #### Features Added
-* Added `azure.cosmosdb.operation.request_charge` and `azure.cosmosdb.response.sub_status_code` attributes. - [PR 45753](https://github.com/Azure/azure-sdk-for-java/pull/45753)
+* Added `azure.cosmosdb.operation.request_charge` and `azure.cosmosdb.response.sub_status_code` trace attributes. - [PR 45753](https://github.com/Azure/azure-sdk-for-java/pull/45753)
 
 #### Breaking Changes
 
 #### Bugs Fixed
-* Fixed attribute type mismatch for `db.cosmosdb.request_charge` and `db.cosmosdb.sub_status_code` attributes so that they
-  match OpenTelemetry semantic conventions. - [PR 45753](https://github.com/Azure/azure-sdk-for-java/pull/45753)
 
 #### Other Changes
 
