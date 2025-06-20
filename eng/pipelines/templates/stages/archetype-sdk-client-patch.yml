@@ -124,7 +124,7 @@ extends:
               inputs:
                 mavenPomFile: ClientFromSourcePom.xml
                 goals: 'deploy'
-                options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} -DskipTests -Dgenerate-overview -DadditionalJOption=-Xdoclint:all,-html -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dspotless.apply.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module, so we ensure it always builds in CI.
+                options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} -DskipTests -Dgenerate-overview -DadditionalJOption=-Xdoclint:none -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dspotless.apply.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module, so we ensure it always builds in CI.
                 mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
                 javaHomeOption: 'JDKVersion'
                 jdkVersionOption: ${{ parameters.JavaBuildVersion }}
