@@ -24,9 +24,8 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.when;
@@ -193,8 +192,7 @@ public class ManagedIdentityCredentialTest {
                 .put("AZURE_FEDERATED_TOKEN_FILE", "tokenFile"));
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
-        assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
-            cred.managedIdentityServiceCredential, instanceOf(AksExchangeTokenCredential.class));
+        assertInstanceOf(AksExchangeTokenCredential.class, cred.managedIdentityServiceCredential);
     }
 
     private MockHttpResponse getMockResponse(int code, String body) {
