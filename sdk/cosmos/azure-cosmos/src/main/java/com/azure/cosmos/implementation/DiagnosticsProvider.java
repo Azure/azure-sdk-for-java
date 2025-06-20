@@ -1536,7 +1536,7 @@ public final class DiagnosticsProvider {
                 context);
             tracer.setAttribute(
                 "db.cosmosdb.sub_status_code",
-                cosmosCtx.getSubStatusCode(),
+                Integer.toString(cosmosCtx.getSubStatusCode()),
                 context);
             tracer.setAttribute(
                 "azure.cosmosdb.response.sub_status_code",
@@ -1544,7 +1544,7 @@ public final class DiagnosticsProvider {
                 context);
             tracer.setAttribute(
                 "db.cosmosdb.request_charge",
-                (double) cosmosCtx.getTotalRequestCharge(),
+                Float.toString(cosmosCtx.getTotalRequestCharge()),
                 context);
             tracer.setAttribute(
                 "azure.cosmosdb.operation.request_charge",
