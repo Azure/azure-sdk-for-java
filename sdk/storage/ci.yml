@@ -111,7 +111,7 @@ parameters:
   type: boolean
   default: true
 - name: ReleaseToDevOpsOnly
-  displayName: 'Release package to DevOps feed instead of Nuget.org'
+  displayName: 'Release package to DevOps feed instead of maven.org'
   type: boolean
   default: false
 
