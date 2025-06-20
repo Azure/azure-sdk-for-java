@@ -240,7 +240,8 @@ stages:
           # This timeout shouldn't be necessary once we're able to parallelize better. Right now,
           # this is here to ensure larger areas (30+) libraries don't time out.
           timeoutInMinutes: 120
-          dependsOn: PublishESRPPackage
+          ${{ if eq(parameters.PublicFeedUrl, 'maven.org') }}:
+            dependsOn: PublishESRPPackage
           pool:
             name: $(WINDOWSPOOL)
             image: $(WINDOWSVMIMAGE)
@@ -286,7 +287,7 @@ stages:
         - job: UpdatePackageVersion
           displayName: "Update Package Version"
           condition: and(succeeded(), ne(variables['Skip.UpdatePackageVersion'], 'true'))
-          dependsOn: PublishESRPPackage
+          dependsOn: PublishDevFeedPackage
           pool:
             name: $(WINDOWSPOOL)
             image: $(WINDOWSVMIMAGE)
@@ -372,7 +373,7 @@ stages:
         - job: PublishDocs
           displayName: Publish Docs to GitHubIO Blob Storage
           condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
-          dependsOn: PublishESRPPackage
+          dependsOn: PublishDevFeedPackage
           pool:
             name: $(WINDOWSPOOL)
             image: $(WINDOWSVMIMAGE)
