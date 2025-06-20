@@ -58,14 +58,13 @@ public class JobTests extends BatchClientTestBase {
 
         try {
             // GET
-            final BatchJob[] jobHolder = new BatchJob[1];
-            jobHolder[0]
+            BatchJob job
                 = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
-            Assertions.assertNotNull(jobHolder[0]);
-            Assertions.assertNotNull(jobHolder[0].isAllowTaskPreemption());
-            Assertions.assertEquals(-1, (int) jobHolder[0].getMaxParallelTasks());
-            Assertions.assertEquals(jobId, jobHolder[0].getId());
-            Assertions.assertEquals((Integer) 0, jobHolder[0].getPriority());
+            Assertions.assertNotNull(job);
+            Assertions.assertNotNull(job.isAllowTaskPreemption());
+            Assertions.assertEquals(-1, (int) job.getMaxParallelTasks());
+            Assertions.assertEquals(jobId, job.getId());
+            Assertions.assertEquals((Integer) 0, job.getPriority());
 
             // LIST
             Iterable<BatchJob> jobs = SyncAsyncExtension.execute(() -> batchClient.listJobs(),
@@ -83,14 +82,13 @@ public class JobTests extends BatchClientTestBase {
             Assertions.assertTrue(found);
 
             // REPLACE
-            BatchJob replacementJob = jobHolder[0];
+            BatchJob replacementJob = job;
             replacementJob.setPriority(1);
             SyncAsyncExtension.execute(() -> batchClient.replaceJob(jobId, replacementJob),
                 () -> batchAsyncClient.replaceJob(jobId, replacementJob));
 
-            jobHolder[0]
-                = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
-            Assertions.assertEquals((Integer) 1, jobHolder[0].getPriority());
+            job = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
+            Assertions.assertEquals((Integer) 1, job.getPriority());
 
             // DELETE
             SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
@@ -129,42 +127,39 @@ public class JobTests extends BatchClientTestBase {
 
         try {
             // GET
-            final BatchJob[] jobHolder = new BatchJob[1];
-            jobHolder[0]
+            BatchJob job
                 = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
-            Assertions.assertEquals(BatchJobState.ACTIVE, jobHolder[0].getState());
+            Assertions.assertEquals(BatchJobState.ACTIVE, job.getState());
 
             // REPLACE
             Integer maxTaskRetryCount = 3;
             Integer priority = 500;
-            jobHolder[0].setPriority(priority);
-            jobHolder[0].setConstraints(new BatchJobConstraints().setMaxTaskRetryCount(maxTaskRetryCount));
-            jobHolder[0].getPoolInfo().setPoolId(poolId);
+            BatchJob replacementJob = job;
+            replacementJob.setPriority(priority);
+            replacementJob.setConstraints(new BatchJobConstraints().setMaxTaskRetryCount(maxTaskRetryCount));
+            replacementJob.getPoolInfo().setPoolId(poolId);
 
-            SyncAsyncExtension.execute(() -> batchClient.replaceJob(jobId, jobHolder[0]),
-                () -> batchAsyncClient.replaceJob(jobId, jobHolder[0]));
+            SyncAsyncExtension.execute(() -> batchClient.replaceJob(jobId, replacementJob),
+                () -> batchAsyncClient.replaceJob(jobId, replacementJob));
 
-            jobHolder[0]
-                = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
-            Assertions.assertEquals(priority, jobHolder[0].getPriority());
-            Assertions.assertEquals(maxTaskRetryCount, jobHolder[0].getConstraints().getMaxTaskRetryCount());
+            job = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
+            Assertions.assertEquals(priority, job.getPriority());
+            Assertions.assertEquals(maxTaskRetryCount, job.getConstraints().getMaxTaskRetryCount());
 
             // DISABLE
             BatchJobDisableParameters disableParams = new BatchJobDisableParameters(DisableBatchJobOption.REQUEUE);
             SyncAsyncExtension.execute(() -> batchClient.disableJob(jobId, disableParams),
                 () -> batchAsyncClient.disableJob(jobId, disableParams));
 
-            jobHolder[0]
-                = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
-            Assertions.assertEquals(BatchJobState.DISABLING, jobHolder[0].getState());
+            job = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
+            Assertions.assertEquals(BatchJobState.DISABLING, job.getState());
 
             sleepIfRunningAgainstService(5000);
 
-            jobHolder[0]
-                = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
-            Assertions.assertTrue(jobHolder[0].getState() == BatchJobState.DISABLED
-                || jobHolder[0].getState() == BatchJobState.DISABLING);
-            Assertions.assertEquals(BatchAllTasksCompleteMode.NO_ACTION, jobHolder[0].getAllTasksCompleteMode());
+            job = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
+            Assertions
+                .assertTrue(job.getState() == BatchJobState.DISABLED || job.getState() == BatchJobState.DISABLING);
+            Assertions.assertEquals(BatchAllTasksCompleteMode.NO_ACTION, job.getAllTasksCompleteMode());
 
             // UPDATE
             BatchJobUpdateParameters updateParams
@@ -172,16 +167,14 @@ public class JobTests extends BatchClientTestBase {
             SyncAsyncExtension.execute(() -> batchClient.updateJob(jobId, updateParams),
                 () -> batchAsyncClient.updateJob(jobId, updateParams));
 
-            jobHolder[0]
-                = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
-            Assertions.assertEquals(BatchAllTasksCompleteMode.TERMINATE_JOB, jobHolder[0].getAllTasksCompleteMode());
+            job = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
+            Assertions.assertEquals(BatchAllTasksCompleteMode.TERMINATE_JOB, job.getAllTasksCompleteMode());
 
             // ENABLE
             SyncAsyncExtension.execute(() -> batchClient.enableJob(jobId), () -> batchAsyncClient.enableJob(jobId));
 
-            jobHolder[0]
-                = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
-            Assertions.assertEquals(BatchJobState.ACTIVE, jobHolder[0].getState());
+            job = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
+            Assertions.assertEquals(BatchJobState.ACTIVE, job.getState());
 
             // TERMINATE
             BatchJobTerminateParameters terminateParams
@@ -191,15 +184,13 @@ public class JobTests extends BatchClientTestBase {
             SyncAsyncExtension.execute(() -> batchClient.terminateJob(jobId, terminateOptions, null),
                 () -> batchAsyncClient.terminateJob(jobId, terminateOptions, null));
 
-            jobHolder[0]
-                = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
-            Assertions.assertEquals(BatchJobState.TERMINATING, jobHolder[0].getState());
+            job = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
+            Assertions.assertEquals(BatchJobState.TERMINATING, job.getState());
 
             sleepIfRunningAgainstService(2000);
 
-            jobHolder[0]
-                = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
-            Assertions.assertEquals(BatchJobState.COMPLETED, jobHolder[0].getState());
+            job = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
+            Assertions.assertEquals(BatchJobState.COMPLETED, job.getState());
 
         } finally {
             try {
@@ -239,13 +230,12 @@ public class JobTests extends BatchClientTestBase {
 
         try {
             // GET
-            final BatchJob[] jobHolder = new BatchJob[1];
-            jobHolder[0]
+            BatchJob job
                 = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
-            Assertions.assertNotNull(jobHolder[0]);
-            Assertions.assertEquals(jobId, jobHolder[0].getId());
+            Assertions.assertNotNull(job);
+            Assertions.assertEquals(jobId, job.getId());
             Assertions.assertEquals(targetMode,
-                jobHolder[0].getPoolInfo().getAutoPoolSpecification().getPool().getTargetNodeCommunicationMode());
+                job.getPoolInfo().getAutoPoolSpecification().getPool().getTargetNodeCommunicationMode());
 
             // DELETE
             SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
