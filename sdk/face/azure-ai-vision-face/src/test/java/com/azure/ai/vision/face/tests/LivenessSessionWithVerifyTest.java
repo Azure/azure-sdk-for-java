@@ -9,6 +9,7 @@ import com.azure.ai.vision.face.FaceSessionClient;
 import com.azure.ai.vision.face.models.CreateLivenessWithVerifySessionContent;
 import com.azure.ai.vision.face.models.LivenessOperationMode;
 import com.azure.ai.vision.face.models.LivenessWithVerifySession;
+import com.azure.ai.vision.face.models.OperationState;
 import com.azure.ai.vision.face.samples.utils.Resources;
 import com.azure.ai.vision.face.samples.utils.Utils;
 import com.azure.ai.vision.face.tests.commands.liveness.ILivenessWithVerifySessionSyncCommands;
@@ -69,8 +70,7 @@ public class LivenessSessionWithVerifyTest extends FaceClientTestBase {
         }
         CreateLivenessWithVerifySessionContent content
             = new CreateLivenessWithVerifySessionContent(LivenessOperationMode.PASSIVE, verifyImageFileDetails)
-                .setDeviceCorrelationIdSetInClient(true)
-                .setDeviceCorrelationId(null); // Fix: explicitly set deviceCorrelationId to null when using client-side ID
+                .setDeviceCorrelationIdSetInClient(true);
         createSessionAndVerify(commandProvider.get(), content);
     }
 
@@ -96,11 +96,6 @@ public class LivenessSessionWithVerifyTest extends FaceClientTestBase {
                 .setAuthTokenTimeToLiveInSeconds(authTokenTimeToLiveInSeconds); // Set valid TTL instead of null
 
         LivenessWithVerifySession result = createSessionAndVerify(livenessCommands, content);
-        // Uncomment these if you want to verify the TTL was set correctly:
-        // LivenessWithVerifySession livenessSession
-        //     = livenessCommands.getLivenessWithVerifySessionResultSync(result.getSessionId());
-        // Assertions.assertNotNull(livenessSession);
-        // Assertions.assertEquals(livenessSession.getAuthTokenTimeToLiveInSeconds(), authTokenTimeToLiveInSeconds);
     }
 
     @BeforeEach
@@ -139,6 +134,12 @@ public class LivenessSessionWithVerifyTest extends FaceClientTestBase {
         Assertions.assertNotNull(result);
         Assertions.assertNotNull(result.getSessionId());
         Assertions.assertNotNull(result.getAuthToken());
+        Assertions.assertNotNull(result.getStatus());
+        Assertions.assertNotNull(result.getModelVersion());
+        Assertions.assertNotNull(result.getResults());
+
+        Assertions.assertEquals(OperationState.NOT_STARTED, result.getStatus());
+        Assertions.assertEquals(0, result.getResults().getAttempts().size());
 
         return result;
     }

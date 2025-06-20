@@ -662,6 +662,7 @@ public final class FaceSessionAsyncClient {
         MultipartFormDataHelper form = new MultipartFormDataHelper(requestOptions)
             .serializeTextField("livenessOperationMode", Objects.toString(body.getLivenessOperationMode()));
 
+        // Handwritten start
         if (body.isDeviceCorrelationIdSetInClient() != null) {
             form.serializeTextField("deviceCorrelationIdSetInClient",
                 Objects.toString(body.isDeviceCorrelationIdSetInClient()));
@@ -689,6 +690,7 @@ public final class FaceSessionAsyncClient {
             form.serializeTextField("authTokenTimeToLiveInSeconds",
                 Objects.toString(body.getAuthTokenTimeToLiveInSeconds()));
         }
+        // Handwritten end
 
         return createLivenessWithVerifySessionWithResponse(form.end().getRequestBody(), requestOptions)
             .flatMap(FluxUtil::toMono)
