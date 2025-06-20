@@ -11,7 +11,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-sdk-template-two</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-sdk-template-two;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-sdk-template-two;current} -->
 
   <name>Microsoft Azure SDK for Template</name>
   <description>This package contains Microsoft Azure SDK for Template.</description>
@@ -46,7 +46,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-sdk-template</artifactId>
-      <version>1.2.2-beta.1</version> <!-- {x-version-update;com.azure:azure-sdk-template;current} -->
+      <version>1.2.2-beta.2</version> <!-- {x-version-update;com.azure:azure-sdk-template;current} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
