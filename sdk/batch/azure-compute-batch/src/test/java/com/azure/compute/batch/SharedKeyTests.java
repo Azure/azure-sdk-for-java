@@ -57,7 +57,7 @@ public class SharedKeyTests extends BatchClientTestBase {
              */
             BatchVmImageReference imgRef = new BatchVmImageReference().setPublisher("microsoftwindowsserver")
                 .setOffer("windowsserver")
-                .setSku("2022-datacenter-smalldisk-g2");
+                .setSku("2022-datacenter-smalldisk");
 
             VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, nodeAgentSkuId);
 
