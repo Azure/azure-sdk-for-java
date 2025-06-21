@@ -89,6 +89,11 @@ public final class CosmosAsyncClient implements Closeable {
         .CosmosClientTelemetryConfigHelper
         .getCosmosClientTelemetryConfigAccessor();
 
+    private static final ImplementationBridgeHelpers.ReadConsistencyStrategyHelper.ReadConsistencyStrategyAccessor
+        readConsistencyStrategyAccessor = ImplementationBridgeHelpers
+            .ReadConsistencyStrategyHelper
+            .getReadConsistencyStrategyAccessor();
+
     private final static Function<CosmosAsyncContainer, CosmosAsyncContainer> DEFAULT_CONTAINER_FACTORY =
         (originalContainer) -> originalContainer;
 
@@ -748,23 +753,12 @@ public final class CosmosAsyncClient implements Closeable {
         OperationType operationType,
         ReadConsistencyStrategy desiredReadConsistencyStrategyOfOperation) {
 
-        if (resourceType != ResourceType.Document) {
-            return ReadConsistencyStrategy.DEFAULT;
-        }
-
-        if (operationType.isWriteOperation()) {
-            return ReadConsistencyStrategy.DEFAULT;
-        }
-
-        if (desiredReadConsistencyStrategyOfOperation != null) {
-            return desiredReadConsistencyStrategyOfOperation;
-        }
-
-        if (this.readConsistencyStrategy != null) {
-            return readConsistencyStrategy;
-        }
-
-        return ReadConsistencyStrategy.DEFAULT;
+        return readConsistencyStrategyAccessor.getEffectiveReadConsistencyStrategy(
+            resourceType,
+            operationType,
+            desiredReadConsistencyStrategyOfOperation,
+            this.readConsistencyStrategy
+        );
     }
 
     CosmosDiagnosticsThresholds getEffectiveDiagnosticsThresholds(
