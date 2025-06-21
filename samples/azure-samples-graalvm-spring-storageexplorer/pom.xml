@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.6.6</version>
+    <version>3.2.0</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
@@ -16,8 +16,9 @@
   <description>Azure Storage Explorer sample</description>
 
   <properties>
-    <java.version>11</java.version>
+    <java.version>17</java.version>
     <graalvm.version>22.3.0</graalvm.version>
+    <native.buildtools.version>0.10.0</native.buildtools.version>
   </properties>
 
   <dependencyManagement>
@@ -49,11 +50,13 @@
     </dependency>
 
     <!-- this enables the Spring support for native-image compilation -->
-    <dependency>
+    <!-- <dependency>
       <groupId>org.springframework.experimental</groupId>
       <artifactId>spring-native</artifactId>
       <version>0.11.4</version>
-    </dependency>
+    </dependency> -->
+
+
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -78,23 +81,12 @@
             </env>
           </image>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.springframework.experimental</groupId>
-        <artifactId>spring-aot-maven-plugin</artifactId>
-        <version>0.11.4</version>
         <executions>
           <execution>
-            <id>test-generate</id>
-            <goals>
-              <goal>test-generate</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>generate</id>
-            <goals>
-              <goal>generate</goal>
-            </goals>
+              <id>process-aot</id>
+              <goals>
+                  <goal>process-aot</goal>
+              </goals>
           </execution>
         </executions>
       </plugin>
@@ -138,10 +130,70 @@
           <plugin>
             <groupId>org.graalvm.buildtools</groupId>
             <artifactId>native-maven-plugin</artifactId>
-            <version>0.9.19</version>
+            <version>0.10.6</version>
             <configuration>
               <mainClass>com.azure.samples.graalvm.spring.storageexplorer.SpringNativeApplication</mainClass>
               <imageName>storageexplorer</imageName>
+              <buildArgs>
+
+                <!-- Azure SDK Core -->
+                <buildArg>--initialize-at-build-time=com.azure.core.util.logging.ClientLogger</buildArg>
+                <buildArg>--initialize-at-build-time=com.azure.core.implementation</buildArg>
+                <buildArg>--initialize-at-build-time=com.azure.core.util</buildArg>
+                <buildArg>--initialize-at-build-time=com.azure.core.http</buildArg>
+
+                <!-- Azure Storage -->
+                <buildArg>--initialize-at-build-time=com.azure.storage.blob</buildArg>
+                <buildArg>--initialize-at-build-time=com.azure.storage.common</buildArg>
+
+                <!-- Your application classes -->
+                <buildArg>
+                  --initialize-at-build-time=com.azure.samples.graalvm.spring.storageexplorer</buildArg>
+
+                <!-- Logging frameworks -->
+                <buildArg>--initialize-at-build-time=org.slf4j</buildArg>
+                <buildArg>--initialize-at-build-time=ch.qos.logback</buildArg>
+                <buildArg>--initialize-at-build-time=org.apache.logging</buildArg>
+
+                <!-- Spring Framework -->
+                <buildArg>--initialize-at-build-time=org.springframework.boot.autoconfigure.logging</buildArg>
+                <buildArg>
+                  --initialize-at-build-time=org.springframework.core.io.support.SpringFactoriesLoader</buildArg>
+
+                <!-- JNA -->
+                <buildArg>--initialize-at-build-time=com.sun.jna</buildArg>
+
+                <!-- Common utility libraries -->
+                <buildArg>
+                  --initialize-at-build-time=com.fasterxml.jackson.databind.ext.Java7Handlers</buildArg>
+                <buildArg>
+                  --initialize-at-build-time=com.fasterxml.jackson.databind.ext.Java7HandlersImpl</buildArg>
+                <buildArg>--initialize-at-build-time=com.fasterxml.jackson.databind.ext.Java7Support</buildArg>
+                <buildArg>--initialize-at-build-time=com.fasterxml.jackson.databind.util.LRUMap</buildArg>
+
+                <!-- JNA Components that must be initialized at runtime -->
+                <buildArg>--initialize-at-run-time=com.sun.jna.Native</buildArg>
+                <buildArg>--initialize-at-run-time=com.sun.jna.NativeLibrary</buildArg>
+                <buildArg>--initialize-at-run-time=com.sun.jna.Function</buildArg>
+                <buildArg>--initialize-at-run-time=com.sun.jna.Memory</buildArg>
+                <buildArg>--initialize-at-run-time=com.sun.jna.Pointer</buildArg>
+                <buildArg>--initialize-at-run-time=com.sun.jna.CallbackReference</buildArg>
+                <buildArg>--initialize-at-run-time=com.sun.jna.Structure</buildArg>
+                <buildArg>--initialize-at-run-time=com.sun.jna.NativeMapped</buildArg>
+                <buildArg>--initialize-at-run-time=com.sun.jna.NativeLong</buildArg>
+
+                <!-- Network-related classes -->
+                <buildArg>--initialize-at-run-time=io.netty.channel.unix</buildArg>
+                <buildArg>--initialize-at-run-time=io.netty.channel.epoll</buildArg>
+                <buildArg>--initialize-at-run-time=io.netty.channel.socket.unix</buildArg>
+                <buildArg>--initialize-at-run-time=io.netty.util.internal.PlatformDependent</buildArg>
+                <buildArg>--initialize-at-run-time=io.netty.util.internal.PlatformDependent0</buildArg>
+
+                <!-- Security-related classes -->
+                <buildArg>--initialize-at-run-time=javax.crypto.JceSecurity</buildArg>
+                <buildArg>--initialize-at-run-time=sun.security.jca.JCAUtil</buildArg>
+                <buildArg>--initialize-at-run-time=javax.security.auth.Policy</buildArg>
+              </buildArgs>
             </configuration>
             <executions>
               <execution>
