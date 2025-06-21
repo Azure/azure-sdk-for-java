@@ -43,12 +43,17 @@ def generate_overview(readme_file, version, overview_file_path):
     if (readme_exists):
         with open(readme_file, 'r', encoding='utf-8') as f:
             raw_readme_content_lines = f.readlines()
-
+            
+        # Replace all instances of & with &amp; in the raw readme content
+        escaped_readme_content_lines = []
+        for line in raw_readme_content_lines:
+            escaped_readme_content_lines.append(line.replace('&', '&amp;'))
+            
         # Before passing the README contents to markdown2 clean out the codesnippet tags on the java code fences.
         # Clean ```java com.azure.core.aCodeSnippetTag to ```java, without doing this markdown2 won't properly process
         # the contents of the code fence. 
         cleaned_readme_content_lines = []
-        for line in raw_readme_content_lines:
+        for line in escaped_readme_content_lines:
             cleaned_readme_content_lines.append(re.sub(pattern="``` *java +[a-zA-Z0-9.#\-_]*", repl="```java", string=line, flags=re.UNICODE))
 
         readme_content = ''.join(cleaned_readme_content_lines)
@@ -59,14 +64,6 @@ def generate_overview(readme_file, version, overview_file_path):
         # The target-blank-links will open new tab for new page, but leave the anchor link in the same page.
         # The toc helps the anchor link to jump to the right place.
         html_readme_content = markdown2.markdown(re.sub(pattern='(?<!opencode)@', repl='{@literal @}', string=readme_content, flags=re.MULTILINE|re.UNICODE), extras=["fenced-code-blocks", "target-blank-links", "toc"])
-
-        # Replace all instances of & with &amp; in the HTML content
-        html_readme_content = html_readme_content.replace('&', '&amp;')
-        # Replace &amp;amp; (double escaped) back to &amp;
-        html_readme_content = html_readme_content.replace('&amp;amp;', '&amp;')
-        # Restore entities that should remain as they are
-        for entity in ['&amp;lt;', '&amp;gt;', '&amp;quot;', '&amp;apos;', '&amp;nbsp;']:
-            html_readme_content = html_readme_content.replace(entity, entity.replace('&amp;', '&'))
 
         # Now use BeautifulSoup to cleanup the generated HTML so that it conforms to Javadoc compliance.
         soup = BeautifulSoup(html_readme_content, features="html.parser")
