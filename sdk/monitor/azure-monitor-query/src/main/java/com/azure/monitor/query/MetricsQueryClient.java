@@ -12,7 +12,6 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.monitor.query.implementation.logs.models.LogsQueryHelper;
 import com.azure.monitor.query.implementation.metrics.AzureMonitorMetricsDataAPI;
 import com.azure.monitor.query.implementation.metrics.models.MetricsHelper;
 import com.azure.monitor.query.implementation.metrics.models.MetricsResponse;
@@ -144,7 +143,7 @@ public final class MetricsQueryClient {
         }
         String timespan = options == null || options.getTimeInterval() == null
             ? null
-            : LogsQueryHelper.toIso8601Format(options.getTimeInterval());
+            : MetricsHelper.toMetricsTimespan(options.getTimeInterval());
         Duration granularity = options == null ? null : options.getGranularity();
         Integer top = options == null ? null : options.getTop();
         String orderBy = options == null ? null : options.getOrderBy();
