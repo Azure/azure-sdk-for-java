@@ -71,7 +71,7 @@ public final class TrafficsImpl {
      * calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "TrafficClientTraffic")
+    @ServiceInterface(name = "TrafficClientTraffics")
     public interface TrafficsService {
         @Get("/traffic/flow/tile/{format}")
         @ExpectedResponses({ 200 })

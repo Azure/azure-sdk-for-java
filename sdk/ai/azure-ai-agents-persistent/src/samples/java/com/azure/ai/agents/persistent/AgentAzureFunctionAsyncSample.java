@@ -27,14 +27,15 @@ import static com.azure.ai.agents.persistent.SampleUtils.waitForRunCompletionAsy
 public class AgentAzureFunctionAsyncSample {
 
     public static void main(String[] args) {
-        PersistentAgentsAdministrationClientBuilder clientBuilder = new PersistentAgentsAdministrationClientBuilder()
+        PersistentAgentsClientBuilder clientBuilder = new PersistentAgentsClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build());
-        
-        PersistentAgentsAdministrationAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
-        ThreadsAsyncClient threadsAsyncClient = clientBuilder.buildThreadsAsyncClient();
-        MessagesAsyncClient messagesAsyncClient = clientBuilder.buildMessagesAsyncClient();
-        RunsAsyncClient runsAsyncClient = clientBuilder.buildRunsAsyncClient();
+
+        PersistentAgentsAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
+        PersistentAgentsAdministrationAsyncClient administrationAsyncClient = agentsAsyncClient.getPersistentAgentsAdministrationAsyncClient();
+        ThreadsAsyncClient threadsAsyncClient = agentsAsyncClient.getThreadsAsyncClient();
+        MessagesAsyncClient messagesAsyncClient = agentsAsyncClient.getMessagesAsyncClient();
+        RunsAsyncClient runsAsyncClient = agentsAsyncClient.getRunsAsyncClient();
 
         String storageQueueUri = Configuration.getGlobalConfiguration().get("STORAGE_QUEUE_URI", "");
         String azureFunctionName = Configuration.getGlobalConfiguration().get("AZURE_FUNCTION_NAME", "");
@@ -74,7 +75,7 @@ public class AgentAzureFunctionAsyncSample {
         AtomicReference<String> threadId = new AtomicReference<>();
         
         // Create full reactive chain to showcase reactive programming
-        agentsAsyncClient.createAgentWithResponse(createAgentRequest, requestOptions)
+        administrationAsyncClient.createAgentWithResponse(createAgentRequest, requestOptions)
             .flatMap(response -> {
                 PersistentAgent agent = response.getValue().toObject(PersistentAgent.class);
                 System.out.println("Created agent: " + agent.getId());
@@ -123,7 +124,7 @@ public class AgentAzureFunctionAsyncSample {
                 
                 // Clean up agent if created
                 if (agentId.get() != null) {
-                    agentsAsyncClient.deleteAgent(agentId.get())
+                    administrationAsyncClient.deleteAgent(agentId.get())
                         .doOnSuccess(ignored -> System.out.println("Agent deleted: " + agentId.get()))
                         .doOnError(error -> System.err.println("Failed to delete agent: " + error.getMessage()))
                         .subscribe();

@@ -232,6 +232,7 @@
     <module>sdk/sqlvirtualmachine</module>
     <module>sdk/standbypool</module>
     <module>sdk/storage</module>
+    <module>sdk/storage-v2</module>
     <module>sdk/storageactions</module>
     <module>sdk/storagecache</module>
     <module>sdk/storagemover</module>

@@ -68,7 +68,7 @@ public final class AccountsImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PurviewAccountClient")
+    @ServiceInterface(name = "PurviewAccountClientAccounts")
     public interface AccountsService {
         @Get("/")
         @ExpectedResponses({ 200 })

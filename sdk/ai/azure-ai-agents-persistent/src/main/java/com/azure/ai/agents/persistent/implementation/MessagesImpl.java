@@ -4,7 +4,7 @@
 
 package com.azure.ai.agents.persistent.implementation;
 
-import com.azure.ai.agents.persistent.AgentsServiceVersion;
+import com.azure.ai.agents.persistent.PersistentAgentsServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -22,6 +22,10 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
@@ -32,13 +36,15 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in Messages.
+ * Initializes a new instance of the Messages type.
  */
 public final class MessagesImpl {
     /**
@@ -47,35 +53,110 @@ public final class MessagesImpl {
     private final MessagesService service;
 
     /**
-     * The service client containing this operation class.
+     * Project endpoint in the form of:
+     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
      */
-    private final PersistentAgentsAdministrationClientImpl client;
+    private final String endpoint;
 
     /**
-     * Initializes an instance of MessagesImpl.
+     * Gets Project endpoint in the form of:
+     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
      * 
-     * @param client the instance of the service client containing this operation class.
+     * @return the endpoint value.
      */
-    MessagesImpl(PersistentAgentsAdministrationClientImpl client) {
-        this.service = RestProxy.create(MessagesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
+    public String getEndpoint() {
+        return this.endpoint;
     }
+
+    /**
+     * Service version.
+     */
+    private final PersistentAgentsServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
      * 
      * @return the serviceVersion value.
      */
-    public AgentsServiceVersion getServiceVersion() {
-        return client.getServiceVersion();
+    public PersistentAgentsServiceVersion getServiceVersion() {
+        return this.serviceVersion;
     }
 
     /**
-     * The interface defining all the services for PersistentAgentsAdministrationClientMessages to be used by the proxy
-     * service to perform REST calls.
+     * The HTTP pipeline to send requests through.
+     */
+    private final HttpPipeline httpPipeline;
+
+    /**
+     * Gets The HTTP pipeline to send requests through.
+     * 
+     * @return the httpPipeline value.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return this.httpPipeline;
+    }
+
+    /**
+     * The serializer to serialize an object into a string.
+     */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     * 
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
+    /**
+     * Initializes an instance of Messages client.
+     * 
+     * @param endpoint Project endpoint in the form of:
+     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
+     * @param serviceVersion Service version.
+     */
+    public MessagesImpl(String endpoint, PersistentAgentsServiceVersion serviceVersion) {
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
+    }
+
+    /**
+     * Initializes an instance of Messages client.
+     * 
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param endpoint Project endpoint in the form of:
+     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
+     * @param serviceVersion Service version.
+     */
+    public MessagesImpl(HttpPipeline httpPipeline, String endpoint, PersistentAgentsServiceVersion serviceVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
+    }
+
+    /**
+     * Initializes an instance of Messages client.
+     * 
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param endpoint Project endpoint in the form of:
+     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
+     * @param serviceVersion Service version.
+     */
+    public MessagesImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
+        PersistentAgentsServiceVersion serviceVersion) {
+        this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
+        this.endpoint = endpoint;
+        this.serviceVersion = serviceVersion;
+        this.service = RestProxy.create(MessagesService.class, this.httpPipeline, this.getSerializerAdapter());
+    }
+
+    /**
+     * The interface defining all the services for Messages to be used by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PersistentAgentsAdministrationClientMessages")
+    @ServiceInterface(name = "Messages")
     public interface MessagesService {
         @Post("/threads/{threadId}/messages")
         @ExpectedResponses({ 200 })
@@ -253,8 +334,8 @@ public final class MessagesImpl {
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.createMessage(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+        return FluxUtil
+            .withContext(context -> service.createMessage(this.getEndpoint(), this.getServiceVersion().getVersion(),
                 threadId, contentType, accept, createMessageRequest, requestOptions, context));
     }
 
@@ -342,8 +423,8 @@ public final class MessagesImpl {
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createMessageSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            threadId, contentType, accept, createMessageRequest, requestOptions, Context.NONE);
+        return service.createMessageSync(this.getEndpoint(), this.getServiceVersion().getVersion(), threadId,
+            contentType, accept, createMessageRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -422,8 +503,8 @@ public final class MessagesImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listMessages(this.client.getEndpoint(), threadId,
-                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .withContext(context -> service.listMessages(this.getEndpoint(), threadId,
+                this.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
     }
@@ -576,8 +657,8 @@ public final class MessagesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listMessagesSinglePage(String threadId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listMessagesSync(this.client.getEndpoint(), threadId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listMessagesSync(this.getEndpoint(), threadId,
+            this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
     }
@@ -715,8 +796,8 @@ public final class MessagesImpl {
     public Mono<Response<BinaryData>> getMessageWithResponseAsync(String threadId, String messageId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getMessage(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), threadId, messageId, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getMessage(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), threadId, messageId, accept, requestOptions, context));
     }
 
     /**
@@ -776,8 +857,8 @@ public final class MessagesImpl {
     public Response<BinaryData> getMessageWithResponse(String threadId, String messageId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getMessageSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), threadId,
-            messageId, accept, requestOptions, Context.NONE);
+        return service.getMessageSync(this.getEndpoint(), this.getServiceVersion().getVersion(), threadId, messageId,
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -852,8 +933,8 @@ public final class MessagesImpl {
         BinaryData updateMessageRequest, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.updateMessage(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+        return FluxUtil
+            .withContext(context -> service.updateMessage(this.getEndpoint(), this.getServiceVersion().getVersion(),
                 threadId, messageId, contentType, accept, updateMessageRequest, requestOptions, context));
     }
 
@@ -928,8 +1009,8 @@ public final class MessagesImpl {
         BinaryData updateMessageRequest, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateMessageSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            threadId, messageId, contentType, accept, updateMessageRequest, requestOptions, Context.NONE);
+        return service.updateMessageSync(this.getEndpoint(), this.getServiceVersion().getVersion(), threadId, messageId,
+            contentType, accept, updateMessageRequest, requestOptions, Context.NONE);
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

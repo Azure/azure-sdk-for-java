@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class SynapseActivityAuthentication implements JsonSerializable<Syn
     /*
      * Synapse activity authentication (MSI/UserAssignedManagedIdentity)
      */
+    @Generated
     private String type;
 
     /*
      * The credential reference containing authentication information.
      */
+    @Generated
     private CredentialReference credential;
 
     /**
      * Creates an instance of SynapseActivityAuthentication class.
      */
+    @Generated
     public SynapseActivityAuthentication() {
     }
 
@@ -37,6 +41,7 @@ public final class SynapseActivityAuthentication implements JsonSerializable<Syn
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -47,6 +52,7 @@ public final class SynapseActivityAuthentication implements JsonSerializable<Syn
      * @param type the type value to set.
      * @return the SynapseActivityAuthentication object itself.
      */
+    @Generated
     public SynapseActivityAuthentication setType(String type) {
         this.type = type;
         return this;
@@ -57,6 +63,7 @@ public final class SynapseActivityAuthentication implements JsonSerializable<Syn
      * 
      * @return the credential value.
      */
+    @Generated
     public CredentialReference getCredential() {
         return this.credential;
     }
@@ -67,6 +74,7 @@ public final class SynapseActivityAuthentication implements JsonSerializable<Syn
      * @param credential the credential value to set.
      * @return the SynapseActivityAuthentication object itself.
      */
+    @Generated
     public SynapseActivityAuthentication setCredential(CredentialReference credential) {
         this.credential = credential;
         return this;
@@ -75,6 +83,7 @@ public final class SynapseActivityAuthentication implements JsonSerializable<Syn
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class SynapseActivityAuthentication implements JsonSerializable<Syn
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SynapseActivityAuthentication.
      */
+    @Generated
     public static SynapseActivityAuthentication fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SynapseActivityAuthentication deserializedSynapseActivityAuthentication

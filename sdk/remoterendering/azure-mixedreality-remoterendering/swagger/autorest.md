@@ -15,7 +15,7 @@ autorest autorest.md
 ``` yaml
 input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/2a65b0a2bbd9113b91c889f187d8778c2725c0b9/specification/mixedreality/data-plane/Microsoft.MixedReality/stable/2021-01-01/mr-arr.json"
 java: true
-use: '@autorest/java@4.1.42'
+use: '@autorest/java@4.1.52'
 output-folder: ..\
 generate-client-as-impl: true
 namespace: com.azure.mixedreality.remoterendering

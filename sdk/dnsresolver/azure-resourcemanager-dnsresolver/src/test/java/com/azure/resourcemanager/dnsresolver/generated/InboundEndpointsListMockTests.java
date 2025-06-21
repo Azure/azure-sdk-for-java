@@ -7,8 +7,8 @@ package com.azure.resourcemanager.dnsresolver.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dnsresolver.DnsResolverManager;
 import com.azure.resourcemanager.dnsresolver.models.InboundEndpoint;
@@ -23,22 +23,22 @@ public final class InboundEndpointsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"etag\":\"tpvjzbexilzznfqq\",\"properties\":{\"ipConfigurations\":[{\"subnet\":{\"id\":\"pmqtaru\"},\"privateIpAddress\":\"jmkcjhwqytj\",\"privateIpAllocationMethod\":\"Static\"}],\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"ewgdrjervn\"},\"location\":\"nqpeh\",\"tags\":{\"nzdndslgna\":\"oygmift\"},\"id\":\"qig\",\"name\":\"nduhavhqlkthum\",\"type\":\"qolbgyc\"}]}";
+            = "{\"value\":[{\"etag\":\"gq\",\"properties\":{\"ipConfigurations\":[{\"subnet\":{\"id\":\"hejhzisx\"},\"privateIpAddress\":\"pelol\",\"privateIpAllocationMethod\":\"Static\"},{\"subnet\":{\"id\":\"srp\"},\"privateIpAddress\":\"ujzra\",\"privateIpAllocationMethod\":\"Static\"},{\"subnet\":{\"id\":\"dw\"},\"privateIpAddress\":\"tswiby\",\"privateIpAllocationMethod\":\"Static\"}],\"provisioningState\":\"Updating\",\"resourceGuid\":\"shfwpracstwity\"},\"location\":\"evxccedcp\",\"tags\":{\"vnhltiugcx\":\"yodnwzxltj\",\"y\":\"avvwxqi\",\"djrkvfgbvfvpd\":\"unyowxwl\"},\"id\":\"odacizs\",\"name\":\"q\",\"type\":\"hkr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DnsResolverManager manager = DnsResolverManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<InboundEndpoint> response = manager.inboundEndpoints()
-            .list("sqfsubcgjbirxb", "ybsrfbjfdtwss", 22179172, com.azure.core.util.Context.NONE);
+        PagedIterable<InboundEndpoint> response
+            = manager.inboundEndpoints().list("lusiy", "bsfgytguslfea", 489676883, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nqpeh", response.iterator().next().location());
-        Assertions.assertEquals("oygmift", response.iterator().next().tags().get("nzdndslgna"));
-        Assertions.assertEquals("pmqtaru", response.iterator().next().ipConfigurations().get(0).subnet().id());
-        Assertions.assertEquals("jmkcjhwqytj", response.iterator().next().ipConfigurations().get(0).privateIpAddress());
+        Assertions.assertEquals("evxccedcp", response.iterator().next().location());
+        Assertions.assertEquals("yodnwzxltj", response.iterator().next().tags().get("vnhltiugcx"));
+        Assertions.assertEquals("hejhzisx", response.iterator().next().ipConfigurations().get(0).subnet().id());
+        Assertions.assertEquals("pelol", response.iterator().next().ipConfigurations().get(0).privateIpAddress());
         Assertions.assertEquals(IpAllocationMethod.STATIC,
             response.iterator().next().ipConfigurations().get(0).privateIpAllocationMethod());
     }

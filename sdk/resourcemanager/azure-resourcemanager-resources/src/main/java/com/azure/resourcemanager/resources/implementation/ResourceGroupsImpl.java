@@ -6,6 +6,7 @@ package com.azure.resourcemanager.resources.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
@@ -112,20 +113,32 @@ public final class ResourceGroupsImpl
 
     @Override
     public Accepted<Void> beginDeleteByName(String name) {
-        return beginDeleteByName(name, null);
+        return beginDeleteByName(name, Context.NONE);
+    }
+
+    @Override
+    public Accepted<Void> beginDeleteByName(String name, Context context) {
+        return beginDeleteByName(name, null, context);
     }
 
     @Override
     public Accepted<Void> beginDeleteByName(String name,
         Collection<ForceDeletionResourceType> forceDeletionResourceTypes) {
+        return beginDeleteByName(name, forceDeletionResourceTypes, Context.NONE);
+    }
+
+    @Override
+    public Accepted<Void> beginDeleteByName(String name,
+        Collection<ForceDeletionResourceType> forceDeletionResourceTypes, Context context) {
         return AcceptedImpl.newAccepted(logger, this.manager().serviceClient().getHttpPipeline(),
             this.manager().serviceClient().getDefaultPollInterval(),
             () -> this.manager()
                 .serviceClient()
                 .getResourceGroups()
                 .deleteWithResponseAsync(name, forceDeletionTypes(forceDeletionResourceTypes))
+                .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
                 .block(),
-            Function.identity(), Void.class, null, Context.NONE);
+            Function.identity(), Void.class, null, context);
     }
 
     //    @Override

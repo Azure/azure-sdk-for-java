@@ -64,7 +64,7 @@ public final class SparkJobDefinitionsImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ArtifactsClientSpark")
+    @ServiceInterface(name = "ArtifactsClientSparkJobDefinitions")
     public interface SparkJobDefinitionsService {
         @Get("/sparkJobDefinitions")
         @ExpectedResponses({ 200 })

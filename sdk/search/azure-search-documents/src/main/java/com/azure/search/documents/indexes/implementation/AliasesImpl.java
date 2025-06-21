@@ -65,7 +65,7 @@ public final class AliasesImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "SearchServiceClientA")
+    @ServiceInterface(name = "SearchServiceClientAliases")
     public interface AliasesService {
         @Post("/aliases")
         @ExpectedResponses({ 201 })

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,21 +21,25 @@ public final class BinarySource extends CopySource {
     /*
      * Copy source type.
      */
+    @Generated
     private String type = "BinarySource";
 
     /*
      * Binary store settings.
      */
+    @Generated
     private StoreReadSettings storeSettings;
 
     /*
      * Binary format settings.
      */
+    @Generated
     private BinaryReadSettings formatSettings;
 
     /**
      * Creates an instance of BinarySource class.
      */
+    @Generated
     public BinarySource() {
     }
 
@@ -43,6 +48,7 @@ public final class BinarySource extends CopySource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -53,6 +59,7 @@ public final class BinarySource extends CopySource {
      * 
      * @return the storeSettings value.
      */
+    @Generated
     public StoreReadSettings getStoreSettings() {
         return this.storeSettings;
     }
@@ -63,6 +70,7 @@ public final class BinarySource extends CopySource {
      * @param storeSettings the storeSettings value to set.
      * @return the BinarySource object itself.
      */
+    @Generated
     public BinarySource setStoreSettings(StoreReadSettings storeSettings) {
         this.storeSettings = storeSettings;
         return this;
@@ -73,6 +81,7 @@ public final class BinarySource extends CopySource {
      * 
      * @return the formatSettings value.
      */
+    @Generated
     public BinaryReadSettings getFormatSettings() {
         return this.formatSettings;
     }
@@ -83,6 +92,7 @@ public final class BinarySource extends CopySource {
      * @param formatSettings the formatSettings value to set.
      * @return the BinarySource object itself.
      */
+    @Generated
     public BinarySource setFormatSettings(BinaryReadSettings formatSettings) {
         this.formatSettings = formatSettings;
         return this;
@@ -91,6 +101,7 @@ public final class BinarySource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public BinarySource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
@@ -100,6 +111,7 @@ public final class BinarySource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public BinarySource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
@@ -109,6 +121,7 @@ public final class BinarySource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public BinarySource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -118,12 +131,19 @@ public final class BinarySource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getSourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        }
+        if (getSourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeJsonField("storeSettings", this.storeSettings);
         jsonWriter.writeJsonField("formatSettings", this.formatSettings);
@@ -143,6 +163,7 @@ public final class BinarySource extends CopySource {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the BinarySource.
      */
+    @Generated
     public static BinarySource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BinarySource deserializedBinarySource = new BinarySource();

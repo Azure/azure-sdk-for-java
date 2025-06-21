@@ -5,6 +5,7 @@
 package com.azure.security.attestation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
@@ -22,11 +23,13 @@ public final class StoredAttestationPolicy implements JsonSerializable<StoredAtt
     /*
      * Policy text to set as a sequence of UTF-8 encoded octets.
      */
+    @Generated
     private Base64Url attestationPolicy;
 
     /**
      * Creates an instance of StoredAttestationPolicy class.
      */
+    @Generated
     public StoredAttestationPolicy() {
     }
 
@@ -35,6 +38,7 @@ public final class StoredAttestationPolicy implements JsonSerializable<StoredAtt
      * 
      * @return the attestationPolicy value.
      */
+    @Generated
     public byte[] getAttestationPolicy() {
         if (this.attestationPolicy == null) {
             return null;
@@ -48,6 +52,7 @@ public final class StoredAttestationPolicy implements JsonSerializable<StoredAtt
      * @param attestationPolicy the attestationPolicy value to set.
      * @return the StoredAttestationPolicy object itself.
      */
+    @Generated
     public StoredAttestationPolicy setAttestationPolicy(byte[] attestationPolicy) {
         if (attestationPolicy == null) {
             this.attestationPolicy = null;
@@ -68,6 +73,7 @@ public final class StoredAttestationPolicy implements JsonSerializable<StoredAtt
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -83,6 +89,7 @@ public final class StoredAttestationPolicy implements JsonSerializable<StoredAtt
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the StoredAttestationPolicy.
      */
+    @Generated
     public static StoredAttestationPolicy fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             StoredAttestationPolicy deserializedStoredAttestationPolicy = new StoredAttestationPolicy();

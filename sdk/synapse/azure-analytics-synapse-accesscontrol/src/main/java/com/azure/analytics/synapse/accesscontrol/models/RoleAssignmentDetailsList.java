@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.accesscontrol.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class RoleAssignmentDetailsList implements JsonSerializable<RoleAss
     /*
      * Number of role assignments
      */
+    @Generated
     private Integer count;
 
     /*
      * A list of role assignments
      */
+    @Generated
     private List<RoleAssignmentDetails> value;
 
     /**
      * Creates an instance of RoleAssignmentDetailsList class.
      */
+    @Generated
     public RoleAssignmentDetailsList() {
     }
 
@@ -38,6 +42,7 @@ public final class RoleAssignmentDetailsList implements JsonSerializable<RoleAss
      * 
      * @return the count value.
      */
+    @Generated
     public Integer getCount() {
         return this.count;
     }
@@ -48,6 +53,7 @@ public final class RoleAssignmentDetailsList implements JsonSerializable<RoleAss
      * @param count the count value to set.
      * @return the RoleAssignmentDetailsList object itself.
      */
+    @Generated
     public RoleAssignmentDetailsList setCount(Integer count) {
         this.count = count;
         return this;
@@ -58,6 +64,7 @@ public final class RoleAssignmentDetailsList implements JsonSerializable<RoleAss
      * 
      * @return the value value.
      */
+    @Generated
     public List<RoleAssignmentDetails> getValue() {
         return this.value;
     }
@@ -68,6 +75,7 @@ public final class RoleAssignmentDetailsList implements JsonSerializable<RoleAss
      * @param value the value value to set.
      * @return the RoleAssignmentDetailsList object itself.
      */
+    @Generated
     public RoleAssignmentDetailsList setValue(List<RoleAssignmentDetails> value) {
         this.value = value;
         return this;
@@ -76,6 +84,7 @@ public final class RoleAssignmentDetailsList implements JsonSerializable<RoleAss
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class RoleAssignmentDetailsList implements JsonSerializable<RoleAss
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the RoleAssignmentDetailsList.
      */
+    @Generated
     public static RoleAssignmentDetailsList fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RoleAssignmentDetailsList deserializedRoleAssignmentDetailsList = new RoleAssignmentDetailsList();

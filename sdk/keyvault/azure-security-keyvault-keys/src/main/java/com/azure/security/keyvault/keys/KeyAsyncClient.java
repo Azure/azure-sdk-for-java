@@ -982,7 +982,7 @@ public final class KeyAsyncClient {
      * @param e The {@link HttpResponseException} to map.
      * @return The {@link HttpResponseException} that maps from the {@link HttpResponseException}.
      */
-    public static HttpResponseException mapGetKeyException(HttpResponseException e) {
+    static HttpResponseException mapGetKeyException(HttpResponseException e) {
         return e.getResponse().getStatusCode() == 403
             ? new ResourceModifiedException(e.getMessage(), e.getResponse(), e.getValue())
             : e;

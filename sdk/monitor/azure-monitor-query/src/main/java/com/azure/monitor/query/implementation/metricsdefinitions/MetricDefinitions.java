@@ -61,7 +61,7 @@ public final class MetricDefinitions {
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureMonitorMetricsD")
+    @ServiceInterface(name = "AzureMonitorMetricsDefinitionsAPIMetricDefinitions")
     public interface MetricDefinitionsService {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/metricDefinitions")
         @ExpectedResponses({ 200 })
