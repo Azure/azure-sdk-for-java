@@ -3,13 +3,13 @@
 
 package com.azure.cosmos.kafka.connect.implementation.source;
 
-import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.kafka.connect.KafkaCosmosTestSuiteBase;
 import com.azure.cosmos.kafka.connect.implementation.CosmosAccountConfig;
-import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
+import com.azure.cosmos.kafka.connect.implementation.CosmosClientCache;
+import com.azure.cosmos.kafka.connect.implementation.CosmosClientCacheItem;
 import com.azure.cosmos.kafka.connect.implementation.CosmosMasterKeyAuthConfig;
 import com.azure.cosmos.kafka.connect.implementation.sink.StructToJsonMap;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -32,7 +32,7 @@ import java.util.Map;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class MetadataKafkaStorageManagerTest extends KafkaCosmosTestSuiteBase {
-    private CosmosAsyncClient client;
+    private CosmosClientCacheItem clientItem;
     private MetadataTaskUnit metadataTaskUnit;
 
     @DataProvider(name = "metadataIsLegacyProvider")
@@ -51,11 +51,16 @@ public class MetadataKafkaStorageManagerTest extends KafkaCosmosTestSuiteBase {
             "metadataKafkaStorageManagerTest",
             false,
             new ArrayList<>());
-        this.client = CosmosClientStore.getCosmosClient(accountConfig, "testKafkaConnector");
-        CosmosContainerProperties container = getSinglePartitionContainer(this.client);
+        this.clientItem = CosmosClientCache.getCosmosClient(accountConfig, "before_MetadataKafkaStorageManagerTest");
+        CosmosContainerProperties container = getSinglePartitionContainer(this.clientItem.getClient());
         // define metadata task
         List<FeedRange> feedRanges =
-            client.getDatabase(databaseName).getContainer(container.getId()).getFeedRanges().block();
+            clientItem
+                .getClient()
+                .getDatabase(databaseName)
+                .getContainer(container.getId())
+                .getFeedRanges()
+                .block();
         assertThat(feedRanges).isNotNull();
         assertThat(feedRanges.size()).isEqualTo(1);
 
@@ -72,8 +77,9 @@ public class MetadataKafkaStorageManagerTest extends KafkaCosmosTestSuiteBase {
 
     @AfterClass(groups = { "kafka", "kafka-emulator" }, timeOut = TIMEOUT)
     public void after_MetadataKafkaStorageManagerTest() {
-        if (this.client != null) {
-            this.client.close();
+        if (this.clientItem != null) {
+            CosmosClientCache.releaseCosmosClient(this.clientItem.getClientConfig());
+            this.clientItem.getClient().close();
         }
     }
 
