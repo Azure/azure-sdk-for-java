@@ -52,7 +52,7 @@ def generate_overview(readme_file, version, overview_file_path):
             cleaned_readme_content_lines.append(re.sub(pattern="``` *java +[a-zA-Z0-9.#\-_]*", repl="```java", string=line, flags=re.UNICODE))
 
         readme_content = ''.join(cleaned_readme_content_lines)
-        readme_content = re.sub(pattern='\\B&\\B', repl='&amp;', string=readme_content, flags=re.UNICODE)
+        # readme_content = re.sub(pattern='\\B&\\B', repl='&amp;', string=readme_content, flags=re.UNICODE)
 
         # markdown2.markdown will create html from the readme.md file. The fenced-code-blocks
         # extras being passed into the markdown call is necessary to deal with the embedded
@@ -60,6 +60,14 @@ def generate_overview(readme_file, version, overview_file_path):
         # The target-blank-links will open new tab for new page, but leave the anchor link in the same page.
         # The toc helps the anchor link to jump to the right place.
         html_readme_content = markdown2.markdown(re.sub(pattern='(?<!opencode)@', repl='{@literal @}', string=readme_content, flags=re.MULTILINE|re.UNICODE), extras=["fenced-code-blocks", "target-blank-links", "toc"])
+
+        # Replace all instances of & with &amp; in the HTML content
+        html_readme_content = html_readme_content.replace('&', '&amp;')
+        # Replace &amp;amp; (double escaped) back to &amp;
+        html_readme_content = html_readme_content.replace('&amp;amp;', '&amp;')
+        # Restore entities that should remain as they are
+        for entity in ['&amp;lt;', '&amp;gt;', '&amp;quot;', '&amp;apos;', '&amp;nbsp;']:
+            html_readme_content = html_readme_content.replace(entity, entity.replace('&amp;', '&'))
 
         # Now use BeautifulSoup to cleanup the generated HTML so that it conforms to Javadoc compliance.
         soup = BeautifulSoup(html_readme_content, features="html.parser")
