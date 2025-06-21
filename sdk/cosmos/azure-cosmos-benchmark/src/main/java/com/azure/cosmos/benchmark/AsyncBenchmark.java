@@ -10,7 +10,6 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosContainerProactiveInitConfigBuilder;
 import com.azure.cosmos.CosmosException;
@@ -160,7 +159,12 @@ abstract class AsyncBenchmark<T> {
             );
 
         if (configuration.isDefaultLog4jLoggerEnabled()) {
-            telemetryConfig.diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER);
+            logger.info("Diagnostics thresholds Point: {}, Non-Point: {}",
+                cfg.getPointOperationThreshold(),
+                cfg.getNonPointOperationThreshold());
+            telemetryConfig.diagnosticsHandler(
+                new CosmosSamplingDiagnosticsLogger(10, 10_000)
+            );
         }
 
         MeterRegistry registry = configuration.getAzureMonitorMeterRegistry();
