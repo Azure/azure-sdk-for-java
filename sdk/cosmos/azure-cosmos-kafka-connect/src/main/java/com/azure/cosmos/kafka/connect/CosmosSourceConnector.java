@@ -114,7 +114,7 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
         } catch (Exception e) {
             // if the connector failed to start, release initialized resources here
             LOGGER.warn("Error starting the kafka cosmos sink connector", e);
-            this.stop();
+            this.cleanup();
             // re-throw the exception back to kafka
             throw e;
         }
@@ -160,9 +160,9 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
         return taskConfigs;
     }
 
-    @Override
-    public void stop() {
-        LOGGER.info("Stopping Kafka CosmosDB source connector");
+    private void cleanup() {
+        LOGGER.info("Cleaning up CosmosSourceConnector");
+
         // Close monitor thread first since it uses the cosmos client
         if (this.monitorThread != null) {
             LOGGER.debug("Closing monitoring thread");
@@ -174,6 +174,12 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
             CosmosClientCache.releaseCosmosClient(this.cosmosClientItem.getClientConfig());
             this.cosmosClientItem = null;
         }
+    }
+
+    @Override
+    public void stop() {
+        LOGGER.info("Stopping Kafka CosmosDB source connector");
+        cleanup();
     }
 
     @Override

@@ -188,7 +188,10 @@ public class CosmosClientCache implements AutoCloseable {
         CosmosClientCacheMetadata metadata = clientCache.get(cacheConfig);
 
         if (metadata != null) {
-            metadata.decrementRefCount();
+            long currentRefCount = metadata.decrementRefCount();
+            if (currentRefCount < 0) {
+                LOGGER.warn("Released Cosmos client more than it referenced");
+            }
         }
     }
 
@@ -226,7 +229,7 @@ public class CosmosClientCache implements AutoCloseable {
                 CosmosClientCacheMetadata metadata = entry.getValue();
                 LOGGER.info("Closing client from cleanup queue");
                 // only close the client when the ref count is 0
-                if (metadata.getRefCount() == 0) {
+                if (metadata.getRefCount() <= 0) {
                     metadata.close();
                     return true;
                 }
@@ -240,7 +243,7 @@ public class CosmosClientCache implements AutoCloseable {
 
     private boolean shouldPurgeClient(CosmosClientCacheMetadata cacheClientMetadata) {
         return cacheClientMetadata.getRefCount() <= 0
-                && (Instant.now().toEpochMilli() - cacheClientMetadata.getLastAccessed().toEpochMilli() > UNUSED_CLIENT_TTL_IN_MS);
+                && (Instant.now().toEpochMilli() - cacheClientMetadata.getLastAccessed().toEpochMilli() >= UNUSED_CLIENT_TTL_IN_MS);
     }
 
     void purgeClient(CosmosClientCacheConfig cacheClientConfig) {
@@ -254,14 +257,16 @@ public class CosmosClientCache implements AutoCloseable {
 
     @Override
     public synchronized void close() {
-        cleanupExecutor.shutdown();
-        try {
-            if (!cleanupExecutor.awaitTermination(30, TimeUnit.SECONDS)) {
+        if (this.cleanupExecutor != null) {
+            cleanupExecutor.shutdown();
+            try {
+                if (!cleanupExecutor.awaitTermination(30, TimeUnit.SECONDS)) {
+                    cleanupExecutor.shutdownNow();
+                }
+            } catch (InterruptedException e) {
                 cleanupExecutor.shutdownNow();
+                Thread.currentThread().interrupt();
             }
-        } catch (InterruptedException e) {
-            cleanupExecutor.shutdownNow();
-            Thread.currentThread().interrupt();
         }
 
         // Close all clients

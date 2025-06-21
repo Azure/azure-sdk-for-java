@@ -67,7 +67,7 @@ public final class CosmosSinkConnector extends SinkConnector implements AutoClos
         } catch (Exception e) {
             LOGGER.warn("Error starting the kafka cosmos sink connector", e);
             // if connector failed to start, release initialized resources here
-            this.stop();
+            this.cleanup();
 
             // re-throw the exception back to kafka
             throw e;
@@ -185,14 +185,18 @@ public final class CosmosSinkConnector extends SinkConnector implements AutoClos
         }
     }
 
-    @Override
-    public void stop() {
-        LOGGER.info("Stopping Kafka CosmosDB sink connector");
-
+    private void cleanup() {
+        LOGGER.info("Cleaning up CosmosSinkConnector");
         if (this.cosmosClientItem != null) {
             CosmosClientCache.releaseCosmosClient(this.cosmosClientItem.getClientConfig());
             this.cosmosClientItem = null;
         }
+    }
+
+    @Override
+    public void stop() {
+        LOGGER.info("Stopping Kafka CosmosDB sink connector");
+        cleanup();
     }
 
     @Override

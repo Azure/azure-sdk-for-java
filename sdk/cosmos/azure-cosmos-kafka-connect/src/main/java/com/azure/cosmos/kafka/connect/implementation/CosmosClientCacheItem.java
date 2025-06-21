@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class CosmosClientCacheItem implements AutoCloseable {
-    private static final Logger logger = LoggerFactory.getLogger(CosmosClientCacheItem.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosClientCacheItem.class);
 
     private CosmosClientCacheConfig clientConfig;
     private CosmosClientCacheMetadata clientCacheMetadata;
@@ -37,7 +37,7 @@ public class CosmosClientCacheItem implements AutoCloseable {
     public void close() {
         long refCnt = this.clientCacheMetadata.decrementRefCount();
         if (refCnt < 0) {
-            logger.error("CosmosClient is released more than required.");
+            LOGGER.error("CosmosClient is released more than required.");
         }
     }
 }
