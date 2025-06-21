@@ -61,6 +61,11 @@ Set the values of the client ID, tenant ID, and client secret of the AAD applica
 
 Every write to Azure Confidential Ledger generates an immutable ledger entry in the service. Writes, also referred to as transactions, are uniquely identified by transaction ids that increment with each write. Once written, ledger entries may be retrieved at any time.
 
+#### Tags
+It is possible to further organize data within a collection as part of the latest preview version dated `2024-12-09-preview` or newer.
+
+Specify the `tags` parameter as part of the create entry operation. Multiple tags can be specified using commas. There is a limit of five tags per transaction.
+
 ### Receipts
 
 State changes to the Confidential Ledger are saved in a data structure called a Merkle tree. To cryptographically verify that writes were correctly saved, a Merkle proof, or receipt, can be retrieved for any transaction id.

@@ -72,7 +72,7 @@ All of these samples need the endpoint to your Confidential Ledger resource, and
 [GetTransactionStatusSample.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java/com/azure/security/confidentialledger/GetTransactionStatusSample.java)|Get the status of a ledger entry|
 [GetUserSample.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java/com/azure/security/confidentialledger/GetUserSample.java)|Get specific user data from a ledger|
 [PostLedgerEntrySample.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java/com/azure/security/confidentialledger/PostLedgerEntrySample.java)|Add a ledger entry. This also contains a more robust example of response handling.|
-
+[CreateLedgerEntrySample.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java/com/azure/security/confidentialledger/CreateLedgerEntrySample.java)|Create a new ledger entry.|
 ## Troubleshooting
 
 Troubleshooting steps can be found [here](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-security-confidentialledger/README.md#troubleshooting).
