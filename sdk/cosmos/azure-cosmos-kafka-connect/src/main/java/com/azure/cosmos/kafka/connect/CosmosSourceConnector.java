@@ -113,6 +113,7 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
             this.monitorThread.start();
         } catch (Exception e) {
             // if the connector failed to start, release initialized resources here
+            LOGGER.warn("Error starting the kafka cosmos sink connector", e);
             this.stop();
             // re-throw the exception back to kafka
             throw e;

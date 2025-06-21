@@ -65,6 +65,7 @@ public final class CosmosSinkConnector extends SinkConnector implements AutoClos
                 this.cosmosClientItem.getClient(),
                 containersConfig.getDatabaseName());
         } catch (Exception e) {
+            LOGGER.warn("Error starting the kafka cosmos sink connector", e);
             // if connector failed to start, release initialized resources here
             this.stop();
 
