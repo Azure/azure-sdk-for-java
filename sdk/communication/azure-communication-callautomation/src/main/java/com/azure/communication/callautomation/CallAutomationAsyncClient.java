@@ -346,7 +346,7 @@ public final class CallAutomationAsyncClient {
             .setLocale(transcriptionOptions.getLocale())
             .setStartTranscription(transcriptionOptions.getStartTranscription())
             .setEnableIntermediateResults(transcriptionOptions.isIntermediateResultsEnabled())
-            .setSpeechRecognitionModelEndpointId(transcriptionOptions.getSpeechRecognitionModelEndpointId());
+            .setSpeechModelEndpointId(transcriptionOptions.getSpeechRecognitionModelEndpointId());
     }
 
     /**
