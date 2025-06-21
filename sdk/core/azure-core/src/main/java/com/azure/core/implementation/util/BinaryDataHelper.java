@@ -4,11 +4,14 @@
 package com.azure.core.implementation.util;
 
 import com.azure.core.util.BinaryData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Helper class to access private values of {@link BinaryData} across package boundaries.
  */
 public final class BinaryDataHelper {
+    private static final Logger log = LoggerFactory.getLogger(BinaryDataHelper.class);
     private static BinaryDataAccessor accessor;
 
     /**
@@ -50,8 +53,13 @@ public final class BinaryDataHelper {
      * @throws NullPointerException If {@code content} is null.
      */
     public static BinaryData createBinaryData(BinaryDataContent content) {
-        ensureAccessorSet();
-        return accessor.createBinaryData(content);
+        try {
+            ensureAccessorSet();
+            return accessor.createBinaryData(content);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw e;
+        }
     }
 
     /**
@@ -71,8 +79,14 @@ public final class BinaryDataHelper {
      * which in turns populates the accessor.
      */
     private static void ensureAccessorSet() {
-        if (accessor == null) {
-            BinaryData.fromString("");
+        try {
+            if (accessor == null) {
+                BinaryData.fromString("");
+            }
+        } catch (Exception e) {
+            log.error("Failed to ensure BinaryData accessor is set.", e);
+            throw e;
         }
+
     }
 }

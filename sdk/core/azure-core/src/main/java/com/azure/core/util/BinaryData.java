@@ -187,17 +187,23 @@ public final class BinaryData {
     }
 
     static {
-        BinaryDataHelper.setAccessor(new BinaryDataHelper.BinaryDataAccessor() {
-            @Override
-            public BinaryData createBinaryData(BinaryDataContent content) {
-                return new BinaryData(content);
-            }
+        try {
+            BinaryDataHelper.setAccessor(new BinaryDataHelper.BinaryDataAccessor() {
 
-            @Override
-            public BinaryDataContent getContent(BinaryData binaryData) {
-                return binaryData.content;
-            }
-        });
+                @Override
+                public BinaryData createBinaryData(BinaryDataContent content) {
+                    return new BinaryData(content);
+                }
+
+                @Override
+                public BinaryDataContent getContent(BinaryData binaryData) {
+                    return binaryData.content;
+                }
+            });
+        } catch (Exception e) {
+            LOGGER.error("Failed to set BinaryData accessor.", e);
+            throw e;
+        }
     }
 
     /**
