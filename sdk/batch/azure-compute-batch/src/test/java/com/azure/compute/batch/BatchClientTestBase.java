@@ -6,13 +6,13 @@ package com.azure.compute.batch;
 
 import com.azure.compute.batch.models.AllocationState;
 import com.azure.compute.batch.models.BatchPool;
-import com.azure.compute.batch.models.BatchPoolCreateContent;
+import com.azure.compute.batch.models.BatchPoolCreateParameters;
 import com.azure.compute.batch.models.BatchTask;
 import com.azure.compute.batch.models.BatchTaskState;
 import com.azure.compute.batch.models.ElevationLevel;
-import com.azure.compute.batch.models.ImageReference;
 import com.azure.compute.batch.models.LinuxUserConfiguration;
-import com.azure.compute.batch.models.ListBatchTasksOptions;
+import com.azure.compute.batch.models.BatchTasksListOptions;
+import com.azure.compute.batch.models.BatchVmImageReference;
 import com.azure.compute.batch.models.NetworkConfiguration;
 import com.azure.compute.batch.models.UserAccount;
 import com.azure.compute.batch.models.VirtualMachineConfiguration;
@@ -57,6 +57,8 @@ class BatchClientTestBase extends TestProxyTestBase {
 
     protected BatchClient batchClient;
 
+    protected BatchAsyncClient batchAsyncClient;
+
     static final int MAX_LEN_ID = 64;
 
     static String redacted = "REDACTED";
@@ -90,6 +92,7 @@ class BatchClientTestBase extends TestProxyTestBase {
         authenticateClient(AuthMode.AAD);
 
         batchClient = batchClientBuilder.buildClient();
+        batchAsyncClient = batchClientBuilder.buildAsyncClient();
     }
 
     public void addTestRulesOnPlayback(InterceptorManager interceptorManager) {
@@ -155,7 +158,7 @@ class BatchClientTestBase extends TestProxyTestBase {
         // Check if pool exists
         if (!poolExists(batchClient, poolId)) {
             // Use IaaS VM with Ubuntu
-            ImageReference imgRef = new ImageReference().setPublisher("Canonical")
+            BatchVmImageReference imgRef = new BatchVmImageReference().setPublisher("Canonical")
                 .setOffer("UbuntuServer")
                 .setSku("18.04-LTS")
                 .setVersion("latest");
@@ -171,7 +174,7 @@ class BatchClientTestBase extends TestProxyTestBase {
             // Need VNet to allow security to inject NSGs
             NetworkConfiguration networkConfiguration = createNetworkConfiguration();
 
-            BatchPoolCreateContent poolToCreate = new BatchPoolCreateContent(poolId, poolVmSize);
+            BatchPoolCreateParameters poolToCreate = new BatchPoolCreateParameters(poolId, poolVmSize);
             poolToCreate.setTargetDedicatedNodes(poolVmCount)
                 .setVirtualMachineConfiguration(configuration)
                 .setUserAccounts(userList)
@@ -254,6 +257,10 @@ class BatchClientTestBase extends TestProxyTestBase {
         return batchClient.poolExists(poolId);
     }
 
+    static Mono<Boolean> poolExists(BatchAsyncClient batchAsyncClient, String poolId) {
+        return batchAsyncClient.poolExists(poolId);
+    }
+
     static BlobContainerClient createBlobContainer(String storageAccountName, String storageAccountKey,
         String containerName) throws BlobStorageException {
         // Create storage credential from name and key
@@ -315,7 +322,7 @@ class BatchClientTestBase extends TestProxyTestBase {
 
         while (elapsedTime < expiryTimeInSeconds * 1000L) {
 
-            ListBatchTasksOptions options = new ListBatchTasksOptions();
+            BatchTasksListOptions options = new BatchTasksListOptions();
             options.setSelect(Arrays.asList("id", "state"));
             PagedIterable<BatchTask> taskIterator = batchClient.listTasks(jobId, options);
 
@@ -342,6 +349,39 @@ class BatchClientTestBase extends TestProxyTestBase {
         }
 
         // Timeout, return false
+        return false;
+    }
+
+    boolean waitForTasksToComplete(BatchAsyncClient batchAsyncClient, String jobId, int expiryTimeInSeconds) {
+        long startTime = System.currentTimeMillis();
+        long elapsedTime = 0L;
+
+        while (elapsedTime < expiryTimeInSeconds * 1000L) {
+            BatchTasksListOptions options = new BatchTasksListOptions();
+            options.setSelect(Arrays.asList("id", "state"));
+
+            Iterable<BatchTask> taskIterator = batchAsyncClient.listTasks(jobId, options).toIterable();
+
+            boolean allComplete = true;
+            for (BatchTask task : taskIterator) {
+                if (task.getState() != BatchTaskState.COMPLETED) {
+                    allComplete = false;
+                    break;
+                }
+            }
+
+            if (allComplete) {
+                return true;
+            }
+
+            sleepIfRunningAgainstService(10 * 1000);
+            if (interceptorManager.isPlaybackMode()) {
+                elapsedTime += 10 * 1000;
+            } else {
+                elapsedTime = System.currentTimeMillis() - startTime;
+            }
+        }
+
         return false;
     }
 
