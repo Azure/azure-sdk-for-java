@@ -54,13 +54,13 @@ public class CosmosRepositoryFactory extends RepositoryFactorySupport {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({"deprecation", "removal"})
     protected Optional<QueryLookupStrategy> getQueryLookupStrategy(
             QueryLookupStrategy.Key key, QueryMethodEvaluationContextProvider evaluationContextProvider) {
         return Optional.of(new CosmosDbQueryLookupStrategy(cosmosOperations, evaluationContextProvider));
     }
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({"deprecation", "removal"})
     private static class CosmosDbQueryLookupStrategy implements QueryLookupStrategy {
         private final CosmosOperations dbOperations;
 

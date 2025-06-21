@@ -33,9 +33,9 @@ jobs:
       - task: Maven@4
         displayName: 'Run tests'
         inputs:
-          options: '$(DefaultOptions) -ntp -T ${{parameters.BuildParallelization}} ${{parameters.SkipOptions}}'
+          options: '$(DefaultOptions) -ntp -T ${{parameters.BuildParallelization}} ${{parameters.SkipOptions}} --fail-at-end'
           mavenPomFile: sdk/spring/pom.xml
-          mavenOptions: '$(MemoryOptions)'
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
