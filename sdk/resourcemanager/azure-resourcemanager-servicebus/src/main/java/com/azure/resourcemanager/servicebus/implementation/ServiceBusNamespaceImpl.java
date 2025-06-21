@@ -5,6 +5,7 @@ package com.azure.resourcemanager.servicebus.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
 import com.azure.resourcemanager.servicebus.fluent.models.SBNamespaceInner;
 import com.azure.resourcemanager.servicebus.models.NamespaceAuthorizationRule;
@@ -76,6 +77,11 @@ class ServiceBusNamespaceImpl
     @Override
     public NamespaceAuthorizationRulesImpl authorizationRules() {
         return new NamespaceAuthorizationRulesImpl(this.resourceGroupName(), this.name(), this.region(), manager());
+    }
+
+    @Override
+    public boolean localAuthDisabled() {
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().disableLocalAuth());
     }
 
     @Override
@@ -159,6 +165,12 @@ class ServiceBusNamespaceImpl
         return Flux.concat(createTask, childOperationTasks)
             .doOnTerminate(() -> initChildrenOperationsCache())
             .then(Mono.just(self));
+    }
+
+    @Override
+    public ServiceBusNamespaceImpl disableLocalAuth() {
+        this.innerModel().withDisableLocalAuth(true);
+        return this;
     }
 
     private void initChildrenOperationsCache() {
