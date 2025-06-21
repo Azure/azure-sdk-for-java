@@ -38,9 +38,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.azure.tools.bomgenerator.Utils.ANALYZE_MODE;
@@ -69,16 +72,26 @@ public class BomGenerator {
     private String mode;
     private String outputDirectory;
     private String inputDirectory;
+    private final Pattern sdkDependencyPattern;
+    private final Set<String> groupIds;
 
     private static Logger logger = LoggerFactory.getLogger(BomGenerator.class);
 
-    BomGenerator(String inputDirectory, String outputDirectory, String mode) throws FileNotFoundException {
+    BomGenerator(String inputDirectory, String outputDirectory, String mode, List<String> groupIds) throws FileNotFoundException {
         validateNotNullOrEmpty(inputDirectory, "inputDirectory");
         validateNotNullOrEmpty(outputDirectory, "outputDirectory");
 
         this.inputDirectory = inputDirectory;
         this.outputDirectory = outputDirectory;
         this.mode = (mode == null ? GENERATE_MODE : mode);
+        if (groupIds == null || groupIds.isEmpty()) {
+            logger.warn("groupIds null, will use com.azure");
+            this.groupIds = Set.of(BASE_AZURE_GROUPID);
+            this.sdkDependencyPattern = SDK_DEPENDENCY_PATTERN;
+        } else {
+            this.groupIds = new HashSet<>(groupIds);
+            this.sdkDependencyPattern = Pattern.compile(String.format("(%s):(.+);(.+);(.+)", String.join("|", this.groupIds)));
+        }
 
         parseInputs();
         validateInputs();
@@ -147,7 +160,7 @@ public class BomGenerator {
         analyzer.reduce();
         Collection<BomDependency> outputDependencies = analyzer.getBomEligibleDependencies();
 
-        // 2. Create the new tree for the BOM.
+        // 3. Create the new tree for the BOM.
         analyzer = new DependencyAnalyzer(outputDependencies, externalDependencies, this.reportFileName);
         boolean validationFailed = analyzer.validate();
         outputDependencies = analyzer.getBomEligibleDependencies();
@@ -166,11 +179,17 @@ public class BomGenerator {
         List<BomDependency> inputDependencies = new ArrayList<>();
 
         try {
+            Set<String> premiumLibraries = getPremiumLibraries();
             for (String line : Files.readAllLines(Paths.get(inputFileName))) {
                 BomDependency dependency = scanDependency(line);
 
                 if(dependency != null) {
-                    inputDependencies.add(dependency);
+                    // Hack for including only premium ARM libraries into BOM as the first step.
+                    // TODO(xiaofei) In core-v2, we need to change this, or may include only those from patch_release_client.txt.
+                    //  Also, we may include all ARM libraries in the future and remove this hack.
+                    if (!"com.azure.resourcemanager".equals(dependency.getGroupId()) || premiumLibraries.contains(dependency.getArtifactId())) {
+                        inputDependencies.add(dependency);
+                    }
                 }
             }
         } catch (IOException exception) {
@@ -244,17 +263,18 @@ public class BomGenerator {
     }
 
     private BomDependency scanDependency(String line) {
-        Matcher matcher = SDK_DEPENDENCY_PATTERN.matcher(line);
+        Matcher matcher = sdkDependencyPattern.matcher(line);
         if (!matcher.matches()) {
             return null;
         }
 
-        if (matcher.groupCount() != 3) {
+        if (matcher.groupCount() != 4) {
             return null;
         }
 
-        String artifactId = matcher.group(1);
-        String version = matcher.group(2);
+        String groupId = matcher.group(1);
+        String artifactId = matcher.group(2);
+        String version = matcher.group(3);
 
         if(version.contains("-")) {
             // This is a non-GA library
@@ -264,11 +284,11 @@ public class BomGenerator {
         if (EXCLUSION_LIST.contains(artifactId)
             || artifactId.contains(AZURE_PERF_LIBRARY_IDENTIFIER)
             || (artifactId.contains(AZURE_TEST_LIBRARY_IDENTIFIER))) {
-            logger.trace("Skipping dependency {}:{}", BASE_AZURE_GROUPID, artifactId);
+            logger.trace("Skipping dependency {}:{}", groupId, artifactId);
             return null;
         }
 
-        return new BomDependency(BASE_AZURE_GROUPID, artifactId, version);
+        return new BomDependency(groupId, artifactId, version);
     }
 
     private Model readModel() {
@@ -338,8 +358,18 @@ public class BomGenerator {
         dependencies.sort(new DependencyComparator());
 
         // Remove external dependencies from the BOM.
-        dependencies = dependencies.stream().filter(dependency -> BASE_AZURE_GROUPID.equals(dependency.getGroupId())).collect(Collectors.toList());
+        Set<String> premiumLibraries = getPremiumLibraries();
+        dependencies = dependencies.stream().filter(dependency -> groupIds.contains(dependency.getGroupId())).collect(Collectors.toList());
         management.setDependencies(dependencies);
         writeModel(this.pomFileName, this.outputFileName, model);
+    }
+
+    private Set<String> getPremiumLibraries() {
+        return Set.of("azure-resourcemanager", "azure-resourcemanager-appplatform", "azure-resourcemanager-appservice", "azure-resourcemanager-authorization",
+                "azure-resourcemanager-cdn", "azure-resourcemanager-compute", "azure-resourcemanager-containerinstance",
+                "azure-resourcemanager-containerregistry", "azure-resourcemanager-containerservice", "azure-resourcemanager-cosmos",
+                "azure-resourcemanager-dns", "azure-resourcemanager-eventhubs", "azure-resourcemanager-keyvault", "azure-resourcemanager-monitor"
+                , "azure-resourcemanager-msi", "azure-resourcemanagernetwork", "azure-resourcemanager-privatedns", "azure-resourcemanager-redis", "azure-resourcemanager-resources"
+                , "azure-resourcemanager-search", "azure-resourcemanager-servicebus", "azure-resourcemanager-sql", "azure-resourcemanager-storage", "azure-resourcemanager-trafficmanager");
     }
 }

@@ -14,6 +14,7 @@ $BomPomFilePath = Join-Path $RepoRoot "sdk" "boms" "azure-sdk-bom" $PomFileName
 $EngScriptDir = Join-Path  $EngDir "scripts"
 $BomGeneratorPomFilePath = Join-Path ${PSScriptRoot} $PomFileName
 $NewBomFilePath = Join-Path $OutputDir $PomFileName
+$GroupIds = @("com.azure", "com.azure.resourcemanager")
 
 . (Join-Path $EngScriptDir syncversionclient.ps1)
 
@@ -36,8 +37,7 @@ function UpdateBomProjectElement($OldPomFilePath, $NewPomFilePath) {
 Write-Output "InputDir:$($InputDir)"
 Write-Output "OutputDir:$($OutputDir)"
 Write-Output "Updating version_client.txt file by looking at the packages released to maven."
-# TODO (alzimmer): Handle other group IDs for generating BOMs. https://github.com/Azure/azure-sdk-for-java/issues/44475
-SyncVersionClientFile -GroupId "com.azure"
+SyncVersionClientFile -GroupIds $GroupIds
 Write-Output "Updated version_client.txt file."
 
 New-Item -Path $PSScriptRoot -Name "inputdir" -ItemType "directory" -Force
@@ -50,7 +50,8 @@ if (!(Test-Path -Path $DefaultPomFilePath)) {
   Copy-Item $BomPomFilePath -Destination $InputDir
 }
 
-$cmdoutput = mvn clean install -f $BomGeneratorPomFilePath
+$groupIdString = $GroupIds -join ","
+$cmdoutput = mvn clean install -f $BomGeneratorPomFilePath -DgroupIds="$groupIdString"
 
 if (Test-Path -Path $BomPomFilePath && Test-Path -Path $NewBomFilePath) {
   Copy-Item $NewBomFilePath -Destination $BomPomFilePath -Force
