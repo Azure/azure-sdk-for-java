@@ -819,7 +819,8 @@ public class IdentityClient extends IdentityClientBase {
         // a null account to MSAL. If that fails, show the dialog.
 
         return getPublicClientInstance(request).getValue().flatMap(pc -> {
-            if (options.isBrokerEnabled() && options.useDefaultBrokerAccount()) {
+            if (options.isBrokerEnabled()
+                && (options.useDefaultBrokerAccount() || options.getAuthenticationRecord() != null)) {
                 return Mono.fromFuture(() -> acquireTokenFromPublicClientSilently(request, pc, null, false))
                     // The error case here represents the silent acquisition failing. There's nothing actionable and
                     // in this case the fallback path of showing the dialog will capture any meaningful error and share it.
