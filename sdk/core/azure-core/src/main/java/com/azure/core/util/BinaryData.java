@@ -201,7 +201,8 @@ public final class BinaryData {
                 }
             });
         } catch (Exception e) {
-            LOGGER.error("Failed to set BinaryData accessor.", e);
+            LOGGER.error("BinaryData's static initializer failed with message : {}", e.getMessage());
+            LOGGER.error("BinaryData's static initializer failed with exception : {}", e);
             throw e;
         }
     }
