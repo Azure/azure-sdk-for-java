@@ -1,5 +1,15 @@
 # Release History
 
+## 7.18.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 7.17.12 (2025-06-19)
 
 ### Other Changes
