@@ -30,7 +30,7 @@ public final class AppConfigurationKeyValueSelector {
     /**
      * Separator for multiple labels
      */
-    public static final String LABEL_SEPARATOR = ",";
+    private static final String LABEL_SEPARATOR = ",";
 
     @NotNull
     /**
@@ -129,7 +129,7 @@ public final class AppConfigurationKeyValueSelector {
      * Validates key-filter and label-filter are valid.
      */
     @PostConstruct
-    public void validateAndInit() {
+    void validateAndInit() {
         Assert.isTrue(!keyFilter.contains("*"), "KeyFilter must not contain asterisk(*)");
         if (labelFilter != null) {
             Assert.isTrue(!labelFilter.contains("*"), "LabelFilter must not contain asterisk(*)");
