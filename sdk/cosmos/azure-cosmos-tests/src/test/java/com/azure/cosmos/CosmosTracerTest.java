@@ -1479,6 +1479,14 @@ public class CosmosTracerTest extends TestSuiteBase {
 
             assertThat(attributes.get("db.cosmosdb.request_content_length")).isNotNull();
 
+            assertThat(attributes.get("azure.cosmosdb.operation.request_charge")).isNotNull();
+            assertThat(attributes.get("azure.cosmosdb.operation.request_charge")).isInstanceOf(Double.class);
+            assertThat(attributes.get("azure.cosmosdb.operation.request_charge")).isEqualTo(Double.valueOf(ctx.getTotalRequestCharge()));
+
+            assertThat(attributes.get("azure.cosmosdb.response.sub_status_code")).isNotNull();
+            assertThat(attributes.get("azure.cosmosdb.response.sub_status_code")).isInstanceOf(Integer.class);
+            assertThat(attributes.get("azure.cosmosdb.response.sub_status_code")).isEqualTo(Integer.valueOf(ctx.getSubStatusCode()));
+
             assertThat(attributes.get("db.cosmosdb.operation_type")).isEqualTo(ctx.getOperationType());
             if (customOperationId != null) {
                 assertThat(attributes.get("db.cosmosdb.operation_id")).isEqualTo(customOperationId);
