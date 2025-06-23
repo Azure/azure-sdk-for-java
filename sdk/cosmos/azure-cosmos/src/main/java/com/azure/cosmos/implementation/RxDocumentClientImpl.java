@@ -183,6 +183,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private static final ImplementationBridgeHelpers.CosmosOperationDetailsHelper.CosmosOperationDetailsAccessor operationDetailsAccessor =
         ImplementationBridgeHelpers.CosmosOperationDetailsHelper.getCosmosOperationDetailsAccessor();
 
+    private static final ImplementationBridgeHelpers.CosmosDatabaseAccountHelper.CosmosDatabaseAccountAccessor databaseAccountAccessor =
+        ImplementationBridgeHelpers.CosmosDatabaseAccountHelper.getCosmosDatabaseAccountAccessor();
+
     private static final String tempMachineId = "uuid:" + UUIDs.nonBlockingRandomUUID();
     private static final AtomicInteger activeClientsCnt = new AtomicInteger(0);
     private static final Map<String, Integer> clientMap = new ConcurrentHashMap<>();
@@ -6245,7 +6248,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 List<String> writeableRegions
                     = Utils.iterableToList(databaseAccount.getWritableLocations()).stream().map(DatabaseAccountLocation::getName).collect(Collectors.toList());
 
-                return Mono.just(ImplementationBridgeHelpers.CosmosDatabaseAccountHelper.getCosmosDatabaseAccountAccessor().build(
+                return Mono.just(databaseAccountAccessor.build(
                     databaseAccount.getId(),
                     databaseAccount.getETag(),
                     readableRegions,
