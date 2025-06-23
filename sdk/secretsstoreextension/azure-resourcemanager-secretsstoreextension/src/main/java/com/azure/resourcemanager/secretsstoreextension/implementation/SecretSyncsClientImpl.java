@@ -72,7 +72,7 @@ public final class SecretSyncsClientImpl implements SecretSyncsClient {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "SecretsStoreExtensio")
+    @ServiceInterface(name = "SecretsStoreExtensionMgmtClientSecretSyncs")
     public interface SecretSyncsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/secretSyncs/{secretSyncName}")

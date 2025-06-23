@@ -42,14 +42,15 @@ import static com.azure.ai.agents.persistent.SampleUtils.printStreamUpdate;
 public final class AgentFunctionsStreamingAsyncSample {
 
     public static void main(String[] args) {
-        PersistentAgentsAdministrationClientBuilder clientBuilder = new PersistentAgentsAdministrationClientBuilder()
+        PersistentAgentsClientBuilder clientBuilder = new PersistentAgentsClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build());
-            
-        PersistentAgentsAdministrationAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
-        ThreadsAsyncClient threadsAsyncClient = clientBuilder.buildThreadsAsyncClient();
-        MessagesAsyncClient messagesAsyncClient = clientBuilder.buildMessagesAsyncClient();
-        RunsAsyncClient runsAsyncClient = clientBuilder.buildRunsAsyncClient();
+
+        PersistentAgentsAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
+        PersistentAgentsAdministrationAsyncClient administrationAsyncClient = agentsAsyncClient.getPersistentAgentsAdministrationAsyncClient();
+        ThreadsAsyncClient threadsAsyncClient = agentsAsyncClient.getThreadsAsyncClient();
+        MessagesAsyncClient messagesAsyncClient = agentsAsyncClient.getMessagesAsyncClient();
+        RunsAsyncClient runsAsyncClient = agentsAsyncClient.getRunsAsyncClient();
 
         // function tool definitions
         FunctionToolDefinition getUserFavoriteCityTool = new FunctionToolDefinition(
@@ -160,7 +161,7 @@ public final class AgentFunctionsStreamingAsyncSample {
             .setTools(Arrays.asList(getUserFavoriteCityTool, getCityNicknameTool, getCurrentWeatherAtLocationTool));
 
         // Create a fully reactive chain
-        agentsAsyncClient.createAgent(createAgentOptions)
+        administrationAsyncClient.createAgent(createAgentOptions)
             .flatMap(agent -> {
                 System.out.println("Created agent: " + agent.getId());
                 agentId.set(agent.getId());
@@ -181,12 +182,12 @@ public final class AgentFunctionsStreamingAsyncSample {
                                     .setAdditionalInstructions("");
                                 
                                 System.out.println("----- Run started! -----");
-                                return runsAsyncClient.createRunStreaming(createRunOptions)
-                                    .map(su -> handleStreamingRun(su, runsAsyncClient, getResolvedToolOutput));
+                                return handleStreamingRun(runsAsyncClient
+                                    .createRunStreaming(createRunOptions), runsAsyncClient, getResolvedToolOutput);
                             });
                     });
             })
-            .doFinally(signalType -> cleanUpResources(threadId, threadsAsyncClient, agentId, agentsAsyncClient))
+            .doFinally(signalType -> cleanUpResources(threadId, threadsAsyncClient, agentId, administrationAsyncClient))
             .doOnError(error -> System.err.println("An error occurred: " + error.getMessage()))
             .block(); // Only block at the end of the reactive chain
     }
@@ -238,7 +239,7 @@ public final class AgentFunctionsStreamingAsyncSample {
         return runsAsyncClient.submitToolOutputsToRunStreaming(
             run.getThreadId(),
             run.getId(),
-            toolOutputs).flatMapMany(su -> su);
+            toolOutputs);
     }
 
     // Use "Map.of" if available

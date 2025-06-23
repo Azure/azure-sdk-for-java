@@ -62,7 +62,7 @@ public final class TimezonesImpl {
      * REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "TimezoneClientTimezo")
+    @ServiceInterface(name = "TimezoneClientTimezones")
     public interface TimezonesService {
         @Get("/timezone/byId/{format}")
         @ExpectedResponses({ 200 })

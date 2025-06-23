@@ -7,14 +7,11 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
-import java.util.regex.Pattern;
-
 /**
- * The @ServiceInterface class should have the following rules:
- *   1) The annotation property 'name' should be non-empty
- *   2) The length of value of property 'name' should be less than 20 characters and without space
+ * ServiceInterface annotation should have a non-empty 'name' property
  */
 public class ServiceInterfaceCheck extends AbstractCheck {
+
     @Override
     public int[] getDefaultTokens() {
         return getRequiredTokens();
@@ -40,9 +37,7 @@ public class ServiceInterfaceCheck extends AbstractCheck {
     }
 
     /**
-     *  The @ServiceInterface class should have the following rules:
-     *   1) The annotation property 'name' should be non-empty
-     *   2) The length of value of property 'name' should be less than 20 characters and without space
+     *  The @ServiceInterface annotation should have a non-empty 'name' property.
      *
      * @param interfaceDefToken INTERFACE_DEF AST node
      */
@@ -81,12 +76,10 @@ public class ServiceInterfaceCheck extends AbstractCheck {
         }
 
         // 'name' is required at @ServiceInterface
-        // 'name' should not be empty, no Space allowed and the length should less than or equal to 20 characters
-        Pattern serviceNamePattern = Pattern.compile("^[a-zA-Z0-9]{1,20}$");
-        if (!serviceNamePattern.matcher(nameValue).find()) {
+        // 'name' should not be null or empty
+        if (nameValue == null || nameValue.isEmpty()) {
             log(serviceInterfaceAnnotationNode, String.format(
-                "The ''name'' property of @ServiceInterface, ''%s'' should be non-empty, alphanumeric and not more "
-                    + "than 20 characters", nameValue));
+                "The ''name'' property of @ServiceInterface, ''%s'' should be not be null or empty", nameValue));
         }
     }
 

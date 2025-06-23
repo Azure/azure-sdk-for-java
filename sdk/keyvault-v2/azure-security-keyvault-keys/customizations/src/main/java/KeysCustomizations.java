@@ -1,79 +1,46 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import com.microsoft.typespec.http.client.generator.core.customization.Customization;
-import com.microsoft.typespec.http.client.generator.core.customization.Editor;
-import com.microsoft.typespec.http.client.generator.core.customization.LibraryCustomization;
+import com.azure.autorest.customization.Customization;
+import com.azure.autorest.customization.Editor;
+import com.azure.autorest.customization.LibraryCustomization;
 import org.slf4j.Logger;
 
 /**
  * Contains customizations for Azure Key Vault's Keys code generation.
  */
 public class KeysCustomizations extends Customization {
+    private static final String ROOT_FILE_PATH = "src/main/java/com/azure/v2/security/keyvault/keys/";
+
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         // Remove unnecessary files.
         removeFiles(libraryCustomization.getRawEditor());
-        moveListResultFiles(libraryCustomization);
-        customizeServiceVersion(libraryCustomization);
+        customizeServiceVersion(libraryCustomization.getRawEditor());
         customizeModuleInfo(libraryCustomization.getRawEditor());
     }
 
     private static void removeFiles(Editor editor) {
-        editor.removeFile("src/main/java/com/azure/v2/security/keyvault/keys/KeyClient.java");
-        editor.removeFile("src/main/java/com/azure/v2/security/keyvault/keys/KeyClientBuilder.java");
-        editor.removeFile("src/main/java/com/azure/v2/security/keyvault/keys/implementation/implementation/models/package-info.java");
+        editor.removeFile(ROOT_FILE_PATH + "KeyClient.java");
+        editor.removeFile(ROOT_FILE_PATH + "KeyClientBuilder.java");
+        editor.removeFile(ROOT_FILE_PATH + "implementation/models/package-info.java");
     }
 
-    private static void moveListResultFiles(LibraryCustomization libraryCustomization) {
-        moveSingleFile(libraryCustomization,
-            "com.azure.v2.security.keyvault.keys.implementation.implementation.models",
-            "com.azure.v2.security.keyvault.keys.implementation.models", "DeletedKeyListResult");
-        moveSingleFile(libraryCustomization,
-            "com.azure.v2.security.keyvault.keys.implementation.implementation.models",
-            "com.azure.v2.security.keyvault.keys.implementation.models", "KeyListResult");
+    private static void customizeServiceVersion(Editor editor) {
+        String serviceVersion = editor.getFileContent(ROOT_FILE_PATH + "KeyVaultServiceVersion.java")
+            .replace("KeyVaultServiceVersion", "KeyServiceVersion");
 
-        // Update imports statements for moved classes in impl client.
-        String classPath = "src/main/java/com/azure/v2/security/keyvault/keys/implementation/KeyClientImpl.java";
-        Editor editor = libraryCustomization.getRawEditor();
-        String newFileContent = editor.getFileContent(classPath)
-            .replace("implementation.implementation", "implementation");
+        editor.addFile(ROOT_FILE_PATH + "KeyServiceVersion.java", serviceVersion);
+        editor.removeFile(ROOT_FILE_PATH + "KeyVaultServiceVersion.java");
 
-        editor.replaceFile(classPath, newFileContent);
-    }
-
-    private static void moveSingleFile(LibraryCustomization libraryCustomization, String oldPackage, String newPackage,
-        String className) {
-
-        Editor editor = libraryCustomization.getRawEditor();
-        String oldClassPath = "src/main/java/" + oldPackage.replace('.', '/') + "/" + className + ".java";
-        String newClassPath = "src/main/java/" + newPackage.replace('.', '/') + "/" + className + ".java";
-
-        // Update the package declaration.
-        libraryCustomization.getPackage(oldPackage)
-            .getClass(className)
-            .customizeAst(ast -> ast.getPackageDeclaration()
-                .ifPresent(packageDeclaration -> packageDeclaration.setName(newPackage)));
-
-        // Remove unnecessary import statement.
-        String newFileContent = editor.getFileContent(oldClassPath)
-            .replace("import " + oldPackage + "." + className.replace("ListResult", "Item") + ";\n", "");
-
-        // Replace file contents.
-        editor.replaceFile(oldClassPath, newFileContent);
-
-        // Move file to the new path.
-        editor.renameFile(oldClassPath, newClassPath);
-    }
-
-    private static void customizeServiceVersion(LibraryCustomization libraryCustomization) {
-        libraryCustomization.getPackage("com.azure.v2.security.keyvault.keys")
-            .getClass("KeyVaultServiceVersion")
-            .rename("KeyServiceVersion");
+        String fileName = ROOT_FILE_PATH + "implementation/KeyClientImpl.java";
+        String fileContent = editor.getFileContent(fileName);
+        fileContent = fileContent.replace("KeyVaultServiceVersion", "KeyServiceVersion");
+        editor.replaceFile(fileName, fileContent);
     }
 
     private static void customizeModuleInfo(Editor editor) {
-        editor.replaceFile("src/main/java/module-info.java", joinWithNewline(
+        editor.replaceFile("src/main/java/module-info.java", String.join("\n",
             "// Copyright (c) Microsoft Corporation. All rights reserved.",
             "// Licensed under the MIT License.",
             "// Code generated by Microsoft (R) TypeSpec Code Generator.",
@@ -84,9 +51,5 @@ public class KeysCustomizations extends Customization {
             "    exports com.azure.v2.security.keyvault.keys;",
             "    exports com.azure.v2.security.keyvault.keys.models;",
             "}"));
-    }
-
-    private static String joinWithNewline(String... lines) {
-        return String.join("\n", lines);
     }
 }

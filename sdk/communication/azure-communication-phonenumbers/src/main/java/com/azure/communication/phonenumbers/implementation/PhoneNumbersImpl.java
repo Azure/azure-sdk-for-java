@@ -14,14 +14,14 @@ import com.azure.communication.phonenumbers.implementation.models.PhoneNumberLoc
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberPurchaseRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberRawOperation;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberSearchRequest;
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersGetOperationResponse;
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersPurchasePhoneNumbersResponse;
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersPurchaseReservationResponse;
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReleasePhoneNumberResponse;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersGetOperationHeaders;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersPurchasePhoneNumbersHeaders;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersPurchaseReservationHeaders;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReleasePhoneNumberHeaders;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReservationPurchaseRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReservations;
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersSearchAvailablePhoneNumbersResponse;
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersUpdateCapabilitiesResponse;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersSearchAvailablePhoneNumbersHeaders;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersUpdateCapabilitiesHeaders;
 import com.azure.communication.phonenumbers.implementation.models.PurchasedPhoneNumbers;
 import com.azure.communication.phonenumbers.models.BrowsePhoneNumbersOptions;
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
@@ -30,10 +30,10 @@ import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCountry;
 import com.azure.communication.phonenumbers.models.PhoneNumberLocality;
 import com.azure.communication.phonenumbers.models.PhoneNumberOffering;
-import com.azure.communication.phonenumbers.models.PhoneNumbersBrowseResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
-import com.azure.communication.phonenumbers.models.PhoneNumbersReservation;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
+import com.azure.communication.phonenumbers.models.PhoneNumbersBrowseResult;
+import com.azure.communication.phonenumbers.models.PhoneNumbersReservation;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
@@ -55,6 +55,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -91,7 +92,7 @@ public final class PhoneNumbersImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PhoneNumberAdminClie")
+    @ServiceInterface(name = "PhoneNumberAdminClientPhoneNumbers")
     public interface PhoneNumbersService {
         @Get("/availablePhoneNumbers/countries/{countryCode}/areaCodes")
         @ExpectedResponses({ 200 })
@@ -175,7 +176,16 @@ public final class PhoneNumbersImpl {
         @Post("/availablePhoneNumbers/reservations/{reservationId}/:purchase")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<PhoneNumbersPurchaseReservationResponse> purchaseReservation(@HostParam("endpoint") String endpoint,
+        Mono<ResponseBase<PhoneNumbersPurchaseReservationHeaders, Void>> purchaseReservation(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("reservationId") UUID reservationId,
+            @BodyParam("application/json") PhoneNumbersReservationPurchaseRequest reservationPurchaseRequest,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/availablePhoneNumbers/reservations/{reservationId}/:purchase")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<Void>> purchaseReservationNoCustomHeaders(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("reservationId") UUID reservationId,
             @BodyParam("application/json") PhoneNumbersReservationPurchaseRequest reservationPurchaseRequest,
             @HeaderParam("Accept") String accept, Context context);
@@ -183,7 +193,16 @@ public final class PhoneNumbersImpl {
         @Post("/availablePhoneNumbers/countries/{countryCode}/:search")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<PhoneNumbersSearchAvailablePhoneNumbersResponse> searchAvailablePhoneNumbers(
+        Mono<ResponseBase<PhoneNumbersSearchAvailablePhoneNumbersHeaders, PhoneNumberSearchResult>>
+            searchAvailablePhoneNumbers(@HostParam("endpoint") String endpoint,
+                @PathParam("countryCode") String countryCode, @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") PhoneNumberSearchRequest body, @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/availablePhoneNumbers/countries/{countryCode}/:search")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<PhoneNumberSearchResult>> searchAvailablePhoneNumbersNoCustomHeaders(
             @HostParam("endpoint") String endpoint, @PathParam("countryCode") String countryCode,
             @QueryParam("api-version") String apiVersion, @BodyParam("application/json") PhoneNumberSearchRequest body,
             @HeaderParam("Accept") String accept, Context context);
@@ -198,7 +217,15 @@ public final class PhoneNumbersImpl {
         @Post("/availablePhoneNumbers/:purchase")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<PhoneNumbersPurchasePhoneNumbersResponse> purchasePhoneNumbers(@HostParam("endpoint") String endpoint,
+        Mono<ResponseBase<PhoneNumbersPurchasePhoneNumbersHeaders, Void>> purchasePhoneNumbers(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") PhoneNumberPurchaseRequest body, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Post("/availablePhoneNumbers/:purchase")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<Void>> purchasePhoneNumbersNoCustomHeaders(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") PhoneNumberPurchaseRequest body, @HeaderParam("Accept") String accept,
             Context context);
@@ -206,7 +233,14 @@ public final class PhoneNumbersImpl {
         @Get("/phoneNumbers/operations/{operationId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<PhoneNumbersGetOperationResponse> getOperation(@HostParam("endpoint") String endpoint,
+        Mono<ResponseBase<PhoneNumbersGetOperationHeaders, PhoneNumberRawOperation>> getOperation(
+            @HostParam("endpoint") String endpoint, @PathParam("operationId") String operationId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/phoneNumbers/operations/{operationId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<PhoneNumberRawOperation>> getOperationNoCustomHeaders(@HostParam("endpoint") String endpoint,
             @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -220,7 +254,16 @@ public final class PhoneNumbersImpl {
         @Patch("/phoneNumbers/{phoneNumber}/capabilities")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<PhoneNumbersUpdateCapabilitiesResponse> updateCapabilities(@HostParam("endpoint") String endpoint,
+        Mono<ResponseBase<PhoneNumbersUpdateCapabilitiesHeaders, PurchasedPhoneNumber>> updateCapabilities(
+            @HostParam("endpoint") String endpoint, @PathParam("phoneNumber") String phoneNumber,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/merge-patch+json") PhoneNumberCapabilitiesRequest body,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Patch("/phoneNumbers/{phoneNumber}/capabilities")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<PurchasedPhoneNumber>> updateCapabilitiesNoCustomHeaders(@HostParam("endpoint") String endpoint,
             @PathParam("phoneNumber") String phoneNumber, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/merge-patch+json") PhoneNumberCapabilitiesRequest body,
             @HeaderParam("Accept") String accept, Context context);
@@ -235,7 +278,14 @@ public final class PhoneNumbersImpl {
         @Delete("/phoneNumbers/{phoneNumber}")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<PhoneNumbersReleasePhoneNumberResponse> releasePhoneNumber(@HostParam("endpoint") String endpoint,
+        Mono<ResponseBase<PhoneNumbersReleasePhoneNumberHeaders, Void>> releasePhoneNumber(
+            @HostParam("endpoint") String endpoint, @PathParam("phoneNumber") String phoneNumber,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Delete("/phoneNumbers/{phoneNumber}")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<Void>> releasePhoneNumberNoCustomHeaders(@HostParam("endpoint") String endpoint,
             @PathParam("phoneNumber") String phoneNumber, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -708,9 +758,8 @@ public final class PhoneNumbersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PhoneNumbersBrowseResult>> browseAvailableNumbersWithResponseAsync(String countryCode,
         BrowsePhoneNumbersOptions phoneNumbersBrowseRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.browseAvailableNumbers(this.client.getEndpoint(),
-            this.client.getApiVersion(), countryCode, phoneNumbersBrowseRequest, accept, context));
+        return FluxUtil.withContext(
+            context -> browseAvailableNumbersWithResponseAsync(countryCode, phoneNumbersBrowseRequest, context));
     }
 
     /**
@@ -1398,9 +1447,8 @@ public final class PhoneNumbersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PhoneNumbersReservation>> createOrUpdateReservationWithResponseAsync(UUID reservationId,
         PhoneNumbersReservation reservation) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createOrUpdateReservation(this.client.getEndpoint(),
-            this.client.getApiVersion(), reservationId, reservation, accept, context));
+        return FluxUtil
+            .withContext(context -> createOrUpdateReservationWithResponseAsync(reservationId, reservation, context));
     }
 
     /**
@@ -1544,9 +1592,7 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PhoneNumbersReservation>> getReservationWithResponseAsync(UUID reservationId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getReservation(this.client.getEndpoint(),
-            this.client.getApiVersion(), reservationId, accept, context));
+        return FluxUtil.withContext(context -> getReservationWithResponseAsync(reservationId, context));
     }
 
     /**
@@ -1650,9 +1696,7 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteReservationWithResponseAsync(UUID reservationId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteReservation(this.client.getEndpoint(),
-            this.client.getApiVersion(), reservationId, accept, context));
+        return FluxUtil.withContext(context -> deleteReservationWithResponseAsync(reservationId, context));
     }
 
     /**
@@ -1753,18 +1797,17 @@ public final class PhoneNumbersImpl {
      * an 'Operation-Location' header that can be used to query the status of the operation.
      * 
      * @param reservationId The id of the reservation.
-     * @param reservationPurchaseRequest The phone number search purchase request.
+     * @param reservationPurchaseRequest The reservationPurchaseRequest parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersPurchaseReservationResponse> purchaseReservationWithResponseAsync(UUID reservationId,
-        PhoneNumbersReservationPurchaseRequest reservationPurchaseRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.purchaseReservation(this.client.getEndpoint(),
-            this.client.getApiVersion(), reservationId, reservationPurchaseRequest, accept, context));
+    public Mono<ResponseBase<PhoneNumbersPurchaseReservationHeaders, Void>> purchaseReservationWithResponseAsync(
+        UUID reservationId, PhoneNumbersReservationPurchaseRequest reservationPurchaseRequest) {
+        return FluxUtil.withContext(
+            context -> purchaseReservationWithResponseAsync(reservationId, reservationPurchaseRequest, context));
     }
 
     /**
@@ -1776,16 +1819,16 @@ public final class PhoneNumbersImpl {
      * an 'Operation-Location' header that can be used to query the status of the operation.
      * 
      * @param reservationId The id of the reservation.
-     * @param reservationPurchaseRequest The phone number search purchase request.
+     * @param reservationPurchaseRequest The reservationPurchaseRequest parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersPurchaseReservationResponse> purchaseReservationWithResponseAsync(UUID reservationId,
-        PhoneNumbersReservationPurchaseRequest reservationPurchaseRequest, Context context) {
+    public Mono<ResponseBase<PhoneNumbersPurchaseReservationHeaders, Void>> purchaseReservationWithResponseAsync(
+        UUID reservationId, PhoneNumbersReservationPurchaseRequest reservationPurchaseRequest, Context context) {
         final String accept = "application/json";
         return service.purchaseReservation(this.client.getEndpoint(), this.client.getApiVersion(), reservationId,
             reservationPurchaseRequest, accept, context);
@@ -1800,7 +1843,7 @@ public final class PhoneNumbersImpl {
      * an 'Operation-Location' header that can be used to query the status of the operation.
      * 
      * @param reservationId The id of the reservation.
-     * @param reservationPurchaseRequest The phone number search purchase request.
+     * @param reservationPurchaseRequest The reservationPurchaseRequest parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1822,7 +1865,7 @@ public final class PhoneNumbersImpl {
      * an 'Operation-Location' header that can be used to query the status of the operation.
      * 
      * @param reservationId The id of the reservation.
-     * @param reservationPurchaseRequest The phone number search purchase request.
+     * @param reservationPurchaseRequest The reservationPurchaseRequest parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1845,16 +1888,16 @@ public final class PhoneNumbersImpl {
      * an 'Operation-Location' header that can be used to query the status of the operation.
      * 
      * @param reservationId The id of the reservation.
-     * @param reservationPurchaseRequest The phone number search purchase request.
+     * @param reservationPurchaseRequest The reservationPurchaseRequest parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumbersPurchaseReservationResponse purchaseReservationWithResponse(UUID reservationId,
-        PhoneNumbersReservationPurchaseRequest reservationPurchaseRequest, Context context) {
+    public ResponseBase<PhoneNumbersPurchaseReservationHeaders, Void> purchaseReservationWithResponse(
+        UUID reservationId, PhoneNumbersReservationPurchaseRequest reservationPurchaseRequest, Context context) {
         return purchaseReservationWithResponseAsync(reservationId, reservationPurchaseRequest, context).block();
     }
 
@@ -1867,7 +1910,7 @@ public final class PhoneNumbersImpl {
      * an 'Operation-Location' header that can be used to query the status of the operation.
      * 
      * @param reservationId The id of the reservation.
-     * @param reservationPurchaseRequest The phone number search purchase request.
+     * @param reservationPurchaseRequest The reservationPurchaseRequest parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1879,6 +1922,75 @@ public final class PhoneNumbersImpl {
     }
 
     /**
+     * Starts the purchase of all phone numbers in the reservation.
+     * 
+     * Starts a long running operation to purchase all of the phone numbers in the reservation. Purchase can only be
+     * started for active reservations that at least one phone number. If any of the phone numbers in the reservation is
+     * from a country where reselling is not permitted, do not resell agreement is required. The response will include
+     * an 'Operation-Location' header that can be used to query the status of the operation.
+     * 
+     * @param reservationId The id of the reservation.
+     * @param reservationPurchaseRequest The reservationPurchaseRequest parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> purchaseReservationNoCustomHeadersWithResponseAsync(UUID reservationId,
+        PhoneNumbersReservationPurchaseRequest reservationPurchaseRequest) {
+        return FluxUtil.withContext(context -> purchaseReservationNoCustomHeadersWithResponseAsync(reservationId,
+            reservationPurchaseRequest, context));
+    }
+
+    /**
+     * Starts the purchase of all phone numbers in the reservation.
+     * 
+     * Starts a long running operation to purchase all of the phone numbers in the reservation. Purchase can only be
+     * started for active reservations that at least one phone number. If any of the phone numbers in the reservation is
+     * from a country where reselling is not permitted, do not resell agreement is required. The response will include
+     * an 'Operation-Location' header that can be used to query the status of the operation.
+     * 
+     * @param reservationId The id of the reservation.
+     * @param reservationPurchaseRequest The reservationPurchaseRequest parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> purchaseReservationNoCustomHeadersWithResponseAsync(UUID reservationId,
+        PhoneNumbersReservationPurchaseRequest reservationPurchaseRequest, Context context) {
+        final String accept = "application/json";
+        return service.purchaseReservationNoCustomHeaders(this.client.getEndpoint(), this.client.getApiVersion(),
+            reservationId, reservationPurchaseRequest, accept, context);
+    }
+
+    /**
+     * Starts the purchase of all phone numbers in the reservation.
+     * 
+     * Starts a long running operation to purchase all of the phone numbers in the reservation. Purchase can only be
+     * started for active reservations that at least one phone number. If any of the phone numbers in the reservation is
+     * from a country where reselling is not permitted, do not resell agreement is required. The response will include
+     * an 'Operation-Location' header that can be used to query the status of the operation.
+     * 
+     * @param reservationId The id of the reservation.
+     * @param reservationPurchaseRequest The reservationPurchaseRequest parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> purchaseReservationNoCustomHeadersWithResponse(UUID reservationId,
+        PhoneNumbersReservationPurchaseRequest reservationPurchaseRequest, Context context) {
+        return purchaseReservationNoCustomHeadersWithResponseAsync(reservationId, reservationPurchaseRequest, context)
+            .block();
+    }
+
+    /**
      * Search for available phone numbers to purchase.
      * 
      * @param countryCode The ISO 3166-2 country code, e.g. US.
@@ -1886,14 +1998,14 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a phone number search operation on successful completion of {@link Mono}.
+     * @return the result of a phone number search operation along with {@link ResponseBase} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersSearchAvailablePhoneNumbersResponse>
+    public Mono<ResponseBase<PhoneNumbersSearchAvailablePhoneNumbersHeaders, PhoneNumberSearchResult>>
         searchAvailablePhoneNumbersWithResponseAsync(String countryCode, PhoneNumberSearchRequest body) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.searchAvailablePhoneNumbers(this.client.getEndpoint(),
-            countryCode, this.client.getApiVersion(), body, accept, context));
+        return FluxUtil
+            .withContext(context -> searchAvailablePhoneNumbersWithResponseAsync(countryCode, body, context));
     }
 
     /**
@@ -1905,11 +2017,13 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a phone number search operation on successful completion of {@link Mono}.
+     * @return the result of a phone number search operation along with {@link ResponseBase} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersSearchAvailablePhoneNumbersResponse> searchAvailablePhoneNumbersWithResponseAsync(
-        String countryCode, PhoneNumberSearchRequest body, Context context) {
+    public Mono<ResponseBase<PhoneNumbersSearchAvailablePhoneNumbersHeaders, PhoneNumberSearchResult>>
+        searchAvailablePhoneNumbersWithResponseAsync(String countryCode, PhoneNumberSearchRequest body,
+            Context context) {
         final String accept = "application/json";
         return service.searchAvailablePhoneNumbers(this.client.getEndpoint(), countryCode, this.client.getApiVersion(),
             body, accept, context);
@@ -1959,11 +2073,11 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a phone number search operation.
+     * @return the result of a phone number search operation along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumbersSearchAvailablePhoneNumbersResponse searchAvailablePhoneNumbersWithResponse(String countryCode,
-        PhoneNumberSearchRequest body, Context context) {
+    public ResponseBase<PhoneNumbersSearchAvailablePhoneNumbersHeaders, PhoneNumberSearchResult>
+        searchAvailablePhoneNumbersWithResponse(String countryCode, PhoneNumberSearchRequest body, Context context) {
         return searchAvailablePhoneNumbersWithResponseAsync(countryCode, body, context).block();
     }
 
@@ -1983,6 +2097,61 @@ public final class PhoneNumbersImpl {
     }
 
     /**
+     * Search for available phone numbers to purchase.
+     * 
+     * @param countryCode The ISO 3166-2 country code, e.g. US.
+     * @param body The phone number search request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a phone number search operation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PhoneNumberSearchResult>>
+        searchAvailablePhoneNumbersNoCustomHeadersWithResponseAsync(String countryCode, PhoneNumberSearchRequest body) {
+        return FluxUtil.withContext(
+            context -> searchAvailablePhoneNumbersNoCustomHeadersWithResponseAsync(countryCode, body, context));
+    }
+
+    /**
+     * Search for available phone numbers to purchase.
+     * 
+     * @param countryCode The ISO 3166-2 country code, e.g. US.
+     * @param body The phone number search request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a phone number search operation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PhoneNumberSearchResult>> searchAvailablePhoneNumbersNoCustomHeadersWithResponseAsync(
+        String countryCode, PhoneNumberSearchRequest body, Context context) {
+        final String accept = "application/json";
+        return service.searchAvailablePhoneNumbersNoCustomHeaders(this.client.getEndpoint(), countryCode,
+            this.client.getApiVersion(), body, accept, context);
+    }
+
+    /**
+     * Search for available phone numbers to purchase.
+     * 
+     * @param countryCode The ISO 3166-2 country code, e.g. US.
+     * @param body The phone number search request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a phone number search operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PhoneNumberSearchResult> searchAvailablePhoneNumbersNoCustomHeadersWithResponse(String countryCode,
+        PhoneNumberSearchRequest body, Context context) {
+        return searchAvailablePhoneNumbersNoCustomHeadersWithResponseAsync(countryCode, body, context).block();
+    }
+
+    /**
      * Gets a phone number search result by search id.
      * 
      * @param searchId The search Id.
@@ -1994,9 +2163,7 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PhoneNumberSearchResult>> getSearchResultWithResponseAsync(String searchId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSearchResult(this.client.getEndpoint(), searchId,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> getSearchResultWithResponseAsync(searchId, context));
     }
 
     /**
@@ -2082,14 +2249,12 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersPurchasePhoneNumbersResponse>
+    public Mono<ResponseBase<PhoneNumbersPurchasePhoneNumbersHeaders, Void>>
         purchasePhoneNumbersWithResponseAsync(PhoneNumberPurchaseRequest body) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.purchasePhoneNumbers(this.client.getEndpoint(),
-            this.client.getApiVersion(), body, accept, context));
+        return FluxUtil.withContext(context -> purchasePhoneNumbersWithResponseAsync(body, context));
     }
 
     /**
@@ -2100,10 +2265,10 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersPurchasePhoneNumbersResponse>
+    public Mono<ResponseBase<PhoneNumbersPurchasePhoneNumbersHeaders, Void>>
         purchasePhoneNumbersWithResponseAsync(PhoneNumberPurchaseRequest body, Context context) {
         final String accept = "application/json";
         return service.purchasePhoneNumbers(this.client.getEndpoint(), this.client.getApiVersion(), body, accept,
@@ -2147,11 +2312,11 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumbersPurchasePhoneNumbersResponse purchasePhoneNumbersWithResponse(PhoneNumberPurchaseRequest body,
-        Context context) {
+    public ResponseBase<PhoneNumbersPurchasePhoneNumbersHeaders, Void>
+        purchasePhoneNumbersWithResponse(PhoneNumberPurchaseRequest body, Context context) {
         return purchasePhoneNumbersWithResponseAsync(body, context).block();
     }
 
@@ -2169,19 +2334,66 @@ public final class PhoneNumbersImpl {
     }
 
     /**
+     * Purchases phone numbers.
+     * 
+     * @param body The phone number purchase request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> purchasePhoneNumbersNoCustomHeadersWithResponseAsync(PhoneNumberPurchaseRequest body) {
+        return FluxUtil.withContext(context -> purchasePhoneNumbersNoCustomHeadersWithResponseAsync(body, context));
+    }
+
+    /**
+     * Purchases phone numbers.
+     * 
+     * @param body The phone number purchase request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> purchasePhoneNumbersNoCustomHeadersWithResponseAsync(PhoneNumberPurchaseRequest body,
+        Context context) {
+        final String accept = "application/json";
+        return service.purchasePhoneNumbersNoCustomHeaders(this.client.getEndpoint(), this.client.getApiVersion(), body,
+            accept, context);
+    }
+
+    /**
+     * Purchases phone numbers.
+     * 
+     * @param body The phone number purchase request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> purchasePhoneNumbersNoCustomHeadersWithResponse(PhoneNumberPurchaseRequest body,
+        Context context) {
+        return purchasePhoneNumbersNoCustomHeadersWithResponseAsync(body, context).block();
+    }
+
+    /**
      * Gets an operation by its id.
      * 
      * @param operationId The id of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an operation by its id on successful completion of {@link Mono}.
+     * @return an operation by its id along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersGetOperationResponse> getOperationWithResponseAsync(String operationId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getOperation(this.client.getEndpoint(), operationId,
-            this.client.getApiVersion(), accept, context));
+    public Mono<ResponseBase<PhoneNumbersGetOperationHeaders, PhoneNumberRawOperation>>
+        getOperationWithResponseAsync(String operationId) {
+        return FluxUtil.withContext(context -> getOperationWithResponseAsync(operationId, context));
     }
 
     /**
@@ -2192,10 +2404,11 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an operation by its id on successful completion of {@link Mono}.
+     * @return an operation by its id along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersGetOperationResponse> getOperationWithResponseAsync(String operationId, Context context) {
+    public Mono<ResponseBase<PhoneNumbersGetOperationHeaders, PhoneNumberRawOperation>>
+        getOperationWithResponseAsync(String operationId, Context context) {
         final String accept = "application/json";
         return service.getOperation(this.client.getEndpoint(), operationId, this.client.getApiVersion(), accept,
             context);
@@ -2238,10 +2451,11 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an operation by its id.
+     * @return an operation by its id along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumbersGetOperationResponse getOperationWithResponse(String operationId, Context context) {
+    public ResponseBase<PhoneNumbersGetOperationHeaders, PhoneNumberRawOperation>
+        getOperationWithResponse(String operationId, Context context) {
         return getOperationWithResponseAsync(operationId, context).block();
     }
 
@@ -2260,6 +2474,54 @@ public final class PhoneNumbersImpl {
     }
 
     /**
+     * Gets an operation by its id.
+     * 
+     * @param operationId The id of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an operation by its id along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PhoneNumberRawOperation>> getOperationNoCustomHeadersWithResponseAsync(String operationId) {
+        return FluxUtil.withContext(context -> getOperationNoCustomHeadersWithResponseAsync(operationId, context));
+    }
+
+    /**
+     * Gets an operation by its id.
+     * 
+     * @param operationId The id of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an operation by its id along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PhoneNumberRawOperation>> getOperationNoCustomHeadersWithResponseAsync(String operationId,
+        Context context) {
+        final String accept = "application/json";
+        return service.getOperationNoCustomHeaders(this.client.getEndpoint(), operationId, this.client.getApiVersion(),
+            accept, context);
+    }
+
+    /**
+     * Gets an operation by its id.
+     * 
+     * @param operationId The id of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an operation by its id along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PhoneNumberRawOperation> getOperationNoCustomHeadersWithResponse(String operationId,
+        Context context) {
+        return getOperationNoCustomHeadersWithResponseAsync(operationId, context).block();
+    }
+
+    /**
      * Cancels an operation by its id.
      * 
      * @param operationId The id of the operation.
@@ -2270,9 +2532,7 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelOperationWithResponseAsync(String operationId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.cancelOperation(this.client.getEndpoint(), operationId,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> cancelOperationWithResponseAsync(operationId, context));
     }
 
     /**
@@ -2358,14 +2618,13 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a purchased phone number on successful completion of {@link Mono}.
+     * @return represents a purchased phone number along with {@link ResponseBase} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersUpdateCapabilitiesResponse> updateCapabilitiesWithResponseAsync(String phoneNumber,
-        PhoneNumberCapabilitiesRequest body) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateCapabilities(this.client.getEndpoint(), phoneNumber,
-            this.client.getApiVersion(), body, accept, context));
+    public Mono<ResponseBase<PhoneNumbersUpdateCapabilitiesHeaders, PurchasedPhoneNumber>>
+        updateCapabilitiesWithResponseAsync(String phoneNumber, PhoneNumberCapabilitiesRequest body) {
+        return FluxUtil.withContext(context -> updateCapabilitiesWithResponseAsync(phoneNumber, body, context));
     }
 
     /**
@@ -2378,11 +2637,12 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a purchased phone number on successful completion of {@link Mono}.
+     * @return represents a purchased phone number along with {@link ResponseBase} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersUpdateCapabilitiesResponse> updateCapabilitiesWithResponseAsync(String phoneNumber,
-        PhoneNumberCapabilitiesRequest body, Context context) {
+    public Mono<ResponseBase<PhoneNumbersUpdateCapabilitiesHeaders, PurchasedPhoneNumber>>
+        updateCapabilitiesWithResponseAsync(String phoneNumber, PhoneNumberCapabilitiesRequest body, Context context) {
         final String accept = "application/json";
         return service.updateCapabilities(this.client.getEndpoint(), phoneNumber, this.client.getApiVersion(), body,
             accept, context);
@@ -2433,11 +2693,11 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a purchased phone number.
+     * @return represents a purchased phone number along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumbersUpdateCapabilitiesResponse updateCapabilitiesWithResponse(String phoneNumber,
-        PhoneNumberCapabilitiesRequest body, Context context) {
+    public ResponseBase<PhoneNumbersUpdateCapabilitiesHeaders, PurchasedPhoneNumber>
+        updateCapabilitiesWithResponse(String phoneNumber, PhoneNumberCapabilitiesRequest body, Context context) {
         return updateCapabilitiesWithResponseAsync(phoneNumber, body, context).block();
     }
 
@@ -2458,6 +2718,62 @@ public final class PhoneNumbersImpl {
     }
 
     /**
+     * Updates the capabilities of a phone number.
+     * 
+     * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded as %2B, e.g.
+     * +11234567890.
+     * @param body Defines the update capabilities request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a purchased phone number along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PurchasedPhoneNumber>> updateCapabilitiesNoCustomHeadersWithResponseAsync(String phoneNumber,
+        PhoneNumberCapabilitiesRequest body) {
+        return FluxUtil
+            .withContext(context -> updateCapabilitiesNoCustomHeadersWithResponseAsync(phoneNumber, body, context));
+    }
+
+    /**
+     * Updates the capabilities of a phone number.
+     * 
+     * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded as %2B, e.g.
+     * +11234567890.
+     * @param body Defines the update capabilities request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a purchased phone number along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PurchasedPhoneNumber>> updateCapabilitiesNoCustomHeadersWithResponseAsync(String phoneNumber,
+        PhoneNumberCapabilitiesRequest body, Context context) {
+        final String accept = "application/json";
+        return service.updateCapabilitiesNoCustomHeaders(this.client.getEndpoint(), phoneNumber,
+            this.client.getApiVersion(), body, accept, context);
+    }
+
+    /**
+     * Updates the capabilities of a phone number.
+     * 
+     * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded as %2B, e.g.
+     * +11234567890.
+     * @param body Defines the update capabilities request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a purchased phone number along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PurchasedPhoneNumber> updateCapabilitiesNoCustomHeadersWithResponse(String phoneNumber,
+        PhoneNumberCapabilitiesRequest body, Context context) {
+        return updateCapabilitiesNoCustomHeadersWithResponseAsync(phoneNumber, body, context).block();
+    }
+
+    /**
      * Gets the details of the given purchased phone number.
      * 
      * @param phoneNumber The purchased phone number whose details are to be fetched in E.164 format, e.g. +11234567890.
@@ -2469,9 +2785,7 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PurchasedPhoneNumber>> getByNumberWithResponseAsync(String phoneNumber) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getByNumber(this.client.getEndpoint(), phoneNumber,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> getByNumberWithResponseAsync(phoneNumber, context));
     }
 
     /**
@@ -2557,13 +2871,12 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersReleasePhoneNumberResponse> releasePhoneNumberWithResponseAsync(String phoneNumber) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.releasePhoneNumber(this.client.getEndpoint(), phoneNumber,
-            this.client.getApiVersion(), accept, context));
+    public Mono<ResponseBase<PhoneNumbersReleasePhoneNumberHeaders, Void>>
+        releasePhoneNumberWithResponseAsync(String phoneNumber) {
+        return FluxUtil.withContext(context -> releasePhoneNumberWithResponseAsync(phoneNumber, context));
     }
 
     /**
@@ -2574,11 +2887,11 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersReleasePhoneNumberResponse> releasePhoneNumberWithResponseAsync(String phoneNumber,
-        Context context) {
+    public Mono<ResponseBase<PhoneNumbersReleasePhoneNumberHeaders, Void>>
+        releasePhoneNumberWithResponseAsync(String phoneNumber, Context context) {
         final String accept = "application/json";
         return service.releasePhoneNumber(this.client.getEndpoint(), phoneNumber, this.client.getApiVersion(), accept,
             context);
@@ -2621,10 +2934,11 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumbersReleasePhoneNumberResponse releasePhoneNumberWithResponse(String phoneNumber, Context context) {
+    public ResponseBase<PhoneNumbersReleasePhoneNumberHeaders, Void> releasePhoneNumberWithResponse(String phoneNumber,
+        Context context) {
         return releasePhoneNumberWithResponseAsync(phoneNumber, context).block();
     }
 
@@ -2639,6 +2953,54 @@ public final class PhoneNumbersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void releasePhoneNumber(String phoneNumber) {
         releasePhoneNumberWithResponse(phoneNumber, Context.NONE);
+    }
+
+    /**
+     * Releases a purchased phone number.
+     * 
+     * @param phoneNumber Phone number to be released, e.g. +11234567890.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> releasePhoneNumberNoCustomHeadersWithResponseAsync(String phoneNumber) {
+        return FluxUtil
+            .withContext(context -> releasePhoneNumberNoCustomHeadersWithResponseAsync(phoneNumber, context));
+    }
+
+    /**
+     * Releases a purchased phone number.
+     * 
+     * @param phoneNumber Phone number to be released, e.g. +11234567890.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> releasePhoneNumberNoCustomHeadersWithResponseAsync(String phoneNumber,
+        Context context) {
+        final String accept = "application/json";
+        return service.releasePhoneNumberNoCustomHeaders(this.client.getEndpoint(), phoneNumber,
+            this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Releases a purchased phone number.
+     * 
+     * @param phoneNumber Phone number to be released, e.g. +11234567890.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> releasePhoneNumberNoCustomHeadersWithResponse(String phoneNumber, Context context) {
+        return releasePhoneNumberNoCustomHeadersWithResponseAsync(phoneNumber, context).block();
     }
 
     /**
@@ -2800,9 +3162,7 @@ public final class PhoneNumbersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<OperatorInformationResult>>
         operatorInformationSearchWithResponseAsync(OperatorInformationRequest body) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.operatorInformationSearch(this.client.getEndpoint(),
-            this.client.getApiVersion(), body, accept, context));
+        return FluxUtil.withContext(context -> operatorInformationSearchWithResponseAsync(body, context));
     }
 
     /**
@@ -2892,9 +3252,7 @@ public final class PhoneNumbersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -2915,9 +3273,7 @@ public final class PhoneNumbersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2938,9 +3294,7 @@ public final class PhoneNumbersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -2955,9 +3309,7 @@ public final class PhoneNumbersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2974,9 +3326,7 @@ public final class PhoneNumbersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -2998,9 +3348,7 @@ public final class PhoneNumbersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3021,9 +3369,7 @@ public final class PhoneNumbersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -3039,9 +3385,7 @@ public final class PhoneNumbersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3058,9 +3402,7 @@ public final class PhoneNumbersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -3082,9 +3424,7 @@ public final class PhoneNumbersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3105,9 +3445,7 @@ public final class PhoneNumbersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -3123,9 +3461,7 @@ public final class PhoneNumbersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3142,9 +3478,7 @@ public final class PhoneNumbersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -3165,9 +3499,7 @@ public final class PhoneNumbersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3188,9 +3520,7 @@ public final class PhoneNumbersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -3205,9 +3535,7 @@ public final class PhoneNumbersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3224,9 +3552,7 @@ public final class PhoneNumbersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3245,9 +3571,7 @@ public final class PhoneNumbersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -3267,9 +3591,7 @@ public final class PhoneNumbersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3283,9 +3605,7 @@ public final class PhoneNumbersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -3300,9 +3620,7 @@ public final class PhoneNumbersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3321,9 +3639,7 @@ public final class PhoneNumbersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -3343,9 +3659,7 @@ public final class PhoneNumbersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3359,9 +3673,7 @@ public final class PhoneNumbersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.

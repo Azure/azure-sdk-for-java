@@ -6,8 +6,8 @@ package com.azure.resourcemanager.hybridcompute.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.models.Gateway;
@@ -25,28 +25,28 @@ public final class GatewaysCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"gatewayId\":\"rblmli\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"hspnxwqagnepz\",\"allowedFeatures\":[\"lsbs\",\"qqqagwwrxaomzi\",\"glrrczez\"]},\"location\":\"hltnjadhqoawjq\",\"tags\":{\"yrrueqth\":\"eayfbpcmspl\",\"mbscbbx\":\"mg\",\"d\":\"gdhxi\",\"dnafcbqwre\":\"opedbwdpyqyybxub\"},\"id\":\"jelaqacigele\",\"name\":\"hdbvqvwzkjop\",\"type\":\"beonrlkwzdq\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"gatewayId\":\"jzcfyjzptwr\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"pqinf\",\"allowedFeatures\":[\"yglqdhmrjzral\",\"xpjb\",\"ypsjoq\",\"jenkyh\"]},\"location\":\"zv\",\"tags\":{\"mpzqjhhhq\":\"fxjelg\",\"bsizus\":\"uwyvcacoyvi\",\"lzijiufehgmvflnw\":\"szlbscm\",\"kxrerlniylylyfwx\":\"v\"},\"id\":\"utgqztwh\",\"name\":\"hmupgxyjtcdxabbu\",\"type\":\"ftabenbbklqp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HybridComputeManager manager = HybridComputeManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Gateway response = manager.gateways()
-            .define("lhkgmnsghp")
-            .withRegion("csypobkdqzrdzsyl")
-            .withExistingResourceGroup("ypnyghshxc")
-            .withTags(mapOf("aurkihcirlde", "gtrczzydmxzjijpv", "urnnqbnqbpiz", "xrdcoxnbkkja"))
+            .define("nggiycwkdtaa")
+            .withRegion("wijymr")
+            .withExistingResourceGroup("aujvaa")
+            .withTags(mapOf("ozkyewnfnzh", "u", "jkutycyarnr", "hqosmf", "ghktdpy", "ohguabz"))
             .withGatewayType(GatewayType.PUBLIC)
-            .withAllowedFeatures(Arrays.asList("fwmkoisqcssffxui"))
+            .withAllowedFeatures(Arrays.asList("tbnxwbjsid", "irkfpksokdgo"))
             .create();
 
-        Assertions.assertEquals("hltnjadhqoawjq", response.location());
-        Assertions.assertEquals("eayfbpcmspl", response.tags().get("yrrueqth"));
+        Assertions.assertEquals("zv", response.location());
+        Assertions.assertEquals("fxjelg", response.tags().get("mpzqjhhhq"));
         Assertions.assertEquals(GatewayType.PUBLIC, response.gatewayType());
-        Assertions.assertEquals("lsbs", response.allowedFeatures().get(0));
+        Assertions.assertEquals("yglqdhmrjzral", response.allowedFeatures().get(0));
     }
 
     // Use "Map.of" if available

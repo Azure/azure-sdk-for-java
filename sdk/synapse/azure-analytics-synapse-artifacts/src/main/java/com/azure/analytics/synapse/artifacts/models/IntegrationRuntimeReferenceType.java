@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class IntegrationRuntimeReferenceType extends ExpandableStringEnum<
     /**
      * Static value IntegrationRuntimeReference for IntegrationRuntimeReferenceType.
      */
+    @Generated
     public static final IntegrationRuntimeReferenceType INTEGRATION_RUNTIME_REFERENCE
         = fromString("IntegrationRuntimeReference");
 
@@ -22,6 +24,7 @@ public final class IntegrationRuntimeReferenceType extends ExpandableStringEnum<
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public IntegrationRuntimeReferenceType() {
     }
@@ -32,6 +35,7 @@ public final class IntegrationRuntimeReferenceType extends ExpandableStringEnum<
      * @param name a name to look for.
      * @return the corresponding IntegrationRuntimeReferenceType.
      */
+    @Generated
     public static IntegrationRuntimeReferenceType fromString(String name) {
         return fromString(name, IntegrationRuntimeReferenceType.class);
     }
@@ -41,6 +45,7 @@ public final class IntegrationRuntimeReferenceType extends ExpandableStringEnum<
      * 
      * @return known IntegrationRuntimeReferenceType values.
      */
+    @Generated
     public static Collection<IntegrationRuntimeReferenceType> values() {
         return values(IntegrationRuntimeReferenceType.class);
     }

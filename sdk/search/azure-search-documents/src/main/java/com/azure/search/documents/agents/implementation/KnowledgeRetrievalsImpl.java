@@ -58,7 +58,7 @@ public final class KnowledgeRetrievalsImpl {
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}/agents('{agentName}')")
-    @ServiceInterface(name = "KnowledgeAgentRetrie")
+    @ServiceInterface(name = "KnowledgeAgentRetrievalClientKnowledgeRetrievals")
     public interface KnowledgeRetrievalsService {
         @Post("/retrieve")
         @ExpectedResponses({ 200 })

@@ -22,7 +22,7 @@ public class ResourceReference implements JsonSerializable<ResourceReference> {
     private String id;
 
     /*
-     * The key of the extension the resource was deployed with.
+     * The extension the resource was deployed with.
      */
     private DeploymentExtensionDefinition extension;
 
@@ -57,7 +57,7 @@ public class ResourceReference implements JsonSerializable<ResourceReference> {
     }
 
     /**
-     * Get the extension property: The key of the extension the resource was deployed with.
+     * Get the extension property: The extension the resource was deployed with.
      * 
      * @return the extension value.
      */

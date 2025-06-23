@@ -29,13 +29,6 @@ public final class SasCredentials extends BaseCredentials {
     private String sasToken;
 
     /**
-     * Creates an instance of SasCredentials class.
-     */
-    @Generated
-    private SasCredentials() {
-    }
-
-    /**
      * Get the type property: The type of credential used by the connection.
      *
      * @return the type value.
@@ -92,5 +85,12 @@ public final class SasCredentials extends BaseCredentials {
             }
             return deserializedSasCredentials;
         });
+    }
+
+    /**
+     * Creates an instance of SasCredentials class.
+     */
+    @Generated
+    private SasCredentials() {
     }
 }

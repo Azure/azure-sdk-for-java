@@ -151,7 +151,7 @@ public final class NotificationMessagesClientImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "NotificationMessages")
+    @ServiceInterface(name = "NotificationMessagesClient")
     public interface NotificationMessagesClientService {
         @Post("/messages/notifications:send")
         @ExpectedResponses({ 202 })

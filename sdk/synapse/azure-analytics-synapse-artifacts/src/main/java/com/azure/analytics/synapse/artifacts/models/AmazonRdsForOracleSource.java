@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,39 +21,46 @@ public final class AmazonRdsForOracleSource extends CopySource {
     /*
      * Copy source type.
      */
+    @Generated
     private String type = "AmazonRdsForOracleSource";
 
     /*
      * AmazonRdsForOracle reader query. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object oracleReaderQuery;
 
     /*
      * Query timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
+    @Generated
     private Object queryTimeout;
 
     /*
      * The partition mechanism that will be used for AmazonRdsForOracle read in parallel. Type: string (or Expression
      * with resultType string).
      */
+    @Generated
     private Object partitionOption;
 
     /*
      * The settings that will be leveraged for AmazonRdsForOracle source partitioning.
      */
+    @Generated
     private AmazonRdsForOraclePartitionSettings partitionSettings;
 
     /*
      * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
      * Expression with resultType array of objects).
      */
+    @Generated
     private Object additionalColumns;
 
     /**
      * Creates an instance of AmazonRdsForOracleSource class.
      */
+    @Generated
     public AmazonRdsForOracleSource() {
     }
 
@@ -61,6 +69,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -72,6 +81,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
      * 
      * @return the oracleReaderQuery value.
      */
+    @Generated
     public Object getOracleReaderQuery() {
         return this.oracleReaderQuery;
     }
@@ -83,6 +93,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
      * @param oracleReaderQuery the oracleReaderQuery value to set.
      * @return the AmazonRdsForOracleSource object itself.
      */
+    @Generated
     public AmazonRdsForOracleSource setOracleReaderQuery(Object oracleReaderQuery) {
         this.oracleReaderQuery = oracleReaderQuery;
         return this;
@@ -94,6 +105,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
      * 
      * @return the queryTimeout value.
      */
+    @Generated
     public Object getQueryTimeout() {
         return this.queryTimeout;
     }
@@ -105,6 +117,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
      * @param queryTimeout the queryTimeout value to set.
      * @return the AmazonRdsForOracleSource object itself.
      */
+    @Generated
     public AmazonRdsForOracleSource setQueryTimeout(Object queryTimeout) {
         this.queryTimeout = queryTimeout;
         return this;
@@ -116,6 +129,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
      * 
      * @return the partitionOption value.
      */
+    @Generated
     public Object getPartitionOption() {
         return this.partitionOption;
     }
@@ -127,6 +141,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
      * @param partitionOption the partitionOption value to set.
      * @return the AmazonRdsForOracleSource object itself.
      */
+    @Generated
     public AmazonRdsForOracleSource setPartitionOption(Object partitionOption) {
         this.partitionOption = partitionOption;
         return this;
@@ -138,6 +153,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
      * 
      * @return the partitionSettings value.
      */
+    @Generated
     public AmazonRdsForOraclePartitionSettings getPartitionSettings() {
         return this.partitionSettings;
     }
@@ -149,6 +165,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
      * @param partitionSettings the partitionSettings value to set.
      * @return the AmazonRdsForOracleSource object itself.
      */
+    @Generated
     public AmazonRdsForOracleSource setPartitionSettings(AmazonRdsForOraclePartitionSettings partitionSettings) {
         this.partitionSettings = partitionSettings;
         return this;
@@ -160,6 +177,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
      * 
      * @return the additionalColumns value.
      */
+    @Generated
     public Object getAdditionalColumns() {
         return this.additionalColumns;
     }
@@ -171,6 +189,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
      * @param additionalColumns the additionalColumns value to set.
      * @return the AmazonRdsForOracleSource object itself.
      */
+    @Generated
     public AmazonRdsForOracleSource setAdditionalColumns(Object additionalColumns) {
         this.additionalColumns = additionalColumns;
         return this;
@@ -179,6 +198,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonRdsForOracleSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
@@ -188,6 +208,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonRdsForOracleSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
@@ -197,6 +218,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonRdsForOracleSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -206,18 +228,33 @@ public final class AmazonRdsForOracleSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getSourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        }
+        if (getSourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("oracleReaderQuery", this.oracleReaderQuery);
-        jsonWriter.writeUntypedField("queryTimeout", this.queryTimeout);
-        jsonWriter.writeUntypedField("partitionOption", this.partitionOption);
+        if (this.oracleReaderQuery != null) {
+            jsonWriter.writeUntypedField("oracleReaderQuery", this.oracleReaderQuery);
+        }
+        if (this.queryTimeout != null) {
+            jsonWriter.writeUntypedField("queryTimeout", this.queryTimeout);
+        }
+        if (this.partitionOption != null) {
+            jsonWriter.writeUntypedField("partitionOption", this.partitionOption);
+        }
         jsonWriter.writeJsonField("partitionSettings", this.partitionSettings);
-        jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        if (this.additionalColumns != null) {
+            jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -234,6 +271,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AmazonRdsForOracleSource.
      */
+    @Generated
     public static AmazonRdsForOracleSource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AmazonRdsForOracleSource deserializedAmazonRdsForOracleSource = new AmazonRdsForOracleSource();
