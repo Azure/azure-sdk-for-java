@@ -32,8 +32,7 @@ public final class BingCustomSearchConfiguration implements JsonSerializable<Bin
     /*
      * The market where the results come from.
      */
-    @Generated
-    private String market;
+    private MarketCode market;
 
     /*
      * The number of search results to return in the bing api response
@@ -85,8 +84,7 @@ public final class BingCustomSearchConfiguration implements JsonSerializable<Bin
      *
      * @return the market value.
      */
-    @Generated
-    public String getMarket() {
+    public MarketCode getMarket() {
         return this.market;
     }
 
@@ -96,8 +94,7 @@ public final class BingCustomSearchConfiguration implements JsonSerializable<Bin
      * @param market the market value to set.
      * @return the BingCustomSearchConfiguration object itself.
      */
-    @Generated
-    public BingCustomSearchConfiguration setMarket(String market) {
+    public BingCustomSearchConfiguration setMarket(MarketCode market) {
         this.market = market;
         return this;
     }
@@ -151,13 +148,12 @@ public final class BingCustomSearchConfiguration implements JsonSerializable<Bin
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("connection_id", this.connectionId);
         jsonWriter.writeStringField("instance_name", this.instanceName);
-        jsonWriter.writeStringField("market", this.market);
+        jsonWriter.writeStringField("market", this.market == null ? null : this.market.toString());
         jsonWriter.writeStringField("set_lang", this.language);
         jsonWriter.writeNumberField("count", this.count);
         jsonWriter.writeStringField("freshness", this.freshness);
@@ -173,7 +169,6 @@ public final class BingCustomSearchConfiguration implements JsonSerializable<Bin
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BingCustomSearchConfiguration.
      */
-    @Generated
     public static BingCustomSearchConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String connectionId = null;
@@ -203,7 +198,7 @@ public final class BingCustomSearchConfiguration implements JsonSerializable<Bin
             }
             BingCustomSearchConfiguration deserializedBingCustomSearchConfiguration
                 = new BingCustomSearchConfiguration(connectionId, instanceName);
-            deserializedBingCustomSearchConfiguration.market = market;
+            deserializedBingCustomSearchConfiguration.market = MarketCode.fromString(market);
             deserializedBingCustomSearchConfiguration.language = language;
             deserializedBingCustomSearchConfiguration.count = count;
             deserializedBingCustomSearchConfiguration.freshness = freshness;
