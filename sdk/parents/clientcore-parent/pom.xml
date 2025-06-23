@@ -117,7 +117,6 @@
     <!-- Reserved for general Surefire JVM arguments that affect all SDKs. -->
     <defaultSurefireArgLine>
       @{jacocoUnitTestAgent}
-      -javaagent:C:\\Users\\alzimmer\\Downloads\\extract-tls-secrets-4.0.0.jar=D:\\secrets.log
       ${surefireJvmXmx}
       ${heapDumpOnOom}
     </defaultSurefireArgLine>
