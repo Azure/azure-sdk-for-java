@@ -37,7 +37,7 @@ public class RequestContextTests {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
         RequestContext context = RequestContext.builder()
-            .addRequestCallback(request2 -> request2.getHeaders()
+            .addBeforeRequestHook(request2 -> request2.getHeaders()
                 .add(new HttpHeader(X_MS_FOO, "bar"))
                 .set(HttpHeaderName.CONTENT_TYPE, "application/json"))
             .build();
@@ -58,7 +58,7 @@ public class RequestContextTests {
 
         BinaryData requestBody = BinaryData.fromString(expected);
         RequestContext context
-            = RequestContext.builder().addRequestCallback(request2 -> request2.setBody(requestBody)).build();
+            = RequestContext.builder().addBeforeRequestHook(request2 -> request2.setBody(requestBody)).build();
         context.getRequestCallback().accept(request);
         BinaryData actual = request.getBody();
 
@@ -67,11 +67,11 @@ public class RequestContextTests {
     }
 
     @Test
-    public void addRequestCallback() {
+    public void addBeforeRequestHook() {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
         RequestContext context = RequestContext.builder()
-            .addRequestCallback(request2 -> request2
+            .addBeforeRequestHook(request2 -> request2
                 // may already be set if request is created from a client
                 .setUri("https://request.uri")
                 .setMethod(HttpMethod.GET)
@@ -85,5 +85,24 @@ public class RequestContextTests {
         assertEquals("baz", headers.getValue(X_MS_FOO));
         assertEquals(HttpMethod.GET, request.getHttpMethod());
         assertEquals("https://request.uri?%24skipToken=1", request.getUri().toString());
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
+    public void addRequestCallbackStillWorks() {
+        final HttpRequest request
+            = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
+        RequestContext context = RequestContext.builder()
+            .addRequestCallback(request2 -> request2.setUri("https://deprecated.uri")
+                .setMethod(HttpMethod.GET)
+                .getHeaders()
+                .set(X_MS_FOO, "deprecated"))
+            .build();
+        context.getRequestCallback().accept(request);
+
+        HttpHeaders headers = request.getHeaders();
+        assertEquals("deprecated", headers.getValue(X_MS_FOO));
+        assertEquals(HttpMethod.GET, request.getHttpMethod());
+        assertEquals("https://deprecated.uri", request.getUri().toString());
     }
 }

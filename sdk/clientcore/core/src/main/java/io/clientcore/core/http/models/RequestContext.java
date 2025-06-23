@@ -100,7 +100,7 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
  * <!-- src_embed io.clientcore.core.http.rest.requestcontext.postrequest -->
  * <pre>
  * RequestContext context = RequestContext.builder&#40;&#41;
- *     .addRequestCallback&#40;request -&gt; request
+ *     .addBeforeRequestHook&#40;request -&gt; request
  *         &#47;&#47; may already be set if request is created from a client
  *         .setUri&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&quot;&#41;
  *         .setMethod&#40;HttpMethod.POST&#41;
@@ -245,9 +245,26 @@ public final class RequestContext {
          * @param requestCallback The request callback.
          * @return The updated {@link Builder} object.
          * @throws NullPointerException If {@code requestCallback} is null.
+         * @deprecated Use {@link #addBeforeRequestHook(Consumer)} as it better conveys that the hook executes before the request is sent.
          */
+        @Deprecated
         public Builder addRequestCallback(Consumer<HttpRequest> requestCallback) {
+            Objects.requireNonNull(requestCallback, "'requestCallback' cannot be null.");
             this.requestCallback = this.requestCallback.andThen(requestCallback);
+            return this;
+        }
+
+        /**
+         * Adds a custom hook to modify the {@link HttpRequest} before it's sent by the {@link HttpClient}. The
+         * modifications made on a {@link RequestContext} object are applied in order on the request.
+         *
+         * @param requestHook The request hook to apply before the request is sent.
+         * @return The updated {@link Builder} object.
+         * @throws NullPointerException If {@code requestHook} is null.
+         */
+        public Builder addBeforeRequestHook(Consumer<HttpRequest> requestHook) {
+            Objects.requireNonNull(requestHook, "'requestHook' cannot be null.");
+            this.requestCallback = this.requestCallback.andThen(requestHook);
             return this;
         }
 
