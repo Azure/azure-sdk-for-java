@@ -226,6 +226,19 @@ public final class CosmosClient implements Closeable {
         }
     }
 
+    CosmosDatabaseAccount blockReadDatabaseAccount(Mono<CosmosDatabaseAccount> databaseAccountMono) {
+        try {
+            return databaseAccountMono.block();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+            if (throwable instanceof CosmosException) {
+                throw (CosmosException) throwable;
+            } else {
+                throw Exceptions.propagate(ex);
+            }
+        }
+    }
+
     /**
      * Reads all Cosmos databases.
      * <!-- src_embed com.azure.cosmos.CosmosClient.readAllDatabases -->
@@ -324,7 +337,7 @@ public final class CosmosClient implements Closeable {
      * @return the {@link CosmosDatabaseAccount} with the read database account.
      */
     public CosmosDatabaseAccount readDatabaseAccount() {
-        return this.asyncClientWrapper.readDatabaseAccount();
+        return blockReadDatabaseAccount(this.asyncClientWrapper.readDatabaseAccount());
     }
 
     CosmosAsyncClient asyncClient() {

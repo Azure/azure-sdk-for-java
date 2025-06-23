@@ -57,6 +57,7 @@ import com.azure.cosmos.models.CosmosClientEncryptionKeyResponse;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosDatabaseAccount;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -1885,6 +1886,46 @@ public class ImplementationBridgeHelpers {
 
         public interface ReadConsistencyStrategyAccessor {
             ReadConsistencyStrategy createFromServiceSerializedFormat(String serviceSerializedFormat);
+        }
+    }
+
+    public static final class CosmosDatabaseAccountHelper {
+        private static final AtomicReference<CosmosDatabaseAccountHelper.CosmosDatabaseAccountAccessor> accessor = new AtomicReference<>();
+        private static final AtomicBoolean cosmosDatabaseAccountClassLoaded = new AtomicBoolean(false);
+
+        private CosmosDatabaseAccountHelper() {}
+
+        public static void setCosmosDatabaseAccountAccessor(final CosmosDatabaseAccountHelper.CosmosDatabaseAccountAccessor newAccessor) {
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("CosmosDatabaseAccountAccessor already initialized!");
+            } else {
+                logger.debug("Setting CosmosDatabaseAccountAccessor...");
+                cosmosDatabaseAccountClassLoaded.set(true);
+            }
+        }
+
+        public static CosmosDatabaseAccountHelper.CosmosDatabaseAccountAccessor getCosmosDatabaseAccountAccessor() {
+            if (!cosmosDatabaseAccountClassLoaded.get()) {
+                logger.debug("Initializing CosmosDatabaseAccountAccessor...");
+                initializeAllAccessors();
+            }
+
+            CosmosDatabaseAccountHelper.CosmosDatabaseAccountAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosDatabaseAccountAccessor is not initialized yet!");
+            }
+
+            return snapshot;
+        }
+
+        public interface CosmosDatabaseAccountAccessor {
+            CosmosDatabaseAccount build(
+                String id,
+                String eTag,
+                List<String> readableRegions,
+                List<String> writeableRegions,
+                boolean isMultiWriteAccount,
+                ConsistencyLevel consistencyLevel);
         }
     }
 }

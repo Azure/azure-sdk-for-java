@@ -37,10 +37,12 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -813,5 +815,17 @@ public class Utils {
         } else {
             return duration1.compareTo(duration2) < 0 ? duration1 : duration2;
         }
+    }
+
+    public static <T> List<T> iterableToList(Iterable<T> iterable) {
+
+        Iterator<T> iterator = iterable.iterator();
+        List<T> list = new ArrayList<>();
+
+        while (iterator.hasNext()) {
+            list.add(iterator.next());
+        }
+
+        return list;
     }
 }

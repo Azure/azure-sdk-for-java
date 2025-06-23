@@ -126,7 +126,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -6236,25 +6235,25 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public CosmosDatabaseAccount readDatabaseAccount() {
+    public Mono<CosmosDatabaseAccount> readDatabaseAccount() {
+        return this.getDatabaseAccountFromEndpoint(this.serviceEndpoint)
+            .next()
+            .flatMap(databaseAccount -> {
 
-        DatabaseAccount databaseAccountSnapshot
-            = this.globalEndpointManager.getLatestDatabaseAccount();
+                List<String> readableRegions
+                    = Utils.iterableToList(databaseAccount.getReadableLocations()).stream().map(databaseAccountLocation -> databaseAccountLocation.getName()).collect(Collectors.toUnmodifiableList());
+                List<String> writeableRegions
+                    = Utils.iterableToList(databaseAccount.getWritableLocations()).stream().map(databaseAccountLocation -> databaseAccountLocation.getName()).collect(Collectors.toUnmodifiableList());
 
-        return new CosmosDatabaseAccount(
-            this.globalEndpointManager
-                .getReadEndpoints()
-                .stream()
-                .map(regionalRoutingContext -> this.globalEndpointManager.getRegionName(regionalRoutingContext.getGatewayRegionalEndpoint(), OperationType.Read))
-                .collect(Collectors.toUnmodifiableList()),
-            this.globalEndpointManager
-                .getWriteEndpoints()
-                .stream()
-                .map(regionalRoutingContext -> this.globalEndpointManager.getRegionName(regionalRoutingContext.getGatewayRegionalEndpoint(), OperationType.Create))
-                .collect(Collectors.toUnmodifiableList()),
-            databaseAccountSnapshot.getEnableMultipleWriteLocations(),
-            databaseAccountSnapshot.getConsistencyPolicy().getDefaultConsistencyLevel()
-        );
+                return Mono.just(ImplementationBridgeHelpers.CosmosDatabaseAccountHelper.getCosmosDatabaseAccountAccessor().build(
+                    databaseAccount.getId(),
+                    databaseAccount.getETag(),
+                    readableRegions,
+                    writeableRegions,
+                    databaseAccount.getEnableMultipleWriteLocations(),
+                    databaseAccount.getConsistencyPolicy().getDefaultConsistencyLevel()
+                ));
+            });
     }
 
     /***

@@ -1647,7 +1647,7 @@ public interface AsyncDocumentClient {
 
     ConsistencyLevel getDefaultConsistencyLevelOfAccount();
 
-    CosmosDatabaseAccount readDatabaseAccount();
+    Mono<CosmosDatabaseAccount> readDatabaseAccount();
 
     /***
      * Configure fault injector provider.
