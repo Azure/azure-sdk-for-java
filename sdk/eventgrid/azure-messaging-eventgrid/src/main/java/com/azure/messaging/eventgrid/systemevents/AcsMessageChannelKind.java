@@ -11,6 +11,7 @@ import java.util.Collection;
 /**
  * The received message channel Kind.
  */
+@Deprecated
 public final class AcsMessageChannelKind extends ExpandableStringEnum<AcsMessageChannelKind> {
     /**
      * Updated message channel type is Whatsapp.
@@ -20,7 +21,7 @@ public final class AcsMessageChannelKind extends ExpandableStringEnum<AcsMessage
 
     /**
      * Creates a new instance of AcsMessageChannelKind value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
@@ -30,7 +31,7 @@ public final class AcsMessageChannelKind extends ExpandableStringEnum<AcsMessage
 
     /**
      * Creates or finds a AcsMessageChannelKind from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding AcsMessageChannelKind.
      */
@@ -41,7 +42,7 @@ public final class AcsMessageChannelKind extends ExpandableStringEnum<AcsMessage
 
     /**
      * Gets known AcsMessageChannelKind values.
-     * 
+     *
      * @return known AcsMessageChannelKind values.
      */
     @Generated

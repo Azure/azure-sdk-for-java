@@ -10,54 +10,57 @@ import java.util.Collection;
 
 /**
  * Policy status can be Completed/CompletedWithError/Incomplete.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Deprecated
 public final class StorageLifecycleCompletionStatus extends ExpandableStringEnum<StorageLifecycleCompletionStatus> {
-    /**
-     * Static value Completed for StorageLifecycleCompletionStatus.
-     */
-    @Generated
-    public static final StorageLifecycleCompletionStatus COMPLETED = fromString("Completed");
+        /**
+         * Static value Completed for StorageLifecycleCompletionStatus.
+         */
+        @Generated
+        public static final StorageLifecycleCompletionStatus COMPLETED = fromString("Completed");
 
-    /**
-     * Static value CompletedWithError for StorageLifecycleCompletionStatus.
-     */
-    @Generated
-    public static final StorageLifecycleCompletionStatus COMPLETED_WITH_ERROR = fromString("CompletedWithError");
+        /**
+         * Static value CompletedWithError for StorageLifecycleCompletionStatus.
+         */
+        @Generated
+        public static final StorageLifecycleCompletionStatus COMPLETED_WITH_ERROR = fromString("CompletedWithError");
 
-    /**
-     * Static value Incomplete for StorageLifecycleCompletionStatus.
-     */
-    @Generated
-    public static final StorageLifecycleCompletionStatus INCOMPLETE = fromString("Incomplete");
+        /**
+         * Static value Incomplete for StorageLifecycleCompletionStatus.
+         */
+        @Generated
+        public static final StorageLifecycleCompletionStatus INCOMPLETE = fromString("Incomplete");
 
-    /**
-     * Creates a new instance of StorageLifecycleCompletionStatus value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Generated
-    @Deprecated
-    public StorageLifecycleCompletionStatus() {
-    }
+        /**
+         * Creates a new instance of StorageLifecycleCompletionStatus value.
+         *
+         * @deprecated Use the {@link #fromString(String)} factory method.
+         */
+        @Generated
+        @Deprecated
+        public StorageLifecycleCompletionStatus() {
+        }
 
-    /**
-     * Creates or finds a StorageLifecycleCompletionStatus from its string representation.
-     * 
-     * @param name a name to look for.
-     * @return the corresponding StorageLifecycleCompletionStatus.
-     */
-    @Generated
-    public static StorageLifecycleCompletionStatus fromString(String name) {
-        return fromString(name, StorageLifecycleCompletionStatus.class);
-    }
+        /**
+         * Creates or finds a StorageLifecycleCompletionStatus from its string representation.
+         *
+         * @param name a name to look for.
+         * @return the corresponding StorageLifecycleCompletionStatus.
+         */
+        @Generated
+        public static StorageLifecycleCompletionStatus fromString(String name) {
+            return fromString(name, StorageLifecycleCompletionStatus.class);
+        }
 
-    /**
-     * Gets known StorageLifecycleCompletionStatus values.
-     * 
-     * @return known StorageLifecycleCompletionStatus values.
-     */
-    @Generated
-    public static Collection<StorageLifecycleCompletionStatus> values() {
-        return values(StorageLifecycleCompletionStatus.class);
-    }
+        /**
+         * Gets known StorageLifecycleCompletionStatus values.
+         *
+         * @return known StorageLifecycleCompletionStatus values.
+         */
+        @Generated
+        public static Collection<StorageLifecycleCompletionStatus> values() {
+            return values(StorageLifecycleCompletionStatus.class);
+        }
 }

@@ -17,85 +17,87 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * details of operational info.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class ResourceNotificationsOperationalDetails
     implements JsonSerializable<ResourceNotificationsOperationalDetails> {
-    /*
-     * Date and Time when resource was updated
-     */
-    @Generated
-    private OffsetDateTime resourceEventTime;
+        /*
+         * Date and Time when resource was updated
+         */
+        @Generated
+        private OffsetDateTime resourceEventTime;
 
-    /**
-     * Creates an instance of ResourceNotificationsOperationalDetails class.
-     */
-    @Generated
-    public ResourceNotificationsOperationalDetails() {
-    }
+        /**
+         * Creates an instance of ResourceNotificationsOperationalDetails class.
+         */
+        @Generated
+        public ResourceNotificationsOperationalDetails() {
+        }
 
-    /**
-     * Get the resourceEventTime property: Date and Time when resource was updated.
-     * 
-     * @return the resourceEventTime value.
-     */
-    @Generated
-    public OffsetDateTime getResourceEventTime() {
-        return this.resourceEventTime;
-    }
+        /**
+         * Get the resourceEventTime property: Date and Time when resource was updated.
+         *
+         * @return the resourceEventTime value.
+         */
+        @Generated
+        public OffsetDateTime getResourceEventTime() {
+            return this.resourceEventTime;
+        }
 
-    /**
-     * Set the resourceEventTime property: Date and Time when resource was updated.
-     * 
-     * @param resourceEventTime the resourceEventTime value to set.
-     * @return the ResourceNotificationsOperationalDetails object itself.
-     */
-    @Generated
-    public ResourceNotificationsOperationalDetails setResourceEventTime(OffsetDateTime resourceEventTime) {
-        this.resourceEventTime = resourceEventTime;
-        return this;
-    }
+        /**
+         * Set the resourceEventTime property: Date and Time when resource was updated.
+         *
+         * @param resourceEventTime the resourceEventTime value to set.
+         * @return the ResourceNotificationsOperationalDetails object itself.
+         */
+        @Generated
+        public ResourceNotificationsOperationalDetails setResourceEventTime(OffsetDateTime resourceEventTime) {
+            this.resourceEventTime = resourceEventTime;
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("resourceEventTime",
-            this.resourceEventTime == null
-                ? null
-                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.resourceEventTime));
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("resourceEventTime",
+                this.resourceEventTime == null
+                    ? null
+                    : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.resourceEventTime));
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of ResourceNotificationsOperationalDetails from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ResourceNotificationsOperationalDetails if the JsonReader was pointing to an instance of
-     * it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ResourceNotificationsOperationalDetails.
-     */
-    @Generated
-    public static ResourceNotificationsOperationalDetails fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ResourceNotificationsOperationalDetails deserializedResourceNotificationsOperationalDetails
-                = new ResourceNotificationsOperationalDetails();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        /**
+         * Reads an instance of ResourceNotificationsOperationalDetails from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of ResourceNotificationsOperationalDetails if the JsonReader was pointing to an instance of
+         * it, or null if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the ResourceNotificationsOperationalDetails.
+         */
+        @Generated
+        public static ResourceNotificationsOperationalDetails fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                ResourceNotificationsOperationalDetails deserializedResourceNotificationsOperationalDetails
+                    = new ResourceNotificationsOperationalDetails();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
 
-                if ("resourceEventTime".equals(fieldName)) {
-                    deserializedResourceNotificationsOperationalDetails.resourceEventTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else {
-                    reader.skipChildren();
+                    if ("resourceEventTime".equals(fieldName)) {
+                        deserializedResourceNotificationsOperationalDetails.resourceEventTime = reader
+                            .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
 
-            return deserializedResourceNotificationsOperationalDetails;
-        });
-    }
+                return deserializedResourceNotificationsOperationalDetails;
+            });
+        }
 }

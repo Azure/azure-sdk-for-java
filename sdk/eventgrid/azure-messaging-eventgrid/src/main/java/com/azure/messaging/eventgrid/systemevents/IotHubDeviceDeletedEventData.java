@@ -12,86 +12,89 @@ import java.io.IOException;
 
 /**
  * Event data for Microsoft.Devices.DeviceDeleted event.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class IotHubDeviceDeletedEventData extends DeviceLifeCycleEventProperties {
 
-    /**
-     * Creates an instance of IotHubDeviceDeletedEventData class.
-     */
-    @Generated
-    public IotHubDeviceDeletedEventData() {
-    }
+        /**
+         * Creates an instance of IotHubDeviceDeletedEventData class.
+         */
+        @Generated
+        public IotHubDeviceDeletedEventData() {
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public IotHubDeviceDeletedEventData setDeviceId(String deviceId) {
-        super.setDeviceId(deviceId);
-        return this;
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public IotHubDeviceDeletedEventData setDeviceId(String deviceId) {
+            super.setDeviceId(deviceId);
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public IotHubDeviceDeletedEventData setHubName(String hubName) {
-        super.setHubName(hubName);
-        return this;
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public IotHubDeviceDeletedEventData setHubName(String hubName) {
+            super.setHubName(hubName);
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public IotHubDeviceDeletedEventData setTwin(DeviceTwinInfo twin) {
-        super.setTwin(twin);
-        return this;
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public IotHubDeviceDeletedEventData setTwin(DeviceTwinInfo twin) {
+            super.setTwin(twin);
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("deviceId", getDeviceId());
-        jsonWriter.writeStringField("hubName", getHubName());
-        jsonWriter.writeJsonField("twin", getTwin());
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("deviceId", getDeviceId());
+            jsonWriter.writeStringField("hubName", getHubName());
+            jsonWriter.writeJsonField("twin", getTwin());
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of IotHubDeviceDeletedEventData from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of IotHubDeviceDeletedEventData if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the IotHubDeviceDeletedEventData.
-     */
-    @Generated
-    public static IotHubDeviceDeletedEventData fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            IotHubDeviceDeletedEventData deserializedIotHubDeviceDeletedEventData = new IotHubDeviceDeletedEventData();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("deviceId".equals(fieldName)) {
-                    deserializedIotHubDeviceDeletedEventData.setDeviceId(reader.getString());
-                } else if ("hubName".equals(fieldName)) {
-                    deserializedIotHubDeviceDeletedEventData.setHubName(reader.getString());
-                } else if ("twin".equals(fieldName)) {
-                    deserializedIotHubDeviceDeletedEventData.setTwin(DeviceTwinInfo.fromJson(reader));
-                } else {
-                    reader.skipChildren();
+        /**
+         * Reads an instance of IotHubDeviceDeletedEventData from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of IotHubDeviceDeletedEventData if the JsonReader was pointing to an instance of it, or null
+         * if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the IotHubDeviceDeletedEventData.
+         */
+        @Generated
+        public static IotHubDeviceDeletedEventData fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                IotHubDeviceDeletedEventData deserializedIotHubDeviceDeletedEventData
+                    = new IotHubDeviceDeletedEventData();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("deviceId".equals(fieldName)) {
+                        deserializedIotHubDeviceDeletedEventData.setDeviceId(reader.getString());
+                    } else if ("hubName".equals(fieldName)) {
+                        deserializedIotHubDeviceDeletedEventData.setHubName(reader.getString());
+                    } else if ("twin".equals(fieldName)) {
+                        deserializedIotHubDeviceDeletedEventData.setTwin(DeviceTwinInfo.fromJson(reader));
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
-            return deserializedIotHubDeviceDeletedEventData;
-        });
-    }
+                return deserializedIotHubDeviceDeletedEventData;
+            });
+        }
 }

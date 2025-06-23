@@ -15,143 +15,145 @@ import java.util.Map;
 /**
  * Job Output Progress Event Data. Schema of the Data property of an EventGridEvent for a
  * Microsoft.Media.JobOutputProgress event.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class MediaJobOutputProgressEventData implements JsonSerializable<MediaJobOutputProgressEventData> {
 
-    /*
-     * Gets the Job output label.
-     */
-    @Generated
-    private String label;
+        /*
+         * Gets the Job output label.
+         */
+        @Generated
+        private String label;
 
-    /*
-     * Gets the Job output progress.
-     */
-    @Generated
-    private Long progress;
+        /*
+         * Gets the Job output progress.
+         */
+        @Generated
+        private Long progress;
 
-    /*
-     * Gets the Job correlation data.
-     */
-    @Generated
-    private Map<String, String> jobCorrelationData;
+        /*
+         * Gets the Job correlation data.
+         */
+        @Generated
+        private Map<String, String> jobCorrelationData;
 
-    /**
-     * Creates an instance of MediaJobOutputProgressEventData class.
-     */
-    @Generated
-    public MediaJobOutputProgressEventData() {
-    }
+        /**
+         * Creates an instance of MediaJobOutputProgressEventData class.
+         */
+        @Generated
+        public MediaJobOutputProgressEventData() {
+        }
 
-    /**
-     * Get the label property: Gets the Job output label.
-     *
-     * @return the label value.
-     */
-    @Generated
-    public String getLabel() {
-        return this.label;
-    }
+        /**
+         * Get the label property: Gets the Job output label.
+         *
+         * @return the label value.
+         */
+        @Generated
+        public String getLabel() {
+            return this.label;
+        }
 
-    /**
-     * Set the label property: Gets the Job output label.
-     *
-     * @param label the label value to set.
-     * @return the MediaJobOutputProgressEventData object itself.
-     */
-    @Generated
-    public MediaJobOutputProgressEventData setLabel(String label) {
-        this.label = label;
-        return this;
-    }
+        /**
+         * Set the label property: Gets the Job output label.
+         *
+         * @param label the label value to set.
+         * @return the MediaJobOutputProgressEventData object itself.
+         */
+        @Generated
+        public MediaJobOutputProgressEventData setLabel(String label) {
+            this.label = label;
+            return this;
+        }
 
-    /**
-     * Get the progress property: Gets the Job output progress.
-     *
-     * @return the progress value.
-     */
-    @Generated
-    public Long getProgress() {
-        return this.progress;
-    }
+        /**
+         * Get the progress property: Gets the Job output progress.
+         *
+         * @return the progress value.
+         */
+        @Generated
+        public Long getProgress() {
+            return this.progress;
+        }
 
-    /**
-     * Set the progress property: Gets the Job output progress.
-     *
-     * @param progress the progress value to set.
-     * @return the MediaJobOutputProgressEventData object itself.
-     */
-    @Generated
-    public MediaJobOutputProgressEventData setProgress(Long progress) {
-        this.progress = progress;
-        return this;
-    }
+        /**
+         * Set the progress property: Gets the Job output progress.
+         *
+         * @param progress the progress value to set.
+         * @return the MediaJobOutputProgressEventData object itself.
+         */
+        @Generated
+        public MediaJobOutputProgressEventData setProgress(Long progress) {
+            this.progress = progress;
+            return this;
+        }
 
-    /**
-     * Get the jobCorrelationData property: Gets the Job correlation data.
-     *
-     * @return the jobCorrelationData value.
-     */
-    @Generated
-    public Map<String, String> getJobCorrelationData() {
-        return this.jobCorrelationData;
-    }
+        /**
+         * Get the jobCorrelationData property: Gets the Job correlation data.
+         *
+         * @return the jobCorrelationData value.
+         */
+        @Generated
+        public Map<String, String> getJobCorrelationData() {
+            return this.jobCorrelationData;
+        }
 
-    /**
-     * Set the jobCorrelationData property: Gets the Job correlation data.
-     *
-     * @param jobCorrelationData the jobCorrelationData value to set.
-     * @return the MediaJobOutputProgressEventData object itself.
-     */
-    @Generated
-    public MediaJobOutputProgressEventData setJobCorrelationData(Map<String, String> jobCorrelationData) {
-        this.jobCorrelationData = jobCorrelationData;
-        return this;
-    }
+        /**
+         * Set the jobCorrelationData property: Gets the Job correlation data.
+         *
+         * @param jobCorrelationData the jobCorrelationData value to set.
+         * @return the MediaJobOutputProgressEventData object itself.
+         */
+        @Generated
+        public MediaJobOutputProgressEventData setJobCorrelationData(Map<String, String> jobCorrelationData) {
+            this.jobCorrelationData = jobCorrelationData;
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("label", this.label);
-        jsonWriter.writeNumberField("progress", this.progress);
-        jsonWriter.writeMapField("jobCorrelationData", this.jobCorrelationData,
-            (writer, element) -> writer.writeString(element));
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("label", this.label);
+            jsonWriter.writeNumberField("progress", this.progress);
+            jsonWriter.writeMapField("jobCorrelationData", this.jobCorrelationData,
+                (writer, element) -> writer.writeString(element));
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of MediaJobOutputProgressEventData from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of MediaJobOutputProgressEventData if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the MediaJobOutputProgressEventData.
-     */
-    @Generated
-    public static MediaJobOutputProgressEventData fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            MediaJobOutputProgressEventData deserializedMediaJobOutputProgressEventData
-                = new MediaJobOutputProgressEventData();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("label".equals(fieldName)) {
-                    deserializedMediaJobOutputProgressEventData.label = reader.getString();
-                } else if ("progress".equals(fieldName)) {
-                    deserializedMediaJobOutputProgressEventData.progress = reader.getNullable(JsonReader::getLong);
-                } else if ("jobCorrelationData".equals(fieldName)) {
-                    Map<String, String> jobCorrelationData = reader.readMap(reader1 -> reader1.getString());
-                    deserializedMediaJobOutputProgressEventData.jobCorrelationData = jobCorrelationData;
-                } else {
-                    reader.skipChildren();
+        /**
+         * Reads an instance of MediaJobOutputProgressEventData from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of MediaJobOutputProgressEventData if the JsonReader was pointing to an instance of it, or
+         * null if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the MediaJobOutputProgressEventData.
+         */
+        @Generated
+        public static MediaJobOutputProgressEventData fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                MediaJobOutputProgressEventData deserializedMediaJobOutputProgressEventData
+                    = new MediaJobOutputProgressEventData();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("label".equals(fieldName)) {
+                        deserializedMediaJobOutputProgressEventData.label = reader.getString();
+                    } else if ("progress".equals(fieldName)) {
+                        deserializedMediaJobOutputProgressEventData.progress = reader.getNullable(JsonReader::getLong);
+                    } else if ("jobCorrelationData".equals(fieldName)) {
+                        Map<String, String> jobCorrelationData = reader.readMap(reader1 -> reader1.getString());
+                        deserializedMediaJobOutputProgressEventData.jobCorrelationData = jobCorrelationData;
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
-            return deserializedMediaJobOutputProgressEventData;
-        });
-    }
+                return deserializedMediaJobOutputProgressEventData;
+            });
+        }
 }

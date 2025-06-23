@@ -14,7 +14,10 @@ import java.io.IOException;
 
 /**
  * Schema of calling event group properties.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Deprecated
 @Fluent
 public final class AcsCallGroupProperties implements JsonSerializable<AcsCallGroupProperties> {
     /*
@@ -32,7 +35,7 @@ public final class AcsCallGroupProperties implements JsonSerializable<AcsCallGro
 
     /**
      * Get the id property: Group Id. Format is Guid as string.
-     * 
+     *
      * @return the id value.
      */
     @Generated
@@ -42,7 +45,7 @@ public final class AcsCallGroupProperties implements JsonSerializable<AcsCallGro
 
     /**
      * Set the id property: Group Id. Format is Guid as string.
-     * 
+     *
      * @param id the id value to set.
      * @return the AcsCallGroupProperties object itself.
      */
@@ -65,7 +68,7 @@ public final class AcsCallGroupProperties implements JsonSerializable<AcsCallGro
 
     /**
      * Reads an instance of AcsCallGroupProperties from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsCallGroupProperties if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.

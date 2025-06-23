@@ -14,7 +14,10 @@ import java.io.IOException;
 
 /**
  * Schema of common properties of all thread-level chat events.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Deprecated
 @Fluent
 public class AcsChatEventInThreadBaseProperties implements JsonSerializable<AcsChatEventInThreadBaseProperties> {
     /*
@@ -38,7 +41,7 @@ public class AcsChatEventInThreadBaseProperties implements JsonSerializable<AcsC
 
     /**
      * Get the transactionId property: The transaction id will be used as co-relation vector.
-     * 
+     *
      * @return the transactionId value.
      */
     @Generated
@@ -48,7 +51,7 @@ public class AcsChatEventInThreadBaseProperties implements JsonSerializable<AcsC
 
     /**
      * Set the transactionId property: The transaction id will be used as co-relation vector.
-     * 
+     *
      * @param transactionId the transactionId value to set.
      * @return the AcsChatEventInThreadBaseProperties object itself.
      */
@@ -60,7 +63,7 @@ public class AcsChatEventInThreadBaseProperties implements JsonSerializable<AcsC
 
     /**
      * Get the threadId property: The chat thread id.
-     * 
+     *
      * @return the threadId value.
      */
     @Generated
@@ -70,7 +73,7 @@ public class AcsChatEventInThreadBaseProperties implements JsonSerializable<AcsC
 
     /**
      * Set the threadId property: The chat thread id.
-     * 
+     *
      * @param threadId the threadId value to set.
      * @return the AcsChatEventInThreadBaseProperties object itself.
      */
@@ -94,7 +97,7 @@ public class AcsChatEventInThreadBaseProperties implements JsonSerializable<AcsC
 
     /**
      * Reads an instance of AcsChatEventInThreadBaseProperties from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsChatEventInThreadBaseProperties if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.

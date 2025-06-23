@@ -13,6 +13,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /** The AcsChatThreadMemberProperties model. */
+@Deprecated
 @Fluent
 public final class AcsChatThreadMemberProperties implements JsonSerializable<AcsChatThreadMemberProperties> {
     /*

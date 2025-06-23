@@ -16,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadWithUserDeleted event.
  */
+@Deprecated
 @Fluent
 public final class AcsChatThreadWithUserDeletedEventData extends AcsChatThreadEventBaseProperties {
 

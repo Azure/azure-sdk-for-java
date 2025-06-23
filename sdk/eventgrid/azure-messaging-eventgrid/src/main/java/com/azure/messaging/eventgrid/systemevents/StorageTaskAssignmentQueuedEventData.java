@@ -16,113 +16,115 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * Schema of the Data property of an EventGridEvent for an Microsoft.Storage.StorageTaskAssignmentQueued event.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class StorageTaskAssignmentQueuedEventData
     implements JsonSerializable<StorageTaskAssignmentQueuedEventData> {
 
-    /*
-     * The time at which a storage task was queued.
-     */
-    @Generated
-    private OffsetDateTime queuedOn;
+        /*
+         * The time at which a storage task was queued.
+         */
+        @Generated
+        private OffsetDateTime queuedOn;
 
-    /*
-     * The execution id for a storage task.
-     */
-    @Generated
-    private String taskExecutionId;
+        /*
+         * The execution id for a storage task.
+         */
+        @Generated
+        private String taskExecutionId;
 
-    /**
-     * Creates an instance of StorageTaskAssignmentQueuedEventData class.
-     */
-    @Generated
-    public StorageTaskAssignmentQueuedEventData() {
-    }
+        /**
+         * Creates an instance of StorageTaskAssignmentQueuedEventData class.
+         */
+        @Generated
+        public StorageTaskAssignmentQueuedEventData() {
+        }
 
-    /**
-     * Get the queuedOn property: The time at which a storage task was queued.
-     *
-     * @return the queuedOn value.
-     */
-    @Generated
-    public OffsetDateTime getQueuedOn() {
-        return this.queuedOn;
-    }
+        /**
+         * Get the queuedOn property: The time at which a storage task was queued.
+         *
+         * @return the queuedOn value.
+         */
+        @Generated
+        public OffsetDateTime getQueuedOn() {
+            return this.queuedOn;
+        }
 
-    /**
-     * Set the queuedOn property: The time at which a storage task was queued.
-     *
-     * @param queuedOn the queuedOn value to set.
-     * @return the StorageTaskAssignmentQueuedEventData object itself.
-     */
-    @Generated
-    public StorageTaskAssignmentQueuedEventData setQueuedOn(OffsetDateTime queuedOn) {
-        this.queuedOn = queuedOn;
-        return this;
-    }
+        /**
+         * Set the queuedOn property: The time at which a storage task was queued.
+         *
+         * @param queuedOn the queuedOn value to set.
+         * @return the StorageTaskAssignmentQueuedEventData object itself.
+         */
+        @Generated
+        public StorageTaskAssignmentQueuedEventData setQueuedOn(OffsetDateTime queuedOn) {
+            this.queuedOn = queuedOn;
+            return this;
+        }
 
-    /**
-     * Get the taskExecutionId property: The execution id for a storage task.
-     *
-     * @return the taskExecutionId value.
-     */
-    @Generated
-    public String getTaskExecutionId() {
-        return this.taskExecutionId;
-    }
+        /**
+         * Get the taskExecutionId property: The execution id for a storage task.
+         *
+         * @return the taskExecutionId value.
+         */
+        @Generated
+        public String getTaskExecutionId() {
+            return this.taskExecutionId;
+        }
 
-    /**
-     * Set the taskExecutionId property: The execution id for a storage task.
-     *
-     * @param taskExecutionId the taskExecutionId value to set.
-     * @return the StorageTaskAssignmentQueuedEventData object itself.
-     */
-    @Generated
-    public StorageTaskAssignmentQueuedEventData setTaskExecutionId(String taskExecutionId) {
-        this.taskExecutionId = taskExecutionId;
-        return this;
-    }
+        /**
+         * Set the taskExecutionId property: The execution id for a storage task.
+         *
+         * @param taskExecutionId the taskExecutionId value to set.
+         * @return the StorageTaskAssignmentQueuedEventData object itself.
+         */
+        @Generated
+        public StorageTaskAssignmentQueuedEventData setTaskExecutionId(String taskExecutionId) {
+            this.taskExecutionId = taskExecutionId;
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("queuedDateTime",
-            this.queuedOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.queuedOn));
-        jsonWriter.writeStringField("taskExecutionId", this.taskExecutionId);
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("queuedDateTime",
+                this.queuedOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.queuedOn));
+            jsonWriter.writeStringField("taskExecutionId", this.taskExecutionId);
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of StorageTaskAssignmentQueuedEventData from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of StorageTaskAssignmentQueuedEventData if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the StorageTaskAssignmentQueuedEventData.
-     */
-    @Generated
-    public static StorageTaskAssignmentQueuedEventData fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            StorageTaskAssignmentQueuedEventData deserializedStorageTaskAssignmentQueuedEventData
-                = new StorageTaskAssignmentQueuedEventData();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("queuedDateTime".equals(fieldName)) {
-                    deserializedStorageTaskAssignmentQueuedEventData.queuedOn = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("taskExecutionId".equals(fieldName)) {
-                    deserializedStorageTaskAssignmentQueuedEventData.taskExecutionId = reader.getString();
-                } else {
-                    reader.skipChildren();
+        /**
+         * Reads an instance of StorageTaskAssignmentQueuedEventData from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of StorageTaskAssignmentQueuedEventData if the JsonReader was pointing to an instance of it,
+         * or null if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the StorageTaskAssignmentQueuedEventData.
+         */
+        @Generated
+        public static StorageTaskAssignmentQueuedEventData fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                StorageTaskAssignmentQueuedEventData deserializedStorageTaskAssignmentQueuedEventData
+                    = new StorageTaskAssignmentQueuedEventData();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("queuedDateTime".equals(fieldName)) {
+                        deserializedStorageTaskAssignmentQueuedEventData.queuedOn = reader
+                            .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    } else if ("taskExecutionId".equals(fieldName)) {
+                        deserializedStorageTaskAssignmentQueuedEventData.taskExecutionId = reader.getString();
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
-            return deserializedStorageTaskAssignmentQueuedEventData;
-        });
-    }
+                return deserializedStorageTaskAssignmentQueuedEventData;
+            });
+        }
 }

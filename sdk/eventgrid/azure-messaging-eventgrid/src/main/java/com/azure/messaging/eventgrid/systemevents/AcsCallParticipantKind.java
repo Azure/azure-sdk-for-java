@@ -11,6 +11,7 @@ import java.util.Collection;
 /**
  * The role of participant user.
  */
+@Deprecated
 public final class AcsCallParticipantKind extends ExpandableStringEnum<AcsCallParticipantKind> {
     /**
      * Call participant role is an attendee.
@@ -44,7 +45,7 @@ public final class AcsCallParticipantKind extends ExpandableStringEnum<AcsCallPa
 
     /**
      * Creates a new instance of AcsCallParticipantKind value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
@@ -54,7 +55,7 @@ public final class AcsCallParticipantKind extends ExpandableStringEnum<AcsCallPa
 
     /**
      * Creates or finds a AcsCallParticipantKind from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding AcsCallParticipantKind.
      */
@@ -65,7 +66,7 @@ public final class AcsCallParticipantKind extends ExpandableStringEnum<AcsCallPa
 
     /**
      * Gets known AcsCallParticipantKind values.
-     * 
+     *
      * @return known AcsCallParticipantKind values.
      */
     @Generated

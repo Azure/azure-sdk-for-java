@@ -14,177 +14,181 @@ import java.io.IOException;
 /**
  * Ingest track discontinuity detected event data. Schema of the data property of an EventGridEvent for a
  * Microsoft.Media.LiveEventTrackDiscontinuityDetected event.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Immutable
+@Deprecated
 public final class MediaLiveEventTrackDiscontinuityDetectedEventData
     implements JsonSerializable<MediaLiveEventTrackDiscontinuityDetectedEventData> {
 
-    /*
-     * Gets the type of the track (Audio / Video).
-     */
-    @Generated
-    private String trackType;
+        /*
+         * Gets the type of the track (Audio / Video).
+         */
+        @Generated
+        private String trackType;
 
-    /*
-     * Gets the track name.
-     */
-    @Generated
-    private String trackName;
+        /*
+         * Gets the track name.
+         */
+        @Generated
+        private String trackName;
 
-    /*
-     * Gets the bitrate.
-     */
-    @Generated
-    private Long bitrate;
+        /*
+         * Gets the bitrate.
+         */
+        @Generated
+        private Long bitrate;
 
-    /*
-     * Gets the timestamp of the previous fragment.
-     */
-    @Generated
-    private String previousTimestamp;
+        /*
+         * Gets the timestamp of the previous fragment.
+         */
+        @Generated
+        private String previousTimestamp;
 
-    /*
-     * Gets the timestamp of the current fragment.
-     */
-    @Generated
-    private String newTimestamp;
+        /*
+         * Gets the timestamp of the current fragment.
+         */
+        @Generated
+        private String newTimestamp;
 
-    /*
-     * Gets the timescale in which both timestamps and discontinuity gap are represented.
-     */
-    @Generated
-    private String timescale;
+        /*
+         * Gets the timescale in which both timestamps and discontinuity gap are represented.
+         */
+        @Generated
+        private String timescale;
 
-    /*
-     * Gets the discontinuity gap between PreviousTimestamp and NewTimestamp.
-     */
-    @Generated
-    private String discontinuityGap;
+        /*
+         * Gets the discontinuity gap between PreviousTimestamp and NewTimestamp.
+         */
+        @Generated
+        private String discontinuityGap;
 
-    /**
-     * Creates an instance of MediaLiveEventTrackDiscontinuityDetectedEventData class.
-     */
-    @Generated
-    public MediaLiveEventTrackDiscontinuityDetectedEventData() {
-    }
+        /**
+         * Creates an instance of MediaLiveEventTrackDiscontinuityDetectedEventData class.
+         */
+        @Generated
+        public MediaLiveEventTrackDiscontinuityDetectedEventData() {
+        }
 
-    /**
-     * Get the trackType property: Gets the type of the track (Audio / Video).
-     *
-     * @return the trackType value.
-     */
-    @Generated
-    public String getTrackType() {
-        return this.trackType;
-    }
+        /**
+         * Get the trackType property: Gets the type of the track (Audio / Video).
+         *
+         * @return the trackType value.
+         */
+        @Generated
+        public String getTrackType() {
+            return this.trackType;
+        }
 
-    /**
-     * Get the trackName property: Gets the track name.
-     *
-     * @return the trackName value.
-     */
-    @Generated
-    public String getTrackName() {
-        return this.trackName;
-    }
+        /**
+         * Get the trackName property: Gets the track name.
+         *
+         * @return the trackName value.
+         */
+        @Generated
+        public String getTrackName() {
+            return this.trackName;
+        }
 
-    /**
-     * Get the bitrate property: Gets the bitrate.
-     *
-     * @return the bitrate value.
-     */
-    @Generated
-    public Long getBitrate() {
-        return this.bitrate;
-    }
+        /**
+         * Get the bitrate property: Gets the bitrate.
+         *
+         * @return the bitrate value.
+         */
+        @Generated
+        public Long getBitrate() {
+            return this.bitrate;
+        }
 
-    /**
-     * Get the previousTimestamp property: Gets the timestamp of the previous fragment.
-     *
-     * @return the previousTimestamp value.
-     */
-    @Generated
-    public String getPreviousTimestamp() {
-        return this.previousTimestamp;
-    }
+        /**
+         * Get the previousTimestamp property: Gets the timestamp of the previous fragment.
+         *
+         * @return the previousTimestamp value.
+         */
+        @Generated
+        public String getPreviousTimestamp() {
+            return this.previousTimestamp;
+        }
 
-    /**
-     * Get the newTimestamp property: Gets the timestamp of the current fragment.
-     *
-     * @return the newTimestamp value.
-     */
-    @Generated
-    public String getNewTimestamp() {
-        return this.newTimestamp;
-    }
+        /**
+         * Get the newTimestamp property: Gets the timestamp of the current fragment.
+         *
+         * @return the newTimestamp value.
+         */
+        @Generated
+        public String getNewTimestamp() {
+            return this.newTimestamp;
+        }
 
-    /**
-     * Get the timescale property: Gets the timescale in which both timestamps and discontinuity gap are represented.
-     *
-     * @return the timescale value.
-     */
-    @Generated
-    public String getTimescale() {
-        return this.timescale;
-    }
+        /**
+         * Get the timescale property: Gets the timescale in which both timestamps and discontinuity gap are represented.
+         *
+         * @return the timescale value.
+         */
+        @Generated
+        public String getTimescale() {
+            return this.timescale;
+        }
 
-    /**
-     * Get the discontinuityGap property: Gets the discontinuity gap between PreviousTimestamp and NewTimestamp.
-     *
-     * @return the discontinuityGap value.
-     */
-    @Generated
-    public String getDiscontinuityGap() {
-        return this.discontinuityGap;
-    }
+        /**
+         * Get the discontinuityGap property: Gets the discontinuity gap between PreviousTimestamp and NewTimestamp.
+         *
+         * @return the discontinuityGap value.
+         */
+        @Generated
+        public String getDiscontinuityGap() {
+            return this.discontinuityGap;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of MediaLiveEventTrackDiscontinuityDetectedEventData from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of MediaLiveEventTrackDiscontinuityDetectedEventData if the JsonReader was pointing to an
-     * instance of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the MediaLiveEventTrackDiscontinuityDetectedEventData.
-     */
-    @Generated
-    public static MediaLiveEventTrackDiscontinuityDetectedEventData fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            MediaLiveEventTrackDiscontinuityDetectedEventData deserializedMediaLiveEventTrackDiscontinuityDetectedEventData
-                = new MediaLiveEventTrackDiscontinuityDetectedEventData();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("trackType".equals(fieldName)) {
-                    deserializedMediaLiveEventTrackDiscontinuityDetectedEventData.trackType = reader.getString();
-                } else if ("trackName".equals(fieldName)) {
-                    deserializedMediaLiveEventTrackDiscontinuityDetectedEventData.trackName = reader.getString();
-                } else if ("bitrate".equals(fieldName)) {
-                    deserializedMediaLiveEventTrackDiscontinuityDetectedEventData.bitrate
-                        = reader.getNullable(JsonReader::getLong);
-                } else if ("previousTimestamp".equals(fieldName)) {
-                    deserializedMediaLiveEventTrackDiscontinuityDetectedEventData.previousTimestamp
-                        = reader.getString();
-                } else if ("newTimestamp".equals(fieldName)) {
-                    deserializedMediaLiveEventTrackDiscontinuityDetectedEventData.newTimestamp = reader.getString();
-                } else if ("timescale".equals(fieldName)) {
-                    deserializedMediaLiveEventTrackDiscontinuityDetectedEventData.timescale = reader.getString();
-                } else if ("discontinuityGap".equals(fieldName)) {
-                    deserializedMediaLiveEventTrackDiscontinuityDetectedEventData.discontinuityGap = reader.getString();
-                } else {
-                    reader.skipChildren();
+        /**
+         * Reads an instance of MediaLiveEventTrackDiscontinuityDetectedEventData from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of MediaLiveEventTrackDiscontinuityDetectedEventData if the JsonReader was pointing to an
+         * instance of it, or null if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the MediaLiveEventTrackDiscontinuityDetectedEventData.
+         */
+        @Generated
+        public static MediaLiveEventTrackDiscontinuityDetectedEventData fromJson(JsonReader jsonReader)
+            throws IOException {
+            return jsonReader.readObject(reader -> {
+                MediaLiveEventTrackDiscontinuityDetectedEventData deserializedMediaLiveEventTrackDiscontinuityDetectedEventData
+                    = new MediaLiveEventTrackDiscontinuityDetectedEventData();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("trackType".equals(fieldName)) {
+                        deserializedMediaLiveEventTrackDiscontinuityDetectedEventData.trackType = reader.getString();
+                    } else if ("trackName".equals(fieldName)) {
+                        deserializedMediaLiveEventTrackDiscontinuityDetectedEventData.trackName = reader.getString();
+                    } else if ("bitrate".equals(fieldName)) {
+                        deserializedMediaLiveEventTrackDiscontinuityDetectedEventData.bitrate
+                            = reader.getNullable(JsonReader::getLong);
+                    } else if ("previousTimestamp".equals(fieldName)) {
+                        deserializedMediaLiveEventTrackDiscontinuityDetectedEventData.previousTimestamp
+                            = reader.getString();
+                    } else if ("newTimestamp".equals(fieldName)) {
+                        deserializedMediaLiveEventTrackDiscontinuityDetectedEventData.newTimestamp = reader.getString();
+                    } else if ("timescale".equals(fieldName)) {
+                        deserializedMediaLiveEventTrackDiscontinuityDetectedEventData.timescale = reader.getString();
+                    } else if ("discontinuityGap".equals(fieldName)) {
+                        deserializedMediaLiveEventTrackDiscontinuityDetectedEventData.discontinuityGap
+                            = reader.getString();
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
-            return deserializedMediaLiveEventTrackDiscontinuityDetectedEventData;
-        });
-    }
+                return deserializedMediaLiveEventTrackDiscontinuityDetectedEventData;
+            });
+        }
 }

@@ -14,79 +14,81 @@ import java.io.IOException;
 
 /**
  * Detail of action on the app.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class AppEventTypeDetail implements JsonSerializable<AppEventTypeDetail> {
-    /*
-     * Type of action of the operation.
-     */
-    @Generated
-    private AppAction action;
+        /*
+         * Type of action of the operation.
+         */
+        @Generated
+        private AppAction action;
 
-    /**
-     * Creates an instance of AppEventTypeDetail class.
-     */
-    @Generated
-    public AppEventTypeDetail() {
-    }
+        /**
+         * Creates an instance of AppEventTypeDetail class.
+         */
+        @Generated
+        public AppEventTypeDetail() {
+        }
 
-    /**
-     * Get the action property: Type of action of the operation.
-     * 
-     * @return the action value.
-     */
-    @Generated
-    public AppAction getAction() {
-        return this.action;
-    }
+        /**
+         * Get the action property: Type of action of the operation.
+         *
+         * @return the action value.
+         */
+        @Generated
+        public AppAction getAction() {
+            return this.action;
+        }
 
-    /**
-     * Set the action property: Type of action of the operation.
-     * 
-     * @param action the action value to set.
-     * @return the AppEventTypeDetail object itself.
-     */
-    @Generated
-    public AppEventTypeDetail setAction(AppAction action) {
-        this.action = action;
-        return this;
-    }
+        /**
+         * Set the action property: Type of action of the operation.
+         *
+         * @param action the action value to set.
+         * @return the AppEventTypeDetail object itself.
+         */
+        @Generated
+        public AppEventTypeDetail setAction(AppAction action) {
+            this.action = action;
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of AppEventTypeDetail from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AppEventTypeDetail if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AppEventTypeDetail.
-     */
-    @Generated
-    public static AppEventTypeDetail fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AppEventTypeDetail deserializedAppEventTypeDetail = new AppEventTypeDetail();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        /**
+         * Reads an instance of AppEventTypeDetail from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of AppEventTypeDetail if the JsonReader was pointing to an instance of it, or null if it was
+         * pointing to JSON null.
+         * @throws IOException If an error occurs while reading the AppEventTypeDetail.
+         */
+        @Generated
+        public static AppEventTypeDetail fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                AppEventTypeDetail deserializedAppEventTypeDetail = new AppEventTypeDetail();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
 
-                if ("action".equals(fieldName)) {
-                    deserializedAppEventTypeDetail.action = AppAction.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
+                    if ("action".equals(fieldName)) {
+                        deserializedAppEventTypeDetail.action = AppAction.fromString(reader.getString());
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
 
-            return deserializedAppEventTypeDetail;
-        });
-    }
+                return deserializedAppEventTypeDetail;
+            });
+        }
 }

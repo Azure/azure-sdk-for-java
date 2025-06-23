@@ -14,267 +14,269 @@ import java.io.IOException;
 
 /**
  * The target of the event.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class ContainerRegistryArtifactEventTarget
     implements JsonSerializable<ContainerRegistryArtifactEventTarget> {
-    /*
-     * The MIME type of the artifact.
-     */
-    @Generated
-    private String mediaType;
+        /*
+         * The MIME type of the artifact.
+         */
+        @Generated
+        private String mediaType;
 
-    /*
-     * The size in bytes of the artifact.
-     */
-    @Generated
-    private Long size;
+        /*
+         * The size in bytes of the artifact.
+         */
+        @Generated
+        private Long size;
 
-    /*
-     * The digest of the artifact.
-     */
-    @Generated
-    private String digest;
+        /*
+         * The digest of the artifact.
+         */
+        @Generated
+        private String digest;
 
-    /*
-     * The repository name of the artifact.
-     */
-    @Generated
-    private String repository;
+        /*
+         * The repository name of the artifact.
+         */
+        @Generated
+        private String repository;
 
-    /*
-     * The tag of the artifact.
-     */
-    @Generated
-    private String tag;
+        /*
+         * The tag of the artifact.
+         */
+        @Generated
+        private String tag;
 
-    /*
-     * The name of the artifact.
-     */
-    @Generated
-    private String name;
+        /*
+         * The name of the artifact.
+         */
+        @Generated
+        private String name;
 
-    /*
-     * The version of the artifact.
-     */
-    @Generated
-    private String version;
+        /*
+         * The version of the artifact.
+         */
+        @Generated
+        private String version;
 
-    /**
-     * Creates an instance of ContainerRegistryArtifactEventTarget class.
-     */
-    @Generated
-    public ContainerRegistryArtifactEventTarget() {
-    }
+        /**
+         * Creates an instance of ContainerRegistryArtifactEventTarget class.
+         */
+        @Generated
+        public ContainerRegistryArtifactEventTarget() {
+        }
 
-    /**
-     * Get the mediaType property: The MIME type of the artifact.
-     * 
-     * @return the mediaType value.
-     */
-    @Generated
-    public String getMediaType() {
-        return this.mediaType;
-    }
+        /**
+         * Get the mediaType property: The MIME type of the artifact.
+         *
+         * @return the mediaType value.
+         */
+        @Generated
+        public String getMediaType() {
+            return this.mediaType;
+        }
 
-    /**
-     * Set the mediaType property: The MIME type of the artifact.
-     * 
-     * @param mediaType the mediaType value to set.
-     * @return the ContainerRegistryArtifactEventTarget object itself.
-     */
-    @Generated
-    public ContainerRegistryArtifactEventTarget setMediaType(String mediaType) {
-        this.mediaType = mediaType;
-        return this;
-    }
+        /**
+         * Set the mediaType property: The MIME type of the artifact.
+         *
+         * @param mediaType the mediaType value to set.
+         * @return the ContainerRegistryArtifactEventTarget object itself.
+         */
+        @Generated
+        public ContainerRegistryArtifactEventTarget setMediaType(String mediaType) {
+            this.mediaType = mediaType;
+            return this;
+        }
 
-    /**
-     * Get the size property: The size in bytes of the artifact.
-     * 
-     * @return the size value.
-     */
-    @Generated
-    public Long getSize() {
-        return this.size;
-    }
+        /**
+         * Get the size property: The size in bytes of the artifact.
+         *
+         * @return the size value.
+         */
+        @Generated
+        public Long getSize() {
+            return this.size;
+        }
 
-    /**
-     * Set the size property: The size in bytes of the artifact.
-     * 
-     * @param size the size value to set.
-     * @return the ContainerRegistryArtifactEventTarget object itself.
-     */
-    @Generated
-    public ContainerRegistryArtifactEventTarget setSize(Long size) {
-        this.size = size;
-        return this;
-    }
+        /**
+         * Set the size property: The size in bytes of the artifact.
+         *
+         * @param size the size value to set.
+         * @return the ContainerRegistryArtifactEventTarget object itself.
+         */
+        @Generated
+        public ContainerRegistryArtifactEventTarget setSize(Long size) {
+            this.size = size;
+            return this;
+        }
 
-    /**
-     * Get the digest property: The digest of the artifact.
-     * 
-     * @return the digest value.
-     */
-    @Generated
-    public String getDigest() {
-        return this.digest;
-    }
+        /**
+         * Get the digest property: The digest of the artifact.
+         *
+         * @return the digest value.
+         */
+        @Generated
+        public String getDigest() {
+            return this.digest;
+        }
 
-    /**
-     * Set the digest property: The digest of the artifact.
-     * 
-     * @param digest the digest value to set.
-     * @return the ContainerRegistryArtifactEventTarget object itself.
-     */
-    @Generated
-    public ContainerRegistryArtifactEventTarget setDigest(String digest) {
-        this.digest = digest;
-        return this;
-    }
+        /**
+         * Set the digest property: The digest of the artifact.
+         *
+         * @param digest the digest value to set.
+         * @return the ContainerRegistryArtifactEventTarget object itself.
+         */
+        @Generated
+        public ContainerRegistryArtifactEventTarget setDigest(String digest) {
+            this.digest = digest;
+            return this;
+        }
 
-    /**
-     * Get the repository property: The repository name of the artifact.
-     * 
-     * @return the repository value.
-     */
-    @Generated
-    public String getRepository() {
-        return this.repository;
-    }
+        /**
+         * Get the repository property: The repository name of the artifact.
+         *
+         * @return the repository value.
+         */
+        @Generated
+        public String getRepository() {
+            return this.repository;
+        }
 
-    /**
-     * Set the repository property: The repository name of the artifact.
-     * 
-     * @param repository the repository value to set.
-     * @return the ContainerRegistryArtifactEventTarget object itself.
-     */
-    @Generated
-    public ContainerRegistryArtifactEventTarget setRepository(String repository) {
-        this.repository = repository;
-        return this;
-    }
+        /**
+         * Set the repository property: The repository name of the artifact.
+         *
+         * @param repository the repository value to set.
+         * @return the ContainerRegistryArtifactEventTarget object itself.
+         */
+        @Generated
+        public ContainerRegistryArtifactEventTarget setRepository(String repository) {
+            this.repository = repository;
+            return this;
+        }
 
-    /**
-     * Get the tag property: The tag of the artifact.
-     * 
-     * @return the tag value.
-     */
-    @Generated
-    public String getTag() {
-        return this.tag;
-    }
+        /**
+         * Get the tag property: The tag of the artifact.
+         *
+         * @return the tag value.
+         */
+        @Generated
+        public String getTag() {
+            return this.tag;
+        }
 
-    /**
-     * Set the tag property: The tag of the artifact.
-     * 
-     * @param tag the tag value to set.
-     * @return the ContainerRegistryArtifactEventTarget object itself.
-     */
-    @Generated
-    public ContainerRegistryArtifactEventTarget setTag(String tag) {
-        this.tag = tag;
-        return this;
-    }
+        /**
+         * Set the tag property: The tag of the artifact.
+         *
+         * @param tag the tag value to set.
+         * @return the ContainerRegistryArtifactEventTarget object itself.
+         */
+        @Generated
+        public ContainerRegistryArtifactEventTarget setTag(String tag) {
+            this.tag = tag;
+            return this;
+        }
 
-    /**
-     * Get the name property: The name of the artifact.
-     * 
-     * @return the name value.
-     */
-    @Generated
-    public String getName() {
-        return this.name;
-    }
+        /**
+         * Get the name property: The name of the artifact.
+         *
+         * @return the name value.
+         */
+        @Generated
+        public String getName() {
+            return this.name;
+        }
 
-    /**
-     * Set the name property: The name of the artifact.
-     * 
-     * @param name the name value to set.
-     * @return the ContainerRegistryArtifactEventTarget object itself.
-     */
-    @Generated
-    public ContainerRegistryArtifactEventTarget setName(String name) {
-        this.name = name;
-        return this;
-    }
+        /**
+         * Set the name property: The name of the artifact.
+         *
+         * @param name the name value to set.
+         * @return the ContainerRegistryArtifactEventTarget object itself.
+         */
+        @Generated
+        public ContainerRegistryArtifactEventTarget setName(String name) {
+            this.name = name;
+            return this;
+        }
 
-    /**
-     * Get the version property: The version of the artifact.
-     * 
-     * @return the version value.
-     */
-    @Generated
-    public String getVersion() {
-        return this.version;
-    }
+        /**
+         * Get the version property: The version of the artifact.
+         *
+         * @return the version value.
+         */
+        @Generated
+        public String getVersion() {
+            return this.version;
+        }
 
-    /**
-     * Set the version property: The version of the artifact.
-     * 
-     * @param version the version value to set.
-     * @return the ContainerRegistryArtifactEventTarget object itself.
-     */
-    @Generated
-    public ContainerRegistryArtifactEventTarget setVersion(String version) {
-        this.version = version;
-        return this;
-    }
+        /**
+         * Set the version property: The version of the artifact.
+         *
+         * @param version the version value to set.
+         * @return the ContainerRegistryArtifactEventTarget object itself.
+         */
+        @Generated
+        public ContainerRegistryArtifactEventTarget setVersion(String version) {
+            this.version = version;
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("mediaType", this.mediaType);
-        jsonWriter.writeNumberField("size", this.size);
-        jsonWriter.writeStringField("digest", this.digest);
-        jsonWriter.writeStringField("repository", this.repository);
-        jsonWriter.writeStringField("tag", this.tag);
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("version", this.version);
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("mediaType", this.mediaType);
+            jsonWriter.writeNumberField("size", this.size);
+            jsonWriter.writeStringField("digest", this.digest);
+            jsonWriter.writeStringField("repository", this.repository);
+            jsonWriter.writeStringField("tag", this.tag);
+            jsonWriter.writeStringField("name", this.name);
+            jsonWriter.writeStringField("version", this.version);
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of ContainerRegistryArtifactEventTarget from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ContainerRegistryArtifactEventTarget if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ContainerRegistryArtifactEventTarget.
-     */
-    @Generated
-    public static ContainerRegistryArtifactEventTarget fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ContainerRegistryArtifactEventTarget deserializedContainerRegistryArtifactEventTarget
-                = new ContainerRegistryArtifactEventTarget();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        /**
+         * Reads an instance of ContainerRegistryArtifactEventTarget from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of ContainerRegistryArtifactEventTarget if the JsonReader was pointing to an instance of it,
+         * or null if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the ContainerRegistryArtifactEventTarget.
+         */
+        @Generated
+        public static ContainerRegistryArtifactEventTarget fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                ContainerRegistryArtifactEventTarget deserializedContainerRegistryArtifactEventTarget
+                    = new ContainerRegistryArtifactEventTarget();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
 
-                if ("mediaType".equals(fieldName)) {
-                    deserializedContainerRegistryArtifactEventTarget.mediaType = reader.getString();
-                } else if ("size".equals(fieldName)) {
-                    deserializedContainerRegistryArtifactEventTarget.size = reader.getNullable(JsonReader::getLong);
-                } else if ("digest".equals(fieldName)) {
-                    deserializedContainerRegistryArtifactEventTarget.digest = reader.getString();
-                } else if ("repository".equals(fieldName)) {
-                    deserializedContainerRegistryArtifactEventTarget.repository = reader.getString();
-                } else if ("tag".equals(fieldName)) {
-                    deserializedContainerRegistryArtifactEventTarget.tag = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedContainerRegistryArtifactEventTarget.name = reader.getString();
-                } else if ("version".equals(fieldName)) {
-                    deserializedContainerRegistryArtifactEventTarget.version = reader.getString();
-                } else {
-                    reader.skipChildren();
+                    if ("mediaType".equals(fieldName)) {
+                        deserializedContainerRegistryArtifactEventTarget.mediaType = reader.getString();
+                    } else if ("size".equals(fieldName)) {
+                        deserializedContainerRegistryArtifactEventTarget.size = reader.getNullable(JsonReader::getLong);
+                    } else if ("digest".equals(fieldName)) {
+                        deserializedContainerRegistryArtifactEventTarget.digest = reader.getString();
+                    } else if ("repository".equals(fieldName)) {
+                        deserializedContainerRegistryArtifactEventTarget.repository = reader.getString();
+                    } else if ("tag".equals(fieldName)) {
+                        deserializedContainerRegistryArtifactEventTarget.tag = reader.getString();
+                    } else if ("name".equals(fieldName)) {
+                        deserializedContainerRegistryArtifactEventTarget.name = reader.getString();
+                    } else if ("version".equals(fieldName)) {
+                        deserializedContainerRegistryArtifactEventTarget.version = reader.getString();
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
 
-            return deserializedContainerRegistryArtifactEventTarget;
-        });
-    }
+                return deserializedContainerRegistryArtifactEventTarget;
+            });
+        }
 }

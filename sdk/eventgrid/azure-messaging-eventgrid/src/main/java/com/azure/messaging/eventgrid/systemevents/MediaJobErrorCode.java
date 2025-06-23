@@ -6,7 +6,10 @@ package com.azure.messaging.eventgrid.systemevents;
 
 /**
  * Error code describing the error.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Deprecated
 public enum MediaJobErrorCode {
     /**
      * Fatal service error, please contact support.

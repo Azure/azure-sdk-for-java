@@ -15,6 +15,7 @@ import java.io.IOException;
 /**
  * Message Button Content.
  */
+@Deprecated
 @Fluent
 public final class AcsMessageButtonContent implements JsonSerializable<AcsMessageButtonContent> {
     /*
@@ -38,7 +39,7 @@ public final class AcsMessageButtonContent implements JsonSerializable<AcsMessag
 
     /**
      * Get the text property: The Text of the button.
-     * 
+     *
      * @return the text value.
      */
     @Generated
@@ -48,7 +49,7 @@ public final class AcsMessageButtonContent implements JsonSerializable<AcsMessag
 
     /**
      * Set the text property: The Text of the button.
-     * 
+     *
      * @param text the text value to set.
      * @return the AcsMessageButtonContent object itself.
      */
@@ -60,7 +61,7 @@ public final class AcsMessageButtonContent implements JsonSerializable<AcsMessag
 
     /**
      * Get the payload property: The Payload of the button which was clicked by the user, setup by the business.
-     * 
+     *
      * @return the payload value.
      */
     @Generated
@@ -70,7 +71,7 @@ public final class AcsMessageButtonContent implements JsonSerializable<AcsMessag
 
     /**
      * Set the payload property: The Payload of the button which was clicked by the user, setup by the business.
-     * 
+     *
      * @param payload the payload value to set.
      * @return the AcsMessageButtonContent object itself.
      */
@@ -94,7 +95,7 @@ public final class AcsMessageButtonContent implements JsonSerializable<AcsMessag
 
     /**
      * Reads an instance of AcsMessageButtonContent from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsMessageButtonContent if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.

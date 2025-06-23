@@ -15,113 +15,116 @@ import java.io.IOException;
 /**
  * The registry node that generated the event. Put differently, while the actor initiates the event, the source
  * generates it.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class ContainerRegistryEventSource implements JsonSerializable<ContainerRegistryEventSource> {
-    /*
-     * The IP or hostname and the port of the registry node that generated the event. Generally, this will be resolved
-     * by os.Hostname() along with the running port.
-     */
-    @Generated
-    private String addr;
+        /*
+         * The IP or hostname and the port of the registry node that generated the event. Generally, this will be resolved
+         * by os.Hostname() along with the running port.
+         */
+        @Generated
+        private String addr;
 
-    /*
-     * The running instance of an application. Changes after each restart.
-     */
-    @Generated
-    private String instanceID;
+        /*
+         * The running instance of an application. Changes after each restart.
+         */
+        @Generated
+        private String instanceID;
 
-    /**
-     * Creates an instance of ContainerRegistryEventSource class.
-     */
-    @Generated
-    public ContainerRegistryEventSource() {
-    }
+        /**
+         * Creates an instance of ContainerRegistryEventSource class.
+         */
+        @Generated
+        public ContainerRegistryEventSource() {
+        }
 
-    /**
-     * Get the addr property: The IP or hostname and the port of the registry node that generated the event. Generally,
-     * this will be resolved by os.Hostname() along with the running port.
-     * 
-     * @return the addr value.
-     */
-    @Generated
-    public String getAddr() {
-        return this.addr;
-    }
+        /**
+         * Get the addr property: The IP or hostname and the port of the registry node that generated the event. Generally,
+         * this will be resolved by os.Hostname() along with the running port.
+         *
+         * @return the addr value.
+         */
+        @Generated
+        public String getAddr() {
+            return this.addr;
+        }
 
-    /**
-     * Set the addr property: The IP or hostname and the port of the registry node that generated the event. Generally,
-     * this will be resolved by os.Hostname() along with the running port.
-     * 
-     * @param addr the addr value to set.
-     * @return the ContainerRegistryEventSource object itself.
-     */
-    @Generated
-    public ContainerRegistryEventSource setAddr(String addr) {
-        this.addr = addr;
-        return this;
-    }
+        /**
+         * Set the addr property: The IP or hostname and the port of the registry node that generated the event. Generally,
+         * this will be resolved by os.Hostname() along with the running port.
+         *
+         * @param addr the addr value to set.
+         * @return the ContainerRegistryEventSource object itself.
+         */
+        @Generated
+        public ContainerRegistryEventSource setAddr(String addr) {
+            this.addr = addr;
+            return this;
+        }
 
-    /**
-     * Get the instanceID property: The running instance of an application. Changes after each restart.
-     * 
-     * @return the instanceID value.
-     */
-    @Generated
-    public String getInstanceID() {
-        return this.instanceID;
-    }
+        /**
+         * Get the instanceID property: The running instance of an application. Changes after each restart.
+         *
+         * @return the instanceID value.
+         */
+        @Generated
+        public String getInstanceID() {
+            return this.instanceID;
+        }
 
-    /**
-     * Set the instanceID property: The running instance of an application. Changes after each restart.
-     * 
-     * @param instanceID the instanceID value to set.
-     * @return the ContainerRegistryEventSource object itself.
-     */
-    @Generated
-    public ContainerRegistryEventSource setInstanceID(String instanceID) {
-        this.instanceID = instanceID;
-        return this;
-    }
+        /**
+         * Set the instanceID property: The running instance of an application. Changes after each restart.
+         *
+         * @param instanceID the instanceID value to set.
+         * @return the ContainerRegistryEventSource object itself.
+         */
+        @Generated
+        public ContainerRegistryEventSource setInstanceID(String instanceID) {
+            this.instanceID = instanceID;
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("addr", this.addr);
-        jsonWriter.writeStringField("instanceID", this.instanceID);
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("addr", this.addr);
+            jsonWriter.writeStringField("instanceID", this.instanceID);
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of ContainerRegistryEventSource from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ContainerRegistryEventSource if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ContainerRegistryEventSource.
-     */
-    @Generated
-    public static ContainerRegistryEventSource fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ContainerRegistryEventSource deserializedContainerRegistryEventSource = new ContainerRegistryEventSource();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        /**
+         * Reads an instance of ContainerRegistryEventSource from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of ContainerRegistryEventSource if the JsonReader was pointing to an instance of it, or null
+         * if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the ContainerRegistryEventSource.
+         */
+        @Generated
+        public static ContainerRegistryEventSource fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                ContainerRegistryEventSource deserializedContainerRegistryEventSource
+                    = new ContainerRegistryEventSource();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
 
-                if ("addr".equals(fieldName)) {
-                    deserializedContainerRegistryEventSource.addr = reader.getString();
-                } else if ("instanceID".equals(fieldName)) {
-                    deserializedContainerRegistryEventSource.instanceID = reader.getString();
-                } else {
-                    reader.skipChildren();
+                    if ("addr".equals(fieldName)) {
+                        deserializedContainerRegistryEventSource.addr = reader.getString();
+                    } else if ("instanceID".equals(fieldName)) {
+                        deserializedContainerRegistryEventSource.instanceID = reader.getString();
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
 
-            return deserializedContainerRegistryEventSource;
-        });
-    }
+                return deserializedContainerRegistryEventSource;
+            });
+        }
 }

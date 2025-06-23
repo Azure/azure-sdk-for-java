@@ -11,6 +11,7 @@ import java.util.Collection;
 /**
  * The status of the email. Any value other than Delivered is considered failed.
  */
+@Deprecated
 public final class AcsEmailDeliveryReportStatus extends ExpandableStringEnum<AcsEmailDeliveryReportStatus> {
     /**
      * Hard bounce detected while sending the email.
@@ -51,7 +52,7 @@ public final class AcsEmailDeliveryReportStatus extends ExpandableStringEnum<Acs
 
     /**
      * Creates a new instance of AcsEmailDeliveryReportStatus value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
@@ -61,7 +62,7 @@ public final class AcsEmailDeliveryReportStatus extends ExpandableStringEnum<Acs
 
     /**
      * Creates or finds a AcsEmailDeliveryReportStatus from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding AcsEmailDeliveryReportStatus.
      */
@@ -72,7 +73,7 @@ public final class AcsEmailDeliveryReportStatus extends ExpandableStringEnum<Acs
 
     /**
      * Gets known AcsEmailDeliveryReportStatus values.
-     * 
+     *
      * @return known AcsEmailDeliveryReportStatus values.
      */
     @Generated

@@ -14,192 +14,194 @@ import java.io.IOException;
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.ContainerService.NewKubernetesVersionAvailable
  * event.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class ContainerServiceNewKubernetesVersionAvailableEventData
     implements JsonSerializable<ContainerServiceNewKubernetesVersionAvailableEventData> {
 
-    /*
-     * The highest PATCH Kubernetes version for the highest MINOR version supported by ManagedCluster resource
-     */
-    @Generated
-    private String latestSupportedKubernetesVersion;
+        /*
+         * The highest PATCH Kubernetes version for the highest MINOR version supported by ManagedCluster resource
+         */
+        @Generated
+        private String latestSupportedKubernetesVersion;
 
-    /*
-     * The highest PATCH Kubernetes version for the MINOR version considered stable for the ManagedCluster resource
-     */
-    @Generated
-    private String latestStableKubernetesVersion;
+        /*
+         * The highest PATCH Kubernetes version for the MINOR version considered stable for the ManagedCluster resource
+         */
+        @Generated
+        private String latestStableKubernetesVersion;
 
-    /*
-     * The highest PATCH Kubernetes version for the lowest applicable MINOR version available for the ManagedCluster
-     * resource
-     */
-    @Generated
-    private String lowestMinorKubernetesVersion;
+        /*
+         * The highest PATCH Kubernetes version for the lowest applicable MINOR version available for the ManagedCluster
+         * resource
+         */
+        @Generated
+        private String lowestMinorKubernetesVersion;
 
-    /*
-     * The highest PATCH Kubernetes version considered preview for the ManagedCluster resource. There might not be any
-     * version in preview at the time of publishing the event
-     */
-    @Generated
-    private String latestPreviewKubernetesVersion;
+        /*
+         * The highest PATCH Kubernetes version considered preview for the ManagedCluster resource. There might not be any
+         * version in preview at the time of publishing the event
+         */
+        @Generated
+        private String latestPreviewKubernetesVersion;
 
-    /**
-     * Creates an instance of ContainerServiceNewKubernetesVersionAvailableEventData class.
-     */
-    @Generated
-    public ContainerServiceNewKubernetesVersionAvailableEventData() {
-    }
+        /**
+         * Creates an instance of ContainerServiceNewKubernetesVersionAvailableEventData class.
+         */
+        @Generated
+        public ContainerServiceNewKubernetesVersionAvailableEventData() {
+        }
 
-    /**
-     * Get the latestSupportedKubernetesVersion property: The highest PATCH Kubernetes version for the highest MINOR
-     * version supported by ManagedCluster resource.
-     *
-     * @return the latestSupportedKubernetesVersion value.
-     */
-    @Generated
-    public String getLatestSupportedKubernetesVersion() {
-        return this.latestSupportedKubernetesVersion;
-    }
+        /**
+         * Get the latestSupportedKubernetesVersion property: The highest PATCH Kubernetes version for the highest MINOR
+         * version supported by ManagedCluster resource.
+         *
+         * @return the latestSupportedKubernetesVersion value.
+         */
+        @Generated
+        public String getLatestSupportedKubernetesVersion() {
+            return this.latestSupportedKubernetesVersion;
+        }
 
-    /**
-     * Set the latestSupportedKubernetesVersion property: The highest PATCH Kubernetes version for the highest MINOR
-     * version supported by ManagedCluster resource.
-     *
-     * @param latestSupportedKubernetesVersion the latestSupportedKubernetesVersion value to set.
-     * @return the ContainerServiceNewKubernetesVersionAvailableEventData object itself.
-     */
-    @Generated
-    public ContainerServiceNewKubernetesVersionAvailableEventData
-        setLatestSupportedKubernetesVersion(String latestSupportedKubernetesVersion) {
-        this.latestSupportedKubernetesVersion = latestSupportedKubernetesVersion;
-        return this;
-    }
+        /**
+         * Set the latestSupportedKubernetesVersion property: The highest PATCH Kubernetes version for the highest MINOR
+         * version supported by ManagedCluster resource.
+         *
+         * @param latestSupportedKubernetesVersion the latestSupportedKubernetesVersion value to set.
+         * @return the ContainerServiceNewKubernetesVersionAvailableEventData object itself.
+         */
+        @Generated
+        public ContainerServiceNewKubernetesVersionAvailableEventData
+            setLatestSupportedKubernetesVersion(String latestSupportedKubernetesVersion) {
+            this.latestSupportedKubernetesVersion = latestSupportedKubernetesVersion;
+            return this;
+        }
 
-    /**
-     * Get the latestStableKubernetesVersion property: The highest PATCH Kubernetes version for the MINOR version
-     * considered stable for the ManagedCluster resource.
-     *
-     * @return the latestStableKubernetesVersion value.
-     */
-    @Generated
-    public String getLatestStableKubernetesVersion() {
-        return this.latestStableKubernetesVersion;
-    }
+        /**
+         * Get the latestStableKubernetesVersion property: The highest PATCH Kubernetes version for the MINOR version
+         * considered stable for the ManagedCluster resource.
+         *
+         * @return the latestStableKubernetesVersion value.
+         */
+        @Generated
+        public String getLatestStableKubernetesVersion() {
+            return this.latestStableKubernetesVersion;
+        }
 
-    /**
-     * Set the latestStableKubernetesVersion property: The highest PATCH Kubernetes version for the MINOR version
-     * considered stable for the ManagedCluster resource.
-     *
-     * @param latestStableKubernetesVersion the latestStableKubernetesVersion value to set.
-     * @return the ContainerServiceNewKubernetesVersionAvailableEventData object itself.
-     */
-    @Generated
-    public ContainerServiceNewKubernetesVersionAvailableEventData
-        setLatestStableKubernetesVersion(String latestStableKubernetesVersion) {
-        this.latestStableKubernetesVersion = latestStableKubernetesVersion;
-        return this;
-    }
+        /**
+         * Set the latestStableKubernetesVersion property: The highest PATCH Kubernetes version for the MINOR version
+         * considered stable for the ManagedCluster resource.
+         *
+         * @param latestStableKubernetesVersion the latestStableKubernetesVersion value to set.
+         * @return the ContainerServiceNewKubernetesVersionAvailableEventData object itself.
+         */
+        @Generated
+        public ContainerServiceNewKubernetesVersionAvailableEventData
+            setLatestStableKubernetesVersion(String latestStableKubernetesVersion) {
+            this.latestStableKubernetesVersion = latestStableKubernetesVersion;
+            return this;
+        }
 
-    /**
-     * Get the lowestMinorKubernetesVersion property: The highest PATCH Kubernetes version for the lowest applicable
-     * MINOR version available for the ManagedCluster resource.
-     *
-     * @return the lowestMinorKubernetesVersion value.
-     */
-    @Generated
-    public String getLowestMinorKubernetesVersion() {
-        return this.lowestMinorKubernetesVersion;
-    }
+        /**
+         * Get the lowestMinorKubernetesVersion property: The highest PATCH Kubernetes version for the lowest applicable
+         * MINOR version available for the ManagedCluster resource.
+         *
+         * @return the lowestMinorKubernetesVersion value.
+         */
+        @Generated
+        public String getLowestMinorKubernetesVersion() {
+            return this.lowestMinorKubernetesVersion;
+        }
 
-    /**
-     * Set the lowestMinorKubernetesVersion property: The highest PATCH Kubernetes version for the lowest applicable
-     * MINOR version available for the ManagedCluster resource.
-     *
-     * @param lowestMinorKubernetesVersion the lowestMinorKubernetesVersion value to set.
-     * @return the ContainerServiceNewKubernetesVersionAvailableEventData object itself.
-     */
-    @Generated
-    public ContainerServiceNewKubernetesVersionAvailableEventData
-        setLowestMinorKubernetesVersion(String lowestMinorKubernetesVersion) {
-        this.lowestMinorKubernetesVersion = lowestMinorKubernetesVersion;
-        return this;
-    }
+        /**
+         * Set the lowestMinorKubernetesVersion property: The highest PATCH Kubernetes version for the lowest applicable
+         * MINOR version available for the ManagedCluster resource.
+         *
+         * @param lowestMinorKubernetesVersion the lowestMinorKubernetesVersion value to set.
+         * @return the ContainerServiceNewKubernetesVersionAvailableEventData object itself.
+         */
+        @Generated
+        public ContainerServiceNewKubernetesVersionAvailableEventData
+            setLowestMinorKubernetesVersion(String lowestMinorKubernetesVersion) {
+            this.lowestMinorKubernetesVersion = lowestMinorKubernetesVersion;
+            return this;
+        }
 
-    /**
-     * Get the latestPreviewKubernetesVersion property: The highest PATCH Kubernetes version considered preview for the
-     * ManagedCluster resource. There might not be any version in preview at the time of publishing the event.
-     *
-     * @return the latestPreviewKubernetesVersion value.
-     */
-    @Generated
-    public String getLatestPreviewKubernetesVersion() {
-        return this.latestPreviewKubernetesVersion;
-    }
+        /**
+         * Get the latestPreviewKubernetesVersion property: The highest PATCH Kubernetes version considered preview for the
+         * ManagedCluster resource. There might not be any version in preview at the time of publishing the event.
+         *
+         * @return the latestPreviewKubernetesVersion value.
+         */
+        @Generated
+        public String getLatestPreviewKubernetesVersion() {
+            return this.latestPreviewKubernetesVersion;
+        }
 
-    /**
-     * Set the latestPreviewKubernetesVersion property: The highest PATCH Kubernetes version considered preview for the
-     * ManagedCluster resource. There might not be any version in preview at the time of publishing the event.
-     *
-     * @param latestPreviewKubernetesVersion the latestPreviewKubernetesVersion value to set.
-     * @return the ContainerServiceNewKubernetesVersionAvailableEventData object itself.
-     */
-    @Generated
-    public ContainerServiceNewKubernetesVersionAvailableEventData
-        setLatestPreviewKubernetesVersion(String latestPreviewKubernetesVersion) {
-        this.latestPreviewKubernetesVersion = latestPreviewKubernetesVersion;
-        return this;
-    }
+        /**
+         * Set the latestPreviewKubernetesVersion property: The highest PATCH Kubernetes version considered preview for the
+         * ManagedCluster resource. There might not be any version in preview at the time of publishing the event.
+         *
+         * @param latestPreviewKubernetesVersion the latestPreviewKubernetesVersion value to set.
+         * @return the ContainerServiceNewKubernetesVersionAvailableEventData object itself.
+         */
+        @Generated
+        public ContainerServiceNewKubernetesVersionAvailableEventData
+            setLatestPreviewKubernetesVersion(String latestPreviewKubernetesVersion) {
+            this.latestPreviewKubernetesVersion = latestPreviewKubernetesVersion;
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("latestSupportedKubernetesVersion", this.latestSupportedKubernetesVersion);
-        jsonWriter.writeStringField("latestStableKubernetesVersion", this.latestStableKubernetesVersion);
-        jsonWriter.writeStringField("lowestMinorKubernetesVersion", this.lowestMinorKubernetesVersion);
-        jsonWriter.writeStringField("latestPreviewKubernetesVersion", this.latestPreviewKubernetesVersion);
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("latestSupportedKubernetesVersion", this.latestSupportedKubernetesVersion);
+            jsonWriter.writeStringField("latestStableKubernetesVersion", this.latestStableKubernetesVersion);
+            jsonWriter.writeStringField("lowestMinorKubernetesVersion", this.lowestMinorKubernetesVersion);
+            jsonWriter.writeStringField("latestPreviewKubernetesVersion", this.latestPreviewKubernetesVersion);
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of ContainerServiceNewKubernetesVersionAvailableEventData from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ContainerServiceNewKubernetesVersionAvailableEventData if the JsonReader was pointing to
-     * an instance of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ContainerServiceNewKubernetesVersionAvailableEventData.
-     */
-    @Generated
-    public static ContainerServiceNewKubernetesVersionAvailableEventData fromJson(JsonReader jsonReader)
-        throws IOException {
-        return jsonReader.readObject(reader -> {
-            ContainerServiceNewKubernetesVersionAvailableEventData deserializedContainerServiceNewKubernetesVersionAvailableEventData
-                = new ContainerServiceNewKubernetesVersionAvailableEventData();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("latestSupportedKubernetesVersion".equals(fieldName)) {
-                    deserializedContainerServiceNewKubernetesVersionAvailableEventData.latestSupportedKubernetesVersion
-                        = reader.getString();
-                } else if ("latestStableKubernetesVersion".equals(fieldName)) {
-                    deserializedContainerServiceNewKubernetesVersionAvailableEventData.latestStableKubernetesVersion
-                        = reader.getString();
-                } else if ("lowestMinorKubernetesVersion".equals(fieldName)) {
-                    deserializedContainerServiceNewKubernetesVersionAvailableEventData.lowestMinorKubernetesVersion
-                        = reader.getString();
-                } else if ("latestPreviewKubernetesVersion".equals(fieldName)) {
-                    deserializedContainerServiceNewKubernetesVersionAvailableEventData.latestPreviewKubernetesVersion
-                        = reader.getString();
-                } else {
-                    reader.skipChildren();
+        /**
+         * Reads an instance of ContainerServiceNewKubernetesVersionAvailableEventData from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of ContainerServiceNewKubernetesVersionAvailableEventData if the JsonReader was pointing to
+         * an instance of it, or null if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the ContainerServiceNewKubernetesVersionAvailableEventData.
+         */
+        @Generated
+        public static ContainerServiceNewKubernetesVersionAvailableEventData fromJson(JsonReader jsonReader)
+            throws IOException {
+            return jsonReader.readObject(reader -> {
+                ContainerServiceNewKubernetesVersionAvailableEventData deserializedContainerServiceNewKubernetesVersionAvailableEventData
+                    = new ContainerServiceNewKubernetesVersionAvailableEventData();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("latestSupportedKubernetesVersion".equals(fieldName)) {
+                        deserializedContainerServiceNewKubernetesVersionAvailableEventData.latestSupportedKubernetesVersion
+                            = reader.getString();
+                    } else if ("latestStableKubernetesVersion".equals(fieldName)) {
+                        deserializedContainerServiceNewKubernetesVersionAvailableEventData.latestStableKubernetesVersion
+                            = reader.getString();
+                    } else if ("lowestMinorKubernetesVersion".equals(fieldName)) {
+                        deserializedContainerServiceNewKubernetesVersionAvailableEventData.lowestMinorKubernetesVersion
+                            = reader.getString();
+                    } else if ("latestPreviewKubernetesVersion".equals(fieldName)) {
+                        deserializedContainerServiceNewKubernetesVersionAvailableEventData.latestPreviewKubernetesVersion
+                            = reader.getString();
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
-            return deserializedContainerServiceNewKubernetesVersionAvailableEventData;
-        });
-    }
+                return deserializedContainerServiceNewKubernetesVersionAvailableEventData;
+            });
+        }
 }

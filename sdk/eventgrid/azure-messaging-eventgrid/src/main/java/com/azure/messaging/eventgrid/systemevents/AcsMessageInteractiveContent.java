@@ -4,7 +4,6 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -14,8 +13,9 @@ import java.io.IOException;
 
 /**
  * Message Interactive Content.
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class AcsMessageInteractiveContent implements JsonSerializable<AcsMessageInteractiveContent> {
     /*
      * The Message interactive reply type
@@ -44,7 +44,7 @@ public final class AcsMessageInteractiveContent implements JsonSerializable<AcsM
 
     /**
      * Get the replyKind property: The Message interactive reply type.
-     * 
+     *
      * @return the replyKind value.
      */
     @Generated
@@ -54,7 +54,7 @@ public final class AcsMessageInteractiveContent implements JsonSerializable<AcsM
 
     /**
      * Set the replyKind property: The Message interactive reply type.
-     * 
+     *
      * @param replyKind the replyKind value to set.
      * @return the AcsMessageInteractiveContent object itself.
      */
@@ -66,7 +66,7 @@ public final class AcsMessageInteractiveContent implements JsonSerializable<AcsM
 
     /**
      * Get the buttonReply property: The Message Sent when a customer clicks a button.
-     * 
+     *
      * @return the buttonReply value.
      */
     @Generated
@@ -76,7 +76,7 @@ public final class AcsMessageInteractiveContent implements JsonSerializable<AcsM
 
     /**
      * Set the buttonReply property: The Message Sent when a customer clicks a button.
-     * 
+     *
      * @param buttonReply the buttonReply value to set.
      * @return the AcsMessageInteractiveContent object itself.
      */
@@ -88,7 +88,7 @@ public final class AcsMessageInteractiveContent implements JsonSerializable<AcsM
 
     /**
      * Get the listReply property: The Message Sent when a customer selects an item from a list.
-     * 
+     *
      * @return the listReply value.
      */
     @Generated
@@ -98,7 +98,7 @@ public final class AcsMessageInteractiveContent implements JsonSerializable<AcsM
 
     /**
      * Set the listReply property: The Message Sent when a customer selects an item from a list.
-     * 
+     *
      * @param listReply the listReply value to set.
      * @return the AcsMessageInteractiveContent object itself.
      */
@@ -123,7 +123,7 @@ public final class AcsMessageInteractiveContent implements JsonSerializable<AcsM
 
     /**
      * Reads an instance of AcsMessageInteractiveContent from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsMessageInteractiveContent if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.

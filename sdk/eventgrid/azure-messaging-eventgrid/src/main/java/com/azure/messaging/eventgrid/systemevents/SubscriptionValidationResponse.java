@@ -16,83 +16,85 @@ import java.io.IOException;
  * To complete an event subscription validation handshake, a subscriber can use either the validationCode or the
  * validationUrl received in a SubscriptionValidationEvent. When the validationCode is used, the
  * SubscriptionValidationResponse can be used to build the response.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class SubscriptionValidationResponse implements JsonSerializable<SubscriptionValidationResponse> {
-    /*
-     * The validation response sent by the subscriber to Azure Event Grid to complete the validation of an event
-     * subscription.
-     */
-    @Generated
-    private String validationResponse;
+        /*
+         * The validation response sent by the subscriber to Azure Event Grid to complete the validation of an event
+         * subscription.
+         */
+        @Generated
+        private String validationResponse;
 
-    /**
-     * Creates an instance of SubscriptionValidationResponse class.
-     */
-    @Generated
-    public SubscriptionValidationResponse() {
-    }
+        /**
+         * Creates an instance of SubscriptionValidationResponse class.
+         */
+        @Generated
+        public SubscriptionValidationResponse() {
+        }
 
-    /**
-     * Get the validationResponse property: The validation response sent by the subscriber to Azure Event Grid to
-     * complete the validation of an event subscription.
-     * 
-     * @return the validationResponse value.
-     */
-    @Generated
-    public String getValidationResponse() {
-        return this.validationResponse;
-    }
+        /**
+         * Get the validationResponse property: The validation response sent by the subscriber to Azure Event Grid to
+         * complete the validation of an event subscription.
+         *
+         * @return the validationResponse value.
+         */
+        @Generated
+        public String getValidationResponse() {
+            return this.validationResponse;
+        }
 
-    /**
-     * Set the validationResponse property: The validation response sent by the subscriber to Azure Event Grid to
-     * complete the validation of an event subscription.
-     * 
-     * @param validationResponse the validationResponse value to set.
-     * @return the SubscriptionValidationResponse object itself.
-     */
-    @Generated
-    public SubscriptionValidationResponse setValidationResponse(String validationResponse) {
-        this.validationResponse = validationResponse;
-        return this;
-    }
+        /**
+         * Set the validationResponse property: The validation response sent by the subscriber to Azure Event Grid to
+         * complete the validation of an event subscription.
+         *
+         * @param validationResponse the validationResponse value to set.
+         * @return the SubscriptionValidationResponse object itself.
+         */
+        @Generated
+        public SubscriptionValidationResponse setValidationResponse(String validationResponse) {
+            this.validationResponse = validationResponse;
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("validationResponse", this.validationResponse);
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("validationResponse", this.validationResponse);
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of SubscriptionValidationResponse from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SubscriptionValidationResponse if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the SubscriptionValidationResponse.
-     */
-    @Generated
-    public static SubscriptionValidationResponse fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            SubscriptionValidationResponse deserializedSubscriptionValidationResponse
-                = new SubscriptionValidationResponse();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        /**
+         * Reads an instance of SubscriptionValidationResponse from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of SubscriptionValidationResponse if the JsonReader was pointing to an instance of it, or
+         * null if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the SubscriptionValidationResponse.
+         */
+        @Generated
+        public static SubscriptionValidationResponse fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                SubscriptionValidationResponse deserializedSubscriptionValidationResponse
+                    = new SubscriptionValidationResponse();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
 
-                if ("validationResponse".equals(fieldName)) {
-                    deserializedSubscriptionValidationResponse.validationResponse = reader.getString();
-                } else {
-                    reader.skipChildren();
+                    if ("validationResponse".equals(fieldName)) {
+                        deserializedSubscriptionValidationResponse.validationResponse = reader.getString();
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
 
-            return deserializedSubscriptionValidationResponse;
-        });
-    }
+                return deserializedSubscriptionValidationResponse;
+            });
+        }
 }

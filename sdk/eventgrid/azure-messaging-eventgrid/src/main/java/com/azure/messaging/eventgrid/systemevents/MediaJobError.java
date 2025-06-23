@@ -15,142 +15,144 @@ import java.util.List;
 
 /**
  * Details of JobOutput errors.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Immutable
+@Deprecated
 public final class MediaJobError implements JsonSerializable<MediaJobError> {
-    /*
-     * Error code describing the error.
-     */
-    @Generated
-    private MediaJobErrorCode code;
+        /*
+         * Error code describing the error.
+         */
+        @Generated
+        private MediaJobErrorCode code;
 
-    /*
-     * A human-readable language-dependent representation of the error.
-     */
-    @Generated
-    private String message;
+        /*
+         * A human-readable language-dependent representation of the error.
+         */
+        @Generated
+        private String message;
 
-    /*
-     * Helps with categorization of errors.
-     */
-    @Generated
-    private MediaJobErrorCategory category;
+        /*
+         * Helps with categorization of errors.
+         */
+        @Generated
+        private MediaJobErrorCategory category;
 
-    /*
-     * Indicates that it may be possible to retry the Job. If retry is unsuccessful, please contact Azure support via
-     * Azure Portal.
-     */
-    @Generated
-    private MediaJobRetry retry;
+        /*
+         * Indicates that it may be possible to retry the Job. If retry is unsuccessful, please contact Azure support via
+         * Azure Portal.
+         */
+        @Generated
+        private MediaJobRetry retry;
 
-    /*
-     * An array of details about specific errors that led to this reported error.
-     */
-    @Generated
-    private List<MediaJobErrorDetail> details;
+        /*
+         * An array of details about specific errors that led to this reported error.
+         */
+        @Generated
+        private List<MediaJobErrorDetail> details;
 
-    /**
-     * Creates an instance of MediaJobError class.
-     */
-    @Generated
-    public MediaJobError() {
-    }
+        /**
+         * Creates an instance of MediaJobError class.
+         */
+        @Generated
+        public MediaJobError() {
+        }
 
-    /**
-     * Get the code property: Error code describing the error.
-     * 
-     * @return the code value.
-     */
-    @Generated
-    public MediaJobErrorCode getCode() {
-        return this.code;
-    }
+        /**
+         * Get the code property: Error code describing the error.
+         *
+         * @return the code value.
+         */
+        @Generated
+        public MediaJobErrorCode getCode() {
+            return this.code;
+        }
 
-    /**
-     * Get the message property: A human-readable language-dependent representation of the error.
-     * 
-     * @return the message value.
-     */
-    @Generated
-    public String getMessage() {
-        return this.message;
-    }
+        /**
+         * Get the message property: A human-readable language-dependent representation of the error.
+         *
+         * @return the message value.
+         */
+        @Generated
+        public String getMessage() {
+            return this.message;
+        }
 
-    /**
-     * Get the category property: Helps with categorization of errors.
-     * 
-     * @return the category value.
-     */
-    @Generated
-    public MediaJobErrorCategory getCategory() {
-        return this.category;
-    }
+        /**
+         * Get the category property: Helps with categorization of errors.
+         *
+         * @return the category value.
+         */
+        @Generated
+        public MediaJobErrorCategory getCategory() {
+            return this.category;
+        }
 
-    /**
-     * Get the retry property: Indicates that it may be possible to retry the Job. If retry is unsuccessful, please
-     * contact Azure support via Azure Portal.
-     * 
-     * @return the retry value.
-     */
-    @Generated
-    public MediaJobRetry getRetry() {
-        return this.retry;
-    }
+        /**
+         * Get the retry property: Indicates that it may be possible to retry the Job. If retry is unsuccessful, please
+         * contact Azure support via Azure Portal.
+         *
+         * @return the retry value.
+         */
+        @Generated
+        public MediaJobRetry getRetry() {
+            return this.retry;
+        }
 
-    /**
-     * Get the details property: An array of details about specific errors that led to this reported error.
-     * 
-     * @return the details value.
-     */
-    @Generated
-    public List<MediaJobErrorDetail> getDetails() {
-        return this.details;
-    }
+        /**
+         * Get the details property: An array of details about specific errors that led to this reported error.
+         *
+         * @return the details value.
+         */
+        @Generated
+        public List<MediaJobErrorDetail> getDetails() {
+            return this.details;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of MediaJobError from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of MediaJobError if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the MediaJobError.
-     */
-    @Generated
-    public static MediaJobError fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            MediaJobError deserializedMediaJobError = new MediaJobError();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        /**
+         * Reads an instance of MediaJobError from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of MediaJobError if the JsonReader was pointing to an instance of it, or null if it was
+         * pointing to JSON null.
+         * @throws IOException If an error occurs while reading the MediaJobError.
+         */
+        @Generated
+        public static MediaJobError fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                MediaJobError deserializedMediaJobError = new MediaJobError();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
 
-                if ("code".equals(fieldName)) {
-                    deserializedMediaJobError.code = MediaJobErrorCode.fromString(reader.getString());
-                } else if ("message".equals(fieldName)) {
-                    deserializedMediaJobError.message = reader.getString();
-                } else if ("category".equals(fieldName)) {
-                    deserializedMediaJobError.category = MediaJobErrorCategory.fromString(reader.getString());
-                } else if ("retry".equals(fieldName)) {
-                    deserializedMediaJobError.retry = MediaJobRetry.fromString(reader.getString());
-                } else if ("details".equals(fieldName)) {
-                    List<MediaJobErrorDetail> details
-                        = reader.readArray(reader1 -> MediaJobErrorDetail.fromJson(reader1));
-                    deserializedMediaJobError.details = details;
-                } else {
-                    reader.skipChildren();
+                    if ("code".equals(fieldName)) {
+                        deserializedMediaJobError.code = MediaJobErrorCode.fromString(reader.getString());
+                    } else if ("message".equals(fieldName)) {
+                        deserializedMediaJobError.message = reader.getString();
+                    } else if ("category".equals(fieldName)) {
+                        deserializedMediaJobError.category = MediaJobErrorCategory.fromString(reader.getString());
+                    } else if ("retry".equals(fieldName)) {
+                        deserializedMediaJobError.retry = MediaJobRetry.fromString(reader.getString());
+                    } else if ("details".equals(fieldName)) {
+                        List<MediaJobErrorDetail> details
+                            = reader.readArray(reader1 -> MediaJobErrorDetail.fromJson(reader1));
+                        deserializedMediaJobError.details = details;
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
 
-            return deserializedMediaJobError;
-        });
-    }
+                return deserializedMediaJobError;
+            });
+        }
 }

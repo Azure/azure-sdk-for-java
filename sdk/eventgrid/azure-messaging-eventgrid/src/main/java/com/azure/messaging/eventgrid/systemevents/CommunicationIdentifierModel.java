@@ -16,7 +16,10 @@ import java.io.IOException;
  * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an Azure
  * communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may be set
  * which must match the kind enum value.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Deprecated
 @Fluent
 public final class CommunicationIdentifierModel implements JsonSerializable<CommunicationIdentifierModel> {
     /*
@@ -64,7 +67,7 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
 
     /**
      * Get the kind property: The identifier kind. Only required in responses.
-     * 
+     *
      * @return the kind value.
      */
     @Generated
@@ -74,7 +77,7 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
 
     /**
      * Set the kind property: The identifier kind. Only required in responses.
-     * 
+     *
      * @param kind the kind value to set.
      * @return the CommunicationIdentifierModel object itself.
      */
@@ -86,7 +89,7 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
 
     /**
      * Get the rawId property: Raw Id of the identifier. Optional in requests, required in responses.
-     * 
+     *
      * @return the rawId value.
      */
     @Generated
@@ -96,7 +99,7 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
 
     /**
      * Set the rawId property: Raw Id of the identifier. Optional in requests, required in responses.
-     * 
+     *
      * @param rawId the rawId value to set.
      * @return the CommunicationIdentifierModel object itself.
      */
@@ -108,7 +111,7 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
 
     /**
      * Get the communicationUser property: The communication user.
-     * 
+     *
      * @return the communicationUser value.
      */
     @Generated
@@ -118,7 +121,7 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
 
     /**
      * Set the communicationUser property: The communication user.
-     * 
+     *
      * @param communicationUser the communicationUser value to set.
      * @return the CommunicationIdentifierModel object itself.
      */
@@ -130,7 +133,7 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
 
     /**
      * Get the phoneNumber property: The phone number.
-     * 
+     *
      * @return the phoneNumber value.
      */
     @Generated
@@ -140,7 +143,7 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
 
     /**
      * Set the phoneNumber property: The phone number.
-     * 
+     *
      * @param phoneNumber the phoneNumber value to set.
      * @return the CommunicationIdentifierModel object itself.
      */
@@ -152,7 +155,7 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
 
     /**
      * Get the microsoftTeamsUser property: The Microsoft Teams user.
-     * 
+     *
      * @return the microsoftTeamsUser value.
      */
     @Generated
@@ -162,7 +165,7 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
 
     /**
      * Set the microsoftTeamsUser property: The Microsoft Teams user.
-     * 
+     *
      * @param microsoftTeamsUser the microsoftTeamsUser value to set.
      * @return the CommunicationIdentifierModel object itself.
      */
@@ -174,7 +177,7 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
 
     /**
      * Get the microsoftTeamsApp property: The Microsoft Teams application.
-     * 
+     *
      * @return the microsoftTeamsApp value.
      */
     @Generated
@@ -184,7 +187,7 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
 
     /**
      * Set the microsoftTeamsApp property: The Microsoft Teams application.
-     * 
+     *
      * @param microsoftTeamsApp the microsoftTeamsApp value to set.
      * @return the CommunicationIdentifierModel object itself.
      */
@@ -212,7 +215,7 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
 
     /**
      * Reads an instance of CommunicationIdentifierModel from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of CommunicationIdentifierModel if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.

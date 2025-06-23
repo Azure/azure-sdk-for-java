@@ -16,304 +16,309 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.MachineLearningServices.DatasetDriftDetected event.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class MachineLearningServicesDatasetDriftDetectedEventData
     implements JsonSerializable<MachineLearningServicesDatasetDriftDetectedEventData> {
 
-    /*
-     * The ID of the data drift monitor that triggered the event.
-     */
-    @Generated
-    private String dataDriftId;
+        /*
+         * The ID of the data drift monitor that triggered the event.
+         */
+        @Generated
+        private String dataDriftId;
 
-    /*
-     * The name of the data drift monitor that triggered the event.
-     */
-    @Generated
-    private String dataDriftName;
+        /*
+         * The name of the data drift monitor that triggered the event.
+         */
+        @Generated
+        private String dataDriftName;
 
-    /*
-     * The ID of the Run that detected data drift.
-     */
-    @Generated
-    private String runId;
+        /*
+         * The ID of the Run that detected data drift.
+         */
+        @Generated
+        private String runId;
 
-    /*
-     * The ID of the base Dataset used to detect drift.
-     */
-    @Generated
-    private String baseDatasetId;
+        /*
+         * The ID of the base Dataset used to detect drift.
+         */
+        @Generated
+        private String baseDatasetId;
 
-    /*
-     * The ID of the target Dataset used to detect drift.
-     */
-    @Generated
-    private String targetDatasetId;
+        /*
+         * The ID of the target Dataset used to detect drift.
+         */
+        @Generated
+        private String targetDatasetId;
 
-    /*
-     * The coefficient result that triggered the event.
-     */
-    @Generated
-    private Double driftCoefficient;
+        /*
+         * The coefficient result that triggered the event.
+         */
+        @Generated
+        private Double driftCoefficient;
 
-    /*
-     * The start time of the target dataset time series that resulted in drift detection.
-     */
-    @Generated
-    private OffsetDateTime startTime;
+        /*
+         * The start time of the target dataset time series that resulted in drift detection.
+         */
+        @Generated
+        private OffsetDateTime startTime;
 
-    /*
-     * The end time of the target dataset time series that resulted in drift detection.
-     */
-    @Generated
-    private OffsetDateTime endTime;
+        /*
+         * The end time of the target dataset time series that resulted in drift detection.
+         */
+        @Generated
+        private OffsetDateTime endTime;
 
-    /**
-     * Creates an instance of MachineLearningServicesDatasetDriftDetectedEventData class.
-     */
-    @Generated
-    public MachineLearningServicesDatasetDriftDetectedEventData() {
-    }
+        /**
+         * Creates an instance of MachineLearningServicesDatasetDriftDetectedEventData class.
+         */
+        @Generated
+        public MachineLearningServicesDatasetDriftDetectedEventData() {
+        }
 
-    /**
-     * Get the dataDriftId property: The ID of the data drift monitor that triggered the event.
-     *
-     * @return the dataDriftId value.
-     */
-    @Generated
-    public String getDataDriftId() {
-        return this.dataDriftId;
-    }
+        /**
+         * Get the dataDriftId property: The ID of the data drift monitor that triggered the event.
+         *
+         * @return the dataDriftId value.
+         */
+        @Generated
+        public String getDataDriftId() {
+            return this.dataDriftId;
+        }
 
-    /**
-     * Set the dataDriftId property: The ID of the data drift monitor that triggered the event.
-     *
-     * @param dataDriftId the dataDriftId value to set.
-     * @return the MachineLearningServicesDatasetDriftDetectedEventData object itself.
-     */
-    @Generated
-    public MachineLearningServicesDatasetDriftDetectedEventData setDataDriftId(String dataDriftId) {
-        this.dataDriftId = dataDriftId;
-        return this;
-    }
+        /**
+         * Set the dataDriftId property: The ID of the data drift monitor that triggered the event.
+         *
+         * @param dataDriftId the dataDriftId value to set.
+         * @return the MachineLearningServicesDatasetDriftDetectedEventData object itself.
+         */
+        @Generated
+        public MachineLearningServicesDatasetDriftDetectedEventData setDataDriftId(String dataDriftId) {
+            this.dataDriftId = dataDriftId;
+            return this;
+        }
 
-    /**
-     * Get the dataDriftName property: The name of the data drift monitor that triggered the event.
-     *
-     * @return the dataDriftName value.
-     */
-    @Generated
-    public String getDataDriftName() {
-        return this.dataDriftName;
-    }
+        /**
+         * Get the dataDriftName property: The name of the data drift monitor that triggered the event.
+         *
+         * @return the dataDriftName value.
+         */
+        @Generated
+        public String getDataDriftName() {
+            return this.dataDriftName;
+        }
 
-    /**
-     * Set the dataDriftName property: The name of the data drift monitor that triggered the event.
-     *
-     * @param dataDriftName the dataDriftName value to set.
-     * @return the MachineLearningServicesDatasetDriftDetectedEventData object itself.
-     */
-    @Generated
-    public MachineLearningServicesDatasetDriftDetectedEventData setDataDriftName(String dataDriftName) {
-        this.dataDriftName = dataDriftName;
-        return this;
-    }
+        /**
+         * Set the dataDriftName property: The name of the data drift monitor that triggered the event.
+         *
+         * @param dataDriftName the dataDriftName value to set.
+         * @return the MachineLearningServicesDatasetDriftDetectedEventData object itself.
+         */
+        @Generated
+        public MachineLearningServicesDatasetDriftDetectedEventData setDataDriftName(String dataDriftName) {
+            this.dataDriftName = dataDriftName;
+            return this;
+        }
 
-    /**
-     * Get the runId property: The ID of the Run that detected data drift.
-     *
-     * @return the runId value.
-     */
-    @Generated
-    public String getRunId() {
-        return this.runId;
-    }
+        /**
+         * Get the runId property: The ID of the Run that detected data drift.
+         *
+         * @return the runId value.
+         */
+        @Generated
+        public String getRunId() {
+            return this.runId;
+        }
 
-    /**
-     * Set the runId property: The ID of the Run that detected data drift.
-     *
-     * @param runId the runId value to set.
-     * @return the MachineLearningServicesDatasetDriftDetectedEventData object itself.
-     */
-    @Generated
-    public MachineLearningServicesDatasetDriftDetectedEventData setRunId(String runId) {
-        this.runId = runId;
-        return this;
-    }
+        /**
+         * Set the runId property: The ID of the Run that detected data drift.
+         *
+         * @param runId the runId value to set.
+         * @return the MachineLearningServicesDatasetDriftDetectedEventData object itself.
+         */
+        @Generated
+        public MachineLearningServicesDatasetDriftDetectedEventData setRunId(String runId) {
+            this.runId = runId;
+            return this;
+        }
 
-    /**
-     * Get the baseDatasetId property: The ID of the base Dataset used to detect drift.
-     *
-     * @return the baseDatasetId value.
-     */
-    @Generated
-    public String getBaseDatasetId() {
-        return this.baseDatasetId;
-    }
+        /**
+         * Get the baseDatasetId property: The ID of the base Dataset used to detect drift.
+         *
+         * @return the baseDatasetId value.
+         */
+        @Generated
+        public String getBaseDatasetId() {
+            return this.baseDatasetId;
+        }
 
-    /**
-     * Set the baseDatasetId property: The ID of the base Dataset used to detect drift.
-     *
-     * @param baseDatasetId the baseDatasetId value to set.
-     * @return the MachineLearningServicesDatasetDriftDetectedEventData object itself.
-     */
-    @Generated
-    public MachineLearningServicesDatasetDriftDetectedEventData setBaseDatasetId(String baseDatasetId) {
-        this.baseDatasetId = baseDatasetId;
-        return this;
-    }
+        /**
+         * Set the baseDatasetId property: The ID of the base Dataset used to detect drift.
+         *
+         * @param baseDatasetId the baseDatasetId value to set.
+         * @return the MachineLearningServicesDatasetDriftDetectedEventData object itself.
+         */
+        @Generated
+        public MachineLearningServicesDatasetDriftDetectedEventData setBaseDatasetId(String baseDatasetId) {
+            this.baseDatasetId = baseDatasetId;
+            return this;
+        }
 
-    /**
-     * Get the targetDatasetId property: The ID of the target Dataset used to detect drift.
-     *
-     * @return the targetDatasetId value.
-     */
-    @Generated
-    public String getTargetDatasetId() {
-        return this.targetDatasetId;
-    }
+        /**
+         * Get the targetDatasetId property: The ID of the target Dataset used to detect drift.
+         *
+         * @return the targetDatasetId value.
+         */
+        @Generated
+        public String getTargetDatasetId() {
+            return this.targetDatasetId;
+        }
 
-    /**
-     * Set the targetDatasetId property: The ID of the target Dataset used to detect drift.
-     *
-     * @param targetDatasetId the targetDatasetId value to set.
-     * @return the MachineLearningServicesDatasetDriftDetectedEventData object itself.
-     */
-    @Generated
-    public MachineLearningServicesDatasetDriftDetectedEventData setTargetDatasetId(String targetDatasetId) {
-        this.targetDatasetId = targetDatasetId;
-        return this;
-    }
+        /**
+         * Set the targetDatasetId property: The ID of the target Dataset used to detect drift.
+         *
+         * @param targetDatasetId the targetDatasetId value to set.
+         * @return the MachineLearningServicesDatasetDriftDetectedEventData object itself.
+         */
+        @Generated
+        public MachineLearningServicesDatasetDriftDetectedEventData setTargetDatasetId(String targetDatasetId) {
+            this.targetDatasetId = targetDatasetId;
+            return this;
+        }
 
-    /**
-     * Get the driftCoefficient property: The coefficient result that triggered the event.
-     *
-     * @return the driftCoefficient value.
-     */
-    @Generated
-    public Double getDriftCoefficient() {
-        return this.driftCoefficient;
-    }
+        /**
+         * Get the driftCoefficient property: The coefficient result that triggered the event.
+         *
+         * @return the driftCoefficient value.
+         */
+        @Generated
+        public Double getDriftCoefficient() {
+            return this.driftCoefficient;
+        }
 
-    /**
-     * Set the driftCoefficient property: The coefficient result that triggered the event.
-     *
-     * @param driftCoefficient the driftCoefficient value to set.
-     * @return the MachineLearningServicesDatasetDriftDetectedEventData object itself.
-     */
-    @Generated
-    public MachineLearningServicesDatasetDriftDetectedEventData setDriftCoefficient(Double driftCoefficient) {
-        this.driftCoefficient = driftCoefficient;
-        return this;
-    }
+        /**
+         * Set the driftCoefficient property: The coefficient result that triggered the event.
+         *
+         * @param driftCoefficient the driftCoefficient value to set.
+         * @return the MachineLearningServicesDatasetDriftDetectedEventData object itself.
+         */
+        @Generated
+        public MachineLearningServicesDatasetDriftDetectedEventData setDriftCoefficient(Double driftCoefficient) {
+            this.driftCoefficient = driftCoefficient;
+            return this;
+        }
 
-    /**
-     * Get the startTime property: The start time of the target dataset time series that resulted in drift detection.
-     *
-     * @return the startTime value.
-     */
-    @Generated
-    public OffsetDateTime getStartTime() {
-        return this.startTime;
-    }
+        /**
+         * Get the startTime property: The start time of the target dataset time series that resulted in drift detection.
+         *
+         * @return the startTime value.
+         */
+        @Generated
+        public OffsetDateTime getStartTime() {
+            return this.startTime;
+        }
 
-    /**
-     * Set the startTime property: The start time of the target dataset time series that resulted in drift detection.
-     *
-     * @param startTime the startTime value to set.
-     * @return the MachineLearningServicesDatasetDriftDetectedEventData object itself.
-     */
-    @Generated
-    public MachineLearningServicesDatasetDriftDetectedEventData setStartTime(OffsetDateTime startTime) {
-        this.startTime = startTime;
-        return this;
-    }
+        /**
+         * Set the startTime property: The start time of the target dataset time series that resulted in drift detection.
+         *
+         * @param startTime the startTime value to set.
+         * @return the MachineLearningServicesDatasetDriftDetectedEventData object itself.
+         */
+        @Generated
+        public MachineLearningServicesDatasetDriftDetectedEventData setStartTime(OffsetDateTime startTime) {
+            this.startTime = startTime;
+            return this;
+        }
 
-    /**
-     * Get the endTime property: The end time of the target dataset time series that resulted in drift detection.
-     *
-     * @return the endTime value.
-     */
-    @Generated
-    public OffsetDateTime getEndTime() {
-        return this.endTime;
-    }
+        /**
+         * Get the endTime property: The end time of the target dataset time series that resulted in drift detection.
+         *
+         * @return the endTime value.
+         */
+        @Generated
+        public OffsetDateTime getEndTime() {
+            return this.endTime;
+        }
 
-    /**
-     * Set the endTime property: The end time of the target dataset time series that resulted in drift detection.
-     *
-     * @param endTime the endTime value to set.
-     * @return the MachineLearningServicesDatasetDriftDetectedEventData object itself.
-     */
-    @Generated
-    public MachineLearningServicesDatasetDriftDetectedEventData setEndTime(OffsetDateTime endTime) {
-        this.endTime = endTime;
-        return this;
-    }
+        /**
+         * Set the endTime property: The end time of the target dataset time series that resulted in drift detection.
+         *
+         * @param endTime the endTime value to set.
+         * @return the MachineLearningServicesDatasetDriftDetectedEventData object itself.
+         */
+        @Generated
+        public MachineLearningServicesDatasetDriftDetectedEventData setEndTime(OffsetDateTime endTime) {
+            this.endTime = endTime;
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dataDriftId", this.dataDriftId);
-        jsonWriter.writeStringField("dataDriftName", this.dataDriftName);
-        jsonWriter.writeStringField("runId", this.runId);
-        jsonWriter.writeStringField("baseDatasetId", this.baseDatasetId);
-        jsonWriter.writeStringField("targetDatasetId", this.targetDatasetId);
-        jsonWriter.writeNumberField("driftCoefficient", this.driftCoefficient);
-        jsonWriter.writeStringField("startTime",
-            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
-        jsonWriter.writeStringField("endTime",
-            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("dataDriftId", this.dataDriftId);
+            jsonWriter.writeStringField("dataDriftName", this.dataDriftName);
+            jsonWriter.writeStringField("runId", this.runId);
+            jsonWriter.writeStringField("baseDatasetId", this.baseDatasetId);
+            jsonWriter.writeStringField("targetDatasetId", this.targetDatasetId);
+            jsonWriter.writeNumberField("driftCoefficient", this.driftCoefficient);
+            jsonWriter.writeStringField("startTime",
+                this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+            jsonWriter.writeStringField("endTime",
+                this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of MachineLearningServicesDatasetDriftDetectedEventData from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of MachineLearningServicesDatasetDriftDetectedEventData if the JsonReader was pointing to an
-     * instance of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the MachineLearningServicesDatasetDriftDetectedEventData.
-     */
-    @Generated
-    public static MachineLearningServicesDatasetDriftDetectedEventData fromJson(JsonReader jsonReader)
-        throws IOException {
-        return jsonReader.readObject(reader -> {
-            MachineLearningServicesDatasetDriftDetectedEventData deserializedMachineLearningServicesDatasetDriftDetectedEventData
-                = new MachineLearningServicesDatasetDriftDetectedEventData();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("dataDriftId".equals(fieldName)) {
-                    deserializedMachineLearningServicesDatasetDriftDetectedEventData.dataDriftId = reader.getString();
-                } else if ("dataDriftName".equals(fieldName)) {
-                    deserializedMachineLearningServicesDatasetDriftDetectedEventData.dataDriftName = reader.getString();
-                } else if ("runId".equals(fieldName)) {
-                    deserializedMachineLearningServicesDatasetDriftDetectedEventData.runId = reader.getString();
-                } else if ("baseDatasetId".equals(fieldName)) {
-                    deserializedMachineLearningServicesDatasetDriftDetectedEventData.baseDatasetId = reader.getString();
-                } else if ("targetDatasetId".equals(fieldName)) {
-                    deserializedMachineLearningServicesDatasetDriftDetectedEventData.targetDatasetId
-                        = reader.getString();
-                } else if ("driftCoefficient".equals(fieldName)) {
-                    deserializedMachineLearningServicesDatasetDriftDetectedEventData.driftCoefficient
-                        = reader.getNullable(JsonReader::getDouble);
-                } else if ("startTime".equals(fieldName)) {
-                    deserializedMachineLearningServicesDatasetDriftDetectedEventData.startTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("endTime".equals(fieldName)) {
-                    deserializedMachineLearningServicesDatasetDriftDetectedEventData.endTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else {
-                    reader.skipChildren();
+        /**
+         * Reads an instance of MachineLearningServicesDatasetDriftDetectedEventData from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of MachineLearningServicesDatasetDriftDetectedEventData if the JsonReader was pointing to an
+         * instance of it, or null if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the MachineLearningServicesDatasetDriftDetectedEventData.
+         */
+        @Generated
+        public static MachineLearningServicesDatasetDriftDetectedEventData fromJson(JsonReader jsonReader)
+            throws IOException {
+            return jsonReader.readObject(reader -> {
+                MachineLearningServicesDatasetDriftDetectedEventData deserializedMachineLearningServicesDatasetDriftDetectedEventData
+                    = new MachineLearningServicesDatasetDriftDetectedEventData();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("dataDriftId".equals(fieldName)) {
+                        deserializedMachineLearningServicesDatasetDriftDetectedEventData.dataDriftId
+                            = reader.getString();
+                    } else if ("dataDriftName".equals(fieldName)) {
+                        deserializedMachineLearningServicesDatasetDriftDetectedEventData.dataDriftName
+                            = reader.getString();
+                    } else if ("runId".equals(fieldName)) {
+                        deserializedMachineLearningServicesDatasetDriftDetectedEventData.runId = reader.getString();
+                    } else if ("baseDatasetId".equals(fieldName)) {
+                        deserializedMachineLearningServicesDatasetDriftDetectedEventData.baseDatasetId
+                            = reader.getString();
+                    } else if ("targetDatasetId".equals(fieldName)) {
+                        deserializedMachineLearningServicesDatasetDriftDetectedEventData.targetDatasetId
+                            = reader.getString();
+                    } else if ("driftCoefficient".equals(fieldName)) {
+                        deserializedMachineLearningServicesDatasetDriftDetectedEventData.driftCoefficient
+                            = reader.getNullable(JsonReader::getDouble);
+                    } else if ("startTime".equals(fieldName)) {
+                        deserializedMachineLearningServicesDatasetDriftDetectedEventData.startTime = reader
+                            .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    } else if ("endTime".equals(fieldName)) {
+                        deserializedMachineLearningServicesDatasetDriftDetectedEventData.endTime = reader
+                            .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
-            return deserializedMachineLearningServicesDatasetDriftDetectedEventData;
-        });
-    }
+                return deserializedMachineLearningServicesDatasetDriftDetectedEventData;
+            });
+        }
 }

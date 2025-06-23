@@ -11,6 +11,7 @@ import java.util.Collection;
 /**
  * The identifier kind, for example 'communicationUser' or 'phoneNumber'.
  */
+@Deprecated
 public final class AcsCommunicationIdentifierKind extends ExpandableStringEnum<AcsCommunicationIdentifierKind> {
     /**
      * Static value unknown for AcsCommunicationIdentifierKind.
@@ -44,7 +45,7 @@ public final class AcsCommunicationIdentifierKind extends ExpandableStringEnum<A
 
     /**
      * Creates a new instance of AcsCommunicationIdentifierKind value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
@@ -54,7 +55,7 @@ public final class AcsCommunicationIdentifierKind extends ExpandableStringEnum<A
 
     /**
      * Creates or finds a AcsCommunicationIdentifierKind from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding AcsCommunicationIdentifierKind.
      */
@@ -65,7 +66,7 @@ public final class AcsCommunicationIdentifierKind extends ExpandableStringEnum<A
 
     /**
      * Gets known AcsCommunicationIdentifierKind values.
-     * 
+     *
      * @return known AcsCommunicationIdentifierKind values.
      */
     @Generated

@@ -14,8 +14,10 @@ import java.io.IOException;
 
 /**
  * Message Interactive button reply content for a user to business message.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class AcsMessageInteractiveButtonReplyContent
     implements JsonSerializable<AcsMessageInteractiveButtonReplyContent> {
     /*

@@ -15,278 +15,281 @@ import java.util.Map;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterWorkerUpdated event.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class AcsRouterWorkerUpdatedEventData implements JsonSerializable<AcsRouterWorkerUpdatedEventData> {
 
-    /*
-     * Router Worker Updated Worker Id
-     */
-    @Generated
-    private String workerId;
+        /*
+         * Router Worker Updated Worker Id
+         */
+        @Generated
+        private String workerId;
 
-    /*
-     * Router Worker Updated Queue Info
-     */
-    @Generated
-    private List<AcsRouterQueueDetails> queueAssignments;
+        /*
+         * Router Worker Updated Queue Info
+         */
+        @Generated
+        private List<AcsRouterQueueDetails> queueAssignments;
 
-    /*
-     * Router Worker Updated Channel Configuration
-     */
-    @Generated
-    private List<AcsRouterChannelConfiguration> channelConfigurations;
+        /*
+         * Router Worker Updated Channel Configuration
+         */
+        @Generated
+        private List<AcsRouterChannelConfiguration> channelConfigurations;
 
-    /*
-     * Router Worker Updated Total Capacity
-     */
-    @Generated
-    private Integer totalCapacity;
+        /*
+         * Router Worker Updated Total Capacity
+         */
+        @Generated
+        private Integer totalCapacity;
 
-    /*
-     * Router Worker Updated Labels
-     */
-    @Generated
-    private Map<String, String> labels;
+        /*
+         * Router Worker Updated Labels
+         */
+        @Generated
+        private Map<String, String> labels;
 
-    /*
-     * Router Worker Updated Tags
-     */
-    @Generated
-    private Map<String, String> tags;
+        /*
+         * Router Worker Updated Tags
+         */
+        @Generated
+        private Map<String, String> tags;
 
-    /*
-     * Router Worker Properties Updated
-     */
-    @Generated
-    private List<AcsRouterUpdatedWorkerProperty> updatedWorkerProperties;
+        /*
+         * Router Worker Properties Updated
+         */
+        @Generated
+        private List<AcsRouterUpdatedWorkerProperty> updatedWorkerProperties;
 
-    /**
-     * Creates an instance of AcsRouterWorkerUpdatedEventData class.
-     */
-    @Generated
-    public AcsRouterWorkerUpdatedEventData() {
-    }
+        /**
+         * Creates an instance of AcsRouterWorkerUpdatedEventData class.
+         */
+        @Generated
+        public AcsRouterWorkerUpdatedEventData() {
+        }
 
-    /**
-     * Get the workerId property: Router Worker Updated Worker Id.
-     *
-     * @return the workerId value.
-     */
-    @Generated
-    public String getWorkerId() {
-        return this.workerId;
-    }
+        /**
+         * Get the workerId property: Router Worker Updated Worker Id.
+         *
+         * @return the workerId value.
+         */
+        @Generated
+        public String getWorkerId() {
+            return this.workerId;
+        }
 
-    /**
-     * Set the workerId property: Router Worker Updated Worker Id.
-     *
-     * @param workerId the workerId value to set.
-     * @return the AcsRouterWorkerUpdatedEventData object itself.
-     */
-    @Generated
-    public AcsRouterWorkerUpdatedEventData setWorkerId(String workerId) {
-        this.workerId = workerId;
-        return this;
-    }
+        /**
+         * Set the workerId property: Router Worker Updated Worker Id.
+         *
+         * @param workerId the workerId value to set.
+         * @return the AcsRouterWorkerUpdatedEventData object itself.
+         */
+        @Generated
+        public AcsRouterWorkerUpdatedEventData setWorkerId(String workerId) {
+            this.workerId = workerId;
+            return this;
+        }
 
-    /**
-     * Get the queueAssignments property: Router Worker Updated Queue Info.
-     *
-     * @return the queueAssignments value.
-     */
-    @Generated
-    public List<AcsRouterQueueDetails> getQueueAssignments() {
-        return this.queueAssignments;
-    }
+        /**
+         * Get the queueAssignments property: Router Worker Updated Queue Info.
+         *
+         * @return the queueAssignments value.
+         */
+        @Generated
+        public List<AcsRouterQueueDetails> getQueueAssignments() {
+            return this.queueAssignments;
+        }
 
-    /**
-     * Set the queueAssignments property: Router Worker Updated Queue Info.
-     *
-     * @param queueAssignments the queueAssignments value to set.
-     * @return the AcsRouterWorkerUpdatedEventData object itself.
-     */
-    @Generated
-    public AcsRouterWorkerUpdatedEventData setQueueAssignments(List<AcsRouterQueueDetails> queueAssignments) {
-        this.queueAssignments = queueAssignments;
-        return this;
-    }
+        /**
+         * Set the queueAssignments property: Router Worker Updated Queue Info.
+         *
+         * @param queueAssignments the queueAssignments value to set.
+         * @return the AcsRouterWorkerUpdatedEventData object itself.
+         */
+        @Generated
+        public AcsRouterWorkerUpdatedEventData setQueueAssignments(List<AcsRouterQueueDetails> queueAssignments) {
+            this.queueAssignments = queueAssignments;
+            return this;
+        }
 
-    /**
-     * Get the channelConfigurations property: Router Worker Updated Channel Configuration.
-     *
-     * @return the channelConfigurations value.
-     */
-    @Generated
-    public List<AcsRouterChannelConfiguration> getChannelConfigurations() {
-        return this.channelConfigurations;
-    }
+        /**
+         * Get the channelConfigurations property: Router Worker Updated Channel Configuration.
+         *
+         * @return the channelConfigurations value.
+         */
+        @Generated
+        public List<AcsRouterChannelConfiguration> getChannelConfigurations() {
+            return this.channelConfigurations;
+        }
 
-    /**
-     * Set the channelConfigurations property: Router Worker Updated Channel Configuration.
-     *
-     * @param channelConfigurations the channelConfigurations value to set.
-     * @return the AcsRouterWorkerUpdatedEventData object itself.
-     */
-    @Generated
-    public AcsRouterWorkerUpdatedEventData
-        setChannelConfigurations(List<AcsRouterChannelConfiguration> channelConfigurations) {
-        this.channelConfigurations = channelConfigurations;
-        return this;
-    }
+        /**
+         * Set the channelConfigurations property: Router Worker Updated Channel Configuration.
+         *
+         * @param channelConfigurations the channelConfigurations value to set.
+         * @return the AcsRouterWorkerUpdatedEventData object itself.
+         */
+        @Generated
+        public AcsRouterWorkerUpdatedEventData
+            setChannelConfigurations(List<AcsRouterChannelConfiguration> channelConfigurations) {
+            this.channelConfigurations = channelConfigurations;
+            return this;
+        }
 
-    /**
-     * Get the totalCapacity property: Router Worker Updated Total Capacity.
-     *
-     * @return the totalCapacity value.
-     */
-    @Generated
-    public Integer getTotalCapacity() {
-        return this.totalCapacity;
-    }
+        /**
+         * Get the totalCapacity property: Router Worker Updated Total Capacity.
+         *
+         * @return the totalCapacity value.
+         */
+        @Generated
+        public Integer getTotalCapacity() {
+            return this.totalCapacity;
+        }
 
-    /**
-     * Set the totalCapacity property: Router Worker Updated Total Capacity.
-     *
-     * @param totalCapacity the totalCapacity value to set.
-     * @return the AcsRouterWorkerUpdatedEventData object itself.
-     */
-    @Generated
-    public AcsRouterWorkerUpdatedEventData setTotalCapacity(Integer totalCapacity) {
-        this.totalCapacity = totalCapacity;
-        return this;
-    }
+        /**
+         * Set the totalCapacity property: Router Worker Updated Total Capacity.
+         *
+         * @param totalCapacity the totalCapacity value to set.
+         * @return the AcsRouterWorkerUpdatedEventData object itself.
+         */
+        @Generated
+        public AcsRouterWorkerUpdatedEventData setTotalCapacity(Integer totalCapacity) {
+            this.totalCapacity = totalCapacity;
+            return this;
+        }
 
-    /**
-     * Get the labels property: Router Worker Updated Labels.
-     *
-     * @return the labels value.
-     */
-    @Generated
-    public Map<String, String> getLabels() {
-        return this.labels;
-    }
+        /**
+         * Get the labels property: Router Worker Updated Labels.
+         *
+         * @return the labels value.
+         */
+        @Generated
+        public Map<String, String> getLabels() {
+            return this.labels;
+        }
 
-    /**
-     * Set the labels property: Router Worker Updated Labels.
-     *
-     * @param labels the labels value to set.
-     * @return the AcsRouterWorkerUpdatedEventData object itself.
-     */
-    @Generated
-    public AcsRouterWorkerUpdatedEventData setLabels(Map<String, String> labels) {
-        this.labels = labels;
-        return this;
-    }
+        /**
+         * Set the labels property: Router Worker Updated Labels.
+         *
+         * @param labels the labels value to set.
+         * @return the AcsRouterWorkerUpdatedEventData object itself.
+         */
+        @Generated
+        public AcsRouterWorkerUpdatedEventData setLabels(Map<String, String> labels) {
+            this.labels = labels;
+            return this;
+        }
 
-    /**
-     * Get the tags property: Router Worker Updated Tags.
-     *
-     * @return the tags value.
-     */
-    @Generated
-    public Map<String, String> getTags() {
-        return this.tags;
-    }
+        /**
+         * Get the tags property: Router Worker Updated Tags.
+         *
+         * @return the tags value.
+         */
+        @Generated
+        public Map<String, String> getTags() {
+            return this.tags;
+        }
 
-    /**
-     * Set the tags property: Router Worker Updated Tags.
-     *
-     * @param tags the tags value to set.
-     * @return the AcsRouterWorkerUpdatedEventData object itself.
-     */
-    @Generated
-    public AcsRouterWorkerUpdatedEventData setTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
+        /**
+         * Set the tags property: Router Worker Updated Tags.
+         *
+         * @param tags the tags value to set.
+         * @return the AcsRouterWorkerUpdatedEventData object itself.
+         */
+        @Generated
+        public AcsRouterWorkerUpdatedEventData setTags(Map<String, String> tags) {
+            this.tags = tags;
+            return this;
+        }
 
-    /**
-     * Get the updatedWorkerProperties property: Router Worker Properties Updated.
-     *
-     * @return the updatedWorkerProperties value.
-     */
-    @Generated
-    public List<AcsRouterUpdatedWorkerProperty> getUpdatedWorkerProperties() {
-        return this.updatedWorkerProperties;
-    }
+        /**
+         * Get the updatedWorkerProperties property: Router Worker Properties Updated.
+         *
+         * @return the updatedWorkerProperties value.
+         */
+        @Generated
+        public List<AcsRouterUpdatedWorkerProperty> getUpdatedWorkerProperties() {
+            return this.updatedWorkerProperties;
+        }
 
-    /**
-     * Set the updatedWorkerProperties property: Router Worker Properties Updated.
-     *
-     * @param updatedWorkerProperties the updatedWorkerProperties value to set.
-     * @return the AcsRouterWorkerUpdatedEventData object itself.
-     */
-    @Generated
-    public AcsRouterWorkerUpdatedEventData
-        setUpdatedWorkerProperties(List<AcsRouterUpdatedWorkerProperty> updatedWorkerProperties) {
-        this.updatedWorkerProperties = updatedWorkerProperties;
-        return this;
-    }
+        /**
+         * Set the updatedWorkerProperties property: Router Worker Properties Updated.
+         *
+         * @param updatedWorkerProperties the updatedWorkerProperties value to set.
+         * @return the AcsRouterWorkerUpdatedEventData object itself.
+         */
+        @Generated
+        public AcsRouterWorkerUpdatedEventData
+            setUpdatedWorkerProperties(List<AcsRouterUpdatedWorkerProperty> updatedWorkerProperties) {
+            this.updatedWorkerProperties = updatedWorkerProperties;
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("workerId", this.workerId);
-        jsonWriter.writeArrayField("queueAssignments", this.queueAssignments,
-            (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("channelConfigurations", this.channelConfigurations,
-            (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeNumberField("totalCapacity", this.totalCapacity);
-        jsonWriter.writeMapField("labels", this.labels, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("updatedWorkerProperties", this.updatedWorkerProperties,
-            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("workerId", this.workerId);
+            jsonWriter.writeArrayField("queueAssignments", this.queueAssignments,
+                (writer, element) -> writer.writeJson(element));
+            jsonWriter.writeArrayField("channelConfigurations", this.channelConfigurations,
+                (writer, element) -> writer.writeJson(element));
+            jsonWriter.writeNumberField("totalCapacity", this.totalCapacity);
+            jsonWriter.writeMapField("labels", this.labels, (writer, element) -> writer.writeString(element));
+            jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+            jsonWriter.writeArrayField("updatedWorkerProperties", this.updatedWorkerProperties,
+                (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of AcsRouterWorkerUpdatedEventData from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AcsRouterWorkerUpdatedEventData if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AcsRouterWorkerUpdatedEventData.
-     */
-    @Generated
-    public static AcsRouterWorkerUpdatedEventData fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AcsRouterWorkerUpdatedEventData deserializedAcsRouterWorkerUpdatedEventData
-                = new AcsRouterWorkerUpdatedEventData();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("workerId".equals(fieldName)) {
-                    deserializedAcsRouterWorkerUpdatedEventData.workerId = reader.getString();
-                } else if ("queueAssignments".equals(fieldName)) {
-                    List<AcsRouterQueueDetails> queueAssignments
-                        = reader.readArray(reader1 -> AcsRouterQueueDetails.fromJson(reader1));
-                    deserializedAcsRouterWorkerUpdatedEventData.queueAssignments = queueAssignments;
-                } else if ("channelConfigurations".equals(fieldName)) {
-                    List<AcsRouterChannelConfiguration> channelConfigurations
-                        = reader.readArray(reader1 -> AcsRouterChannelConfiguration.fromJson(reader1));
-                    deserializedAcsRouterWorkerUpdatedEventData.channelConfigurations = channelConfigurations;
-                } else if ("totalCapacity".equals(fieldName)) {
-                    deserializedAcsRouterWorkerUpdatedEventData.totalCapacity = reader.getNullable(JsonReader::getInt);
-                } else if ("labels".equals(fieldName)) {
-                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAcsRouterWorkerUpdatedEventData.labels = labels;
-                } else if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAcsRouterWorkerUpdatedEventData.tags = tags;
-                } else if ("updatedWorkerProperties".equals(fieldName)) {
-                    List<AcsRouterUpdatedWorkerProperty> updatedWorkerProperties
-                        = reader.readArray(reader1 -> AcsRouterUpdatedWorkerProperty.fromString(reader1.getString()));
-                    deserializedAcsRouterWorkerUpdatedEventData.updatedWorkerProperties = updatedWorkerProperties;
-                } else {
-                    reader.skipChildren();
+        /**
+         * Reads an instance of AcsRouterWorkerUpdatedEventData from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of AcsRouterWorkerUpdatedEventData if the JsonReader was pointing to an instance of it, or
+         * null if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the AcsRouterWorkerUpdatedEventData.
+         */
+        @Generated
+        public static AcsRouterWorkerUpdatedEventData fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                AcsRouterWorkerUpdatedEventData deserializedAcsRouterWorkerUpdatedEventData
+                    = new AcsRouterWorkerUpdatedEventData();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("workerId".equals(fieldName)) {
+                        deserializedAcsRouterWorkerUpdatedEventData.workerId = reader.getString();
+                    } else if ("queueAssignments".equals(fieldName)) {
+                        List<AcsRouterQueueDetails> queueAssignments
+                            = reader.readArray(reader1 -> AcsRouterQueueDetails.fromJson(reader1));
+                        deserializedAcsRouterWorkerUpdatedEventData.queueAssignments = queueAssignments;
+                    } else if ("channelConfigurations".equals(fieldName)) {
+                        List<AcsRouterChannelConfiguration> channelConfigurations
+                            = reader.readArray(reader1 -> AcsRouterChannelConfiguration.fromJson(reader1));
+                        deserializedAcsRouterWorkerUpdatedEventData.channelConfigurations = channelConfigurations;
+                    } else if ("totalCapacity".equals(fieldName)) {
+                        deserializedAcsRouterWorkerUpdatedEventData.totalCapacity
+                            = reader.getNullable(JsonReader::getInt);
+                    } else if ("labels".equals(fieldName)) {
+                        Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
+                        deserializedAcsRouterWorkerUpdatedEventData.labels = labels;
+                    } else if ("tags".equals(fieldName)) {
+                        Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                        deserializedAcsRouterWorkerUpdatedEventData.tags = tags;
+                    } else if ("updatedWorkerProperties".equals(fieldName)) {
+                        List<AcsRouterUpdatedWorkerProperty> updatedWorkerProperties = reader
+                            .readArray(reader1 -> AcsRouterUpdatedWorkerProperty.fromString(reader1.getString()));
+                        deserializedAcsRouterWorkerUpdatedEventData.updatedWorkerProperties = updatedWorkerProperties;
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
-            return deserializedAcsRouterWorkerUpdatedEventData;
-        });
-    }
+                return deserializedAcsRouterWorkerUpdatedEventData;
+            });
+        }
 }

@@ -10,48 +10,51 @@ import java.util.Collection;
 
 /**
  * The type of engagement user have with email.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Deprecated
 public final class AcsUserEngagement extends ExpandableStringEnum<AcsUserEngagement> {
-    /**
-     * Static value view for AcsUserEngagement.
-     */
-    @Generated
-    public static final AcsUserEngagement VIEW = fromString("view");
+        /**
+         * Static value view for AcsUserEngagement.
+         */
+        @Generated
+        public static final AcsUserEngagement VIEW = fromString("view");
 
-    /**
-     * Static value click for AcsUserEngagement.
-     */
-    @Generated
-    public static final AcsUserEngagement CLICK = fromString("click");
+        /**
+         * Static value click for AcsUserEngagement.
+         */
+        @Generated
+        public static final AcsUserEngagement CLICK = fromString("click");
 
-    /**
-     * Creates a new instance of AcsUserEngagement value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Generated
-    @Deprecated
-    public AcsUserEngagement() {
-    }
+        /**
+         * Creates a new instance of AcsUserEngagement value.
+         *
+         * @deprecated Use the {@link #fromString(String)} factory method.
+         */
+        @Generated
+        @Deprecated
+        public AcsUserEngagement() {
+        }
 
-    /**
-     * Creates or finds a AcsUserEngagement from its string representation.
-     * 
-     * @param name a name to look for.
-     * @return the corresponding AcsUserEngagement.
-     */
-    @Generated
-    public static AcsUserEngagement fromString(String name) {
-        return fromString(name, AcsUserEngagement.class);
-    }
+        /**
+         * Creates or finds a AcsUserEngagement from its string representation.
+         *
+         * @param name a name to look for.
+         * @return the corresponding AcsUserEngagement.
+         */
+        @Generated
+        public static AcsUserEngagement fromString(String name) {
+            return fromString(name, AcsUserEngagement.class);
+        }
 
-    /**
-     * Gets known AcsUserEngagement values.
-     * 
-     * @return known AcsUserEngagement values.
-     */
-    @Generated
-    public static Collection<AcsUserEngagement> values() {
-        return values(AcsUserEngagement.class);
-    }
+        /**
+         * Gets known AcsUserEngagement values.
+         *
+         * @return known AcsUserEngagement values.
+         */
+        @Generated
+        public static Collection<AcsUserEngagement> values() {
+            return values(AcsUserEngagement.class);
+        }
 }

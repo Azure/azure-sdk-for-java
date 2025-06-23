@@ -15,6 +15,7 @@ import java.io.IOException;
 /**
  * Schema of common properties of all chat events.
  */
+@Deprecated
 @Fluent
 public class AcsChatEventBaseProperties implements JsonSerializable<AcsChatEventBaseProperties> {
     /*
@@ -44,7 +45,7 @@ public class AcsChatEventBaseProperties implements JsonSerializable<AcsChatEvent
 
     /**
      * Get the recipientCommunicationIdentifier property: The communication identifier of the target user.
-     * 
+     *
      * @return the recipientCommunicationIdentifier value.
      */
     @Generated
@@ -54,7 +55,7 @@ public class AcsChatEventBaseProperties implements JsonSerializable<AcsChatEvent
 
     /**
      * Set the recipientCommunicationIdentifier property: The communication identifier of the target user.
-     * 
+     *
      * @param recipientCommunicationIdentifier the recipientCommunicationIdentifier value to set.
      * @return the AcsChatEventBaseProperties object itself.
      */
@@ -67,7 +68,7 @@ public class AcsChatEventBaseProperties implements JsonSerializable<AcsChatEvent
 
     /**
      * Get the transactionId property: The transaction id will be used as co-relation vector.
-     * 
+     *
      * @return the transactionId value.
      */
     @Generated
@@ -77,7 +78,7 @@ public class AcsChatEventBaseProperties implements JsonSerializable<AcsChatEvent
 
     /**
      * Set the transactionId property: The transaction id will be used as co-relation vector.
-     * 
+     *
      * @param transactionId the transactionId value to set.
      * @return the AcsChatEventBaseProperties object itself.
      */
@@ -89,7 +90,7 @@ public class AcsChatEventBaseProperties implements JsonSerializable<AcsChatEvent
 
     /**
      * Get the threadId property: The chat thread id.
-     * 
+     *
      * @return the threadId value.
      */
     @Generated
@@ -99,7 +100,7 @@ public class AcsChatEventBaseProperties implements JsonSerializable<AcsChatEvent
 
     /**
      * Set the threadId property: The chat thread id.
-     * 
+     *
      * @param threadId the threadId value to set.
      * @return the AcsChatEventBaseProperties object itself.
      */
@@ -124,7 +125,7 @@ public class AcsChatEventBaseProperties implements JsonSerializable<AcsChatEvent
 
     /**
      * Reads an instance of AcsChatEventBaseProperties from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsChatEventBaseProperties if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.

@@ -19,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * Schema of common properties of all chat thread events.
  */
+@Deprecated
 @Fluent
 public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData> {
 

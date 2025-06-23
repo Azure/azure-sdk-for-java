@@ -10,48 +10,51 @@ import java.util.Collection;
 
 /**
  * The recording channel type - Mixed, Unmixed.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Deprecated
 public final class RecordingChannelType extends ExpandableStringEnum<RecordingChannelType> {
-    /**
-     * Static value Mixed for RecordingChannelType.
-     */
-    @Generated
-    public static final RecordingChannelType MIXED = fromString("Mixed");
+        /**
+         * Static value Mixed for RecordingChannelType.
+         */
+        @Generated
+        public static final RecordingChannelType MIXED = fromString("Mixed");
 
-    /**
-     * Static value Unmixed for RecordingChannelType.
-     */
-    @Generated
-    public static final RecordingChannelType UNMIXED = fromString("Unmixed");
+        /**
+         * Static value Unmixed for RecordingChannelType.
+         */
+        @Generated
+        public static final RecordingChannelType UNMIXED = fromString("Unmixed");
 
-    /**
-     * Creates a new instance of RecordingChannelType value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Generated
-    @Deprecated
-    public RecordingChannelType() {
-    }
+        /**
+         * Creates a new instance of RecordingChannelType value.
+         *
+         * @deprecated Use the {@link #fromString(String)} factory method.
+         */
+        @Generated
+        @Deprecated
+        public RecordingChannelType() {
+        }
 
-    /**
-     * Creates or finds a RecordingChannelType from its string representation.
-     * 
-     * @param name a name to look for.
-     * @return the corresponding RecordingChannelType.
-     */
-    @Generated
-    public static RecordingChannelType fromString(String name) {
-        return fromString(name, RecordingChannelType.class);
-    }
+        /**
+         * Creates or finds a RecordingChannelType from its string representation.
+         *
+         * @param name a name to look for.
+         * @return the corresponding RecordingChannelType.
+         */
+        @Generated
+        public static RecordingChannelType fromString(String name) {
+            return fromString(name, RecordingChannelType.class);
+        }
 
-    /**
-     * Gets known RecordingChannelType values.
-     * 
-     * @return known RecordingChannelType values.
-     */
-    @Generated
-    public static Collection<RecordingChannelType> values() {
-        return values(RecordingChannelType.class);
-    }
+        /**
+         * Gets known RecordingChannelType values.
+         *
+         * @return known RecordingChannelType values.
+         */
+        @Generated
+        public static Collection<RecordingChannelType> values() {
+            return values(RecordingChannelType.class);
+        }
 }

@@ -14,115 +14,117 @@ import java.io.IOException;
 
 /**
  * A Microsoft Teams application.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class AcsMicrosoftTeamsAppIdentifier implements JsonSerializable<AcsMicrosoftTeamsAppIdentifier> {
-    /*
-     * The Id of the Microsoft Teams application.
-     */
-    @Generated
-    private String appId;
+        /*
+         * The Id of the Microsoft Teams application.
+         */
+        @Generated
+        private String appId;
 
-    /*
-     * The cloud that the Microsoft Teams application belongs to. By default 'public' if missing.
-     */
-    @Generated
-    private CommunicationCloudEnvironmentModel cloud;
+        /*
+         * The cloud that the Microsoft Teams application belongs to. By default 'public' if missing.
+         */
+        @Generated
+        private CommunicationCloudEnvironmentModel cloud;
 
-    /**
-     * Creates an instance of AcsMicrosoftTeamsAppIdentifier class.
-     */
-    @Generated
-    public AcsMicrosoftTeamsAppIdentifier() {
-    }
+        /**
+         * Creates an instance of AcsMicrosoftTeamsAppIdentifier class.
+         */
+        @Generated
+        public AcsMicrosoftTeamsAppIdentifier() {
+        }
 
-    /**
-     * Get the appId property: The Id of the Microsoft Teams application.
-     * 
-     * @return the appId value.
-     */
-    @Generated
-    public String getAppId() {
-        return this.appId;
-    }
+        /**
+         * Get the appId property: The Id of the Microsoft Teams application.
+         *
+         * @return the appId value.
+         */
+        @Generated
+        public String getAppId() {
+            return this.appId;
+        }
 
-    /**
-     * Set the appId property: The Id of the Microsoft Teams application.
-     * 
-     * @param appId the appId value to set.
-     * @return the AcsMicrosoftTeamsAppIdentifier object itself.
-     */
-    @Generated
-    public AcsMicrosoftTeamsAppIdentifier setAppId(String appId) {
-        this.appId = appId;
-        return this;
-    }
+        /**
+         * Set the appId property: The Id of the Microsoft Teams application.
+         *
+         * @param appId the appId value to set.
+         * @return the AcsMicrosoftTeamsAppIdentifier object itself.
+         */
+        @Generated
+        public AcsMicrosoftTeamsAppIdentifier setAppId(String appId) {
+            this.appId = appId;
+            return this;
+        }
 
-    /**
-     * Get the cloud property: The cloud that the Microsoft Teams application belongs to. By default 'public' if
-     * missing.
-     * 
-     * @return the cloud value.
-     */
-    @Generated
-    public CommunicationCloudEnvironmentModel getCloud() {
-        return this.cloud;
-    }
+        /**
+         * Get the cloud property: The cloud that the Microsoft Teams application belongs to. By default 'public' if
+         * missing.
+         *
+         * @return the cloud value.
+         */
+        @Generated
+        public CommunicationCloudEnvironmentModel getCloud() {
+            return this.cloud;
+        }
 
-    /**
-     * Set the cloud property: The cloud that the Microsoft Teams application belongs to. By default 'public' if
-     * missing.
-     * 
-     * @param cloud the cloud value to set.
-     * @return the AcsMicrosoftTeamsAppIdentifier object itself.
-     */
-    @Generated
-    public AcsMicrosoftTeamsAppIdentifier setCloud(CommunicationCloudEnvironmentModel cloud) {
-        this.cloud = cloud;
-        return this;
-    }
+        /**
+         * Set the cloud property: The cloud that the Microsoft Teams application belongs to. By default 'public' if
+         * missing.
+         *
+         * @param cloud the cloud value to set.
+         * @return the AcsMicrosoftTeamsAppIdentifier object itself.
+         */
+        @Generated
+        public AcsMicrosoftTeamsAppIdentifier setCloud(CommunicationCloudEnvironmentModel cloud) {
+            this.cloud = cloud;
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("appId", this.appId);
-        jsonWriter.writeStringField("cloud", this.cloud == null ? null : this.cloud.toString());
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("appId", this.appId);
+            jsonWriter.writeStringField("cloud", this.cloud == null ? null : this.cloud.toString());
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of AcsMicrosoftTeamsAppIdentifier from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AcsMicrosoftTeamsAppIdentifier if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AcsMicrosoftTeamsAppIdentifier.
-     */
-    @Generated
-    public static AcsMicrosoftTeamsAppIdentifier fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AcsMicrosoftTeamsAppIdentifier deserializedAcsMicrosoftTeamsAppIdentifier
-                = new AcsMicrosoftTeamsAppIdentifier();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        /**
+         * Reads an instance of AcsMicrosoftTeamsAppIdentifier from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of AcsMicrosoftTeamsAppIdentifier if the JsonReader was pointing to an instance of it, or
+         * null if it was pointing to JSON null.
+         * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+         * @throws IOException If an error occurs while reading the AcsMicrosoftTeamsAppIdentifier.
+         */
+        @Generated
+        public static AcsMicrosoftTeamsAppIdentifier fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                AcsMicrosoftTeamsAppIdentifier deserializedAcsMicrosoftTeamsAppIdentifier
+                    = new AcsMicrosoftTeamsAppIdentifier();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
 
-                if ("appId".equals(fieldName)) {
-                    deserializedAcsMicrosoftTeamsAppIdentifier.appId = reader.getString();
-                } else if ("cloud".equals(fieldName)) {
-                    deserializedAcsMicrosoftTeamsAppIdentifier.cloud
-                        = CommunicationCloudEnvironmentModel.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
+                    if ("appId".equals(fieldName)) {
+                        deserializedAcsMicrosoftTeamsAppIdentifier.appId = reader.getString();
+                    } else if ("cloud".equals(fieldName)) {
+                        deserializedAcsMicrosoftTeamsAppIdentifier.cloud
+                            = CommunicationCloudEnvironmentModel.fromString(reader.getString());
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
 
-            return deserializedAcsMicrosoftTeamsAppIdentifier;
-        });
-    }
+                return deserializedAcsMicrosoftTeamsAppIdentifier;
+            });
+        }
 }

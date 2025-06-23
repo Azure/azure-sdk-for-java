@@ -15,6 +15,7 @@ import java.io.IOException;
 /**
  * Schema of calling event room properties.
  */
+@Deprecated
 @Fluent
 public final class AcsCallRoomProperties implements JsonSerializable<AcsCallRoomProperties> {
     /*
@@ -32,7 +33,7 @@ public final class AcsCallRoomProperties implements JsonSerializable<AcsCallRoom
 
     /**
      * Get the id property: Room Id. Format is Guid as string.
-     * 
+     *
      * @return the id value.
      */
     @Generated
@@ -42,7 +43,7 @@ public final class AcsCallRoomProperties implements JsonSerializable<AcsCallRoom
 
     /**
      * Set the id property: Room Id. Format is Guid as string.
-     * 
+     *
      * @param id the id value to set.
      * @return the AcsCallRoomProperties object itself.
      */
@@ -65,7 +66,7 @@ public final class AcsCallRoomProperties implements JsonSerializable<AcsCallRoom
 
     /**
      * Reads an instance of AcsCallRoomProperties from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsCallRoomProperties if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.

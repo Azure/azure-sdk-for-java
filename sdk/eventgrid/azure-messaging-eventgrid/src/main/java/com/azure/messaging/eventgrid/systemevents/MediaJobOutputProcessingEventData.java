@@ -14,96 +14,98 @@ import java.util.Map;
 /**
  * Job output processing event data. Schema of the data property of an EventGridEvent for a
  * Microsoft.Media.JobOutputProcessing event.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class MediaJobOutputProcessingEventData extends MediaJobOutputStateChangeEventData {
 
-    /*
-     * The previous state of the Job.
-     */
-    @Generated
-    private MediaJobState previousState;
+        /*
+         * The previous state of the Job.
+         */
+        @Generated
+        private MediaJobState previousState;
 
-    /**
-     * Creates an instance of MediaJobOutputProcessingEventData class.
-     */
-    @Generated
-    public MediaJobOutputProcessingEventData() {
-    }
+        /**
+         * Creates an instance of MediaJobOutputProcessingEventData class.
+         */
+        @Generated
+        public MediaJobOutputProcessingEventData() {
+        }
 
-    /**
-     * Get the previousState property: The previous state of the Job.
-     *
-     * @return the previousState value.
-     */
-    @Generated
-    @Override
-    public MediaJobState getPreviousState() {
-        return this.previousState;
-    }
+        /**
+         * Get the previousState property: The previous state of the Job.
+         *
+         * @return the previousState value.
+         */
+        @Generated
+        @Override
+        public MediaJobState getPreviousState() {
+            return this.previousState;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public MediaJobOutputProcessingEventData setOutput(MediaJobOutput output) {
-        super.setOutput(output);
-        return this;
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public MediaJobOutputProcessingEventData setOutput(MediaJobOutput output) {
+            super.setOutput(output);
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public MediaJobOutputProcessingEventData setJobCorrelationData(Map<String, String> jobCorrelationData) {
-        super.setJobCorrelationData(jobCorrelationData);
-        return this;
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public MediaJobOutputProcessingEventData setJobCorrelationData(Map<String, String> jobCorrelationData) {
+            super.setJobCorrelationData(jobCorrelationData);
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("output", getOutput());
-        jsonWriter.writeMapField("jobCorrelationData", getJobCorrelationData(),
-            (writer, element) -> writer.writeString(element));
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeJsonField("output", getOutput());
+            jsonWriter.writeMapField("jobCorrelationData", getJobCorrelationData(),
+                (writer, element) -> writer.writeString(element));
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of MediaJobOutputProcessingEventData from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of MediaJobOutputProcessingEventData if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the MediaJobOutputProcessingEventData.
-     */
-    @Generated
-    public static MediaJobOutputProcessingEventData fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            MediaJobOutputProcessingEventData deserializedMediaJobOutputProcessingEventData
-                = new MediaJobOutputProcessingEventData();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("previousState".equals(fieldName)) {
-                    deserializedMediaJobOutputProcessingEventData.previousState
-                        = MediaJobState.fromString(reader.getString());
-                } else if ("output".equals(fieldName)) {
-                    deserializedMediaJobOutputProcessingEventData.setOutput(MediaJobOutput.fromJson(reader));
-                } else if ("jobCorrelationData".equals(fieldName)) {
-                    Map<String, String> jobCorrelationData = reader.readMap(reader1 -> reader1.getString());
-                    deserializedMediaJobOutputProcessingEventData.setJobCorrelationData(jobCorrelationData);
-                } else {
-                    reader.skipChildren();
+        /**
+         * Reads an instance of MediaJobOutputProcessingEventData from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of MediaJobOutputProcessingEventData if the JsonReader was pointing to an instance of it, or
+         * null if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the MediaJobOutputProcessingEventData.
+         */
+        @Generated
+        public static MediaJobOutputProcessingEventData fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                MediaJobOutputProcessingEventData deserializedMediaJobOutputProcessingEventData
+                    = new MediaJobOutputProcessingEventData();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("previousState".equals(fieldName)) {
+                        deserializedMediaJobOutputProcessingEventData.previousState
+                            = MediaJobState.fromString(reader.getString());
+                    } else if ("output".equals(fieldName)) {
+                        deserializedMediaJobOutputProcessingEventData.setOutput(MediaJobOutput.fromJson(reader));
+                    } else if ("jobCorrelationData".equals(fieldName)) {
+                        Map<String, String> jobCorrelationData = reader.readMap(reader1 -> reader1.getString());
+                        deserializedMediaJobOutputProcessingEventData.setJobCorrelationData(jobCorrelationData);
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
-            return deserializedMediaJobOutputProcessingEventData;
-        });
-    }
+                return deserializedMediaJobOutputProcessingEventData;
+            });
+        }
 }

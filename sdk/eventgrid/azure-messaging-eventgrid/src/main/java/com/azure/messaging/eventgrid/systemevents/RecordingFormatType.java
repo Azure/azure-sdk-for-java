@@ -10,54 +10,57 @@ import java.util.Collection;
 
 /**
  * The recording format type - Mp4, Mp3, Wav.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Deprecated
 public final class RecordingFormatType extends ExpandableStringEnum<RecordingFormatType> {
-    /**
-     * Static value Wav for RecordingFormatType.
-     */
-    @Generated
-    public static final RecordingFormatType WAV = fromString("Wav");
+        /**
+         * Static value Wav for RecordingFormatType.
+         */
+        @Generated
+        public static final RecordingFormatType WAV = fromString("Wav");
 
-    /**
-     * Static value Mp3 for RecordingFormatType.
-     */
-    @Generated
-    public static final RecordingFormatType MP3 = fromString("Mp3");
+        /**
+         * Static value Mp3 for RecordingFormatType.
+         */
+        @Generated
+        public static final RecordingFormatType MP3 = fromString("Mp3");
 
-    /**
-     * Static value Mp4 for RecordingFormatType.
-     */
-    @Generated
-    public static final RecordingFormatType MP4 = fromString("Mp4");
+        /**
+         * Static value Mp4 for RecordingFormatType.
+         */
+        @Generated
+        public static final RecordingFormatType MP4 = fromString("Mp4");
 
-    /**
-     * Creates a new instance of RecordingFormatType value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Generated
-    @Deprecated
-    public RecordingFormatType() {
-    }
+        /**
+         * Creates a new instance of RecordingFormatType value.
+         *
+         * @deprecated Use the {@link #fromString(String)} factory method.
+         */
+        @Generated
+        @Deprecated
+        public RecordingFormatType() {
+        }
 
-    /**
-     * Creates or finds a RecordingFormatType from its string representation.
-     * 
-     * @param name a name to look for.
-     * @return the corresponding RecordingFormatType.
-     */
-    @Generated
-    public static RecordingFormatType fromString(String name) {
-        return fromString(name, RecordingFormatType.class);
-    }
+        /**
+         * Creates or finds a RecordingFormatType from its string representation.
+         *
+         * @param name a name to look for.
+         * @return the corresponding RecordingFormatType.
+         */
+        @Generated
+        public static RecordingFormatType fromString(String name) {
+            return fromString(name, RecordingFormatType.class);
+        }
 
-    /**
-     * Gets known RecordingFormatType values.
-     * 
-     * @return known RecordingFormatType values.
-     */
-    @Generated
-    public static Collection<RecordingFormatType> values() {
-        return values(RecordingFormatType.class);
-    }
+        /**
+         * Gets known RecordingFormatType values.
+         *
+         * @return known RecordingFormatType values.
+         */
+        @Generated
+        public static Collection<RecordingFormatType> values() {
+            return values(RecordingFormatType.class);
+        }
 }

@@ -14,8 +14,10 @@ import java.io.IOException;
 
 /**
  * Message Reaction Content.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class AcsMessageReactionContent implements JsonSerializable<AcsMessageReactionContent> {
     /*
      * WhatsApp message ID of message you want to apply the emoji to.

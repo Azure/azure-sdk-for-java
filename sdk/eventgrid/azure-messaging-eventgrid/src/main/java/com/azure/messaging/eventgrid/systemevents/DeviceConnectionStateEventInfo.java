@@ -14,86 +14,88 @@ import java.io.IOException;
 
 /**
  * Information about the device connection state event.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class DeviceConnectionStateEventInfo implements JsonSerializable<DeviceConnectionStateEventInfo> {
-    /*
-     * Sequence number is string representation of a hexadecimal number. string compare can be used to identify the
-     * larger number because both in ASCII and HEX numbers come after alphabets. If you are converting the string to
-     * hex, then the number is a 256 bit number.
-     */
-    @Generated
-    private String sequenceNumber;
+        /*
+         * Sequence number is string representation of a hexadecimal number. string compare can be used to identify the
+         * larger number because both in ASCII and HEX numbers come after alphabets. If you are converting the string to
+         * hex, then the number is a 256 bit number.
+         */
+        @Generated
+        private String sequenceNumber;
 
-    /**
-     * Creates an instance of DeviceConnectionStateEventInfo class.
-     */
-    @Generated
-    public DeviceConnectionStateEventInfo() {
-    }
+        /**
+         * Creates an instance of DeviceConnectionStateEventInfo class.
+         */
+        @Generated
+        public DeviceConnectionStateEventInfo() {
+        }
 
-    /**
-     * Get the sequenceNumber property: Sequence number is string representation of a hexadecimal number. string compare
-     * can be used to identify the larger number because both in ASCII and HEX numbers come after alphabets. If you are
-     * converting the string to hex, then the number is a 256 bit number.
-     * 
-     * @return the sequenceNumber value.
-     */
-    @Generated
-    public String getSequenceNumber() {
-        return this.sequenceNumber;
-    }
+        /**
+         * Get the sequenceNumber property: Sequence number is string representation of a hexadecimal number. string compare
+         * can be used to identify the larger number because both in ASCII and HEX numbers come after alphabets. If you are
+         * converting the string to hex, then the number is a 256 bit number.
+         *
+         * @return the sequenceNumber value.
+         */
+        @Generated
+        public String getSequenceNumber() {
+            return this.sequenceNumber;
+        }
 
-    /**
-     * Set the sequenceNumber property: Sequence number is string representation of a hexadecimal number. string compare
-     * can be used to identify the larger number because both in ASCII and HEX numbers come after alphabets. If you are
-     * converting the string to hex, then the number is a 256 bit number.
-     * 
-     * @param sequenceNumber the sequenceNumber value to set.
-     * @return the DeviceConnectionStateEventInfo object itself.
-     */
-    @Generated
-    public DeviceConnectionStateEventInfo setSequenceNumber(String sequenceNumber) {
-        this.sequenceNumber = sequenceNumber;
-        return this;
-    }
+        /**
+         * Set the sequenceNumber property: Sequence number is string representation of a hexadecimal number. string compare
+         * can be used to identify the larger number because both in ASCII and HEX numbers come after alphabets. If you are
+         * converting the string to hex, then the number is a 256 bit number.
+         *
+         * @param sequenceNumber the sequenceNumber value to set.
+         * @return the DeviceConnectionStateEventInfo object itself.
+         */
+        @Generated
+        public DeviceConnectionStateEventInfo setSequenceNumber(String sequenceNumber) {
+            this.sequenceNumber = sequenceNumber;
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("sequenceNumber", this.sequenceNumber);
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("sequenceNumber", this.sequenceNumber);
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of DeviceConnectionStateEventInfo from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of DeviceConnectionStateEventInfo if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the DeviceConnectionStateEventInfo.
-     */
-    @Generated
-    public static DeviceConnectionStateEventInfo fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            DeviceConnectionStateEventInfo deserializedDeviceConnectionStateEventInfo
-                = new DeviceConnectionStateEventInfo();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        /**
+         * Reads an instance of DeviceConnectionStateEventInfo from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of DeviceConnectionStateEventInfo if the JsonReader was pointing to an instance of it, or
+         * null if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the DeviceConnectionStateEventInfo.
+         */
+        @Generated
+        public static DeviceConnectionStateEventInfo fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                DeviceConnectionStateEventInfo deserializedDeviceConnectionStateEventInfo
+                    = new DeviceConnectionStateEventInfo();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
 
-                if ("sequenceNumber".equals(fieldName)) {
-                    deserializedDeviceConnectionStateEventInfo.sequenceNumber = reader.getString();
-                } else {
-                    reader.skipChildren();
+                    if ("sequenceNumber".equals(fieldName)) {
+                        deserializedDeviceConnectionStateEventInfo.sequenceNumber = reader.getString();
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
 
-            return deserializedDeviceConnectionStateEventInfo;
-        });
-    }
+                return deserializedDeviceConnectionStateEventInfo;
+            });
+        }
 }

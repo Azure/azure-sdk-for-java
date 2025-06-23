@@ -14,114 +14,116 @@ import java.io.IOException;
 
 /**
  * Information related to a given self-hosted gateway deployment.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class ApiManagementGatewayProperties implements JsonSerializable<ApiManagementGatewayProperties> {
-    /*
-     * Id of Gateway that is used to deploy the gateway to get the configuration for. This is the ARM resource ID
-     * referenced in the Azure API Management instance.
-     */
-    @Generated
-    private String gatewayId;
+        /*
+         * Id of Gateway that is used to deploy the gateway to get the configuration for. This is the ARM resource ID
+         * referenced in the Azure API Management instance.
+         */
+        @Generated
+        private String gatewayId;
 
-    /*
-     * Unique instance ID of the deployed gateway
-     */
-    @Generated
-    private String instanceId;
+        /*
+         * Unique instance ID of the deployed gateway
+         */
+        @Generated
+        private String instanceId;
 
-    /**
-     * Creates an instance of ApiManagementGatewayProperties class.
-     */
-    @Generated
-    public ApiManagementGatewayProperties() {
-    }
+        /**
+         * Creates an instance of ApiManagementGatewayProperties class.
+         */
+        @Generated
+        public ApiManagementGatewayProperties() {
+        }
 
-    /**
-     * Get the gatewayId property: Id of Gateway that is used to deploy the gateway to get the configuration for. This
-     * is the ARM resource ID referenced in the Azure API Management instance.
-     * 
-     * @return the gatewayId value.
-     */
-    @Generated
-    public String getGatewayId() {
-        return this.gatewayId;
-    }
+        /**
+         * Get the gatewayId property: Id of Gateway that is used to deploy the gateway to get the configuration for. This
+         * is the ARM resource ID referenced in the Azure API Management instance.
+         *
+         * @return the gatewayId value.
+         */
+        @Generated
+        public String getGatewayId() {
+            return this.gatewayId;
+        }
 
-    /**
-     * Set the gatewayId property: Id of Gateway that is used to deploy the gateway to get the configuration for. This
-     * is the ARM resource ID referenced in the Azure API Management instance.
-     * 
-     * @param gatewayId the gatewayId value to set.
-     * @return the ApiManagementGatewayProperties object itself.
-     */
-    @Generated
-    public ApiManagementGatewayProperties setGatewayId(String gatewayId) {
-        this.gatewayId = gatewayId;
-        return this;
-    }
+        /**
+         * Set the gatewayId property: Id of Gateway that is used to deploy the gateway to get the configuration for. This
+         * is the ARM resource ID referenced in the Azure API Management instance.
+         *
+         * @param gatewayId the gatewayId value to set.
+         * @return the ApiManagementGatewayProperties object itself.
+         */
+        @Generated
+        public ApiManagementGatewayProperties setGatewayId(String gatewayId) {
+            this.gatewayId = gatewayId;
+            return this;
+        }
 
-    /**
-     * Get the instanceId property: Unique instance ID of the deployed gateway.
-     * 
-     * @return the instanceId value.
-     */
-    @Generated
-    public String getInstanceId() {
-        return this.instanceId;
-    }
+        /**
+         * Get the instanceId property: Unique instance ID of the deployed gateway.
+         *
+         * @return the instanceId value.
+         */
+        @Generated
+        public String getInstanceId() {
+            return this.instanceId;
+        }
 
-    /**
-     * Set the instanceId property: Unique instance ID of the deployed gateway.
-     * 
-     * @param instanceId the instanceId value to set.
-     * @return the ApiManagementGatewayProperties object itself.
-     */
-    @Generated
-    public ApiManagementGatewayProperties setInstanceId(String instanceId) {
-        this.instanceId = instanceId;
-        return this;
-    }
+        /**
+         * Set the instanceId property: Unique instance ID of the deployed gateway.
+         *
+         * @param instanceId the instanceId value to set.
+         * @return the ApiManagementGatewayProperties object itself.
+         */
+        @Generated
+        public ApiManagementGatewayProperties setInstanceId(String instanceId) {
+            this.instanceId = instanceId;
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("gatewayId", this.gatewayId);
-        jsonWriter.writeStringField("instanceId", this.instanceId);
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("gatewayId", this.gatewayId);
+            jsonWriter.writeStringField("instanceId", this.instanceId);
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of ApiManagementGatewayProperties from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ApiManagementGatewayProperties if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ApiManagementGatewayProperties.
-     */
-    @Generated
-    public static ApiManagementGatewayProperties fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ApiManagementGatewayProperties deserializedApiManagementGatewayProperties
-                = new ApiManagementGatewayProperties();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        /**
+         * Reads an instance of ApiManagementGatewayProperties from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of ApiManagementGatewayProperties if the JsonReader was pointing to an instance of it, or
+         * null if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the ApiManagementGatewayProperties.
+         */
+        @Generated
+        public static ApiManagementGatewayProperties fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                ApiManagementGatewayProperties deserializedApiManagementGatewayProperties
+                    = new ApiManagementGatewayProperties();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
 
-                if ("gatewayId".equals(fieldName)) {
-                    deserializedApiManagementGatewayProperties.gatewayId = reader.getString();
-                } else if ("instanceId".equals(fieldName)) {
-                    deserializedApiManagementGatewayProperties.instanceId = reader.getString();
-                } else {
-                    reader.skipChildren();
+                    if ("gatewayId".equals(fieldName)) {
+                        deserializedApiManagementGatewayProperties.gatewayId = reader.getString();
+                    } else if ("instanceId".equals(fieldName)) {
+                        deserializedApiManagementGatewayProperties.instanceId = reader.getString();
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
 
-            return deserializedApiManagementGatewayProperties;
-        });
-    }
+                return deserializedApiManagementGatewayProperties;
+            });
+        }
 }

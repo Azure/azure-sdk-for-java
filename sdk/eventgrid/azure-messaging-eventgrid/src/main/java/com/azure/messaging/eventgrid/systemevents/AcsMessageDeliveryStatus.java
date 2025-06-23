@@ -10,7 +10,10 @@ import java.util.Collection;
 
 /**
  * The updated message status.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Deprecated
 public final class AcsMessageDeliveryStatus extends ExpandableStringEnum<AcsMessageDeliveryStatus> {
     /**
      * Static value read for AcsMessageDeliveryStatus.

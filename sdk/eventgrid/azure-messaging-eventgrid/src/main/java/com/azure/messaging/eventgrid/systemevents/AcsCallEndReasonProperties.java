@@ -14,7 +14,10 @@ import java.io.IOException;
 
 /**
  * Schema of calling event reason properties.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Deprecated
 @Fluent
 public final class AcsCallEndReasonProperties implements JsonSerializable<AcsCallEndReasonProperties> {
     /*
@@ -44,7 +47,7 @@ public final class AcsCallEndReasonProperties implements JsonSerializable<AcsCal
 
     /**
      * Get the code property: Reason code for ending the call.
-     * 
+     *
      * @return the code value.
      */
     @Generated
@@ -54,7 +57,7 @@ public final class AcsCallEndReasonProperties implements JsonSerializable<AcsCal
 
     /**
      * Set the code property: Reason code for ending the call.
-     * 
+     *
      * @param code the code value to set.
      * @return the AcsCallEndReasonProperties object itself.
      */
@@ -66,7 +69,7 @@ public final class AcsCallEndReasonProperties implements JsonSerializable<AcsCal
 
     /**
      * Get the subCode property: Reason subcode for ending the call.
-     * 
+     *
      * @return the subCode value.
      */
     @Generated
@@ -76,7 +79,7 @@ public final class AcsCallEndReasonProperties implements JsonSerializable<AcsCal
 
     /**
      * Set the subCode property: Reason subcode for ending the call.
-     * 
+     *
      * @param subCode the subCode value to set.
      * @return the AcsCallEndReasonProperties object itself.
      */
@@ -88,7 +91,7 @@ public final class AcsCallEndReasonProperties implements JsonSerializable<AcsCal
 
     /**
      * Get the phrase property: Reason for ending the call.
-     * 
+     *
      * @return the phrase value.
      */
     @Generated
@@ -98,7 +101,7 @@ public final class AcsCallEndReasonProperties implements JsonSerializable<AcsCal
 
     /**
      * Set the phrase property: Reason for ending the call.
-     * 
+     *
      * @param phrase the phrase value to set.
      * @return the AcsCallEndReasonProperties object itself.
      */
@@ -123,7 +126,7 @@ public final class AcsCallEndReasonProperties implements JsonSerializable<AcsCal
 
     /**
      * Reads an instance of AcsCallEndReasonProperties from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsCallEndReasonProperties if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.

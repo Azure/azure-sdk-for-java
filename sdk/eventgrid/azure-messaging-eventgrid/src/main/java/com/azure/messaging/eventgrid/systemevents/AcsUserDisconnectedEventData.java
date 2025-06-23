@@ -13,80 +13,83 @@ import java.io.IOException;
 
 /**
  * Schema of the Data property of an EventGridEvent for an Microsoft.Communication.UserDisconnected event.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class AcsUserDisconnectedEventData implements JsonSerializable<AcsUserDisconnectedEventData> {
 
-    /*
-     * The communication identifier of the user who was disconnected
-     */
-    @Generated
-    private CommunicationIdentifierModel userCommunicationIdentifier;
+        /*
+         * The communication identifier of the user who was disconnected
+         */
+        @Generated
+        private CommunicationIdentifierModel userCommunicationIdentifier;
 
-    /**
-     * Creates an instance of AcsUserDisconnectedEventData class.
-     */
-    @Generated
-    public AcsUserDisconnectedEventData() {
-    }
+        /**
+         * Creates an instance of AcsUserDisconnectedEventData class.
+         */
+        @Generated
+        public AcsUserDisconnectedEventData() {
+        }
 
-    /**
-     * Get the userCommunicationIdentifier property: The communication identifier of the user who was disconnected.
-     *
-     * @return the userCommunicationIdentifier value.
-     */
-    @Generated
-    public CommunicationIdentifierModel getUserCommunicationIdentifier() {
-        return this.userCommunicationIdentifier;
-    }
+        /**
+         * Get the userCommunicationIdentifier property: The communication identifier of the user who was disconnected.
+         *
+         * @return the userCommunicationIdentifier value.
+         */
+        @Generated
+        public CommunicationIdentifierModel getUserCommunicationIdentifier() {
+            return this.userCommunicationIdentifier;
+        }
 
-    /**
-     * Set the userCommunicationIdentifier property: The communication identifier of the user who was disconnected.
-     *
-     * @param userCommunicationIdentifier the userCommunicationIdentifier value to set.
-     * @return the AcsUserDisconnectedEventData object itself.
-     */
-    @Generated
-    public AcsUserDisconnectedEventData
-        setUserCommunicationIdentifier(CommunicationIdentifierModel userCommunicationIdentifier) {
-        this.userCommunicationIdentifier = userCommunicationIdentifier;
-        return this;
-    }
+        /**
+         * Set the userCommunicationIdentifier property: The communication identifier of the user who was disconnected.
+         *
+         * @param userCommunicationIdentifier the userCommunicationIdentifier value to set.
+         * @return the AcsUserDisconnectedEventData object itself.
+         */
+        @Generated
+        public AcsUserDisconnectedEventData
+            setUserCommunicationIdentifier(CommunicationIdentifierModel userCommunicationIdentifier) {
+            this.userCommunicationIdentifier = userCommunicationIdentifier;
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("userCommunicationIdentifier", this.userCommunicationIdentifier);
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeJsonField("userCommunicationIdentifier", this.userCommunicationIdentifier);
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of AcsUserDisconnectedEventData from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AcsUserDisconnectedEventData if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AcsUserDisconnectedEventData.
-     */
-    @Generated
-    public static AcsUserDisconnectedEventData fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AcsUserDisconnectedEventData deserializedAcsUserDisconnectedEventData = new AcsUserDisconnectedEventData();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("userCommunicationIdentifier".equals(fieldName)) {
-                    deserializedAcsUserDisconnectedEventData.userCommunicationIdentifier
-                        = CommunicationIdentifierModel.fromJson(reader);
-                } else {
-                    reader.skipChildren();
+        /**
+         * Reads an instance of AcsUserDisconnectedEventData from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of AcsUserDisconnectedEventData if the JsonReader was pointing to an instance of it, or null
+         * if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the AcsUserDisconnectedEventData.
+         */
+        @Generated
+        public static AcsUserDisconnectedEventData fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                AcsUserDisconnectedEventData deserializedAcsUserDisconnectedEventData
+                    = new AcsUserDisconnectedEventData();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("userCommunicationIdentifier".equals(fieldName)) {
+                        deserializedAcsUserDisconnectedEventData.userCommunicationIdentifier
+                            = CommunicationIdentifierModel.fromJson(reader);
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
-            return deserializedAcsUserDisconnectedEventData;
-        });
-    }
+                return deserializedAcsUserDisconnectedEventData;
+            });
+        }
 }

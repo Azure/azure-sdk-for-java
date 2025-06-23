@@ -14,7 +14,10 @@ import java.io.IOException;
 
 /**
  * Schema of calling event endedby properties.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Deprecated
 @Fluent
 public final class AcsCallEndedByProperties implements JsonSerializable<AcsCallEndedByProperties> {
     /*
@@ -44,7 +47,7 @@ public final class AcsCallEndedByProperties implements JsonSerializable<AcsCallE
 
     /**
      * Get the communicationIdentifier property: The communication identifier of the call ended by.
-     * 
+     *
      * @return the communicationIdentifier value.
      */
     @Generated
@@ -54,7 +57,7 @@ public final class AcsCallEndedByProperties implements JsonSerializable<AcsCallE
 
     /**
      * Set the communicationIdentifier property: The communication identifier of the call ended by.
-     * 
+     *
      * @param communicationIdentifier the communicationIdentifier value to set.
      * @return the AcsCallEndedByProperties object itself.
      */
@@ -66,7 +69,7 @@ public final class AcsCallEndedByProperties implements JsonSerializable<AcsCallE
 
     /**
      * Get the kind property: The type of the call ended by.
-     * 
+     *
      * @return the kind value.
      */
     @Generated
@@ -76,7 +79,7 @@ public final class AcsCallEndedByProperties implements JsonSerializable<AcsCallE
 
     /**
      * Set the kind property: The type of the call ended by.
-     * 
+     *
      * @param kind the kind value to set.
      * @return the AcsCallEndedByProperties object itself.
      */
@@ -88,7 +91,7 @@ public final class AcsCallEndedByProperties implements JsonSerializable<AcsCallE
 
     /**
      * Get the name property: The name of the call ended by.
-     * 
+     *
      * @return the name value.
      */
     @Generated
@@ -98,7 +101,7 @@ public final class AcsCallEndedByProperties implements JsonSerializable<AcsCallE
 
     /**
      * Set the name property: The name of the call ended by.
-     * 
+     *
      * @param name the name value to set.
      * @return the AcsCallEndedByProperties object itself.
      */
@@ -123,7 +126,7 @@ public final class AcsCallEndedByProperties implements JsonSerializable<AcsCallE
 
     /**
      * Reads an instance of AcsCallEndedByProperties from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsCallEndedByProperties if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.

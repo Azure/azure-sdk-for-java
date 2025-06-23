@@ -12,9 +12,12 @@ import java.io.IOException;
 
 /**
  * Schema of common properties of participant events.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Deprecated
 @Fluent
-public class AcsCallParticipantEventData extends AcsCallingEventProperties {
+public final class AcsCallParticipantEventData extends AcsCallingEventProperties {
 
     /*
      * The user of the call participant.

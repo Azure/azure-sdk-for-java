@@ -14,110 +14,112 @@ import java.io.IOException;
 
 /**
  * A portion of the properties that can be written only by the application back-end, and read by the device.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class DeviceTwinProperties implements JsonSerializable<DeviceTwinProperties> {
-    /*
-     * Metadata information for the properties JSON document.
-     */
-    @Generated
-    private DeviceTwinMetadata metadata;
+        /*
+         * Metadata information for the properties JSON document.
+         */
+        @Generated
+        private DeviceTwinMetadata metadata;
 
-    /*
-     * Version of device twin properties.
-     */
-    @Generated
-    private Float version;
+        /*
+         * Version of device twin properties.
+         */
+        @Generated
+        private Float version;
 
-    /**
-     * Creates an instance of DeviceTwinProperties class.
-     */
-    @Generated
-    public DeviceTwinProperties() {
-    }
+        /**
+         * Creates an instance of DeviceTwinProperties class.
+         */
+        @Generated
+        public DeviceTwinProperties() {
+        }
 
-    /**
-     * Get the metadata property: Metadata information for the properties JSON document.
-     * 
-     * @return the metadata value.
-     */
-    @Generated
-    public DeviceTwinMetadata getMetadata() {
-        return this.metadata;
-    }
+        /**
+         * Get the metadata property: Metadata information for the properties JSON document.
+         *
+         * @return the metadata value.
+         */
+        @Generated
+        public DeviceTwinMetadata getMetadata() {
+            return this.metadata;
+        }
 
-    /**
-     * Set the metadata property: Metadata information for the properties JSON document.
-     * 
-     * @param metadata the metadata value to set.
-     * @return the DeviceTwinProperties object itself.
-     */
-    @Generated
-    public DeviceTwinProperties setMetadata(DeviceTwinMetadata metadata) {
-        this.metadata = metadata;
-        return this;
-    }
+        /**
+         * Set the metadata property: Metadata information for the properties JSON document.
+         *
+         * @param metadata the metadata value to set.
+         * @return the DeviceTwinProperties object itself.
+         */
+        @Generated
+        public DeviceTwinProperties setMetadata(DeviceTwinMetadata metadata) {
+            this.metadata = metadata;
+            return this;
+        }
 
-    /**
-     * Get the version property: Version of device twin properties.
-     * 
-     * @return the version value.
-     */
-    @Generated
-    public Float getVersion() {
-        return this.version;
-    }
+        /**
+         * Get the version property: Version of device twin properties.
+         *
+         * @return the version value.
+         */
+        @Generated
+        public Float getVersion() {
+            return this.version;
+        }
 
-    /**
-     * Set the version property: Version of device twin properties.
-     * 
-     * @param version the version value to set.
-     * @return the DeviceTwinProperties object itself.
-     */
-    @Generated
-    public DeviceTwinProperties setVersion(Float version) {
-        this.version = version;
-        return this;
-    }
+        /**
+         * Set the version property: Version of device twin properties.
+         *
+         * @param version the version value to set.
+         * @return the DeviceTwinProperties object itself.
+         */
+        @Generated
+        public DeviceTwinProperties setVersion(Float version) {
+            this.version = version;
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("metadata", this.metadata);
-        jsonWriter.writeNumberField("version", this.version);
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeJsonField("metadata", this.metadata);
+            jsonWriter.writeNumberField("version", this.version);
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of DeviceTwinProperties from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of DeviceTwinProperties if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the DeviceTwinProperties.
-     */
-    @Generated
-    public static DeviceTwinProperties fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            DeviceTwinProperties deserializedDeviceTwinProperties = new DeviceTwinProperties();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        /**
+         * Reads an instance of DeviceTwinProperties from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of DeviceTwinProperties if the JsonReader was pointing to an instance of it, or null if it
+         * was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the DeviceTwinProperties.
+         */
+        @Generated
+        public static DeviceTwinProperties fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                DeviceTwinProperties deserializedDeviceTwinProperties = new DeviceTwinProperties();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
 
-                if ("metadata".equals(fieldName)) {
-                    deserializedDeviceTwinProperties.metadata = DeviceTwinMetadata.fromJson(reader);
-                } else if ("version".equals(fieldName)) {
-                    deserializedDeviceTwinProperties.version = reader.getNullable(JsonReader::getFloat);
-                } else {
-                    reader.skipChildren();
+                    if ("metadata".equals(fieldName)) {
+                        deserializedDeviceTwinProperties.metadata = DeviceTwinMetadata.fromJson(reader);
+                    } else if ("version".equals(fieldName)) {
+                        deserializedDeviceTwinProperties.version = reader.getNullable(JsonReader::getFloat);
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
 
-            return deserializedDeviceTwinProperties;
-        });
-    }
+                return deserializedDeviceTwinProperties;
+            });
+        }
 }

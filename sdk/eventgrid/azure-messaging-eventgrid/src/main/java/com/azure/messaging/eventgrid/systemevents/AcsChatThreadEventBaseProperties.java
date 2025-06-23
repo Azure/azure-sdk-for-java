@@ -16,9 +16,12 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * Schema of common properties of all chat thread events.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Deprecated
 @Fluent
-public class AcsChatThreadEventBaseProperties extends AcsChatEventBaseProperties {
+public final class AcsChatThreadEventBaseProperties extends AcsChatEventBaseProperties {
     /*
      * The original creation time of the thread
      */
@@ -40,7 +43,7 @@ public class AcsChatThreadEventBaseProperties extends AcsChatEventBaseProperties
 
     /**
      * Get the createTime property: The original creation time of the thread.
-     * 
+     *
      * @return the createTime value.
      */
     @Generated
@@ -50,7 +53,7 @@ public class AcsChatThreadEventBaseProperties extends AcsChatEventBaseProperties
 
     /**
      * Set the createTime property: The original creation time of the thread.
-     * 
+     *
      * @param createTime the createTime value to set.
      * @return the AcsChatThreadEventBaseProperties object itself.
      */
@@ -62,7 +65,7 @@ public class AcsChatThreadEventBaseProperties extends AcsChatEventBaseProperties
 
     /**
      * Get the version property: The version of the thread.
-     * 
+     *
      * @return the version value.
      */
     @Generated
@@ -72,7 +75,7 @@ public class AcsChatThreadEventBaseProperties extends AcsChatEventBaseProperties
 
     /**
      * Set the version property: The version of the thread.
-     * 
+     *
      * @param version the version value to set.
      * @return the AcsChatThreadEventBaseProperties object itself.
      */
@@ -131,7 +134,7 @@ public class AcsChatThreadEventBaseProperties extends AcsChatEventBaseProperties
 
     /**
      * Reads an instance of AcsChatThreadEventBaseProperties from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsChatThreadEventBaseProperties if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.

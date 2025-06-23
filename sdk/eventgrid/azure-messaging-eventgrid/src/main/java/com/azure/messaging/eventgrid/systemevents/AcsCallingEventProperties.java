@@ -14,9 +14,12 @@ import java.io.IOException;
 
 /**
  * Schema of common properties of all calling events.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Deprecated
 @Fluent
-public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEventProperties> {
+public final class AcsCallingEventProperties implements JsonSerializable<AcsCallingEventProperties> {
     /*
      * The call participant who initiated the call.
      */
@@ -68,7 +71,7 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
 
     /**
      * Get the startedBy property: The call participant who initiated the call.
-     * 
+     *
      * @return the startedBy value.
      */
     @Generated
@@ -78,7 +81,7 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
 
     /**
      * Set the startedBy property: The call participant who initiated the call.
-     * 
+     *
      * @param startedBy the startedBy value to set.
      * @return the AcsCallingEventProperties object itself.
      */
@@ -90,7 +93,7 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
 
     /**
      * Get the serverCallId property: The callId of the server.
-     * 
+     *
      * @return the serverCallId value.
      */
     @Generated
@@ -100,7 +103,7 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
 
     /**
      * Set the serverCallId property: The callId of the server.
-     * 
+     *
      * @param serverCallId the serverCallId value to set.
      * @return the AcsCallingEventProperties object itself.
      */
@@ -112,7 +115,7 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
 
     /**
      * Get the group property: The group metadata.
-     * 
+     *
      * @return the group value.
      */
     @Generated
@@ -122,7 +125,7 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
 
     /**
      * Set the group property: The group metadata.
-     * 
+     *
      * @param group the group value to set.
      * @return the AcsCallingEventProperties object itself.
      */
@@ -134,7 +137,7 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
 
     /**
      * Get the room property: The group metadata.
-     * 
+     *
      * @return the room value.
      */
     @Generated
@@ -144,7 +147,7 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
 
     /**
      * Set the room property: The group metadata.
-     * 
+     *
      * @param room the room value to set.
      * @return the AcsCallingEventProperties object itself.
      */
@@ -156,7 +159,7 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
 
     /**
      * Get the isTwoParty property: Is two-party in calling event.
-     * 
+     *
      * @return the isTwoParty value.
      */
     @Generated
@@ -166,7 +169,7 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
 
     /**
      * Set the isTwoParty property: Is two-party in calling event.
-     * 
+     *
      * @param isTwoParty the isTwoParty value to set.
      * @return the AcsCallingEventProperties object itself.
      */
@@ -178,7 +181,7 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
 
     /**
      * Get the correlationId property: The correlation ID of the calling event.
-     * 
+     *
      * @return the correlationId value.
      */
     @Generated
@@ -188,7 +191,7 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
 
     /**
      * Set the correlationId property: The correlation ID of the calling event.
-     * 
+     *
      * @param correlationId the correlationId value to set.
      * @return the AcsCallingEventProperties object itself.
      */
@@ -200,7 +203,7 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
 
     /**
      * Get the isRoomsCall property: Is the calling event a room call.
-     * 
+     *
      * @return the isRoomsCall value.
      */
     @Generated
@@ -210,7 +213,7 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
 
     /**
      * Set the isRoomsCall property: Is the calling event a room call.
-     * 
+     *
      * @param isRoomsCall the isRoomsCall value to set.
      * @return the AcsCallingEventProperties object itself.
      */
@@ -239,7 +242,7 @@ public class AcsCallingEventProperties implements JsonSerializable<AcsCallingEve
 
     /**
      * Reads an instance of AcsCallingEventProperties from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsCallingEventProperties if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.

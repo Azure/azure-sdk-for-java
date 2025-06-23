@@ -13,136 +13,138 @@ import java.util.List;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.AVS.ClusterFailed event.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class AvsClusterFailedEventData extends AvsClusterEventData {
 
-    /*
-     * Failure reason of an event.
-     */
-    @Generated
-    private String failureMessage;
+        /*
+         * Failure reason of an event.
+         */
+        @Generated
+        private String failureMessage;
 
-    /**
-     * Creates an instance of AvsClusterFailedEventData class.
-     */
-    @Generated
-    public AvsClusterFailedEventData() {
-    }
+        /**
+         * Creates an instance of AvsClusterFailedEventData class.
+         */
+        @Generated
+        public AvsClusterFailedEventData() {
+        }
 
-    /**
-     * Get the failureMessage property: Failure reason of an event.
-     *
-     * @return the failureMessage value.
-     */
-    @Generated
-    public String getFailureMessage() {
-        return this.failureMessage;
-    }
+        /**
+         * Get the failureMessage property: Failure reason of an event.
+         *
+         * @return the failureMessage value.
+         */
+        @Generated
+        public String getFailureMessage() {
+            return this.failureMessage;
+        }
 
-    /**
-     * Set the failureMessage property: Failure reason of an event.
-     *
-     * @param failureMessage the failureMessage value to set.
-     * @return the AvsClusterFailedEventData object itself.
-     */
-    @Generated
-    public AvsClusterFailedEventData setFailureMessage(String failureMessage) {
-        this.failureMessage = failureMessage;
-        return this;
-    }
+        /**
+         * Set the failureMessage property: Failure reason of an event.
+         *
+         * @param failureMessage the failureMessage value to set.
+         * @return the AvsClusterFailedEventData object itself.
+         */
+        @Generated
+        public AvsClusterFailedEventData setFailureMessage(String failureMessage) {
+            this.failureMessage = failureMessage;
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public AvsClusterFailedEventData setOperationId(String operationId) {
-        super.setOperationId(operationId);
-        return this;
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public AvsClusterFailedEventData setOperationId(String operationId) {
+            super.setOperationId(operationId);
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public AvsClusterFailedEventData setAddedHostNames(List<String> addedHostNames) {
-        super.setAddedHostNames(addedHostNames);
-        return this;
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public AvsClusterFailedEventData setAddedHostNames(List<String> addedHostNames) {
+            super.setAddedHostNames(addedHostNames);
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public AvsClusterFailedEventData setRemovedHostNames(List<String> removedHostNames) {
-        super.setRemovedHostNames(removedHostNames);
-        return this;
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public AvsClusterFailedEventData setRemovedHostNames(List<String> removedHostNames) {
+            super.setRemovedHostNames(removedHostNames);
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public AvsClusterFailedEventData setInMaintenanceHostNames(List<String> inMaintenanceHostNames) {
-        super.setInMaintenanceHostNames(inMaintenanceHostNames);
-        return this;
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public AvsClusterFailedEventData setInMaintenanceHostNames(List<String> inMaintenanceHostNames) {
+            super.setInMaintenanceHostNames(inMaintenanceHostNames);
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("operationId", getOperationId());
-        jsonWriter.writeArrayField("addedHostNames", getAddedHostNames(),
-            (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("removedHostNames", getRemovedHostNames(),
-            (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("inMaintenanceHostNames", getInMaintenanceHostNames(),
-            (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("failureMessage", this.failureMessage);
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("operationId", getOperationId());
+            jsonWriter.writeArrayField("addedHostNames", getAddedHostNames(),
+                (writer, element) -> writer.writeString(element));
+            jsonWriter.writeArrayField("removedHostNames", getRemovedHostNames(),
+                (writer, element) -> writer.writeString(element));
+            jsonWriter.writeArrayField("inMaintenanceHostNames", getInMaintenanceHostNames(),
+                (writer, element) -> writer.writeString(element));
+            jsonWriter.writeStringField("failureMessage", this.failureMessage);
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of AvsClusterFailedEventData from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AvsClusterFailedEventData if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AvsClusterFailedEventData.
-     */
-    @Generated
-    public static AvsClusterFailedEventData fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AvsClusterFailedEventData deserializedAvsClusterFailedEventData = new AvsClusterFailedEventData();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("operationId".equals(fieldName)) {
-                    deserializedAvsClusterFailedEventData.setOperationId(reader.getString());
-                } else if ("addedHostNames".equals(fieldName)) {
-                    List<String> addedHostNames = reader.readArray(reader1 -> reader1.getString());
-                    deserializedAvsClusterFailedEventData.setAddedHostNames(addedHostNames);
-                } else if ("removedHostNames".equals(fieldName)) {
-                    List<String> removedHostNames = reader.readArray(reader1 -> reader1.getString());
-                    deserializedAvsClusterFailedEventData.setRemovedHostNames(removedHostNames);
-                } else if ("inMaintenanceHostNames".equals(fieldName)) {
-                    List<String> inMaintenanceHostNames = reader.readArray(reader1 -> reader1.getString());
-                    deserializedAvsClusterFailedEventData.setInMaintenanceHostNames(inMaintenanceHostNames);
-                } else if ("failureMessage".equals(fieldName)) {
-                    deserializedAvsClusterFailedEventData.failureMessage = reader.getString();
-                } else {
-                    reader.skipChildren();
+        /**
+         * Reads an instance of AvsClusterFailedEventData from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of AvsClusterFailedEventData if the JsonReader was pointing to an instance of it, or null if
+         * it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the AvsClusterFailedEventData.
+         */
+        @Generated
+        public static AvsClusterFailedEventData fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                AvsClusterFailedEventData deserializedAvsClusterFailedEventData = new AvsClusterFailedEventData();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("operationId".equals(fieldName)) {
+                        deserializedAvsClusterFailedEventData.setOperationId(reader.getString());
+                    } else if ("addedHostNames".equals(fieldName)) {
+                        List<String> addedHostNames = reader.readArray(reader1 -> reader1.getString());
+                        deserializedAvsClusterFailedEventData.setAddedHostNames(addedHostNames);
+                    } else if ("removedHostNames".equals(fieldName)) {
+                        List<String> removedHostNames = reader.readArray(reader1 -> reader1.getString());
+                        deserializedAvsClusterFailedEventData.setRemovedHostNames(removedHostNames);
+                    } else if ("inMaintenanceHostNames".equals(fieldName)) {
+                        List<String> inMaintenanceHostNames = reader.readArray(reader1 -> reader1.getString());
+                        deserializedAvsClusterFailedEventData.setInMaintenanceHostNames(inMaintenanceHostNames);
+                    } else if ("failureMessage".equals(fieldName)) {
+                        deserializedAvsClusterFailedEventData.failureMessage = reader.getString();
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
-            return deserializedAvsClusterFailedEventData;
-        });
-    }
+                return deserializedAvsClusterFailedEventData;
+            });
+        }
 }

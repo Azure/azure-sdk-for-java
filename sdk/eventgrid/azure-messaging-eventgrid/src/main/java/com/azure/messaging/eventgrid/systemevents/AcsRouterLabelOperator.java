@@ -10,72 +10,75 @@ import java.util.Collection;
 
 /**
  * Router Job Worker Selector Label Operator.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Deprecated
 public final class AcsRouterLabelOperator extends ExpandableStringEnum<AcsRouterLabelOperator> {
-    /**
-     * =.
-     */
-    @Generated
-    public static final AcsRouterLabelOperator EQUAL = fromString("Equal");
+        /**
+         * =.
+         */
+        @Generated
+        public static final AcsRouterLabelOperator EQUAL = fromString("Equal");
 
-    /**
-     * !=.
-     */
-    @Generated
-    public static final AcsRouterLabelOperator NOT_EQUAL = fromString("NotEqual");
+        /**
+         * !=.
+         */
+        @Generated
+        public static final AcsRouterLabelOperator NOT_EQUAL = fromString("NotEqual");
 
-    /**
-     * &gt;.
-     */
-    @Generated
-    public static final AcsRouterLabelOperator GREATER = fromString("Greater");
+        /**
+         * &gt;.
+         */
+        @Generated
+        public static final AcsRouterLabelOperator GREATER = fromString("Greater");
 
-    /**
-     * &lt;.
-     */
-    @Generated
-    public static final AcsRouterLabelOperator LESS = fromString("Less");
+        /**
+         * &lt;.
+         */
+        @Generated
+        public static final AcsRouterLabelOperator LESS = fromString("Less");
 
-    /**
-     * &gt;=.
-     */
-    @Generated
-    public static final AcsRouterLabelOperator GREATER_THAN_OR_EQUAL = fromString("GreaterThanOrEqual");
+        /**
+         * &gt;=.
+         */
+        @Generated
+        public static final AcsRouterLabelOperator GREATER_THAN_OR_EQUAL = fromString("GreaterThanOrEqual");
 
-    /**
-     * &lt;=.
-     */
-    @Generated
-    public static final AcsRouterLabelOperator LESS_THAN_OR_EQUAL = fromString("LessThanOrEqual");
+        /**
+         * &lt;=.
+         */
+        @Generated
+        public static final AcsRouterLabelOperator LESS_THAN_OR_EQUAL = fromString("LessThanOrEqual");
 
-    /**
-     * Creates a new instance of AcsRouterLabelOperator value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Generated
-    @Deprecated
-    public AcsRouterLabelOperator() {
-    }
+        /**
+         * Creates a new instance of AcsRouterLabelOperator value.
+         *
+         * @deprecated Use the {@link #fromString(String)} factory method.
+         */
+        @Generated
+        @Deprecated
+        public AcsRouterLabelOperator() {
+        }
 
-    /**
-     * Creates or finds a AcsRouterLabelOperator from its string representation.
-     * 
-     * @param name a name to look for.
-     * @return the corresponding AcsRouterLabelOperator.
-     */
-    @Generated
-    public static AcsRouterLabelOperator fromString(String name) {
-        return fromString(name, AcsRouterLabelOperator.class);
-    }
+        /**
+         * Creates or finds a AcsRouterLabelOperator from its string representation.
+         *
+         * @param name a name to look for.
+         * @return the corresponding AcsRouterLabelOperator.
+         */
+        @Generated
+        public static AcsRouterLabelOperator fromString(String name) {
+            return fromString(name, AcsRouterLabelOperator.class);
+        }
 
-    /**
-     * Gets known AcsRouterLabelOperator values.
-     * 
-     * @return known AcsRouterLabelOperator values.
-     */
-    @Generated
-    public static Collection<AcsRouterLabelOperator> values() {
-        return values(AcsRouterLabelOperator.class);
-    }
+        /**
+         * Gets known AcsRouterLabelOperator values.
+         *
+         * @return known AcsRouterLabelOperator values.
+         */
+        @Generated
+        public static Collection<AcsRouterLabelOperator> values() {
+            return values(AcsRouterLabelOperator.class);
+        }
 }

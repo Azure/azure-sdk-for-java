@@ -13,239 +13,241 @@ import java.io.IOException;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.MachineLearningServices.RunCompleted event.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class MachineLearningServicesRunCompletedEventData
     implements JsonSerializable<MachineLearningServicesRunCompletedEventData> {
 
-    /*
-     * The ID of the experiment that the run belongs to.
-     */
-    @Generated
-    private String experimentId;
+        /*
+         * The ID of the experiment that the run belongs to.
+         */
+        @Generated
+        private String experimentId;
 
-    /*
-     * The name of the experiment that the run belongs to.
-     */
-    @Generated
-    private String experimentName;
+        /*
+         * The name of the experiment that the run belongs to.
+         */
+        @Generated
+        private String experimentName;
 
-    /*
-     * The ID of the Run that was completed.
-     */
-    @Generated
-    private String runId;
+        /*
+         * The ID of the Run that was completed.
+         */
+        @Generated
+        private String runId;
 
-    /*
-     * The Run Type of the completed Run.
-     */
-    @Generated
-    private String runType;
+        /*
+         * The Run Type of the completed Run.
+         */
+        @Generated
+        private String runType;
 
-    /*
-     * The tags of the completed Run.
-     */
-    @Generated
-    private Object runTags;
+        /*
+         * The tags of the completed Run.
+         */
+        @Generated
+        private Object runTags;
 
-    /*
-     * The properties of the completed Run.
-     */
-    @Generated
-    private Object runProperties;
+        /*
+         * The properties of the completed Run.
+         */
+        @Generated
+        private Object runProperties;
 
-    /**
-     * Creates an instance of MachineLearningServicesRunCompletedEventData class.
-     */
-    @Generated
-    public MachineLearningServicesRunCompletedEventData() {
-    }
-
-    /**
-     * Get the experimentId property: The ID of the experiment that the run belongs to.
-     *
-     * @return the experimentId value.
-     */
-    @Generated
-    public String getExperimentId() {
-        return this.experimentId;
-    }
-
-    /**
-     * Set the experimentId property: The ID of the experiment that the run belongs to.
-     *
-     * @param experimentId the experimentId value to set.
-     * @return the MachineLearningServicesRunCompletedEventData object itself.
-     */
-    @Generated
-    public MachineLearningServicesRunCompletedEventData setExperimentId(String experimentId) {
-        this.experimentId = experimentId;
-        return this;
-    }
-
-    /**
-     * Get the experimentName property: The name of the experiment that the run belongs to.
-     *
-     * @return the experimentName value.
-     */
-    @Generated
-    public String getExperimentName() {
-        return this.experimentName;
-    }
-
-    /**
-     * Set the experimentName property: The name of the experiment that the run belongs to.
-     *
-     * @param experimentName the experimentName value to set.
-     * @return the MachineLearningServicesRunCompletedEventData object itself.
-     */
-    @Generated
-    public MachineLearningServicesRunCompletedEventData setExperimentName(String experimentName) {
-        this.experimentName = experimentName;
-        return this;
-    }
-
-    /**
-     * Get the runId property: The ID of the Run that was completed.
-     *
-     * @return the runId value.
-     */
-    @Generated
-    public String getRunId() {
-        return this.runId;
-    }
-
-    /**
-     * Set the runId property: The ID of the Run that was completed.
-     *
-     * @param runId the runId value to set.
-     * @return the MachineLearningServicesRunCompletedEventData object itself.
-     */
-    @Generated
-    public MachineLearningServicesRunCompletedEventData setRunId(String runId) {
-        this.runId = runId;
-        return this;
-    }
-
-    /**
-     * Get the runType property: The Run Type of the completed Run.
-     *
-     * @return the runType value.
-     */
-    @Generated
-    public String getRunType() {
-        return this.runType;
-    }
-
-    /**
-     * Set the runType property: The Run Type of the completed Run.
-     *
-     * @param runType the runType value to set.
-     * @return the MachineLearningServicesRunCompletedEventData object itself.
-     */
-    @Generated
-    public MachineLearningServicesRunCompletedEventData setRunType(String runType) {
-        this.runType = runType;
-        return this;
-    }
-
-    /**
-     * Get the runTags property: The tags of the completed Run.
-     *
-     * @return the runTags value.
-     */
-    @Generated
-    public Object getRunTags() {
-        return this.runTags;
-    }
-
-    /**
-     * Set the runTags property: The tags of the completed Run.
-     *
-     * @param runTags the runTags value to set.
-     * @return the MachineLearningServicesRunCompletedEventData object itself.
-     */
-    @Generated
-    public MachineLearningServicesRunCompletedEventData setRunTags(Object runTags) {
-        this.runTags = runTags;
-        return this;
-    }
-
-    /**
-     * Get the runProperties property: The properties of the completed Run.
-     *
-     * @return the runProperties value.
-     */
-    @Generated
-    public Object getRunProperties() {
-        return this.runProperties;
-    }
-
-    /**
-     * Set the runProperties property: The properties of the completed Run.
-     *
-     * @param runProperties the runProperties value to set.
-     * @return the MachineLearningServicesRunCompletedEventData object itself.
-     */
-    @Generated
-    public MachineLearningServicesRunCompletedEventData setRunProperties(Object runProperties) {
-        this.runProperties = runProperties;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("experimentId", this.experimentId);
-        jsonWriter.writeStringField("experimentName", this.experimentName);
-        jsonWriter.writeStringField("runId", this.runId);
-        jsonWriter.writeStringField("runType", this.runType);
-        if (this.runTags != null) {
-            jsonWriter.writeUntypedField("runTags", this.runTags);
+        /**
+         * Creates an instance of MachineLearningServicesRunCompletedEventData class.
+         */
+        @Generated
+        public MachineLearningServicesRunCompletedEventData() {
         }
-        if (this.runProperties != null) {
-            jsonWriter.writeUntypedField("runProperties", this.runProperties);
-        }
-        return jsonWriter.writeEndObject();
-    }
 
-    /**
-     * Reads an instance of MachineLearningServicesRunCompletedEventData from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of MachineLearningServicesRunCompletedEventData if the JsonReader was pointing to an instance
-     * of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the MachineLearningServicesRunCompletedEventData.
-     */
-    @Generated
-    public static MachineLearningServicesRunCompletedEventData fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            MachineLearningServicesRunCompletedEventData deserializedMachineLearningServicesRunCompletedEventData
-                = new MachineLearningServicesRunCompletedEventData();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("experimentId".equals(fieldName)) {
-                    deserializedMachineLearningServicesRunCompletedEventData.experimentId = reader.getString();
-                } else if ("experimentName".equals(fieldName)) {
-                    deserializedMachineLearningServicesRunCompletedEventData.experimentName = reader.getString();
-                } else if ("runId".equals(fieldName)) {
-                    deserializedMachineLearningServicesRunCompletedEventData.runId = reader.getString();
-                } else if ("runType".equals(fieldName)) {
-                    deserializedMachineLearningServicesRunCompletedEventData.runType = reader.getString();
-                } else if ("runTags".equals(fieldName)) {
-                    deserializedMachineLearningServicesRunCompletedEventData.runTags = reader.readUntyped();
-                } else if ("runProperties".equals(fieldName)) {
-                    deserializedMachineLearningServicesRunCompletedEventData.runProperties = reader.readUntyped();
-                } else {
-                    reader.skipChildren();
-                }
+        /**
+         * Get the experimentId property: The ID of the experiment that the run belongs to.
+         *
+         * @return the experimentId value.
+         */
+        @Generated
+        public String getExperimentId() {
+            return this.experimentId;
+        }
+
+        /**
+         * Set the experimentId property: The ID of the experiment that the run belongs to.
+         *
+         * @param experimentId the experimentId value to set.
+         * @return the MachineLearningServicesRunCompletedEventData object itself.
+         */
+        @Generated
+        public MachineLearningServicesRunCompletedEventData setExperimentId(String experimentId) {
+            this.experimentId = experimentId;
+            return this;
+        }
+
+        /**
+         * Get the experimentName property: The name of the experiment that the run belongs to.
+         *
+         * @return the experimentName value.
+         */
+        @Generated
+        public String getExperimentName() {
+            return this.experimentName;
+        }
+
+        /**
+         * Set the experimentName property: The name of the experiment that the run belongs to.
+         *
+         * @param experimentName the experimentName value to set.
+         * @return the MachineLearningServicesRunCompletedEventData object itself.
+         */
+        @Generated
+        public MachineLearningServicesRunCompletedEventData setExperimentName(String experimentName) {
+            this.experimentName = experimentName;
+            return this;
+        }
+
+        /**
+         * Get the runId property: The ID of the Run that was completed.
+         *
+         * @return the runId value.
+         */
+        @Generated
+        public String getRunId() {
+            return this.runId;
+        }
+
+        /**
+         * Set the runId property: The ID of the Run that was completed.
+         *
+         * @param runId the runId value to set.
+         * @return the MachineLearningServicesRunCompletedEventData object itself.
+         */
+        @Generated
+        public MachineLearningServicesRunCompletedEventData setRunId(String runId) {
+            this.runId = runId;
+            return this;
+        }
+
+        /**
+         * Get the runType property: The Run Type of the completed Run.
+         *
+         * @return the runType value.
+         */
+        @Generated
+        public String getRunType() {
+            return this.runType;
+        }
+
+        /**
+         * Set the runType property: The Run Type of the completed Run.
+         *
+         * @param runType the runType value to set.
+         * @return the MachineLearningServicesRunCompletedEventData object itself.
+         */
+        @Generated
+        public MachineLearningServicesRunCompletedEventData setRunType(String runType) {
+            this.runType = runType;
+            return this;
+        }
+
+        /**
+         * Get the runTags property: The tags of the completed Run.
+         *
+         * @return the runTags value.
+         */
+        @Generated
+        public Object getRunTags() {
+            return this.runTags;
+        }
+
+        /**
+         * Set the runTags property: The tags of the completed Run.
+         *
+         * @param runTags the runTags value to set.
+         * @return the MachineLearningServicesRunCompletedEventData object itself.
+         */
+        @Generated
+        public MachineLearningServicesRunCompletedEventData setRunTags(Object runTags) {
+            this.runTags = runTags;
+            return this;
+        }
+
+        /**
+         * Get the runProperties property: The properties of the completed Run.
+         *
+         * @return the runProperties value.
+         */
+        @Generated
+        public Object getRunProperties() {
+            return this.runProperties;
+        }
+
+        /**
+         * Set the runProperties property: The properties of the completed Run.
+         *
+         * @param runProperties the runProperties value to set.
+         * @return the MachineLearningServicesRunCompletedEventData object itself.
+         */
+        @Generated
+        public MachineLearningServicesRunCompletedEventData setRunProperties(Object runProperties) {
+            this.runProperties = runProperties;
+            return this;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("experimentId", this.experimentId);
+            jsonWriter.writeStringField("experimentName", this.experimentName);
+            jsonWriter.writeStringField("runId", this.runId);
+            jsonWriter.writeStringField("runType", this.runType);
+            if (this.runTags != null) {
+                jsonWriter.writeUntypedField("runTags", this.runTags);
             }
-            return deserializedMachineLearningServicesRunCompletedEventData;
-        });
-    }
+            if (this.runProperties != null) {
+                jsonWriter.writeUntypedField("runProperties", this.runProperties);
+            }
+            return jsonWriter.writeEndObject();
+        }
+
+        /**
+         * Reads an instance of MachineLearningServicesRunCompletedEventData from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of MachineLearningServicesRunCompletedEventData if the JsonReader was pointing to an instance
+         * of it, or null if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the MachineLearningServicesRunCompletedEventData.
+         */
+        @Generated
+        public static MachineLearningServicesRunCompletedEventData fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                MachineLearningServicesRunCompletedEventData deserializedMachineLearningServicesRunCompletedEventData
+                    = new MachineLearningServicesRunCompletedEventData();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("experimentId".equals(fieldName)) {
+                        deserializedMachineLearningServicesRunCompletedEventData.experimentId = reader.getString();
+                    } else if ("experimentName".equals(fieldName)) {
+                        deserializedMachineLearningServicesRunCompletedEventData.experimentName = reader.getString();
+                    } else if ("runId".equals(fieldName)) {
+                        deserializedMachineLearningServicesRunCompletedEventData.runId = reader.getString();
+                    } else if ("runType".equals(fieldName)) {
+                        deserializedMachineLearningServicesRunCompletedEventData.runType = reader.getString();
+                    } else if ("runTags".equals(fieldName)) {
+                        deserializedMachineLearningServicesRunCompletedEventData.runTags = reader.readUntyped();
+                    } else if ("runProperties".equals(fieldName)) {
+                        deserializedMachineLearningServicesRunCompletedEventData.runProperties = reader.readUntyped();
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+                return deserializedMachineLearningServicesRunCompletedEventData;
+            });
+        }
 }

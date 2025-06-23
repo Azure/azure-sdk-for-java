@@ -13,6 +13,7 @@ import java.io.IOException;
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.CallParticipantRemoved event.
  */
+@Deprecated
 @Fluent
 public final class AcsCallParticipantRemovedEventData extends AcsCallParticipantEventData {
 

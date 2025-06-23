@@ -10,54 +10,57 @@ import java.util.Collection;
 
 /**
  * Schema of DataBox Stage Name enumeration.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Deprecated
 public final class DataBoxStageName extends ExpandableStringEnum<DataBoxStageName> {
-    /**
-     * Copy has started.
-     */
-    @Generated
-    public static final DataBoxStageName COPY_STARTED = fromString("CopyStarted");
+        /**
+         * Copy has started.
+         */
+        @Generated
+        public static final DataBoxStageName COPY_STARTED = fromString("CopyStarted");
 
-    /**
-     * Copy has completed.
-     */
-    @Generated
-    public static final DataBoxStageName COPY_COMPLETED = fromString("CopyCompleted");
+        /**
+         * Copy has completed.
+         */
+        @Generated
+        public static final DataBoxStageName COPY_COMPLETED = fromString("CopyCompleted");
 
-    /**
-     * Order has been completed.
-     */
-    @Generated
-    public static final DataBoxStageName ORDER_COMPLETED = fromString("OrderCompleted");
+        /**
+         * Order has been completed.
+         */
+        @Generated
+        public static final DataBoxStageName ORDER_COMPLETED = fromString("OrderCompleted");
 
-    /**
-     * Creates a new instance of DataBoxStageName value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Generated
-    @Deprecated
-    public DataBoxStageName() {
-    }
+        /**
+         * Creates a new instance of DataBoxStageName value.
+         *
+         * @deprecated Use the {@link #fromString(String)} factory method.
+         */
+        @Generated
+        @Deprecated
+        public DataBoxStageName() {
+        }
 
-    /**
-     * Creates or finds a DataBoxStageName from its string representation.
-     * 
-     * @param name a name to look for.
-     * @return the corresponding DataBoxStageName.
-     */
-    @Generated
-    public static DataBoxStageName fromString(String name) {
-        return fromString(name, DataBoxStageName.class);
-    }
+        /**
+         * Creates or finds a DataBoxStageName from its string representation.
+         *
+         * @param name a name to look for.
+         * @return the corresponding DataBoxStageName.
+         */
+        @Generated
+        public static DataBoxStageName fromString(String name) {
+            return fromString(name, DataBoxStageName.class);
+        }
 
-    /**
-     * Gets known DataBoxStageName values.
-     * 
-     * @return known DataBoxStageName values.
-     */
-    @Generated
-    public static Collection<DataBoxStageName> values() {
-        return values(DataBoxStageName.class);
-    }
+        /**
+         * Gets known DataBoxStageName values.
+         *
+         * @return known DataBoxStageName values.
+         */
+        @Generated
+        public static Collection<DataBoxStageName> values() {
+            return values(DataBoxStageName.class);
+        }
 }

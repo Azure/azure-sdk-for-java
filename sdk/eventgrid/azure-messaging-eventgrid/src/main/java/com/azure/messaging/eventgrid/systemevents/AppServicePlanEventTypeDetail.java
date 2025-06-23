@@ -14,143 +14,145 @@ import java.io.IOException;
 
 /**
  * Detail of action on the app service plan.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class AppServicePlanEventTypeDetail implements JsonSerializable<AppServicePlanEventTypeDetail> {
-    /*
-     * Kind of environment where app service plan is.
-     */
-    @Generated
-    private StampKind stampKind;
+        /*
+         * Kind of environment where app service plan is.
+         */
+        @Generated
+        private StampKind stampKind;
 
-    /*
-     * Type of action on the app service plan.
-     */
-    @Generated
-    private AppServicePlanAction action;
+        /*
+         * Type of action on the app service plan.
+         */
+        @Generated
+        private AppServicePlanAction action;
 
-    /*
-     * Asynchronous operation status of the operation on the app service plan.
-     */
-    @Generated
-    private AsyncStatus status;
+        /*
+         * Asynchronous operation status of the operation on the app service plan.
+         */
+        @Generated
+        private AsyncStatus status;
 
-    /**
-     * Creates an instance of AppServicePlanEventTypeDetail class.
-     */
-    @Generated
-    public AppServicePlanEventTypeDetail() {
-    }
+        /**
+         * Creates an instance of AppServicePlanEventTypeDetail class.
+         */
+        @Generated
+        public AppServicePlanEventTypeDetail() {
+        }
 
-    /**
-     * Get the stampKind property: Kind of environment where app service plan is.
-     * 
-     * @return the stampKind value.
-     */
-    @Generated
-    public StampKind getStampKind() {
-        return this.stampKind;
-    }
+        /**
+         * Get the stampKind property: Kind of environment where app service plan is.
+         *
+         * @return the stampKind value.
+         */
+        @Generated
+        public StampKind getStampKind() {
+            return this.stampKind;
+        }
 
-    /**
-     * Set the stampKind property: Kind of environment where app service plan is.
-     * 
-     * @param stampKind the stampKind value to set.
-     * @return the AppServicePlanEventTypeDetail object itself.
-     */
-    @Generated
-    public AppServicePlanEventTypeDetail setStampKind(StampKind stampKind) {
-        this.stampKind = stampKind;
-        return this;
-    }
+        /**
+         * Set the stampKind property: Kind of environment where app service plan is.
+         *
+         * @param stampKind the stampKind value to set.
+         * @return the AppServicePlanEventTypeDetail object itself.
+         */
+        @Generated
+        public AppServicePlanEventTypeDetail setStampKind(StampKind stampKind) {
+            this.stampKind = stampKind;
+            return this;
+        }
 
-    /**
-     * Get the action property: Type of action on the app service plan.
-     * 
-     * @return the action value.
-     */
-    @Generated
-    public AppServicePlanAction getAction() {
-        return this.action;
-    }
+        /**
+         * Get the action property: Type of action on the app service plan.
+         *
+         * @return the action value.
+         */
+        @Generated
+        public AppServicePlanAction getAction() {
+            return this.action;
+        }
 
-    /**
-     * Set the action property: Type of action on the app service plan.
-     * 
-     * @param action the action value to set.
-     * @return the AppServicePlanEventTypeDetail object itself.
-     */
-    @Generated
-    public AppServicePlanEventTypeDetail setAction(AppServicePlanAction action) {
-        this.action = action;
-        return this;
-    }
+        /**
+         * Set the action property: Type of action on the app service plan.
+         *
+         * @param action the action value to set.
+         * @return the AppServicePlanEventTypeDetail object itself.
+         */
+        @Generated
+        public AppServicePlanEventTypeDetail setAction(AppServicePlanAction action) {
+            this.action = action;
+            return this;
+        }
 
-    /**
-     * Get the status property: Asynchronous operation status of the operation on the app service plan.
-     * 
-     * @return the status value.
-     */
-    @Generated
-    public AsyncStatus getStatus() {
-        return this.status;
-    }
+        /**
+         * Get the status property: Asynchronous operation status of the operation on the app service plan.
+         *
+         * @return the status value.
+         */
+        @Generated
+        public AsyncStatus getStatus() {
+            return this.status;
+        }
 
-    /**
-     * Set the status property: Asynchronous operation status of the operation on the app service plan.
-     * 
-     * @param status the status value to set.
-     * @return the AppServicePlanEventTypeDetail object itself.
-     */
-    @Generated
-    public AppServicePlanEventTypeDetail setStatus(AsyncStatus status) {
-        this.status = status;
-        return this;
-    }
+        /**
+         * Set the status property: Asynchronous operation status of the operation on the app service plan.
+         *
+         * @param status the status value to set.
+         * @return the AppServicePlanEventTypeDetail object itself.
+         */
+        @Generated
+        public AppServicePlanEventTypeDetail setStatus(AsyncStatus status) {
+            this.status = status;
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("stampKind", this.stampKind == null ? null : this.stampKind.toString());
-        jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
-        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("stampKind", this.stampKind == null ? null : this.stampKind.toString());
+            jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
+            jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of AppServicePlanEventTypeDetail from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AppServicePlanEventTypeDetail if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AppServicePlanEventTypeDetail.
-     */
-    @Generated
-    public static AppServicePlanEventTypeDetail fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AppServicePlanEventTypeDetail deserializedAppServicePlanEventTypeDetail
-                = new AppServicePlanEventTypeDetail();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        /**
+         * Reads an instance of AppServicePlanEventTypeDetail from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of AppServicePlanEventTypeDetail if the JsonReader was pointing to an instance of it, or null
+         * if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the AppServicePlanEventTypeDetail.
+         */
+        @Generated
+        public static AppServicePlanEventTypeDetail fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                AppServicePlanEventTypeDetail deserializedAppServicePlanEventTypeDetail
+                    = new AppServicePlanEventTypeDetail();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
 
-                if ("stampKind".equals(fieldName)) {
-                    deserializedAppServicePlanEventTypeDetail.stampKind = StampKind.fromString(reader.getString());
-                } else if ("action".equals(fieldName)) {
-                    deserializedAppServicePlanEventTypeDetail.action
-                        = AppServicePlanAction.fromString(reader.getString());
-                } else if ("status".equals(fieldName)) {
-                    deserializedAppServicePlanEventTypeDetail.status = AsyncStatus.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
+                    if ("stampKind".equals(fieldName)) {
+                        deserializedAppServicePlanEventTypeDetail.stampKind = StampKind.fromString(reader.getString());
+                    } else if ("action".equals(fieldName)) {
+                        deserializedAppServicePlanEventTypeDetail.action
+                            = AppServicePlanAction.fromString(reader.getString());
+                    } else if ("status".equals(fieldName)) {
+                        deserializedAppServicePlanEventTypeDetail.status = AsyncStatus.fromString(reader.getString());
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
 
-            return deserializedAppServicePlanEventTypeDetail;
-        });
-    }
+                return deserializedAppServicePlanEventTypeDetail;
+            });
+        }
 }

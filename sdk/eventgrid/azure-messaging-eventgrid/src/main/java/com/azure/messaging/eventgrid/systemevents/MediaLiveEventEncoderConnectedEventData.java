@@ -14,121 +14,123 @@ import java.io.IOException;
 /**
  * Encoder connect event data. Schema of the data property of an EventGridEvent for a
  * Microsoft.Media.LiveEventEncoderConnected event.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Immutable
+@Deprecated
 public final class MediaLiveEventEncoderConnectedEventData
     implements JsonSerializable<MediaLiveEventEncoderConnectedEventData> {
 
-    /*
-     * Gets the ingest URL provided by the live event.
-     */
-    @Generated
-    private String ingestUrl;
+        /*
+         * Gets the ingest URL provided by the live event.
+         */
+        @Generated
+        private String ingestUrl;
 
-    /*
-     * Gets the stream Id.
-     */
-    @Generated
-    private String streamId;
+        /*
+         * Gets the stream Id.
+         */
+        @Generated
+        private String streamId;
 
-    /*
-     * Gets the remote IP.
-     */
-    @Generated
-    private String encoderIp;
+        /*
+         * Gets the remote IP.
+         */
+        @Generated
+        private String encoderIp;
 
-    /*
-     * Gets the remote port.
-     */
-    @Generated
-    private String encoderPort;
+        /*
+         * Gets the remote port.
+         */
+        @Generated
+        private String encoderPort;
 
-    /**
-     * Creates an instance of MediaLiveEventEncoderConnectedEventData class.
-     */
-    @Generated
-    public MediaLiveEventEncoderConnectedEventData() {
-    }
+        /**
+         * Creates an instance of MediaLiveEventEncoderConnectedEventData class.
+         */
+        @Generated
+        public MediaLiveEventEncoderConnectedEventData() {
+        }
 
-    /**
-     * Get the ingestUrl property: Gets the ingest URL provided by the live event.
-     *
-     * @return the ingestUrl value.
-     */
-    @Generated
-    public String getIngestUrl() {
-        return this.ingestUrl;
-    }
+        /**
+         * Get the ingestUrl property: Gets the ingest URL provided by the live event.
+         *
+         * @return the ingestUrl value.
+         */
+        @Generated
+        public String getIngestUrl() {
+            return this.ingestUrl;
+        }
 
-    /**
-     * Get the streamId property: Gets the stream Id.
-     *
-     * @return the streamId value.
-     */
-    @Generated
-    public String getStreamId() {
-        return this.streamId;
-    }
+        /**
+         * Get the streamId property: Gets the stream Id.
+         *
+         * @return the streamId value.
+         */
+        @Generated
+        public String getStreamId() {
+            return this.streamId;
+        }
 
-    /**
-     * Get the encoderIp property: Gets the remote IP.
-     *
-     * @return the encoderIp value.
-     */
-    @Generated
-    public String getEncoderIp() {
-        return this.encoderIp;
-    }
+        /**
+         * Get the encoderIp property: Gets the remote IP.
+         *
+         * @return the encoderIp value.
+         */
+        @Generated
+        public String getEncoderIp() {
+            return this.encoderIp;
+        }
 
-    /**
-     * Get the encoderPort property: Gets the remote port.
-     *
-     * @return the encoderPort value.
-     */
-    @Generated
-    public String getEncoderPort() {
-        return this.encoderPort;
-    }
+        /**
+         * Get the encoderPort property: Gets the remote port.
+         *
+         * @return the encoderPort value.
+         */
+        @Generated
+        public String getEncoderPort() {
+            return this.encoderPort;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of MediaLiveEventEncoderConnectedEventData from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of MediaLiveEventEncoderConnectedEventData if the JsonReader was pointing to an instance of
-     * it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the MediaLiveEventEncoderConnectedEventData.
-     */
-    @Generated
-    public static MediaLiveEventEncoderConnectedEventData fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            MediaLiveEventEncoderConnectedEventData deserializedMediaLiveEventEncoderConnectedEventData
-                = new MediaLiveEventEncoderConnectedEventData();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("ingestUrl".equals(fieldName)) {
-                    deserializedMediaLiveEventEncoderConnectedEventData.ingestUrl = reader.getString();
-                } else if ("streamId".equals(fieldName)) {
-                    deserializedMediaLiveEventEncoderConnectedEventData.streamId = reader.getString();
-                } else if ("encoderIp".equals(fieldName)) {
-                    deserializedMediaLiveEventEncoderConnectedEventData.encoderIp = reader.getString();
-                } else if ("encoderPort".equals(fieldName)) {
-                    deserializedMediaLiveEventEncoderConnectedEventData.encoderPort = reader.getString();
-                } else {
-                    reader.skipChildren();
+        /**
+         * Reads an instance of MediaLiveEventEncoderConnectedEventData from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of MediaLiveEventEncoderConnectedEventData if the JsonReader was pointing to an instance of
+         * it, or null if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the MediaLiveEventEncoderConnectedEventData.
+         */
+        @Generated
+        public static MediaLiveEventEncoderConnectedEventData fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                MediaLiveEventEncoderConnectedEventData deserializedMediaLiveEventEncoderConnectedEventData
+                    = new MediaLiveEventEncoderConnectedEventData();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("ingestUrl".equals(fieldName)) {
+                        deserializedMediaLiveEventEncoderConnectedEventData.ingestUrl = reader.getString();
+                    } else if ("streamId".equals(fieldName)) {
+                        deserializedMediaLiveEventEncoderConnectedEventData.streamId = reader.getString();
+                    } else if ("encoderIp".equals(fieldName)) {
+                        deserializedMediaLiveEventEncoderConnectedEventData.encoderIp = reader.getString();
+                    } else if ("encoderPort".equals(fieldName)) {
+                        deserializedMediaLiveEventEncoderConnectedEventData.encoderPort = reader.getString();
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
-            return deserializedMediaLiveEventEncoderConnectedEventData;
-        });
-    }
+                return deserializedMediaLiveEventEncoderConnectedEventData;
+            });
+        }
 }

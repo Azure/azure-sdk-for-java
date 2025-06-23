@@ -13,94 +13,96 @@ import java.io.IOException;
 /**
  * Schema of the Data property of an EventGridEvent for a
  * Microsoft.ResourceNotifications.HealthResources.ResourceAnnotated event.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class ResourceNotificationsHealthResourcesAnnotatedEventData
     extends ResourceNotificationsResourceUpdatedEventData {
 
-    /**
-     * Creates an instance of ResourceNotificationsHealthResourcesAnnotatedEventData class.
-     */
-    @Generated
-    public ResourceNotificationsHealthResourcesAnnotatedEventData() {
-    }
+        /**
+         * Creates an instance of ResourceNotificationsHealthResourcesAnnotatedEventData class.
+         */
+        @Generated
+        public ResourceNotificationsHealthResourcesAnnotatedEventData() {
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public ResourceNotificationsHealthResourcesAnnotatedEventData
-        setResourceDetails(ResourceNotificationsResourceUpdatedDetails resourceDetails) {
-        super.setResourceDetails(resourceDetails);
-        return this;
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public ResourceNotificationsHealthResourcesAnnotatedEventData
+            setResourceDetails(ResourceNotificationsResourceUpdatedDetails resourceDetails) {
+            super.setResourceDetails(resourceDetails);
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public ResourceNotificationsHealthResourcesAnnotatedEventData
-        setOperationalDetails(ResourceNotificationsOperationalDetails operationalDetails) {
-        super.setOperationalDetails(operationalDetails);
-        return this;
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public ResourceNotificationsHealthResourcesAnnotatedEventData
+            setOperationalDetails(ResourceNotificationsOperationalDetails operationalDetails) {
+            super.setOperationalDetails(operationalDetails);
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public ResourceNotificationsHealthResourcesAnnotatedEventData setApiVersion(String apiVersion) {
-        super.setApiVersion(apiVersion);
-        return this;
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public ResourceNotificationsHealthResourcesAnnotatedEventData setApiVersion(String apiVersion) {
+            super.setApiVersion(apiVersion);
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("resourceInfo", getResourceDetails());
-        jsonWriter.writeJsonField("operationalInfo", getOperationalDetails());
-        jsonWriter.writeStringField("apiVersion", getApiVersion());
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeJsonField("resourceInfo", getResourceDetails());
+            jsonWriter.writeJsonField("operationalInfo", getOperationalDetails());
+            jsonWriter.writeStringField("apiVersion", getApiVersion());
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of ResourceNotificationsHealthResourcesAnnotatedEventData from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ResourceNotificationsHealthResourcesAnnotatedEventData if the JsonReader was pointing to
-     * an instance of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ResourceNotificationsHealthResourcesAnnotatedEventData.
-     */
-    @Generated
-    public static ResourceNotificationsHealthResourcesAnnotatedEventData fromJson(JsonReader jsonReader)
-        throws IOException {
-        return jsonReader.readObject(reader -> {
-            ResourceNotificationsHealthResourcesAnnotatedEventData deserializedResourceNotificationsHealthResourcesAnnotatedEventData
-                = new ResourceNotificationsHealthResourcesAnnotatedEventData();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("resourceInfo".equals(fieldName)) {
-                    deserializedResourceNotificationsHealthResourcesAnnotatedEventData
-                        .setResourceDetails(ResourceNotificationsResourceUpdatedDetails.fromJson(reader));
-                } else if ("operationalInfo".equals(fieldName)) {
-                    deserializedResourceNotificationsHealthResourcesAnnotatedEventData
-                        .setOperationalDetails(ResourceNotificationsOperationalDetails.fromJson(reader));
-                } else if ("apiVersion".equals(fieldName)) {
-                    deserializedResourceNotificationsHealthResourcesAnnotatedEventData
-                        .setApiVersion(reader.getString());
-                } else {
-                    reader.skipChildren();
+        /**
+         * Reads an instance of ResourceNotificationsHealthResourcesAnnotatedEventData from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of ResourceNotificationsHealthResourcesAnnotatedEventData if the JsonReader was pointing to
+         * an instance of it, or null if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the ResourceNotificationsHealthResourcesAnnotatedEventData.
+         */
+        @Generated
+        public static ResourceNotificationsHealthResourcesAnnotatedEventData fromJson(JsonReader jsonReader)
+            throws IOException {
+            return jsonReader.readObject(reader -> {
+                ResourceNotificationsHealthResourcesAnnotatedEventData deserializedResourceNotificationsHealthResourcesAnnotatedEventData
+                    = new ResourceNotificationsHealthResourcesAnnotatedEventData();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("resourceInfo".equals(fieldName)) {
+                        deserializedResourceNotificationsHealthResourcesAnnotatedEventData
+                            .setResourceDetails(ResourceNotificationsResourceUpdatedDetails.fromJson(reader));
+                    } else if ("operationalInfo".equals(fieldName)) {
+                        deserializedResourceNotificationsHealthResourcesAnnotatedEventData
+                            .setOperationalDetails(ResourceNotificationsOperationalDetails.fromJson(reader));
+                    } else if ("apiVersion".equals(fieldName)) {
+                        deserializedResourceNotificationsHealthResourcesAnnotatedEventData
+                            .setApiVersion(reader.getString());
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
-            return deserializedResourceNotificationsHealthResourcesAnnotatedEventData;
-        });
-    }
+                return deserializedResourceNotificationsHealthResourcesAnnotatedEventData;
+            });
+        }
 }

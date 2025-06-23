@@ -13,108 +13,110 @@ import java.util.List;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Maps.GeofenceExited event.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class MapsGeofenceExitedEventData extends MapsGeofenceEventProperties {
 
-    /**
-     * Creates an instance of MapsGeofenceExitedEventData class.
-     */
-    @Generated
-    public MapsGeofenceExitedEventData() {
-    }
+        /**
+         * Creates an instance of MapsGeofenceExitedEventData class.
+         */
+        @Generated
+        public MapsGeofenceExitedEventData() {
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public MapsGeofenceExitedEventData setExpiredGeofenceGeometryId(List<String> expiredGeofenceGeometryId) {
-        super.setExpiredGeofenceGeometryId(expiredGeofenceGeometryId);
-        return this;
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public MapsGeofenceExitedEventData setExpiredGeofenceGeometryId(List<String> expiredGeofenceGeometryId) {
+            super.setExpiredGeofenceGeometryId(expiredGeofenceGeometryId);
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public MapsGeofenceExitedEventData setGeometries(List<MapsGeofenceGeometry> geometries) {
-        super.setGeometries(geometries);
-        return this;
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public MapsGeofenceExitedEventData setGeometries(List<MapsGeofenceGeometry> geometries) {
+            super.setGeometries(geometries);
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public MapsGeofenceExitedEventData
-        setInvalidPeriodGeofenceGeometryId(List<String> invalidPeriodGeofenceGeometryId) {
-        super.setInvalidPeriodGeofenceGeometryId(invalidPeriodGeofenceGeometryId);
-        return this;
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public MapsGeofenceExitedEventData
+            setInvalidPeriodGeofenceGeometryId(List<String> invalidPeriodGeofenceGeometryId) {
+            super.setInvalidPeriodGeofenceGeometryId(invalidPeriodGeofenceGeometryId);
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public MapsGeofenceExitedEventData setIsEventPublished(Boolean isEventPublished) {
-        super.setIsEventPublished(isEventPublished);
-        return this;
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public MapsGeofenceExitedEventData setIsEventPublished(Boolean isEventPublished) {
+            super.setIsEventPublished(isEventPublished);
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("expiredGeofenceGeometryId", getExpiredGeofenceGeometryId(),
-            (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("geometries", getGeometries(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("invalidPeriodGeofenceGeometryId", getInvalidPeriodGeofenceGeometryId(),
-            (writer, element) -> writer.writeString(element));
-        jsonWriter.writeBooleanField("isEventPublished", isEventPublished());
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeArrayField("expiredGeofenceGeometryId", getExpiredGeofenceGeometryId(),
+                (writer, element) -> writer.writeString(element));
+            jsonWriter.writeArrayField("geometries", getGeometries(), (writer, element) -> writer.writeJson(element));
+            jsonWriter.writeArrayField("invalidPeriodGeofenceGeometryId", getInvalidPeriodGeofenceGeometryId(),
+                (writer, element) -> writer.writeString(element));
+            jsonWriter.writeBooleanField("isEventPublished", isEventPublished());
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of MapsGeofenceExitedEventData from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of MapsGeofenceExitedEventData if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the MapsGeofenceExitedEventData.
-     */
-    @Generated
-    public static MapsGeofenceExitedEventData fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            MapsGeofenceExitedEventData deserializedMapsGeofenceExitedEventData = new MapsGeofenceExitedEventData();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("expiredGeofenceGeometryId".equals(fieldName)) {
-                    List<String> expiredGeofenceGeometryId = reader.readArray(reader1 -> reader1.getString());
-                    deserializedMapsGeofenceExitedEventData.setExpiredGeofenceGeometryId(expiredGeofenceGeometryId);
-                } else if ("geometries".equals(fieldName)) {
-                    List<MapsGeofenceGeometry> geometries
-                        = reader.readArray(reader1 -> MapsGeofenceGeometry.fromJson(reader1));
-                    deserializedMapsGeofenceExitedEventData.setGeometries(geometries);
-                } else if ("invalidPeriodGeofenceGeometryId".equals(fieldName)) {
-                    List<String> invalidPeriodGeofenceGeometryId = reader.readArray(reader1 -> reader1.getString());
-                    deserializedMapsGeofenceExitedEventData
-                        .setInvalidPeriodGeofenceGeometryId(invalidPeriodGeofenceGeometryId);
-                } else if ("isEventPublished".equals(fieldName)) {
-                    deserializedMapsGeofenceExitedEventData
-                        .setIsEventPublished(reader.getNullable(JsonReader::getBoolean));
-                } else {
-                    reader.skipChildren();
+        /**
+         * Reads an instance of MapsGeofenceExitedEventData from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of MapsGeofenceExitedEventData if the JsonReader was pointing to an instance of it, or null
+         * if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the MapsGeofenceExitedEventData.
+         */
+        @Generated
+        public static MapsGeofenceExitedEventData fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                MapsGeofenceExitedEventData deserializedMapsGeofenceExitedEventData = new MapsGeofenceExitedEventData();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("expiredGeofenceGeometryId".equals(fieldName)) {
+                        List<String> expiredGeofenceGeometryId = reader.readArray(reader1 -> reader1.getString());
+                        deserializedMapsGeofenceExitedEventData.setExpiredGeofenceGeometryId(expiredGeofenceGeometryId);
+                    } else if ("geometries".equals(fieldName)) {
+                        List<MapsGeofenceGeometry> geometries
+                            = reader.readArray(reader1 -> MapsGeofenceGeometry.fromJson(reader1));
+                        deserializedMapsGeofenceExitedEventData.setGeometries(geometries);
+                    } else if ("invalidPeriodGeofenceGeometryId".equals(fieldName)) {
+                        List<String> invalidPeriodGeofenceGeometryId = reader.readArray(reader1 -> reader1.getString());
+                        deserializedMapsGeofenceExitedEventData
+                            .setInvalidPeriodGeofenceGeometryId(invalidPeriodGeofenceGeometryId);
+                    } else if ("isEventPublished".equals(fieldName)) {
+                        deserializedMapsGeofenceExitedEventData
+                            .setIsEventPublished(reader.getNullable(JsonReader::getBoolean));
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
-            return deserializedMapsGeofenceExitedEventData;
-        });
-    }
+                return deserializedMapsGeofenceExitedEventData;
+            });
+        }
 }

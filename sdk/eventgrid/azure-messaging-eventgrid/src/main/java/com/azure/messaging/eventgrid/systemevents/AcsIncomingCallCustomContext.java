@@ -16,6 +16,7 @@ import java.util.Map;
 /**
  * Custom Context of Incoming Call.
  */
+@Deprecated
 @Fluent
 public final class AcsIncomingCallCustomContext implements JsonSerializable<AcsIncomingCallCustomContext> {
     /*
@@ -39,7 +40,7 @@ public final class AcsIncomingCallCustomContext implements JsonSerializable<AcsI
 
     /**
      * Get the sipHeaders property: Sip Headers for incoming call.
-     * 
+     *
      * @return the sipHeaders value.
      */
     @Generated
@@ -49,7 +50,7 @@ public final class AcsIncomingCallCustomContext implements JsonSerializable<AcsI
 
     /**
      * Set the sipHeaders property: Sip Headers for incoming call.
-     * 
+     *
      * @param sipHeaders the sipHeaders value to set.
      * @return the AcsIncomingCallCustomContext object itself.
      */
@@ -61,7 +62,7 @@ public final class AcsIncomingCallCustomContext implements JsonSerializable<AcsI
 
     /**
      * Get the voipHeaders property: Voip Headers for incoming call.
-     * 
+     *
      * @return the voipHeaders value.
      */
     @Generated
@@ -71,7 +72,7 @@ public final class AcsIncomingCallCustomContext implements JsonSerializable<AcsI
 
     /**
      * Set the voipHeaders property: Voip Headers for incoming call.
-     * 
+     *
      * @param voipHeaders the voipHeaders value to set.
      * @return the AcsIncomingCallCustomContext object itself.
      */
@@ -95,7 +96,7 @@ public final class AcsIncomingCallCustomContext implements JsonSerializable<AcsI
 
     /**
      * Reads an instance of AcsIncomingCallCustomContext from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsIncomingCallCustomContext if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.

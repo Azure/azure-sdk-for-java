@@ -6,7 +6,10 @@ package com.azure.messaging.eventgrid.systemevents;
 
 /**
  * The previous state of the Job.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Deprecated
 public enum MediaJobState {
     /**
      * The job was canceled. This is a final state for the job.

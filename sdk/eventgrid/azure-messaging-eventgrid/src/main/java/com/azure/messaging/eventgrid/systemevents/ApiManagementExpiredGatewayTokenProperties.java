@@ -17,83 +17,85 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * Information related to a an expired gateway token for a self-hosted gateway deployment.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class ApiManagementExpiredGatewayTokenProperties
     implements JsonSerializable<ApiManagementExpiredGatewayTokenProperties> {
-    /*
-     * Timestamp when the gateway token has expired.
-     */
-    @Generated
-    private OffsetDateTime expiresOn;
+        /*
+         * Timestamp when the gateway token has expired.
+         */
+        @Generated
+        private OffsetDateTime expiresOn;
 
-    /**
-     * Creates an instance of ApiManagementExpiredGatewayTokenProperties class.
-     */
-    @Generated
-    public ApiManagementExpiredGatewayTokenProperties() {
-    }
+        /**
+         * Creates an instance of ApiManagementExpiredGatewayTokenProperties class.
+         */
+        @Generated
+        public ApiManagementExpiredGatewayTokenProperties() {
+        }
 
-    /**
-     * Get the expiresOn property: Timestamp when the gateway token has expired.
-     * 
-     * @return the expiresOn value.
-     */
-    @Generated
-    public OffsetDateTime getExpiresOn() {
-        return this.expiresOn;
-    }
+        /**
+         * Get the expiresOn property: Timestamp when the gateway token has expired.
+         *
+         * @return the expiresOn value.
+         */
+        @Generated
+        public OffsetDateTime getExpiresOn() {
+            return this.expiresOn;
+        }
 
-    /**
-     * Set the expiresOn property: Timestamp when the gateway token has expired.
-     * 
-     * @param expiresOn the expiresOn value to set.
-     * @return the ApiManagementExpiredGatewayTokenProperties object itself.
-     */
-    @Generated
-    public ApiManagementExpiredGatewayTokenProperties setExpiresOn(OffsetDateTime expiresOn) {
-        this.expiresOn = expiresOn;
-        return this;
-    }
+        /**
+         * Set the expiresOn property: Timestamp when the gateway token has expired.
+         *
+         * @param expiresOn the expiresOn value to set.
+         * @return the ApiManagementExpiredGatewayTokenProperties object itself.
+         */
+        @Generated
+        public ApiManagementExpiredGatewayTokenProperties setExpiresOn(OffsetDateTime expiresOn) {
+            this.expiresOn = expiresOn;
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("expiredAtUtc",
-            this.expiresOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiresOn));
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("expiredAtUtc",
+                this.expiresOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiresOn));
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of ApiManagementExpiredGatewayTokenProperties from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ApiManagementExpiredGatewayTokenProperties if the JsonReader was pointing to an instance
-     * of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ApiManagementExpiredGatewayTokenProperties.
-     */
-    @Generated
-    public static ApiManagementExpiredGatewayTokenProperties fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ApiManagementExpiredGatewayTokenProperties deserializedApiManagementExpiredGatewayTokenProperties
-                = new ApiManagementExpiredGatewayTokenProperties();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        /**
+         * Reads an instance of ApiManagementExpiredGatewayTokenProperties from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of ApiManagementExpiredGatewayTokenProperties if the JsonReader was pointing to an instance
+         * of it, or null if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the ApiManagementExpiredGatewayTokenProperties.
+         */
+        @Generated
+        public static ApiManagementExpiredGatewayTokenProperties fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                ApiManagementExpiredGatewayTokenProperties deserializedApiManagementExpiredGatewayTokenProperties
+                    = new ApiManagementExpiredGatewayTokenProperties();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
 
-                if ("expiredAtUtc".equals(fieldName)) {
-                    deserializedApiManagementExpiredGatewayTokenProperties.expiresOn = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else {
-                    reader.skipChildren();
+                    if ("expiredAtUtc".equals(fieldName)) {
+                        deserializedApiManagementExpiredGatewayTokenProperties.expiresOn = reader
+                            .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
 
-            return deserializedApiManagementExpiredGatewayTokenProperties;
-        });
-    }
+                return deserializedApiManagementExpiredGatewayTokenProperties;
+            });
+        }
 }

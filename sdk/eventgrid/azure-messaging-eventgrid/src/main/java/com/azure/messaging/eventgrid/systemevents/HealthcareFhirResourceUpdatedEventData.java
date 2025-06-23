@@ -13,178 +13,180 @@ import java.io.IOException;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.FhirResourceUpdated event.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class HealthcareFhirResourceUpdatedEventData
     implements JsonSerializable<HealthcareFhirResourceUpdatedEventData> {
 
-    /*
-     * Type of HL7 FHIR resource.
-     */
-    @Generated
-    private HealthcareFhirResourceType fhirResourceType;
+        /*
+         * Type of HL7 FHIR resource.
+         */
+        @Generated
+        private HealthcareFhirResourceType fhirResourceType;
 
-    /*
-     * Domain name of FHIR account for this resource.
-     */
-    @Generated
-    private String fhirServiceHostName;
+        /*
+         * Domain name of FHIR account for this resource.
+         */
+        @Generated
+        private String fhirServiceHostName;
 
-    /*
-     * Id of HL7 FHIR resource.
-     */
-    @Generated
-    private String fhirResourceId;
+        /*
+         * Id of HL7 FHIR resource.
+         */
+        @Generated
+        private String fhirResourceId;
 
-    /*
-     * VersionId of HL7 FHIR resource. It changes when the resource is created, updated, or deleted(soft-deletion).
-     */
-    @Generated
-    private Long fhirResourceVersionId;
+        /*
+         * VersionId of HL7 FHIR resource. It changes when the resource is created, updated, or deleted(soft-deletion).
+         */
+        @Generated
+        private Long fhirResourceVersionId;
 
-    /**
-     * Creates an instance of HealthcareFhirResourceUpdatedEventData class.
-     */
-    @Generated
-    public HealthcareFhirResourceUpdatedEventData() {
-    }
+        /**
+         * Creates an instance of HealthcareFhirResourceUpdatedEventData class.
+         */
+        @Generated
+        public HealthcareFhirResourceUpdatedEventData() {
+        }
 
-    /**
-     * Get the fhirResourceType property: Type of HL7 FHIR resource.
-     *
-     * @return the fhirResourceType value.
-     */
-    @Generated
-    public HealthcareFhirResourceType getFhirResourceType() {
-        return this.fhirResourceType;
-    }
+        /**
+         * Get the fhirResourceType property: Type of HL7 FHIR resource.
+         *
+         * @return the fhirResourceType value.
+         */
+        @Generated
+        public HealthcareFhirResourceType getFhirResourceType() {
+            return this.fhirResourceType;
+        }
 
-    /**
-     * Set the fhirResourceType property: Type of HL7 FHIR resource.
-     *
-     * @param fhirResourceType the fhirResourceType value to set.
-     * @return the HealthcareFhirResourceUpdatedEventData object itself.
-     */
-    @Generated
-    public HealthcareFhirResourceUpdatedEventData setFhirResourceType(HealthcareFhirResourceType fhirResourceType) {
-        this.fhirResourceType = fhirResourceType;
-        return this;
-    }
+        /**
+         * Set the fhirResourceType property: Type of HL7 FHIR resource.
+         *
+         * @param fhirResourceType the fhirResourceType value to set.
+         * @return the HealthcareFhirResourceUpdatedEventData object itself.
+         */
+        @Generated
+        public HealthcareFhirResourceUpdatedEventData setFhirResourceType(HealthcareFhirResourceType fhirResourceType) {
+            this.fhirResourceType = fhirResourceType;
+            return this;
+        }
 
-    /**
-     * Get the fhirServiceHostName property: Domain name of FHIR account for this resource.
-     *
-     * @return the fhirServiceHostName value.
-     */
-    @Generated
-    public String getFhirServiceHostName() {
-        return this.fhirServiceHostName;
-    }
+        /**
+         * Get the fhirServiceHostName property: Domain name of FHIR account for this resource.
+         *
+         * @return the fhirServiceHostName value.
+         */
+        @Generated
+        public String getFhirServiceHostName() {
+            return this.fhirServiceHostName;
+        }
 
-    /**
-     * Set the fhirServiceHostName property: Domain name of FHIR account for this resource.
-     *
-     * @param fhirServiceHostName the fhirServiceHostName value to set.
-     * @return the HealthcareFhirResourceUpdatedEventData object itself.
-     */
-    @Generated
-    public HealthcareFhirResourceUpdatedEventData setFhirServiceHostName(String fhirServiceHostName) {
-        this.fhirServiceHostName = fhirServiceHostName;
-        return this;
-    }
+        /**
+         * Set the fhirServiceHostName property: Domain name of FHIR account for this resource.
+         *
+         * @param fhirServiceHostName the fhirServiceHostName value to set.
+         * @return the HealthcareFhirResourceUpdatedEventData object itself.
+         */
+        @Generated
+        public HealthcareFhirResourceUpdatedEventData setFhirServiceHostName(String fhirServiceHostName) {
+            this.fhirServiceHostName = fhirServiceHostName;
+            return this;
+        }
 
-    /**
-     * Get the fhirResourceId property: Id of HL7 FHIR resource.
-     *
-     * @return the fhirResourceId value.
-     */
-    @Generated
-    public String getFhirResourceId() {
-        return this.fhirResourceId;
-    }
+        /**
+         * Get the fhirResourceId property: Id of HL7 FHIR resource.
+         *
+         * @return the fhirResourceId value.
+         */
+        @Generated
+        public String getFhirResourceId() {
+            return this.fhirResourceId;
+        }
 
-    /**
-     * Set the fhirResourceId property: Id of HL7 FHIR resource.
-     *
-     * @param fhirResourceId the fhirResourceId value to set.
-     * @return the HealthcareFhirResourceUpdatedEventData object itself.
-     */
-    @Generated
-    public HealthcareFhirResourceUpdatedEventData setFhirResourceId(String fhirResourceId) {
-        this.fhirResourceId = fhirResourceId;
-        return this;
-    }
+        /**
+         * Set the fhirResourceId property: Id of HL7 FHIR resource.
+         *
+         * @param fhirResourceId the fhirResourceId value to set.
+         * @return the HealthcareFhirResourceUpdatedEventData object itself.
+         */
+        @Generated
+        public HealthcareFhirResourceUpdatedEventData setFhirResourceId(String fhirResourceId) {
+            this.fhirResourceId = fhirResourceId;
+            return this;
+        }
 
-    /**
-     * Get the fhirResourceVersionId property: VersionId of HL7 FHIR resource. It changes when the resource is created,
-     * updated, or deleted(soft-deletion).
-     *
-     * @return the fhirResourceVersionId value.
-     */
-    @Generated
-    public Long getFhirResourceVersionId() {
-        return this.fhirResourceVersionId;
-    }
+        /**
+         * Get the fhirResourceVersionId property: VersionId of HL7 FHIR resource. It changes when the resource is created,
+         * updated, or deleted(soft-deletion).
+         *
+         * @return the fhirResourceVersionId value.
+         */
+        @Generated
+        public Long getFhirResourceVersionId() {
+            return this.fhirResourceVersionId;
+        }
 
-    /**
-     * Set the fhirResourceVersionId property: VersionId of HL7 FHIR resource. It changes when the resource is created,
-     * updated, or deleted(soft-deletion).
-     *
-     * @param fhirResourceVersionId the fhirResourceVersionId value to set.
-     * @return the HealthcareFhirResourceUpdatedEventData object itself.
-     */
-    @Generated
-    public HealthcareFhirResourceUpdatedEventData setFhirResourceVersionId(Long fhirResourceVersionId) {
-        this.fhirResourceVersionId = fhirResourceVersionId;
-        return this;
-    }
+        /**
+         * Set the fhirResourceVersionId property: VersionId of HL7 FHIR resource. It changes when the resource is created,
+         * updated, or deleted(soft-deletion).
+         *
+         * @param fhirResourceVersionId the fhirResourceVersionId value to set.
+         * @return the HealthcareFhirResourceUpdatedEventData object itself.
+         */
+        @Generated
+        public HealthcareFhirResourceUpdatedEventData setFhirResourceVersionId(Long fhirResourceVersionId) {
+            this.fhirResourceVersionId = fhirResourceVersionId;
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("resourceType",
-            this.fhirResourceType == null ? null : this.fhirResourceType.toString());
-        jsonWriter.writeStringField("resourceFhirAccount", this.fhirServiceHostName);
-        jsonWriter.writeStringField("resourceFhirId", this.fhirResourceId);
-        jsonWriter.writeNumberField("resourceVersionId", this.fhirResourceVersionId);
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("resourceType",
+                this.fhirResourceType == null ? null : this.fhirResourceType.toString());
+            jsonWriter.writeStringField("resourceFhirAccount", this.fhirServiceHostName);
+            jsonWriter.writeStringField("resourceFhirId", this.fhirResourceId);
+            jsonWriter.writeNumberField("resourceVersionId", this.fhirResourceVersionId);
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of HealthcareFhirResourceUpdatedEventData from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of HealthcareFhirResourceUpdatedEventData if the JsonReader was pointing to an instance of
-     * it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the HealthcareFhirResourceUpdatedEventData.
-     */
-    @Generated
-    public static HealthcareFhirResourceUpdatedEventData fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            HealthcareFhirResourceUpdatedEventData deserializedHealthcareFhirResourceUpdatedEventData
-                = new HealthcareFhirResourceUpdatedEventData();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("resourceType".equals(fieldName)) {
-                    deserializedHealthcareFhirResourceUpdatedEventData.fhirResourceType
-                        = HealthcareFhirResourceType.fromString(reader.getString());
-                } else if ("resourceFhirAccount".equals(fieldName)) {
-                    deserializedHealthcareFhirResourceUpdatedEventData.fhirServiceHostName = reader.getString();
-                } else if ("resourceFhirId".equals(fieldName)) {
-                    deserializedHealthcareFhirResourceUpdatedEventData.fhirResourceId = reader.getString();
-                } else if ("resourceVersionId".equals(fieldName)) {
-                    deserializedHealthcareFhirResourceUpdatedEventData.fhirResourceVersionId
-                        = reader.getNullable(JsonReader::getLong);
-                } else {
-                    reader.skipChildren();
+        /**
+         * Reads an instance of HealthcareFhirResourceUpdatedEventData from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of HealthcareFhirResourceUpdatedEventData if the JsonReader was pointing to an instance of
+         * it, or null if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the HealthcareFhirResourceUpdatedEventData.
+         */
+        @Generated
+        public static HealthcareFhirResourceUpdatedEventData fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                HealthcareFhirResourceUpdatedEventData deserializedHealthcareFhirResourceUpdatedEventData
+                    = new HealthcareFhirResourceUpdatedEventData();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("resourceType".equals(fieldName)) {
+                        deserializedHealthcareFhirResourceUpdatedEventData.fhirResourceType
+                            = HealthcareFhirResourceType.fromString(reader.getString());
+                    } else if ("resourceFhirAccount".equals(fieldName)) {
+                        deserializedHealthcareFhirResourceUpdatedEventData.fhirServiceHostName = reader.getString();
+                    } else if ("resourceFhirId".equals(fieldName)) {
+                        deserializedHealthcareFhirResourceUpdatedEventData.fhirResourceId = reader.getString();
+                    } else if ("resourceVersionId".equals(fieldName)) {
+                        deserializedHealthcareFhirResourceUpdatedEventData.fhirResourceVersionId
+                            = reader.getNullable(JsonReader::getLong);
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
-            return deserializedHealthcareFhirResourceUpdatedEventData;
-        });
-    }
+                return deserializedHealthcareFhirResourceUpdatedEventData;
+            });
+        }
 }

@@ -14,145 +14,147 @@ import java.io.IOException;
 
 /**
  * Execution statistics of a specific policy action in a Blob Management cycle.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class StorageLifecyclePolicyActionSummaryDetail
     implements JsonSerializable<StorageLifecyclePolicyActionSummaryDetail> {
-    /*
-     * Total number of objects to be acted on by this action.
-     */
-    @Generated
-    private Long totalObjectsCount;
+        /*
+         * Total number of objects to be acted on by this action.
+         */
+        @Generated
+        private Long totalObjectsCount;
 
-    /*
-     * Number of success operations of this action.
-     */
-    @Generated
-    private Long successCount;
+        /*
+         * Number of success operations of this action.
+         */
+        @Generated
+        private Long successCount;
 
-    /*
-     * Error messages of this action if any.
-     */
-    @Generated
-    private String errorList;
+        /*
+         * Error messages of this action if any.
+         */
+        @Generated
+        private String errorList;
 
-    /**
-     * Creates an instance of StorageLifecyclePolicyActionSummaryDetail class.
-     */
-    @Generated
-    public StorageLifecyclePolicyActionSummaryDetail() {
-    }
+        /**
+         * Creates an instance of StorageLifecyclePolicyActionSummaryDetail class.
+         */
+        @Generated
+        public StorageLifecyclePolicyActionSummaryDetail() {
+        }
 
-    /**
-     * Get the totalObjectsCount property: Total number of objects to be acted on by this action.
-     * 
-     * @return the totalObjectsCount value.
-     */
-    @Generated
-    public Long getTotalObjectsCount() {
-        return this.totalObjectsCount;
-    }
+        /**
+         * Get the totalObjectsCount property: Total number of objects to be acted on by this action.
+         *
+         * @return the totalObjectsCount value.
+         */
+        @Generated
+        public Long getTotalObjectsCount() {
+            return this.totalObjectsCount;
+        }
 
-    /**
-     * Set the totalObjectsCount property: Total number of objects to be acted on by this action.
-     * 
-     * @param totalObjectsCount the totalObjectsCount value to set.
-     * @return the StorageLifecyclePolicyActionSummaryDetail object itself.
-     */
-    @Generated
-    public StorageLifecyclePolicyActionSummaryDetail setTotalObjectsCount(Long totalObjectsCount) {
-        this.totalObjectsCount = totalObjectsCount;
-        return this;
-    }
+        /**
+         * Set the totalObjectsCount property: Total number of objects to be acted on by this action.
+         *
+         * @param totalObjectsCount the totalObjectsCount value to set.
+         * @return the StorageLifecyclePolicyActionSummaryDetail object itself.
+         */
+        @Generated
+        public StorageLifecyclePolicyActionSummaryDetail setTotalObjectsCount(Long totalObjectsCount) {
+            this.totalObjectsCount = totalObjectsCount;
+            return this;
+        }
 
-    /**
-     * Get the successCount property: Number of success operations of this action.
-     * 
-     * @return the successCount value.
-     */
-    @Generated
-    public Long getSuccessCount() {
-        return this.successCount;
-    }
+        /**
+         * Get the successCount property: Number of success operations of this action.
+         *
+         * @return the successCount value.
+         */
+        @Generated
+        public Long getSuccessCount() {
+            return this.successCount;
+        }
 
-    /**
-     * Set the successCount property: Number of success operations of this action.
-     * 
-     * @param successCount the successCount value to set.
-     * @return the StorageLifecyclePolicyActionSummaryDetail object itself.
-     */
-    @Generated
-    public StorageLifecyclePolicyActionSummaryDetail setSuccessCount(Long successCount) {
-        this.successCount = successCount;
-        return this;
-    }
+        /**
+         * Set the successCount property: Number of success operations of this action.
+         *
+         * @param successCount the successCount value to set.
+         * @return the StorageLifecyclePolicyActionSummaryDetail object itself.
+         */
+        @Generated
+        public StorageLifecyclePolicyActionSummaryDetail setSuccessCount(Long successCount) {
+            this.successCount = successCount;
+            return this;
+        }
 
-    /**
-     * Get the errorList property: Error messages of this action if any.
-     * 
-     * @return the errorList value.
-     */
-    @Generated
-    public String getErrorList() {
-        return this.errorList;
-    }
+        /**
+         * Get the errorList property: Error messages of this action if any.
+         *
+         * @return the errorList value.
+         */
+        @Generated
+        public String getErrorList() {
+            return this.errorList;
+        }
 
-    /**
-     * Set the errorList property: Error messages of this action if any.
-     * 
-     * @param errorList the errorList value to set.
-     * @return the StorageLifecyclePolicyActionSummaryDetail object itself.
-     */
-    @Generated
-    public StorageLifecyclePolicyActionSummaryDetail setErrorList(String errorList) {
-        this.errorList = errorList;
-        return this;
-    }
+        /**
+         * Set the errorList property: Error messages of this action if any.
+         *
+         * @param errorList the errorList value to set.
+         * @return the StorageLifecyclePolicyActionSummaryDetail object itself.
+         */
+        @Generated
+        public StorageLifecyclePolicyActionSummaryDetail setErrorList(String errorList) {
+            this.errorList = errorList;
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeNumberField("totalObjectsCount", this.totalObjectsCount);
-        jsonWriter.writeNumberField("successCount", this.successCount);
-        jsonWriter.writeStringField("errorList", this.errorList);
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeNumberField("totalObjectsCount", this.totalObjectsCount);
+            jsonWriter.writeNumberField("successCount", this.successCount);
+            jsonWriter.writeStringField("errorList", this.errorList);
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of StorageLifecyclePolicyActionSummaryDetail from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of StorageLifecyclePolicyActionSummaryDetail if the JsonReader was pointing to an instance of
-     * it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the StorageLifecyclePolicyActionSummaryDetail.
-     */
-    @Generated
-    public static StorageLifecyclePolicyActionSummaryDetail fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            StorageLifecyclePolicyActionSummaryDetail deserializedStorageLifecyclePolicyActionSummaryDetail
-                = new StorageLifecyclePolicyActionSummaryDetail();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        /**
+         * Reads an instance of StorageLifecyclePolicyActionSummaryDetail from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of StorageLifecyclePolicyActionSummaryDetail if the JsonReader was pointing to an instance of
+         * it, or null if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the StorageLifecyclePolicyActionSummaryDetail.
+         */
+        @Generated
+        public static StorageLifecyclePolicyActionSummaryDetail fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                StorageLifecyclePolicyActionSummaryDetail deserializedStorageLifecyclePolicyActionSummaryDetail
+                    = new StorageLifecyclePolicyActionSummaryDetail();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
 
-                if ("totalObjectsCount".equals(fieldName)) {
-                    deserializedStorageLifecyclePolicyActionSummaryDetail.totalObjectsCount
-                        = reader.getNullable(JsonReader::getLong);
-                } else if ("successCount".equals(fieldName)) {
-                    deserializedStorageLifecyclePolicyActionSummaryDetail.successCount
-                        = reader.getNullable(JsonReader::getLong);
-                } else if ("errorList".equals(fieldName)) {
-                    deserializedStorageLifecyclePolicyActionSummaryDetail.errorList = reader.getString();
-                } else {
-                    reader.skipChildren();
+                    if ("totalObjectsCount".equals(fieldName)) {
+                        deserializedStorageLifecyclePolicyActionSummaryDetail.totalObjectsCount
+                            = reader.getNullable(JsonReader::getLong);
+                    } else if ("successCount".equals(fieldName)) {
+                        deserializedStorageLifecyclePolicyActionSummaryDetail.successCount
+                            = reader.getNullable(JsonReader::getLong);
+                    } else if ("errorList".equals(fieldName)) {
+                        deserializedStorageLifecyclePolicyActionSummaryDetail.errorList = reader.getString();
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
 
-            return deserializedStorageLifecyclePolicyActionSummaryDetail;
-        });
-    }
+                return deserializedStorageLifecyclePolicyActionSummaryDetail;
+            });
+        }
 }

@@ -17,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * Schema of common properties of all chat thread events.
  */
+@Deprecated
 @Fluent
 public class AcsChatThreadEventInThreadBaseProperties extends AcsChatEventInThreadBaseProperties {
     /*
@@ -40,7 +41,7 @@ public class AcsChatThreadEventInThreadBaseProperties extends AcsChatEventInThre
 
     /**
      * Get the createTime property: The original creation time of the thread.
-     * 
+     *
      * @return the createTime value.
      */
     @Generated
@@ -50,7 +51,7 @@ public class AcsChatThreadEventInThreadBaseProperties extends AcsChatEventInThre
 
     /**
      * Set the createTime property: The original creation time of the thread.
-     * 
+     *
      * @param createTime the createTime value to set.
      * @return the AcsChatThreadEventInThreadBaseProperties object itself.
      */
@@ -62,7 +63,7 @@ public class AcsChatThreadEventInThreadBaseProperties extends AcsChatEventInThre
 
     /**
      * Get the version property: The version of the thread.
-     * 
+     *
      * @return the version value.
      */
     @Generated
@@ -72,7 +73,7 @@ public class AcsChatThreadEventInThreadBaseProperties extends AcsChatEventInThre
 
     /**
      * Set the version property: The version of the thread.
-     * 
+     *
      * @param version the version value to set.
      * @return the AcsChatThreadEventInThreadBaseProperties object itself.
      */
@@ -119,7 +120,7 @@ public class AcsChatThreadEventInThreadBaseProperties extends AcsChatEventInThre
 
     /**
      * Reads an instance of AcsChatThreadEventInThreadBaseProperties from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsChatThreadEventInThreadBaseProperties if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.

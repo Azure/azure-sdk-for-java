@@ -10,54 +10,57 @@ import java.util.Collection;
 
 /**
  * Asynchronous operation status of the operation on the app service plan.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Deprecated
 public final class AsyncStatus extends ExpandableStringEnum<AsyncStatus> {
-    /**
-     * Async operation has started.
-     */
-    @Generated
-    public static final AsyncStatus STARTED = fromString("Started");
+        /**
+         * Async operation has started.
+         */
+        @Generated
+        public static final AsyncStatus STARTED = fromString("Started");
 
-    /**
-     * Async operation has completed.
-     */
-    @Generated
-    public static final AsyncStatus COMPLETED = fromString("Completed");
+        /**
+         * Async operation has completed.
+         */
+        @Generated
+        public static final AsyncStatus COMPLETED = fromString("Completed");
 
-    /**
-     * Async operation failed to complete.
-     */
-    @Generated
-    public static final AsyncStatus FAILED = fromString("Failed");
+        /**
+         * Async operation failed to complete.
+         */
+        @Generated
+        public static final AsyncStatus FAILED = fromString("Failed");
 
-    /**
-     * Creates a new instance of AsyncStatus value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Generated
-    @Deprecated
-    public AsyncStatus() {
-    }
+        /**
+         * Creates a new instance of AsyncStatus value.
+         *
+         * @deprecated Use the {@link #fromString(String)} factory method.
+         */
+        @Generated
+        @Deprecated
+        public AsyncStatus() {
+        }
 
-    /**
-     * Creates or finds a AsyncStatus from its string representation.
-     * 
-     * @param name a name to look for.
-     * @return the corresponding AsyncStatus.
-     */
-    @Generated
-    public static AsyncStatus fromString(String name) {
-        return fromString(name, AsyncStatus.class);
-    }
+        /**
+         * Creates or finds a AsyncStatus from its string representation.
+         *
+         * @param name a name to look for.
+         * @return the corresponding AsyncStatus.
+         */
+        @Generated
+        public static AsyncStatus fromString(String name) {
+            return fromString(name, AsyncStatus.class);
+        }
 
-    /**
-     * Gets known AsyncStatus values.
-     * 
-     * @return known AsyncStatus values.
-     */
-    @Generated
-    public static Collection<AsyncStatus> values() {
-        return values(AsyncStatus.class);
-    }
+        /**
+         * Gets known AsyncStatus values.
+         *
+         * @return known AsyncStatus values.
+         */
+        @Generated
+        public static Collection<AsyncStatus> values() {
+            return values(AsyncStatus.class);
+        }
 }

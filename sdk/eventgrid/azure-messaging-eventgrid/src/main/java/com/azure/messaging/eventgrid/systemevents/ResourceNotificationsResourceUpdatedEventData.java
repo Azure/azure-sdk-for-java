@@ -13,146 +13,148 @@ import java.io.IOException;
 
 /**
  * Describes the schema of the common properties across all ARN system topic events.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public class ResourceNotificationsResourceUpdatedEventData
     implements JsonSerializable<ResourceNotificationsResourceUpdatedEventData> {
 
-    /*
-     * resourceInfo details for update event
-     */
-    @Generated
-    private ResourceNotificationsResourceUpdatedDetails resourceDetails;
+        /*
+         * resourceInfo details for update event
+         */
+        @Generated
+        private ResourceNotificationsResourceUpdatedDetails resourceDetails;
 
-    /*
-     * details about operational info
-     */
-    @Generated
-    private ResourceNotificationsOperationalDetails operationalDetails;
+        /*
+         * details about operational info
+         */
+        @Generated
+        private ResourceNotificationsOperationalDetails operationalDetails;
 
-    /*
-     * api version of the resource properties bag
-     */
-    @Generated
-    private String apiVersion;
+        /*
+         * api version of the resource properties bag
+         */
+        @Generated
+        private String apiVersion;
 
-    /**
-     * Creates an instance of ResourceNotificationsResourceUpdatedEventData class.
-     */
-    @Generated
-    public ResourceNotificationsResourceUpdatedEventData() {
-    }
+        /**
+         * Creates an instance of ResourceNotificationsResourceUpdatedEventData class.
+         */
+        @Generated
+        public ResourceNotificationsResourceUpdatedEventData() {
+        }
 
-    /**
-     * Get the resourceDetails property: resourceInfo details for update event.
-     *
-     * @return the resourceDetails value.
-     */
-    @Generated
-    public ResourceNotificationsResourceUpdatedDetails getResourceDetails() {
-        return this.resourceDetails;
-    }
+        /**
+         * Get the resourceDetails property: resourceInfo details for update event.
+         *
+         * @return the resourceDetails value.
+         */
+        @Generated
+        public ResourceNotificationsResourceUpdatedDetails getResourceDetails() {
+            return this.resourceDetails;
+        }
 
-    /**
-     * Set the resourceDetails property: resourceInfo details for update event.
-     *
-     * @param resourceDetails the resourceDetails value to set.
-     * @return the ResourceNotificationsResourceUpdatedEventData object itself.
-     */
-    @Generated
-    public ResourceNotificationsResourceUpdatedEventData
-        setResourceDetails(ResourceNotificationsResourceUpdatedDetails resourceDetails) {
-        this.resourceDetails = resourceDetails;
-        return this;
-    }
+        /**
+         * Set the resourceDetails property: resourceInfo details for update event.
+         *
+         * @param resourceDetails the resourceDetails value to set.
+         * @return the ResourceNotificationsResourceUpdatedEventData object itself.
+         */
+        @Generated
+        public ResourceNotificationsResourceUpdatedEventData
+            setResourceDetails(ResourceNotificationsResourceUpdatedDetails resourceDetails) {
+            this.resourceDetails = resourceDetails;
+            return this;
+        }
 
-    /**
-     * Get the operationalDetails property: details about operational info.
-     *
-     * @return the operationalDetails value.
-     */
-    @Generated
-    public ResourceNotificationsOperationalDetails getOperationalDetails() {
-        return this.operationalDetails;
-    }
+        /**
+         * Get the operationalDetails property: details about operational info.
+         *
+         * @return the operationalDetails value.
+         */
+        @Generated
+        public ResourceNotificationsOperationalDetails getOperationalDetails() {
+            return this.operationalDetails;
+        }
 
-    /**
-     * Set the operationalDetails property: details about operational info.
-     *
-     * @param operationalDetails the operationalDetails value to set.
-     * @return the ResourceNotificationsResourceUpdatedEventData object itself.
-     */
-    @Generated
-    public ResourceNotificationsResourceUpdatedEventData
-        setOperationalDetails(ResourceNotificationsOperationalDetails operationalDetails) {
-        this.operationalDetails = operationalDetails;
-        return this;
-    }
+        /**
+         * Set the operationalDetails property: details about operational info.
+         *
+         * @param operationalDetails the operationalDetails value to set.
+         * @return the ResourceNotificationsResourceUpdatedEventData object itself.
+         */
+        @Generated
+        public ResourceNotificationsResourceUpdatedEventData
+            setOperationalDetails(ResourceNotificationsOperationalDetails operationalDetails) {
+            this.operationalDetails = operationalDetails;
+            return this;
+        }
 
-    /**
-     * Get the apiVersion property: api version of the resource properties bag.
-     *
-     * @return the apiVersion value.
-     */
-    @Generated
-    public String getApiVersion() {
-        return this.apiVersion;
-    }
+        /**
+         * Get the apiVersion property: api version of the resource properties bag.
+         *
+         * @return the apiVersion value.
+         */
+        @Generated
+        public String getApiVersion() {
+            return this.apiVersion;
+        }
 
-    /**
-     * Set the apiVersion property: api version of the resource properties bag.
-     *
-     * @param apiVersion the apiVersion value to set.
-     * @return the ResourceNotificationsResourceUpdatedEventData object itself.
-     */
-    @Generated
-    public ResourceNotificationsResourceUpdatedEventData setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-        return this;
-    }
+        /**
+         * Set the apiVersion property: api version of the resource properties bag.
+         *
+         * @param apiVersion the apiVersion value to set.
+         * @return the ResourceNotificationsResourceUpdatedEventData object itself.
+         */
+        @Generated
+        public ResourceNotificationsResourceUpdatedEventData setApiVersion(String apiVersion) {
+            this.apiVersion = apiVersion;
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("resourceInfo", this.resourceDetails);
-        jsonWriter.writeJsonField("operationalInfo", this.operationalDetails);
-        jsonWriter.writeStringField("apiVersion", this.apiVersion);
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeJsonField("resourceInfo", this.resourceDetails);
+            jsonWriter.writeJsonField("operationalInfo", this.operationalDetails);
+            jsonWriter.writeStringField("apiVersion", this.apiVersion);
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of ResourceNotificationsResourceUpdatedEventData from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ResourceNotificationsResourceUpdatedEventData if the JsonReader was pointing to an
-     * instance of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ResourceNotificationsResourceUpdatedEventData.
-     */
-    @Generated
-    public static ResourceNotificationsResourceUpdatedEventData fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ResourceNotificationsResourceUpdatedEventData deserializedResourceNotificationsResourceUpdatedEventData
-                = new ResourceNotificationsResourceUpdatedEventData();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("resourceInfo".equals(fieldName)) {
-                    deserializedResourceNotificationsResourceUpdatedEventData.resourceDetails
-                        = ResourceNotificationsResourceUpdatedDetails.fromJson(reader);
-                } else if ("operationalInfo".equals(fieldName)) {
-                    deserializedResourceNotificationsResourceUpdatedEventData.operationalDetails
-                        = ResourceNotificationsOperationalDetails.fromJson(reader);
-                } else if ("apiVersion".equals(fieldName)) {
-                    deserializedResourceNotificationsResourceUpdatedEventData.apiVersion = reader.getString();
-                } else {
-                    reader.skipChildren();
+        /**
+         * Reads an instance of ResourceNotificationsResourceUpdatedEventData from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of ResourceNotificationsResourceUpdatedEventData if the JsonReader was pointing to an
+         * instance of it, or null if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the ResourceNotificationsResourceUpdatedEventData.
+         */
+        @Generated
+        public static ResourceNotificationsResourceUpdatedEventData fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                ResourceNotificationsResourceUpdatedEventData deserializedResourceNotificationsResourceUpdatedEventData
+                    = new ResourceNotificationsResourceUpdatedEventData();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("resourceInfo".equals(fieldName)) {
+                        deserializedResourceNotificationsResourceUpdatedEventData.resourceDetails
+                            = ResourceNotificationsResourceUpdatedDetails.fromJson(reader);
+                    } else if ("operationalInfo".equals(fieldName)) {
+                        deserializedResourceNotificationsResourceUpdatedEventData.operationalDetails
+                            = ResourceNotificationsOperationalDetails.fromJson(reader);
+                    } else if ("apiVersion".equals(fieldName)) {
+                        deserializedResourceNotificationsResourceUpdatedEventData.apiVersion = reader.getString();
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
-            return deserializedResourceNotificationsResourceUpdatedEventData;
-        });
-    }
+                return deserializedResourceNotificationsResourceUpdatedEventData;
+            });
+        }
 }

@@ -14,205 +14,207 @@ import java.io.IOException;
 
 /**
  * sku of app service plan.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class WebAppServicePlanUpdatedEventDataSku
     implements JsonSerializable<WebAppServicePlanUpdatedEventDataSku> {
-    /*
-     * name of app service plan sku.
-     */
-    @Generated
-    private String name;
+        /*
+         * name of app service plan sku.
+         */
+        @Generated
+        private String name;
 
-    /*
-     * tier of app service plan sku.
-     */
-    @Generated
-    private String tier;
+        /*
+         * tier of app service plan sku.
+         */
+        @Generated
+        private String tier;
 
-    /*
-     * size of app service plan sku.
-     */
-    @Generated
-    private String size;
+        /*
+         * size of app service plan sku.
+         */
+        @Generated
+        private String size;
 
-    /*
-     * family of app service plan sku.
-     */
-    @Generated
-    private String family;
+        /*
+         * family of app service plan sku.
+         */
+        @Generated
+        private String family;
 
-    /*
-     * capacity of app service plan sku.
-     */
-    @Generated
-    private String capacity;
+        /*
+         * capacity of app service plan sku.
+         */
+        @Generated
+        private String capacity;
 
-    /**
-     * Creates an instance of WebAppServicePlanUpdatedEventDataSku class.
-     */
-    @Generated
-    public WebAppServicePlanUpdatedEventDataSku() {
-    }
+        /**
+         * Creates an instance of WebAppServicePlanUpdatedEventDataSku class.
+         */
+        @Generated
+        public WebAppServicePlanUpdatedEventDataSku() {
+        }
 
-    /**
-     * Get the name property: name of app service plan sku.
-     * 
-     * @return the name value.
-     */
-    @Generated
-    public String getName() {
-        return this.name;
-    }
+        /**
+         * Get the name property: name of app service plan sku.
+         *
+         * @return the name value.
+         */
+        @Generated
+        public String getName() {
+            return this.name;
+        }
 
-    /**
-     * Set the name property: name of app service plan sku.
-     * 
-     * @param name the name value to set.
-     * @return the WebAppServicePlanUpdatedEventDataSku object itself.
-     */
-    @Generated
-    public WebAppServicePlanUpdatedEventDataSku setName(String name) {
-        this.name = name;
-        return this;
-    }
+        /**
+         * Set the name property: name of app service plan sku.
+         *
+         * @param name the name value to set.
+         * @return the WebAppServicePlanUpdatedEventDataSku object itself.
+         */
+        @Generated
+        public WebAppServicePlanUpdatedEventDataSku setName(String name) {
+            this.name = name;
+            return this;
+        }
 
-    /**
-     * Get the tier property: tier of app service plan sku.
-     * 
-     * @return the tier value.
-     */
-    @Generated
-    public String getTier() {
-        return this.tier;
-    }
+        /**
+         * Get the tier property: tier of app service plan sku.
+         *
+         * @return the tier value.
+         */
+        @Generated
+        public String getTier() {
+            return this.tier;
+        }
 
-    /**
-     * Set the tier property: tier of app service plan sku.
-     * 
-     * @param tier the tier value to set.
-     * @return the WebAppServicePlanUpdatedEventDataSku object itself.
-     */
-    @Generated
-    public WebAppServicePlanUpdatedEventDataSku setTier(String tier) {
-        this.tier = tier;
-        return this;
-    }
+        /**
+         * Set the tier property: tier of app service plan sku.
+         *
+         * @param tier the tier value to set.
+         * @return the WebAppServicePlanUpdatedEventDataSku object itself.
+         */
+        @Generated
+        public WebAppServicePlanUpdatedEventDataSku setTier(String tier) {
+            this.tier = tier;
+            return this;
+        }
 
-    /**
-     * Get the size property: size of app service plan sku.
-     * 
-     * @return the size value.
-     */
-    @Generated
-    public String getSize() {
-        return this.size;
-    }
+        /**
+         * Get the size property: size of app service plan sku.
+         *
+         * @return the size value.
+         */
+        @Generated
+        public String getSize() {
+            return this.size;
+        }
 
-    /**
-     * Set the size property: size of app service plan sku.
-     * 
-     * @param size the size value to set.
-     * @return the WebAppServicePlanUpdatedEventDataSku object itself.
-     */
-    @Generated
-    public WebAppServicePlanUpdatedEventDataSku setSize(String size) {
-        this.size = size;
-        return this;
-    }
+        /**
+         * Set the size property: size of app service plan sku.
+         *
+         * @param size the size value to set.
+         * @return the WebAppServicePlanUpdatedEventDataSku object itself.
+         */
+        @Generated
+        public WebAppServicePlanUpdatedEventDataSku setSize(String size) {
+            this.size = size;
+            return this;
+        }
 
-    /**
-     * Get the family property: family of app service plan sku.
-     * 
-     * @return the family value.
-     */
-    @Generated
-    public String getFamily() {
-        return this.family;
-    }
+        /**
+         * Get the family property: family of app service plan sku.
+         *
+         * @return the family value.
+         */
+        @Generated
+        public String getFamily() {
+            return this.family;
+        }
 
-    /**
-     * Set the family property: family of app service plan sku.
-     * 
-     * @param family the family value to set.
-     * @return the WebAppServicePlanUpdatedEventDataSku object itself.
-     */
-    @Generated
-    public WebAppServicePlanUpdatedEventDataSku setFamily(String family) {
-        this.family = family;
-        return this;
-    }
+        /**
+         * Set the family property: family of app service plan sku.
+         *
+         * @param family the family value to set.
+         * @return the WebAppServicePlanUpdatedEventDataSku object itself.
+         */
+        @Generated
+        public WebAppServicePlanUpdatedEventDataSku setFamily(String family) {
+            this.family = family;
+            return this;
+        }
 
-    /**
-     * Get the capacity property: capacity of app service plan sku.
-     * 
-     * @return the capacity value.
-     */
-    @Generated
-    public String getCapacity() {
-        return this.capacity;
-    }
+        /**
+         * Get the capacity property: capacity of app service plan sku.
+         *
+         * @return the capacity value.
+         */
+        @Generated
+        public String getCapacity() {
+            return this.capacity;
+        }
 
-    /**
-     * Set the capacity property: capacity of app service plan sku.
-     * 
-     * @param capacity the capacity value to set.
-     * @return the WebAppServicePlanUpdatedEventDataSku object itself.
-     */
-    @Generated
-    public WebAppServicePlanUpdatedEventDataSku setCapacity(String capacity) {
-        this.capacity = capacity;
-        return this;
-    }
+        /**
+         * Set the capacity property: capacity of app service plan sku.
+         *
+         * @param capacity the capacity value to set.
+         * @return the WebAppServicePlanUpdatedEventDataSku object itself.
+         */
+        @Generated
+        public WebAppServicePlanUpdatedEventDataSku setCapacity(String capacity) {
+            this.capacity = capacity;
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("Tier", this.tier);
-        jsonWriter.writeStringField("Size", this.size);
-        jsonWriter.writeStringField("Family", this.family);
-        jsonWriter.writeStringField("Capacity", this.capacity);
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("name", this.name);
+            jsonWriter.writeStringField("Tier", this.tier);
+            jsonWriter.writeStringField("Size", this.size);
+            jsonWriter.writeStringField("Family", this.family);
+            jsonWriter.writeStringField("Capacity", this.capacity);
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of WebAppServicePlanUpdatedEventDataSku from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of WebAppServicePlanUpdatedEventDataSku if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the WebAppServicePlanUpdatedEventDataSku.
-     */
-    @Generated
-    public static WebAppServicePlanUpdatedEventDataSku fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            WebAppServicePlanUpdatedEventDataSku deserializedWebAppServicePlanUpdatedEventDataSku
-                = new WebAppServicePlanUpdatedEventDataSku();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        /**
+         * Reads an instance of WebAppServicePlanUpdatedEventDataSku from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of WebAppServicePlanUpdatedEventDataSku if the JsonReader was pointing to an instance of it,
+         * or null if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the WebAppServicePlanUpdatedEventDataSku.
+         */
+        @Generated
+        public static WebAppServicePlanUpdatedEventDataSku fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                WebAppServicePlanUpdatedEventDataSku deserializedWebAppServicePlanUpdatedEventDataSku
+                    = new WebAppServicePlanUpdatedEventDataSku();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
 
-                if ("name".equals(fieldName)) {
-                    deserializedWebAppServicePlanUpdatedEventDataSku.name = reader.getString();
-                } else if ("Tier".equals(fieldName)) {
-                    deserializedWebAppServicePlanUpdatedEventDataSku.tier = reader.getString();
-                } else if ("Size".equals(fieldName)) {
-                    deserializedWebAppServicePlanUpdatedEventDataSku.size = reader.getString();
-                } else if ("Family".equals(fieldName)) {
-                    deserializedWebAppServicePlanUpdatedEventDataSku.family = reader.getString();
-                } else if ("Capacity".equals(fieldName)) {
-                    deserializedWebAppServicePlanUpdatedEventDataSku.capacity = reader.getString();
-                } else {
-                    reader.skipChildren();
+                    if ("name".equals(fieldName)) {
+                        deserializedWebAppServicePlanUpdatedEventDataSku.name = reader.getString();
+                    } else if ("Tier".equals(fieldName)) {
+                        deserializedWebAppServicePlanUpdatedEventDataSku.tier = reader.getString();
+                    } else if ("Size".equals(fieldName)) {
+                        deserializedWebAppServicePlanUpdatedEventDataSku.size = reader.getString();
+                    } else if ("Family".equals(fieldName)) {
+                        deserializedWebAppServicePlanUpdatedEventDataSku.family = reader.getString();
+                    } else if ("Capacity".equals(fieldName)) {
+                        deserializedWebAppServicePlanUpdatedEventDataSku.capacity = reader.getString();
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
 
-            return deserializedWebAppServicePlanUpdatedEventDataSku;
-        });
-    }
+                return deserializedWebAppServicePlanUpdatedEventDataSku;
+            });
+        }
 }

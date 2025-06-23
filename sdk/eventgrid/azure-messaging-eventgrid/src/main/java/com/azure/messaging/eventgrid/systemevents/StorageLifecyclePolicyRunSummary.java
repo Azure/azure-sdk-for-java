@@ -14,83 +14,85 @@ import java.io.IOException;
 
 /**
  * Policy run status of an account in a Blob Management cycle.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class StorageLifecyclePolicyRunSummary implements JsonSerializable<StorageLifecyclePolicyRunSummary> {
-    /*
-     * Policy status can be Completed/CompletedWithError/Incomplete.
-     */
-    @Generated
-    private StorageLifecycleCompletionStatus completionStatus;
+        /*
+         * Policy status can be Completed/CompletedWithError/Incomplete.
+         */
+        @Generated
+        private StorageLifecycleCompletionStatus completionStatus;
 
-    /**
-     * Creates an instance of StorageLifecyclePolicyRunSummary class.
-     */
-    @Generated
-    public StorageLifecyclePolicyRunSummary() {
-    }
+        /**
+         * Creates an instance of StorageLifecyclePolicyRunSummary class.
+         */
+        @Generated
+        public StorageLifecyclePolicyRunSummary() {
+        }
 
-    /**
-     * Get the completionStatus property: Policy status can be Completed/CompletedWithError/Incomplete.
-     * 
-     * @return the completionStatus value.
-     */
-    @Generated
-    public StorageLifecycleCompletionStatus getCompletionStatus() {
-        return this.completionStatus;
-    }
+        /**
+         * Get the completionStatus property: Policy status can be Completed/CompletedWithError/Incomplete.
+         *
+         * @return the completionStatus value.
+         */
+        @Generated
+        public StorageLifecycleCompletionStatus getCompletionStatus() {
+            return this.completionStatus;
+        }
 
-    /**
-     * Set the completionStatus property: Policy status can be Completed/CompletedWithError/Incomplete.
-     * 
-     * @param completionStatus the completionStatus value to set.
-     * @return the StorageLifecyclePolicyRunSummary object itself.
-     */
-    @Generated
-    public StorageLifecyclePolicyRunSummary setCompletionStatus(StorageLifecycleCompletionStatus completionStatus) {
-        this.completionStatus = completionStatus;
-        return this;
-    }
+        /**
+         * Set the completionStatus property: Policy status can be Completed/CompletedWithError/Incomplete.
+         *
+         * @param completionStatus the completionStatus value to set.
+         * @return the StorageLifecyclePolicyRunSummary object itself.
+         */
+        @Generated
+        public StorageLifecyclePolicyRunSummary setCompletionStatus(StorageLifecycleCompletionStatus completionStatus) {
+            this.completionStatus = completionStatus;
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("completionStatus",
-            this.completionStatus == null ? null : this.completionStatus.toString());
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("completionStatus",
+                this.completionStatus == null ? null : this.completionStatus.toString());
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of StorageLifecyclePolicyRunSummary from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of StorageLifecyclePolicyRunSummary if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the StorageLifecyclePolicyRunSummary.
-     */
-    @Generated
-    public static StorageLifecyclePolicyRunSummary fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            StorageLifecyclePolicyRunSummary deserializedStorageLifecyclePolicyRunSummary
-                = new StorageLifecyclePolicyRunSummary();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        /**
+         * Reads an instance of StorageLifecyclePolicyRunSummary from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of StorageLifecyclePolicyRunSummary if the JsonReader was pointing to an instance of it, or
+         * null if it was pointing to JSON null.
+         * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+         * @throws IOException If an error occurs while reading the StorageLifecyclePolicyRunSummary.
+         */
+        @Generated
+        public static StorageLifecyclePolicyRunSummary fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                StorageLifecyclePolicyRunSummary deserializedStorageLifecyclePolicyRunSummary
+                    = new StorageLifecyclePolicyRunSummary();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
 
-                if ("completionStatus".equals(fieldName)) {
-                    deserializedStorageLifecyclePolicyRunSummary.completionStatus
-                        = StorageLifecycleCompletionStatus.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
+                    if ("completionStatus".equals(fieldName)) {
+                        deserializedStorageLifecyclePolicyRunSummary.completionStatus
+                            = StorageLifecycleCompletionStatus.fromString(reader.getString());
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
 
-            return deserializedStorageLifecyclePolicyRunSummary;
-        });
-    }
+                return deserializedStorageLifecyclePolicyRunSummary;
+            });
+        }
 }

@@ -12,61 +12,63 @@ import java.io.IOException;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.AVS.PrivateCloudUpdating event.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class AvsPrivateCloudUpdatingEventData extends AvsPrivateCloudEventData {
 
-    /**
-     * Creates an instance of AvsPrivateCloudUpdatingEventData class.
-     */
-    @Generated
-    public AvsPrivateCloudUpdatingEventData() {
-    }
+        /**
+         * Creates an instance of AvsPrivateCloudUpdatingEventData class.
+         */
+        @Generated
+        public AvsPrivateCloudUpdatingEventData() {
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public AvsPrivateCloudUpdatingEventData setOperationId(String operationId) {
-        super.setOperationId(operationId);
-        return this;
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public AvsPrivateCloudUpdatingEventData setOperationId(String operationId) {
+            super.setOperationId(operationId);
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("operationId", getOperationId());
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("operationId", getOperationId());
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of AvsPrivateCloudUpdatingEventData from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AvsPrivateCloudUpdatingEventData if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AvsPrivateCloudUpdatingEventData.
-     */
-    @Generated
-    public static AvsPrivateCloudUpdatingEventData fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AvsPrivateCloudUpdatingEventData deserializedAvsPrivateCloudUpdatingEventData
-                = new AvsPrivateCloudUpdatingEventData();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("operationId".equals(fieldName)) {
-                    deserializedAvsPrivateCloudUpdatingEventData.setOperationId(reader.getString());
-                } else {
-                    reader.skipChildren();
+        /**
+         * Reads an instance of AvsPrivateCloudUpdatingEventData from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of AvsPrivateCloudUpdatingEventData if the JsonReader was pointing to an instance of it, or
+         * null if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the AvsPrivateCloudUpdatingEventData.
+         */
+        @Generated
+        public static AvsPrivateCloudUpdatingEventData fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                AvsPrivateCloudUpdatingEventData deserializedAvsPrivateCloudUpdatingEventData
+                    = new AvsPrivateCloudUpdatingEventData();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("operationId".equals(fieldName)) {
+                        deserializedAvsPrivateCloudUpdatingEventData.setOperationId(reader.getString());
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
-            return deserializedAvsPrivateCloudUpdatingEventData;
-        });
-    }
+                return deserializedAvsPrivateCloudUpdatingEventData;
+            });
+        }
 }

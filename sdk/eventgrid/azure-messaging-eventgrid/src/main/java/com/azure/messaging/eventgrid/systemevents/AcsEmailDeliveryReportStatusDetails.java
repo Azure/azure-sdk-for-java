@@ -15,6 +15,7 @@ import java.io.IOException;
 /**
  * Detailed information about the status if any.
  */
+@Deprecated
 @Fluent
 public final class AcsEmailDeliveryReportStatusDetails
     implements JsonSerializable<AcsEmailDeliveryReportStatusDetails> {
@@ -39,7 +40,7 @@ public final class AcsEmailDeliveryReportStatusDetails
 
     /**
      * Get the recipientMailServerHostName property: Recipient Mail Server Host Name.
-     * 
+     *
      * @return the recipientMailServerHostName value.
      */
     @Generated
@@ -49,7 +50,7 @@ public final class AcsEmailDeliveryReportStatusDetails
 
     /**
      * Set the recipientMailServerHostName property: Recipient Mail Server Host Name.
-     * 
+     *
      * @param recipientMailServerHostName the recipientMailServerHostName value to set.
      * @return the AcsEmailDeliveryReportStatusDetails object itself.
      */
@@ -61,7 +62,7 @@ public final class AcsEmailDeliveryReportStatusDetails
 
     /**
      * Get the statusMessage property: Detailed status message.
-     * 
+     *
      * @return the statusMessage value.
      */
     @Generated
@@ -71,7 +72,7 @@ public final class AcsEmailDeliveryReportStatusDetails
 
     /**
      * Set the statusMessage property: Detailed status message.
-     * 
+     *
      * @param statusMessage the statusMessage value to set.
      * @return the AcsEmailDeliveryReportStatusDetails object itself.
      */
@@ -95,7 +96,7 @@ public final class AcsEmailDeliveryReportStatusDetails
 
     /**
      * Reads an instance of AcsEmailDeliveryReportStatusDetails from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsEmailDeliveryReportStatusDetails if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.

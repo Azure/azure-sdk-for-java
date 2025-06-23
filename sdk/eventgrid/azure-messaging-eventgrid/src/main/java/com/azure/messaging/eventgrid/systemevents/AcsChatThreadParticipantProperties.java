@@ -16,6 +16,7 @@ import java.util.Map;
 /**
  * Schema of the chat thread participant.
  */
+@Deprecated
 @Fluent
 public final class AcsChatThreadParticipantProperties implements JsonSerializable<AcsChatThreadParticipantProperties> {
     /*
@@ -45,7 +46,7 @@ public final class AcsChatThreadParticipantProperties implements JsonSerializabl
 
     /**
      * Get the displayName property: The name of the user.
-     * 
+     *
      * @return the displayName value.
      */
     @Generated
@@ -55,7 +56,7 @@ public final class AcsChatThreadParticipantProperties implements JsonSerializabl
 
     /**
      * Set the displayName property: The name of the user.
-     * 
+     *
      * @param displayName the displayName value to set.
      * @return the AcsChatThreadParticipantProperties object itself.
      */
@@ -67,7 +68,7 @@ public final class AcsChatThreadParticipantProperties implements JsonSerializabl
 
     /**
      * Get the participantCommunicationIdentifier property: The communication identifier of the user.
-     * 
+     *
      * @return the participantCommunicationIdentifier value.
      */
     @Generated
@@ -77,7 +78,7 @@ public final class AcsChatThreadParticipantProperties implements JsonSerializabl
 
     /**
      * Set the participantCommunicationIdentifier property: The communication identifier of the user.
-     * 
+     *
      * @param participantCommunicationIdentifier the participantCommunicationIdentifier value to set.
      * @return the AcsChatThreadParticipantProperties object itself.
      */
@@ -90,7 +91,7 @@ public final class AcsChatThreadParticipantProperties implements JsonSerializabl
 
     /**
      * Get the metadata property: The metadata of the user.
-     * 
+     *
      * @return the metadata value.
      */
     @Generated
@@ -100,7 +101,7 @@ public final class AcsChatThreadParticipantProperties implements JsonSerializabl
 
     /**
      * Set the metadata property: The metadata of the user.
-     * 
+     *
      * @param metadata the metadata value to set.
      * @return the AcsChatThreadParticipantProperties object itself.
      */
@@ -125,7 +126,7 @@ public final class AcsChatThreadParticipantProperties implements JsonSerializabl
 
     /**
      * Reads an instance of AcsChatThreadParticipantProperties from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsChatThreadParticipantProperties if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.

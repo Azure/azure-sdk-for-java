@@ -13,191 +13,193 @@ import java.util.Map;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobExceptionTriggered event.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class AcsRouterJobExceptionTriggeredEventData extends AcsRouterJobEventData {
 
-    /*
-     * Router Job Exception Triggered Rule Key
-     */
-    @Generated
-    private String ruleKey;
+        /*
+         * Router Job Exception Triggered Rule Key
+         */
+        @Generated
+        private String ruleKey;
 
-    /*
-     * Router Job Exception Triggered Rule Id
-     */
-    @Generated
-    private String exceptionRuleId;
+        /*
+         * Router Job Exception Triggered Rule Id
+         */
+        @Generated
+        private String exceptionRuleId;
 
-    /**
-     * Creates an instance of AcsRouterJobExceptionTriggeredEventData class.
-     */
-    @Generated
-    public AcsRouterJobExceptionTriggeredEventData() {
-    }
+        /**
+         * Creates an instance of AcsRouterJobExceptionTriggeredEventData class.
+         */
+        @Generated
+        public AcsRouterJobExceptionTriggeredEventData() {
+        }
 
-    /**
-     * Get the ruleKey property: Router Job Exception Triggered Rule Key.
-     *
-     * @return the ruleKey value.
-     */
-    @Generated
-    public String getRuleKey() {
-        return this.ruleKey;
-    }
+        /**
+         * Get the ruleKey property: Router Job Exception Triggered Rule Key.
+         *
+         * @return the ruleKey value.
+         */
+        @Generated
+        public String getRuleKey() {
+            return this.ruleKey;
+        }
 
-    /**
-     * Set the ruleKey property: Router Job Exception Triggered Rule Key.
-     *
-     * @param ruleKey the ruleKey value to set.
-     * @return the AcsRouterJobExceptionTriggeredEventData object itself.
-     */
-    @Generated
-    public AcsRouterJobExceptionTriggeredEventData setRuleKey(String ruleKey) {
-        this.ruleKey = ruleKey;
-        return this;
-    }
+        /**
+         * Set the ruleKey property: Router Job Exception Triggered Rule Key.
+         *
+         * @param ruleKey the ruleKey value to set.
+         * @return the AcsRouterJobExceptionTriggeredEventData object itself.
+         */
+        @Generated
+        public AcsRouterJobExceptionTriggeredEventData setRuleKey(String ruleKey) {
+            this.ruleKey = ruleKey;
+            return this;
+        }
 
-    /**
-     * Get the exceptionRuleId property: Router Job Exception Triggered Rule Id.
-     *
-     * @return the exceptionRuleId value.
-     */
-    @Generated
-    public String getExceptionRuleId() {
-        return this.exceptionRuleId;
-    }
+        /**
+         * Get the exceptionRuleId property: Router Job Exception Triggered Rule Id.
+         *
+         * @return the exceptionRuleId value.
+         */
+        @Generated
+        public String getExceptionRuleId() {
+            return this.exceptionRuleId;
+        }
 
-    /**
-     * Set the exceptionRuleId property: Router Job Exception Triggered Rule Id.
-     *
-     * @param exceptionRuleId the exceptionRuleId value to set.
-     * @return the AcsRouterJobExceptionTriggeredEventData object itself.
-     */
-    @Generated
-    public AcsRouterJobExceptionTriggeredEventData setExceptionRuleId(String exceptionRuleId) {
-        this.exceptionRuleId = exceptionRuleId;
-        return this;
-    }
+        /**
+         * Set the exceptionRuleId property: Router Job Exception Triggered Rule Id.
+         *
+         * @param exceptionRuleId the exceptionRuleId value to set.
+         * @return the AcsRouterJobExceptionTriggeredEventData object itself.
+         */
+        @Generated
+        public AcsRouterJobExceptionTriggeredEventData setExceptionRuleId(String exceptionRuleId) {
+            this.exceptionRuleId = exceptionRuleId;
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public AcsRouterJobExceptionTriggeredEventData setQueueId(String queueId) {
-        super.setQueueId(queueId);
-        return this;
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public AcsRouterJobExceptionTriggeredEventData setQueueId(String queueId) {
+            super.setQueueId(queueId);
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public AcsRouterJobExceptionTriggeredEventData setLabels(Map<String, String> labels) {
-        super.setLabels(labels);
-        return this;
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public AcsRouterJobExceptionTriggeredEventData setLabels(Map<String, String> labels) {
+            super.setLabels(labels);
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public AcsRouterJobExceptionTriggeredEventData setTags(Map<String, String> tags) {
-        super.setTags(tags);
-        return this;
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public AcsRouterJobExceptionTriggeredEventData setTags(Map<String, String> tags) {
+            super.setTags(tags);
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public AcsRouterJobExceptionTriggeredEventData setJobId(String jobId) {
-        super.setJobId(jobId);
-        return this;
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public AcsRouterJobExceptionTriggeredEventData setJobId(String jobId) {
+            super.setJobId(jobId);
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public AcsRouterJobExceptionTriggeredEventData setChannelReference(String channelReference) {
-        super.setChannelReference(channelReference);
-        return this;
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public AcsRouterJobExceptionTriggeredEventData setChannelReference(String channelReference) {
+            super.setChannelReference(channelReference);
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public AcsRouterJobExceptionTriggeredEventData setChannelId(String channelId) {
-        super.setChannelId(channelId);
-        return this;
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public AcsRouterJobExceptionTriggeredEventData setChannelId(String channelId) {
+            super.setChannelId(channelId);
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("jobId", getJobId());
-        jsonWriter.writeStringField("channelReference", getChannelReference());
-        jsonWriter.writeStringField("channelId", getChannelId());
-        jsonWriter.writeStringField("queueId", getQueueId());
-        jsonWriter.writeStringField("ruleKey", this.ruleKey);
-        jsonWriter.writeStringField("exceptionRuleId", this.exceptionRuleId);
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
+            jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
+            jsonWriter.writeStringField("jobId", getJobId());
+            jsonWriter.writeStringField("channelReference", getChannelReference());
+            jsonWriter.writeStringField("channelId", getChannelId());
+            jsonWriter.writeStringField("queueId", getQueueId());
+            jsonWriter.writeStringField("ruleKey", this.ruleKey);
+            jsonWriter.writeStringField("exceptionRuleId", this.exceptionRuleId);
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of AcsRouterJobExceptionTriggeredEventData from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AcsRouterJobExceptionTriggeredEventData if the JsonReader was pointing to an instance of
-     * it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AcsRouterJobExceptionTriggeredEventData.
-     */
-    @Generated
-    public static AcsRouterJobExceptionTriggeredEventData fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AcsRouterJobExceptionTriggeredEventData deserializedAcsRouterJobExceptionTriggeredEventData
-                = new AcsRouterJobExceptionTriggeredEventData();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("labels".equals(fieldName)) {
-                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAcsRouterJobExceptionTriggeredEventData.setLabels(labels);
-                } else if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAcsRouterJobExceptionTriggeredEventData.setTags(tags);
-                } else if ("jobId".equals(fieldName)) {
-                    deserializedAcsRouterJobExceptionTriggeredEventData.setJobId(reader.getString());
-                } else if ("channelReference".equals(fieldName)) {
-                    deserializedAcsRouterJobExceptionTriggeredEventData.setChannelReference(reader.getString());
-                } else if ("channelId".equals(fieldName)) {
-                    deserializedAcsRouterJobExceptionTriggeredEventData.setChannelId(reader.getString());
-                } else if ("queueId".equals(fieldName)) {
-                    deserializedAcsRouterJobExceptionTriggeredEventData.setQueueId(reader.getString());
-                } else if ("ruleKey".equals(fieldName)) {
-                    deserializedAcsRouterJobExceptionTriggeredEventData.ruleKey = reader.getString();
-                } else if ("exceptionRuleId".equals(fieldName)) {
-                    deserializedAcsRouterJobExceptionTriggeredEventData.exceptionRuleId = reader.getString();
-                } else {
-                    reader.skipChildren();
+        /**
+         * Reads an instance of AcsRouterJobExceptionTriggeredEventData from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of AcsRouterJobExceptionTriggeredEventData if the JsonReader was pointing to an instance of
+         * it, or null if it was pointing to JSON null.
+         * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+         * @throws IOException If an error occurs while reading the AcsRouterJobExceptionTriggeredEventData.
+         */
+        @Generated
+        public static AcsRouterJobExceptionTriggeredEventData fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                AcsRouterJobExceptionTriggeredEventData deserializedAcsRouterJobExceptionTriggeredEventData
+                    = new AcsRouterJobExceptionTriggeredEventData();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("labels".equals(fieldName)) {
+                        Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
+                        deserializedAcsRouterJobExceptionTriggeredEventData.setLabels(labels);
+                    } else if ("tags".equals(fieldName)) {
+                        Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                        deserializedAcsRouterJobExceptionTriggeredEventData.setTags(tags);
+                    } else if ("jobId".equals(fieldName)) {
+                        deserializedAcsRouterJobExceptionTriggeredEventData.setJobId(reader.getString());
+                    } else if ("channelReference".equals(fieldName)) {
+                        deserializedAcsRouterJobExceptionTriggeredEventData.setChannelReference(reader.getString());
+                    } else if ("channelId".equals(fieldName)) {
+                        deserializedAcsRouterJobExceptionTriggeredEventData.setChannelId(reader.getString());
+                    } else if ("queueId".equals(fieldName)) {
+                        deserializedAcsRouterJobExceptionTriggeredEventData.setQueueId(reader.getString());
+                    } else if ("ruleKey".equals(fieldName)) {
+                        deserializedAcsRouterJobExceptionTriggeredEventData.ruleKey = reader.getString();
+                    } else if ("exceptionRuleId".equals(fieldName)) {
+                        deserializedAcsRouterJobExceptionTriggeredEventData.exceptionRuleId = reader.getString();
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
-            return deserializedAcsRouterJobExceptionTriggeredEventData;
-        });
-    }
+                return deserializedAcsRouterJobExceptionTriggeredEventData;
+            });
+        }
 }

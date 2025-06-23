@@ -14,235 +14,237 @@ import java.io.IOException;
 
 /**
  * Schema for all properties of Recording Chunk Information.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class AcsRecordingChunkInfoProperties implements JsonSerializable<AcsRecordingChunkInfoProperties> {
-    /*
-     * The documentId of the recording chunk
-     */
-    @Generated
-    private String documentId;
+        /*
+         * The documentId of the recording chunk
+         */
+        @Generated
+        private String documentId;
 
-    /*
-     * The index of the recording chunk
-     */
-    @Generated
-    private Long index;
+        /*
+         * The index of the recording chunk
+         */
+        @Generated
+        private Long index;
 
-    /*
-     * The reason for ending the recording chunk
-     */
-    @Generated
-    private String endReason;
+        /*
+         * The reason for ending the recording chunk
+         */
+        @Generated
+        private String endReason;
 
-    /*
-     * The location of the metadata for this chunk
-     */
-    @Generated
-    private String metadataLocation;
+        /*
+         * The location of the metadata for this chunk
+         */
+        @Generated
+        private String metadataLocation;
 
-    /*
-     * The location of the content for this chunk
-     */
-    @Generated
-    private String contentLocation;
+        /*
+         * The location of the content for this chunk
+         */
+        @Generated
+        private String contentLocation;
 
-    /*
-     * The location to delete all chunk storage
-     */
-    @Generated
-    private String deleteLocation;
+        /*
+         * The location to delete all chunk storage
+         */
+        @Generated
+        private String deleteLocation;
 
-    /**
-     * Creates an instance of AcsRecordingChunkInfoProperties class.
-     */
-    @Generated
-    public AcsRecordingChunkInfoProperties() {
-    }
+        /**
+         * Creates an instance of AcsRecordingChunkInfoProperties class.
+         */
+        @Generated
+        public AcsRecordingChunkInfoProperties() {
+        }
 
-    /**
-     * Get the documentId property: The documentId of the recording chunk.
-     * 
-     * @return the documentId value.
-     */
-    @Generated
-    public String getDocumentId() {
-        return this.documentId;
-    }
+        /**
+         * Get the documentId property: The documentId of the recording chunk.
+         *
+         * @return the documentId value.
+         */
+        @Generated
+        public String getDocumentId() {
+            return this.documentId;
+        }
 
-    /**
-     * Set the documentId property: The documentId of the recording chunk.
-     * 
-     * @param documentId the documentId value to set.
-     * @return the AcsRecordingChunkInfoProperties object itself.
-     */
-    @Generated
-    public AcsRecordingChunkInfoProperties setDocumentId(String documentId) {
-        this.documentId = documentId;
-        return this;
-    }
+        /**
+         * Set the documentId property: The documentId of the recording chunk.
+         *
+         * @param documentId the documentId value to set.
+         * @return the AcsRecordingChunkInfoProperties object itself.
+         */
+        @Generated
+        public AcsRecordingChunkInfoProperties setDocumentId(String documentId) {
+            this.documentId = documentId;
+            return this;
+        }
 
-    /**
-     * Get the index property: The index of the recording chunk.
-     * 
-     * @return the index value.
-     */
-    @Generated
-    public Long getIndex() {
-        return this.index;
-    }
+        /**
+         * Get the index property: The index of the recording chunk.
+         *
+         * @return the index value.
+         */
+        @Generated
+        public Long getIndex() {
+            return this.index;
+        }
 
-    /**
-     * Set the index property: The index of the recording chunk.
-     * 
-     * @param index the index value to set.
-     * @return the AcsRecordingChunkInfoProperties object itself.
-     */
-    @Generated
-    public AcsRecordingChunkInfoProperties setIndex(Long index) {
-        this.index = index;
-        return this;
-    }
+        /**
+         * Set the index property: The index of the recording chunk.
+         *
+         * @param index the index value to set.
+         * @return the AcsRecordingChunkInfoProperties object itself.
+         */
+        @Generated
+        public AcsRecordingChunkInfoProperties setIndex(Long index) {
+            this.index = index;
+            return this;
+        }
 
-    /**
-     * Get the endReason property: The reason for ending the recording chunk.
-     * 
-     * @return the endReason value.
-     */
-    @Generated
-    public String getEndReason() {
-        return this.endReason;
-    }
+        /**
+         * Get the endReason property: The reason for ending the recording chunk.
+         *
+         * @return the endReason value.
+         */
+        @Generated
+        public String getEndReason() {
+            return this.endReason;
+        }
 
-    /**
-     * Set the endReason property: The reason for ending the recording chunk.
-     * 
-     * @param endReason the endReason value to set.
-     * @return the AcsRecordingChunkInfoProperties object itself.
-     */
-    @Generated
-    public AcsRecordingChunkInfoProperties setEndReason(String endReason) {
-        this.endReason = endReason;
-        return this;
-    }
+        /**
+         * Set the endReason property: The reason for ending the recording chunk.
+         *
+         * @param endReason the endReason value to set.
+         * @return the AcsRecordingChunkInfoProperties object itself.
+         */
+        @Generated
+        public AcsRecordingChunkInfoProperties setEndReason(String endReason) {
+            this.endReason = endReason;
+            return this;
+        }
 
-    /**
-     * Get the metadataLocation property: The location of the metadata for this chunk.
-     * 
-     * @return the metadataLocation value.
-     */
-    @Generated
-    public String getMetadataLocation() {
-        return this.metadataLocation;
-    }
+        /**
+         * Get the metadataLocation property: The location of the metadata for this chunk.
+         *
+         * @return the metadataLocation value.
+         */
+        @Generated
+        public String getMetadataLocation() {
+            return this.metadataLocation;
+        }
 
-    /**
-     * Set the metadataLocation property: The location of the metadata for this chunk.
-     * 
-     * @param metadataLocation the metadataLocation value to set.
-     * @return the AcsRecordingChunkInfoProperties object itself.
-     */
-    @Generated
-    public AcsRecordingChunkInfoProperties setMetadataLocation(String metadataLocation) {
-        this.metadataLocation = metadataLocation;
-        return this;
-    }
+        /**
+         * Set the metadataLocation property: The location of the metadata for this chunk.
+         *
+         * @param metadataLocation the metadataLocation value to set.
+         * @return the AcsRecordingChunkInfoProperties object itself.
+         */
+        @Generated
+        public AcsRecordingChunkInfoProperties setMetadataLocation(String metadataLocation) {
+            this.metadataLocation = metadataLocation;
+            return this;
+        }
 
-    /**
-     * Get the contentLocation property: The location of the content for this chunk.
-     * 
-     * @return the contentLocation value.
-     */
-    @Generated
-    public String getContentLocation() {
-        return this.contentLocation;
-    }
+        /**
+         * Get the contentLocation property: The location of the content for this chunk.
+         *
+         * @return the contentLocation value.
+         */
+        @Generated
+        public String getContentLocation() {
+            return this.contentLocation;
+        }
 
-    /**
-     * Set the contentLocation property: The location of the content for this chunk.
-     * 
-     * @param contentLocation the contentLocation value to set.
-     * @return the AcsRecordingChunkInfoProperties object itself.
-     */
-    @Generated
-    public AcsRecordingChunkInfoProperties setContentLocation(String contentLocation) {
-        this.contentLocation = contentLocation;
-        return this;
-    }
+        /**
+         * Set the contentLocation property: The location of the content for this chunk.
+         *
+         * @param contentLocation the contentLocation value to set.
+         * @return the AcsRecordingChunkInfoProperties object itself.
+         */
+        @Generated
+        public AcsRecordingChunkInfoProperties setContentLocation(String contentLocation) {
+            this.contentLocation = contentLocation;
+            return this;
+        }
 
-    /**
-     * Get the deleteLocation property: The location to delete all chunk storage.
-     * 
-     * @return the deleteLocation value.
-     */
-    @Generated
-    public String getDeleteLocation() {
-        return this.deleteLocation;
-    }
+        /**
+         * Get the deleteLocation property: The location to delete all chunk storage.
+         *
+         * @return the deleteLocation value.
+         */
+        @Generated
+        public String getDeleteLocation() {
+            return this.deleteLocation;
+        }
 
-    /**
-     * Set the deleteLocation property: The location to delete all chunk storage.
-     * 
-     * @param deleteLocation the deleteLocation value to set.
-     * @return the AcsRecordingChunkInfoProperties object itself.
-     */
-    @Generated
-    public AcsRecordingChunkInfoProperties setDeleteLocation(String deleteLocation) {
-        this.deleteLocation = deleteLocation;
-        return this;
-    }
+        /**
+         * Set the deleteLocation property: The location to delete all chunk storage.
+         *
+         * @param deleteLocation the deleteLocation value to set.
+         * @return the AcsRecordingChunkInfoProperties object itself.
+         */
+        @Generated
+        public AcsRecordingChunkInfoProperties setDeleteLocation(String deleteLocation) {
+            this.deleteLocation = deleteLocation;
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("documentId", this.documentId);
-        jsonWriter.writeNumberField("index", this.index);
-        jsonWriter.writeStringField("endReason", this.endReason);
-        jsonWriter.writeStringField("metadataLocation", this.metadataLocation);
-        jsonWriter.writeStringField("contentLocation", this.contentLocation);
-        jsonWriter.writeStringField("deleteLocation", this.deleteLocation);
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("documentId", this.documentId);
+            jsonWriter.writeNumberField("index", this.index);
+            jsonWriter.writeStringField("endReason", this.endReason);
+            jsonWriter.writeStringField("metadataLocation", this.metadataLocation);
+            jsonWriter.writeStringField("contentLocation", this.contentLocation);
+            jsonWriter.writeStringField("deleteLocation", this.deleteLocation);
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of AcsRecordingChunkInfoProperties from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AcsRecordingChunkInfoProperties if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AcsRecordingChunkInfoProperties.
-     */
-    @Generated
-    public static AcsRecordingChunkInfoProperties fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AcsRecordingChunkInfoProperties deserializedAcsRecordingChunkInfoProperties
-                = new AcsRecordingChunkInfoProperties();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        /**
+         * Reads an instance of AcsRecordingChunkInfoProperties from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of AcsRecordingChunkInfoProperties if the JsonReader was pointing to an instance of it, or
+         * null if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the AcsRecordingChunkInfoProperties.
+         */
+        @Generated
+        public static AcsRecordingChunkInfoProperties fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                AcsRecordingChunkInfoProperties deserializedAcsRecordingChunkInfoProperties
+                    = new AcsRecordingChunkInfoProperties();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
 
-                if ("documentId".equals(fieldName)) {
-                    deserializedAcsRecordingChunkInfoProperties.documentId = reader.getString();
-                } else if ("index".equals(fieldName)) {
-                    deserializedAcsRecordingChunkInfoProperties.index = reader.getNullable(JsonReader::getLong);
-                } else if ("endReason".equals(fieldName)) {
-                    deserializedAcsRecordingChunkInfoProperties.endReason = reader.getString();
-                } else if ("metadataLocation".equals(fieldName)) {
-                    deserializedAcsRecordingChunkInfoProperties.metadataLocation = reader.getString();
-                } else if ("contentLocation".equals(fieldName)) {
-                    deserializedAcsRecordingChunkInfoProperties.contentLocation = reader.getString();
-                } else if ("deleteLocation".equals(fieldName)) {
-                    deserializedAcsRecordingChunkInfoProperties.deleteLocation = reader.getString();
-                } else {
-                    reader.skipChildren();
+                    if ("documentId".equals(fieldName)) {
+                        deserializedAcsRecordingChunkInfoProperties.documentId = reader.getString();
+                    } else if ("index".equals(fieldName)) {
+                        deserializedAcsRecordingChunkInfoProperties.index = reader.getNullable(JsonReader::getLong);
+                    } else if ("endReason".equals(fieldName)) {
+                        deserializedAcsRecordingChunkInfoProperties.endReason = reader.getString();
+                    } else if ("metadataLocation".equals(fieldName)) {
+                        deserializedAcsRecordingChunkInfoProperties.metadataLocation = reader.getString();
+                    } else if ("contentLocation".equals(fieldName)) {
+                        deserializedAcsRecordingChunkInfoProperties.contentLocation = reader.getString();
+                    } else if ("deleteLocation".equals(fieldName)) {
+                        deserializedAcsRecordingChunkInfoProperties.deleteLocation = reader.getString();
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
 
-            return deserializedAcsRecordingChunkInfoProperties;
-        });
-    }
+                return deserializedAcsRecordingChunkInfoProperties;
+            });
+        }
 }

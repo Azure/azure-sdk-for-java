@@ -13,266 +13,270 @@ import java.io.IOException;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.KeyVault.SecretNewVersionCreated event.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class KeyVaultSecretNewVersionCreatedEventData
     implements JsonSerializable<KeyVaultSecretNewVersionCreatedEventData> {
 
-    /*
-     * The id of the object that triggered this event.
-     */
-    @Generated
-    private String id;
+        /*
+         * The id of the object that triggered this event.
+         */
+        @Generated
+        private String id;
 
-    /*
-     * Key vault name of the object that triggered this event.
-     */
-    @Generated
-    private String vaultName;
+        /*
+         * Key vault name of the object that triggered this event.
+         */
+        @Generated
+        private String vaultName;
 
-    /*
-     * The type of the object that triggered this event
-     */
-    @Generated
-    private String objectType;
+        /*
+         * The type of the object that triggered this event
+         */
+        @Generated
+        private String objectType;
 
-    /*
-     * The name of the object that triggered this event
-     */
-    @Generated
-    private String objectName;
+        /*
+         * The name of the object that triggered this event
+         */
+        @Generated
+        private String objectName;
 
-    /*
-     * The version of the object that triggered this event
-     */
-    @Generated
-    private String version;
+        /*
+         * The version of the object that triggered this event
+         */
+        @Generated
+        private String version;
 
-    /*
-     * Not before date of the object that triggered this event
-     */
-    @Generated
-    private Float nbf;
+        /*
+         * Not before date of the object that triggered this event
+         */
+        @Generated
+        private Float nbf;
 
-    /*
-     * The expiration date of the object that triggered this event
-     */
-    @Generated
-    private Float exp;
+        /*
+         * The expiration date of the object that triggered this event
+         */
+        @Generated
+        private Float exp;
 
-    /**
-     * Creates an instance of KeyVaultSecretNewVersionCreatedEventData class.
-     */
-    @Generated
-    public KeyVaultSecretNewVersionCreatedEventData() {
-    }
+        /**
+         * Creates an instance of KeyVaultSecretNewVersionCreatedEventData class.
+         */
+        @Generated
+        public KeyVaultSecretNewVersionCreatedEventData() {
+        }
 
-    /**
-     * Get the id property: The id of the object that triggered this event.
-     *
-     * @return the id value.
-     */
-    @Generated
-    public String getId() {
-        return this.id;
-    }
+        /**
+         * Get the id property: The id of the object that triggered this event.
+         *
+         * @return the id value.
+         */
+        @Generated
+        public String getId() {
+            return this.id;
+        }
 
-    /**
-     * Set the id property: The id of the object that triggered this event.
-     *
-     * @param id the id value to set.
-     * @return the KeyVaultSecretNewVersionCreatedEventData object itself.
-     */
-    @Generated
-    public KeyVaultSecretNewVersionCreatedEventData setId(String id) {
-        this.id = id;
-        return this;
-    }
+        /**
+         * Set the id property: The id of the object that triggered this event.
+         *
+         * @param id the id value to set.
+         * @return the KeyVaultSecretNewVersionCreatedEventData object itself.
+         */
+        @Generated
+        public KeyVaultSecretNewVersionCreatedEventData setId(String id) {
+            this.id = id;
+            return this;
+        }
 
-    /**
-     * Get the vaultName property: Key vault name of the object that triggered this event.
-     *
-     * @return the vaultName value.
-     */
-    @Generated
-    public String getVaultName() {
-        return this.vaultName;
-    }
+        /**
+         * Get the vaultName property: Key vault name of the object that triggered this event.
+         *
+         * @return the vaultName value.
+         */
+        @Generated
+        public String getVaultName() {
+            return this.vaultName;
+        }
 
-    /**
-     * Set the vaultName property: Key vault name of the object that triggered this event.
-     *
-     * @param vaultName the vaultName value to set.
-     * @return the KeyVaultSecretNewVersionCreatedEventData object itself.
-     */
-    @Generated
-    public KeyVaultSecretNewVersionCreatedEventData setVaultName(String vaultName) {
-        this.vaultName = vaultName;
-        return this;
-    }
+        /**
+         * Set the vaultName property: Key vault name of the object that triggered this event.
+         *
+         * @param vaultName the vaultName value to set.
+         * @return the KeyVaultSecretNewVersionCreatedEventData object itself.
+         */
+        @Generated
+        public KeyVaultSecretNewVersionCreatedEventData setVaultName(String vaultName) {
+            this.vaultName = vaultName;
+            return this;
+        }
 
-    /**
-     * Get the objectType property: The type of the object that triggered this event.
-     *
-     * @return the objectType value.
-     */
-    @Generated
-    public String getObjectType() {
-        return this.objectType;
-    }
+        /**
+         * Get the objectType property: The type of the object that triggered this event.
+         *
+         * @return the objectType value.
+         */
+        @Generated
+        public String getObjectType() {
+            return this.objectType;
+        }
 
-    /**
-     * Set the objectType property: The type of the object that triggered this event.
-     *
-     * @param objectType the objectType value to set.
-     * @return the KeyVaultSecretNewVersionCreatedEventData object itself.
-     */
-    @Generated
-    public KeyVaultSecretNewVersionCreatedEventData setObjectType(String objectType) {
-        this.objectType = objectType;
-        return this;
-    }
+        /**
+         * Set the objectType property: The type of the object that triggered this event.
+         *
+         * @param objectType the objectType value to set.
+         * @return the KeyVaultSecretNewVersionCreatedEventData object itself.
+         */
+        @Generated
+        public KeyVaultSecretNewVersionCreatedEventData setObjectType(String objectType) {
+            this.objectType = objectType;
+            return this;
+        }
 
-    /**
-     * Get the objectName property: The name of the object that triggered this event.
-     *
-     * @return the objectName value.
-     */
-    @Generated
-    public String getObjectName() {
-        return this.objectName;
-    }
+        /**
+         * Get the objectName property: The name of the object that triggered this event.
+         *
+         * @return the objectName value.
+         */
+        @Generated
+        public String getObjectName() {
+            return this.objectName;
+        }
 
-    /**
-     * Set the objectName property: The name of the object that triggered this event.
-     *
-     * @param objectName the objectName value to set.
-     * @return the KeyVaultSecretNewVersionCreatedEventData object itself.
-     */
-    @Generated
-    public KeyVaultSecretNewVersionCreatedEventData setObjectName(String objectName) {
-        this.objectName = objectName;
-        return this;
-    }
+        /**
+         * Set the objectName property: The name of the object that triggered this event.
+         *
+         * @param objectName the objectName value to set.
+         * @return the KeyVaultSecretNewVersionCreatedEventData object itself.
+         */
+        @Generated
+        public KeyVaultSecretNewVersionCreatedEventData setObjectName(String objectName) {
+            this.objectName = objectName;
+            return this;
+        }
 
-    /**
-     * Get the version property: The version of the object that triggered this event.
-     *
-     * @return the version value.
-     */
-    @Generated
-    public String getVersion() {
-        return this.version;
-    }
+        /**
+         * Get the version property: The version of the object that triggered this event.
+         *
+         * @return the version value.
+         */
+        @Generated
+        public String getVersion() {
+            return this.version;
+        }
 
-    /**
-     * Set the version property: The version of the object that triggered this event.
-     *
-     * @param version the version value to set.
-     * @return the KeyVaultSecretNewVersionCreatedEventData object itself.
-     */
-    @Generated
-    public KeyVaultSecretNewVersionCreatedEventData setVersion(String version) {
-        this.version = version;
-        return this;
-    }
+        /**
+         * Set the version property: The version of the object that triggered this event.
+         *
+         * @param version the version value to set.
+         * @return the KeyVaultSecretNewVersionCreatedEventData object itself.
+         */
+        @Generated
+        public KeyVaultSecretNewVersionCreatedEventData setVersion(String version) {
+            this.version = version;
+            return this;
+        }
 
-    /**
-     * Get the nbf property: Not before date of the object that triggered this event.
-     *
-     * @return the nbf value.
-     */
-    @Generated
-    public Float getNbf() {
-        return this.nbf;
-    }
+        /**
+         * Get the nbf property: Not before date of the object that triggered this event.
+         *
+         * @return the nbf value.
+         */
+        @Generated
+        public Float getNbf() {
+            return this.nbf;
+        }
 
-    /**
-     * Set the nbf property: Not before date of the object that triggered this event.
-     *
-     * @param nbf the nbf value to set.
-     * @return the KeyVaultSecretNewVersionCreatedEventData object itself.
-     */
-    @Generated
-    public KeyVaultSecretNewVersionCreatedEventData setNbf(Float nbf) {
-        this.nbf = nbf;
-        return this;
-    }
+        /**
+         * Set the nbf property: Not before date of the object that triggered this event.
+         *
+         * @param nbf the nbf value to set.
+         * @return the KeyVaultSecretNewVersionCreatedEventData object itself.
+         */
+        @Generated
+        public KeyVaultSecretNewVersionCreatedEventData setNbf(Float nbf) {
+            this.nbf = nbf;
+            return this;
+        }
 
-    /**
-     * Get the exp property: The expiration date of the object that triggered this event.
-     *
-     * @return the exp value.
-     */
-    @Generated
-    public Float getExp() {
-        return this.exp;
-    }
+        /**
+         * Get the exp property: The expiration date of the object that triggered this event.
+         *
+         * @return the exp value.
+         */
+        @Generated
+        public Float getExp() {
+            return this.exp;
+        }
 
-    /**
-     * Set the exp property: The expiration date of the object that triggered this event.
-     *
-     * @param exp the exp value to set.
-     * @return the KeyVaultSecretNewVersionCreatedEventData object itself.
-     */
-    @Generated
-    public KeyVaultSecretNewVersionCreatedEventData setExp(Float exp) {
-        this.exp = exp;
-        return this;
-    }
+        /**
+         * Set the exp property: The expiration date of the object that triggered this event.
+         *
+         * @param exp the exp value to set.
+         * @return the KeyVaultSecretNewVersionCreatedEventData object itself.
+         */
+        @Generated
+        public KeyVaultSecretNewVersionCreatedEventData setExp(Float exp) {
+            this.exp = exp;
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("Id", this.id);
-        jsonWriter.writeStringField("VaultName", this.vaultName);
-        jsonWriter.writeStringField("ObjectType", this.objectType);
-        jsonWriter.writeStringField("ObjectName", this.objectName);
-        jsonWriter.writeStringField("Version", this.version);
-        jsonWriter.writeNumberField("NBF", this.nbf);
-        jsonWriter.writeNumberField("EXP", this.exp);
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("Id", this.id);
+            jsonWriter.writeStringField("VaultName", this.vaultName);
+            jsonWriter.writeStringField("ObjectType", this.objectType);
+            jsonWriter.writeStringField("ObjectName", this.objectName);
+            jsonWriter.writeStringField("Version", this.version);
+            jsonWriter.writeNumberField("NBF", this.nbf);
+            jsonWriter.writeNumberField("EXP", this.exp);
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of KeyVaultSecretNewVersionCreatedEventData from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of KeyVaultSecretNewVersionCreatedEventData if the JsonReader was pointing to an instance of
-     * it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the KeyVaultSecretNewVersionCreatedEventData.
-     */
-    @Generated
-    public static KeyVaultSecretNewVersionCreatedEventData fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            KeyVaultSecretNewVersionCreatedEventData deserializedKeyVaultSecretNewVersionCreatedEventData
-                = new KeyVaultSecretNewVersionCreatedEventData();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("Id".equals(fieldName)) {
-                    deserializedKeyVaultSecretNewVersionCreatedEventData.id = reader.getString();
-                } else if ("VaultName".equals(fieldName)) {
-                    deserializedKeyVaultSecretNewVersionCreatedEventData.vaultName = reader.getString();
-                } else if ("ObjectType".equals(fieldName)) {
-                    deserializedKeyVaultSecretNewVersionCreatedEventData.objectType = reader.getString();
-                } else if ("ObjectName".equals(fieldName)) {
-                    deserializedKeyVaultSecretNewVersionCreatedEventData.objectName = reader.getString();
-                } else if ("Version".equals(fieldName)) {
-                    deserializedKeyVaultSecretNewVersionCreatedEventData.version = reader.getString();
-                } else if ("NBF".equals(fieldName)) {
-                    deserializedKeyVaultSecretNewVersionCreatedEventData.nbf = reader.getNullable(JsonReader::getFloat);
-                } else if ("EXP".equals(fieldName)) {
-                    deserializedKeyVaultSecretNewVersionCreatedEventData.exp = reader.getNullable(JsonReader::getFloat);
-                } else {
-                    reader.skipChildren();
+        /**
+         * Reads an instance of KeyVaultSecretNewVersionCreatedEventData from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of KeyVaultSecretNewVersionCreatedEventData if the JsonReader was pointing to an instance of
+         * it, or null if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the KeyVaultSecretNewVersionCreatedEventData.
+         */
+        @Generated
+        public static KeyVaultSecretNewVersionCreatedEventData fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                KeyVaultSecretNewVersionCreatedEventData deserializedKeyVaultSecretNewVersionCreatedEventData
+                    = new KeyVaultSecretNewVersionCreatedEventData();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("Id".equals(fieldName)) {
+                        deserializedKeyVaultSecretNewVersionCreatedEventData.id = reader.getString();
+                    } else if ("VaultName".equals(fieldName)) {
+                        deserializedKeyVaultSecretNewVersionCreatedEventData.vaultName = reader.getString();
+                    } else if ("ObjectType".equals(fieldName)) {
+                        deserializedKeyVaultSecretNewVersionCreatedEventData.objectType = reader.getString();
+                    } else if ("ObjectName".equals(fieldName)) {
+                        deserializedKeyVaultSecretNewVersionCreatedEventData.objectName = reader.getString();
+                    } else if ("Version".equals(fieldName)) {
+                        deserializedKeyVaultSecretNewVersionCreatedEventData.version = reader.getString();
+                    } else if ("NBF".equals(fieldName)) {
+                        deserializedKeyVaultSecretNewVersionCreatedEventData.nbf
+                            = reader.getNullable(JsonReader::getFloat);
+                    } else if ("EXP".equals(fieldName)) {
+                        deserializedKeyVaultSecretNewVersionCreatedEventData.exp
+                            = reader.getNullable(JsonReader::getFloat);
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
-            return deserializedKeyVaultSecretNewVersionCreatedEventData;
-        });
-    }
+                return deserializedKeyVaultSecretNewVersionCreatedEventData;
+            });
+        }
 }

@@ -14,84 +14,86 @@ import java.io.IOException;
 
 /**
  * Details of JobOutput errors.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Immutable
+@Deprecated
 public final class MediaJobErrorDetail implements JsonSerializable<MediaJobErrorDetail> {
-    /*
-     * Code describing the error detail.
-     */
-    @Generated
-    private String code;
+        /*
+         * Code describing the error detail.
+         */
+        @Generated
+        private String code;
 
-    /*
-     * A human-readable representation of the error.
-     */
-    @Generated
-    private String message;
+        /*
+         * A human-readable representation of the error.
+         */
+        @Generated
+        private String message;
 
-    /**
-     * Creates an instance of MediaJobErrorDetail class.
-     */
-    @Generated
-    public MediaJobErrorDetail() {
-    }
+        /**
+         * Creates an instance of MediaJobErrorDetail class.
+         */
+        @Generated
+        public MediaJobErrorDetail() {
+        }
 
-    /**
-     * Get the code property: Code describing the error detail.
-     * 
-     * @return the code value.
-     */
-    @Generated
-    public String getCode() {
-        return this.code;
-    }
+        /**
+         * Get the code property: Code describing the error detail.
+         *
+         * @return the code value.
+         */
+        @Generated
+        public String getCode() {
+            return this.code;
+        }
 
-    /**
-     * Get the message property: A human-readable representation of the error.
-     * 
-     * @return the message value.
-     */
-    @Generated
-    public String getMessage() {
-        return this.message;
-    }
+        /**
+         * Get the message property: A human-readable representation of the error.
+         *
+         * @return the message value.
+         */
+        @Generated
+        public String getMessage() {
+            return this.message;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of MediaJobErrorDetail from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of MediaJobErrorDetail if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the MediaJobErrorDetail.
-     */
-    @Generated
-    public static MediaJobErrorDetail fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            MediaJobErrorDetail deserializedMediaJobErrorDetail = new MediaJobErrorDetail();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        /**
+         * Reads an instance of MediaJobErrorDetail from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of MediaJobErrorDetail if the JsonReader was pointing to an instance of it, or null if it was
+         * pointing to JSON null.
+         * @throws IOException If an error occurs while reading the MediaJobErrorDetail.
+         */
+        @Generated
+        public static MediaJobErrorDetail fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                MediaJobErrorDetail deserializedMediaJobErrorDetail = new MediaJobErrorDetail();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
 
-                if ("code".equals(fieldName)) {
-                    deserializedMediaJobErrorDetail.code = reader.getString();
-                } else if ("message".equals(fieldName)) {
-                    deserializedMediaJobErrorDetail.message = reader.getString();
-                } else {
-                    reader.skipChildren();
+                    if ("code".equals(fieldName)) {
+                        deserializedMediaJobErrorDetail.code = reader.getString();
+                    } else if ("message".equals(fieldName)) {
+                        deserializedMediaJobErrorDetail.message = reader.getString();
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
 
-            return deserializedMediaJobErrorDetail;
-        });
-    }
+                return deserializedMediaJobErrorDetail;
+            });
+        }
 }

@@ -14,8 +14,10 @@ import java.io.IOException;
 
 /**
  * Message Media Content.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class AcsMessageMediaContent implements JsonSerializable<AcsMessageMediaContent> {
     /*
      * The MIME type of the file this media represents

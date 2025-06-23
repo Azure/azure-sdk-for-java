@@ -11,6 +11,7 @@ import java.util.Collection;
 /**
  * The Message interactive reply type.
  */
+@Deprecated
 public final class AcsInteractiveReplyKind extends ExpandableStringEnum<AcsInteractiveReplyKind> {
     /**
      * Messaged interactive reply type is ButtonReply.
@@ -32,7 +33,7 @@ public final class AcsInteractiveReplyKind extends ExpandableStringEnum<AcsInter
 
     /**
      * Creates a new instance of AcsInteractiveReplyKind value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
@@ -42,7 +43,7 @@ public final class AcsInteractiveReplyKind extends ExpandableStringEnum<AcsInter
 
     /**
      * Creates or finds a AcsInteractiveReplyKind from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding AcsInteractiveReplyKind.
      */
@@ -53,7 +54,7 @@ public final class AcsInteractiveReplyKind extends ExpandableStringEnum<AcsInter
 
     /**
      * Gets known AcsInteractiveReplyKind values.
-     * 
+     *
      * @return known AcsInteractiveReplyKind values.
      */
     @Generated

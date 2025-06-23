@@ -14,132 +14,135 @@ import java.util.Map;
 
 /**
  * Job error state event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobErrored event.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class MediaJobErroredEventData extends MediaJobStateChangeEventData {
 
-    /*
-     * Gets the Job outputs.
-     */
-    @Generated
-    private List<MediaJobOutput> outputs;
+        /*
+         * Gets the Job outputs.
+         */
+        @Generated
+        private List<MediaJobOutput> outputs;
 
-    /*
-     * The new state of the Job.
-     */
-    @Generated
-    private MediaJobState state;
+        /*
+         * The new state of the Job.
+         */
+        @Generated
+        private MediaJobState state;
 
-    /*
-     * The previous state of the Job.
-     */
-    @Generated
-    private MediaJobState previousState;
+        /*
+         * The previous state of the Job.
+         */
+        @Generated
+        private MediaJobState previousState;
 
-    /**
-     * Creates an instance of MediaJobErroredEventData class.
-     */
-    @Generated
-    public MediaJobErroredEventData() {
-    }
+        /**
+         * Creates an instance of MediaJobErroredEventData class.
+         */
+        @Generated
+        public MediaJobErroredEventData() {
+        }
 
-    /**
-     * Get the outputs property: Gets the Job outputs.
-     *
-     * @return the outputs value.
-     */
-    @Generated
-    public List<MediaJobOutput> getOutputs() {
-        return this.outputs;
-    }
+        /**
+         * Get the outputs property: Gets the Job outputs.
+         *
+         * @return the outputs value.
+         */
+        @Generated
+        public List<MediaJobOutput> getOutputs() {
+            return this.outputs;
+        }
 
-    /**
-     * Set the outputs property: Gets the Job outputs.
-     *
-     * @param outputs the outputs value to set.
-     * @return the MediaJobErroredEventData object itself.
-     */
-    @Generated
-    public MediaJobErroredEventData setOutputs(List<MediaJobOutput> outputs) {
-        this.outputs = outputs;
-        return this;
-    }
+        /**
+         * Set the outputs property: Gets the Job outputs.
+         *
+         * @param outputs the outputs value to set.
+         * @return the MediaJobErroredEventData object itself.
+         */
+        @Generated
+        public MediaJobErroredEventData setOutputs(List<MediaJobOutput> outputs) {
+            this.outputs = outputs;
+            return this;
+        }
 
-    /**
-     * Get the state property: The new state of the Job.
-     *
-     * @return the state value.
-     */
-    @Generated
-    @Override
-    public MediaJobState getState() {
-        return this.state;
-    }
+        /**
+         * Get the state property: The new state of the Job.
+         *
+         * @return the state value.
+         */
+        @Generated
+        @Override
+        public MediaJobState getState() {
+            return this.state;
+        }
 
-    /**
-     * Get the previousState property: The previous state of the Job.
-     *
-     * @return the previousState value.
-     */
-    @Generated
-    @Override
-    public MediaJobState getPreviousState() {
-        return this.previousState;
-    }
+        /**
+         * Get the previousState property: The previous state of the Job.
+         *
+         * @return the previousState value.
+         */
+        @Generated
+        @Override
+        public MediaJobState getPreviousState() {
+            return this.previousState;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public MediaJobErroredEventData setCorrelationData(Map<String, String> correlationData) {
-        super.setCorrelationData(correlationData);
-        return this;
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public MediaJobErroredEventData setCorrelationData(Map<String, String> correlationData) {
+            super.setCorrelationData(correlationData);
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("correlationData", getCorrelationData(),
-            (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("outputs", this.outputs, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeMapField("correlationData", getCorrelationData(),
+                (writer, element) -> writer.writeString(element));
+            jsonWriter.writeArrayField("outputs", this.outputs, (writer, element) -> writer.writeJson(element));
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of MediaJobErroredEventData from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of MediaJobErroredEventData if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the MediaJobErroredEventData.
-     */
-    @Generated
-    public static MediaJobErroredEventData fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            MediaJobErroredEventData deserializedMediaJobErroredEventData = new MediaJobErroredEventData();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("previousState".equals(fieldName)) {
-                    deserializedMediaJobErroredEventData.previousState = MediaJobState.fromString(reader.getString());
-                } else if ("state".equals(fieldName)) {
-                    deserializedMediaJobErroredEventData.state = MediaJobState.fromString(reader.getString());
-                } else if ("correlationData".equals(fieldName)) {
-                    Map<String, String> correlationData = reader.readMap(reader1 -> reader1.getString());
-                    deserializedMediaJobErroredEventData.setCorrelationData(correlationData);
-                } else if ("outputs".equals(fieldName)) {
-                    List<MediaJobOutput> outputs = reader.readArray(reader1 -> MediaJobOutput.fromJson(reader1));
-                    deserializedMediaJobErroredEventData.outputs = outputs;
-                } else {
-                    reader.skipChildren();
+        /**
+         * Reads an instance of MediaJobErroredEventData from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of MediaJobErroredEventData if the JsonReader was pointing to an instance of it, or null if
+         * it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the MediaJobErroredEventData.
+         */
+        @Generated
+        public static MediaJobErroredEventData fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                MediaJobErroredEventData deserializedMediaJobErroredEventData = new MediaJobErroredEventData();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("previousState".equals(fieldName)) {
+                        deserializedMediaJobErroredEventData.previousState
+                            = MediaJobState.fromString(reader.getString());
+                    } else if ("state".equals(fieldName)) {
+                        deserializedMediaJobErroredEventData.state = MediaJobState.fromString(reader.getString());
+                    } else if ("correlationData".equals(fieldName)) {
+                        Map<String, String> correlationData = reader.readMap(reader1 -> reader1.getString());
+                        deserializedMediaJobErroredEventData.setCorrelationData(correlationData);
+                    } else if ("outputs".equals(fieldName)) {
+                        List<MediaJobOutput> outputs = reader.readArray(reader1 -> MediaJobOutput.fromJson(reader1));
+                        deserializedMediaJobErroredEventData.outputs = outputs;
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
-            return deserializedMediaJobErroredEventData;
-        });
-    }
+                return deserializedMediaJobErroredEventData;
+            });
+        }
 }

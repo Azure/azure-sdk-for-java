@@ -15,6 +15,7 @@ import java.io.IOException;
 /**
  * Schema of calling event participant user.
  */
+@Deprecated
 @Fluent
 public final class AcsCallParticipantProperties implements JsonSerializable<AcsCallParticipantProperties> {
     /*
@@ -38,7 +39,7 @@ public final class AcsCallParticipantProperties implements JsonSerializable<AcsC
 
     /**
      * Get the communicationIdentifier property: The communication identifier of the call ended by.
-     * 
+     *
      * @return the communicationIdentifier value.
      */
     @Generated
@@ -48,7 +49,7 @@ public final class AcsCallParticipantProperties implements JsonSerializable<AcsC
 
     /**
      * Set the communicationIdentifier property: The communication identifier of the call ended by.
-     * 
+     *
      * @param communicationIdentifier the communicationIdentifier value to set.
      * @return the AcsCallParticipantProperties object itself.
      */
@@ -61,7 +62,7 @@ public final class AcsCallParticipantProperties implements JsonSerializable<AcsC
 
     /**
      * Get the role property: The role of participant user.
-     * 
+     *
      * @return the role value.
      */
     @Generated
@@ -71,7 +72,7 @@ public final class AcsCallParticipantProperties implements JsonSerializable<AcsC
 
     /**
      * Set the role property: The role of participant user.
-     * 
+     *
      * @param role the role value to set.
      * @return the AcsCallParticipantProperties object itself.
      */
@@ -95,7 +96,7 @@ public final class AcsCallParticipantProperties implements JsonSerializable<AcsC
 
     /**
      * Reads an instance of AcsCallParticipantProperties from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsCallParticipantProperties if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.

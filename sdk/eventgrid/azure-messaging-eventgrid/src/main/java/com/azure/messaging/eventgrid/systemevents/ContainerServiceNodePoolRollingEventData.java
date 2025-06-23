@@ -13,80 +13,82 @@ import java.io.IOException;
 
 /**
  * Schema of common properties of node pool rolling events.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public class ContainerServiceNodePoolRollingEventData
     implements JsonSerializable<ContainerServiceNodePoolRollingEventData> {
 
-    /*
-     * The name of the node pool in the ManagedCluster resource
-     */
-    @Generated
-    private String nodePoolName;
+        /*
+         * The name of the node pool in the ManagedCluster resource
+         */
+        @Generated
+        private String nodePoolName;
 
-    /**
-     * Creates an instance of ContainerServiceNodePoolRollingEventData class.
-     */
-    @Generated
-    public ContainerServiceNodePoolRollingEventData() {
-    }
+        /**
+         * Creates an instance of ContainerServiceNodePoolRollingEventData class.
+         */
+        @Generated
+        public ContainerServiceNodePoolRollingEventData() {
+        }
 
-    /**
-     * Get the nodePoolName property: The name of the node pool in the ManagedCluster resource.
-     *
-     * @return the nodePoolName value.
-     */
-    @Generated
-    public String getNodePoolName() {
-        return this.nodePoolName;
-    }
+        /**
+         * Get the nodePoolName property: The name of the node pool in the ManagedCluster resource.
+         *
+         * @return the nodePoolName value.
+         */
+        @Generated
+        public String getNodePoolName() {
+            return this.nodePoolName;
+        }
 
-    /**
-     * Set the nodePoolName property: The name of the node pool in the ManagedCluster resource.
-     *
-     * @param nodePoolName the nodePoolName value to set.
-     * @return the ContainerServiceNodePoolRollingEventData object itself.
-     */
-    @Generated
-    public ContainerServiceNodePoolRollingEventData setNodePoolName(String nodePoolName) {
-        this.nodePoolName = nodePoolName;
-        return this;
-    }
+        /**
+         * Set the nodePoolName property: The name of the node pool in the ManagedCluster resource.
+         *
+         * @param nodePoolName the nodePoolName value to set.
+         * @return the ContainerServiceNodePoolRollingEventData object itself.
+         */
+        @Generated
+        public ContainerServiceNodePoolRollingEventData setNodePoolName(String nodePoolName) {
+            this.nodePoolName = nodePoolName;
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("nodePoolName", this.nodePoolName);
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("nodePoolName", this.nodePoolName);
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of ContainerServiceNodePoolRollingEventData from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ContainerServiceNodePoolRollingEventData if the JsonReader was pointing to an instance of
-     * it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ContainerServiceNodePoolRollingEventData.
-     */
-    @Generated
-    public static ContainerServiceNodePoolRollingEventData fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ContainerServiceNodePoolRollingEventData deserializedContainerServiceNodePoolRollingEventData
-                = new ContainerServiceNodePoolRollingEventData();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("nodePoolName".equals(fieldName)) {
-                    deserializedContainerServiceNodePoolRollingEventData.nodePoolName = reader.getString();
-                } else {
-                    reader.skipChildren();
+        /**
+         * Reads an instance of ContainerServiceNodePoolRollingEventData from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of ContainerServiceNodePoolRollingEventData if the JsonReader was pointing to an instance of
+         * it, or null if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the ContainerServiceNodePoolRollingEventData.
+         */
+        @Generated
+        public static ContainerServiceNodePoolRollingEventData fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                ContainerServiceNodePoolRollingEventData deserializedContainerServiceNodePoolRollingEventData
+                    = new ContainerServiceNodePoolRollingEventData();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("nodePoolName".equals(fieldName)) {
+                        deserializedContainerServiceNodePoolRollingEventData.nodePoolName = reader.getString();
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
-            return deserializedContainerServiceNodePoolRollingEventData;
-        });
-    }
+                return deserializedContainerServiceNodePoolRollingEventData;
+            });
+        }
 }

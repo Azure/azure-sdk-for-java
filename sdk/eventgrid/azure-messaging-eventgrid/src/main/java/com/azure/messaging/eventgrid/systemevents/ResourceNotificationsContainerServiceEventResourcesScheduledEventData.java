@@ -13,95 +13,97 @@ import java.io.IOException;
 /**
  * Schema of the Data property of an event grid event for a
  * Microsoft.ResourceNotifications.ContainerServiceEventResources.ScheduledEventEmitted preview event.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class ResourceNotificationsContainerServiceEventResourcesScheduledEventData
     extends ResourceNotificationsResourceUpdatedEventData {
 
-    /**
-     * Creates an instance of ResourceNotificationsContainerServiceEventResourcesScheduledEventData class.
-     */
-    @Generated
-    public ResourceNotificationsContainerServiceEventResourcesScheduledEventData() {
-    }
+        /**
+         * Creates an instance of ResourceNotificationsContainerServiceEventResourcesScheduledEventData class.
+         */
+        @Generated
+        public ResourceNotificationsContainerServiceEventResourcesScheduledEventData() {
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public ResourceNotificationsContainerServiceEventResourcesScheduledEventData
-        setResourceDetails(ResourceNotificationsResourceUpdatedDetails resourceDetails) {
-        super.setResourceDetails(resourceDetails);
-        return this;
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public ResourceNotificationsContainerServiceEventResourcesScheduledEventData
+            setResourceDetails(ResourceNotificationsResourceUpdatedDetails resourceDetails) {
+            super.setResourceDetails(resourceDetails);
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public ResourceNotificationsContainerServiceEventResourcesScheduledEventData
-        setOperationalDetails(ResourceNotificationsOperationalDetails operationalDetails) {
-        super.setOperationalDetails(operationalDetails);
-        return this;
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public ResourceNotificationsContainerServiceEventResourcesScheduledEventData
+            setOperationalDetails(ResourceNotificationsOperationalDetails operationalDetails) {
+            super.setOperationalDetails(operationalDetails);
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public ResourceNotificationsContainerServiceEventResourcesScheduledEventData setApiVersion(String apiVersion) {
-        super.setApiVersion(apiVersion);
-        return this;
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public ResourceNotificationsContainerServiceEventResourcesScheduledEventData setApiVersion(String apiVersion) {
+            super.setApiVersion(apiVersion);
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("resourceInfo", getResourceDetails());
-        jsonWriter.writeJsonField("operationalInfo", getOperationalDetails());
-        jsonWriter.writeStringField("apiVersion", getApiVersion());
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeJsonField("resourceInfo", getResourceDetails());
+            jsonWriter.writeJsonField("operationalInfo", getOperationalDetails());
+            jsonWriter.writeStringField("apiVersion", getApiVersion());
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of ResourceNotificationsContainerServiceEventResourcesScheduledEventData from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ResourceNotificationsContainerServiceEventResourcesScheduledEventData if the JsonReader
-     * was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the
-     * ResourceNotificationsContainerServiceEventResourcesScheduledEventData.
-     */
-    @Generated
-    public static ResourceNotificationsContainerServiceEventResourcesScheduledEventData fromJson(JsonReader jsonReader)
-        throws IOException {
-        return jsonReader.readObject(reader -> {
-            ResourceNotificationsContainerServiceEventResourcesScheduledEventData deserializedResourceNotificationsContainerServiceEventResourcesScheduledEventData
-                = new ResourceNotificationsContainerServiceEventResourcesScheduledEventData();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("resourceInfo".equals(fieldName)) {
-                    deserializedResourceNotificationsContainerServiceEventResourcesScheduledEventData
-                        .setResourceDetails(ResourceNotificationsResourceUpdatedDetails.fromJson(reader));
-                } else if ("operationalInfo".equals(fieldName)) {
-                    deserializedResourceNotificationsContainerServiceEventResourcesScheduledEventData
-                        .setOperationalDetails(ResourceNotificationsOperationalDetails.fromJson(reader));
-                } else if ("apiVersion".equals(fieldName)) {
-                    deserializedResourceNotificationsContainerServiceEventResourcesScheduledEventData
-                        .setApiVersion(reader.getString());
-                } else {
-                    reader.skipChildren();
+        /**
+         * Reads an instance of ResourceNotificationsContainerServiceEventResourcesScheduledEventData from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of ResourceNotificationsContainerServiceEventResourcesScheduledEventData if the JsonReader
+         * was pointing to an instance of it, or null if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the
+         * ResourceNotificationsContainerServiceEventResourcesScheduledEventData.
+         */
+        @Generated
+        public static ResourceNotificationsContainerServiceEventResourcesScheduledEventData
+            fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                ResourceNotificationsContainerServiceEventResourcesScheduledEventData deserializedResourceNotificationsContainerServiceEventResourcesScheduledEventData
+                    = new ResourceNotificationsContainerServiceEventResourcesScheduledEventData();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("resourceInfo".equals(fieldName)) {
+                        deserializedResourceNotificationsContainerServiceEventResourcesScheduledEventData
+                            .setResourceDetails(ResourceNotificationsResourceUpdatedDetails.fromJson(reader));
+                    } else if ("operationalInfo".equals(fieldName)) {
+                        deserializedResourceNotificationsContainerServiceEventResourcesScheduledEventData
+                            .setOperationalDetails(ResourceNotificationsOperationalDetails.fromJson(reader));
+                    } else if ("apiVersion".equals(fieldName)) {
+                        deserializedResourceNotificationsContainerServiceEventResourcesScheduledEventData
+                            .setApiVersion(reader.getString());
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
-            return deserializedResourceNotificationsContainerServiceEventResourcesScheduledEventData;
-        });
-    }
+                return deserializedResourceNotificationsContainerServiceEventResourcesScheduledEventData;
+            });
+        }
 }

@@ -14,8 +14,9 @@ import java.io.IOException;
 
 /**
  * Message Interactive list reply content for a user to business message.
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class AcsMessageInteractiveListReplyContent
     implements JsonSerializable<AcsMessageInteractiveListReplyContent> {
     /*
@@ -45,7 +46,7 @@ public final class AcsMessageInteractiveListReplyContent
 
     /**
      * Get the listItemId property: The ID of the selected list item.
-     * 
+     *
      * @return the listItemId value.
      */
     @Generated
@@ -55,7 +56,7 @@ public final class AcsMessageInteractiveListReplyContent
 
     /**
      * Set the listItemId property: The ID of the selected list item.
-     * 
+     *
      * @param listItemId the listItemId value to set.
      * @return the AcsMessageInteractiveListReplyContent object itself.
      */
@@ -67,7 +68,7 @@ public final class AcsMessageInteractiveListReplyContent
 
     /**
      * Get the title property: The title of the selected list item.
-     * 
+     *
      * @return the title value.
      */
     @Generated
@@ -77,7 +78,7 @@ public final class AcsMessageInteractiveListReplyContent
 
     /**
      * Set the title property: The title of the selected list item.
-     * 
+     *
      * @param title the title value to set.
      * @return the AcsMessageInteractiveListReplyContent object itself.
      */
@@ -89,7 +90,7 @@ public final class AcsMessageInteractiveListReplyContent
 
     /**
      * Get the description property: The description of the selected row.
-     * 
+     *
      * @return the description value.
      */
     @Generated
@@ -99,7 +100,7 @@ public final class AcsMessageInteractiveListReplyContent
 
     /**
      * Set the description property: The description of the selected row.
-     * 
+     *
      * @param description the description value to set.
      * @return the AcsMessageInteractiveListReplyContent object itself.
      */
@@ -124,7 +125,7 @@ public final class AcsMessageInteractiveListReplyContent
 
     /**
      * Reads an instance of AcsMessageInteractiveListReplyContent from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsMessageInteractiveListReplyContent if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.

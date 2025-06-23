@@ -10,54 +10,57 @@ import java.util.Collection;
 
 /**
  * The cloud that the identifier belongs to.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Deprecated
 public final class CommunicationCloudEnvironmentModel extends ExpandableStringEnum<CommunicationCloudEnvironmentModel> {
-    /**
-     * Static value public for CommunicationCloudEnvironmentModel.
-     */
-    @Generated
-    public static final CommunicationCloudEnvironmentModel PUBLIC = fromString("public");
+        /**
+         * Static value public for CommunicationCloudEnvironmentModel.
+         */
+        @Generated
+        public static final CommunicationCloudEnvironmentModel PUBLIC = fromString("public");
 
-    /**
-     * Static value dod for CommunicationCloudEnvironmentModel.
-     */
-    @Generated
-    public static final CommunicationCloudEnvironmentModel DOD = fromString("dod");
+        /**
+         * Static value dod for CommunicationCloudEnvironmentModel.
+         */
+        @Generated
+        public static final CommunicationCloudEnvironmentModel DOD = fromString("dod");
 
-    /**
-     * Static value gcch for CommunicationCloudEnvironmentModel.
-     */
-    @Generated
-    public static final CommunicationCloudEnvironmentModel GCCH = fromString("gcch");
+        /**
+         * Static value gcch for CommunicationCloudEnvironmentModel.
+         */
+        @Generated
+        public static final CommunicationCloudEnvironmentModel GCCH = fromString("gcch");
 
-    /**
-     * Creates a new instance of CommunicationCloudEnvironmentModel value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Generated
-    @Deprecated
-    public CommunicationCloudEnvironmentModel() {
-    }
+        /**
+         * Creates a new instance of CommunicationCloudEnvironmentModel value.
+         *
+         * @deprecated Use the {@link #fromString(String)} factory method.
+         */
+        @Generated
+        @Deprecated
+        public CommunicationCloudEnvironmentModel() {
+        }
 
-    /**
-     * Creates or finds a CommunicationCloudEnvironmentModel from its string representation.
-     * 
-     * @param name a name to look for.
-     * @return the corresponding CommunicationCloudEnvironmentModel.
-     */
-    @Generated
-    public static CommunicationCloudEnvironmentModel fromString(String name) {
-        return fromString(name, CommunicationCloudEnvironmentModel.class);
-    }
+        /**
+         * Creates or finds a CommunicationCloudEnvironmentModel from its string representation.
+         *
+         * @param name a name to look for.
+         * @return the corresponding CommunicationCloudEnvironmentModel.
+         */
+        @Generated
+        public static CommunicationCloudEnvironmentModel fromString(String name) {
+            return fromString(name, CommunicationCloudEnvironmentModel.class);
+        }
 
-    /**
-     * Gets known CommunicationCloudEnvironmentModel values.
-     * 
-     * @return known CommunicationCloudEnvironmentModel values.
-     */
-    @Generated
-    public static Collection<CommunicationCloudEnvironmentModel> values() {
-        return values(CommunicationCloudEnvironmentModel.class);
-    }
+        /**
+         * Gets known CommunicationCloudEnvironmentModel values.
+         *
+         * @return known CommunicationCloudEnvironmentModel values.
+         */
+        @Generated
+        public static Collection<CommunicationCloudEnvironmentModel> values() {
+            return values(CommunicationCloudEnvironmentModel.class);
+        }
 }

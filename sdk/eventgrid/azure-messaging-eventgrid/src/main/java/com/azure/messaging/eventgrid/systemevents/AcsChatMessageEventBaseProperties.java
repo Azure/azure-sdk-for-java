@@ -17,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * Schema of common properties of all chat message events.
  */
+@Deprecated
 @Fluent
 public class AcsChatMessageEventBaseProperties extends AcsChatEventBaseProperties {
     /*
@@ -64,7 +65,7 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
 
     /**
      * Get the messageId property: The chat message id.
-     * 
+     *
      * @return the messageId value.
      */
     @Generated
@@ -74,7 +75,7 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
 
     /**
      * Set the messageId property: The chat message id.
-     * 
+     *
      * @param messageId the messageId value to set.
      * @return the AcsChatMessageEventBaseProperties object itself.
      */
@@ -86,7 +87,7 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
 
     /**
      * Get the senderCommunicationIdentifier property: The communication identifier of the sender.
-     * 
+     *
      * @return the senderCommunicationIdentifier value.
      */
     @Generated
@@ -96,7 +97,7 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
 
     /**
      * Set the senderCommunicationIdentifier property: The communication identifier of the sender.
-     * 
+     *
      * @param senderCommunicationIdentifier the senderCommunicationIdentifier value to set.
      * @return the AcsChatMessageEventBaseProperties object itself.
      */
@@ -109,7 +110,7 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
 
     /**
      * Get the senderDisplayName property: The display name of the sender.
-     * 
+     *
      * @return the senderDisplayName value.
      */
     @Generated
@@ -119,7 +120,7 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
 
     /**
      * Set the senderDisplayName property: The display name of the sender.
-     * 
+     *
      * @param senderDisplayName the senderDisplayName value to set.
      * @return the AcsChatMessageEventBaseProperties object itself.
      */
@@ -131,7 +132,7 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
 
     /**
      * Get the composeTime property: The original compose time of the message.
-     * 
+     *
      * @return the composeTime value.
      */
     @Generated
@@ -141,7 +142,7 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
 
     /**
      * Set the composeTime property: The original compose time of the message.
-     * 
+     *
      * @param composeTime the composeTime value to set.
      * @return the AcsChatMessageEventBaseProperties object itself.
      */
@@ -153,7 +154,7 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
 
     /**
      * Get the type property: The type of the message.
-     * 
+     *
      * @return the type value.
      */
     @Generated
@@ -163,7 +164,7 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
 
     /**
      * Set the type property: The type of the message.
-     * 
+     *
      * @param type the type value to set.
      * @return the AcsChatMessageEventBaseProperties object itself.
      */
@@ -175,7 +176,7 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
 
     /**
      * Get the version property: The version of the message.
-     * 
+     *
      * @return the version value.
      */
     @Generated
@@ -185,7 +186,7 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
 
     /**
      * Set the version property: The version of the message.
-     * 
+     *
      * @param version the version value to set.
      * @return the AcsChatMessageEventBaseProperties object itself.
      */
@@ -248,7 +249,7 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
 
     /**
      * Reads an instance of AcsChatMessageEventBaseProperties from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsChatMessageEventBaseProperties if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.

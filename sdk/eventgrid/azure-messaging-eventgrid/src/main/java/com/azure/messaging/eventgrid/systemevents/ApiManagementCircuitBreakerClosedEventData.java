@@ -13,113 +13,115 @@ import java.io.IOException;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.CircuitBreaker.Closed event.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class ApiManagementCircuitBreakerClosedEventData
     implements JsonSerializable<ApiManagementCircuitBreakerClosedEventData> {
 
-    /*
-     * Name of the backend for which the circuit has closed.
-     */
-    @Generated
-    private String backendName;
+        /*
+         * Name of the backend for which the circuit has closed.
+         */
+        @Generated
+        private String backendName;
 
-    /*
-     * Information related to the circuit breaker configured on the backend.
-     */
-    @Generated
-    private ApiManagementCircuitBreakerProperties circuitBreaker;
+        /*
+         * Information related to the circuit breaker configured on the backend.
+         */
+        @Generated
+        private ApiManagementCircuitBreakerProperties circuitBreaker;
 
-    /**
-     * Creates an instance of ApiManagementCircuitBreakerClosedEventData class.
-     */
-    @Generated
-    public ApiManagementCircuitBreakerClosedEventData() {
-    }
+        /**
+         * Creates an instance of ApiManagementCircuitBreakerClosedEventData class.
+         */
+        @Generated
+        public ApiManagementCircuitBreakerClosedEventData() {
+        }
 
-    /**
-     * Get the backendName property: Name of the backend for which the circuit has closed.
-     *
-     * @return the backendName value.
-     */
-    @Generated
-    public String getBackendName() {
-        return this.backendName;
-    }
+        /**
+         * Get the backendName property: Name of the backend for which the circuit has closed.
+         *
+         * @return the backendName value.
+         */
+        @Generated
+        public String getBackendName() {
+            return this.backendName;
+        }
 
-    /**
-     * Set the backendName property: Name of the backend for which the circuit has closed.
-     *
-     * @param backendName the backendName value to set.
-     * @return the ApiManagementCircuitBreakerClosedEventData object itself.
-     */
-    @Generated
-    public ApiManagementCircuitBreakerClosedEventData setBackendName(String backendName) {
-        this.backendName = backendName;
-        return this;
-    }
+        /**
+         * Set the backendName property: Name of the backend for which the circuit has closed.
+         *
+         * @param backendName the backendName value to set.
+         * @return the ApiManagementCircuitBreakerClosedEventData object itself.
+         */
+        @Generated
+        public ApiManagementCircuitBreakerClosedEventData setBackendName(String backendName) {
+            this.backendName = backendName;
+            return this;
+        }
 
-    /**
-     * Get the circuitBreaker property: Information related to the circuit breaker configured on the backend.
-     *
-     * @return the circuitBreaker value.
-     */
-    @Generated
-    public ApiManagementCircuitBreakerProperties getCircuitBreaker() {
-        return this.circuitBreaker;
-    }
+        /**
+         * Get the circuitBreaker property: Information related to the circuit breaker configured on the backend.
+         *
+         * @return the circuitBreaker value.
+         */
+        @Generated
+        public ApiManagementCircuitBreakerProperties getCircuitBreaker() {
+            return this.circuitBreaker;
+        }
 
-    /**
-     * Set the circuitBreaker property: Information related to the circuit breaker configured on the backend.
-     *
-     * @param circuitBreaker the circuitBreaker value to set.
-     * @return the ApiManagementCircuitBreakerClosedEventData object itself.
-     */
-    @Generated
-    public ApiManagementCircuitBreakerClosedEventData
-        setCircuitBreaker(ApiManagementCircuitBreakerProperties circuitBreaker) {
-        this.circuitBreaker = circuitBreaker;
-        return this;
-    }
+        /**
+         * Set the circuitBreaker property: Information related to the circuit breaker configured on the backend.
+         *
+         * @param circuitBreaker the circuitBreaker value to set.
+         * @return the ApiManagementCircuitBreakerClosedEventData object itself.
+         */
+        @Generated
+        public ApiManagementCircuitBreakerClosedEventData
+            setCircuitBreaker(ApiManagementCircuitBreakerProperties circuitBreaker) {
+            this.circuitBreaker = circuitBreaker;
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("backendName", this.backendName);
-        jsonWriter.writeJsonField("circuitBreaker", this.circuitBreaker);
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("backendName", this.backendName);
+            jsonWriter.writeJsonField("circuitBreaker", this.circuitBreaker);
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of ApiManagementCircuitBreakerClosedEventData from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ApiManagementCircuitBreakerClosedEventData if the JsonReader was pointing to an instance
-     * of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ApiManagementCircuitBreakerClosedEventData.
-     */
-    @Generated
-    public static ApiManagementCircuitBreakerClosedEventData fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ApiManagementCircuitBreakerClosedEventData deserializedApiManagementCircuitBreakerClosedEventData
-                = new ApiManagementCircuitBreakerClosedEventData();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("backendName".equals(fieldName)) {
-                    deserializedApiManagementCircuitBreakerClosedEventData.backendName = reader.getString();
-                } else if ("circuitBreaker".equals(fieldName)) {
-                    deserializedApiManagementCircuitBreakerClosedEventData.circuitBreaker
-                        = ApiManagementCircuitBreakerProperties.fromJson(reader);
-                } else {
-                    reader.skipChildren();
+        /**
+         * Reads an instance of ApiManagementCircuitBreakerClosedEventData from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of ApiManagementCircuitBreakerClosedEventData if the JsonReader was pointing to an instance
+         * of it, or null if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the ApiManagementCircuitBreakerClosedEventData.
+         */
+        @Generated
+        public static ApiManagementCircuitBreakerClosedEventData fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                ApiManagementCircuitBreakerClosedEventData deserializedApiManagementCircuitBreakerClosedEventData
+                    = new ApiManagementCircuitBreakerClosedEventData();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("backendName".equals(fieldName)) {
+                        deserializedApiManagementCircuitBreakerClosedEventData.backendName = reader.getString();
+                    } else if ("circuitBreaker".equals(fieldName)) {
+                        deserializedApiManagementCircuitBreakerClosedEventData.circuitBreaker
+                            = ApiManagementCircuitBreakerProperties.fromJson(reader);
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
-            return deserializedApiManagementCircuitBreakerClosedEventData;
-        });
-    }
+                return deserializedApiManagementCircuitBreakerClosedEventData;
+            });
+        }
 }

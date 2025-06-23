@@ -15,6 +15,7 @@ import java.io.IOException;
 /**
  * Message Context.
  */
+@Deprecated
 @Fluent
 public final class AcsMessageContext implements JsonSerializable<AcsMessageContext> {
     /*
@@ -38,7 +39,7 @@ public final class AcsMessageContext implements JsonSerializable<AcsMessageConte
 
     /**
      * Get the from property: The WhatsApp ID for the customer who replied to an inbound message.
-     * 
+     *
      * @return the from value.
      */
     @Generated
@@ -48,7 +49,7 @@ public final class AcsMessageContext implements JsonSerializable<AcsMessageConte
 
     /**
      * Set the from property: The WhatsApp ID for the customer who replied to an inbound message.
-     * 
+     *
      * @param from the from value to set.
      * @return the AcsMessageContext object itself.
      */
@@ -60,7 +61,7 @@ public final class AcsMessageContext implements JsonSerializable<AcsMessageConte
 
     /**
      * Get the messageId property: The message ID for the sent message for an inbound reply.
-     * 
+     *
      * @return the messageId value.
      */
     @Generated
@@ -70,7 +71,7 @@ public final class AcsMessageContext implements JsonSerializable<AcsMessageConte
 
     /**
      * Set the messageId property: The message ID for the sent message for an inbound reply.
-     * 
+     *
      * @param messageId the messageId value to set.
      * @return the AcsMessageContext object itself.
      */
@@ -94,7 +95,7 @@ public final class AcsMessageContext implements JsonSerializable<AcsMessageConte
 
     /**
      * Reads an instance of AcsMessageContext from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsMessageContext if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

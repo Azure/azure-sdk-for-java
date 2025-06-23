@@ -15,149 +15,151 @@ import java.util.Map;
 
 /**
  * Schema of the Data property of an EventGridEvent for a device telemetry event (DeviceTelemetry).
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public class DeviceTelemetryEventProperties implements JsonSerializable<DeviceTelemetryEventProperties> {
-    /*
-     * The content of the message from the device.
-     */
-    @Generated
-    private Object body;
+        /*
+         * The content of the message from the device.
+         */
+        @Generated
+        private Object body;
 
-    /*
-     * Application properties are user-defined strings that can be added to the message. These fields are optional.
-     */
-    @Generated
-    private Map<String, String> properties;
+        /*
+         * Application properties are user-defined strings that can be added to the message. These fields are optional.
+         */
+        @Generated
+        private Map<String, String> properties;
 
-    /*
-     * System properties help identify contents and source of the messages.
-     */
-    @Generated
-    private Map<String, String> systemProperties;
+        /*
+         * System properties help identify contents and source of the messages.
+         */
+        @Generated
+        private Map<String, String> systemProperties;
 
-    /**
-     * Creates an instance of DeviceTelemetryEventProperties class.
-     */
-    @Generated
-    public DeviceTelemetryEventProperties() {
-    }
-
-    /**
-     * Get the body property: The content of the message from the device.
-     * 
-     * @return the body value.
-     */
-    @Generated
-    public Object getBody() {
-        return this.body;
-    }
-
-    /**
-     * Set the body property: The content of the message from the device.
-     * 
-     * @param body the body value to set.
-     * @return the DeviceTelemetryEventProperties object itself.
-     */
-    @Generated
-    public DeviceTelemetryEventProperties setBody(Object body) {
-        this.body = body;
-        return this;
-    }
-
-    /**
-     * Get the properties property: Application properties are user-defined strings that can be added to the message.
-     * These fields are optional.
-     * 
-     * @return the properties value.
-     */
-    @Generated
-    public Map<String, String> getProperties() {
-        return this.properties;
-    }
-
-    /**
-     * Set the properties property: Application properties are user-defined strings that can be added to the message.
-     * These fields are optional.
-     * 
-     * @param properties the properties value to set.
-     * @return the DeviceTelemetryEventProperties object itself.
-     */
-    @Generated
-    public DeviceTelemetryEventProperties setProperties(Map<String, String> properties) {
-        this.properties = properties;
-        return this;
-    }
-
-    /**
-     * Get the systemProperties property: System properties help identify contents and source of the messages.
-     * 
-     * @return the systemProperties value.
-     */
-    @Generated
-    public Map<String, String> getSystemProperties() {
-        return this.systemProperties;
-    }
-
-    /**
-     * Set the systemProperties property: System properties help identify contents and source of the messages.
-     * 
-     * @param systemProperties the systemProperties value to set.
-     * @return the DeviceTelemetryEventProperties object itself.
-     */
-    @Generated
-    public DeviceTelemetryEventProperties setSystemProperties(Map<String, String> systemProperties) {
-        this.systemProperties = systemProperties;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        if (this.body != null) {
-            jsonWriter.writeUntypedField("body", this.body);
+        /**
+         * Creates an instance of DeviceTelemetryEventProperties class.
+         */
+        @Generated
+        public DeviceTelemetryEventProperties() {
         }
-        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("systemProperties", this.systemProperties,
-            (writer, element) -> writer.writeString(element));
-        return jsonWriter.writeEndObject();
-    }
 
-    /**
-     * Reads an instance of DeviceTelemetryEventProperties from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of DeviceTelemetryEventProperties if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the DeviceTelemetryEventProperties.
-     */
-    @Generated
-    public static DeviceTelemetryEventProperties fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            DeviceTelemetryEventProperties deserializedDeviceTelemetryEventProperties
-                = new DeviceTelemetryEventProperties();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        /**
+         * Get the body property: The content of the message from the device.
+         *
+         * @return the body value.
+         */
+        @Generated
+        public Object getBody() {
+            return this.body;
+        }
 
-                if ("body".equals(fieldName)) {
-                    deserializedDeviceTelemetryEventProperties.body = reader.readUntyped();
-                } else if ("properties".equals(fieldName)) {
-                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
-                    deserializedDeviceTelemetryEventProperties.properties = properties;
-                } else if ("systemProperties".equals(fieldName)) {
-                    Map<String, String> systemProperties = reader.readMap(reader1 -> reader1.getString());
-                    deserializedDeviceTelemetryEventProperties.systemProperties = systemProperties;
-                } else {
-                    reader.skipChildren();
-                }
+        /**
+         * Set the body property: The content of the message from the device.
+         *
+         * @param body the body value to set.
+         * @return the DeviceTelemetryEventProperties object itself.
+         */
+        @Generated
+        public DeviceTelemetryEventProperties setBody(Object body) {
+            this.body = body;
+            return this;
+        }
+
+        /**
+         * Get the properties property: Application properties are user-defined strings that can be added to the message.
+         * These fields are optional.
+         *
+         * @return the properties value.
+         */
+        @Generated
+        public Map<String, String> getProperties() {
+            return this.properties;
+        }
+
+        /**
+         * Set the properties property: Application properties are user-defined strings that can be added to the message.
+         * These fields are optional.
+         *
+         * @param properties the properties value to set.
+         * @return the DeviceTelemetryEventProperties object itself.
+         */
+        @Generated
+        public DeviceTelemetryEventProperties setProperties(Map<String, String> properties) {
+            this.properties = properties;
+            return this;
+        }
+
+        /**
+         * Get the systemProperties property: System properties help identify contents and source of the messages.
+         *
+         * @return the systemProperties value.
+         */
+        @Generated
+        public Map<String, String> getSystemProperties() {
+            return this.systemProperties;
+        }
+
+        /**
+         * Set the systemProperties property: System properties help identify contents and source of the messages.
+         *
+         * @param systemProperties the systemProperties value to set.
+         * @return the DeviceTelemetryEventProperties object itself.
+         */
+        @Generated
+        public DeviceTelemetryEventProperties setSystemProperties(Map<String, String> systemProperties) {
+            this.systemProperties = systemProperties;
+            return this;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            if (this.body != null) {
+                jsonWriter.writeUntypedField("body", this.body);
             }
+            jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeString(element));
+            jsonWriter.writeMapField("systemProperties", this.systemProperties,
+                (writer, element) -> writer.writeString(element));
+            return jsonWriter.writeEndObject();
+        }
 
-            return deserializedDeviceTelemetryEventProperties;
-        });
-    }
+        /**
+         * Reads an instance of DeviceTelemetryEventProperties from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of DeviceTelemetryEventProperties if the JsonReader was pointing to an instance of it, or
+         * null if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the DeviceTelemetryEventProperties.
+         */
+        @Generated
+        public static DeviceTelemetryEventProperties fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                DeviceTelemetryEventProperties deserializedDeviceTelemetryEventProperties
+                    = new DeviceTelemetryEventProperties();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+
+                    if ("body".equals(fieldName)) {
+                        deserializedDeviceTelemetryEventProperties.body = reader.readUntyped();
+                    } else if ("properties".equals(fieldName)) {
+                        Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                        deserializedDeviceTelemetryEventProperties.properties = properties;
+                    } else if ("systemProperties".equals(fieldName)) {
+                        Map<String, String> systemProperties = reader.readMap(reader1 -> reader1.getString());
+                        deserializedDeviceTelemetryEventProperties.systemProperties = systemProperties;
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+
+                return deserializedDeviceTelemetryEventProperties;
+            });
+        }
 }

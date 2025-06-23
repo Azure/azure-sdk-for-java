@@ -10,7 +10,10 @@ import java.util.Collection;
 
 /**
  * The type of the call ended by.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Deprecated
 public final class AcsCallEndedByKind extends ExpandableStringEnum<AcsCallEndedByKind> {
     /**
      * Call end initiator is a participant.
@@ -26,7 +29,7 @@ public final class AcsCallEndedByKind extends ExpandableStringEnum<AcsCallEndedB
 
     /**
      * Creates a new instance of AcsCallEndedByKind value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
@@ -36,7 +39,7 @@ public final class AcsCallEndedByKind extends ExpandableStringEnum<AcsCallEndedB
 
     /**
      * Creates or finds a AcsCallEndedByKind from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding AcsCallEndedByKind.
      */
@@ -47,7 +50,7 @@ public final class AcsCallEndedByKind extends ExpandableStringEnum<AcsCallEndedB
 
     /**
      * Gets known AcsCallEndedByKind values.
-     * 
+     *
      * @return known AcsCallEndedByKind values.
      */
     @Generated

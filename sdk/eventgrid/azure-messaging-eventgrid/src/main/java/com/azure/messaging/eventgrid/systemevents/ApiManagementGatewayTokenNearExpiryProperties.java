@@ -17,83 +17,85 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * Information related to a gateway token that is near expiry for a self-hosted gateway deployment.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class ApiManagementGatewayTokenNearExpiryProperties
     implements JsonSerializable<ApiManagementGatewayTokenNearExpiryProperties> {
-    /*
-     * Timestamp when the gateway token will expire.
-     */
-    @Generated
-    private OffsetDateTime expiresOn;
+        /*
+         * Timestamp when the gateway token will expire.
+         */
+        @Generated
+        private OffsetDateTime expiresOn;
 
-    /**
-     * Creates an instance of ApiManagementGatewayTokenNearExpiryProperties class.
-     */
-    @Generated
-    public ApiManagementGatewayTokenNearExpiryProperties() {
-    }
+        /**
+         * Creates an instance of ApiManagementGatewayTokenNearExpiryProperties class.
+         */
+        @Generated
+        public ApiManagementGatewayTokenNearExpiryProperties() {
+        }
 
-    /**
-     * Get the expiresOn property: Timestamp when the gateway token will expire.
-     * 
-     * @return the expiresOn value.
-     */
-    @Generated
-    public OffsetDateTime getExpiresOn() {
-        return this.expiresOn;
-    }
+        /**
+         * Get the expiresOn property: Timestamp when the gateway token will expire.
+         *
+         * @return the expiresOn value.
+         */
+        @Generated
+        public OffsetDateTime getExpiresOn() {
+            return this.expiresOn;
+        }
 
-    /**
-     * Set the expiresOn property: Timestamp when the gateway token will expire.
-     * 
-     * @param expiresOn the expiresOn value to set.
-     * @return the ApiManagementGatewayTokenNearExpiryProperties object itself.
-     */
-    @Generated
-    public ApiManagementGatewayTokenNearExpiryProperties setExpiresOn(OffsetDateTime expiresOn) {
-        this.expiresOn = expiresOn;
-        return this;
-    }
+        /**
+         * Set the expiresOn property: Timestamp when the gateway token will expire.
+         *
+         * @param expiresOn the expiresOn value to set.
+         * @return the ApiManagementGatewayTokenNearExpiryProperties object itself.
+         */
+        @Generated
+        public ApiManagementGatewayTokenNearExpiryProperties setExpiresOn(OffsetDateTime expiresOn) {
+            this.expiresOn = expiresOn;
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("expiresAtUtc",
-            this.expiresOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiresOn));
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("expiresAtUtc",
+                this.expiresOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiresOn));
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of ApiManagementGatewayTokenNearExpiryProperties from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ApiManagementGatewayTokenNearExpiryProperties if the JsonReader was pointing to an
-     * instance of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ApiManagementGatewayTokenNearExpiryProperties.
-     */
-    @Generated
-    public static ApiManagementGatewayTokenNearExpiryProperties fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ApiManagementGatewayTokenNearExpiryProperties deserializedApiManagementGatewayTokenNearExpiryProperties
-                = new ApiManagementGatewayTokenNearExpiryProperties();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        /**
+         * Reads an instance of ApiManagementGatewayTokenNearExpiryProperties from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of ApiManagementGatewayTokenNearExpiryProperties if the JsonReader was pointing to an
+         * instance of it, or null if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the ApiManagementGatewayTokenNearExpiryProperties.
+         */
+        @Generated
+        public static ApiManagementGatewayTokenNearExpiryProperties fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                ApiManagementGatewayTokenNearExpiryProperties deserializedApiManagementGatewayTokenNearExpiryProperties
+                    = new ApiManagementGatewayTokenNearExpiryProperties();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
 
-                if ("expiresAtUtc".equals(fieldName)) {
-                    deserializedApiManagementGatewayTokenNearExpiryProperties.expiresOn = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else {
-                    reader.skipChildren();
+                    if ("expiresAtUtc".equals(fieldName)) {
+                        deserializedApiManagementGatewayTokenNearExpiryProperties.expiresOn = reader
+                            .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
 
-            return deserializedApiManagementGatewayTokenNearExpiryProperties;
-        });
-    }
+                return deserializedApiManagementGatewayTokenNearExpiryProperties;
+            });
+        }
 }

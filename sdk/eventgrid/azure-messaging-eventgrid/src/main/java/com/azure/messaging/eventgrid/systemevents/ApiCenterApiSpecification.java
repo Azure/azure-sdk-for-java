@@ -14,110 +14,112 @@ import java.io.IOException;
 
 /**
  * API specification details.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Fluent
+@Deprecated
 public final class ApiCenterApiSpecification implements JsonSerializable<ApiCenterApiSpecification> {
-    /*
-     * Specification name.
-     */
-    @Generated
-    private String name;
+        /*
+         * Specification name.
+         */
+        @Generated
+        private String name;
 
-    /*
-     * Specification version.
-     */
-    @Generated
-    private String version;
+        /*
+         * Specification version.
+         */
+        @Generated
+        private String version;
 
-    /**
-     * Creates an instance of ApiCenterApiSpecification class.
-     */
-    @Generated
-    public ApiCenterApiSpecification() {
-    }
+        /**
+         * Creates an instance of ApiCenterApiSpecification class.
+         */
+        @Generated
+        public ApiCenterApiSpecification() {
+        }
 
-    /**
-     * Get the name property: Specification name.
-     * 
-     * @return the name value.
-     */
-    @Generated
-    public String getName() {
-        return this.name;
-    }
+        /**
+         * Get the name property: Specification name.
+         *
+         * @return the name value.
+         */
+        @Generated
+        public String getName() {
+            return this.name;
+        }
 
-    /**
-     * Set the name property: Specification name.
-     * 
-     * @param name the name value to set.
-     * @return the ApiCenterApiSpecification object itself.
-     */
-    @Generated
-    public ApiCenterApiSpecification setName(String name) {
-        this.name = name;
-        return this;
-    }
+        /**
+         * Set the name property: Specification name.
+         *
+         * @param name the name value to set.
+         * @return the ApiCenterApiSpecification object itself.
+         */
+        @Generated
+        public ApiCenterApiSpecification setName(String name) {
+            this.name = name;
+            return this;
+        }
 
-    /**
-     * Get the version property: Specification version.
-     * 
-     * @return the version value.
-     */
-    @Generated
-    public String getVersion() {
-        return this.version;
-    }
+        /**
+         * Get the version property: Specification version.
+         *
+         * @return the version value.
+         */
+        @Generated
+        public String getVersion() {
+            return this.version;
+        }
 
-    /**
-     * Set the version property: Specification version.
-     * 
-     * @param version the version value to set.
-     * @return the ApiCenterApiSpecification object itself.
-     */
-    @Generated
-    public ApiCenterApiSpecification setVersion(String version) {
-        this.version = version;
-        return this;
-    }
+        /**
+         * Set the version property: Specification version.
+         *
+         * @param version the version value to set.
+         * @return the ApiCenterApiSpecification object itself.
+         */
+        @Generated
+        public ApiCenterApiSpecification setVersion(String version) {
+            this.version = version;
+            return this;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("version", this.version);
-        return jsonWriter.writeEndObject();
-    }
+        /**
+         * {@inheritDoc}
+         */
+        @Generated
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("name", this.name);
+            jsonWriter.writeStringField("version", this.version);
+            return jsonWriter.writeEndObject();
+        }
 
-    /**
-     * Reads an instance of ApiCenterApiSpecification from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ApiCenterApiSpecification if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ApiCenterApiSpecification.
-     */
-    @Generated
-    public static ApiCenterApiSpecification fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ApiCenterApiSpecification deserializedApiCenterApiSpecification = new ApiCenterApiSpecification();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        /**
+         * Reads an instance of ApiCenterApiSpecification from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of ApiCenterApiSpecification if the JsonReader was pointing to an instance of it, or null if
+         * it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the ApiCenterApiSpecification.
+         */
+        @Generated
+        public static ApiCenterApiSpecification fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                ApiCenterApiSpecification deserializedApiCenterApiSpecification = new ApiCenterApiSpecification();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
 
-                if ("name".equals(fieldName)) {
-                    deserializedApiCenterApiSpecification.name = reader.getString();
-                } else if ("version".equals(fieldName)) {
-                    deserializedApiCenterApiSpecification.version = reader.getString();
-                } else {
-                    reader.skipChildren();
+                    if ("name".equals(fieldName)) {
+                        deserializedApiCenterApiSpecification.name = reader.getString();
+                    } else if ("version".equals(fieldName)) {
+                        deserializedApiCenterApiSpecification.version = reader.getString();
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
 
-            return deserializedApiCenterApiSpecification;
-        });
-    }
+                return deserializedApiCenterApiSpecification;
+            });
+        }
 }
