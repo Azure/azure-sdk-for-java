@@ -6241,9 +6241,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .flatMap(databaseAccount -> {
 
                 List<String> readableRegions
-                    = Utils.iterableToList(databaseAccount.getReadableLocations()).stream().map(databaseAccountLocation -> databaseAccountLocation.getName()).collect(Collectors.toUnmodifiableList());
+                    = Utils.iterableToList(databaseAccount.getReadableLocations()).stream().map(DatabaseAccountLocation::getName).collect(Collectors.toList());
                 List<String> writeableRegions
-                    = Utils.iterableToList(databaseAccount.getWritableLocations()).stream().map(databaseAccountLocation -> databaseAccountLocation.getName()).collect(Collectors.toUnmodifiableList());
+                    = Utils.iterableToList(databaseAccount.getWritableLocations()).stream().map(DatabaseAccountLocation::getName).collect(Collectors.toList());
 
                 return Mono.just(ImplementationBridgeHelpers.CosmosDatabaseAccountHelper.getCosmosDatabaseAccountAccessor().build(
                     databaseAccount.getId(),
