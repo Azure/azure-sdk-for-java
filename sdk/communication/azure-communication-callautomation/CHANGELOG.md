@@ -4,6 +4,15 @@
 
 ### Features Added
 
+- Added support for Teams multipersona users in add participant, transfer, and redirect scenarios in OPS calls
+- Added TeamsAppSource for use when creating outbound OPS calls
+- Recording with the call connection ID is now supported. OPS calls can be recorded using the call connection ID.
+- Added StartRecordingFailed event to indicate when the start recording API is unable to initiate the recording.
+
+## 1.4.0 (2025-06-04)
+
+### Features Added
+
 - Real-time transcription support
 - Audio and DTMF streaming capabilities
 - Integration of ConnectAPI for seamless streaming and transcription
