@@ -101,22 +101,6 @@ public final class CustomCallingContext {
     }
 
     /**
-    * Type for SipHeaderPrefix.
-    * XMSCustom is the default prefix for custom headers.
-    */
-    public enum SipHeaderPrefix {
-        /**
-         * Use the generic "X-" prefix.
-         */
-        X,
-
-        /**
-         * Use the legacy "X-MS-Custom" prefix.
-         */
-        XMSCustom
-    }
-
-    /**
      * Add a custom context voip header.
      *
      * @param key custom context voip header's key.
