@@ -43,6 +43,11 @@ final class Netty4StreamingHttp2Adapter extends Http2EventAdapter {
         this.connection = connection;
     }
 
+    // TODO (alzimmer): This implementation is close but needs a way to control when WINDOWS_UPDARE frames are sent to
+    //  prevent race conditions between switching from the initial response data handling in Netty4ResponseHandler and
+    //  either eager or deferred content reading in the custom handlers.
+    //  For now, while huge responses don't need to be supported yet, use InboundHttp2ToHttpAdapter to buffer the
+    //  entire response into a FullHttpResponse.
     @Override
     public int onDataRead(ChannelHandlerContext ctx, int streamId, ByteBuf data, int padding, boolean endOfStream)
         throws Http2Exception {
@@ -51,7 +56,8 @@ final class Netty4StreamingHttp2Adapter extends Http2EventAdapter {
             throw connectionError(PROTOCOL_ERROR, "Data Frame received for unknown stream id %d", streamId);
         }
 
-        final int dataReadableBytes = data.readableBytes();
+        int dataReadableBytes = data.readableBytes();
+        data = Unpooled.copiedBuffer(data);
         if (endOfStream) {
             ctx.fireChannelRead(new DefaultLastHttpContent(data));
         } else {
@@ -70,8 +76,7 @@ final class Netty4StreamingHttp2Adapter extends Http2EventAdapter {
 
     @Override
     public void onHeadersRead(ChannelHandlerContext ctx, int streamId, Http2Headers headers, int streamDependency,
-        short weight, boolean exclusive, int padding, boolean endOfStream)
-        throws Http2Exception {
+        short weight, boolean exclusive, int padding, boolean endOfStream) throws Http2Exception {
         Http2Stream stream = connection.stream(streamId);
         if (stream == null) {
             throw connectionError(PROTOCOL_ERROR, "Header Frame received for unknown stream id %d", streamId);
@@ -94,8 +99,8 @@ final class Netty4StreamingHttp2Adapter extends Http2EventAdapter {
 
         // Add special headers for stream dependency and weight.
         if (streamDependency > Http2CodecUtil.CONNECTION_STREAM_ID) {
-            response.headers().setInt(HttpConversionUtil.ExtensionHeaderNames.STREAM_DEPENDENCY_ID.text(),
-                streamDependency);
+            response.headers()
+                .setInt(HttpConversionUtil.ExtensionHeaderNames.STREAM_DEPENDENCY_ID.text(), streamDependency);
         }
         if (weight > 0) {
             response.headers().setShort(HttpConversionUtil.ExtensionHeaderNames.STREAM_WEIGHT.text(), weight);
@@ -106,13 +111,13 @@ final class Netty4StreamingHttp2Adapter extends Http2EventAdapter {
 
     @Override
     public void onRstStreamRead(ChannelHandlerContext ctx, int streamId, long errorCode) throws Http2Exception {
-        ctx.fireExceptionCaught(Http2Exception.streamError(streamId, Http2Error.valueOf(errorCode),
-            "HTTP/2 to HTTP layer caught stream reset"));
+        throw Http2Exception.streamError(streamId, Http2Error.valueOf(errorCode),
+            "HTTP/2 to HTTP layer caught stream reset");
     }
 
     @Override
-    public void onPushPromiseRead(ChannelHandlerContext ctx, int streamId, int promisedStreamId,
-        Http2Headers headers, int padding) throws Http2Exception {
+    public void onPushPromiseRead(ChannelHandlerContext ctx, int streamId, int promisedStreamId, Http2Headers headers,
+        int padding) throws Http2Exception {
         ctx.fireExceptionCaught(new UnsupportedOperationException("Push promises are not supported."));
     }
 

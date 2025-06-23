@@ -15,7 +15,6 @@ import io.clientcore.core.shared.InsecureTrustManager;
 import io.clientcore.core.shared.LocalTestServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
@@ -90,11 +89,5 @@ public class NettyHttp2HttpClientTests extends HttpClientTests {
         try (Response<BinaryData> response = getHttpClient().send(request)) {
             assertArrayEquals(expectedBytes, response.getValue().toBytes());
         }
-    }
-
-    @Disabled
-    @Override
-    public void binaryDataUploadTest() throws Exception {
-        super.binaryDataUploadTest();
     }
 }
