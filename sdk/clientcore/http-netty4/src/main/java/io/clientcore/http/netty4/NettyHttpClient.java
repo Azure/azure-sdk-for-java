@@ -23,7 +23,7 @@ import io.clientcore.http.netty4.implementation.Netty4ChannelBinaryData;
 import io.clientcore.http.netty4.implementation.Netty4EagerConsumeChannelHandler;
 import io.clientcore.http.netty4.implementation.Netty4HandlerNames;
 import io.clientcore.http.netty4.implementation.Netty4ProgressAndTimeoutHandler;
-import io.clientcore.http.netty4.implementation.Netty4Http11ResponseHandler;
+import io.clientcore.http.netty4.implementation.Netty4ResponseHandler;
 import io.clientcore.http.netty4.implementation.Netty4SslInitializationHandler;
 import io.clientcore.http.netty4.implementation.ResponseBodyHandling;
 import io.clientcore.http.netty4.implementation.ResponseStateInfo;
@@ -54,7 +54,7 @@ import java.util.function.Consumer;
 
 import static io.clientcore.core.utils.ServerSentEventUtils.attemptRetry;
 import static io.clientcore.core.utils.ServerSentEventUtils.processTextEventStream;
-import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.HTTP_1_1_RESPONSE;
+import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.HTTP_RESPONSE;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.PROGRESS_AND_TIMEOUT;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.awaitLatch;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.createCodec;
@@ -169,7 +169,8 @@ class NettyHttpClient implements HttpClient {
                         .addLast(Netty4HandlerNames.SSL_INITIALIZER, new Netty4SslInitializationHandler());
 
                     channel.pipeline()
-                        .addLast(new Netty4AlpnHandler(request, responseReference, errorReference, latch));
+                        .addLast(Netty4HandlerNames.ALPN,
+                            new Netty4AlpnHandler(request, responseReference, errorReference, latch));
                 }
             }
         });
@@ -232,12 +233,12 @@ class NettyHttpClient implements HttpClient {
             } else {
                 // If there isn't an SslHandler, we can send the request immediately.
                 // Add the HTTP/1.1 codec, as we only support HTTP/2 when using SSL ALPN.
-                Netty4Http11ResponseHandler responseHandler
-                    = new Netty4Http11ResponseHandler(request, responseReference, errorReference, latch);
-                channel.pipeline().addLast(HTTP_1_1_RESPONSE, responseHandler);
+                Netty4ResponseHandler responseHandler
+                    = new Netty4ResponseHandler(request, responseReference, errorReference, latch);
+                channel.pipeline().addLast(HTTP_RESPONSE, responseHandler);
 
-                String addBefore = addProgressAndTimeoutHandler ? PROGRESS_AND_TIMEOUT : HTTP_1_1_RESPONSE;
-                channel.pipeline().addBefore(addBefore, Netty4HandlerNames.HTTP_1_1_CODEC, createCodec());
+                String addBefore = addProgressAndTimeoutHandler ? PROGRESS_AND_TIMEOUT : HTTP_RESPONSE;
+                channel.pipeline().addBefore(addBefore, Netty4HandlerNames.HTTP_CODEC, createCodec());
 
                 sendHttp11Request(request, channel, errorReference)
                     .addListener((ChannelFutureListener) sendListener -> {

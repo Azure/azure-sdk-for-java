@@ -27,21 +27,21 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Tests {@link Netty4Http11ResponseHandler}.
+ * Tests {@link Netty4ResponseHandler}.
  */
 @Timeout(value = 3, unit = TimeUnit.MINUTES)
-public class Netty4Http11ResponseHandlerTests {
+public class Netty4ResponseHandlerTests {
     @Test
     public void firstReadIsFullHttpResponse() throws Exception {
         HttpRequest request = new HttpRequest();
         AtomicReference<ResponseStateInfo> responseReference = new AtomicReference<>();
         CountDownLatch latch = new CountDownLatch(1);
 
-        Netty4Http11ResponseHandler responseHandler
-            = new Netty4Http11ResponseHandler(request, responseReference, new AtomicReference<>(), latch);
+        Netty4ResponseHandler responseHandler
+            = new Netty4ResponseHandler(request, responseReference, new AtomicReference<>(), latch);
 
         Channel ch = createChannelWithReadHandling((ignored, channel) -> {
-            Netty4Http11ResponseHandler handler = channel.pipeline().get(Netty4Http11ResponseHandler.class);
+            Netty4ResponseHandler handler = channel.pipeline().get(Netty4ResponseHandler.class);
             MockChannelHandlerContext ctx = new MockChannelHandlerContext(channel);
 
             try {
@@ -74,12 +74,12 @@ public class Netty4Http11ResponseHandlerTests {
         AtomicReference<ResponseStateInfo> responseReference = new AtomicReference<>();
         CountDownLatch latch = new CountDownLatch(1);
 
-        Netty4Http11ResponseHandler responseHandler
-            = new Netty4Http11ResponseHandler(request, responseReference, new AtomicReference<>(), latch);
+        Netty4ResponseHandler responseHandler
+            = new Netty4ResponseHandler(request, responseReference, new AtomicReference<>(), latch);
 
         Channel ch = createChannelWithReadHandling((readCount, channel) -> {
             if (readCount == 0) {
-                Netty4Http11ResponseHandler handler = channel.pipeline().get(Netty4Http11ResponseHandler.class);
+                Netty4ResponseHandler handler = channel.pipeline().get(Netty4ResponseHandler.class);
                 MockChannelHandlerContext ctx = new MockChannelHandlerContext(channel);
                 try {
                     handler.channelRead(ctx,
@@ -125,12 +125,12 @@ public class Netty4Http11ResponseHandlerTests {
         AtomicReference<ResponseStateInfo> responseReference = new AtomicReference<>();
         CountDownLatch latch = new CountDownLatch(1);
 
-        Netty4Http11ResponseHandler responseHandler
-            = new Netty4Http11ResponseHandler(request, responseReference, new AtomicReference<>(), latch);
+        Netty4ResponseHandler responseHandler
+            = new Netty4ResponseHandler(request, responseReference, new AtomicReference<>(), latch);
 
         Channel ch = createChannelWithReadHandling((readCount, channel) -> {
             if (readCount == 0) {
-                Netty4Http11ResponseHandler handler = channel.pipeline().get(Netty4Http11ResponseHandler.class);
+                Netty4ResponseHandler handler = channel.pipeline().get(Netty4ResponseHandler.class);
                 MockChannelHandlerContext ctx = new MockChannelHandlerContext(channel);
                 try {
                     handler.channelRead(ctx,

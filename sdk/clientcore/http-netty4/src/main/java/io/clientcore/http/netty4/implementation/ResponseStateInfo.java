@@ -9,7 +9,7 @@ import io.netty.channel.Channel;
 import java.io.ByteArrayOutputStream;
 
 /**
- * Holder of information gathered by {@link Netty4Http11ResponseHandler}. Used in {@code NettyHttpClient} to create the final
+ * Holder of information gathered by {@link Netty4ResponseHandler}. Used in {@code NettyHttpClient} to create the final
  * {@link Response}.
  */
 public final class ResponseStateInfo {

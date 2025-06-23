@@ -19,22 +19,15 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.DefaultHttpRequest;
+import io.netty.handler.codec.http.HttpChunkedInput;
 import io.netty.handler.codec.http.HttpClientCodec;
 import io.netty.handler.codec.http.HttpDecoderConfig;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeadersFactory;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpVersion;
-import io.netty.handler.codec.http2.DefaultHttp2DataFrame;
-import io.netty.handler.codec.http2.DefaultHttp2Headers;
-import io.netty.handler.codec.http2.DefaultHttp2HeadersFrame;
-import io.netty.handler.codec.http2.Http2DataChunkedInput;
-import io.netty.handler.codec.http2.Http2Headers;
-import io.netty.handler.codec.http2.Http2HeadersFrame;
-import io.netty.handler.codec.http2.Http2StreamChannel;
 import io.netty.handler.stream.ChunkedInput;
 import io.netty.handler.stream.ChunkedNioFile;
 import io.netty.handler.stream.ChunkedStream;
@@ -75,12 +68,6 @@ public final class Netty4Utility {
             "netty-handler", "netty-handler-proxy", "netty-resolver", "netty-resolver-dns", "netty-transport");
     private static final List<String> OPTIONAL_NETTY_VERSION_ARTIFACTS = Arrays
         .asList("netty-transport-native-unix-common", "netty-transport-native-epoll", "netty-transport-native-kqueue");
-
-    /**
-     * Name given to the {@link Netty4ProgressAndTimeoutHandler} used in the {@link ChannelPipeline} created by
-     * {@code NettyHttpClient}.
-     */
-    public static final String PROGRESS_AND_TIMEOUT_HANDLER_NAME = "Netty4-Progress-And-Timeout-Handler";
 
     /**
      * Converts Netty HttpHeaders to ClientCore HttpHeaders.
@@ -308,14 +295,8 @@ public final class Netty4Utility {
         io.netty.handler.codec.http.HttpRequest initialLineAndHeaders, AtomicReference<Throwable> errorReference) {
         if (channel.pipeline().get(Netty4HandlerNames.CHUNKED_WRITER) == null) {
             // Add the ChunkedWriteHandler which will handle sending the chunkedInput.
-            ChunkedWriteHandler chunkedWriteHandler = new ChunkedWriteHandler();
-            if (channel.pipeline().get(Netty4HandlerNames.PROGRESS_AND_TIMEOUT) != null) {
-                channel.pipeline()
-                    .addBefore(Netty4HandlerNames.PROGRESS_AND_TIMEOUT, Netty4HandlerNames.CHUNKED_WRITER,
-                        chunkedWriteHandler);
-            } else {
-                channel.pipeline().addLast(Netty4HandlerNames.CHUNKED_WRITER, chunkedWriteHandler);
-            }
+            channel.pipeline()
+                .addAfter(Netty4HandlerNames.HTTP_CODEC, Netty4HandlerNames.CHUNKED_WRITER, new ChunkedWriteHandler());
         }
 
         Throwable error = errorReference.get();
@@ -324,96 +305,7 @@ public final class Netty4Utility {
         }
 
         channel.write(initialLineAndHeaders);
-        return channel.writeAndFlush(chunkedInput);
-    }
-
-    /**
-     * Sends an HTTP/2 request using the provided {@link Channel}.
-     *
-     * @param request The HTTP request to send.
-     * @param channel The Channel to send the request.
-     * @param errorReference An AtomicReference tracking exceptions seen during the request lifecycle.
-     * @return A ChannelFuture that will complete once the request has been sent.
-     */
-    public static ChannelFuture sendHttp2Request(HttpRequest request, Http2StreamChannel channel,
-        AtomicReference<Throwable> errorReference) {
-        // HTTP/2 requests are more complicated than HTTP/1.1 as they are a stream of frames with specific purposes.
-        // Additionally, since we're using multiplexing, we need to associate a stream ID with each frame.
-
-        // Send the headers frame(s).
-        // Unlike in HTTP/1.1, there isn't a status line on requests. Rather pseudo headers are used.
-        // TODO (alzimmer): Create an Http2Headers implementations similar to WrappedHttpHeaders.
-        Http2Headers headers = new DefaultHttp2Headers();
-        headers.method(request.getHttpMethod().toString());
-        headers.scheme(request.getUri().getScheme());
-        headers.authority(request.getUri().getAuthority());
-        if (request.getUri().getPath() != null) {
-            headers.path(request.getUri().getPath());
-        }
-
-        // If the request doesn't have a body or is a HEAD request, only a headers frame should be sent before the
-        // client indicates closure of its half of the stream.
-        BinaryData requestBody = request.getBody();
-        Long bodyLength = requestBody == null ? null : requestBody.getLength();
-        boolean headersOnly = (bodyLength == null || bodyLength == 0)
-            || request.getHttpMethod() == io.clientcore.core.http.models.HttpMethod.HEAD;
-
-        request.getHeaders()
-            .stream()
-            .forEach(httpHeader -> headers.add(httpHeader.getName().getCaseInsensitiveName(), httpHeader.getValues()));
-        Http2HeadersFrame headersFrame = new DefaultHttp2HeadersFrame(headers, headersOnly).stream(channel.stream());
-
-        if (headersOnly) {
-            return channel.write(headersFrame);
-        }
-
-        channel.write(headersFrame);
-
-        // Now it's time to write the data frames.
-        if (requestBody instanceof FileBinaryData) {
-            FileBinaryData fileBinaryData = (FileBinaryData) requestBody;
-            try {
-                return sendChunkedHttp2(channel,
-                    new ChunkedNioFile(FileChannel.open(fileBinaryData.getFile(), StandardOpenOption.READ),
-                        fileBinaryData.getPosition(), fileBinaryData.getLength(), 8192),
-                    errorReference);
-            } catch (IOException ex) {
-                return channel.newFailedFuture(ex);
-            }
-        } else if (requestBody instanceof InputStreamBinaryData) {
-            return sendChunkedHttp2(channel, new ChunkedStream(requestBody.toStream()), errorReference);
-        } else {
-            ByteBuf body = Unpooled.wrappedBuffer(requestBody.toBytes());
-
-            Throwable error = errorReference.get();
-            if (error != null) {
-                return channel.newFailedFuture(error);
-            }
-
-            return channel.writeAndFlush(new DefaultHttp2DataFrame(body, true).stream(channel.stream()));
-        }
-    }
-
-    private static ChannelFuture sendChunkedHttp2(Http2StreamChannel channel, ChunkedInput<ByteBuf> chunkedInput,
-        AtomicReference<Throwable> errorReference) {
-        if (channel.pipeline().get(Netty4HandlerNames.CHUNKED_WRITER) == null) {
-            // Add the ChunkedWriteHandler which will handle sending the chunkedInput.
-            ChunkedWriteHandler chunkedWriteHandler = new ChunkedWriteHandler();
-            if (channel.pipeline().get(Netty4HandlerNames.PROGRESS_AND_TIMEOUT) != null) {
-                channel.pipeline()
-                    .addBefore(Netty4HandlerNames.PROGRESS_AND_TIMEOUT, Netty4HandlerNames.CHUNKED_WRITER,
-                        chunkedWriteHandler);
-            } else {
-                channel.pipeline().addLast(Netty4HandlerNames.CHUNKED_WRITER, chunkedWriteHandler);
-            }
-        }
-
-        Throwable error = errorReference.get();
-        if (error != null) {
-            return channel.newFailedFuture(error);
-        }
-
-        return channel.writeAndFlush(new Http2DataChunkedInput(chunkedInput, channel.stream()));
+        return channel.writeAndFlush(new HttpChunkedInput(chunkedInput));
     }
 
     /**

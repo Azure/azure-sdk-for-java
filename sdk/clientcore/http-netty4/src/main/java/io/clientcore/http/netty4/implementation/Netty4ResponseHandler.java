@@ -31,7 +31,7 @@ import static io.clientcore.http.netty4.implementation.Netty4Utility.setOrSuppre
  * When used with {@code NettyHttpClient} this handler must be added to the pipeline so that the {@link HttpClientCodec}
  * is able to decode the data of the response.
  */
-public final class Netty4Http11ResponseHandler extends ChannelInboundHandlerAdapter {
+public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
     private final HttpRequest request;
     private final AtomicReference<ResponseStateInfo> responseReference;
     private final AtomicReference<Throwable> errorReference;
@@ -49,7 +49,7 @@ public final class Netty4Http11ResponseHandler extends ChannelInboundHandlerAdap
     private boolean complete;
 
     /**
-     * Creates an instance of {@link Netty4Http11ResponseHandler}.
+     * Creates an instance of {@link Netty4ResponseHandler}.
      *
      * @param request The request that resulted in the response.
      * @param responseReference The reference to the {@link Response} that will be created from the response headers and
@@ -59,7 +59,7 @@ public final class Netty4Http11ResponseHandler extends ChannelInboundHandlerAdap
      * @param latch The latch to wait for the response to be processed.
      * @throws NullPointerException If {@code request}, {@code responseReference}, or {@code latch} is null.
      */
-    public Netty4Http11ResponseHandler(HttpRequest request, AtomicReference<ResponseStateInfo> responseReference,
+    public Netty4ResponseHandler(HttpRequest request, AtomicReference<ResponseStateInfo> responseReference,
         AtomicReference<Throwable> errorReference, CountDownLatch latch) {
         this.request = Objects.requireNonNull(request,
             "Cannot create an instance of CoreResponseHandler with a null 'request'.");
