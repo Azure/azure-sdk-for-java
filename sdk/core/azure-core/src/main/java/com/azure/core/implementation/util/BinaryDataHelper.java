@@ -4,13 +4,11 @@
 package com.azure.core.implementation.util;
 
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.logging.ClientLogger;
 
 /**
  * Helper class to access private values of {@link BinaryData} across package boundaries.
  */
 public final class BinaryDataHelper {
-    private static final ClientLogger LOGGER = new ClientLogger(BinaryDataHelper.class);
     private static BinaryDataAccessor accessor;
 
     /**
@@ -56,8 +54,8 @@ public final class BinaryDataHelper {
             ensureAccessorSet();
             return accessor.createBinaryData(content);
         } catch (Exception e) {
-            LOGGER.error("createBinary failed with message : {}", e.getMessage());
-            LOGGER.error("Stack trace: ", e);
+            System.out.println("createBinary failed with message : " + e.getMessage());
+            e.printStackTrace(System.out);
             throw e;
         }
     }
@@ -84,8 +82,8 @@ public final class BinaryDataHelper {
                 BinaryData.fromString("");
             }
         } catch (Exception e) {
-            LOGGER.error("ensureAccessorSet failed with message : {}", e.getMessage());
-            LOGGER.error("Stack trace: ", e);
+            System.out.println("ensureAccessorSet failed with message : " + e.getMessage());
+            e.printStackTrace(System.out);
             throw e;
         }
 
