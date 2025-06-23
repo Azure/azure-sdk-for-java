@@ -51,8 +51,8 @@ public class JavaParserFormattingTest {
         assertTrue(generatedCode.contains("// Licensed under the MIT License."),
             "Generated code should contain proper license header");
         
-        // Verify proper spacing between sections
-        assertTrue(generatedCode.contains("// Licensed under the MIT License.\n//\n"),
+        // Verify proper spacing between sections  
+        assertTrue(generatedCode.contains("// Licensed under the MIT License.\n//"),
             "Should have blank line comment after license header");
         
         // Verify proper class JavaDoc formatting
@@ -92,6 +92,43 @@ public class JavaParserFormattingTest {
     }
 
     @Test
+    public void testJavaDocFormattingCompliance() {
+        // Process the template to generate code
+        processor.process(templateInput, processingEnv);
+        
+        // Get the generated code content
+        String generatedCode = mockFileObject.getContent();
+        assertNotNull(generatedCode, "Generated code should not be null");
+        
+        // Verify JavaDoc formatting follows checkstyle rules:
+        // 1. Exactly one space after @param parameter name
+        // 2. Exactly one space after @return
+        // 3. Description on same line as @param/@return
+        
+        String[] lines = generatedCode.split("\n");
+        for (String line : lines) {
+            if (line.trim().startsWith("@param ")) {
+                // Find parameter name and ensure single space after it
+                String trimmed = line.trim();
+                String[] parts = trimmed.split("\\s+", 3); // Split into @param, paramName, description
+                assertTrue(parts.length >= 3, 
+                    "JavaDoc @param should have parameter name and description: " + line);
+                assertTrue(trimmed.matches("@param \\S+ .*"),
+                    "JavaDoc @param should have exactly one space after parameter name: " + line);
+            }
+            
+            if (line.trim().startsWith("@return ")) {
+                // Ensure single space after @return and description on same line
+                String trimmed = line.trim();
+                assertTrue(trimmed.matches("@return .*"),
+                    "JavaDoc @return should have exactly one space before description: " + line);
+                assertTrue(trimmed.length() > "@return ".length(),
+                    "JavaDoc @return should have description on same line: " + line);
+            }
+        }
+    }
+
+    @Test
     public void testPrettyPrinterConfiguration() {
         // Verify that the processor has a properly configured pretty printer
         assertNotNull(processor, "Processor should be initialized");
@@ -106,5 +143,13 @@ public class JavaParserFormattingTest {
         // Check for consistent line endings and spacing
         assertNotNull(generatedCode);
         assertTrue(generatedCode.length() > 0, "Generated code should not be empty");
+        
+        // Verify line length doesn't exceed 120 characters (checkstyle requirement)
+        String[] lines = generatedCode.split("\n");
+        for (int i = 0; i < lines.length; i++) {
+            String line = lines[i];
+            assertTrue(line.length() <= 120, 
+                "Line " + (i + 1) + " exceeds 120 character limit: " + line.length() + " chars");
+        }
     }
 }

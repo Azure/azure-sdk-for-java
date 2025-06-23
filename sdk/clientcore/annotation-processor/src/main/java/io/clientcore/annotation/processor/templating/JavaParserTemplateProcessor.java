@@ -107,7 +107,8 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             .setIndentType(Indentation.IndentType.SPACES)
             .setOrderImports(true)
             .setColumnAlignParameters(false)
-            .setColumnAlignFirstMethodChain(false);
+            .setColumnAlignFirstMethodChain(false)
+            .setMaxLineLength(120); // Match checkstyle line length requirement
         
         this.prettyPrinter = new PrettyPrinter(config);
     }
@@ -299,20 +300,21 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         StringBuilder javadoc = new StringBuilder();
         javadoc.append("Performs a ").append(method.getHttpMethod()).append(" request to ");
         javadoc.append(method.getPath() != null ? method.getPath() : "the configured endpoint");
-        javadoc.append(".\n\n");
+        javadoc.append(".\n");
         
-        // Add parameter documentation
+        // Add parameter documentation with proper formatting (single space after @param)
         method.getParameters().forEach(param -> {
             javadoc.append("@param ").append(param.getName()).append(" ");
             javadoc.append("The ").append(param.getShortTypeName()).append(" parameter\n");
         });
         
-        // Add return documentation
-        javadoc.append("@return The HTTP response");
+        // Add return documentation with proper formatting (single space after @return)
+        javadoc.append("@return ");
         if (method.getMethodReturnType() != null) {
-            javadoc.append(" containing the result");
+            javadoc.append("The HTTP response containing the result");
+        } else {
+            javadoc.append("The HTTP response");
         }
-        javadoc.append("\n");
         
         methodDeclaration.setJavadocComment(javadoc.toString());
     }
