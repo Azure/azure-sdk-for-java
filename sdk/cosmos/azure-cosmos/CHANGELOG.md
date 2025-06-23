@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue returning incorrect `ReadConsistencyStrategy` in `CosmosDiagnosticsContext.getEffectiveReadConsistencyStrategy()` for change feed operations in some cases - [PR 45645](https://github.com/Azure/azure-sdk-for-java/pull/45645)
 
 #### Other Changes
 
