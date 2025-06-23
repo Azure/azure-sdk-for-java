@@ -72,7 +72,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      * to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ImpactReportingMgmtC")
+    @ServiceInterface(name = "ImpactReportingMgmtClientConnectors")
     public interface ConnectorsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Impact/connectors/{connectorName}")

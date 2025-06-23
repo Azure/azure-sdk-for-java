@@ -6,7 +6,8 @@ module com.azure.ai.projects {
     requires transitive com.azure.core;
     requires com.azure.storage.blob;
     requires com.azure.ai.agents.persistent;
-    requires com.azure.ai.inference;
+    requires openai.java.core;
+    requires openai.java.client.okhttp;
 
     exports com.azure.ai.projects;
     exports com.azure.ai.projects.models;

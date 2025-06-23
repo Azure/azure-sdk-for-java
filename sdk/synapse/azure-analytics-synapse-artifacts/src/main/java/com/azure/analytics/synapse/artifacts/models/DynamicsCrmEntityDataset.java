@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,16 +22,19 @@ public class DynamicsCrmEntityDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "DynamicsCrmEntity";
 
     /*
      * The logical name of the entity. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object entityName;
 
     /**
      * Creates an instance of DynamicsCrmEntityDataset class.
      */
+    @Generated
     public DynamicsCrmEntityDataset() {
     }
 
@@ -39,6 +43,7 @@ public class DynamicsCrmEntityDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -49,6 +54,7 @@ public class DynamicsCrmEntityDataset extends Dataset {
      * 
      * @return the entityName value.
      */
+    @Generated
     public Object getEntityName() {
         return this.entityName;
     }
@@ -59,6 +65,7 @@ public class DynamicsCrmEntityDataset extends Dataset {
      * @param entityName the entityName value to set.
      * @return the DynamicsCrmEntityDataset object itself.
      */
+    @Generated
     public DynamicsCrmEntityDataset setEntityName(Object entityName) {
         this.entityName = entityName;
         return this;
@@ -67,6 +74,7 @@ public class DynamicsCrmEntityDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DynamicsCrmEntityDataset setDescription(String description) {
         super.setDescription(description);
@@ -76,6 +84,7 @@ public class DynamicsCrmEntityDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DynamicsCrmEntityDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -85,6 +94,7 @@ public class DynamicsCrmEntityDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DynamicsCrmEntityDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -94,6 +104,7 @@ public class DynamicsCrmEntityDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DynamicsCrmEntityDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -103,6 +114,7 @@ public class DynamicsCrmEntityDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DynamicsCrmEntityDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -112,6 +124,7 @@ public class DynamicsCrmEntityDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DynamicsCrmEntityDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -121,6 +134,7 @@ public class DynamicsCrmEntityDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DynamicsCrmEntityDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -130,20 +144,27 @@ public class DynamicsCrmEntityDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
         jsonWriter.writeStringField("type", this.type);
         if (entityName != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("entityName", this.entityName);
+            if (this.entityName != null) {
+                jsonWriter.writeUntypedField("entityName", this.entityName);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -163,6 +184,7 @@ public class DynamicsCrmEntityDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DynamicsCrmEntityDataset.
      */
+    @Generated
     public static DynamicsCrmEntityDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DynamicsCrmEntityDataset deserializedDynamicsCrmEntityDataset = new DynamicsCrmEntityDataset();

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,31 +22,37 @@ public final class SqlScriptContent implements JsonSerializable<SqlScriptContent
     /*
      * SQL query to execute.
      */
+    @Generated
     private String query;
 
     /*
      * The connection used to execute the SQL script.
      */
+    @Generated
     private SqlConnection currentConnection;
 
     /*
      * Limit of results, '-1' for no limit.
      */
+    @Generated
     private Integer resultLimit;
 
     /*
      * The metadata of the SQL script.
      */
+    @Generated
     private SqlScriptMetadata metadata;
 
     /*
      * The content of the SQL script.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of SqlScriptContent class.
      */
+    @Generated
     public SqlScriptContent() {
     }
 
@@ -54,6 +61,7 @@ public final class SqlScriptContent implements JsonSerializable<SqlScriptContent
      * 
      * @return the query value.
      */
+    @Generated
     public String getQuery() {
         return this.query;
     }
@@ -64,6 +72,7 @@ public final class SqlScriptContent implements JsonSerializable<SqlScriptContent
      * @param query the query value to set.
      * @return the SqlScriptContent object itself.
      */
+    @Generated
     public SqlScriptContent setQuery(String query) {
         this.query = query;
         return this;
@@ -74,6 +83,7 @@ public final class SqlScriptContent implements JsonSerializable<SqlScriptContent
      * 
      * @return the currentConnection value.
      */
+    @Generated
     public SqlConnection getCurrentConnection() {
         return this.currentConnection;
     }
@@ -84,6 +94,7 @@ public final class SqlScriptContent implements JsonSerializable<SqlScriptContent
      * @param currentConnection the currentConnection value to set.
      * @return the SqlScriptContent object itself.
      */
+    @Generated
     public SqlScriptContent setCurrentConnection(SqlConnection currentConnection) {
         this.currentConnection = currentConnection;
         return this;
@@ -94,6 +105,7 @@ public final class SqlScriptContent implements JsonSerializable<SqlScriptContent
      * 
      * @return the resultLimit value.
      */
+    @Generated
     public Integer getResultLimit() {
         return this.resultLimit;
     }
@@ -104,6 +116,7 @@ public final class SqlScriptContent implements JsonSerializable<SqlScriptContent
      * @param resultLimit the resultLimit value to set.
      * @return the SqlScriptContent object itself.
      */
+    @Generated
     public SqlScriptContent setResultLimit(Integer resultLimit) {
         this.resultLimit = resultLimit;
         return this;
@@ -114,6 +127,7 @@ public final class SqlScriptContent implements JsonSerializable<SqlScriptContent
      * 
      * @return the metadata value.
      */
+    @Generated
     public SqlScriptMetadata getMetadata() {
         return this.metadata;
     }
@@ -124,6 +138,7 @@ public final class SqlScriptContent implements JsonSerializable<SqlScriptContent
      * @param metadata the metadata value to set.
      * @return the SqlScriptContent object itself.
      */
+    @Generated
     public SqlScriptContent setMetadata(SqlScriptMetadata metadata) {
         this.metadata = metadata;
         return this;
@@ -134,6 +149,7 @@ public final class SqlScriptContent implements JsonSerializable<SqlScriptContent
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -144,6 +160,7 @@ public final class SqlScriptContent implements JsonSerializable<SqlScriptContent
      * @param additionalProperties the additionalProperties value to set.
      * @return the SqlScriptContent object itself.
      */
+    @Generated
     public SqlScriptContent setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -152,6 +169,7 @@ public final class SqlScriptContent implements JsonSerializable<SqlScriptContent
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -176,6 +194,7 @@ public final class SqlScriptContent implements JsonSerializable<SqlScriptContent
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SqlScriptContent.
      */
+    @Generated
     public static SqlScriptContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SqlScriptContent deserializedSqlScriptContent = new SqlScriptContent();

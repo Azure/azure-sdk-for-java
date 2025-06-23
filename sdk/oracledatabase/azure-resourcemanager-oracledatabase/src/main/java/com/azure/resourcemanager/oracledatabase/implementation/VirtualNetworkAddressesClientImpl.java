@@ -70,7 +70,7 @@ public final class VirtualNetworkAddressesClientImpl implements VirtualNetworkAd
      * the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "OracleDatabaseManage")
+    @ServiceInterface(name = "OracleDatabaseManagementClientVirtualNetworkAddresses")
     public interface VirtualNetworkAddressesService {
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}/virtualNetworkAddresses/{virtualnetworkaddressname}")
         @ExpectedResponses({ 200, 201 })

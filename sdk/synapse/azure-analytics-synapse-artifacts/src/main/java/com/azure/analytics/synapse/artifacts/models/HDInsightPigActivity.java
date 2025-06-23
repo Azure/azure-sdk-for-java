@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,41 +22,49 @@ public class HDInsightPigActivity extends ExecutionActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "HDInsightPig";
 
     /*
      * Storage linked service references.
      */
+    @Generated
     private List<LinkedServiceReference> storageLinkedServices;
 
     /*
      * User specified arguments to HDInsightActivity. Type: array (or Expression with resultType array).
      */
+    @Generated
     private Object arguments;
 
     /*
      * Debug info option.
      */
+    @Generated
     private HDInsightActivityDebugInfoOption getDebugInfo;
 
     /*
      * Script path. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object scriptPath;
 
     /*
      * Script linked service reference.
      */
+    @Generated
     private LinkedServiceReference scriptLinkedService;
 
     /*
      * Allows user to specify defines for Pig job request.
      */
+    @Generated
     private Map<String, Object> defines;
 
     /**
      * Creates an instance of HDInsightPigActivity class.
      */
+    @Generated
     public HDInsightPigActivity() {
     }
 
@@ -64,6 +73,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -74,6 +84,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
      * 
      * @return the storageLinkedServices value.
      */
+    @Generated
     public List<LinkedServiceReference> getStorageLinkedServices() {
         return this.storageLinkedServices;
     }
@@ -84,6 +95,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
      * @param storageLinkedServices the storageLinkedServices value to set.
      * @return the HDInsightPigActivity object itself.
      */
+    @Generated
     public HDInsightPigActivity setStorageLinkedServices(List<LinkedServiceReference> storageLinkedServices) {
         this.storageLinkedServices = storageLinkedServices;
         return this;
@@ -95,6 +107,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
      * 
      * @return the arguments value.
      */
+    @Generated
     public Object getArguments() {
         return this.arguments;
     }
@@ -106,6 +119,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
      * @param arguments the arguments value to set.
      * @return the HDInsightPigActivity object itself.
      */
+    @Generated
     public HDInsightPigActivity setArguments(Object arguments) {
         this.arguments = arguments;
         return this;
@@ -116,6 +130,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
      * 
      * @return the getDebugInfo value.
      */
+    @Generated
     public HDInsightActivityDebugInfoOption getGetDebugInfo() {
         return this.getDebugInfo;
     }
@@ -126,6 +141,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
      * @param getDebugInfo the getDebugInfo value to set.
      * @return the HDInsightPigActivity object itself.
      */
+    @Generated
     public HDInsightPigActivity setGetDebugInfo(HDInsightActivityDebugInfoOption getDebugInfo) {
         this.getDebugInfo = getDebugInfo;
         return this;
@@ -136,6 +152,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
      * 
      * @return the scriptPath value.
      */
+    @Generated
     public Object getScriptPath() {
         return this.scriptPath;
     }
@@ -146,6 +163,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
      * @param scriptPath the scriptPath value to set.
      * @return the HDInsightPigActivity object itself.
      */
+    @Generated
     public HDInsightPigActivity setScriptPath(Object scriptPath) {
         this.scriptPath = scriptPath;
         return this;
@@ -156,6 +174,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
      * 
      * @return the scriptLinkedService value.
      */
+    @Generated
     public LinkedServiceReference getScriptLinkedService() {
         return this.scriptLinkedService;
     }
@@ -166,6 +185,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
      * @param scriptLinkedService the scriptLinkedService value to set.
      * @return the HDInsightPigActivity object itself.
      */
+    @Generated
     public HDInsightPigActivity setScriptLinkedService(LinkedServiceReference scriptLinkedService) {
         this.scriptLinkedService = scriptLinkedService;
         return this;
@@ -176,6 +196,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
      * 
      * @return the defines value.
      */
+    @Generated
     public Map<String, Object> getDefines() {
         return this.defines;
     }
@@ -186,6 +207,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
      * @param defines the defines value to set.
      * @return the HDInsightPigActivity object itself.
      */
+    @Generated
     public HDInsightPigActivity setDefines(Map<String, Object> defines) {
         this.defines = defines;
         return this;
@@ -194,6 +216,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightPigActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -203,6 +226,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightPigActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
@@ -212,6 +236,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightPigActivity setName(String name) {
         super.setName(name);
@@ -221,6 +246,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightPigActivity setDescription(String description) {
         super.setDescription(description);
@@ -230,6 +256,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightPigActivity setState(ActivityState state) {
         super.setState(state);
@@ -239,6 +266,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightPigActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -248,6 +276,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightPigActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -257,6 +286,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightPigActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -266,6 +296,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -289,10 +320,14 @@ public class HDInsightPigActivity extends ExecutionActivity {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeArrayField("storageLinkedServices", this.storageLinkedServices,
                 (writer, element) -> writer.writeJson(element));
-            jsonWriter.writeUntypedField("arguments", this.arguments);
+            if (this.arguments != null) {
+                jsonWriter.writeUntypedField("arguments", this.arguments);
+            }
             jsonWriter.writeStringField("getDebugInfo",
                 this.getDebugInfo == null ? null : this.getDebugInfo.toString());
-            jsonWriter.writeUntypedField("scriptPath", this.scriptPath);
+            if (this.scriptPath != null) {
+                jsonWriter.writeUntypedField("scriptPath", this.scriptPath);
+            }
             jsonWriter.writeJsonField("scriptLinkedService", this.scriptLinkedService);
             jsonWriter.writeMapField("defines", this.defines, (writer, element) -> writer.writeUntyped(element));
             jsonWriter.writeEndObject();
@@ -314,6 +349,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the HDInsightPigActivity.
      */
+    @Generated
     public static HDInsightPigActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HDInsightPigActivity deserializedHDInsightPigActivity = new HDInsightPigActivity();

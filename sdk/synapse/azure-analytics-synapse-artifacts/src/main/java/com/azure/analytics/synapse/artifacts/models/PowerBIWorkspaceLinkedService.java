@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,21 +22,25 @@ public class PowerBIWorkspaceLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "PowerBIWorkspace";
 
     /*
      * The Power BI workspace id.
      */
+    @Generated
     private String workspaceId;
 
     /*
      * The tenant id to which the Power BI workspace belongs.
      */
+    @Generated
     private String tenantId;
 
     /**
      * Creates an instance of PowerBIWorkspaceLinkedService class.
      */
+    @Generated
     public PowerBIWorkspaceLinkedService() {
     }
 
@@ -44,6 +49,7 @@ public class PowerBIWorkspaceLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -54,6 +60,7 @@ public class PowerBIWorkspaceLinkedService extends LinkedService {
      * 
      * @return the workspaceId value.
      */
+    @Generated
     public String getWorkspaceId() {
         return this.workspaceId;
     }
@@ -64,6 +71,7 @@ public class PowerBIWorkspaceLinkedService extends LinkedService {
      * @param workspaceId the workspaceId value to set.
      * @return the PowerBIWorkspaceLinkedService object itself.
      */
+    @Generated
     public PowerBIWorkspaceLinkedService setWorkspaceId(String workspaceId) {
         this.workspaceId = workspaceId;
         return this;
@@ -74,6 +82,7 @@ public class PowerBIWorkspaceLinkedService extends LinkedService {
      * 
      * @return the tenantId value.
      */
+    @Generated
     public String getTenantId() {
         return this.tenantId;
     }
@@ -84,6 +93,7 @@ public class PowerBIWorkspaceLinkedService extends LinkedService {
      * @param tenantId the tenantId value to set.
      * @return the PowerBIWorkspaceLinkedService object itself.
      */
+    @Generated
     public PowerBIWorkspaceLinkedService setTenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
@@ -92,6 +102,7 @@ public class PowerBIWorkspaceLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public PowerBIWorkspaceLinkedService setVersion(String version) {
         super.setVersion(version);
@@ -101,6 +112,7 @@ public class PowerBIWorkspaceLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public PowerBIWorkspaceLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -110,6 +122,7 @@ public class PowerBIWorkspaceLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public PowerBIWorkspaceLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -119,6 +132,7 @@ public class PowerBIWorkspaceLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public PowerBIWorkspaceLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -128,6 +142,7 @@ public class PowerBIWorkspaceLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public PowerBIWorkspaceLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -137,6 +152,7 @@ public class PowerBIWorkspaceLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -169,6 +185,7 @@ public class PowerBIWorkspaceLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PowerBIWorkspaceLinkedService.
      */
+    @Generated
     public static PowerBIWorkspaceLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PowerBIWorkspaceLinkedService deserializedPowerBIWorkspaceLinkedService

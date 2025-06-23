@@ -10,7 +10,7 @@ package com.azure.resourcemanager.dnsresolver.generated;
 public final class DnsForwardingRulesetsGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsForwardingRuleset_Get.
+     * specification/dnsresolver/resource-manager/Microsoft.Network/stable/2025-05-01/examples/DnsForwardingRuleset_Get.
      * json
      */
     /**

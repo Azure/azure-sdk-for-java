@@ -116,6 +116,10 @@ public interface MetricsConfigurationsClient {
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
      * @param metricsConfigurationParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -126,7 +130,8 @@ public interface MetricsConfigurationsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner> beginCreateOrUpdate(
         String resourceGroupName, String clusterName, String metricsConfigurationName,
-        ClusterMetricsConfigurationInner metricsConfigurationParameters, Context context);
+        ClusterMetricsConfigurationInner metricsConfigurationParameters, String ifMatch, String ifNoneMatch,
+        Context context);
 
     /**
      * Create or update metrics configuration of the cluster.
@@ -155,6 +160,10 @@ public interface MetricsConfigurationsClient {
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
      * @param metricsConfigurationParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -164,7 +173,7 @@ public interface MetricsConfigurationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     ClusterMetricsConfigurationInner createOrUpdate(String resourceGroupName, String clusterName,
         String metricsConfigurationName, ClusterMetricsConfigurationInner metricsConfigurationParameters,
-        Context context);
+        String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete the metrics configuration of the cluster.
@@ -191,6 +200,10 @@ public interface MetricsConfigurationsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -199,7 +212,7 @@ public interface MetricsConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
-        String clusterName, String metricsConfigurationName, Context context);
+        String clusterName, String metricsConfigurationName, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete the metrics configuration of the cluster.
@@ -225,6 +238,10 @@ public interface MetricsConfigurationsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -233,7 +250,7 @@ public interface MetricsConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OperationStatusResultInner delete(String resourceGroupName, String clusterName, String metricsConfigurationName,
-        Context context);
+        String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Patch metrics configuration of the cluster.
@@ -263,6 +280,10 @@ public interface MetricsConfigurationsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param metricsConfigurationUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -273,8 +294,9 @@ public interface MetricsConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner> beginUpdate(
-        String resourceGroupName, String clusterName, String metricsConfigurationName,
-        ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters, Context context);
+        String resourceGroupName, String clusterName, String metricsConfigurationName, String ifMatch,
+        String ifNoneMatch, ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters,
+        Context context);
 
     /**
      * Patch metrics configuration of the cluster.
@@ -303,6 +325,10 @@ public interface MetricsConfigurationsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param metricsConfigurationUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -312,6 +338,6 @@ public interface MetricsConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ClusterMetricsConfigurationInner update(String resourceGroupName, String clusterName,
-        String metricsConfigurationName,
+        String metricsConfigurationName, String ifMatch, String ifNoneMatch,
         ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters, Context context);
 }

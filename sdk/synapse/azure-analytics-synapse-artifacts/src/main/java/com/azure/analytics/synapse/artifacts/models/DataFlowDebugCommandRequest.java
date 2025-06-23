@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class DataFlowDebugCommandRequest implements JsonSerializable<DataF
     /*
      * The ID of data flow debug session.
      */
+    @Generated
     private String sessionId;
 
     /*
      * The command type.
      */
+    @Generated
     private DataFlowDebugCommandType command;
 
     /*
      * The command payload object.
      */
+    @Generated
     private DataFlowDebugCommandPayload commandPayload;
 
     /**
      * Creates an instance of DataFlowDebugCommandRequest class.
      */
+    @Generated
     public DataFlowDebugCommandRequest() {
     }
 
@@ -42,6 +47,7 @@ public final class DataFlowDebugCommandRequest implements JsonSerializable<DataF
      * 
      * @return the sessionId value.
      */
+    @Generated
     public String getSessionId() {
         return this.sessionId;
     }
@@ -52,6 +58,7 @@ public final class DataFlowDebugCommandRequest implements JsonSerializable<DataF
      * @param sessionId the sessionId value to set.
      * @return the DataFlowDebugCommandRequest object itself.
      */
+    @Generated
     public DataFlowDebugCommandRequest setSessionId(String sessionId) {
         this.sessionId = sessionId;
         return this;
@@ -62,6 +69,7 @@ public final class DataFlowDebugCommandRequest implements JsonSerializable<DataF
      * 
      * @return the command value.
      */
+    @Generated
     public DataFlowDebugCommandType getCommand() {
         return this.command;
     }
@@ -72,6 +80,7 @@ public final class DataFlowDebugCommandRequest implements JsonSerializable<DataF
      * @param command the command value to set.
      * @return the DataFlowDebugCommandRequest object itself.
      */
+    @Generated
     public DataFlowDebugCommandRequest setCommand(DataFlowDebugCommandType command) {
         this.command = command;
         return this;
@@ -82,6 +91,7 @@ public final class DataFlowDebugCommandRequest implements JsonSerializable<DataF
      * 
      * @return the commandPayload value.
      */
+    @Generated
     public DataFlowDebugCommandPayload getCommandPayload() {
         return this.commandPayload;
     }
@@ -92,6 +102,7 @@ public final class DataFlowDebugCommandRequest implements JsonSerializable<DataF
      * @param commandPayload the commandPayload value to set.
      * @return the DataFlowDebugCommandRequest object itself.
      */
+    @Generated
     public DataFlowDebugCommandRequest setCommandPayload(DataFlowDebugCommandPayload commandPayload) {
         this.commandPayload = commandPayload;
         return this;
@@ -100,6 +111,7 @@ public final class DataFlowDebugCommandRequest implements JsonSerializable<DataF
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -117,6 +129,7 @@ public final class DataFlowDebugCommandRequest implements JsonSerializable<DataF
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DataFlowDebugCommandRequest.
      */
+    @Generated
     public static DataFlowDebugCommandRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataFlowDebugCommandRequest deserializedDataFlowDebugCommandRequest = new DataFlowDebugCommandRequest();

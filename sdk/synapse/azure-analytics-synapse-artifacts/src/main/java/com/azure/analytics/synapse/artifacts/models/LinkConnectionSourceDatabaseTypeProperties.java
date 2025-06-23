@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class LinkConnectionSourceDatabaseTypeProperties
     /*
      * Link connection source database server's resource id
      */
+    @Generated
     private String resourceId;
 
     /*
      * Link connection source database server's principal id
      */
+    @Generated
     private String principalId;
 
     /**
      * Creates an instance of LinkConnectionSourceDatabaseTypeProperties class.
      */
+    @Generated
     public LinkConnectionSourceDatabaseTypeProperties() {
     }
 
@@ -38,6 +42,7 @@ public final class LinkConnectionSourceDatabaseTypeProperties
      * 
      * @return the resourceId value.
      */
+    @Generated
     public String getResourceId() {
         return this.resourceId;
     }
@@ -48,6 +53,7 @@ public final class LinkConnectionSourceDatabaseTypeProperties
      * @param resourceId the resourceId value to set.
      * @return the LinkConnectionSourceDatabaseTypeProperties object itself.
      */
+    @Generated
     public LinkConnectionSourceDatabaseTypeProperties setResourceId(String resourceId) {
         this.resourceId = resourceId;
         return this;
@@ -58,6 +64,7 @@ public final class LinkConnectionSourceDatabaseTypeProperties
      * 
      * @return the principalId value.
      */
+    @Generated
     public String getPrincipalId() {
         return this.principalId;
     }
@@ -68,6 +75,7 @@ public final class LinkConnectionSourceDatabaseTypeProperties
      * @param principalId the principalId value to set.
      * @return the LinkConnectionSourceDatabaseTypeProperties object itself.
      */
+    @Generated
     public LinkConnectionSourceDatabaseTypeProperties setPrincipalId(String principalId) {
         this.principalId = principalId;
         return this;
@@ -76,6 +84,7 @@ public final class LinkConnectionSourceDatabaseTypeProperties
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class LinkConnectionSourceDatabaseTypeProperties
      * of it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the LinkConnectionSourceDatabaseTypeProperties.
      */
+    @Generated
     public static LinkConnectionSourceDatabaseTypeProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LinkConnectionSourceDatabaseTypeProperties deserializedLinkConnectionSourceDatabaseTypeProperties

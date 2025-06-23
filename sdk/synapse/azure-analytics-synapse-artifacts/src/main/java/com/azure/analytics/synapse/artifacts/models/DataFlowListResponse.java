@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class DataFlowListResponse implements JsonSerializable<DataFlowList
     /*
      * List of data flows.
      */
+    @Generated
     private List<DataFlowResource> value;
 
     /*
      * The link to the next page of results, if any remaining results exist.
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of DataFlowListResponse class.
      */
+    @Generated
     public DataFlowListResponse() {
     }
 
@@ -38,6 +42,7 @@ public final class DataFlowListResponse implements JsonSerializable<DataFlowList
      * 
      * @return the value value.
      */
+    @Generated
     public List<DataFlowResource> getValue() {
         return this.value;
     }
@@ -48,6 +53,7 @@ public final class DataFlowListResponse implements JsonSerializable<DataFlowList
      * @param value the value value to set.
      * @return the DataFlowListResponse object itself.
      */
+    @Generated
     public DataFlowListResponse setValue(List<DataFlowResource> value) {
         this.value = value;
         return this;
@@ -58,6 +64,7 @@ public final class DataFlowListResponse implements JsonSerializable<DataFlowList
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -68,6 +75,7 @@ public final class DataFlowListResponse implements JsonSerializable<DataFlowList
      * @param nextLink the nextLink value to set.
      * @return the DataFlowListResponse object itself.
      */
+    @Generated
     public DataFlowListResponse setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
@@ -76,6 +84,7 @@ public final class DataFlowListResponse implements JsonSerializable<DataFlowList
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -93,6 +102,7 @@ public final class DataFlowListResponse implements JsonSerializable<DataFlowList
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DataFlowListResponse.
      */
+    @Generated
     public static DataFlowListResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataFlowListResponse deserializedDataFlowListResponse = new DataFlowListResponse();

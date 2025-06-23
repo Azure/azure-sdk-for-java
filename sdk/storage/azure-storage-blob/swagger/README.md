@@ -15,7 +15,7 @@ autorest
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.50'
+use: '@autorest/java@4.1.52'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/30318bc99a721df4ebdfdbf40696739ede75564f/specification/storage/data-plane/Microsoft.BlobStorage/stable/2025-07-05/blob.json
 java: true
 output-folder: ../
@@ -31,7 +31,6 @@ custom-types-subpackage: models
 customization-class: src/main/java/BlobStorageCustomization.java
 use-input-stream-for-binary: true
 disable-client-builder: true
-use-eclipse-language-server: false
 ```
 
 ### /{containerName}/{blob}

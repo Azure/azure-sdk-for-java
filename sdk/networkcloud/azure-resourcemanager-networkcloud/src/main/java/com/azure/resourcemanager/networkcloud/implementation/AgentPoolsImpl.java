@@ -74,9 +74,9 @@ public final class AgentPoolsImpl implements AgentPools {
     }
 
     public OperationStatusResult delete(String resourceGroupName, String kubernetesClusterName, String agentPoolName,
-        Context context) {
-        OperationStatusResultInner inner
-            = this.serviceClient().delete(resourceGroupName, kubernetesClusterName, agentPoolName, context);
+        String ifMatch, String ifNoneMatch, Context context) {
+        OperationStatusResultInner inner = this.serviceClient()
+            .delete(resourceGroupName, kubernetesClusterName, agentPoolName, ifMatch, ifNoneMatch, context);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -138,10 +138,14 @@ public final class AgentPoolsImpl implements AgentPools {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'agentPools'.", id)));
         }
-        return this.delete(resourceGroupName, kubernetesClusterName, agentPoolName, Context.NONE);
+        String localIfMatch = null;
+        String localIfNoneMatch = null;
+        return this.delete(resourceGroupName, kubernetesClusterName, agentPoolName, localIfMatch, localIfNoneMatch,
+            Context.NONE);
     }
 
-    public OperationStatusResult deleteByIdWithResponse(String id, Context context) {
+    public OperationStatusResult deleteByIdWithResponse(String id, String ifMatch, String ifNoneMatch,
+        Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -157,7 +161,7 @@ public final class AgentPoolsImpl implements AgentPools {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'agentPools'.", id)));
         }
-        return this.delete(resourceGroupName, kubernetesClusterName, agentPoolName, context);
+        return this.delete(resourceGroupName, kubernetesClusterName, agentPoolName, ifMatch, ifNoneMatch, context);
     }
 
     private AgentPoolsClient serviceClient() {

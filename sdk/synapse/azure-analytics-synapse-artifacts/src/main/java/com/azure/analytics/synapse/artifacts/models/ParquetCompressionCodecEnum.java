@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class ParquetCompressionCodecEnum extends ExpandableStringEnum<Parq
     /**
      * Static value none for ParquetCompressionCodecEnum.
      */
+    @Generated
     public static final ParquetCompressionCodecEnum NONE = fromString("none");
 
     /**
      * Static value gzip for ParquetCompressionCodecEnum.
      */
+    @Generated
     public static final ParquetCompressionCodecEnum GZIP = fromString("gzip");
 
     /**
      * Static value snappy for ParquetCompressionCodecEnum.
      */
+    @Generated
     public static final ParquetCompressionCodecEnum SNAPPY = fromString("snappy");
 
     /**
      * Static value lzo for ParquetCompressionCodecEnum.
      */
+    @Generated
     public static final ParquetCompressionCodecEnum LZO = fromString("lzo");
 
     /**
@@ -36,6 +41,7 @@ public final class ParquetCompressionCodecEnum extends ExpandableStringEnum<Parq
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ParquetCompressionCodecEnum() {
     }
@@ -46,6 +52,7 @@ public final class ParquetCompressionCodecEnum extends ExpandableStringEnum<Parq
      * @param name a name to look for.
      * @return the corresponding ParquetCompressionCodecEnum.
      */
+    @Generated
     public static ParquetCompressionCodecEnum fromString(String name) {
         return fromString(name, ParquetCompressionCodecEnum.class);
     }
@@ -55,6 +62,7 @@ public final class ParquetCompressionCodecEnum extends ExpandableStringEnum<Parq
      * 
      * @return known ParquetCompressionCodecEnum values.
      */
+    @Generated
     public static Collection<ParquetCompressionCodecEnum> values() {
         return values(ParquetCompressionCodecEnum.class);
     }

@@ -121,7 +121,7 @@ public final class ApplicationInsightsClientImpl {
      * REST calls.
      */
     @Host("{Host}/v2.1")
-    @ServiceInterface(name = "ApplicationInsightsC")
+    @ServiceInterface(name = "ApplicationInsightsClient")
     public interface ApplicationInsightsClientService {
         @Post("/track")
         @ExpectedResponses({ 200, 206 })

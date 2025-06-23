@@ -14,8 +14,6 @@ import com.azure.resourcemanager.appservice.fluent.AppServicePlansClient;
 import com.azure.resourcemanager.appservice.fluent.CertificateOrdersDiagnosticsClient;
 import com.azure.resourcemanager.appservice.fluent.CertificateRegistrationProvidersClient;
 import com.azure.resourcemanager.appservice.fluent.CertificatesClient;
-import com.azure.resourcemanager.appservice.fluent.ContainerAppsClient;
-import com.azure.resourcemanager.appservice.fluent.ContainerAppsRevisionsClient;
 import com.azure.resourcemanager.appservice.fluent.DeletedWebAppsClient;
 import com.azure.resourcemanager.appservice.fluent.DiagnosticsClient;
 import com.azure.resourcemanager.appservice.fluent.DomainRegistrationProvidersClient;
@@ -27,6 +25,7 @@ import com.azure.resourcemanager.appservice.fluent.ProvidersClient;
 import com.azure.resourcemanager.appservice.fluent.RecommendationsClient;
 import com.azure.resourcemanager.appservice.fluent.ResourceHealthMetadatasClient;
 import com.azure.resourcemanager.appservice.fluent.ResourceProvidersClient;
+import com.azure.resourcemanager.appservice.fluent.SiteCertificatesClient;
 import com.azure.resourcemanager.appservice.fluent.StaticSitesClient;
 import com.azure.resourcemanager.appservice.fluent.TopLevelDomainsClient;
 import com.azure.resourcemanager.appservice.fluent.WebAppsClient;
@@ -259,34 +258,6 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
-     * The ContainerAppsClient object to access its operations.
-     */
-    private final ContainerAppsClient containerApps;
-
-    /**
-     * Gets the ContainerAppsClient object to access its operations.
-     * 
-     * @return the ContainerAppsClient object.
-     */
-    public ContainerAppsClient getContainerApps() {
-        return this.containerApps;
-    }
-
-    /**
-     * The ContainerAppsRevisionsClient object to access its operations.
-     */
-    private final ContainerAppsRevisionsClient containerAppsRevisions;
-
-    /**
-     * Gets the ContainerAppsRevisionsClient object to access its operations.
-     * 
-     * @return the ContainerAppsRevisionsClient object.
-     */
-    public ContainerAppsRevisionsClient getContainerAppsRevisions() {
-        return this.containerAppsRevisions;
-    }
-
-    /**
      * The DeletedWebAppsClient object to access its operations.
      */
     private final DeletedWebAppsClient deletedWebApps;
@@ -410,6 +381,20 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
      */
     public GetUsagesInLocationsClient getGetUsagesInLocations() {
         return this.getUsagesInLocations;
+    }
+
+    /**
+     * The SiteCertificatesClient object to access its operations.
+     */
+    private final SiteCertificatesClient siteCertificates;
+
+    /**
+     * Gets the SiteCertificatesClient object to access its operations.
+     * 
+     * @return the SiteCertificatesClient object.
+     */
+    public SiteCertificatesClient getSiteCertificates() {
+        return this.siteCertificates;
     }
 
     /**
@@ -585,7 +570,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2024-04-01";
+        this.apiVersion = "2024-11-01";
         this.appServiceCertificateOrders = new AppServiceCertificateOrdersClientImpl(this);
         this.certificateOrdersDiagnostics = new CertificateOrdersDiagnosticsClientImpl(this);
         this.certificateRegistrationProviders = new CertificateRegistrationProvidersClientImpl(this);
@@ -595,8 +580,6 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
         this.appServiceEnvironments = new AppServiceEnvironmentsClientImpl(this);
         this.appServicePlans = new AppServicePlansClientImpl(this);
         this.certificates = new CertificatesClientImpl(this);
-        this.containerApps = new ContainerAppsClientImpl(this);
-        this.containerAppsRevisions = new ContainerAppsRevisionsClientImpl(this);
         this.deletedWebApps = new DeletedWebAppsClientImpl(this);
         this.diagnostics = new DiagnosticsClientImpl(this);
         this.globals = new GlobalsClientImpl(this);
@@ -606,6 +589,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
         this.resourceHealthMetadatas = new ResourceHealthMetadatasClientImpl(this);
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.getUsagesInLocations = new GetUsagesInLocationsClientImpl(this);
+        this.siteCertificates = new SiteCertificatesClientImpl(this);
         this.staticSites = new StaticSitesClientImpl(this);
         this.webApps = new WebAppsClientImpl(this);
         this.workflows = new WorkflowsClientImpl(this);

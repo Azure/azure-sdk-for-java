@@ -72,7 +72,7 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DependencyMapManagem")
+    @ServiceInterface(name = "DependencyMapManagementClientDiscoverySources")
     public interface DiscoverySourcesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/discoverySources/{sourceName}")

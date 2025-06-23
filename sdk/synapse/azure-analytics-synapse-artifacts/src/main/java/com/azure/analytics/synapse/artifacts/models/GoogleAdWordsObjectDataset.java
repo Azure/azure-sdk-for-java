@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,16 +22,19 @@ public class GoogleAdWordsObjectDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "GoogleAdWordsObject";
 
     /*
      * The table name. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object tableName;
 
     /**
      * Creates an instance of GoogleAdWordsObjectDataset class.
      */
+    @Generated
     public GoogleAdWordsObjectDataset() {
     }
 
@@ -39,6 +43,7 @@ public class GoogleAdWordsObjectDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -49,6 +54,7 @@ public class GoogleAdWordsObjectDataset extends Dataset {
      * 
      * @return the tableName value.
      */
+    @Generated
     public Object getTableName() {
         return this.tableName;
     }
@@ -59,6 +65,7 @@ public class GoogleAdWordsObjectDataset extends Dataset {
      * @param tableName the tableName value to set.
      * @return the GoogleAdWordsObjectDataset object itself.
      */
+    @Generated
     public GoogleAdWordsObjectDataset setTableName(Object tableName) {
         this.tableName = tableName;
         return this;
@@ -67,6 +74,7 @@ public class GoogleAdWordsObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GoogleAdWordsObjectDataset setDescription(String description) {
         super.setDescription(description);
@@ -76,6 +84,7 @@ public class GoogleAdWordsObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GoogleAdWordsObjectDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -85,6 +94,7 @@ public class GoogleAdWordsObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GoogleAdWordsObjectDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -94,6 +104,7 @@ public class GoogleAdWordsObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GoogleAdWordsObjectDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -103,6 +114,7 @@ public class GoogleAdWordsObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GoogleAdWordsObjectDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -112,6 +124,7 @@ public class GoogleAdWordsObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GoogleAdWordsObjectDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -121,6 +134,7 @@ public class GoogleAdWordsObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GoogleAdWordsObjectDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -130,20 +144,27 @@ public class GoogleAdWordsObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
         jsonWriter.writeStringField("type", this.type);
         if (tableName != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("tableName", this.tableName);
+            if (this.tableName != null) {
+                jsonWriter.writeUntypedField("tableName", this.tableName);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -163,6 +184,7 @@ public class GoogleAdWordsObjectDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the GoogleAdWordsObjectDataset.
      */
+    @Generated
     public static GoogleAdWordsObjectDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GoogleAdWordsObjectDataset deserializedGoogleAdWordsObjectDataset = new GoogleAdWordsObjectDataset();

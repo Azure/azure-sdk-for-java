@@ -7,6 +7,7 @@ This section includes changes in the `spring-messaging-azure-servicebus` module.
 
 #### Bugs Fixed
 - Lower the priority of the `EntityType` used by `ServiceBusTemplate`.
+- Fix NPE when using JCA Starter with system Managed Identity.
 
 ## 5.22.0 (2025-04-08)
 - This release is compatible with Spring Boot 3.4.0-3.4.4, 3.3.0-3.3.10, 3.2.0-3.2.12, 3.1.0-3.1.12, 3.0.0-3.0.13. (Note: 3.4.x (x>4), 3.3.y (y>10) and 3.2.z (z>12) should be supported, but they aren't tested with this release.)

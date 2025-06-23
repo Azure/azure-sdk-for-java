@@ -29,6 +29,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterPodIdenti
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSecurityProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterStatus;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterStorageProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterWindowsProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterWorkloadAutoScalerProfile;
@@ -161,13 +162,6 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     private KubernetesSupportPlan supportPlan;
 
     /*
-     * (DEPRECATED) Whether to enable Kubernetes pod security policy (preview). PodSecurityPolicy was deprecated in
-     * Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn more at https://aka.ms/k8s/psp and
-     * https://aka.ms/aks/psp.
-     */
-    private Boolean enablePodSecurityPolicy;
-
-    /*
      * The network configuration profile.
      */
     private ContainerServiceNetworkProfile networkProfile;
@@ -278,6 +272,11 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
      * Profile of the cluster bootstrap configuration.
      */
     private ManagedClusterBootstrapProfile bootstrapProfile;
+
+    /*
+     * Contains read-only information about the Managed Cluster.
+     */
+    private ManagedClusterStatus status;
 
     /**
      * Creates an instance of ManagedClusterProperties class.
@@ -653,30 +652,6 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
      */
     public ManagedClusterProperties withSupportPlan(KubernetesSupportPlan supportPlan) {
         this.supportPlan = supportPlan;
-        return this;
-    }
-
-    /**
-     * Get the enablePodSecurityPolicy property: (DEPRECATED) Whether to enable Kubernetes pod security policy
-     * (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn more
-     * at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
-     * 
-     * @return the enablePodSecurityPolicy value.
-     */
-    public Boolean enablePodSecurityPolicy() {
-        return this.enablePodSecurityPolicy;
-    }
-
-    /**
-     * Set the enablePodSecurityPolicy property: (DEPRECATED) Whether to enable Kubernetes pod security policy
-     * (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn more
-     * at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
-     * 
-     * @param enablePodSecurityPolicy the enablePodSecurityPolicy value to set.
-     * @return the ManagedClusterProperties object itself.
-     */
-    public ManagedClusterProperties withEnablePodSecurityPolicy(Boolean enablePodSecurityPolicy) {
-        this.enablePodSecurityPolicy = enablePodSecurityPolicy;
         return this;
     }
 
@@ -1105,6 +1080,26 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
+     * Get the status property: Contains read-only information about the Managed Cluster.
+     * 
+     * @return the status value.
+     */
+    public ManagedClusterStatus status() {
+        return this.status;
+    }
+
+    /**
+     * Set the status property: Contains read-only information about the Managed Cluster.
+     * 
+     * @param status the status value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withStatus(ManagedClusterStatus status) {
+        this.status = status;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1196,6 +1191,9 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
         if (bootstrapProfile() != null) {
             bootstrapProfile().validate();
         }
+        if (status() != null) {
+            status().validate();
+        }
     }
 
     /**
@@ -1219,7 +1217,6 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
         jsonWriter.writeJsonField("nodeResourceGroupProfile", this.nodeResourceGroupProfile);
         jsonWriter.writeBooleanField("enableRBAC", this.enableRbac);
         jsonWriter.writeStringField("supportPlan", this.supportPlan == null ? null : this.supportPlan.toString());
-        jsonWriter.writeBooleanField("enablePodSecurityPolicy", this.enablePodSecurityPolicy);
         jsonWriter.writeJsonField("networkProfile", this.networkProfile);
         jsonWriter.writeJsonField("aadProfile", this.aadProfile);
         jsonWriter.writeJsonField("autoUpgradeProfile", this.autoUpgradeProfile);
@@ -1243,6 +1240,7 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
         jsonWriter.writeJsonField("serviceMeshProfile", this.serviceMeshProfile);
         jsonWriter.writeJsonField("metricsProfile", this.metricsProfile);
         jsonWriter.writeJsonField("bootstrapProfile", this.bootstrapProfile);
+        jsonWriter.writeJsonField("status", this.status);
         return jsonWriter.writeEndObject();
     }
 
@@ -1312,9 +1310,6 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
                 } else if ("supportPlan".equals(fieldName)) {
                     deserializedManagedClusterProperties.supportPlan
                         = KubernetesSupportPlan.fromString(reader.getString());
-                } else if ("enablePodSecurityPolicy".equals(fieldName)) {
-                    deserializedManagedClusterProperties.enablePodSecurityPolicy
-                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("networkProfile".equals(fieldName)) {
                     deserializedManagedClusterProperties.networkProfile
                         = ContainerServiceNetworkProfile.fromJson(reader);
@@ -1372,6 +1367,8 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
                 } else if ("bootstrapProfile".equals(fieldName)) {
                     deserializedManagedClusterProperties.bootstrapProfile
                         = ManagedClusterBootstrapProfile.fromJson(reader);
+                } else if ("status".equals(fieldName)) {
+                    deserializedManagedClusterProperties.status = ManagedClusterStatus.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
