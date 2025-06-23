@@ -14,11 +14,12 @@ parameters:
   - name: EnableIntegrationStage
     type: boolean
     default: true
-    # A different environment will be passed in for service directories that have
-    # live tests enabled for release and ReleaseDependsOnLiveTests is false
-  - name: Environment
+  - name: PublicPublishEnvironment
     type: string
-    default: 'maven'
+    default: 'package-publish'
+  - name: PublicFeedUrl
+    type: string
+    default: 'maven.org'
 
 stages:
   # The signing stage is responsible for submitting binaries to ESRP for our official signing
@@ -204,33 +205,34 @@ stages:
                   PackageRepository: Maven
                   ReleaseSha: $(Build.SourceVersion)
 
-        - deployment: PublishESRPPackage
-          displayName: "Publish to Maven Central via ESRP"
-          condition: and(succeeded(), ne(variables['Skip.PublishPackage'], 'true'))
-          # This timeout shouldn't be necessary once we're able to parallelize better. Right now,
-          # this is here to ensure larger areas (30+) libraries don't time out.
-          timeoutInMinutes: 120
-          environment: ${{ parameters.Environment }}
-          dependsOn: TagRepository
+        - ${{ if eq(parameters.PublicFeedUrl, 'maven.org') }}:
+          - deployment: PublishESRPPackage
+            displayName: "Publish to Maven Central via ESRP"
+            condition: and(succeeded(), ne(variables['Skip.PublishPackage'], 'true'))
+            # This timeout shouldn't be necessary once we're able to parallelize better. Right now,
+            # this is here to ensure larger areas (30+) libraries don't time out.
+            timeoutInMinutes: 120
+            environment: ${{ parameters.PublicPublishEnvironment }}
+            dependsOn: TagRepository
 
-          templateContext:
-            type: releaseJob
-            isProduction: true
-            inputs:
-            - input: pipelineArtifact
-              artifactName: 'packages-esrp-flattened'
-              targetPath: '$(Pipeline.Workspace)/packages-esrp-flattened'
-          pool:
-            name: azsdk-pool-mms-win-2022-general
-            image: azsdk-pool-mms-win-2022-1espt
-            os: windows
-          strategy:
-            runOnce:
-              deploy:
-                steps:
-                  - template: /eng/pipelines/templates/steps/java-esrp-publishing.yml
-                    parameters:
-                      FlattenedDirectory: $(Pipeline.Workspace)/packages-esrp-flattened
+            templateContext:
+              type: releaseJob
+              isProduction: true
+              inputs:
+              - input: pipelineArtifact
+                artifactName: 'packages-esrp-flattened'
+                targetPath: '$(Pipeline.Workspace)/packages-esrp-flattened'
+            pool:
+              name: azsdk-pool
+              image: windows-2022
+              os: windows
+            strategy:
+              runOnce:
+                deploy:
+                  steps:
+                    - template: /eng/pipelines/templates/steps/java-esrp-publishing.yml
+                      parameters:
+                        FlattenedDirectory: $(Pipeline.Workspace)/packages-esrp-flattened
 
         - job: PublishDevFeedPackage
           displayName: "Publish to Java Dev feed"
@@ -238,7 +240,8 @@ stages:
           # This timeout shouldn't be necessary once we're able to parallelize better. Right now,
           # this is here to ensure larger areas (30+) libraries don't time out.
           timeoutInMinutes: 120
-          dependsOn: PublishESRPPackage
+          ${{ if eq(parameters.PublicFeedUrl, 'maven.org') }}:
+            dependsOn: PublishESRPPackage
           pool:
             name: $(WINDOWSPOOL)
             image: $(WINDOWSVMIMAGE)
@@ -258,17 +261,20 @@ stages:
               displayName: 'Download Artifacts'
               artifact: packages-signed
             - template: tools/gpg/gpg.yml@azure-sdk-build-tools
+
+            - ${{ if ne(parameters.PublicFeedUrl, 'maven.org') }}:
+              - template: /eng/pipelines/templates/steps/java-dev-feed-publishing.yml
+                parameters:
+                  RepositoryUrl: ${{ parameters.PublicFeedUrl }}
+
             # Publish to the azure-sdk-for-java feed.
             - template: /eng/pipelines/templates/steps/java-dev-feed-publishing.yml
-              parameters:
-                ArtifactDirectory: $(Pipeline.Workspace)/packages-signed
-                RepositoryUrl: https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1
-                Target: JavaDevFeed
-                JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+
             - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
               parameters:
                 ArtifactName: packages-javadevfeed-$(System.JobAttempt)
                 ArtifactPath: $(Pipeline.Workspace)/packages-signed
+
             - template: /eng/common/pipelines/templates/steps/create-apireview.yml
               parameters:
                 ArtifactPath: $(Pipeline.Workspace)/packages-signed
@@ -281,7 +287,7 @@ stages:
         - job: UpdatePackageVersion
           displayName: "Update Package Version"
           condition: and(succeeded(), ne(variables['Skip.UpdatePackageVersion'], 'true'))
-          dependsOn: PublishESRPPackage
+          dependsOn: PublishDevFeedPackage
           pool:
             name: $(WINDOWSPOOL)
             image: $(WINDOWSVMIMAGE)
@@ -367,7 +373,7 @@ stages:
         - job: PublishDocs
           displayName: Publish Docs to GitHubIO Blob Storage
           condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
-          dependsOn: PublishESRPPackage
+          dependsOn: PublishDevFeedPackage
           pool:
             name: $(WINDOWSPOOL)
             image: $(WINDOWSVMIMAGE)
@@ -399,9 +405,6 @@ stages:
       - job: PublishPackages
         condition: or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal')))
         displayName: Publish package to daily feed
-        variables:
-          - name: RepositoryUrl
-            value: https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-pr/maven/v1
 
         templateContext:
           outputs:
@@ -434,14 +437,16 @@ stages:
         - pwsh: |
             # For safety default to publishing to the private feed.
             # Publish to https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-pr/maven/v1
+
+            $devFeedUrl = "https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-pr/maven/v1"
             if ('$(Build.Repository.Name)' -eq 'Azure/azure-sdk-for-java') {
-              # Publish to the public feed
-              # Publish to https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1
-              echo "##vso[task.setvariable variable=RepositoryUrl]https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1"
+              $devFeedUrl = "https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1"
               echo "Using Java Public Dev Feed"
             } else {
               echo "Using Java Private Dev Feed"
             }
+            echo "##vso[task.setvariable variable=RepositoryUrl]$devFeedUrl"
+
           displayName: Setup TargetFeed
 
         - template: tools/gpg/gpg.yml@azure-sdk-build-tools
@@ -452,10 +457,7 @@ stages:
               parameters:
                 ArtifactID: ${{artifact.name}}
                 GroupID: ${{artifact.groupId}}
-                ArtifactDirectory: $(Pipeline.Workspace)/packages-signed
                 RepositoryUrl: $(RepositoryUrl)
-                Target: JavaDevFeed
-                JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
 
       - job: PublishDocsToNightlyBranch
         dependsOn: PublishPackages
