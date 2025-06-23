@@ -292,7 +292,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
             useDeveloperCredentials = true;
         }
 
-        ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(8);
+        ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(7);
         if (useProductionCredentials) {
             output.add(new EnvironmentCredential(identityClientOptions.clone()));
             output.add(getWorkloadIdentityCredential());
@@ -301,8 +301,6 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         }
 
         if (useDeveloperCredentials) {
-            output.add(new SharedTokenCacheCredential(null, IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID, tenantId,
-                identityClientOptions.clone()));
             output.add(new IntelliJCredential(tenantId, identityClientOptions.clone()));
             output.add(new AzureCliCredential(tenantId, identityClientOptions.clone()));
             output.add(new AzurePowerShellCredential(tenantId, identityClientOptions.clone()));
