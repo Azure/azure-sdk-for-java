@@ -756,7 +756,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
             CosmosClientCache.getCosmosClient(
                 cosmosSourceConfig.getAccountConfig(),
                 "testKafkaConnector");
-        KafkaCosmosReflectionUtils.setCosmosClient(sourceConnector, clientCacheItem.getClient());
+        KafkaCosmosReflectionUtils.setCosmosClientCacheItem(sourceConnector, clientCacheItem);
 
         InMemoryStorageReader inMemoryStorageReader = new InMemoryStorageReader();
         MetadataKafkaStorageManager metadataReader = new MetadataKafkaStorageManager(inMemoryStorageReader);
@@ -792,7 +792,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
             CosmosClientCache.getCosmosClient(
                 cosmosSourceConfig.getAccountConfig(),
                 "testKafkaConnector");
-        KafkaCosmosReflectionUtils.setCosmosClient(sourceConnector, clientCacheItem.getClient());
+        KafkaCosmosReflectionUtils.setCosmosClientCacheItem(sourceConnector, clientCacheItem);
 
         CosmosAsyncContainer container = clientCacheItem.getClient().getDatabase(databaseName).getContainer(containerName);
         MetadataCosmosStorageManager cosmosStorageManager = new MetadataCosmosStorageManager(container);
