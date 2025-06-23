@@ -43,7 +43,7 @@ input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/sp
 namespace: com.azure.maps.geolocation
 license-header: MICROSOFT_MIT_SMALL
 java: true
-use: '@autorest/java@4.1.50'
+use: '@autorest/java@4.1.52'
 output-folder: ../
 payload-flattening-threshold: 0
 add-context-parameter: true
@@ -57,5 +57,4 @@ models-subpackage: implementation.models
 custom-types-subpackage: models
 custom-types: CountryRegion,IpAddressToLocationResult
 customization-class: src/main/java/GeoLocationCustomization.java
-use-eclipse-language-server: false
 ```

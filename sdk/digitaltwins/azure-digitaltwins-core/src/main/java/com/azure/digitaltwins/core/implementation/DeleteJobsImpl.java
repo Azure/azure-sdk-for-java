@@ -63,7 +63,7 @@ public final class DeleteJobsImpl {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureDigitalTwinsAPI")
+    @ServiceInterface(name = "AzureDigitalTwinsAPIDeleteJobs")
     public interface DeleteJobsService {
         @Post("/jobs/deletions")
         @ExpectedResponses({ 202 })

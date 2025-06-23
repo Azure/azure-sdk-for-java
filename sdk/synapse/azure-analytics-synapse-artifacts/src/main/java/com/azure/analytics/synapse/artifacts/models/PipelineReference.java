@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class PipelineReference implements JsonSerializable<PipelineReferen
     /*
      * Pipeline reference type.
      */
+    @Generated
     private PipelineReferenceType type;
 
     /*
      * Reference pipeline name.
      */
+    @Generated
     private String referenceName;
 
     /*
      * Reference name.
      */
+    @Generated
     private String name;
 
     /**
      * Creates an instance of PipelineReference class.
      */
+    @Generated
     public PipelineReference() {
     }
 
@@ -42,6 +47,7 @@ public final class PipelineReference implements JsonSerializable<PipelineReferen
      * 
      * @return the type value.
      */
+    @Generated
     public PipelineReferenceType getType() {
         return this.type;
     }
@@ -52,6 +58,7 @@ public final class PipelineReference implements JsonSerializable<PipelineReferen
      * @param type the type value to set.
      * @return the PipelineReference object itself.
      */
+    @Generated
     public PipelineReference setType(PipelineReferenceType type) {
         this.type = type;
         return this;
@@ -62,6 +69,7 @@ public final class PipelineReference implements JsonSerializable<PipelineReferen
      * 
      * @return the referenceName value.
      */
+    @Generated
     public String getReferenceName() {
         return this.referenceName;
     }
@@ -72,6 +80,7 @@ public final class PipelineReference implements JsonSerializable<PipelineReferen
      * @param referenceName the referenceName value to set.
      * @return the PipelineReference object itself.
      */
+    @Generated
     public PipelineReference setReferenceName(String referenceName) {
         this.referenceName = referenceName;
         return this;
@@ -82,6 +91,7 @@ public final class PipelineReference implements JsonSerializable<PipelineReferen
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -92,6 +102,7 @@ public final class PipelineReference implements JsonSerializable<PipelineReferen
      * @param name the name value to set.
      * @return the PipelineReference object itself.
      */
+    @Generated
     public PipelineReference setName(String name) {
         this.name = name;
         return this;
@@ -100,6 +111,7 @@ public final class PipelineReference implements JsonSerializable<PipelineReferen
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -118,6 +130,7 @@ public final class PipelineReference implements JsonSerializable<PipelineReferen
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PipelineReference.
      */
+    @Generated
     public static PipelineReference fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PipelineReference deserializedPipelineReference = new PipelineReference();

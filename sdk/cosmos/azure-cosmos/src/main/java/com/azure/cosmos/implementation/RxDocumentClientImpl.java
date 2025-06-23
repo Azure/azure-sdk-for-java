@@ -7682,15 +7682,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    private boolean useThinClient() {
+    public boolean useThinClient() {
         return Configs.isThinClientEnabled() && this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY;
     }
 
     private boolean useThinClientStoreModel(RxDocumentServiceRequest request) {
         return useThinClient()
             && this.globalEndpointManager.hasThinClientReadLocations()
-            && request.getResourceType() == ResourceType.Document
-            && request.getOperationType().isPointOperation();
+            && ((request.getResourceType() == ResourceType.Document &&
+                (request.getOperationType().isPointOperation() || request.getOperationType() == OperationType.Query)));
     }
 
     @FunctionalInterface
@@ -7700,6 +7700,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig,
             DiagnosticsClientContext clientContextOverride,
             CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContext);
+    }
+
+    public boolean isClosed() {
+        return this.closed.get();
     }
 
     private static class NonTransientPointOperationResult {

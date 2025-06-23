@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,26 +20,31 @@ public final class LinkTableRequestTarget implements JsonSerializable<LinkTableR
     /*
      * Target table table name
      */
+    @Generated
     private String tableName;
 
     /*
      * Target table schema name
      */
+    @Generated
     private String schemaName;
 
     /*
      * Target table distribution options for link table request
      */
+    @Generated
     private LinkTableRequestTargetDistributionOptions distributionOptions;
 
     /*
      * Target table structure options for link table request
      */
+    @Generated
     private LinkTableRequestTargetStructureOptions structureOptions;
 
     /**
      * Creates an instance of LinkTableRequestTarget class.
      */
+    @Generated
     public LinkTableRequestTarget() {
     }
 
@@ -47,6 +53,7 @@ public final class LinkTableRequestTarget implements JsonSerializable<LinkTableR
      * 
      * @return the tableName value.
      */
+    @Generated
     public String getTableName() {
         return this.tableName;
     }
@@ -57,6 +64,7 @@ public final class LinkTableRequestTarget implements JsonSerializable<LinkTableR
      * @param tableName the tableName value to set.
      * @return the LinkTableRequestTarget object itself.
      */
+    @Generated
     public LinkTableRequestTarget setTableName(String tableName) {
         this.tableName = tableName;
         return this;
@@ -67,6 +75,7 @@ public final class LinkTableRequestTarget implements JsonSerializable<LinkTableR
      * 
      * @return the schemaName value.
      */
+    @Generated
     public String getSchemaName() {
         return this.schemaName;
     }
@@ -77,6 +86,7 @@ public final class LinkTableRequestTarget implements JsonSerializable<LinkTableR
      * @param schemaName the schemaName value to set.
      * @return the LinkTableRequestTarget object itself.
      */
+    @Generated
     public LinkTableRequestTarget setSchemaName(String schemaName) {
         this.schemaName = schemaName;
         return this;
@@ -87,6 +97,7 @@ public final class LinkTableRequestTarget implements JsonSerializable<LinkTableR
      * 
      * @return the distributionOptions value.
      */
+    @Generated
     public LinkTableRequestTargetDistributionOptions getDistributionOptions() {
         return this.distributionOptions;
     }
@@ -97,6 +108,7 @@ public final class LinkTableRequestTarget implements JsonSerializable<LinkTableR
      * @param distributionOptions the distributionOptions value to set.
      * @return the LinkTableRequestTarget object itself.
      */
+    @Generated
     public LinkTableRequestTarget
         setDistributionOptions(LinkTableRequestTargetDistributionOptions distributionOptions) {
         this.distributionOptions = distributionOptions;
@@ -108,6 +120,7 @@ public final class LinkTableRequestTarget implements JsonSerializable<LinkTableR
      * 
      * @return the structureOptions value.
      */
+    @Generated
     public LinkTableRequestTargetStructureOptions getStructureOptions() {
         return this.structureOptions;
     }
@@ -118,6 +131,7 @@ public final class LinkTableRequestTarget implements JsonSerializable<LinkTableR
      * @param structureOptions the structureOptions value to set.
      * @return the LinkTableRequestTarget object itself.
      */
+    @Generated
     public LinkTableRequestTarget setStructureOptions(LinkTableRequestTargetStructureOptions structureOptions) {
         this.structureOptions = structureOptions;
         return this;
@@ -126,6 +140,7 @@ public final class LinkTableRequestTarget implements JsonSerializable<LinkTableR
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -144,6 +159,7 @@ public final class LinkTableRequestTarget implements JsonSerializable<LinkTableR
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the LinkTableRequestTarget.
      */
+    @Generated
     public static LinkTableRequestTarget fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LinkTableRequestTarget deserializedLinkTableRequestTarget = new LinkTableRequestTarget();

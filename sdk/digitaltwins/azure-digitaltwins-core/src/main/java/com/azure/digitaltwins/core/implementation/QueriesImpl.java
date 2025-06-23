@@ -56,7 +56,7 @@ public final class QueriesImpl {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureDigitalTwinsAPI")
+    @ServiceInterface(name = "AzureDigitalTwinsAPIQueries")
     public interface QueriesService {
         @Post("/query")
         @ExpectedResponses({ 200 })

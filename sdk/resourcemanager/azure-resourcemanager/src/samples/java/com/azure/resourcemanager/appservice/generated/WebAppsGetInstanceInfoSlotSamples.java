@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class WebAppsGetInstanceInfoSlotSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/GetSiteInstanceInfo.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/GetSiteInstanceInfo.json
      */
     /**
      * Sample code: Get site instance info.

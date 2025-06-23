@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class ScriptActivityTypePropertiesLogSettings
     /*
      * The destination of logs. Type: string.
      */
+    @Generated
     private ScriptActivityLogDestination logDestination;
 
     /*
      * Log location settings customer needs to provide when enabling log.
      */
+    @Generated
     private LogLocationSettings logLocationSettings;
 
     /**
      * Creates an instance of ScriptActivityTypePropertiesLogSettings class.
      */
+    @Generated
     public ScriptActivityTypePropertiesLogSettings() {
     }
 
@@ -38,6 +42,7 @@ public final class ScriptActivityTypePropertiesLogSettings
      * 
      * @return the logDestination value.
      */
+    @Generated
     public ScriptActivityLogDestination getLogDestination() {
         return this.logDestination;
     }
@@ -48,6 +53,7 @@ public final class ScriptActivityTypePropertiesLogSettings
      * @param logDestination the logDestination value to set.
      * @return the ScriptActivityTypePropertiesLogSettings object itself.
      */
+    @Generated
     public ScriptActivityTypePropertiesLogSettings setLogDestination(ScriptActivityLogDestination logDestination) {
         this.logDestination = logDestination;
         return this;
@@ -58,6 +64,7 @@ public final class ScriptActivityTypePropertiesLogSettings
      * 
      * @return the logLocationSettings value.
      */
+    @Generated
     public LogLocationSettings getLogLocationSettings() {
         return this.logLocationSettings;
     }
@@ -68,6 +75,7 @@ public final class ScriptActivityTypePropertiesLogSettings
      * @param logLocationSettings the logLocationSettings value to set.
      * @return the ScriptActivityTypePropertiesLogSettings object itself.
      */
+    @Generated
     public ScriptActivityTypePropertiesLogSettings setLogLocationSettings(LogLocationSettings logLocationSettings) {
         this.logLocationSettings = logLocationSettings;
         return this;
@@ -76,6 +84,7 @@ public final class ScriptActivityTypePropertiesLogSettings
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -94,6 +103,7 @@ public final class ScriptActivityTypePropertiesLogSettings
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ScriptActivityTypePropertiesLogSettings.
      */
+    @Generated
     public static ScriptActivityTypePropertiesLogSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ScriptActivityTypePropertiesLogSettings deserializedScriptActivityTypePropertiesLogSettings

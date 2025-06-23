@@ -24,14 +24,15 @@ public final class AgentConnectedAgentAsyncSample {
 
     public static void main(String[] args) {
         // Initialize async clients
-        PersistentAgentsAdministrationClientBuilder clientBuilder = new PersistentAgentsAdministrationClientBuilder()
+        PersistentAgentsClientBuilder clientBuilder = new PersistentAgentsClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build());
-        
-        PersistentAgentsAdministrationAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
-        ThreadsAsyncClient threadsAsyncClient = clientBuilder.buildThreadsAsyncClient();
-        MessagesAsyncClient messagesAsyncClient = clientBuilder.buildMessagesAsyncClient();
-        RunsAsyncClient runsAsyncClient = clientBuilder.buildRunsAsyncClient();
+
+        PersistentAgentsAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
+        PersistentAgentsAdministrationAsyncClient administrationAsyncClient = agentsAsyncClient.getPersistentAgentsAdministrationAsyncClient();
+        ThreadsAsyncClient threadsAsyncClient = agentsAsyncClient.getThreadsAsyncClient();
+        MessagesAsyncClient messagesAsyncClient = agentsAsyncClient.getMessagesAsyncClient();
+        RunsAsyncClient runsAsyncClient = agentsAsyncClient.getRunsAsyncClient();
 
         // Track resources for cleanup
         AtomicReference<String> connectedAgentId = new AtomicReference<>();
@@ -45,7 +46,7 @@ public final class AgentConnectedAgentAsyncSample {
             .setInstructions("Your job is to get the stock price of a company. Just return $391.85 EOD 27-Apr-2025");
 
         // Create the connected agent first
-        agentsAsyncClient.createAgent(connectedAgentCreateOptions)
+        administrationAsyncClient.createAgent(connectedAgentCreateOptions)
             .flatMap(connectedAgent -> {
                 connectedAgentId.set(connectedAgent.getId());
                 System.out.println("Created connected agent: " + connectedAgent.getId());
@@ -64,7 +65,7 @@ public final class AgentConnectedAgentAsyncSample {
                 RequestOptions requestOptions = new RequestOptions()
                     .setHeader("x-ms-enable-preview", "true");
                 
-                return agentsAsyncClient.createAgentWithResponse(BinaryData.fromObject(createAgentRequest), requestOptions)
+                return administrationAsyncClient.createAgentWithResponse(BinaryData.fromObject(createAgentRequest), requestOptions)
                     .flatMap(response -> {
                         return Mono.just(response.getValue().toObject(PersistentAgent.class));
                     });
@@ -113,13 +114,13 @@ public final class AgentConnectedAgentAsyncSample {
                 
                 // Clean up the main agent
                 if (mainAgentId.get() != null) {
-                    agentsAsyncClient.deleteAgent(mainAgentId.get()).block();
+                    administrationAsyncClient.deleteAgent(mainAgentId.get()).block();
                     System.out.println("Deleted main agent: " + mainAgentId.get());
                 }
                 
                 // Clean up the connected agent
                 if (connectedAgentId.get() != null) {
-                    agentsAsyncClient.deleteAgent(connectedAgentId.get()).block();
+                    administrationAsyncClient.deleteAgent(connectedAgentId.get()).block();
                     System.out.println("Deleted connected agent: " + connectedAgentId.get());
                 }
             })

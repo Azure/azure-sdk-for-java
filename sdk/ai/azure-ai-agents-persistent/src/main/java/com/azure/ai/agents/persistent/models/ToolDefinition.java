@@ -77,22 +77,28 @@ public class ToolDefinition implements JsonSerializable<ToolDefinition> {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("code_interpreter".equals(discriminatorValue)) {
-                    return CodeInterpreterToolDefinition.fromJson(readerToUse.reset());
-                } else if ("file_search".equals(discriminatorValue)) {
+                if ("file_search".equals(discriminatorValue)) {
                     return FileSearchToolDefinition.fromJson(readerToUse.reset());
                 } else if ("function".equals(discriminatorValue)) {
                     return FunctionToolDefinition.fromJson(readerToUse.reset());
                 } else if ("bing_grounding".equals(discriminatorValue)) {
                     return BingGroundingToolDefinition.fromJson(readerToUse.reset());
+                } else if ("fabric_dataagent".equals(discriminatorValue)) {
+                    return MicrosoftFabricToolDefinition.fromJson(readerToUse.reset());
+                } else if ("sharepoint_grounding".equals(discriminatorValue)) {
+                    return SharepointToolDefinition.fromJson(readerToUse.reset());
                 } else if ("azure_ai_search".equals(discriminatorValue)) {
                     return AzureAISearchToolDefinition.fromJson(readerToUse.reset());
                 } else if ("openapi".equals(discriminatorValue)) {
                     return OpenApiToolDefinition.fromJson(readerToUse.reset());
+                } else if ("bing_custom_search".equals(discriminatorValue)) {
+                    return BingCustomSearchToolDefinition.fromJson(readerToUse.reset());
                 } else if ("connected_agent".equals(discriminatorValue)) {
                     return ConnectedAgentToolDefinition.fromJson(readerToUse.reset());
                 } else if ("azure_function".equals(discriminatorValue)) {
                     return AzureFunctionToolDefinition.fromJson(readerToUse.reset());
+                } else if ("code_interpreter".equals(discriminatorValue)) {
+                    return CodeInterpreterToolDefinition.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

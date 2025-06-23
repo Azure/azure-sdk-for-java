@@ -58,7 +58,7 @@ public final class MetricNamespaces {
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MonitorManagementCli")
+    @ServiceInterface(name = "MonitorManagementClientMetricNamespaces")
     public interface MetricNamespacesService {
         @Get("/{resourceUri}/providers/microsoft.insights/metricNamespaces")
         @ExpectedResponses({ 200 })

@@ -5,6 +5,7 @@
 package com.azure.security.attestation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
@@ -22,6 +23,7 @@ public final class AttestOpenEnclaveRequest implements JsonSerializable<AttestOp
     /*
      * OpenEnclave report from the enclave to be attested
      */
+    @Generated
     private Base64Url report;
 
     /*
@@ -29,27 +31,32 @@ public final class AttestOpenEnclaveRequest implements JsonSerializable<AttestOp
      * bytes of the report_data field of the quote contains the SHA256 hash of the decoded "data" field of the runtime
      * data.
      */
+    @Generated
     private RuntimeData runtimeData;
 
     /*
      * Base64Url encoded "InitTime data". The MAA will verify that the init data was known to the enclave. Note that
      * InitTimeData is invalid for CoffeeLake processors.
      */
+    @Generated
     private InitTimeData initTimeData;
 
     /*
      * Attest against the provided draft policy. Note that the resulting token cannot be validated.
      */
+    @Generated
     private String draftPolicyForAttestation;
 
     /*
      * Nonce for incoming request - emitted in the generated attestation token
      */
+    @Generated
     private String nonce;
 
     /**
      * Creates an instance of AttestOpenEnclaveRequest class.
      */
+    @Generated
     public AttestOpenEnclaveRequest() {
     }
 
@@ -58,6 +65,7 @@ public final class AttestOpenEnclaveRequest implements JsonSerializable<AttestOp
      * 
      * @return the report value.
      */
+    @Generated
     public byte[] getReport() {
         if (this.report == null) {
             return null;
@@ -71,6 +79,7 @@ public final class AttestOpenEnclaveRequest implements JsonSerializable<AttestOp
      * @param report the report value to set.
      * @return the AttestOpenEnclaveRequest object itself.
      */
+    @Generated
     public AttestOpenEnclaveRequest setReport(byte[] report) {
         if (report == null) {
             this.report = null;
@@ -87,6 +96,7 @@ public final class AttestOpenEnclaveRequest implements JsonSerializable<AttestOp
      * 
      * @return the runtimeData value.
      */
+    @Generated
     public RuntimeData getRuntimeData() {
         return this.runtimeData;
     }
@@ -99,6 +109,7 @@ public final class AttestOpenEnclaveRequest implements JsonSerializable<AttestOp
      * @param runtimeData the runtimeData value to set.
      * @return the AttestOpenEnclaveRequest object itself.
      */
+    @Generated
     public AttestOpenEnclaveRequest setRuntimeData(RuntimeData runtimeData) {
         this.runtimeData = runtimeData;
         return this;
@@ -110,6 +121,7 @@ public final class AttestOpenEnclaveRequest implements JsonSerializable<AttestOp
      * 
      * @return the initTimeData value.
      */
+    @Generated
     public InitTimeData getInitTimeData() {
         return this.initTimeData;
     }
@@ -121,6 +133,7 @@ public final class AttestOpenEnclaveRequest implements JsonSerializable<AttestOp
      * @param initTimeData the initTimeData value to set.
      * @return the AttestOpenEnclaveRequest object itself.
      */
+    @Generated
     public AttestOpenEnclaveRequest setInitTimeData(InitTimeData initTimeData) {
         this.initTimeData = initTimeData;
         return this;
@@ -132,6 +145,7 @@ public final class AttestOpenEnclaveRequest implements JsonSerializable<AttestOp
      * 
      * @return the draftPolicyForAttestation value.
      */
+    @Generated
     public String getDraftPolicyForAttestation() {
         return this.draftPolicyForAttestation;
     }
@@ -143,6 +157,7 @@ public final class AttestOpenEnclaveRequest implements JsonSerializable<AttestOp
      * @param draftPolicyForAttestation the draftPolicyForAttestation value to set.
      * @return the AttestOpenEnclaveRequest object itself.
      */
+    @Generated
     public AttestOpenEnclaveRequest setDraftPolicyForAttestation(String draftPolicyForAttestation) {
         this.draftPolicyForAttestation = draftPolicyForAttestation;
         return this;
@@ -153,6 +168,7 @@ public final class AttestOpenEnclaveRequest implements JsonSerializable<AttestOp
      * 
      * @return the nonce value.
      */
+    @Generated
     public String getNonce() {
         return this.nonce;
     }
@@ -163,6 +179,7 @@ public final class AttestOpenEnclaveRequest implements JsonSerializable<AttestOp
      * @param nonce the nonce value to set.
      * @return the AttestOpenEnclaveRequest object itself.
      */
+    @Generated
     public AttestOpenEnclaveRequest setNonce(String nonce) {
         this.nonce = nonce;
         return this;
@@ -185,6 +202,7 @@ public final class AttestOpenEnclaveRequest implements JsonSerializable<AttestOp
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -204,6 +222,7 @@ public final class AttestOpenEnclaveRequest implements JsonSerializable<AttestOp
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AttestOpenEnclaveRequest.
      */
+    @Generated
     public static AttestOpenEnclaveRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AttestOpenEnclaveRequest deserializedAttestOpenEnclaveRequest = new AttestOpenEnclaveRequest();

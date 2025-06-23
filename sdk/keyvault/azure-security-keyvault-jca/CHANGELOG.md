@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed the NPE where the token object was not returned when the credential information was incorrect.
 
 ### Other Changes
 - Included the `org.brotli:dec` library in the list of shaded dependencies to avoid issues when generating and publishing docs to MSLearn.

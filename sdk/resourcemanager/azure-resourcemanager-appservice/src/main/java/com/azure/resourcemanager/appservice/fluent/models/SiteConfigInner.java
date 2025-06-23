@@ -137,7 +137,8 @@ public final class SiteConfigInner implements JsonSerializable<SiteConfigInner> 
     private String publishingUsername;
 
     /*
-     * Application settings.
+     * Application settings. This property is not returned in response to normal create and read requests since it may
+     * contain sensitive information.
      */
     private List<NameValuePair> appSettings;
 
@@ -147,7 +148,8 @@ public final class SiteConfigInner implements JsonSerializable<SiteConfigInner> 
     private List<NameValuePair> metadata;
 
     /*
-     * Connection strings.
+     * Connection strings. This property is not returned in response to normal create and read requests since it may
+     * contain sensitive information.
      */
     private List<ConnStringInfo> connectionStrings;
 
@@ -336,6 +338,12 @@ public final class SiteConfigInner implements JsonSerializable<SiteConfigInner> 
      * Http20Enabled: configures a web site to allow clients to connect over http2.0
      */
     private Boolean http20Enabled;
+
+    /*
+     * Http20ProxyFlag: Configures a website to allow http2.0 to pass be proxied all the way to the app. 0 = disabled, 1
+     * = pass through all http2 traffic, 2 = pass through gRPC only.
+     */
+    private Integer http20ProxyFlag;
 
     /*
      * MinTlsVersion: configures the minimum version of TLS required for SSL requests
@@ -807,7 +815,8 @@ public final class SiteConfigInner implements JsonSerializable<SiteConfigInner> 
     }
 
     /**
-     * Get the appSettings property: Application settings.
+     * Get the appSettings property: Application settings. This property is not returned in response to normal create
+     * and read requests since it may contain sensitive information.
      * 
      * @return the appSettings value.
      */
@@ -816,7 +825,8 @@ public final class SiteConfigInner implements JsonSerializable<SiteConfigInner> 
     }
 
     /**
-     * Set the appSettings property: Application settings.
+     * Set the appSettings property: Application settings. This property is not returned in response to normal create
+     * and read requests since it may contain sensitive information.
      * 
      * @param appSettings the appSettings value to set.
      * @return the SiteConfigInner object itself.
@@ -847,7 +857,8 @@ public final class SiteConfigInner implements JsonSerializable<SiteConfigInner> 
     }
 
     /**
-     * Get the connectionStrings property: Connection strings.
+     * Get the connectionStrings property: Connection strings. This property is not returned in response to normal
+     * create and read requests since it may contain sensitive information.
      * 
      * @return the connectionStrings value.
      */
@@ -856,7 +867,8 @@ public final class SiteConfigInner implements JsonSerializable<SiteConfigInner> 
     }
 
     /**
-     * Set the connectionStrings property: Connection strings.
+     * Set the connectionStrings property: Connection strings. This property is not returned in response to normal
+     * create and read requests since it may contain sensitive information.
      * 
      * @param connectionStrings the connectionStrings value to set.
      * @return the SiteConfigInner object itself.
@@ -1615,6 +1627,28 @@ public final class SiteConfigInner implements JsonSerializable<SiteConfigInner> 
     }
 
     /**
+     * Get the http20ProxyFlag property: Http20ProxyFlag: Configures a website to allow http2.0 to pass be proxied all
+     * the way to the app. 0 = disabled, 1 = pass through all http2 traffic, 2 = pass through gRPC only.
+     * 
+     * @return the http20ProxyFlag value.
+     */
+    public Integer http20ProxyFlag() {
+        return this.http20ProxyFlag;
+    }
+
+    /**
+     * Set the http20ProxyFlag property: Http20ProxyFlag: Configures a website to allow http2.0 to pass be proxied all
+     * the way to the app. 0 = disabled, 1 = pass through all http2 traffic, 2 = pass through gRPC only.
+     * 
+     * @param http20ProxyFlag the http20ProxyFlag value to set.
+     * @return the SiteConfigInner object itself.
+     */
+    public SiteConfigInner withHttp20ProxyFlag(Integer http20ProxyFlag) {
+        this.http20ProxyFlag = http20ProxyFlag;
+        return this;
+    }
+
+    /**
      * Get the minTlsVersion property: MinTlsVersion: configures the minimum version of TLS required for SSL requests.
      * 
      * @return the minTlsVersion value.
@@ -2038,6 +2072,7 @@ public final class SiteConfigInner implements JsonSerializable<SiteConfigInner> 
                 : this.scmIpSecurityRestrictionsDefaultAction.toString());
         jsonWriter.writeBooleanField("scmIpSecurityRestrictionsUseMain", this.scmIpSecurityRestrictionsUseMain);
         jsonWriter.writeBooleanField("http20Enabled", this.http20Enabled);
+        jsonWriter.writeNumberField("http20ProxyFlag", this.http20ProxyFlag);
         jsonWriter.writeStringField("minTlsVersion", this.minTlsVersion == null ? null : this.minTlsVersion.toString());
         jsonWriter.writeStringField("minTlsCipherSuite",
             this.minTlsCipherSuite == null ? null : this.minTlsCipherSuite.toString());
@@ -2210,6 +2245,8 @@ public final class SiteConfigInner implements JsonSerializable<SiteConfigInner> 
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("http20Enabled".equals(fieldName)) {
                     deserializedSiteConfigInner.http20Enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("http20ProxyFlag".equals(fieldName)) {
+                    deserializedSiteConfigInner.http20ProxyFlag = reader.getNullable(JsonReader::getInt);
                 } else if ("minTlsVersion".equals(fieldName)) {
                     deserializedSiteConfigInner.minTlsVersion = SupportedTlsVersions.fromString(reader.getString());
                 } else if ("minTlsCipherSuite".equals(fieldName)) {

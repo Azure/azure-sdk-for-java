@@ -9,17 +9,17 @@
 # groupId:artifactId;dependency-version
 ch.qos.logback:logback-classic;1.3.14
 com.azure:azure-servicebus-jms;2.0.0
-com.azure.tools:azure-autorest-customization;1.0.0-beta.9
+com.azure.tools:azure-autorest-customization;1.0.0-beta.11
 com.fasterxml:aalto-xml;1.3.3
-com.fasterxml.jackson.core:jackson-annotations;2.18.3
-com.fasterxml.jackson.core:jackson-core;2.18.3
-com.fasterxml.jackson.core:jackson-databind;2.18.3
-com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.18.3
-com.fasterxml.jackson.dataformat:jackson-dataformat-smile;2.18.3
-com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.18.3
-com.fasterxml.jackson.module:jackson-module-afterburner;2.18.3
-com.fasterxml.jackson.module:jackson-module-blackbird;2.18.3
-com.fasterxml.jackson.module:jackson-module-scala_2.12;2.18.3
+com.fasterxml.jackson.core:jackson-annotations;2.18.4
+com.fasterxml.jackson.core:jackson-core;2.18.4.1
+com.fasterxml.jackson.core:jackson-databind;2.18.4
+com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.18.4
+com.fasterxml.jackson.dataformat:jackson-dataformat-smile;2.18.4
+com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.18.4
+com.fasterxml.jackson.module:jackson-module-afterburner;2.18.4
+com.fasterxml.jackson.module:jackson-module-blackbird;2.18.4
+com.fasterxml.jackson.module:jackson-module-scala_2.12;2.18.4
 com.github.spotbugs:spotbugs;4.8.3
 com.github.spotbugs:spotbugs-annotations;4.8.3
 com.github.spotbugs:spotbugs-maven-plugin;4.8.3.1
@@ -37,7 +37,7 @@ com.microsoft.sqlserver:mssql-jdbc;10.2.3.jre8
 com.microsoft.azure:azure-functions-maven-plugin;1.30.0
 com.microsoft.azure.functions:azure-functions-java-library;2.2.0
 com.mysql:mysql-connector-j;9.0.0
-com.openai:openai-java;1.3.1
+com.openai:openai-java;2.3.0
 com.squareup.okhttp3:okhttp;4.12.0
 commons-codec:commons-codec;1.15
 commons-net:commons-net;3.9.0
@@ -144,15 +144,16 @@ org.assertj:assertj-core;3.22.0
 org.bouncycastle:bcprov-jdk15to18;1.78.1
 org.bouncycastle:bcprov-jdk18on;1.78.1
 org.bouncycastle:bcpkix-lts8on;2.73.6
+org.eclipse.jetty:jetty-alpn-conscrypt-server;9.4.57.v20241219
 org.eclipse.jetty:jetty-server;9.4.57.v20241219
 org.eclipse.jetty:jetty-servlet;9.4.57.v20241219
-org.hamcrest:hamcrest;2.2
+org.eclipse.jetty.http2:http2-server;9.4.57.v20241219
 org.hamcrest:hamcrest-all;1.3
-org.hamcrest:hamcrest-library;2.2
-org.junit.jupiter:junit-jupiter;5.11.2
-org.junit.jupiter:junit-jupiter-api;5.11.2
-org.junit.jupiter:junit-jupiter-engine;5.11.2
-org.junit.jupiter:junit-jupiter-params;5.11.2
+org.junit.jupiter:junit-jupiter;5.13.1
+org.junit.jupiter:junit-jupiter-api;5.13.1
+org.junit.jupiter:junit-jupiter-engine;5.13.1
+org.junit.jupiter:junit-jupiter-params;5.13.1
+org.junit.platform:junit-platform-launcher;1.13.1
 org.openjdk.jmh:jmh-core;1.37
 org.openjdk.jmh:jmh-generator-annprocess;1.37
 org.testng:testng;7.5.1
@@ -413,13 +414,6 @@ springboot3_org.testcontainers:azure;1.20.6
 # Used for Spring version updates
 springboot3_org.springframework.boot:spring-boot-dependencies;3.4.4
 springboot3_org.springframework.cloud:spring-cloud-dependencies;2024.0.1
-
-# Azure OpenRewrite Dependency Versions
-
-azureopenrewrite_org.junit.jupiter:junit-jupiter-api;5.12.1
-azureopenrewrite_org.junit.jupiter:junit-jupiter-engine;5.12.1
-azureopenrewrite_org.junit.jupiter:junit-jupiter-params;5.12.1
-azureopenrewrite_org.junit.platform:junit-platform-launcher;1.12.1
 
 # Java 7 support
 

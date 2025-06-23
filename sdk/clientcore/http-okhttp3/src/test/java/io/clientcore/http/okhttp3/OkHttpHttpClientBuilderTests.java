@@ -4,6 +4,7 @@
 package io.clientcore.http.okhttp3;
 
 import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.http.client.HttpProtocolVersion;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.ProxyOptions;
@@ -76,7 +77,7 @@ public class OkHttpHttpClientBuilderTests {
 
     @BeforeAll
     public static void startTestServer() {
-        server = new LocalTestServer((req, resp, requestBody) -> {
+        server = new LocalTestServer(HttpProtocolVersion.HTTP_1_1, false, (req, resp, requestBody) -> {
             String path = req.getServletPath();
             boolean get = "GET".equalsIgnoreCase(req.getMethod());
 
@@ -106,11 +107,11 @@ public class OkHttpHttpClientBuilderTests {
 
         server.start();
 
-        cookieValidatorUri = server.getHttpUri() + COOKIE_VALIDATOR_PATH;
-        defaultUri = server.getHttpUri() + DEFAULT_PATH;
-        dispatcherUri = server.getHttpUri() + DISPATCHER_PATH;
-        redirectUri = server.getHttpUri() + REDIRECT_PATH;
-        locationUri = server.getHttpUri() + LOCATION_PATH;
+        cookieValidatorUri = server.getUri() + COOKIE_VALIDATOR_PATH;
+        defaultUri = server.getUri() + DEFAULT_PATH;
+        dispatcherUri = server.getUri() + DISPATCHER_PATH;
+        redirectUri = server.getUri() + REDIRECT_PATH;
+        locationUri = server.getUri() + LOCATION_PATH;
     }
 
     @AfterAll

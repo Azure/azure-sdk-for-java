@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,11 +21,13 @@ public final class SalesforceServiceCloudV2Source extends CopySource {
     /*
      * Copy source type.
      */
+    @Generated
     private String type = "SalesforceServiceCloudV2Source";
 
     /*
      * Deprecating, please use 'query' property instead. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object soqlQuery;
 
     /*
@@ -34,23 +37,27 @@ public final class SalesforceServiceCloudV2Source extends CopySource {
      * If query is not specified, all the data of the Salesforce object specified in ObjectApiName/reportId in dataset
      * will be retrieved. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object query;
 
     /*
      * This property control whether query result contains Deleted objects. Default is false. Type: boolean (or
      * Expression with resultType boolean).
      */
+    @Generated
     private Object includeDeletedObjects;
 
     /*
      * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
      * Expression with resultType array of objects).
      */
+    @Generated
     private Object additionalColumns;
 
     /**
      * Creates an instance of SalesforceServiceCloudV2Source class.
      */
+    @Generated
     public SalesforceServiceCloudV2Source() {
     }
 
@@ -59,6 +66,7 @@ public final class SalesforceServiceCloudV2Source extends CopySource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -70,6 +78,7 @@ public final class SalesforceServiceCloudV2Source extends CopySource {
      * 
      * @return the soqlQuery value.
      */
+    @Generated
     public Object getSoqlQuery() {
         return this.soqlQuery;
     }
@@ -81,6 +90,7 @@ public final class SalesforceServiceCloudV2Source extends CopySource {
      * @param soqlQuery the soqlQuery value to set.
      * @return the SalesforceServiceCloudV2Source object itself.
      */
+    @Generated
     public SalesforceServiceCloudV2Source setSoqlQuery(Object soqlQuery) {
         this.soqlQuery = soqlQuery;
         return this;
@@ -95,6 +105,7 @@ public final class SalesforceServiceCloudV2Source extends CopySource {
      * 
      * @return the query value.
      */
+    @Generated
     public Object getQuery() {
         return this.query;
     }
@@ -109,6 +120,7 @@ public final class SalesforceServiceCloudV2Source extends CopySource {
      * @param query the query value to set.
      * @return the SalesforceServiceCloudV2Source object itself.
      */
+    @Generated
     public SalesforceServiceCloudV2Source setQuery(Object query) {
         this.query = query;
         return this;
@@ -120,6 +132,7 @@ public final class SalesforceServiceCloudV2Source extends CopySource {
      * 
      * @return the includeDeletedObjects value.
      */
+    @Generated
     public Object getIncludeDeletedObjects() {
         return this.includeDeletedObjects;
     }
@@ -131,6 +144,7 @@ public final class SalesforceServiceCloudV2Source extends CopySource {
      * @param includeDeletedObjects the includeDeletedObjects value to set.
      * @return the SalesforceServiceCloudV2Source object itself.
      */
+    @Generated
     public SalesforceServiceCloudV2Source setIncludeDeletedObjects(Object includeDeletedObjects) {
         this.includeDeletedObjects = includeDeletedObjects;
         return this;
@@ -142,6 +156,7 @@ public final class SalesforceServiceCloudV2Source extends CopySource {
      * 
      * @return the additionalColumns value.
      */
+    @Generated
     public Object getAdditionalColumns() {
         return this.additionalColumns;
     }
@@ -153,6 +168,7 @@ public final class SalesforceServiceCloudV2Source extends CopySource {
      * @param additionalColumns the additionalColumns value to set.
      * @return the SalesforceServiceCloudV2Source object itself.
      */
+    @Generated
     public SalesforceServiceCloudV2Source setAdditionalColumns(Object additionalColumns) {
         this.additionalColumns = additionalColumns;
         return this;
@@ -161,6 +177,7 @@ public final class SalesforceServiceCloudV2Source extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceServiceCloudV2Source setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
@@ -170,6 +187,7 @@ public final class SalesforceServiceCloudV2Source extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceServiceCloudV2Source setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
@@ -179,6 +197,7 @@ public final class SalesforceServiceCloudV2Source extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceServiceCloudV2Source setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -188,17 +207,32 @@ public final class SalesforceServiceCloudV2Source extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getSourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        }
+        if (getSourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("SOQLQuery", this.soqlQuery);
-        jsonWriter.writeUntypedField("query", this.query);
-        jsonWriter.writeUntypedField("includeDeletedObjects", this.includeDeletedObjects);
-        jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        if (this.soqlQuery != null) {
+            jsonWriter.writeUntypedField("SOQLQuery", this.soqlQuery);
+        }
+        if (this.query != null) {
+            jsonWriter.writeUntypedField("query", this.query);
+        }
+        if (this.includeDeletedObjects != null) {
+            jsonWriter.writeUntypedField("includeDeletedObjects", this.includeDeletedObjects);
+        }
+        if (this.additionalColumns != null) {
+            jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -215,6 +249,7 @@ public final class SalesforceServiceCloudV2Source extends CopySource {
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SalesforceServiceCloudV2Source.
      */
+    @Generated
     public static SalesforceServiceCloudV2Source fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SalesforceServiceCloudV2Source deserializedSalesforceServiceCloudV2Source
