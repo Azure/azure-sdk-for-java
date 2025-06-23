@@ -241,6 +241,12 @@ You can set the `AZURE_LOG_LEVEL` environment variable to view logging statement
 example, setting `AZURE_LOG_LEVEL=2` would show all informational, warning, and error log messages. The log levels can
 be found here: [log levels][logLevels].
 
+### Enable tracing content recording
+You can set the `AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED` environment variable to `true` to enable the recording
+of message content in distributed tracing. This includes the content of chat messages, completions, and other AI-related
+data in your traces. When enabled, this provides detailed insights into AI operations but be mindful that it will include
+potentially sensitive content in your telemetry data.
+
 ### Default HTTP Client
 All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure
 the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the

@@ -42,6 +42,14 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Sample demonstrates how to get chat completions with tool calls and distributed tracing.
+ * 
+ * Set the following environment variables before running the sample:
+ * 1. MODEL_ENDPOINT - Your AI model endpoint
+ * 2. AZURE_API_KEY - Your API key for authentication
+ * 3. AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED - Set to "true" to enable tracing of message content (optional)
+ */
 public class TraceChatCompletionsToolCallSample {
     /**
      * @param args Unused. Arguments to the program.
@@ -115,7 +123,9 @@ public class TraceChatCompletionsToolCallSample {
         return new ChatCompletionsClientBuilder()
             .endpoint(System.getenv("MODEL_ENDPOINT"))
             .credential(new AzureKeyCredential(System.getenv("AZURE_API_KEY")))
-            // uncomment to capture message content in the telemetry (or you can set AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED environment variable to `true`)
+            // To capture message content in tracing, either:
+            // 1. Set environment variable: AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED=true
+            // 2. Or uncomment the line below to enable it programmatically
             // .configuration(new ConfigurationBuilder().putProperty("azure.tracing.gen_ai.content_recording_enabled", "true").build())
             .buildClient();
     }
