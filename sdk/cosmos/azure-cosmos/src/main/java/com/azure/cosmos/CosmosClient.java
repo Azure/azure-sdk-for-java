@@ -327,13 +327,6 @@ public final class CosmosClient implements Closeable {
 
     /**
      * Reads the Cosmos database account.
-     * <!-- src_embed com.azure.cosmos.CosmosClient.readDatabaseAccount -->
-     * <pre>
-     * CosmosDatabaseAccount databaseAccount = cosmosClient.readDatabaseAccount&#40;&#41;;
-     * System.out.println&#40;databaseAccount.getId&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.cosmos.CosmosClient.readDatabaseAccount -->
-     *
      * @return the {@link CosmosDatabaseAccount} with the read database account.
      */
     public CosmosDatabaseAccount readDatabaseAccount() {
