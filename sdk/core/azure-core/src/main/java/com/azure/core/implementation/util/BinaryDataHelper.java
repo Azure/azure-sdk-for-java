@@ -54,8 +54,8 @@ public final class BinaryDataHelper {
             ensureAccessorSet();
             return accessor.createBinaryData(content);
         } catch (Exception e) {
-            System.out.println("createBinary failed with message : " + e.getMessage());
-            e.printStackTrace(System.out);
+            System.err.println("createBinary failed with message : " + e.getMessage());
+            e.printStackTrace(System.err);
             throw e;
         }
     }
@@ -82,8 +82,8 @@ public final class BinaryDataHelper {
                 BinaryData.fromString("");
             }
         } catch (Exception e) {
-            System.out.println("ensureAccessorSet failed with message : " + e.getMessage());
-            e.printStackTrace(System.out);
+            System.err.println("ensureAccessorSet failed with message : " + e.getMessage());
+            e.printStackTrace(System.err);
             throw e;
         }
 

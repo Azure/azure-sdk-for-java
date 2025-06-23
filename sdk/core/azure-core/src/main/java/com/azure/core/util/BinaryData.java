@@ -201,8 +201,8 @@ public final class BinaryData {
                 }
             });
         } catch (Exception e) {
-            System.out.println("BinaryData's static initializer failed with message : " + e.getMessage());
-            e.printStackTrace(System.out);
+            System.err.println("BinaryData's static initializer failed with message : " + e.getMessage());
+            e.printStackTrace(System.err);
             throw e;
         }
     }
