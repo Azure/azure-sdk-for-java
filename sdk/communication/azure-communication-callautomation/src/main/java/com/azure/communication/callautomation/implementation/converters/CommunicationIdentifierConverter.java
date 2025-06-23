@@ -10,12 +10,14 @@ import com.azure.communication.callautomation.implementation.models.Communicatio
 import com.azure.communication.callautomation.implementation.models.MicrosoftTeamsAppIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.MicrosoftTeamsUserIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.PhoneNumberIdentifierModel;
+import com.azure.communication.callautomation.implementation.models.TeamsExtensionUserIdentifierModel;
 import com.azure.communication.common.CommunicationCloudEnvironment;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.MicrosoftTeamsAppIdentifier;
 import com.azure.communication.common.MicrosoftTeamsUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
+import com.azure.communication.common.TeamsExtensionUserIdentifier;
 import com.azure.communication.common.UnknownIdentifier;
 
 import java.util.ArrayList;
@@ -64,6 +66,25 @@ public class CommunicationIdentifierConverter {
                 teamsUserIdentifierModel.isAnonymous()).setRawId(rawId)
                     .setCloudEnvironment(
                         CommunicationCloudEnvironment.fromString(teamsUserIdentifierModel.getCloud().toString()));
+        }
+
+        if (kind == CommunicationIdentifierModelKind.TEAMS_EXTENSION_USER
+            && identifier.getTeamsExtensionUser() != null) {
+            TeamsExtensionUserIdentifierModel teamsExtensionUserIdentifierModel = identifier.getTeamsExtensionUser();
+            Objects.requireNonNull(teamsExtensionUserIdentifierModel.getUserId(),
+                "'UserID' of the CommunicationIdentifierModel cannot be null.");
+            Objects.requireNonNull(teamsExtensionUserIdentifierModel.getResourceId(),
+                "'ResourceId' of the CommunicationIdentifierModel cannot be null.");
+            Objects.requireNonNull(teamsExtensionUserIdentifierModel.getTenantId(),
+                "'TenantId' of the CommunicationIdentifierModel cannot be null.");
+            Objects.requireNonNull(teamsExtensionUserIdentifierModel.getCloud(),
+                "'Cloud' of the CommunicationIdentifierModel cannot be null.");
+            Objects.requireNonNull(rawId, "'RawID' of the CommunicationIdentifierModel cannot be null.");
+            return new TeamsExtensionUserIdentifier(teamsExtensionUserIdentifierModel.getUserId(),
+                teamsExtensionUserIdentifierModel.getResourceId(), teamsExtensionUserIdentifierModel.getTenantId())
+                    .setRawId(rawId)
+                    .setCloudEnvironment(CommunicationCloudEnvironment
+                        .fromString(teamsExtensionUserIdentifierModel.getCloud().toString()));
         }
 
         if (kind == CommunicationIdentifierModelKind.MICROSOFT_TEAMS_APP && identifier.getMicrosoftTeamsApp() != null) {
@@ -120,6 +141,17 @@ public class CommunicationIdentifierConverter {
                 .setMicrosoftTeamsApp(new MicrosoftTeamsAppIdentifierModel().setAppId(teamsAppIdentifier.getAppId())
                     .setCloud(CommunicationCloudEnvironmentModel
                         .fromString(teamsAppIdentifier.getCloudEnvironment().toString())));
+        }
+
+        if (identifier instanceof TeamsExtensionUserIdentifier) {
+            TeamsExtensionUserIdentifier teamsExtensionUserIdentifier = (TeamsExtensionUserIdentifier) identifier;
+            return new CommunicationIdentifierModel().setRawId(teamsExtensionUserIdentifier.getRawId())
+                .setTeamsExtensionUser(
+                    new TeamsExtensionUserIdentifierModel().setResourceId(teamsExtensionUserIdentifier.getResourceId())
+                        .setUserId(teamsExtensionUserIdentifier.getUserId())
+                        .setTenantId(teamsExtensionUserIdentifier.getTenantId())
+                        .setCloud(CommunicationCloudEnvironmentModel
+                            .fromString(teamsExtensionUserIdentifier.getCloudEnvironment().toString())));
         }
 
         if (identifier instanceof UnknownIdentifier) {
