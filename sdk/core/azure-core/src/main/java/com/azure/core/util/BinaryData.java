@@ -187,6 +187,9 @@ public final class BinaryData {
     }
 
     static {
+
+        ClientLogger staticBlockLocalLogger = new ClientLogger(BinaryData.class);
+
         try {
             BinaryDataHelper.setAccessor(new BinaryDataHelper.BinaryDataAccessor() {
 
@@ -200,10 +203,9 @@ public final class BinaryData {
                     return binaryData.content;
                 }
             });
-        } catch (Exception e) {
-            System.err.println("BinaryData's static initializer failed with message : " + e.getMessage());
-            e.printStackTrace(System.err);
-            throw e;
+        } catch (Throwable t) {
+            staticBlockLocalLogger.error("BinaryData's static initializer failed with message : {}", t.getMessage(), t);
+            throw t;
         }
     }
 
