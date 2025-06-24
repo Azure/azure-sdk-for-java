@@ -79,7 +79,7 @@ public class EventGridMqttClientEventData implements JsonSerializable<EventGridM
      * @return the EventGridMqttClientEventData object itself.
      */
     @Generated
-    EventGridMqttClientEventData setClientName(String clientName) {
+    private EventGridMqttClientEventData setClientName(String clientName) {
         this.clientName = clientName;
         return this;
     }
