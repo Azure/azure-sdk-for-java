@@ -3,6 +3,7 @@
 
 package io.clientcore.core.implementation.http.client;
 
+import io.clientcore.core.http.client.AsyncHttpClient;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
@@ -12,11 +13,12 @@ import io.clientcore.core.models.binarydata.BinaryData;
 import java.net.HttpURLConnection;
 import java.time.Duration;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * HttpClient implementation using {@link HttpURLConnection} to send requests and receive responses.
  */
-public final class JdkHttpClient implements HttpClient {
+public final class JdkHttpClient implements AsyncHttpClient, HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClient.class);
 
     private static final String ERROR_MESSAGE = "It is recommended that libraries be deployed on the latest LTS "
@@ -42,6 +44,11 @@ public final class JdkHttpClient implements HttpClient {
 
     @Override
     public Response<BinaryData> send(HttpRequest request) {
+        throw LOGGER.throwableAtError().log(ERROR_MESSAGE, UnsupportedOperationException::new);
+    }
+
+    @Override
+    public CompletableFuture<Response<BinaryData>> sendAsync(HttpRequest request) {
         throw LOGGER.throwableAtError().log(ERROR_MESSAGE, UnsupportedOperationException::new);
     }
 }

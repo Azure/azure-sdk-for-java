@@ -18,7 +18,7 @@ import java.util.concurrent.Executor;
  * Builder to configure and build an instance of the JDK {@code HttpClient} introduced in Java 11.
  * <p>
  * Due to the JDK preventing some headers from being sent on requests, Java 12 is required to create an instance of this
- * {@link HttpClient} implementation.
+ * {@link AsyncHttpClient} and {@link HttpClient} implementation.
  * <p>
  * This class leverages multi-release JAR functionality. If the JDK version is 11 or lower, this class will throw an
  * {@link UnsupportedOperationException} when any method is invoked. This same issue will also happen if the application
@@ -199,11 +199,13 @@ public class JdkHttpClientBuilder {
     }
 
     /**
-     * Build a HttpClient with current configurations.
+     * Build a AsyncHttpClient and HttpClient implementation with current configurations.
      *
-     * @return a {@link HttpClient}.
+     * @param <T> The type of the client to build, which must implement both {@link AsyncHttpClient} and
+     * {@link HttpClient}.
+     * @return An implementation that implements both {@link AsyncHttpClient} and {@link HttpClient}.
      */
-    public HttpClient build() {
+    public <T extends AsyncHttpClient & HttpClient> T build() {
         throw LOGGER.throwableAtError().log(ERROR_MESSAGE, UnsupportedOperationException::new);
     }
 }
