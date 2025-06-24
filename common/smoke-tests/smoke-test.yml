@@ -1,13 +1,12 @@
 trigger: none
 
+variables:
+  - template: /eng/pipelines/templates/variables/globals.yml
+  - template: /eng/pipelines/templates/variables/image.yml
 
 stages:
   - stage: smoke_tests
     displayName: Smoke Tests
-
-    variables:
-      - template: /eng/pipelines/templates/variables/globals.yml
-      - template: /eng/pipelines/templates/variables/image.yml
 
     jobs:
       - template: ./smoke-test-dependencies.yml

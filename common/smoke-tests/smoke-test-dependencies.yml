@@ -34,6 +34,5 @@ jobs:
           PomFile: common/smoke-tests/pom.xml
           ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
         JavaLTS_${{ parameters.OS }}_(AzureCloud):
-          JavaTestVersion: $(JavaTestVersion)
           PomFile: common/smoke-tests/pom.xml
           ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
