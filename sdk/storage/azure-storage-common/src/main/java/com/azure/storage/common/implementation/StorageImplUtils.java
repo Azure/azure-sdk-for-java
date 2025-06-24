@@ -45,7 +45,6 @@ import java.util.function.Supplier;
 
 import static com.azure.storage.common.Utility.urlDecode;
 import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE_HEADER_NAME;
-import static com.azure.storage.common.implementation.Constants.HeaderConstants.HEADER_NAME;
 
 /**
  * Utility class which is used internally.
@@ -305,7 +304,6 @@ public class StorageImplUtils {
     public static String convertStorageExceptionMessage(String message, HttpResponse response) {
         if (response != null) {
             String errorCode = response.getHeaders().getValue(ERROR_CODE_HEADER_NAME);
-            String headerName = response.getHeaders().getValue(HEADER_NAME);
 
             // Handle 403 Forbidden responses by appending detailed logging instructions for signature mismatches.
             if (response.getStatusCode() == 403) {
@@ -329,16 +327,12 @@ public class StorageImplUtils {
              * for x-ms-version mismatch issues.
              * Note : This is currently supported only for blob package.
              */
-            if (errorCode == null && headerName == null) {
-                try {
-                    errorCode = extractXmlTagValue(message, "Code");
-                    headerName = extractXmlTagValue(message, "HeaderName");
-                    if (Constants.HeaderConstants.INVALID_HEADER_VALUE.equals(errorCode)
-                        && Constants.HeaderConstants.VERSION.equalsIgnoreCase(headerName)) {
-                        return Constants.INVALID_VERSION_HEADER_MESSAGE + message;
-                    }
-                } catch (Exception e) {
-                    return message;
+            if (errorCode == null) {
+                errorCode = extractXmlTagValue(message, "Code");
+                String headerName = extractXmlTagValue(message, "HeaderName");
+                if (Constants.HeaderConstants.INVALID_HEADER_VALUE.equals(errorCode)
+                    && Constants.HeaderConstants.VERSION.equalsIgnoreCase(headerName)) {
+                    return Constants.INVALID_VERSION_HEADER_MESSAGE;
                 }
             }
         }
@@ -363,7 +357,8 @@ public class StorageImplUtils {
                 }
             }
         } catch (XMLStreamException e) {
-            throw new RuntimeException(e);
+            LOGGER.warning("Failed to parse XML tag '{}' from message: {}", tag, e.getMessage());
+            return null;
         }
 
         return null;

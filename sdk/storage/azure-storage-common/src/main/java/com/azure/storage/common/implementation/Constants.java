@@ -269,8 +269,6 @@ public final class Constants {
 
         public static final String INVALID_HEADER_VALUE = "InvalidHeaderValue";
 
-        public static final String HEADER_NAME = "HeaderName";
-
         private HeaderConstants() {
             // Private to prevent construction.
         }

@@ -3617,5 +3617,4 @@ public class FileApiTest extends DataLakeTestBase {
     public void pathGetSystemPropertiesFileMin() {
         assertNotNull(fc.getSystemProperties());
     }
-
 }
