@@ -204,10 +204,6 @@ public class ReactorNettyClient implements HttpClient {
                             true
                         )))
                 .protocol(HttpProtocol.H2, HttpProtocol.HTTP11)
-                .option(ChannelOption.TCP_NODELAY, true)
-                .option(ChannelOption.SO_RCVBUF, 1024 * 1024)
-                .option(ChannelOption.SO_SNDBUF, 1024 * 1024)
-                .option(ChannelOption.SO_KEEPALIVE, true)
                 .http2Settings(settings -> settingsBuilderRef.set(
                     settings
                         .initialWindowSize(1024 * 1024) // 1MB initial window size
@@ -215,31 +211,18 @@ public class ReactorNettyClient implements HttpClient {
                         .maxConcurrentStreams(http2CfgAccessor.getEffectiveMaxConcurrentStreams(http2Cfg))  // Increased from default 30
                     )
                 )
-                .doOnChannelInit(new ChannelPipelineConfigurer() {
-                    @Override
-                    public void onChannelInit(ConnectionObserver connectionObserver,
-                                              Channel channel,
-                                              SocketAddress remoteAddress) {
-
-                        ChannelPipeline channelPipeline = channel.pipeline();
-                        ChannelHandler codecCandidate = channelPipeline.get(NettyPipeline.H2OrHttp11Codec);
-                        if (codecCandidate == null) {
-                            logChannelPipelineAsDebug("NO CODEC FOUND - doOnChannelInit (Before)", channelPipeline);
-                        } else {
-                            logChannelPipelineAsTrace("doOnChannelInit (Before)", channelPipeline);
-                            // Reactor netty http does not allow changing certain configs in the underlying
-                            // netty http/2 stack
-                            // we need to allow custom http/2 settings, inject the broken header cleanup and allow
-                            // custom http/2 frame logger (using different log levels depending on the frame type)
-                            channelPipeline.replace(
-                                NettyPipeline.H2OrHttp11Codec,
-                                CosmosNettyPipeline.H2_OR_HTTP11_CODEC,
-                                new CosmosH2OrHttp11Codec(settingsBuilderRef.get().build(), connectionObserver, remoteAddress)
-                            );
-                            logChannelPipelineAsTrace("doOnChannelInit (After)", channelPipeline);
-                        }
+                .doOnConnected((connection -> {
+                    // The response header clean up pipeline is being added due to an error getting when calling gateway:
+                    // java.lang.IllegalArgumentException: a header value contains prohibited character 0x20 at index 0 for 'x-ms-serviceversion', there is whitespace in the front of the value.
+                    // validateHeaders(false) does not work for http2
+                    ChannelPipeline channelPipeline = connection.channel().pipeline();
+                    if (channelPipeline.get("reactor.left.httpCodec") != null) {
+                        channelPipeline.addAfter(
+                            "reactor.left.httpCodec",
+                            "customHeaderCleaner",
+                            new Http2ResponseHeaderCleanerHandler());
                     }
-                });
+                }));
         }
     }
 
@@ -507,231 +490,5 @@ public class ReactorNettyClient implements HttpClient {
         } else if (logger.isErrorEnabled()) {
             this.httpClient = this.httpClient.wiretap(this.reactorNetworkLogCategory, LogLevel.ERROR);
         }
-    }
-
-    private static class CosmosH2OrHttp11Codec extends ChannelInboundHandlerAdapter {
-        final Http2Settings http2Settings;
-        final ChannelMetricsRecorder metricsRecorder;
-        final ConnectionObserver observer;
-        final SocketAddress proxyAddress;
-        final SocketAddress remoteAddress;
-        final Function<String, String> uriTagValue;
-
-        CosmosH2OrHttp11Codec(Http2SettingsSpec settings, ConnectionObserver observer, SocketAddress remoteAddress) {
-            this.http2Settings = toNettySettings(settings);
-
-            // TODO @fabianm - maybe worth evaluating whether we want to hook in a custom metrics recorder here
-            this.metricsRecorder = null;
-
-            this.observer = observer;
-
-            // TODO @fabianm - do we need to support proxy for http/2 (thin client)
-            this.proxyAddress = null;
-
-            this.remoteAddress = remoteAddress;
-
-            // TODO @fabianm - this would be some nomrmalized Uri for metrics with reasonable low cardinality
-            // for example removing id-values - possibly also database/container
-            this.uriTagValue = null;
-        }
-
-        private static Http2Settings toNettySettings(Http2SettingsSpec spec) {
-            Http2Settings nettyHttp2Settings = Http2Settings.defaultSettings();
-            if (spec.initialWindowSize() != null) {
-                nettyHttp2Settings = nettyHttp2Settings.initialWindowSize(spec.initialWindowSize());
-            }
-
-            if (spec.maxConcurrentStreams() != null) {
-                nettyHttp2Settings = nettyHttp2Settings.maxConcurrentStreams(spec.maxConcurrentStreams());
-            }
-
-            if (spec.maxFrameSize() != null) {
-                nettyHttp2Settings = nettyHttp2Settings.maxFrameSize(spec.maxFrameSize());
-            }
-
-            if (spec.maxHeaderListSize() != null) {
-                nettyHttp2Settings = nettyHttp2Settings.maxHeaderListSize(spec.maxHeaderListSize());
-            }
-
-            if (spec.headerTableSize() != null) {
-                nettyHttp2Settings = nettyHttp2Settings.headerTableSize(spec.headerTableSize());
-            }
-
-            if (spec.pushEnabled() != null) {
-                nettyHttp2Settings = nettyHttp2Settings.pushEnabled(spec.pushEnabled());
-            }
-
-            return nettyHttp2Settings;
-        }
-
-        @Override
-        public void channelActive(ChannelHandlerContext ctx) {
-            ChannelHandler handler = ctx.pipeline().get(NettyPipeline.SslHandler);
-            if (handler instanceof SslHandler) {
-                SslHandler sslHandler = (SslHandler) handler;
-
-                String protocol = sslHandler.applicationProtocol() != null ? sslHandler.applicationProtocol() : ApplicationProtocolNames.HTTP_1_1;
-                if (logger.isDebugEnabled()) {
-                    logger.debug(format(ctx.channel(), "Negotiated application-level protocol [" + protocol + "]"));
-                }
-                if (ApplicationProtocolNames.HTTP_2.equals(protocol)) {
-                    configureHttp2Pipeline(ctx.channel().pipeline(), http2Settings, observer);
-                } else {
-                    throw new IllegalStateException("unknown protocol: " + protocol);
-                }
-
-                ctx.fireChannelActive();
-
-                ctx.channel().pipeline().remove(this);
-            } else {
-                throw new IllegalStateException("Cannot determine negotiated application-level protocol.");
-            }
-        }
-
-        static void configureHttp2Pipeline(ChannelPipeline p,
-                                           Http2Settings http2Settings,
-                                           ConnectionObserver observer) {
-            Http2FrameCodecBuilder http2FrameCodecBuilder =
-                Http2FrameCodecBuilder.forClient()
-                                      .validateHeaders(false)
-                                      .initialSettings(http2Settings);
-
-            if (p.get(NettyPipeline.LoggingHandler) != null) {
-                http2FrameCodecBuilder.frameLogger(new Http2FrameLogger(LogLevel.DEBUG,
-                    "reactor.netty.http.client.h2"));
-            }
-
-            p.addBefore(NettyPipeline.ReactiveBridge, NettyPipeline.H2Flush, new FlushConsolidationHandler(1024, true))
-             .addBefore(NettyPipeline.ReactiveBridge, NettyPipeline.HttpCodec, http2FrameCodecBuilder.build())
-             .addBefore(NettyPipeline.ReactiveBridge, CosmosNettyPipeline.HEADER_CLEANER, new Http2ResponseHeaderCleanerHandler())
-             .addBefore(NettyPipeline.ReactiveBridge, NettyPipeline.H2MultiplexHandler, new Http2MultiplexHandler(H2InboundStreamHandler.INSTANCE))
-             .addBefore(NettyPipeline.ReactiveBridge, NettyPipeline.HttpTrafficHandler, new HttpTrafficHandler(observer));
-        }
-    }
-
-    /**
-     * Handle inbound streams (server pushes).
-     * This feature is not supported and disabled.
-     */
-    static final class H2InboundStreamHandler extends ChannelHandlerAdapter {
-        static final ChannelHandler INSTANCE = new H2InboundStreamHandler();
-
-        @Override
-        public boolean isSharable() {
-            return true;
-        }
-    }
-
-    static final class HttpTrafficHandler extends ChannelInboundHandlerAdapter {
-        static final AttributeKey<Long> ENABLE_CONNECT_PROTOCOL = AttributeKey.valueOf("$ENABLE_CONNECT_PROTOCOL");
-        final ConnectionObserver listener;
-
-        HttpTrafficHandler(ConnectionObserver listener) {
-            this.listener = listener;
-        }
-
-        @Override
-        public void channelActive(ChannelHandlerContext ctx) {
-            Channel channel = ctx.channel();
-            if (channel.isActive()) {
-                if (ctx.pipeline().get(NettyPipeline.H2MultiplexHandler) == null) {
-                    // Proceed with HTTP/1.x as per configuration
-                    ctx.fireChannelActive();
-                }
-                else if (ctx.pipeline().get(NettyPipeline.SslHandler) == null) {
-                    // Proceed with H2C as per configuration
-                    sendNewState(Connection.from(channel), ConnectionObserver.State.CONNECTED);
-                    ctx.flush();
-                    ctx.read();
-                }
-                else {
-                    // Proceed with H2 as per configuration
-                    sendNewState(Connection.from(channel), ConnectionObserver.State.CONNECTED);
-                }
-            }
-        }
-
-        @Override
-        public void channelRead(ChannelHandlerContext ctx, Object msg) {
-            if (msg instanceof Http2SettingsFrame) {
-                ctx.channel().attr(ENABLE_CONNECT_PROTOCOL).set(((Http2SettingsFrame) msg).settings().get(SETTINGS_ENABLE_CONNECT_PROTOCOL));
-                sendNewState(Connection.from(ctx.channel()), ConnectionObserver.State.CONFIGURED);
-                ctx.pipeline().remove(NettyPipeline.ReactiveBridge);
-                ctx.pipeline().remove(this);
-                return;
-            }
-
-            ctx.fireChannelRead(msg);
-        }
-
-        @Override
-        public void channelInactive(ChannelHandlerContext ctx) {
-            ctx.fireExceptionCaught(new PrematureCloseException("Connection prematurely closed BEFORE response"));
-        }
-
-        @Override
-        public void userEventTriggered(ChannelHandlerContext ctx, Object evt) {
-            Channel channel = ctx.channel();
-            if (evt == UPGRADE_ISSUED) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug(format(channel, "An upgrade request was sent to the server."));
-                }
-            }
-            else if (evt == UPGRADE_SUCCESSFUL) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug(format(channel, "The upgrade to H2C protocol was successful."));
-                }
-                sendNewState(Connection.from(channel), HttpClientState.UPGRADE_SUCCESSFUL);
-                ctx.pipeline().remove(this);
-            }
-            else if (evt == UPGRADE_REJECTED) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug(format(channel, "The upgrade to H2C protocol was rejected, continue using HTTP/1.x protocol."));
-                }
-                sendNewState(Connection.from(channel), HttpClientState.UPGRADE_REJECTED);
-                ctx.pipeline().remove(this);
-            }
-            ctx.fireUserEventTriggered(evt);
-        }
-
-        void sendNewState(Connection connection, ConnectionObserver.State state) {
-            ChannelOperations<?, ?> ops = connection.as(ChannelOperations.class);
-            if (ops != null) {
-                listener.onStateChange(ops, state);
-            }
-            else {
-                listener.onStateChange(connection, state);
-            }
-        }
-
-        // https://datatracker.ietf.org/doc/html/rfc8441#section-9.1
-        static final char SETTINGS_ENABLE_CONNECT_PROTOCOL = 8;
-    }
-
-    static final class PrematureCloseException extends IOException {
-
-        public static final PrematureCloseException TEST_EXCEPTION =
-            new PrematureCloseException("Simulated prematurely closed connection");
-
-        PrematureCloseException(String message) {
-            super(message);
-        }
-
-        PrematureCloseException(Throwable throwable) {
-            super(throwable);
-        }
-
-        @Override
-        public synchronized Throwable fillInStackTrace() {
-            // omit stacktrace for this exception
-            return this;
-        }
-
-        private static final long serialVersionUID = -3569621032752341973L;
-    }
-
-    static final class CosmosNettyPipeline {
-        public static final String H2_OR_HTTP11_CODEC = "cosmos.left.h2OrHttp11Codec";
-        public static final String HEADER_CLEANER = "cosmos.left.headerCleaner";
     }
 }
