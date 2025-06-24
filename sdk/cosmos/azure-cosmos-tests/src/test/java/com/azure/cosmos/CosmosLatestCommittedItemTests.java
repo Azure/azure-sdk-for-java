@@ -211,9 +211,8 @@ public class CosmosLatestCommittedItemTests extends TestSuiteBase {
 
         String id = UUID.randomUUID().toString();
         ObjectNode properties = getDocumentDefinition(id, id);
-        CosmosItemResponse<ObjectNode> createResponse = container.createItem(properties);
-        logger.info("CREATE CTX: {}", createResponse.getDiagnostics().getDiagnosticsContext().toJson());
-
+        container.createItem(properties);
+        
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions()
             .setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
 
