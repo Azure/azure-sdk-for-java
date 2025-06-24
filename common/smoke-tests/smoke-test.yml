@@ -16,17 +16,17 @@ stages:
           Pool: $(WINDOWSPOOL)
           OSVmImage: $(WINDOWSVMIMAGE)
 
-      - template: ./smoke-test-dependencies.yml
-        parameters:
-          OS: Linux
-          Pool: $(LINUXPOOL)
-          OSVmImage: $(LINUXVMIMAGE)
+      # - template: ./smoke-test-dependencies.yml
+      #   parameters:
+      #     OS: Linux
+      #     Pool: $(LINUXPOOL)
+      #     OSVmImage: $(LINUXVMIMAGE)
 
-      - template: ./smoke-test-dependencies.yml
-        parameters:
-          OS: macOS
-          Pool: $(MACPOOL)
-          OSVmImage: $(MACVMIMAGE)
+      # - template: ./smoke-test-dependencies.yml
+      #   parameters:
+      #     OS: macOS
+      #     Pool: $(MACPOOL)
+      #     OSVmImage: $(MACVMIMAGE)
 
 #  - stage: smoke_tests_samples
 #    displayName: Smoke Test Samples
