@@ -281,6 +281,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             }
 
             return toDocumentServiceResponse(httpResponseMono, request, httpRequest);
+
         } catch (Exception e) {
             return Mono.error(e);
         }
