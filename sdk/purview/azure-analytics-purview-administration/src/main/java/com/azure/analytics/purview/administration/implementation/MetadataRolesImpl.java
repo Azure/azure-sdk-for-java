@@ -74,7 +74,7 @@ public final class MetadataRolesImpl {
      * perform REST calls.
      */
     @Host("{Endpoint}/policyStore")
-    @ServiceInterface(name = "PurviewMetadataClien")
+    @ServiceInterface(name = "PurviewMetadataClientMetadataRoles")
     public interface MetadataRolesService {
         @Get("/metadataRoles")
         @ExpectedResponses({ 200 })

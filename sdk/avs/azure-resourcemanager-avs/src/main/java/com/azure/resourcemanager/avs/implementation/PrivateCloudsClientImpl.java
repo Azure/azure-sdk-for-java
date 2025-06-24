@@ -74,7 +74,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AvsClientPrivateClou")
+    @ServiceInterface(name = "AvsClientPrivateClouds")
     public interface PrivateCloudsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds")

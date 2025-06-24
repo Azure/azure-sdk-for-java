@@ -27,7 +27,7 @@ autorest
 ```
 
 ```yaml
-use: '@autorest/java@4.1.50'
+use: '@autorest/java@4.1.52'
 java: true
 title: EventGridPublisherClient
 description: EventGrid Publisher Client
@@ -82,7 +82,6 @@ directive:
 
 custom-types-subpackage: implementation.models
 custom-types: CloudEvent,EventGridEvent,AcsRouterCommunicationError,AcsMessageChannelEventError
-use-eclipse-language-server: false
 
 
 input-file:

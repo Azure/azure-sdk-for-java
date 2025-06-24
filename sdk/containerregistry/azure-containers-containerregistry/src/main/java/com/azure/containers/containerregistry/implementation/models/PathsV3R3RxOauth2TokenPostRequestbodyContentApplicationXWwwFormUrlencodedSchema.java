@@ -5,6 +5,7 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,27 +21,32 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
     /*
      * Indicates the name of your Azure container registry.
      */
+    @Generated
     private String service;
 
     /*
      * Which is expected to be a valid scope, and can be specified more than once for multiple scope requests. You
      * obtained this from the Www-Authenticate response header from the challenge.
      */
+    @Generated
     private String scope;
 
     /*
      * Must be a valid ACR refresh token
      */
+    @Generated
     private String acrRefreshToken;
 
     /*
      * Grant type is expected to be refresh_token
      */
+    @Generated
     private TokenGrantType grantType = TokenGrantType.REFRESH_TOKEN;
 
     /**
      * Creates an instance of PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema class.
      */
+    @Generated
     public PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema() {
     }
 
@@ -49,6 +55,7 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
      * 
      * @return the service value.
      */
+    @Generated
     public String getService() {
         return this.service;
     }
@@ -59,6 +66,7 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
      * @param service the service value to set.
      * @return the PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema object itself.
      */
+    @Generated
     public PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema setService(String service) {
         this.service = service;
         return this;
@@ -70,6 +78,7 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
      * 
      * @return the scope value.
      */
+    @Generated
     public String getScope() {
         return this.scope;
     }
@@ -81,6 +90,7 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
      * @param scope the scope value to set.
      * @return the PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema object itself.
      */
+    @Generated
     public PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema setScope(String scope) {
         this.scope = scope;
         return this;
@@ -91,6 +101,7 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
      * 
      * @return the acrRefreshToken value.
      */
+    @Generated
     public String getAcrRefreshToken() {
         return this.acrRefreshToken;
     }
@@ -101,6 +112,7 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
      * @param acrRefreshToken the acrRefreshToken value to set.
      * @return the PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema object itself.
      */
+    @Generated
     public PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema
         setAcrRefreshToken(String acrRefreshToken) {
         this.acrRefreshToken = acrRefreshToken;
@@ -112,6 +124,7 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
      * 
      * @return the grantType value.
      */
+    @Generated
     public TokenGrantType getGrantType() {
         return this.grantType;
     }
@@ -122,6 +135,7 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
      * @param grantType the grantType value to set.
      * @return the PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema object itself.
      */
+    @Generated
     public PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema
         setGrantType(TokenGrantType grantType) {
         this.grantType = grantType;
@@ -131,6 +145,7 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -152,6 +167,7 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
      * @throws IOException If an error occurs while reading the
      * PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema.
      */
+    @Generated
     public static PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema
         fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {

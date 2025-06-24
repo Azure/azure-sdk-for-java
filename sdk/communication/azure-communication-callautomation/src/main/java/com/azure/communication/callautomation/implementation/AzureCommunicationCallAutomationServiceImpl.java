@@ -207,7 +207,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AzureCommunicationCa")
+    @ServiceInterface(name = "AzureCommunicationCallAutomationService")
     public interface AzureCommunicationCallAutomationServiceService {
         @Post("/calling/callConnections")
         @ExpectedResponses({ 201 })

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,31 +22,37 @@ public class SetVariableActivity extends ControlActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "SetVariable";
 
     /*
      * Activity policy.
      */
+    @Generated
     private SecureInputOutputPolicy policy;
 
     /*
      * Name of the variable whose value needs to be set.
      */
+    @Generated
     private String variableName;
 
     /*
      * Value to be set. Could be a static value or Expression.
      */
+    @Generated
     private Object value;
 
     /*
      * If set to true, it sets the pipeline run return value.
      */
+    @Generated
     private Boolean setSystemVariable;
 
     /**
      * Creates an instance of SetVariableActivity class.
      */
+    @Generated
     public SetVariableActivity() {
     }
 
@@ -54,6 +61,7 @@ public class SetVariableActivity extends ControlActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -64,6 +72,7 @@ public class SetVariableActivity extends ControlActivity {
      * 
      * @return the policy value.
      */
+    @Generated
     public SecureInputOutputPolicy getPolicy() {
         return this.policy;
     }
@@ -74,6 +83,7 @@ public class SetVariableActivity extends ControlActivity {
      * @param policy the policy value to set.
      * @return the SetVariableActivity object itself.
      */
+    @Generated
     public SetVariableActivity setPolicy(SecureInputOutputPolicy policy) {
         this.policy = policy;
         return this;
@@ -84,6 +94,7 @@ public class SetVariableActivity extends ControlActivity {
      * 
      * @return the variableName value.
      */
+    @Generated
     public String getVariableName() {
         return this.variableName;
     }
@@ -94,6 +105,7 @@ public class SetVariableActivity extends ControlActivity {
      * @param variableName the variableName value to set.
      * @return the SetVariableActivity object itself.
      */
+    @Generated
     public SetVariableActivity setVariableName(String variableName) {
         this.variableName = variableName;
         return this;
@@ -104,6 +116,7 @@ public class SetVariableActivity extends ControlActivity {
      * 
      * @return the value value.
      */
+    @Generated
     public Object getValue() {
         return this.value;
     }
@@ -114,6 +127,7 @@ public class SetVariableActivity extends ControlActivity {
      * @param value the value value to set.
      * @return the SetVariableActivity object itself.
      */
+    @Generated
     public SetVariableActivity setValue(Object value) {
         this.value = value;
         return this;
@@ -124,6 +138,7 @@ public class SetVariableActivity extends ControlActivity {
      * 
      * @return the setSystemVariable value.
      */
+    @Generated
     public Boolean isSetSystemVariable() {
         return this.setSystemVariable;
     }
@@ -134,6 +149,7 @@ public class SetVariableActivity extends ControlActivity {
      * @param setSystemVariable the setSystemVariable value to set.
      * @return the SetVariableActivity object itself.
      */
+    @Generated
     public SetVariableActivity setSetSystemVariable(Boolean setSystemVariable) {
         this.setSystemVariable = setSystemVariable;
         return this;
@@ -142,6 +158,7 @@ public class SetVariableActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SetVariableActivity setName(String name) {
         super.setName(name);
@@ -151,6 +168,7 @@ public class SetVariableActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SetVariableActivity setDescription(String description) {
         super.setDescription(description);
@@ -160,6 +178,7 @@ public class SetVariableActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SetVariableActivity setState(ActivityState state) {
         super.setState(state);
@@ -169,6 +188,7 @@ public class SetVariableActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SetVariableActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -178,6 +198,7 @@ public class SetVariableActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SetVariableActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -187,6 +208,7 @@ public class SetVariableActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SetVariableActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -196,6 +218,7 @@ public class SetVariableActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -212,7 +235,9 @@ public class SetVariableActivity extends ControlActivity {
         if (variableName != null || value != null || setSystemVariable != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeStringField("variableName", this.variableName);
-            jsonWriter.writeUntypedField("value", this.value);
+            if (this.value != null) {
+                jsonWriter.writeUntypedField("value", this.value);
+            }
             jsonWriter.writeBooleanField("setSystemVariable", this.setSystemVariable);
             jsonWriter.writeEndObject();
         }
@@ -233,6 +258,7 @@ public class SetVariableActivity extends ControlActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SetVariableActivity.
      */
+    @Generated
     public static SetVariableActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SetVariableActivity deserializedSetVariableActivity = new SetVariableActivity();

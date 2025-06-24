@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,31 +24,37 @@ public final class RunFilterParameters implements JsonSerializable<RunFilterPara
     /*
      * The continuation token for getting the next page of results. Null for first page.
      */
+    @Generated
     private String continuationToken;
 
     /*
      * The time at or after which the run event was updated in 'ISO 8601' format.
      */
+    @Generated
     private OffsetDateTime lastUpdatedAfter;
 
     /*
      * The time at or before which the run event was updated in 'ISO 8601' format.
      */
+    @Generated
     private OffsetDateTime lastUpdatedBefore;
 
     /*
      * List of filters.
      */
+    @Generated
     private List<RunQueryFilter> filters;
 
     /*
      * List of OrderBy option.
      */
+    @Generated
     private List<RunQueryOrderBy> orderBy;
 
     /**
      * Creates an instance of RunFilterParameters class.
      */
+    @Generated
     public RunFilterParameters() {
     }
 
@@ -57,6 +64,7 @@ public final class RunFilterParameters implements JsonSerializable<RunFilterPara
      * 
      * @return the continuationToken value.
      */
+    @Generated
     public String getContinuationToken() {
         return this.continuationToken;
     }
@@ -68,6 +76,7 @@ public final class RunFilterParameters implements JsonSerializable<RunFilterPara
      * @param continuationToken the continuationToken value to set.
      * @return the RunFilterParameters object itself.
      */
+    @Generated
     public RunFilterParameters setContinuationToken(String continuationToken) {
         this.continuationToken = continuationToken;
         return this;
@@ -78,6 +87,7 @@ public final class RunFilterParameters implements JsonSerializable<RunFilterPara
      * 
      * @return the lastUpdatedAfter value.
      */
+    @Generated
     public OffsetDateTime getLastUpdatedAfter() {
         return this.lastUpdatedAfter;
     }
@@ -88,6 +98,7 @@ public final class RunFilterParameters implements JsonSerializable<RunFilterPara
      * @param lastUpdatedAfter the lastUpdatedAfter value to set.
      * @return the RunFilterParameters object itself.
      */
+    @Generated
     public RunFilterParameters setLastUpdatedAfter(OffsetDateTime lastUpdatedAfter) {
         this.lastUpdatedAfter = lastUpdatedAfter;
         return this;
@@ -98,6 +109,7 @@ public final class RunFilterParameters implements JsonSerializable<RunFilterPara
      * 
      * @return the lastUpdatedBefore value.
      */
+    @Generated
     public OffsetDateTime getLastUpdatedBefore() {
         return this.lastUpdatedBefore;
     }
@@ -108,6 +120,7 @@ public final class RunFilterParameters implements JsonSerializable<RunFilterPara
      * @param lastUpdatedBefore the lastUpdatedBefore value to set.
      * @return the RunFilterParameters object itself.
      */
+    @Generated
     public RunFilterParameters setLastUpdatedBefore(OffsetDateTime lastUpdatedBefore) {
         this.lastUpdatedBefore = lastUpdatedBefore;
         return this;
@@ -118,6 +131,7 @@ public final class RunFilterParameters implements JsonSerializable<RunFilterPara
      * 
      * @return the filters value.
      */
+    @Generated
     public List<RunQueryFilter> getFilters() {
         return this.filters;
     }
@@ -128,6 +142,7 @@ public final class RunFilterParameters implements JsonSerializable<RunFilterPara
      * @param filters the filters value to set.
      * @return the RunFilterParameters object itself.
      */
+    @Generated
     public RunFilterParameters setFilters(List<RunQueryFilter> filters) {
         this.filters = filters;
         return this;
@@ -138,6 +153,7 @@ public final class RunFilterParameters implements JsonSerializable<RunFilterPara
      * 
      * @return the orderBy value.
      */
+    @Generated
     public List<RunQueryOrderBy> getOrderBy() {
         return this.orderBy;
     }
@@ -148,6 +164,7 @@ public final class RunFilterParameters implements JsonSerializable<RunFilterPara
      * @param orderBy the orderBy value to set.
      * @return the RunFilterParameters object itself.
      */
+    @Generated
     public RunFilterParameters setOrderBy(List<RunQueryOrderBy> orderBy) {
         this.orderBy = orderBy;
         return this;
@@ -156,6 +173,7 @@ public final class RunFilterParameters implements JsonSerializable<RunFilterPara
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -182,6 +200,7 @@ public final class RunFilterParameters implements JsonSerializable<RunFilterPara
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RunFilterParameters.
      */
+    @Generated
     public static RunFilterParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RunFilterParameters deserializedRunFilterParameters = new RunFilterParameters();

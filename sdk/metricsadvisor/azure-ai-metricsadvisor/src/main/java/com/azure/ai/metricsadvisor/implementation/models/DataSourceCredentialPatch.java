@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,22 +20,26 @@ public class DataSourceCredentialPatch implements JsonSerializable<DataSourceCre
     /*
      * Type of data source credential
      */
+    @Generated
     private DataSourceCredentialType dataSourceCredentialType
         = DataSourceCredentialType.fromString("DataSourceCredentialPatch");
 
     /*
      * Name of data source credential
      */
+    @Generated
     private String dataSourceCredentialName;
 
     /*
      * Description of data source credential
      */
+    @Generated
     private String dataSourceCredentialDescription;
 
     /**
      * Creates an instance of DataSourceCredentialPatch class.
      */
+    @Generated
     public DataSourceCredentialPatch() {
     }
 
@@ -43,6 +48,7 @@ public class DataSourceCredentialPatch implements JsonSerializable<DataSourceCre
      * 
      * @return the dataSourceCredentialType value.
      */
+    @Generated
     public DataSourceCredentialType getDataSourceCredentialType() {
         return this.dataSourceCredentialType;
     }
@@ -52,6 +58,7 @@ public class DataSourceCredentialPatch implements JsonSerializable<DataSourceCre
      * 
      * @return the dataSourceCredentialName value.
      */
+    @Generated
     public String getDataSourceCredentialName() {
         return this.dataSourceCredentialName;
     }
@@ -62,6 +69,7 @@ public class DataSourceCredentialPatch implements JsonSerializable<DataSourceCre
      * @param dataSourceCredentialName the dataSourceCredentialName value to set.
      * @return the DataSourceCredentialPatch object itself.
      */
+    @Generated
     public DataSourceCredentialPatch setDataSourceCredentialName(String dataSourceCredentialName) {
         this.dataSourceCredentialName = dataSourceCredentialName;
         return this;
@@ -72,6 +80,7 @@ public class DataSourceCredentialPatch implements JsonSerializable<DataSourceCre
      * 
      * @return the dataSourceCredentialDescription value.
      */
+    @Generated
     public String getDataSourceCredentialDescription() {
         return this.dataSourceCredentialDescription;
     }
@@ -82,6 +91,7 @@ public class DataSourceCredentialPatch implements JsonSerializable<DataSourceCre
      * @param dataSourceCredentialDescription the dataSourceCredentialDescription value to set.
      * @return the DataSourceCredentialPatch object itself.
      */
+    @Generated
     public DataSourceCredentialPatch setDataSourceCredentialDescription(String dataSourceCredentialDescription) {
         this.dataSourceCredentialDescription = dataSourceCredentialDescription;
         return this;
@@ -90,6 +100,7 @@ public class DataSourceCredentialPatch implements JsonSerializable<DataSourceCre
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -108,6 +119,7 @@ public class DataSourceCredentialPatch implements JsonSerializable<DataSourceCre
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DataSourceCredentialPatch.
      */
+    @Generated
     public static DataSourceCredentialPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -139,6 +151,7 @@ public class DataSourceCredentialPatch implements JsonSerializable<DataSourceCre
         });
     }
 
+    @Generated
     static DataSourceCredentialPatch fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataSourceCredentialPatch deserializedDataSourceCredentialPatch = new DataSourceCredentialPatch();

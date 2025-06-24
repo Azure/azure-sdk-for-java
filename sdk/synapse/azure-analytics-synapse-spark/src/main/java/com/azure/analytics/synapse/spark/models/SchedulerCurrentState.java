@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.spark.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class SchedulerCurrentState extends ExpandableStringEnum<SchedulerC
     /**
      * Static value Queued for SchedulerCurrentState.
      */
+    @Generated
     public static final SchedulerCurrentState QUEUED = fromString("Queued");
 
     /**
      * Static value Scheduled for SchedulerCurrentState.
      */
+    @Generated
     public static final SchedulerCurrentState SCHEDULED = fromString("Scheduled");
 
     /**
      * Static value Ended for SchedulerCurrentState.
      */
+    @Generated
     public static final SchedulerCurrentState ENDED = fromString("Ended");
 
     /**
@@ -31,6 +35,7 @@ public final class SchedulerCurrentState extends ExpandableStringEnum<SchedulerC
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SchedulerCurrentState() {
     }
@@ -41,6 +46,7 @@ public final class SchedulerCurrentState extends ExpandableStringEnum<SchedulerC
      * @param name a name to look for.
      * @return the corresponding SchedulerCurrentState.
      */
+    @Generated
     public static SchedulerCurrentState fromString(String name) {
         return fromString(name, SchedulerCurrentState.class);
     }
@@ -50,6 +56,7 @@ public final class SchedulerCurrentState extends ExpandableStringEnum<SchedulerC
      * 
      * @return known SchedulerCurrentState values.
      */
+    @Generated
     public static Collection<SchedulerCurrentState> values() {
         return values(SchedulerCurrentState.class);
     }

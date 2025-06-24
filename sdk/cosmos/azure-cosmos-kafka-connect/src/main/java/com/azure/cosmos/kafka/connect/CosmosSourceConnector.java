@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.kafka.connect;
 
-import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -11,7 +10,8 @@ import com.azure.cosmos.implementation.UUIDs;
 import com.azure.cosmos.implementation.apachecommons.lang.RandomUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
-import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
+import com.azure.cosmos.kafka.connect.implementation.CosmosClientCache;
+import com.azure.cosmos.kafka.connect.implementation.CosmosClientCacheItem;
 import com.azure.cosmos.kafka.connect.implementation.CosmosMasterKeyAuthConfig;
 import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlConfig;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
@@ -74,7 +74,7 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
     private static final int METADATA_CONTAINER_DEFAULT_RU_CONFIG = 4000;
 
     private CosmosSourceConfig config;
-    private CosmosAsyncClient cosmosClient;
+    private CosmosClientCacheItem cosmosClientItem;
     private MetadataMonitorThread monitorThread;
     private MetadataKafkaStorageManager kafkaOffsetStorageReader;
     private IMetadataReader metadataReader;
@@ -88,28 +88,37 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
     @Override
     public void start(Map<String, String> props) {
         LOGGER.info("Starting the kafka cosmos source connector");
-        this.config = new CosmosSourceConfig(props);
-        this.connectorName = props.containsKey(CONNECTOR_NAME) ? props.get(CONNECTOR_NAME).toString() : "EMPTY";
-        this.cosmosClient = CosmosClientStore.getCosmosClient(this.config.getAccountConfig(), connectorName);
-        CosmosSourceContainersConfig containersConfig = this.config.getContainersConfig();
-        validateDatabaseAndContainers(
-            containersConfig.getIncludedContainers(),
-            this.cosmosClient,
-            containersConfig.getDatabaseName());
+        try {
+            this.config = new CosmosSourceConfig(props);
+            this.connectorName = props.containsKey(CONNECTOR_NAME) ? props.get(CONNECTOR_NAME).toString() : "EMPTY";
+            this.cosmosClientItem = CosmosClientCache.getCosmosClient(this.config.getAccountConfig(), connectorName);
+            CosmosSourceContainersConfig containersConfig = this.config.getContainersConfig();
+            validateDatabaseAndContainers(
+                containersConfig.getIncludedContainers(),
+                this.cosmosClientItem.getClient(),
+                containersConfig.getDatabaseName());
 
-        // IMPORTANT: sequence matters
-        this.kafkaOffsetStorageReader = new MetadataKafkaStorageManager(this.context().offsetStorageReader());
-        this.metadataReader = this.getMetadataReader();
-        this.monitorThread = new MetadataMonitorThread(
-            connectorName,
-            this.config.getContainersConfig(),
-            this.config.getMetadataConfig(),
-            this.context(),
-            this.metadataReader,
-            this.cosmosClient
-        );
+            // IMPORTANT: sequence matters
+            this.kafkaOffsetStorageReader = new MetadataKafkaStorageManager(this.context().offsetStorageReader());
+            this.metadataReader = this.getMetadataReader();
+            this.monitorThread = new MetadataMonitorThread(
+                connectorName,
+                this.config.getContainersConfig(),
+                this.config.getMetadataConfig(),
+                this.context(),
+                this.metadataReader,
+                this.cosmosClientItem.getClient()
+            );
 
-        this.monitorThread.start();
+            this.monitorThread.start();
+        } catch (Exception e) {
+            // if the connector failed to start, release initialized resources here
+            LOGGER.warn("Error starting the kafka cosmos sink connector", e);
+            this.cleanup();
+            // re-throw the exception back to kafka
+            throw e;
+        }
+
     }
 
     @Override
@@ -151,18 +160,26 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
         return taskConfigs;
     }
 
-    @Override
-    public void stop() {
-        LOGGER.info("Stopping Kafka CosmosDB source connector");
-        if (this.cosmosClient != null) {
-            LOGGER.debug("Closing cosmos client");
-            this.cosmosClient.close();
-        }
+    private void cleanup() {
+        LOGGER.info("Cleaning up CosmosSourceConnector");
 
+        // Close monitor thread first since it uses the cosmos client
         if (this.monitorThread != null) {
             LOGGER.debug("Closing monitoring thread");
             this.monitorThread.close();
         }
+
+        if (this.cosmosClientItem != null) {
+            LOGGER.debug("Releasing cosmos client");
+            CosmosClientCache.releaseCosmosClient(this.cosmosClientItem.getClientConfig());
+            this.cosmosClientItem = null;
+        }
+    }
+
+    @Override
+    public void stop() {
+        LOGGER.info("Stopping Kafka CosmosDB source connector");
+        cleanup();
     }
 
     @Override
@@ -181,7 +198,8 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
                 return this.kafkaOffsetStorageReader;
             case COSMOS:
                 CosmosAsyncContainer metadataContainer =
-                    this.cosmosClient
+                    this.cosmosClientItem
+                        .getClient()
                         .getDatabase(this.config.getContainersConfig().getDatabaseName())
                         .getContainer(this.config.getMetadataConfig().getStorageName());
                 // validate the metadata container config
@@ -230,7 +248,8 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
     }
 
     private Mono<CosmosContainerResponse> createMetadataContainer(Integer throughput) {
-        return this.cosmosClient
+        return this.cosmosClientItem
+            .getClient()
             .getDatabase(this.config.getContainersConfig().getDatabaseName())
             .createContainer(
                 this.config.getMetadataConfig().getStorageName(),
@@ -363,7 +382,10 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
                 .block().v;
 
         Map<FeedRange, KafkaCosmosChangeFeedState> effectiveFeedRangesContinuationMap = new LinkedHashMap<>();
-        CosmosAsyncContainer container = this.cosmosClient.getDatabase(databaseName).getContainer(containerProperties.getId());
+        CosmosAsyncContainer container =
+            this.cosmosClientItem
+                .getClient()
+                .getDatabase(databaseName).getContainer(containerProperties.getId());
 
         Flux.fromIterable(containerFeedRanges)
             .flatMap(containerFeedRange -> {
@@ -493,7 +515,8 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
     }
 
     private List<FeedRange> getFeedRanges(CosmosContainerProperties containerProperties) {
-        return this.cosmosClient
+        return this.cosmosClientItem
+            .getClient()
             .getDatabase(this.config.getContainersConfig().getDatabaseName())
             .getContainer(containerProperties.getId())
             .getFeedRanges()
@@ -543,7 +566,10 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
                         .map(CosmosContainerProperties::getId)
                         .collect(Collectors.toList()))
                 .block();
-        CosmosAsyncDatabase database = this.cosmosClient.getDatabase(containersConfig.getDatabaseName());
+        CosmosAsyncDatabase database =
+            this.cosmosClientItem
+                .getClient()
+                .getDatabase(containersConfig.getDatabaseName());
 
         // read a random item from each container to populate the collection cache
         for (String containerName : containerNames) {
@@ -556,7 +582,8 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
         if (cosmosThroughputControlConfig.isThroughputControlEnabled()) {
             if (cosmosThroughputControlConfig.getThroughputControlAccountConfig() == null) {
                 CosmosAsyncContainer throughputControlContainer =
-                    this.cosmosClient
+                    this.cosmosClientItem
+                        .getClient()
                         .getDatabase(cosmosThroughputControlConfig.getGlobalThroughputControlDatabaseName())
                         .getContainer(cosmosThroughputControlConfig.getGlobalThroughputControlContainerName());
                 readRandomItemFromContainer(throughputControlContainer);
@@ -568,33 +595,36 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
             readRandomItemFromContainer(database.getContainer(this.config.getMetadataConfig().getStorageName()));
         }
 
-        return KafkaCosmosUtils.convertClientMetadataCacheSnapshotToString(this.cosmosClient);
+        return KafkaCosmosUtils.convertClientMetadataCacheSnapshotToString(this.cosmosClientItem.getClient());
     }
 
     private String getThroughputControlClientMetadataCachesSnapshotString() {
-        CosmosAsyncClient throughputControlClient = null;
+        CosmosClientCacheItem throughputControlClientItem = null;
         try {
             CosmosThroughputControlConfig throughputControlConfig = this.config.getThroughputControlConfig();
             if (throughputControlConfig.isThroughputControlEnabled()
                 && throughputControlConfig.getThroughputControlAccountConfig() != null) {
-                throughputControlClient = CosmosClientStore.getCosmosClient(
+                throughputControlClientItem = CosmosClientCache.getCosmosClient(
                     this.config.getThroughputControlConfig().getThroughputControlAccountConfig(),
                     this.connectorName
                 );
             }
 
-            if (throughputControlClient != null) {
+            if (throughputControlClientItem != null) {
                 this.readRandomItemFromContainer(
-                    throughputControlClient
+                    throughputControlClientItem
+                        .getClient()
                         .getDatabase(throughputControlConfig.getGlobalThroughputControlDatabaseName())
                         .getContainer(throughputControlConfig.getGlobalThroughputControlContainerName())
                 );
+                return KafkaCosmosUtils.convertClientMetadataCacheSnapshotToString(throughputControlClientItem.getClient());
             }
 
-            return KafkaCosmosUtils.convertClientMetadataCacheSnapshotToString(throughputControlClient);
+            return null;
+
         } finally {
-            if (throughputControlClient != null) {
-                throughputControlClient.close();
+            if (throughputControlClientItem != null) {
+                CosmosClientCache.releaseCosmosClient(throughputControlClientItem.getClientConfig());
             }
         }
     }

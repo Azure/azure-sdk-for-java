@@ -3,7 +3,7 @@ trigger: none
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
-    ServiceDirectory: keyvault
+    ServiceDirectory: keyvault-v2
     TestResourceDirectories:
       - keyvault-v2/test-resources
     TimeoutInMinutes: 240

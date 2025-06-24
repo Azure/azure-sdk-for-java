@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appservice.models.CertificatePatchResource;
 public final class CertificatesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/PatchCertificate.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/PatchCertificate.json
      */
     /**
      * Sample code: Patch Certificate.
@@ -25,6 +25,7 @@ public final class CertificatesUpdateSamples {
             .serviceClient()
             .getCertificates()
             .updateWithResponse("testrg123", "testc6282",
-                new CertificatePatchResource().withPassword("fakeTokenPlaceholder"), com.azure.core.util.Context.NONE);
+                new CertificatePatchResource().withKeyVaultId("fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 }

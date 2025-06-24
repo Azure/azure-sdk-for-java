@@ -56,7 +56,7 @@ public final class PoliciesImpl {
      * REST calls.
      */
     @Host("{instanceUrl}")
-    @ServiceInterface(name = "AttestationClientPol")
+    @ServiceInterface(name = "AttestationClientPolicies")
     public interface PoliciesService {
         @Get("/policies/{attestationType}")
         @ExpectedResponses({ 200 })

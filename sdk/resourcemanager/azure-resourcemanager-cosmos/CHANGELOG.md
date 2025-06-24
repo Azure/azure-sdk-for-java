@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Supported `automaticFailoverEnabled()`, `enableAutomaticFailover` and `disableAutomaticFailover` in `CosmosDBAccount`.
+
 ### Breaking Changes
 
 ### Bugs Fixed

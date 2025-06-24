@@ -14,5 +14,6 @@
     <module>azure-resourcemanager-kubernetesconfiguration-extensions</module>
     <module>azure-resourcemanager-kubernetesconfiguration-extensiontypes</module>
     <module>azure-resourcemanager-kubernetesconfiguration-fluxconfigurations</module>
+    <module>azure-resourcemanager-kubernetesconfiguration-privatelinkscopes</module>
   </modules>
 </project>

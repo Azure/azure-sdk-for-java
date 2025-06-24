@@ -4,6 +4,8 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.annotation.JsonValue;
 
@@ -99,6 +101,31 @@ public enum ReadConsistencyStrategy {
                 @Override
                 public ReadConsistencyStrategy createFromServiceSerializedFormat(String serviceSerializedFormat) {
                     return ReadConsistencyStrategy.fromServiceSerializedFormat(serviceSerializedFormat);
+                }
+
+                public ReadConsistencyStrategy getEffectiveReadConsistencyStrategy(
+                    ResourceType resourceType,
+                    OperationType operationType,
+                    ReadConsistencyStrategy desiredReadConsistencyStrategyOfOperation,
+                    ReadConsistencyStrategy clientLevelReadConsistencyStrategy) {
+
+                    if (resourceType != ResourceType.Document) {
+                        return ReadConsistencyStrategy.DEFAULT;
+                    }
+
+                    if (operationType.isWriteOperation()) {
+                        return ReadConsistencyStrategy.DEFAULT;
+                    }
+
+                    if (desiredReadConsistencyStrategyOfOperation != null) {
+                        return desiredReadConsistencyStrategyOfOperation;
+                    }
+
+                    if (clientLevelReadConsistencyStrategy != null) {
+                        return clientLevelReadConsistencyStrategy;
+                    }
+
+                    return ReadConsistencyStrategy.DEFAULT;
                 }
             }
         );

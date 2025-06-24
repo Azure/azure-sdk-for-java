@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class AddDataFlowToDebugSessionResponse implements JsonSerializable
     /*
      * The ID of data flow debug job version.
      */
+    @Generated
     private String jobVersion;
 
     /**
      * Creates an instance of AddDataFlowToDebugSessionResponse class.
      */
+    @Generated
     public AddDataFlowToDebugSessionResponse() {
     }
 
@@ -32,6 +35,7 @@ public final class AddDataFlowToDebugSessionResponse implements JsonSerializable
      * 
      * @return the jobVersion value.
      */
+    @Generated
     public String getJobVersion() {
         return this.jobVersion;
     }
@@ -42,6 +46,7 @@ public final class AddDataFlowToDebugSessionResponse implements JsonSerializable
      * @param jobVersion the jobVersion value to set.
      * @return the AddDataFlowToDebugSessionResponse object itself.
      */
+    @Generated
     public AddDataFlowToDebugSessionResponse setJobVersion(String jobVersion) {
         this.jobVersion = jobVersion;
         return this;
@@ -50,6 +55,7 @@ public final class AddDataFlowToDebugSessionResponse implements JsonSerializable
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +71,7 @@ public final class AddDataFlowToDebugSessionResponse implements JsonSerializable
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AddDataFlowToDebugSessionResponse.
      */
+    @Generated
     public static AddDataFlowToDebugSessionResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AddDataFlowToDebugSessionResponse deserializedAddDataFlowToDebugSessionResponse

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,26 +20,31 @@ public final class DataFlowDebugPreviewDataRequest implements JsonSerializable<D
     /*
      * The ID of data flow debug session.
      */
+    @Generated
     private String sessionId;
 
     /*
      * The data flow which contains the debug session.
      */
+    @Generated
     private String dataFlowName;
 
     /*
      * The output stream name.
      */
+    @Generated
     private String streamName;
 
     /*
      * The row limit for preview request.
      */
+    @Generated
     private Integer rowLimits;
 
     /**
      * Creates an instance of DataFlowDebugPreviewDataRequest class.
      */
+    @Generated
     public DataFlowDebugPreviewDataRequest() {
     }
 
@@ -47,6 +53,7 @@ public final class DataFlowDebugPreviewDataRequest implements JsonSerializable<D
      * 
      * @return the sessionId value.
      */
+    @Generated
     public String getSessionId() {
         return this.sessionId;
     }
@@ -57,6 +64,7 @@ public final class DataFlowDebugPreviewDataRequest implements JsonSerializable<D
      * @param sessionId the sessionId value to set.
      * @return the DataFlowDebugPreviewDataRequest object itself.
      */
+    @Generated
     public DataFlowDebugPreviewDataRequest setSessionId(String sessionId) {
         this.sessionId = sessionId;
         return this;
@@ -67,6 +75,7 @@ public final class DataFlowDebugPreviewDataRequest implements JsonSerializable<D
      * 
      * @return the dataFlowName value.
      */
+    @Generated
     public String getDataFlowName() {
         return this.dataFlowName;
     }
@@ -77,6 +86,7 @@ public final class DataFlowDebugPreviewDataRequest implements JsonSerializable<D
      * @param dataFlowName the dataFlowName value to set.
      * @return the DataFlowDebugPreviewDataRequest object itself.
      */
+    @Generated
     public DataFlowDebugPreviewDataRequest setDataFlowName(String dataFlowName) {
         this.dataFlowName = dataFlowName;
         return this;
@@ -87,6 +97,7 @@ public final class DataFlowDebugPreviewDataRequest implements JsonSerializable<D
      * 
      * @return the streamName value.
      */
+    @Generated
     public String getStreamName() {
         return this.streamName;
     }
@@ -97,6 +108,7 @@ public final class DataFlowDebugPreviewDataRequest implements JsonSerializable<D
      * @param streamName the streamName value to set.
      * @return the DataFlowDebugPreviewDataRequest object itself.
      */
+    @Generated
     public DataFlowDebugPreviewDataRequest setStreamName(String streamName) {
         this.streamName = streamName;
         return this;
@@ -107,6 +119,7 @@ public final class DataFlowDebugPreviewDataRequest implements JsonSerializable<D
      * 
      * @return the rowLimits value.
      */
+    @Generated
     public Integer getRowLimits() {
         return this.rowLimits;
     }
@@ -117,6 +130,7 @@ public final class DataFlowDebugPreviewDataRequest implements JsonSerializable<D
      * @param rowLimits the rowLimits value to set.
      * @return the DataFlowDebugPreviewDataRequest object itself.
      */
+    @Generated
     public DataFlowDebugPreviewDataRequest setRowLimits(Integer rowLimits) {
         this.rowLimits = rowLimits;
         return this;
@@ -125,6 +139,7 @@ public final class DataFlowDebugPreviewDataRequest implements JsonSerializable<D
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -143,6 +158,7 @@ public final class DataFlowDebugPreviewDataRequest implements JsonSerializable<D
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DataFlowDebugPreviewDataRequest.
      */
+    @Generated
     public static DataFlowDebugPreviewDataRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataFlowDebugPreviewDataRequest deserializedDataFlowDebugPreviewDataRequest

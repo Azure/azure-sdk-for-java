@@ -197,6 +197,35 @@ public final class AvailablePhoneNumber implements JsonSerializable<AvailablePho
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        if (this.countryCode != null) {
+            jsonWriter.writeStringField("countryCode", this.countryCode);
+        }
+        if (this.capabilities != null) {
+            jsonWriter.writeFieldName("capabilities");
+            this.capabilities.toJson(jsonWriter);
+        }
+        if (this.phoneNumberType != null) {
+            jsonWriter.writeStringField("phoneNumberType", this.phoneNumberType.toString());
+        }
+        if (this.assignmentType != null) {
+            jsonWriter.writeStringField("assignmentType", this.assignmentType.toString());
+        }
+        if (this.id != null) {
+            jsonWriter.writeStringField("id", this.id);
+        }
+        if (this.phoneNumber != null) {
+            jsonWriter.writeStringField("phoneNumber", this.phoneNumber);
+        }
+        if (this.cost != null) {
+            jsonWriter.writeFieldName("cost");
+            this.cost.toJson(jsonWriter);
+        }
+        if (this.status != null) {
+            jsonWriter.writeStringField("status", this.status.toString());
+        }
+        if (this.isAgreementToNotResellRequired != null) {
+            jsonWriter.writeBooleanField("isAgreementToNotResellRequired", this.isAgreementToNotResellRequired);
+        }
         return jsonWriter.writeEndObject();
     }
 

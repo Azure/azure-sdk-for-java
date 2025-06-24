@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -18,16 +19,19 @@ public class SubResource extends AzureEntityResource {
     /*
      * Resource Etag.
      */
+    @Generated
     private String etag;
 
     /*
      * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
      */
+    @Generated
     private String type;
 
     /*
      * The name of the resource
      */
+    @Generated
     private String name;
 
     /*
@@ -35,11 +39,13 @@ public class SubResource extends AzureEntityResource {
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
      * resourceType}/{resourceName}
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of SubResource class.
      */
+    @Generated
     public SubResource() {
     }
 
@@ -48,6 +54,7 @@ public class SubResource extends AzureEntityResource {
      * 
      * @return the etag value.
      */
+    @Generated
     @Override
     public String getEtag() {
         return this.etag;
@@ -59,6 +66,7 @@ public class SubResource extends AzureEntityResource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -69,6 +77,7 @@ public class SubResource extends AzureEntityResource {
      * 
      * @return the name value.
      */
+    @Generated
     @Override
     public String getName() {
         return this.name;
@@ -80,6 +89,7 @@ public class SubResource extends AzureEntityResource {
      * 
      * @return the id value.
      */
+    @Generated
     @Override
     public String getId() {
         return this.id;
@@ -88,6 +98,7 @@ public class SubResource extends AzureEntityResource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -102,6 +113,7 @@ public class SubResource extends AzureEntityResource {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SubResource.
      */
+    @Generated
     public static SubResource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SubResource deserializedSubResource = new SubResource();

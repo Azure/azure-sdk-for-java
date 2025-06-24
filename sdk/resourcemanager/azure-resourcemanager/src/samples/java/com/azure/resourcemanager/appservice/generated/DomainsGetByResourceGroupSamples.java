@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class DomainsGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.DomainRegistration/stable/2024-04-01/examples/GetDomain.json
+     * specification/web/resource-manager/Microsoft.DomainRegistration/stable/2024-11-01/examples/GetDomain.json
      */
     /**
      * Sample code: Get Domain.
