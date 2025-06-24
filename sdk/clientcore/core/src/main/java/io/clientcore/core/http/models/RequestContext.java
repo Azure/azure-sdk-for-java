@@ -100,7 +100,7 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
  * <!-- src_embed io.clientcore.core.http.rest.requestcontext.postrequest -->
  * <pre>
  * RequestContext context = RequestContext.builder&#40;&#41;
- *     .addBeforeRequestInterceptor&#40;request -&gt; request
+ *     .addRequestMutator&#40;request -&gt; request
  *         &#47;&#47; may already be set if request is created from a client
  *         .setUri&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&quot;&#41;
  *         .setMethod&#40;HttpMethod.POST&#41;
@@ -239,16 +239,16 @@ public final class RequestContext {
         }
 
         /**
-         * Adds a custom interceptor to modify the {@link HttpRequest} before it's sent by the {@link HttpClient}. The
+         * Adds a custom mutator to modify the {@link HttpRequest} before it's sent by the {@link HttpClient}. The
          * modifications made on a {@link RequestContext} object are applied in order on the request.
          *
-         * @param requestInterceptor The request interceptor to apply before the request is sent.
+         * @param requestMutator The request mutator to apply to modify the request.
          * @return The updated {@link Builder} object.
-         * @throws NullPointerException If {@code requestInterceptor} is null.
+         * @throws NullPointerException If {@code requestMutator} is null.
          */
-        public Builder addBeforeRequestInterceptor(Consumer<HttpRequest> requestInterceptor) {
-            Objects.requireNonNull(requestInterceptor, "'requestInterceptor' cannot be null.");
-            this.requestCallback = this.requestCallback.andThen(requestInterceptor);
+        public Builder addRequestMutator(Consumer<HttpRequest> requestMutator) {
+            Objects.requireNonNull(requestMutator, "'requestMutator' cannot be null.");
+            this.requestCallback = this.requestCallback.andThen(requestMutator);
             return this;
         }
 

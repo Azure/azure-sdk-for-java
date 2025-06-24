@@ -40,7 +40,7 @@ public class RequestContextTests {
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
 
         RequestContext context = RequestContext.builder()
-            .addBeforeRequestInterceptor(r -> r.getHeaders()
+            .addRequestMutator(r -> r.getHeaders()
                 .add(new HttpHeader(X_MS_FOO, "bar"))
                 .add(new HttpHeader(HttpHeaderName.CONTENT_TYPE, "application/json")))
             .build();
@@ -52,16 +52,16 @@ public class RequestContextTests {
     }
 
     @Test
-    public void addBeforeRequestInterceptor() {
+    public void addRequestMutator() {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
 
         RequestContext context = RequestContext.builder()
-            .addBeforeRequestInterceptor(r -> r.getHeaders().add(new HttpHeader(X_MS_FOO, "bar")))
-            .addBeforeRequestInterceptor(r -> r.setMethod(HttpMethod.GET))
-            .addBeforeRequestInterceptor(r -> r.setUri("https://request.uri"))
+            .addRequestMutator(r -> r.getHeaders().add(new HttpHeader(X_MS_FOO, "bar")))
+            .addRequestMutator(r -> r.setMethod(HttpMethod.GET))
+            .addRequestMutator(r -> r.setUri("https://request.uri"))
             .addQueryParam("$skipToken", "1")
-            .addBeforeRequestInterceptor(r -> r.getHeaders().set(X_MS_FOO, "baz"))
+            .addRequestMutator(r -> r.getHeaders().set(X_MS_FOO, "baz"))
             .build();
 
         context.getRequestCallback().accept(request);
@@ -73,15 +73,15 @@ public class RequestContextTests {
     }
 
     @Test
-    public void multipleBeforeRequestInterceptors() {
+    public void multipleRequestMutators() {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
 
         RequestContext context = RequestContext.builder()
-            .addBeforeRequestInterceptor(r -> r.getHeaders().add(new HttpHeader(X_MS_FOO, "first")))
-            .addBeforeRequestInterceptor(r -> r.setMethod(HttpMethod.GET))
-            .addBeforeRequestInterceptor(r -> r.setUri("https://mixed.uri"))
-            .addBeforeRequestInterceptor(r -> r.getHeaders().set(X_MS_FOO, "last"))
+            .addRequestMutator(r -> r.getHeaders().add(new HttpHeader(X_MS_FOO, "first")))
+            .addRequestMutator(r -> r.setMethod(HttpMethod.GET))
+            .addRequestMutator(r -> r.setUri("https://mixed.uri"))
+            .addRequestMutator(r -> r.getHeaders().set(X_MS_FOO, "last"))
             .build();
 
         context.getRequestCallback().accept(request);
