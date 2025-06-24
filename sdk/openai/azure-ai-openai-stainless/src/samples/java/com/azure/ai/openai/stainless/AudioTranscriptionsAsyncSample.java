@@ -37,7 +37,7 @@ public final class AudioTranscriptionsAsyncSample {
 
 
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-        Path path = Paths.get(classloader.getResource("sports.wav").toURI());
+        Path path = Paths.get(classloader.getResource("batman.wav").toURI());
 
         TranscriptionCreateParams createParams = TranscriptionCreateParams.builder()
                 .file(path)

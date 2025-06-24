@@ -52,6 +52,8 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.openai.azure.AzureOpenAIServiceVersion;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.credential.BearerTokenCredential;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -419,31 +421,36 @@ public final class AIProjectClientBuilder
         OpenAIOkHttpClient.Builder builder = OpenAIOkHttpClient.builder();
         ConnectionsClient connectionsClient = this.buildConnectionsClient();
         if (openAIConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("OpenAI connection name is not set."));
-        }
-        Connection connection = connectionsClient.getConnection(openAIConnectionName, true);
-        if (connection.getType() != ConnectionType.AZURE_OPEN_AI) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("The connection is not of type OPENAI."));
-        }
-        String azureOpenAIEndpoint = connection.getTarget();
-        if (azureOpenAIEndpoint.endsWith("/")) {
-            azureOpenAIEndpoint = azureOpenAIEndpoint.substring(0, azureOpenAIEndpoint.length() - 1);
-        }
-        builder.baseUrl(azureOpenAIEndpoint);
-        BaseCredentials credentials = connection.getCredentials();
-        if (credentials.getType() == CredentialType.API_KEY && credentials instanceof ApiKeyCredentials) {
-            String apiKey = ((ApiKeyCredentials) credentials).getApiKey();
-            builder.apiKey(apiKey);
-        } else if (credentials.getType() == CredentialType.ENTRA_ID) {
-            if (tokenCredential == null) {
-                throw LOGGER
-                    .logExceptionAsError(new IllegalArgumentException("Credential is required for OpenAI connection."));
-            }
+            // use the parent resource
+            String azureOpenAIEndpoint = getOpenAIInferenceUrl(this.endpoint);
+            builder.baseUrl(azureOpenAIEndpoint);
             builder.credential(BearerTokenCredential
-                .create(getBearerTokenSupplier(tokenCredential, "https://cognitiveservices.azure.com/.default")));
+                .create(getBearerTokenSupplier(this.tokenCredential, "https://cognitiveservices.azure.com/.default")));
         } else {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Unsupported credential type for OpenAI connection."));
+            Connection connection = connectionsClient.getConnection(openAIConnectionName, true);
+            if (connection.getType() != ConnectionType.AZURE_OPEN_AI) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("The connection is not of type OPENAI."));
+            }
+            String azureOpenAIEndpoint = connection.getTarget();
+            if (azureOpenAIEndpoint.endsWith("/")) {
+                azureOpenAIEndpoint = azureOpenAIEndpoint.substring(0, azureOpenAIEndpoint.length() - 1);
+            }
+            builder.baseUrl(azureOpenAIEndpoint);
+            BaseCredentials credentials = connection.getCredentials();
+            if (credentials.getType() == CredentialType.API_KEY && credentials instanceof ApiKeyCredentials) {
+                String apiKey = ((ApiKeyCredentials) credentials).getApiKey();
+                builder.apiKey(apiKey);
+            } else if (credentials.getType() == CredentialType.ENTRA_ID) {
+                if (tokenCredential == null) {
+                    throw LOGGER.logExceptionAsError(
+                        new IllegalArgumentException("Credential is required for OpenAI connection."));
+                }
+                builder.credential(BearerTokenCredential
+                    .create(getBearerTokenSupplier(tokenCredential, "https://cognitiveservices.azure.com/.default")));
+            } else {
+                throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("Unsupported credential type for OpenAI connection."));
+            }
         }
         if (azureOpenAIServiceVersion != null) {
             builder.azureServiceVersion(azureOpenAIServiceVersion);
@@ -600,6 +607,31 @@ public final class AIProjectClientBuilder
                 return res.getRequest().getHeaders().get(HttpHeaderName.AUTHORIZATION).getValue().split(" ")[1];
             }
         };
+    }
+
+    /**
+     * Converts an input URL in the format:
+     * https://[host-name]/[some-path]
+     * to:
+     * https://[host-name]
+     *
+     * @param inputUrl The input endpoint URL used to construct AIProjectClient.
+     * @return The endpoint URL required to construct an AzureOpenAI client.
+     */
+    private static String getOpenAIInferenceUrl(String inputUrl) {
+        URL parsed = null;
+        try {
+            parsed = new URL(inputUrl);
+        } catch (MalformedURLException e) {
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("Invalid endpoint URL format. Malformed.", e));
+        }
+        if (!"https".equals(parsed.getProtocol()) || parsed.getHost().isEmpty()) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Invalid endpoint URL format. Must be an https URL with a host."));
+        }
+        String newUrl = "https://" + parsed.getHost();
+        return newUrl;
     }
 
     /**
