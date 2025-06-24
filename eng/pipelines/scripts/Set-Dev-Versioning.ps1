@@ -34,4 +34,4 @@ foreach ($artifact in $artifacts) {
 python3 "$PSScriptRoot/../../versioning/set_versions.py" --set-dev-zero-version --build-type $SDKType --build-qualifier "alpha.$BuildNumber"
 
 # Apply version settings to repository
-python3 "$PSScriptRoot/../../versioning/update_versions.py" --update-type library --build-type $SDKType --sr
+python3 "$PSScriptRoot/../../versioning/update_versions.py" --update-type library --build-type $SDKType --sr --setting-dev-version

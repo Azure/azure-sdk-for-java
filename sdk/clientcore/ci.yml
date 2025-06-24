@@ -53,16 +53,19 @@ extends:
       - name: core
         groupId: io.clientcore
         safeName: core
+        skipPublishDocMs: true
         releaseInBatch: ${{ parameters.release_core }}
         triggeringPaths:
         - /sdk/parents/clientcore-parent
       - name: http-netty4
         groupId: io.clientcore
         safeName: httpnetty4
+        skipPublishDocMs: true
         releaseInBatch: ${{ parameters.release_httpnetty4 }}
       - name: http-okhttp3
         groupId: io.clientcore
         safeName: httpokhttp3
+        skipPublishDocMs: true
         releaseInBatch: ${{ parameters.release_httpokhttp3 }}
     AdditionalModules:
       - name: optional-dependency-tests

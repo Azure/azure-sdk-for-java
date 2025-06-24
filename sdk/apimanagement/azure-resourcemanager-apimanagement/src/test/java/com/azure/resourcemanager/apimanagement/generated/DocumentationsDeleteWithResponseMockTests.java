@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import java.nio.charset.StandardCharsets;
@@ -25,10 +25,10 @@ public final class DocumentationsDeleteWithResponseMockTests {
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.documentations()
-            .deleteWithResponse("rwphbuzm", "ji", "tlbmfkc", "paiwhrjw", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("p", "mkqbylbbnjldicq", "ma", "efwlenitv", com.azure.core.util.Context.NONE);
 
     }
 }

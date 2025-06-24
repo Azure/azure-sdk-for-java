@@ -13,6 +13,7 @@ import com.azure.resourcemanager.netapp.models.ActiveDirectory;
 import com.azure.resourcemanager.netapp.models.ChangeKeyVault;
 import com.azure.resourcemanager.netapp.models.EncryptionTransitionRequest;
 import com.azure.resourcemanager.netapp.models.GetKeyVaultStatusResponse;
+import com.azure.resourcemanager.netapp.models.LdapConfiguration;
 import com.azure.resourcemanager.netapp.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.netapp.models.MultiAdStatus;
 import com.azure.resourcemanager.netapp.models.NetAppAccount;
@@ -90,6 +91,10 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
 
     public MultiAdStatus multiAdStatus() {
         return this.innerModel().multiAdStatus();
+    }
+
+    public LdapConfiguration ldapConfiguration() {
+        return this.innerModel().ldapConfiguration();
     }
 
     public Region region() {
@@ -273,6 +278,16 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
             return this;
         } else {
             this.updateBody.withNfsV4IdDomain(nfsV4IdDomain);
+            return this;
+        }
+    }
+
+    public NetAppAccountImpl withLdapConfiguration(LdapConfiguration ldapConfiguration) {
+        if (isInCreateMode()) {
+            this.innerModel().withLdapConfiguration(ldapConfiguration);
+            return this;
+        } else {
+            this.updateBody.withLdapConfiguration(ldapConfiguration);
             return this;
         }
     }

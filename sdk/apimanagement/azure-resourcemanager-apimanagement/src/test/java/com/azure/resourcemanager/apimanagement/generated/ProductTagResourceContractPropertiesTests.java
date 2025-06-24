@@ -13,37 +13,36 @@ public final class ProductTagResourceContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProductTagResourceContractProperties model = BinaryData.fromString(
-            "{\"id\":\"pxvpifdfaif\",\"name\":\"zyzeyuubeidsz\",\"description\":\"ytoithgygvfl\",\"terms\":\"vdihoynkrx\",\"subscriptionRequired\":false,\"approvalRequired\":true,\"subscriptionsLimit\":925532435,\"state\":\"published\"}")
+            "{\"id\":\"yo\",\"name\":\"kxkxhnegk\",\"description\":\"z\",\"terms\":\"h\",\"subscriptionRequired\":false,\"approvalRequired\":true,\"subscriptionsLimit\":1783999067,\"state\":\"notPublished\"}")
             .toObject(ProductTagResourceContractProperties.class);
-        Assertions.assertEquals("ytoithgygvfl", model.description());
-        Assertions.assertEquals("vdihoynkrx", model.terms());
-        Assertions.assertEquals(false, model.subscriptionRequired());
-        Assertions.assertEquals(true, model.approvalRequired());
-        Assertions.assertEquals(925532435, model.subscriptionsLimit());
-        Assertions.assertEquals(ProductState.PUBLISHED, model.state());
-        Assertions.assertEquals("pxvpifdfaif", model.id());
-        Assertions.assertEquals("zyzeyuubeidsz", model.name());
+        Assertions.assertEquals("z", model.description());
+        Assertions.assertEquals("h", model.terms());
+        Assertions.assertFalse(model.subscriptionRequired());
+        Assertions.assertTrue(model.approvalRequired());
+        Assertions.assertEquals(1783999067, model.subscriptionsLimit());
+        Assertions.assertEquals(ProductState.NOT_PUBLISHED, model.state());
+        Assertions.assertEquals("yo", model.id());
+        Assertions.assertEquals("kxkxhnegk", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProductTagResourceContractProperties model
-            = new ProductTagResourceContractProperties().withDescription("ytoithgygvfl")
-                .withTerms("vdihoynkrx")
-                .withSubscriptionRequired(false)
-                .withApprovalRequired(true)
-                .withSubscriptionsLimit(925532435)
-                .withState(ProductState.PUBLISHED)
-                .withId("pxvpifdfaif")
-                .withName("zyzeyuubeidsz");
+        ProductTagResourceContractProperties model = new ProductTagResourceContractProperties().withDescription("z")
+            .withTerms("h")
+            .withSubscriptionRequired(false)
+            .withApprovalRequired(true)
+            .withSubscriptionsLimit(1783999067)
+            .withState(ProductState.NOT_PUBLISHED)
+            .withId("yo")
+            .withName("kxkxhnegk");
         model = BinaryData.fromObject(model).toObject(ProductTagResourceContractProperties.class);
-        Assertions.assertEquals("ytoithgygvfl", model.description());
-        Assertions.assertEquals("vdihoynkrx", model.terms());
-        Assertions.assertEquals(false, model.subscriptionRequired());
-        Assertions.assertEquals(true, model.approvalRequired());
-        Assertions.assertEquals(925532435, model.subscriptionsLimit());
-        Assertions.assertEquals(ProductState.PUBLISHED, model.state());
-        Assertions.assertEquals("pxvpifdfaif", model.id());
-        Assertions.assertEquals("zyzeyuubeidsz", model.name());
+        Assertions.assertEquals("z", model.description());
+        Assertions.assertEquals("h", model.terms());
+        Assertions.assertFalse(model.subscriptionRequired());
+        Assertions.assertTrue(model.approvalRequired());
+        Assertions.assertEquals(1783999067, model.subscriptionsLimit());
+        Assertions.assertEquals(ProductState.NOT_PUBLISHED, model.state());
+        Assertions.assertEquals("yo", model.id());
+        Assertions.assertEquals("kxkxhnegk", model.name());
     }
 }

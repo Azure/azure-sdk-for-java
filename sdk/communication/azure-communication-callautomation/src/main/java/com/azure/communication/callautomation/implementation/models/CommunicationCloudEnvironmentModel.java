@@ -4,6 +4,7 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class CommunicationCloudEnvironmentModel extends ExpandableStringEn
     /**
      * Static value public for CommunicationCloudEnvironmentModel.
      */
+    @Generated
     public static final CommunicationCloudEnvironmentModel PUBLIC = fromString("public");
 
     /**
      * Static value dod for CommunicationCloudEnvironmentModel.
      */
+    @Generated
     public static final CommunicationCloudEnvironmentModel DOD = fromString("dod");
 
     /**
      * Static value gcch for CommunicationCloudEnvironmentModel.
      */
+    @Generated
     public static final CommunicationCloudEnvironmentModel GCCH = fromString("gcch");
 
     /**
@@ -31,6 +35,7 @@ public final class CommunicationCloudEnvironmentModel extends ExpandableStringEn
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public CommunicationCloudEnvironmentModel() {
     }
@@ -41,6 +46,7 @@ public final class CommunicationCloudEnvironmentModel extends ExpandableStringEn
      * @param name a name to look for.
      * @return the corresponding CommunicationCloudEnvironmentModel.
      */
+    @Generated
     public static CommunicationCloudEnvironmentModel fromString(String name) {
         return fromString(name, CommunicationCloudEnvironmentModel.class);
     }
@@ -50,6 +56,7 @@ public final class CommunicationCloudEnvironmentModel extends ExpandableStringEn
      * 
      * @return known CommunicationCloudEnvironmentModel values.
      */
+    @Generated
     public static Collection<CommunicationCloudEnvironmentModel> values() {
         return values(CommunicationCloudEnvironmentModel.class);
     }

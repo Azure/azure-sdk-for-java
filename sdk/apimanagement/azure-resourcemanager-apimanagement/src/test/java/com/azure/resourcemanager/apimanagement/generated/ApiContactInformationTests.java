@@ -12,20 +12,20 @@ public final class ApiContactInformationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApiContactInformation model
-            = BinaryData.fromString("{\"name\":\"pmqnja\",\"url\":\"ixjsprozvcputeg\",\"email\":\"wmfdatscmdvpjhul\"}")
+            = BinaryData.fromString("{\"name\":\"jzzvdud\",\"url\":\"dslfhotwmcy\",\"email\":\"wlbjnpgacftade\"}")
                 .toObject(ApiContactInformation.class);
-        Assertions.assertEquals("pmqnja", model.name());
-        Assertions.assertEquals("ixjsprozvcputeg", model.url());
-        Assertions.assertEquals("wmfdatscmdvpjhul", model.email());
+        Assertions.assertEquals("jzzvdud", model.name());
+        Assertions.assertEquals("dslfhotwmcy", model.url());
+        Assertions.assertEquals("wlbjnpgacftade", model.email());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApiContactInformation model
-            = new ApiContactInformation().withName("pmqnja").withUrl("ixjsprozvcputeg").withEmail("wmfdatscmdvpjhul");
+            = new ApiContactInformation().withName("jzzvdud").withUrl("dslfhotwmcy").withEmail("wlbjnpgacftade");
         model = BinaryData.fromObject(model).toObject(ApiContactInformation.class);
-        Assertions.assertEquals("pmqnja", model.name());
-        Assertions.assertEquals("ixjsprozvcputeg", model.url());
-        Assertions.assertEquals("wmfdatscmdvpjhul", model.email());
+        Assertions.assertEquals("jzzvdud", model.name());
+        Assertions.assertEquals("dslfhotwmcy", model.url());
+        Assertions.assertEquals("wlbjnpgacftade", model.email());
     }
 }

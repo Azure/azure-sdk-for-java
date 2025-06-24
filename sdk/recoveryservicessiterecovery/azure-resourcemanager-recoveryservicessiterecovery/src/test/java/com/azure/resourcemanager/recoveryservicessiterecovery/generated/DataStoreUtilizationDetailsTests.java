@@ -11,7 +11,7 @@ public final class DataStoreUtilizationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataStoreUtilizationDetails model = BinaryData.fromString(
-            "{\"totalSnapshotsSupported\":3097932904552377371,\"totalSnapshotsCreated\":4245389434648384828,\"dataStoreName\":\"kdschlzvfictnkjj\"}")
+            "{\"totalSnapshotsSupported\":5890767217967985205,\"totalSnapshotsCreated\":2742379304408674761,\"dataStoreName\":\"dseacdhz\"}")
             .toObject(DataStoreUtilizationDetails.class);
     }
 

@@ -1,5 +1,10 @@
 # Azure Resource Manager App Platform client library for Java
 
+Please note, this package has been deprecated and will no longer be maintained after 03/31/2025. 
+We recommend [azure-resourcemanager-appcontainers](https://learn.microsoft.com/java/api/overview/azure/resourcemanager-appcontainers-readme) and [azure-resourcemanager-containerservice](https://learn.microsoft.com/java/api/overview/azure/resourcemanager-containerservice-readme) as the replacement libraries. 
+Refer to [Azure Spring Apps retirement announcement](https://aka.ms/asaretirement) for more retirement details and how to migrate to the new services.
+Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
+
 Azure Resource Manager App Platform client library for Java
 
 For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
@@ -18,7 +23,7 @@ For documentation on how to use this package, please see [Azure Management Libra
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-appplatform</artifactId>
-    <version>2.49.0</version>
+    <version>2.51.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

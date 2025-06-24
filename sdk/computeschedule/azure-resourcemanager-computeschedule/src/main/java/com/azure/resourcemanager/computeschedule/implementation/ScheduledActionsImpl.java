@@ -10,15 +10,21 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.computeschedule.fluent.ScheduledActionsClient;
 import com.azure.resourcemanager.computeschedule.fluent.models.CancelOperationsResponseInner;
+import com.azure.resourcemanager.computeschedule.fluent.models.CreateResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.DeallocateResourceOperationResponseInner;
+import com.azure.resourcemanager.computeschedule.fluent.models.DeleteResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.GetOperationErrorsResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.GetOperationStatusResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.HibernateResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.StartResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.models.CancelOperationsRequest;
 import com.azure.resourcemanager.computeschedule.models.CancelOperationsResponse;
+import com.azure.resourcemanager.computeschedule.models.CreateResourceOperationResponse;
 import com.azure.resourcemanager.computeschedule.models.DeallocateResourceOperationResponse;
+import com.azure.resourcemanager.computeschedule.models.DeleteResourceOperationResponse;
+import com.azure.resourcemanager.computeschedule.models.ExecuteCreateRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecuteDeallocateRequest;
+import com.azure.resourcemanager.computeschedule.models.ExecuteDeleteRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecuteHibernateRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecuteStartRequest;
 import com.azure.resourcemanager.computeschedule.models.GetOperationErrorsRequest;
@@ -178,6 +184,52 @@ public final class ScheduledActionsImpl implements ScheduledActions {
             = this.serviceClient().virtualMachinesExecuteStart(locationparameter, requestBody);
         if (inner != null) {
             return new StartResourceOperationResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<CreateResourceOperationResponse> virtualMachinesExecuteCreateWithResponse(String locationparameter,
+        ExecuteCreateRequest requestBody, Context context) {
+        Response<CreateResourceOperationResponseInner> inner
+            = this.serviceClient().virtualMachinesExecuteCreateWithResponse(locationparameter, requestBody, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CreateResourceOperationResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CreateResourceOperationResponse virtualMachinesExecuteCreate(String locationparameter,
+        ExecuteCreateRequest requestBody) {
+        CreateResourceOperationResponseInner inner
+            = this.serviceClient().virtualMachinesExecuteCreate(locationparameter, requestBody);
+        if (inner != null) {
+            return new CreateResourceOperationResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<DeleteResourceOperationResponse> virtualMachinesExecuteDeleteWithResponse(String locationparameter,
+        ExecuteDeleteRequest requestBody, Context context) {
+        Response<DeleteResourceOperationResponseInner> inner
+            = this.serviceClient().virtualMachinesExecuteDeleteWithResponse(locationparameter, requestBody, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DeleteResourceOperationResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DeleteResourceOperationResponse virtualMachinesExecuteDelete(String locationparameter,
+        ExecuteDeleteRequest requestBody) {
+        DeleteResourceOperationResponseInner inner
+            = this.serviceClient().virtualMachinesExecuteDelete(locationparameter, requestBody);
+        if (inner != null) {
+            return new DeleteResourceOperationResponseImpl(inner, this.manager());
         } else {
             return null;
         }

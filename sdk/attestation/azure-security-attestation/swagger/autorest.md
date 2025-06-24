@@ -33,7 +33,7 @@ tag: package-2020-10-01
 require:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/attestation/data-plane/readme.md
 java: true
-use: '@autorest/java@4.1.42'
+use: '@autorest/java@4.1.52'
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.security.attestation

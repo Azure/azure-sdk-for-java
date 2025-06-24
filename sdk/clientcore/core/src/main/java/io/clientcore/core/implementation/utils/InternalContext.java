@@ -2,9 +2,6 @@
 // Licensed under the MIT License.
 package io.clientcore.core.implementation.utils;
 
-import io.clientcore.core.instrumentation.logging.ClientLogger;
-
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -80,98 +77,5 @@ public abstract class InternalContext {
      */
     public static InternalContext empty() {
         return InternalContext0.INSTANCE;
-    }
-
-    /**
-     * Creates an {@link InternalContext} from the given key-value pair.
-     *
-     * @param key The key for the internal context.
-     * @param value The value for the internal context.
-     * @return The created internal context.
-     */
-    public static InternalContext of(Object key, Object value) {
-        return new InternalContext1(key, value);
-    }
-
-    /**
-     * Creates an {@link InternalContext} from the given key-value pairs.
-     *
-     * @param key1 The key for the first key-value pair.
-     * @param value1 The value for the first key-value pair.
-     * @param key2 The key for the second key-value pair.
-     * @param value2 The value for the second key-value pair.
-     * @return The created internal context.
-     */
-    public static InternalContext of(Object key1, Object value1, Object key2, Object value2) {
-        return new InternalContext2(key1, value1, key2, value2);
-    }
-
-    /**
-     * Creates an {@link InternalContext} from the given key-value pairs.
-     *
-     * @param key1 The key for the first key-value pair.
-     * @param value1 The value for the first key-value pair.
-     * @param key2 The key for the second key-value pair.
-     * @param value2 The value for the second key-value pair.
-     * @param key3 The key for the third key-value pair.
-     * @param value3 The value for the third key-value pair.
-     * @return The created internal context.
-     */
-    public static InternalContext of(Object key1, Object value1, Object key2, Object value2, Object key3,
-        Object value3) {
-        return new InternalContext3(key1, value1, key2, value2, key3, value3);
-    }
-
-    /**
-     * Creates an {@link InternalContext} from the given key-value pairs.
-     *
-     * @param key1 The key for the first key-value pair.
-     * @param value1 The value for the first key-value pair.
-     * @param key2 The key for the second key-value pair.
-     * @param value2 The value for the second key-value pair.
-     * @param key3 The key for the third key-value pair.
-     * @param value3 The value for the third key-value pair.
-     * @param key4 The key for the fourth key-value pair.
-     * @param value4 The value for the fourth key-value pair.
-     * @return The created internal context.
-     */
-    public static InternalContext of(Object key1, Object value1, Object key2, Object value2, Object key3, Object value3,
-        Object key4, Object value4) {
-        return new InternalContext4(key1, value1, key2, value2, key3, value3, key4, value4);
-    }
-
-    /**
-     * Creates a new context from the given map.
-     *
-     * @param map The map to create the context from.
-     * @return A new context with the given map.
-     * @throws NullPointerException If {@code map} is null or if any key in the map is null.
-     */
-    public static InternalContext of(Map<Object, Object> map, ClientLogger logger) {
-        if (map == null) {
-            throw logger.logThrowableAsError(new NullPointerException("map cannot be null"));
-        }
-
-        // Naive implementation that will create a new context for each key-value pair.
-        // In the future this could be optimized to create contexts based on the size of the key-value pairs.
-        // For example, if the key-values had 10 entries this could be optimized to create two InternalContext4 and
-        // one InternalContext2 then combine them into a single InternalContextN.
-        // But this method isn't called from anywhere within SDK code, so this won't be prioritized.
-        InternalContext context = InternalContext.empty();
-        int entryCount = 0;
-        for (Map.Entry<Object, Object> entry : map.entrySet()) {
-            context = context.put(validateKey(entry.getKey(), "key" + entryCount, logger), entry.getValue());
-            entryCount++;
-        }
-
-        return context;
-    }
-
-    private static Object validateKey(Object key, String keyName, ClientLogger logger) {
-        if (key == null) {
-            throw logger.logThrowableAsError(new NullPointerException(keyName + " cannot be null"));
-        }
-
-        return key;
     }
 }

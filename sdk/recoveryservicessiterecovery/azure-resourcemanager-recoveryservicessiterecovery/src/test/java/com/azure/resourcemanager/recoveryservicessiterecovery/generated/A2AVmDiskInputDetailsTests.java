@@ -12,21 +12,21 @@ public final class A2AVmDiskInputDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         A2AVmDiskInputDetails model = BinaryData.fromString(
-            "{\"diskUri\":\"qdx\",\"recoveryAzureStorageAccountId\":\"urnpnuhzafccnuh\",\"primaryStagingAzureStorageAccountId\":\"i\"}")
+            "{\"diskUri\":\"aomhjrmkuhmaxl\",\"recoveryAzureStorageAccountId\":\"alfihcjmobcancd\",\"primaryStagingAzureStorageAccountId\":\"xxqcwgaxf\"}")
             .toObject(A2AVmDiskInputDetails.class);
-        Assertions.assertEquals("qdx", model.diskUri());
-        Assertions.assertEquals("urnpnuhzafccnuh", model.recoveryAzureStorageAccountId());
-        Assertions.assertEquals("i", model.primaryStagingAzureStorageAccountId());
+        Assertions.assertEquals("aomhjrmkuhmaxl", model.diskUri());
+        Assertions.assertEquals("alfihcjmobcancd", model.recoveryAzureStorageAccountId());
+        Assertions.assertEquals("xxqcwgaxf", model.primaryStagingAzureStorageAccountId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        A2AVmDiskInputDetails model = new A2AVmDiskInputDetails().withDiskUri("qdx")
-            .withRecoveryAzureStorageAccountId("urnpnuhzafccnuh")
-            .withPrimaryStagingAzureStorageAccountId("i");
+        A2AVmDiskInputDetails model = new A2AVmDiskInputDetails().withDiskUri("aomhjrmkuhmaxl")
+            .withRecoveryAzureStorageAccountId("alfihcjmobcancd")
+            .withPrimaryStagingAzureStorageAccountId("xxqcwgaxf");
         model = BinaryData.fromObject(model).toObject(A2AVmDiskInputDetails.class);
-        Assertions.assertEquals("qdx", model.diskUri());
-        Assertions.assertEquals("urnpnuhzafccnuh", model.recoveryAzureStorageAccountId());
-        Assertions.assertEquals("i", model.primaryStagingAzureStorageAccountId());
+        Assertions.assertEquals("aomhjrmkuhmaxl", model.diskUri());
+        Assertions.assertEquals("alfihcjmobcancd", model.recoveryAzureStorageAccountId());
+        Assertions.assertEquals("xxqcwgaxf", model.primaryStagingAzureStorageAccountId());
     }
 }

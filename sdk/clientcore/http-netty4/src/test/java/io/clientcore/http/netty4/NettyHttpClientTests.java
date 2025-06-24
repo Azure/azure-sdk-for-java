@@ -82,14 +82,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Timeout(value = 1, unit = TimeUnit.MINUTES)
 public class NettyHttpClientTests {
-    private static final String SERVER_HTTP_URI = NettyHttpClientLocalTestServer.getServer().getHttpUri();
+    private static final String SERVER_HTTP_URI = NettyHttpClientLocalTestServer.getServer().getUri();
 
     @Test
     public void testConcurrentRequestsSync() throws InterruptedException, ExecutionException {
         int numRequests = 100; // 100 = 1GB of data read
         HttpClient client = new NettyHttpClientProvider().getSharedInstance();
 
-        ForkJoinPool pool = new ForkJoinPool();
+        ForkJoinPool pool = new ForkJoinPool((int) Math.ceil(Runtime.getRuntime().availableProcessors() / 2.0));
         try {
             List<Future<byte[]>> requests
                 = pool.invokeAll(IntStream.range(0, numRequests).mapToObj(ignored -> (Callable<byte[]>) () -> {

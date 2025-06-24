@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,6 +17,7 @@ public final class VectorSearchCompressionTarget extends ExpandableStringEnum<Ve
     /**
      * Static value int8 for VectorSearchCompressionTarget.
      */
+    @Generated
     public static final VectorSearchCompressionTarget INT8 = fromString("int8");
 
     /**
@@ -23,6 +25,7 @@ public final class VectorSearchCompressionTarget extends ExpandableStringEnum<Ve
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public VectorSearchCompressionTarget() {
     }
@@ -33,6 +36,7 @@ public final class VectorSearchCompressionTarget extends ExpandableStringEnum<Ve
      * @param name a name to look for.
      * @return the corresponding VectorSearchCompressionTarget.
      */
+    @Generated
     public static VectorSearchCompressionTarget fromString(String name) {
         return fromString(name, VectorSearchCompressionTarget.class);
     }
@@ -42,6 +46,7 @@ public final class VectorSearchCompressionTarget extends ExpandableStringEnum<Ve
      * 
      * @return known VectorSearchCompressionTarget values.
      */
+    @Generated
     public static Collection<VectorSearchCompressionTarget> values() {
         return values(VectorSearchCompressionTarget.class);
     }

@@ -20,7 +20,7 @@ public class GetLedgerEntry {
                 .buildClient();
         // BEGIN:com.azure.security.confidentialledger.generated.getledgerentry.getledgerentry
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = confidentialLedgerClient.getLedgerEntryWithResponse("3.14", requestOptions);
+        Response<BinaryData> response = confidentialLedgerClient.getLedgerEntryWithResponse("2.15", requestOptions);
         // END:com.azure.security.confidentialledger.generated.getledgerentry.getledgerentry
     }
 }

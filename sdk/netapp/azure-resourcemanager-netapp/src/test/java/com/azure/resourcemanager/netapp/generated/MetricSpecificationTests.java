@@ -24,16 +24,16 @@ public final class MetricSpecificationTests {
         Assertions.assertEquals(MetricAggregationType.AVERAGE, model.supportedAggregationTypes().get(0));
         Assertions.assertEquals("qfbow", model.supportedTimeGrainTypes().get(0));
         Assertions.assertEquals("hzgpphrcgyncocpe", model.internalMetricName());
-        Assertions.assertEquals(false, model.enableRegionalMdmAccount());
+        Assertions.assertFalse(model.enableRegionalMdmAccount());
         Assertions.assertEquals("mcoo", model.sourceMdmAccount());
         Assertions.assertEquals("xlzevgbmqjqabcy", model.sourceMdmNamespace());
         Assertions.assertEquals("kwlzuvccfwnfn", model.dimensions().get(0).name());
         Assertions.assertEquals("cfionl", model.dimensions().get(0).displayName());
         Assertions.assertEquals("rxnjeaseipheofl", model.aggregationType());
-        Assertions.assertEquals(false, model.fillGapWithZero());
+        Assertions.assertFalse(model.fillGapWithZero());
         Assertions.assertEquals("y", model.category());
         Assertions.assertEquals("nj", model.resourceIdDimensionNameOverride());
-        Assertions.assertEquals(true, model.isInternal());
+        Assertions.assertTrue(model.isInternal());
     }
 
     @org.junit.jupiter.api.Test
@@ -65,15 +65,15 @@ public final class MetricSpecificationTests {
         Assertions.assertEquals(MetricAggregationType.AVERAGE, model.supportedAggregationTypes().get(0));
         Assertions.assertEquals("qfbow", model.supportedTimeGrainTypes().get(0));
         Assertions.assertEquals("hzgpphrcgyncocpe", model.internalMetricName());
-        Assertions.assertEquals(false, model.enableRegionalMdmAccount());
+        Assertions.assertFalse(model.enableRegionalMdmAccount());
         Assertions.assertEquals("mcoo", model.sourceMdmAccount());
         Assertions.assertEquals("xlzevgbmqjqabcy", model.sourceMdmNamespace());
         Assertions.assertEquals("kwlzuvccfwnfn", model.dimensions().get(0).name());
         Assertions.assertEquals("cfionl", model.dimensions().get(0).displayName());
         Assertions.assertEquals("rxnjeaseipheofl", model.aggregationType());
-        Assertions.assertEquals(false, model.fillGapWithZero());
+        Assertions.assertFalse(model.fillGapWithZero());
         Assertions.assertEquals("y", model.category());
         Assertions.assertEquals("nj", model.resourceIdDimensionNameOverride());
-        Assertions.assertEquals(true, model.isInternal());
+        Assertions.assertTrue(model.isInternal());
     }
 }

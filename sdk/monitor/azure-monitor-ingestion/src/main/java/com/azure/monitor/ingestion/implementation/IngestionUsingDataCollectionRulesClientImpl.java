@@ -152,7 +152,7 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "IngestionUsingDataCo")
+    @ServiceInterface(name = "IngestionUsingDataCollectionRulesClient")
     public interface IngestionUsingDataCollectionRulesClientService {
         @Post("/dataCollectionRules/{ruleId}/streams/{stream}")
         @ExpectedResponses({ 204 })
@@ -213,15 +213,13 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
     public Mono<Response<Void>> uploadWithResponseAsync(String ruleId, String stream, BinaryData body,
         RequestOptions requestOptions) {
         if (ruleId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter ruleId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter ruleId is required and cannot be null."));
         }
         if (stream == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter stream is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter stream is required and cannot be null."));
         }
         if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.upload(this.getEndpoint(), ruleId, stream,

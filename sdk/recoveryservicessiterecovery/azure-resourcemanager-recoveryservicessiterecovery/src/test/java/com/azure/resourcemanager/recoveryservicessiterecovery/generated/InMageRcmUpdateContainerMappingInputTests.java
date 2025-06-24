@@ -12,16 +12,16 @@ public final class InMageRcmUpdateContainerMappingInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageRcmUpdateContainerMappingInput model
-            = BinaryData.fromString("{\"instanceType\":\"InMageRcm\",\"enableAgentAutoUpgrade\":\"ulbl\"}")
+            = BinaryData.fromString("{\"instanceType\":\"InMageRcm\",\"enableAgentAutoUpgrade\":\"cytjgoea\"}")
                 .toObject(InMageRcmUpdateContainerMappingInput.class);
-        Assertions.assertEquals("ulbl", model.enableAgentAutoUpgrade());
+        Assertions.assertEquals("cytjgoea", model.enableAgentAutoUpgrade());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InMageRcmUpdateContainerMappingInput model
-            = new InMageRcmUpdateContainerMappingInput().withEnableAgentAutoUpgrade("ulbl");
+            = new InMageRcmUpdateContainerMappingInput().withEnableAgentAutoUpgrade("cytjgoea");
         model = BinaryData.fromObject(model).toObject(InMageRcmUpdateContainerMappingInput.class);
-        Assertions.assertEquals("ulbl", model.enableAgentAutoUpgrade());
+        Assertions.assertEquals("cytjgoea", model.enableAgentAutoUpgrade());
     }
 }

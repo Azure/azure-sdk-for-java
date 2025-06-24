@@ -4,6 +4,7 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,66 +20,79 @@ public final class Path implements JsonSerializable<Path> {
     /*
      * The name property.
      */
+    @Generated
     private String name;
 
     /*
      * The isDirectory property.
      */
+    @Generated
     private Boolean isDirectory;
 
     /*
      * The lastModified property.
      */
+    @Generated
     private String lastModified;
 
     /*
      * The contentLength property.
      */
+    @Generated
     private Long contentLength;
 
     /*
      * The owner property.
      */
+    @Generated
     private String owner;
 
     /*
      * The group property.
      */
+    @Generated
     private String group;
 
     /*
      * The permissions property.
      */
+    @Generated
     private String permissions;
 
     /*
      * The name of the encryption scope under which the blob is encrypted.
      */
+    @Generated
     private String encryptionScope;
 
     /*
      * The creationTime property.
      */
+    @Generated
     private String creationTime;
 
     /*
      * The expiryTime property.
      */
+    @Generated
     private String expiryTime;
 
     /*
      * The EncryptionContext property.
      */
+    @Generated
     private String encryptionContext;
 
     /*
      * The etag property.
      */
+    @Generated
     private String eTag;
 
     /**
      * Creates an instance of Path class.
      */
+    @Generated
     public Path() {
     }
 
@@ -87,6 +101,7 @@ public final class Path implements JsonSerializable<Path> {
      *
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -97,6 +112,7 @@ public final class Path implements JsonSerializable<Path> {
      * @param name the name value to set.
      * @return the Path object itself.
      */
+    @Generated
     public Path setName(String name) {
         this.name = name;
         return this;
@@ -107,6 +123,7 @@ public final class Path implements JsonSerializable<Path> {
      *
      * @return the isDirectory value.
      */
+    @Generated
     public Boolean isDirectory() {
         return this.isDirectory;
     }
@@ -117,6 +134,7 @@ public final class Path implements JsonSerializable<Path> {
      * @param isDirectory the isDirectory value to set.
      * @return the Path object itself.
      */
+    @Generated
     public Path setIsDirectory(Boolean isDirectory) {
         this.isDirectory = isDirectory;
         return this;
@@ -127,6 +145,7 @@ public final class Path implements JsonSerializable<Path> {
      *
      * @return the lastModified value.
      */
+    @Generated
     public String getLastModified() {
         return this.lastModified;
     }
@@ -137,6 +156,7 @@ public final class Path implements JsonSerializable<Path> {
      * @param lastModified the lastModified value to set.
      * @return the Path object itself.
      */
+    @Generated
     public Path setLastModified(String lastModified) {
         this.lastModified = lastModified;
         return this;
@@ -147,6 +167,7 @@ public final class Path implements JsonSerializable<Path> {
      *
      * @return the contentLength value.
      */
+    @Generated
     public Long getContentLength() {
         return this.contentLength;
     }
@@ -157,6 +178,7 @@ public final class Path implements JsonSerializable<Path> {
      * @param contentLength the contentLength value to set.
      * @return the Path object itself.
      */
+    @Generated
     public Path setContentLength(Long contentLength) {
         this.contentLength = contentLength;
         return this;
@@ -167,6 +189,7 @@ public final class Path implements JsonSerializable<Path> {
      *
      * @return the owner value.
      */
+    @Generated
     public String getOwner() {
         return this.owner;
     }
@@ -177,6 +200,7 @@ public final class Path implements JsonSerializable<Path> {
      * @param owner the owner value to set.
      * @return the Path object itself.
      */
+    @Generated
     public Path setOwner(String owner) {
         this.owner = owner;
         return this;
@@ -187,6 +211,7 @@ public final class Path implements JsonSerializable<Path> {
      *
      * @return the group value.
      */
+    @Generated
     public String getGroup() {
         return this.group;
     }
@@ -197,6 +222,7 @@ public final class Path implements JsonSerializable<Path> {
      * @param group the group value to set.
      * @return the Path object itself.
      */
+    @Generated
     public Path setGroup(String group) {
         this.group = group;
         return this;
@@ -207,6 +233,7 @@ public final class Path implements JsonSerializable<Path> {
      *
      * @return the permissions value.
      */
+    @Generated
     public String getPermissions() {
         return this.permissions;
     }
@@ -217,6 +244,7 @@ public final class Path implements JsonSerializable<Path> {
      * @param permissions the permissions value to set.
      * @return the Path object itself.
      */
+    @Generated
     public Path setPermissions(String permissions) {
         this.permissions = permissions;
         return this;
@@ -227,6 +255,7 @@ public final class Path implements JsonSerializable<Path> {
      *
      * @return the encryptionScope value.
      */
+    @Generated
     public String getEncryptionScope() {
         return this.encryptionScope;
     }
@@ -237,6 +266,7 @@ public final class Path implements JsonSerializable<Path> {
      * @param encryptionScope the encryptionScope value to set.
      * @return the Path object itself.
      */
+    @Generated
     public Path setEncryptionScope(String encryptionScope) {
         this.encryptionScope = encryptionScope;
         return this;
@@ -247,6 +277,7 @@ public final class Path implements JsonSerializable<Path> {
      *
      * @return the creationTime value.
      */
+    @Generated
     public String getCreationTime() {
         return this.creationTime;
     }
@@ -257,6 +288,7 @@ public final class Path implements JsonSerializable<Path> {
      * @param creationTime the creationTime value to set.
      * @return the Path object itself.
      */
+    @Generated
     public Path setCreationTime(String creationTime) {
         this.creationTime = creationTime;
         return this;
@@ -267,6 +299,7 @@ public final class Path implements JsonSerializable<Path> {
      *
      * @return the expiryTime value.
      */
+    @Generated
     public String getExpiryTime() {
         return this.expiryTime;
     }
@@ -277,6 +310,7 @@ public final class Path implements JsonSerializable<Path> {
      * @param expiryTime the expiryTime value to set.
      * @return the Path object itself.
      */
+    @Generated
     public Path setExpiryTime(String expiryTime) {
         this.expiryTime = expiryTime;
         return this;
@@ -287,6 +321,7 @@ public final class Path implements JsonSerializable<Path> {
      *
      * @return the encryptionContext value.
      */
+    @Generated
     public String getEncryptionContext() {
         return this.encryptionContext;
     }
@@ -297,6 +332,7 @@ public final class Path implements JsonSerializable<Path> {
      * @param encryptionContext the encryptionContext value to set.
      * @return the Path object itself.
      */
+    @Generated
     public Path setEncryptionContext(String encryptionContext) {
         this.encryptionContext = encryptionContext;
         return this;
@@ -307,6 +343,7 @@ public final class Path implements JsonSerializable<Path> {
      *
      * @return the eTag value.
      */
+    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -317,6 +354,7 @@ public final class Path implements JsonSerializable<Path> {
      * @param eTag the eTag value to set.
      * @return the Path object itself.
      */
+    @Generated
     public Path setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -325,6 +363,7 @@ public final class Path implements JsonSerializable<Path> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -349,13 +388,14 @@ public final class Path implements JsonSerializable<Path> {
 
     /**
      * Reads an instance of Path from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of Path if the JsonReader was pointing to an instance of it, or null if it was pointing to
      * JSON null.
-     * @throws IOException IOException If an error occurs while reading the Path.
+     * @throws IOException If an error occurs while reading the Path.
      * @throws IllegalStateException If a token is not an allowed type.
      */
+    @Generated
     public static Path fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Path deserializedPath = new Path();

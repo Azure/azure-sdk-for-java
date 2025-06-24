@@ -5,6 +5,7 @@
 package com.azure.communication.phonenumbers.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,19 @@ public final class PhoneNumberPurchaseRequest implements JsonSerializable<PhoneN
     /*
      * The search id.
      */
+    @Generated
     private String searchId;
+
+    /*
+     * The agreement to not resell the phone numbers. Defaults to false if not provided.
+     */
+    @Generated
+    private Boolean agreeToNotResell;
 
     /**
      * Creates an instance of PhoneNumberPurchaseRequest class.
      */
+    @Generated
     public PhoneNumberPurchaseRequest() {
     }
 
@@ -32,6 +41,7 @@ public final class PhoneNumberPurchaseRequest implements JsonSerializable<PhoneN
      * 
      * @return the searchId value.
      */
+    @Generated
     public String getSearchId() {
         return this.searchId;
     }
@@ -42,18 +52,45 @@ public final class PhoneNumberPurchaseRequest implements JsonSerializable<PhoneN
      * @param searchId the searchId value to set.
      * @return the PhoneNumberPurchaseRequest object itself.
      */
+    @Generated
     public PhoneNumberPurchaseRequest setSearchId(String searchId) {
         this.searchId = searchId;
         return this;
     }
 
     /**
+     * Get the agreeToNotResell property: The agreement to not resell the phone numbers. Defaults to false if not
+     * provided.
+     * 
+     * @return the agreeToNotResell value.
+     */
+    @Generated
+    public Boolean isAgreeToNotResell() {
+        return this.agreeToNotResell;
+    }
+
+    /**
+     * Set the agreeToNotResell property: The agreement to not resell the phone numbers. Defaults to false if not
+     * provided.
+     * 
+     * @param agreeToNotResell the agreeToNotResell value to set.
+     * @return the PhoneNumberPurchaseRequest object itself.
+     */
+    @Generated
+    public PhoneNumberPurchaseRequest setAgreeToNotResell(Boolean agreeToNotResell) {
+        this.agreeToNotResell = agreeToNotResell;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("searchId", this.searchId);
+        jsonWriter.writeBooleanField("agreeToNotResell", this.agreeToNotResell);
         return jsonWriter.writeEndObject();
     }
 
@@ -65,6 +102,7 @@ public final class PhoneNumberPurchaseRequest implements JsonSerializable<PhoneN
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the PhoneNumberPurchaseRequest.
      */
+    @Generated
     public static PhoneNumberPurchaseRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PhoneNumberPurchaseRequest deserializedPhoneNumberPurchaseRequest = new PhoneNumberPurchaseRequest();
@@ -74,6 +112,9 @@ public final class PhoneNumberPurchaseRequest implements JsonSerializable<PhoneN
 
                 if ("searchId".equals(fieldName)) {
                     deserializedPhoneNumberPurchaseRequest.searchId = reader.getString();
+                } else if ("agreeToNotResell".equals(fieldName)) {
+                    deserializedPhoneNumberPurchaseRequest.agreeToNotResell
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

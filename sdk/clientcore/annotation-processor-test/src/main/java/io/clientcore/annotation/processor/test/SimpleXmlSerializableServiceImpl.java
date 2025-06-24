@@ -8,19 +8,16 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.implementation.utils.UriEscapers;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.annotation.processor.test.implementation.SimpleXmlSerializableService;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
-import java.io.IOException;
-import io.clientcore.core.models.CoreException;
-import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.serialization.SerializationFormat;
-import io.clientcore.core.serialization.ObjectSerializer;
+import io.clientcore.core.utils.CoreUtils;
+import io.clientcore.core.utils.GeneratedCodeUtils;
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.List;
 
 /**
  * Initializes a new instance of the SimpleXmlSerializableServiceImpl type.
@@ -50,14 +47,13 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         return new SimpleXmlSerializableServiceImpl(httpPipeline);
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public void sendApplicationXml(SimpleXmlSerializable simpleXmlSerializable) {
-        String url = "http://localhost/sendApplicationXml";
-        // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri(url);
-        httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml");
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri("http://localhost/sendApplicationXml");
         if (simpleXmlSerializable != null) {
+            httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml");
             SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
             if (xmlSerializer.supportsFormat(serializationFormat)) {
                 httpRequest.setBody(BinaryData.fromObject(simpleXmlSerializable, xmlSerializer));
@@ -70,19 +66,20 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            networkResponse.close();
         }
         networkResponse.close();
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public void sendTextXml(SimpleXmlSerializable simpleXmlSerializable) {
-        String url = "http://localhost/sendTextXml";
-        // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri(url);
-        httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "text/xml");
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri("http://localhost/sendTextXml");
         if (simpleXmlSerializable != null) {
+            httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "text/xml");
             SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
             if (xmlSerializer.supportsFormat(serializationFormat)) {
                 httpRequest.setBody(BinaryData.fromObject(simpleXmlSerializable, xmlSerializer));
@@ -95,89 +92,64 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            networkResponse.close();
         }
         networkResponse.close();
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public SimpleXmlSerializable getXml(String contentType) {
-        String url = "http://localhost/getXml";
-        // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url);
-        httpRequest.getHeaders().add(HttpHeaderName.CONTENT_TYPE, contentType);
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/getXml");
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            networkResponse.close();
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.SimpleXmlSerializable.class);
+        SimpleXmlSerializable deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(SimpleXmlSerializable.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
         }
-        networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.SimpleXmlSerializable) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
-    public SimpleXmlSerializable getInvalidXml() {
-        String url = "http://localhost/getInvalidXml";
-        // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url);
+    public SimpleXmlSerializable getInvalidXml(String contentType) {
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/getInvalidXml");
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            networkResponse.close();
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.SimpleXmlSerializable.class);
+        SimpleXmlSerializable deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(SimpleXmlSerializable.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
         }
-        networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.SimpleXmlSerializable) result;
-    }
-
-    /**
-     * Decodes the body of an {@link Response} into the type returned by the called API.
-     * @param data The BinaryData to decode.
-     * @param serializer The serializer to use.
-     * @param returnType The type of the ParameterizedType return value.
-     * @return The decoded value.
-     * @throws CoreException If the deserialization fails.
-     */
-    private static Object decodeNetworkResponse(BinaryData data, ObjectSerializer serializer, ParameterizedType returnType) {
-        if (data == null) {
-            return null;
-        }
-        try {
-            if (List.class.isAssignableFrom((Class<?>) returnType.getRawType())) {
-                return serializer.deserializeFromBytes(data.toBytes(), returnType);
-            }
-            Type token = returnType.getRawType();
-            if (Response.class.isAssignableFrom((Class<?>) token)) {
-                token = returnType.getActualTypeArguments()[0];
-            }
-            return serializer.deserializeFromBytes(data.toBytes(), token);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
-        }
+        return deserializedResult;
     }
 }

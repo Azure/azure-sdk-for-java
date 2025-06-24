@@ -1,7 +1,6 @@
 parameters:
-  ArtifactDirectory: not-specified
-  OutputDirectory: not-specified
-  RepositoryUrl: not-specified
+  ArtifactDirectory: $(Pipeline.Workspace)/packages-signed
+  RepositoryUrl: https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1
   GroupID:
   ArtifactID:
   GPGExecutablePath: $(Pipeline.Workspace)/azure-sdk-build-tools/tools/gpg/bin/gpg.exe
@@ -9,38 +8,19 @@ parameters:
   ShouldPublish: true
 
 steps:
-  - ${{if eq(parameters.Target, 'JavaDevFeed')}}:
-    - task: PowerShell@2
-      displayName: 'Publish to Java Dev Feed'
-      inputs:
-        pwsh: true
-        workingDirectory: $(Agent.BuildDirectory)
-        filePath: ${{ parameters.JavaRepoRoot }}/eng/scripts/Publish-MavenPackages.ps1
-        arguments: >
-          -ArtifactDirectory ${{ parameters.ArtifactDirectory }}
-          -GroupIDFilter "${{ parameters.GroupID }}"
-          -ArtifactIDFilter "${{ parameters.ArtifactID }}"
-          -RepositoryUrl ${{ parameters.RepositoryUrl }}
-          -RepositoryUsername nobody
-          -RepositoryPassword $(System.AccessToken)
-          -GPGExecutablePath ${{ parameters.GPGExecutablePath }}
-          -ShouldPublish:$${{parameters.ShouldPublish}}
-          -InformationAction Continue
-
-  - ${{if eq(parameters.Target, 'AndroidDevFeed')}}:
-    - task: PowerShell@2
-      displayName: 'Publish to Andriod Public Dev Feed'
-      inputs:
-        pwsh: true
-        workingDirectory: $(Agent.BuildDirectory)
-        filePath: ${{ parameters.JavaRepoRoot }}/eng/scripts/Publish-MavenPackages.ps1
-        arguments: >
-          -ArtifactDirectory ${{ parameters.ArtifactDirectory }}
-          -GroupIDFilter "${{ parameters.GroupID }}"
-          -ArtifactIDFilter "${{ parameters.ArtifactID }}"
-          -RepositoryUrl https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-android/maven/v1
-          -RepositoryUsername nobody
-          -RepositoryPassword $(System.AccessToken)
-          -GPGExecutablePath ${{ parameters.GPGExecutablePath }}
-          -ShouldPublish:$${{parameters.ShouldPublish}}
-          -InformationAction Continue
+  - task: PowerShell@2
+    displayName: 'Publish to DevOps Feed ${{ parameters.RepositoryUrl }}'
+    inputs:
+      pwsh: true
+      workingDirectory: $(Agent.BuildDirectory)
+      filePath: ${{ parameters.JavaRepoRoot }}/eng/scripts/Publish-MavenPackages.ps1
+      arguments: >
+        -ArtifactDirectory ${{ parameters.ArtifactDirectory }}
+        -GroupIDFilter "${{ parameters.GroupID }}"
+        -ArtifactIDFilter "${{ parameters.ArtifactID }}"
+        -RepositoryUrl ${{ parameters.RepositoryUrl }}
+        -RepositoryUsername nobody
+        -RepositoryPassword $(System.AccessToken)
+        -GPGExecutablePath ${{ parameters.GPGExecutablePath }}
+        -ShouldPublish:$${{ parameters.ShouldPublish }}
+        -InformationAction Continue

@@ -13,7 +13,7 @@ import java.util.Collection;
 public final class PrivateEndpointServiceConnectionStatus
     extends ExpandableStringEnum<PrivateEndpointServiceConnectionStatus> {
     /**
-     * Connectionaiting for approval or rejection.
+     * Connection waiting for approval or rejection.
      */
     public static final PrivateEndpointServiceConnectionStatus PENDING = fromString("Pending");
 

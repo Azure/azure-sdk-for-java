@@ -15,16 +15,20 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.SyncPollerFactory;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.durabletask.fluent.DurableTaskManagementClient;
 import com.azure.resourcemanager.durabletask.fluent.OperationsClient;
+import com.azure.resourcemanager.durabletask.fluent.RetentionPoliciesClient;
 import com.azure.resourcemanager.durabletask.fluent.SchedulersClient;
 import com.azure.resourcemanager.durabletask.fluent.TaskHubsClient;
 import java.io.IOException;
@@ -168,6 +172,20 @@ public final class DurableTaskManagementClientImpl implements DurableTaskManagem
     }
 
     /**
+     * The RetentionPoliciesClient object to access its operations.
+     */
+    private final RetentionPoliciesClient retentionPolicies;
+
+    /**
+     * Gets the RetentionPoliciesClient object to access its operations.
+     * 
+     * @return the RetentionPoliciesClient object.
+     */
+    public RetentionPoliciesClient getRetentionPolicies() {
+        return this.retentionPolicies;
+    }
+
+    /**
      * Initializes an instance of DurableTaskManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -184,10 +202,11 @@ public final class DurableTaskManagementClientImpl implements DurableTaskManagem
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-10-01-preview";
+        this.apiVersion = "2025-04-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.schedulers = new SchedulersClientImpl(this);
         this.taskHubs = new TaskHubsClientImpl(this);
+        this.retentionPolicies = new RetentionPoliciesClientImpl(this);
     }
 
     /**
@@ -225,6 +244,23 @@ public final class DurableTaskManagementClientImpl implements DurableTaskManagem
         HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
         return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
             defaultPollInterval, activationResponse, context);
+    }
+
+    /**
+     * Gets long running operation result.
+     * 
+     * @param activationResponse the response of activation operation.
+     * @param pollResultType type of poll result.
+     * @param finalResultType type of final result.
+     * @param context the context shared by all requests.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return SyncPoller for poll result and final result.
+     */
+    public <T, U> SyncPoller<PollResult<T>, U> getLroResult(Response<BinaryData> activationResponse,
+        Type pollResultType, Type finalResultType, Context context) {
+        return SyncPollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, () -> activationResponse, context);
     }
 
     /**

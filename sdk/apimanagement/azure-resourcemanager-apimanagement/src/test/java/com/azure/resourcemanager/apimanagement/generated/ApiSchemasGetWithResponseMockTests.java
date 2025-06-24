@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.SchemaContract;
@@ -21,20 +21,20 @@ public final class ApiSchemasGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"contentType\":\"ngfwhrmvl\",\"document\":{\"value\":\"nujmwxnrzb\",\"definitions\":\"datanahhs\",\"components\":\"datandcbs\"}},\"id\":\"hl\",\"name\":\"dzjkkovohwvprjf\",\"type\":\"vtdu\"}";
+            = "{\"properties\":{\"contentType\":\"cetfvgwfwsl\",\"document\":{\"value\":\"gwouppvyddqsvc\",\"definitions\":\"datasnxfrppwwqc\",\"components\":\"datadmtfxxepzpxzxlc\"},\"provisioningState\":\"fxaitiq\"},\"id\":\"cj\",\"name\":\"smkir\",\"type\":\"qnipudmhkco\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SchemaContract response = manager.apiSchemas()
-            .getWithResponse("zetjizwh", "nbmajvvyxtvvx", "akzixb", "aybf", com.azure.core.util.Context.NONE)
+            .getWithResponse("ywlrkqsqvvdkfpfj", "ajdqxymxx", "fr", "j", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ngfwhrmvl", response.contentType());
-        Assertions.assertEquals("nujmwxnrzb", response.value());
+        Assertions.assertEquals("cetfvgwfwsl", response.contentType());
+        Assertions.assertEquals("gwouppvyddqsvc", response.value());
     }
 }

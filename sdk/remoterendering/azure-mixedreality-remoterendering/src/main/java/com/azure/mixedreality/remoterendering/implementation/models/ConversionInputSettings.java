@@ -5,6 +5,7 @@
 package com.azure.mixedreality.remoterendering.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,6 +22,7 @@ public final class ConversionInputSettings implements JsonSerializable<Conversio
     /*
      * The URI of the Azure blob storage container containing the input model.
      */
+    @Generated
     private final String storageContainerUri;
 
     /*
@@ -30,12 +32,14 @@ public final class ConversionInputSettings implements JsonSerializable<Conversio
      * https://docs.microsoft.com/azure/remote-rendering/how-tos/create-an-account#link-storage-accounts for details.
      * For security purposes this field will never be filled out in responses bodies.
      */
+    @Generated
     private String storageContainerReadListSas;
 
     /*
      * Only Blobs starting with this prefix will be downloaded to perform the conversion. Optional. If not provided, all
      * Blobs from the container will be downloaded.
      */
+    @Generated
     private String blobPrefix;
 
     /*
@@ -43,6 +47,7 @@ public final class ConversionInputSettings implements JsonSerializable<Conversio
      * model. Must point to a file with a supported file format ending. See
      * https://docs.microsoft.com/azure/remote-rendering/how-tos/conversion/model-conversion for details.
      */
+    @Generated
     private final String relativeInputAssetPath;
 
     /**
@@ -51,6 +56,7 @@ public final class ConversionInputSettings implements JsonSerializable<Conversio
      * @param storageContainerUri the storageContainerUri value to set.
      * @param relativeInputAssetPath the relativeInputAssetPath value to set.
      */
+    @Generated
     public ConversionInputSettings(String storageContainerUri, String relativeInputAssetPath) {
         this.storageContainerUri = storageContainerUri;
         this.relativeInputAssetPath = relativeInputAssetPath;
@@ -61,6 +67,7 @@ public final class ConversionInputSettings implements JsonSerializable<Conversio
      * 
      * @return the storageContainerUri value.
      */
+    @Generated
     public String getStorageContainerUri() {
         return this.storageContainerUri;
     }
@@ -74,6 +81,7 @@ public final class ConversionInputSettings implements JsonSerializable<Conversio
      * 
      * @return the storageContainerReadListSas value.
      */
+    @Generated
     public String getStorageContainerReadListSas() {
         return this.storageContainerReadListSas;
     }
@@ -88,6 +96,7 @@ public final class ConversionInputSettings implements JsonSerializable<Conversio
      * @param storageContainerReadListSas the storageContainerReadListSas value to set.
      * @return the ConversionInputSettings object itself.
      */
+    @Generated
     public ConversionInputSettings setStorageContainerReadListSas(String storageContainerReadListSas) {
         this.storageContainerReadListSas = storageContainerReadListSas;
         return this;
@@ -99,6 +108,7 @@ public final class ConversionInputSettings implements JsonSerializable<Conversio
      * 
      * @return the blobPrefix value.
      */
+    @Generated
     public String getBlobPrefix() {
         return this.blobPrefix;
     }
@@ -110,6 +120,7 @@ public final class ConversionInputSettings implements JsonSerializable<Conversio
      * @param blobPrefix the blobPrefix value to set.
      * @return the ConversionInputSettings object itself.
      */
+    @Generated
     public ConversionInputSettings setBlobPrefix(String blobPrefix) {
         this.blobPrefix = blobPrefix;
         return this;
@@ -122,6 +133,7 @@ public final class ConversionInputSettings implements JsonSerializable<Conversio
      * 
      * @return the relativeInputAssetPath value.
      */
+    @Generated
     public String getRelativeInputAssetPath() {
         return this.relativeInputAssetPath;
     }
@@ -129,6 +141,7 @@ public final class ConversionInputSettings implements JsonSerializable<Conversio
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -148,6 +161,7 @@ public final class ConversionInputSettings implements JsonSerializable<Conversio
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ConversionInputSettings.
      */
+    @Generated
     public static ConversionInputSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean storageContainerUriFound = false;

@@ -12,10 +12,12 @@ jobs:
       maxParallel: ${{ parameters.MaxParallel }}
       matrix: $[ ${{ parameters.Matrix }} ]
     variables:
-      - template: ../../../eng/pipelines/templates/variables/globals.yml
+      - template: /eng/pipelines/templates/variables/globals.yml
+      - template: /eng/pipelines/templates/variables/image.yml
     pool:
-      name: azsdk-pool-mms-ubuntu-2204-general
-      vmImage: ubuntu-22.04
+      name: $(LINUXPOOL)
+      image: $(LINUXVMIMAGE)
+      os: linux
     steps:
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:

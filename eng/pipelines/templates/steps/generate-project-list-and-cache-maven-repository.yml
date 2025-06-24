@@ -51,7 +51,7 @@ steps:
     ARTIFACTSJSON: $(ArtifactsJson)
     ADDITIONALMODULESJSON: $(AdditionalModulesJson)
     PACKAGEINFODIR: $(Build.ArtifactStagingDirectory)/PackageInfo
-  condition: eq(variables['ArtifactPackageNames'], '')
+  condition: and(succeeded(), eq(variables['ArtifactPackageNames'], ''))
 
 - task: PowerShell@2
   displayName: Initialize project list variable for PR test run
@@ -63,7 +63,7 @@ steps:
     ADDITIONALMODULESJSON: $(AdditionalModulesJson)
     PACKAGEINFODIR: $(Build.ArtifactStagingDirectory)/PackageInfo
     ARTIFACTPACKAGENAMES: $(ArtifactPackageNames)
-  condition: ne(variables['ArtifactPackageNames'], '')
+  condition: and(succeeded(), ne(variables['ArtifactPackageNames'], ''))
 
 # The Cache task, when restoring, can have a miss and still pass but, if nothing is built, the
 # Post-Job Cache will fail because there's no .m2/repository

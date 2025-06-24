@@ -23,7 +23,8 @@ public final class SchemaContractProperties implements JsonSerializable<SchemaCo
      * `application/vnd.ms-azure-apim.swagger.definitions+json` </br> - `WSDL` Schema use
      * `application/vnd.ms-azure-apim.xsd+xml` </br> - `OpenApi` Schema use
      * `application/vnd.oai.openapi.components+json` </br> - `WADL Schema` use
-     * `application/vnd.ms-azure-apim.wadl.grammars+xml`.
+     * `application/vnd.ms-azure-apim.wadl.grammars+xml` </br> - `OData Schema` use
+     * `application/vnd.ms-azure-apim.odata.schema` </br> - `gRPC Schema` use `text/protobuf`.
      */
     private String contentType;
 
@@ -31,6 +32,11 @@ public final class SchemaContractProperties implements JsonSerializable<SchemaCo
      * Create or update Properties of the API Schema Document.
      */
     private SchemaDocumentProperties innerDocument = new SchemaDocumentProperties();
+
+    /*
+     * The provisioning state
+     */
+    private String provisioningState;
 
     /**
      * Creates an instance of SchemaContractProperties class.
@@ -44,7 +50,8 @@ public final class SchemaContractProperties implements JsonSerializable<SchemaCo
      * use `application/vnd.ms-azure-apim.swagger.definitions+json` &lt;/br&gt; - `WSDL` Schema use
      * `application/vnd.ms-azure-apim.xsd+xml` &lt;/br&gt; - `OpenApi` Schema use
      * `application/vnd.oai.openapi.components+json` &lt;/br&gt; - `WADL Schema` use
-     * `application/vnd.ms-azure-apim.wadl.grammars+xml`.
+     * `application/vnd.ms-azure-apim.wadl.grammars+xml` &lt;/br&gt; - `OData Schema` use
+     * `application/vnd.ms-azure-apim.odata.schema` &lt;/br&gt; - `gRPC Schema` use `text/protobuf`.
      * 
      * @return the contentType value.
      */
@@ -58,7 +65,8 @@ public final class SchemaContractProperties implements JsonSerializable<SchemaCo
      * use `application/vnd.ms-azure-apim.swagger.definitions+json` &lt;/br&gt; - `WSDL` Schema use
      * `application/vnd.ms-azure-apim.xsd+xml` &lt;/br&gt; - `OpenApi` Schema use
      * `application/vnd.oai.openapi.components+json` &lt;/br&gt; - `WADL Schema` use
-     * `application/vnd.ms-azure-apim.wadl.grammars+xml`.
+     * `application/vnd.ms-azure-apim.wadl.grammars+xml` &lt;/br&gt; - `OData Schema` use
+     * `application/vnd.ms-azure-apim.odata.schema` &lt;/br&gt; - `gRPC Schema` use `text/protobuf`.
      * 
      * @param contentType the contentType value to set.
      * @return the SchemaContractProperties object itself.
@@ -75,6 +83,15 @@ public final class SchemaContractProperties implements JsonSerializable<SchemaCo
      */
     private SchemaDocumentProperties innerDocument() {
         return this.innerDocument;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.provisioningState;
     }
 
     /**
@@ -201,6 +218,8 @@ public final class SchemaContractProperties implements JsonSerializable<SchemaCo
                     deserializedSchemaContractProperties.contentType = reader.getString();
                 } else if ("document".equals(fieldName)) {
                     deserializedSchemaContractProperties.innerDocument = SchemaDocumentProperties.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSchemaContractProperties.provisioningState = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

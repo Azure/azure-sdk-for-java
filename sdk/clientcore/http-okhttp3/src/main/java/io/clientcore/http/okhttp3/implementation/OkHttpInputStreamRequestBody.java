@@ -35,7 +35,8 @@ public class OkHttpInputStreamRequestBody extends OkHttpStreamableRequestBody<In
             bufferedSink.writeAll(source);
         } else {
             // Prevent OkHttp from potentially re-sending non-repeatable body outside of retry policies.
-            throw LOGGER.logThrowableAsError(new IOException("Re-attempt to send InputStream body is not supported."));
+            throw LOGGER.throwableAtError()
+                .log("Re-attempt to send InputStream body is not supported.", IOException::new);
         }
     }
 }

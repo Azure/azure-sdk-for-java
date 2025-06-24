@@ -7,8 +7,8 @@ package com.azure.resourcemanager.redisenterprise.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager;
 import com.azure.resourcemanager.redisenterprise.models.PrivateEndpointConnection;
@@ -23,23 +23,22 @@ public final class PrivateEndpointConnectionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"napnyiropuhpigv\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"gqgitxmedjvcsl\",\"actionsRequired\":\"qwwncw\"},\"provisioningState\":\"Succeeded\"},\"id\":\"xgk\",\"name\":\"rmgucnap\",\"type\":\"t\"}]}";
+            = "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"mvb\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"sflhhca\",\"actionsRequired\":\"n\"},\"provisioningState\":\"Failed\"},\"id\":\"isxyawjoyaqcslyj\",\"name\":\"kiidzyex\",\"type\":\"nelixhnrztfo\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         RedisEnterpriseManager manager = RedisEnterpriseManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PrivateEndpointConnection> response
-            = manager.privateEndpointConnections().list("hb", "xknalaulppg", com.azure.core.util.Context.NONE);
+            = manager.privateEndpointConnections().list("uusdttouwa", "oekqvk", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             response.iterator().next().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("gqgitxmedjvcsl",
+        Assertions.assertEquals("sflhhca",
             response.iterator().next().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("qwwncw",
-            response.iterator().next().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("n", response.iterator().next().privateLinkServiceConnectionState().actionsRequired());
     }
 }

@@ -12,33 +12,36 @@ public final class InMageRcmNicInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageRcmNicInput model = BinaryData.fromString(
-            "{\"nicId\":\"urz\",\"isPrimaryNic\":\"vktjhffecqkoq\",\"isSelectedForFailover\":\"uergaghpuzxkpye\",\"targetSubnetName\":\"fdyldhgyed\",\"targetStaticIPAddress\":\"zqiyuqhtder\",\"testSubnetName\":\"n\",\"testStaticIPAddress\":\"a\"}")
+            "{\"nicId\":\"sevchefpg\",\"isPrimaryNic\":\"edyybruholaemwcg\",\"isSelectedForFailover\":\"mrimaabsqql\",\"targetSubnetName\":\"b\",\"targetStaticIPAddress\":\"ow\",\"testSubnetName\":\"hdkmbjsmihrijezb\",\"testStaticIPAddress\":\"jwfcz\",\"targetNicName\":\"kvb\"}")
             .toObject(InMageRcmNicInput.class);
-        Assertions.assertEquals("urz", model.nicId());
-        Assertions.assertEquals("vktjhffecqkoq", model.isPrimaryNic());
-        Assertions.assertEquals("uergaghpuzxkpye", model.isSelectedForFailover());
-        Assertions.assertEquals("fdyldhgyed", model.targetSubnetName());
-        Assertions.assertEquals("zqiyuqhtder", model.targetStaticIpAddress());
-        Assertions.assertEquals("n", model.testSubnetName());
-        Assertions.assertEquals("a", model.testStaticIpAddress());
+        Assertions.assertEquals("sevchefpg", model.nicId());
+        Assertions.assertEquals("edyybruholaemwcg", model.isPrimaryNic());
+        Assertions.assertEquals("mrimaabsqql", model.isSelectedForFailover());
+        Assertions.assertEquals("b", model.targetSubnetName());
+        Assertions.assertEquals("ow", model.targetStaticIpAddress());
+        Assertions.assertEquals("hdkmbjsmihrijezb", model.testSubnetName());
+        Assertions.assertEquals("jwfcz", model.testStaticIpAddress());
+        Assertions.assertEquals("kvb", model.targetNicName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageRcmNicInput model = new InMageRcmNicInput().withNicId("urz")
-            .withIsPrimaryNic("vktjhffecqkoq")
-            .withIsSelectedForFailover("uergaghpuzxkpye")
-            .withTargetSubnetName("fdyldhgyed")
-            .withTargetStaticIpAddress("zqiyuqhtder")
-            .withTestSubnetName("n")
-            .withTestStaticIpAddress("a");
+        InMageRcmNicInput model = new InMageRcmNicInput().withNicId("sevchefpg")
+            .withIsPrimaryNic("edyybruholaemwcg")
+            .withIsSelectedForFailover("mrimaabsqql")
+            .withTargetSubnetName("b")
+            .withTargetStaticIpAddress("ow")
+            .withTestSubnetName("hdkmbjsmihrijezb")
+            .withTestStaticIpAddress("jwfcz")
+            .withTargetNicName("kvb");
         model = BinaryData.fromObject(model).toObject(InMageRcmNicInput.class);
-        Assertions.assertEquals("urz", model.nicId());
-        Assertions.assertEquals("vktjhffecqkoq", model.isPrimaryNic());
-        Assertions.assertEquals("uergaghpuzxkpye", model.isSelectedForFailover());
-        Assertions.assertEquals("fdyldhgyed", model.targetSubnetName());
-        Assertions.assertEquals("zqiyuqhtder", model.targetStaticIpAddress());
-        Assertions.assertEquals("n", model.testSubnetName());
-        Assertions.assertEquals("a", model.testStaticIpAddress());
+        Assertions.assertEquals("sevchefpg", model.nicId());
+        Assertions.assertEquals("edyybruholaemwcg", model.isPrimaryNic());
+        Assertions.assertEquals("mrimaabsqql", model.isSelectedForFailover());
+        Assertions.assertEquals("b", model.targetSubnetName());
+        Assertions.assertEquals("ow", model.targetStaticIpAddress());
+        Assertions.assertEquals("hdkmbjsmihrijezb", model.testSubnetName());
+        Assertions.assertEquals("jwfcz", model.testStaticIpAddress());
+        Assertions.assertEquals("kvb", model.targetNicName());
     }
 }

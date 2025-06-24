@@ -12,15 +12,15 @@ public final class GlobalSchemaCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GlobalSchemaCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"schemaType\":\"json\",\"description\":\"hxsdplaumydmhwe\",\"value\":\"datafyxydgtokv\",\"document\":\"datavwglgwzpv\"},\"id\":\"akglhpsesrfga\",\"name\":\"qiy\",\"type\":\"vxcgdhyhgoqgs\"},{\"properties\":{\"schemaType\":\"xml\",\"description\":\"xyjrcbqpb\",\"value\":\"datapglqjo\",\"document\":\"datadahneaoovty\"},\"id\":\"ztivfwjl\",\"name\":\"fzekfsrm\",\"type\":\"uklajvcfoc\"},{\"properties\":{\"schemaType\":\"json\",\"description\":\"ejov\",\"value\":\"datawxn\",\"document\":\"datahhnoyrzaaoee\"},\"id\":\"pmjen\",\"name\":\"jeatea\",\"type\":\"xc\"}],\"count\":3516913214378637568,\"nextLink\":\"jxldnaryy\"}")
+            "{\"value\":[{\"properties\":{\"schemaType\":\"xml\",\"description\":\"mvynuqqko\",\"value\":\"datauratnicp\",\"document\":\"datazsclefyrletn\",\"provisioningState\":\"lmfdg\"},\"id\":\"n\",\"name\":\"buypwovvv\",\"type\":\"fleev\"}],\"count\":3517733454074003441,\"nextLink\":\"rehjuqwvapx\"}")
             .toObject(GlobalSchemaCollection.class);
-        Assertions.assertEquals(3516913214378637568L, model.count());
+        Assertions.assertEquals(3517733454074003441L, model.count());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GlobalSchemaCollection model = new GlobalSchemaCollection().withCount(3516913214378637568L);
+        GlobalSchemaCollection model = new GlobalSchemaCollection().withCount(3517733454074003441L);
         model = BinaryData.fromObject(model).toObject(GlobalSchemaCollection.class);
-        Assertions.assertEquals(3516913214378637568L, model.count());
+        Assertions.assertEquals(3517733454074003441L, model.count());
     }
 }

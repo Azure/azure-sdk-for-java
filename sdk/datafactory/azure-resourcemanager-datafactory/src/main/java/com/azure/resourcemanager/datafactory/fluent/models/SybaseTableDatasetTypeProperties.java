@@ -61,7 +61,9 @@ public final class SybaseTableDatasetTypeProperties implements JsonSerializable<
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("tableName", this.tableName);
+        if (this.tableName != null) {
+            jsonWriter.writeUntypedField("tableName", this.tableName);
+        }
         return jsonWriter.writeEndObject();
     }
 

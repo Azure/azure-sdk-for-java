@@ -10,7 +10,7 @@ import com.azure.cosmos.models.{CosmosClientTelemetryConfig, CosmosMetricCategor
 import com.azure.cosmos.spark.CosmosPredicates.isOnSparkDriver
 import com.azure.cosmos.spark.catalog.{CosmosCatalogClient, CosmosCatalogCosmosSDKClient, CosmosCatalogManagementSDKClient}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, CosmosContainerProactiveInitConfigBuilder, DirectConnectionConfig, GatewayConnectionConfig, ThrottlingRetryOptions}
+import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, CosmosContainerProactiveInitConfigBuilder, DirectConnectionConfig, GatewayConnectionConfig, ReadConsistencyStrategy, ThrottlingRetryOptions}
 import com.azure.identity.{ClientCertificateCredentialBuilder, ClientSecretCredentialBuilder, ManagedIdentityCredentialBuilder}
 import com.azure.resourcemanager.cosmos.CosmosManager
 import org.apache.spark.scheduler.{SparkListener, SparkListenerApplicationEnd}
@@ -305,8 +305,12 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           builder.endpointDiscoveryEnabled(false)
       }
 
-      if (cosmosClientConfiguration.useEventualConsistency) {
+      if (cosmosClientConfiguration.readConsistencyStrategy != ReadConsistencyStrategy.DEFAULT) {
+        if (cosmosClientConfiguration.readConsistencyStrategy == ReadConsistencyStrategy.EVENTUAL) {
           builder = builder.consistencyLevel(ConsistencyLevel.EVENTUAL)
+        } else {
+          builder = builder.readConsistencyStrategy(cosmosClientConfiguration.readConsistencyStrategy)
+        }
       }
 
       if (cosmosClientConfiguration.useGatewayMode) {
@@ -500,7 +504,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
             if (clientMetadata.lastModified.get() < Instant.now.toEpochMilli - (cleanupIntervalInSeconds * 1000)) {
               logDebug(s"Removing client due to inactivity from the cache - ${clientConfig.endpoint}, " +
                 s"${clientConfig.applicationName}, ${clientConfig.preferredRegionsList}, ${clientConfig.useGatewayMode}, " +
-                s"${clientConfig.useEventualConsistency}, ${clientConfig.httpConnectionPoolSize}")
+                s"${clientConfig.readConsistencyStrategy}, ${clientConfig.httpConnectionPoolSize}")
               purgeImpl(clientConfig, forceClosure = false)
             } else {
               logDebug("Client has not been retrieved from the cache recently and no spark task has been using " +
@@ -592,7 +596,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                                                         // You would never want separate clients just for this
                                                         // difference
                                                         httpConnectionPoolSize: Int,
-                                                        useEventualConsistency: Boolean,
+                                                        readConsistencyStrategy: ReadConsistencyStrategy,
                                                         preferredRegionsList: String,
                                                         clientBuilderInterceptors: Option[List[CosmosClientBuilder => CosmosClientBuilder]],
                                                         clientInterceptors: Option[List[CosmosAsyncClient => CosmosAsyncClient]])
@@ -605,7 +609,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         clientConfig.applicationName,
         clientConfig.useGatewayMode,
         clientConfig.httpConnectionPoolSize,
-        clientConfig.useEventualConsistency,
+        clientConfig.readConsistencyStrategy,
         clientConfig.preferredRegionsList match {
           case Some(regionListArray) => s"[${regionListArray.mkString(", ")}]"
           case None => ""

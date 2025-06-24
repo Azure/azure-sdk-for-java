@@ -12,30 +12,33 @@ public final class OSDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OSDetails model = BinaryData.fromString(
-            "{\"osType\":\"dqigmg\",\"productType\":\"inztxl\",\"osEdition\":\"khnjcmrnkfm\",\"oSVersion\":\"cqtwmlmhjnqtq\",\"oSMajorVersion\":\"hj\",\"oSMinorVersion\":\"vragpokddx\"}")
+            "{\"osType\":\"sqlv\",\"productType\":\"cpwgoljtzxnmxsd\",\"osEdition\":\"ygoogxqapjxva\",\"oSVersion\":\"jfucsaodjnosdkv\",\"oSMajorVersion\":\"fasgm\",\"oSMinorVersion\":\"rnzpducdaak\",\"userSelectedOSName\":\"jktzboimyfpq\"}")
             .toObject(OSDetails.class);
-        Assertions.assertEquals("dqigmg", model.osType());
-        Assertions.assertEquals("inztxl", model.productType());
-        Assertions.assertEquals("khnjcmrnkfm", model.osEdition());
-        Assertions.assertEquals("cqtwmlmhjnqtq", model.oSVersion());
-        Assertions.assertEquals("hj", model.oSMajorVersion());
-        Assertions.assertEquals("vragpokddx", model.oSMinorVersion());
+        Assertions.assertEquals("sqlv", model.osType());
+        Assertions.assertEquals("cpwgoljtzxnmxsd", model.productType());
+        Assertions.assertEquals("ygoogxqapjxva", model.osEdition());
+        Assertions.assertEquals("jfucsaodjnosdkv", model.oSVersion());
+        Assertions.assertEquals("fasgm", model.oSMajorVersion());
+        Assertions.assertEquals("rnzpducdaak", model.oSMinorVersion());
+        Assertions.assertEquals("jktzboimyfpq", model.userSelectedOSName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OSDetails model = new OSDetails().withOsType("dqigmg")
-            .withProductType("inztxl")
-            .withOsEdition("khnjcmrnkfm")
-            .withOSVersion("cqtwmlmhjnqtq")
-            .withOSMajorVersion("hj")
-            .withOSMinorVersion("vragpokddx");
+        OSDetails model = new OSDetails().withOsType("sqlv")
+            .withProductType("cpwgoljtzxnmxsd")
+            .withOsEdition("ygoogxqapjxva")
+            .withOSVersion("jfucsaodjnosdkv")
+            .withOSMajorVersion("fasgm")
+            .withOSMinorVersion("rnzpducdaak")
+            .withUserSelectedOSName("jktzboimyfpq");
         model = BinaryData.fromObject(model).toObject(OSDetails.class);
-        Assertions.assertEquals("dqigmg", model.osType());
-        Assertions.assertEquals("inztxl", model.productType());
-        Assertions.assertEquals("khnjcmrnkfm", model.osEdition());
-        Assertions.assertEquals("cqtwmlmhjnqtq", model.oSVersion());
-        Assertions.assertEquals("hj", model.oSMajorVersion());
-        Assertions.assertEquals("vragpokddx", model.oSMinorVersion());
+        Assertions.assertEquals("sqlv", model.osType());
+        Assertions.assertEquals("cpwgoljtzxnmxsd", model.productType());
+        Assertions.assertEquals("ygoogxqapjxva", model.osEdition());
+        Assertions.assertEquals("jfucsaodjnosdkv", model.oSVersion());
+        Assertions.assertEquals("fasgm", model.oSMajorVersion());
+        Assertions.assertEquals("rnzpducdaak", model.oSMinorVersion());
+        Assertions.assertEquals("jktzboimyfpq", model.userSelectedOSName());
     }
 }

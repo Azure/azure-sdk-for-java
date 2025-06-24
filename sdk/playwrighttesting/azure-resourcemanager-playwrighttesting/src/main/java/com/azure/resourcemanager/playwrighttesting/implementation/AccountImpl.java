@@ -180,6 +180,6 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

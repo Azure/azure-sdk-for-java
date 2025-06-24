@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.core.management.AzureEnvironment
-import com.azure.cosmos.CosmosAsyncClient
+import com.azure.cosmos.{CosmosAsyncClient, ReadConsistencyStrategy}
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, TestConfigurations}
 import com.azure.cosmos.spark.catalog.CosmosCatalogCosmosSDKClient
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
@@ -25,7 +25,7 @@ class CosmosClientCacheITest
     "spark.cosmos.database" -> cosmosDatabase,
     "spark.cosmos.container" -> cosmosContainer
   )
-  private val clientConfig = CosmosClientConfiguration(userConfigTemplate, useEventualConsistency = true, sparkEnvironmentInfo = "")
+  private val clientConfig = CosmosClientConfiguration(userConfigTemplate, readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL, sparkEnvironmentInfo = "")
 
   "CosmosClientCache" should "get cached object with same config" in {
 
@@ -37,7 +37,7 @@ class CosmosClientCacheITest
           "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
           "spark.cosmos.accountKey" -> cosmosMasterKey
         ),
-        useEventualConsistency = true,
+          readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL,
         sparkEnvironmentInfo = "")
       ),
       (
@@ -53,7 +53,7 @@ class CosmosClientCacheITest
           proactiveConnectionInitialization = None,
           proactiveConnectionInitializationDurationInSeconds = 120,
           httpConnectionPoolSize = 1000,
-          useEventualConsistency = true,
+          readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL,
           enableClientTelemetry = false,
           disableTcpConnectionEndpointRediscovery = false,
           clientTelemetryEndpoint = None,
@@ -79,7 +79,7 @@ class CosmosClientCacheITest
           proactiveConnectionInitialization = None,
           proactiveConnectionInitializationDurationInSeconds = 120,
           httpConnectionPoolSize = 1000,
-          useEventualConsistency = true,
+          readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL,
           enableClientTelemetry = false,
           disableTcpConnectionEndpointRediscovery = false,
           clientTelemetryEndpoint = None,
@@ -105,7 +105,7 @@ class CosmosClientCacheITest
           proactiveConnectionInitialization = None,
           proactiveConnectionInitializationDurationInSeconds = 120,
           httpConnectionPoolSize = 1000,
-          useEventualConsistency = true,
+          readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL,
           enableClientTelemetry = false,
           disableTcpConnectionEndpointRediscovery = false,
           clientTelemetryEndpoint = None,
@@ -131,7 +131,7 @@ class CosmosClientCacheITest
           proactiveConnectionInitialization = None,
           proactiveConnectionInitializationDurationInSeconds = 120,
           httpConnectionPoolSize = 1000,
-          useEventualConsistency = true,
+          readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL,
           enableClientTelemetry = false,
           disableTcpConnectionEndpointRediscovery = false,
           clientTelemetryEndpoint = None,
@@ -161,7 +161,7 @@ class CosmosClientCacheITest
         userConfig.proactiveConnectionInitialization,
         userConfig.proactiveConnectionInitializationDurationInSeconds,
         userConfig.httpConnectionPoolSize,
-        userConfig.useEventualConsistency,
+        userConfig.readConsistencyStrategy,
         enableClientTelemetry = false,
         disableTcpConnectionEndpointRediscovery = false,
         clientTelemetryEndpoint = None,
@@ -208,8 +208,9 @@ class CosmosClientCacheITest
   it should "return a new instance after purging" in {
     val userConfig = CosmosClientConfiguration(Map(
       "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
-      "spark.cosmos.accountKey" -> cosmosMasterKey
-    ), useEventualConsistency = true, sparkEnvironmentInfo = "")
+      "spark.cosmos.accountKey" -> cosmosMasterKey),
+      readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL,
+      sparkEnvironmentInfo = "")
 
     Loan(
      List[Option[CosmosClientCacheItem]](
@@ -233,7 +234,7 @@ class CosmosClientCacheITest
     val userConfig = CosmosClientConfiguration(Map(
       "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
       "spark.cosmos.accountKey" -> cosmosMasterKey
-    ), useEventualConsistency = true, sparkEnvironmentInfo = "")
+    ), readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL, sparkEnvironmentInfo = "")
 
     val cosmosClientCacheSnapshot = mock(classOf[CosmosClientMetadataCachesSnapshot])
     Loan(

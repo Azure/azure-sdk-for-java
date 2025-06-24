@@ -32,7 +32,9 @@ import com.azure.resourcemanager.netapp.implementation.BackupsImpl;
 import com.azure.resourcemanager.netapp.implementation.BackupsUnderAccountsImpl;
 import com.azure.resourcemanager.netapp.implementation.BackupsUnderBackupVaultsImpl;
 import com.azure.resourcemanager.netapp.implementation.BackupsUnderVolumesImpl;
+import com.azure.resourcemanager.netapp.implementation.BucketsImpl;
 import com.azure.resourcemanager.netapp.implementation.NetAppManagementClientBuilder;
+import com.azure.resourcemanager.netapp.implementation.NetAppResourceQuotaLimitsAccountsImpl;
 import com.azure.resourcemanager.netapp.implementation.NetAppResourceQuotaLimitsImpl;
 import com.azure.resourcemanager.netapp.implementation.NetAppResourceRegionInfosImpl;
 import com.azure.resourcemanager.netapp.implementation.NetAppResourceUsagesImpl;
@@ -52,7 +54,9 @@ import com.azure.resourcemanager.netapp.models.Backups;
 import com.azure.resourcemanager.netapp.models.BackupsUnderAccounts;
 import com.azure.resourcemanager.netapp.models.BackupsUnderBackupVaults;
 import com.azure.resourcemanager.netapp.models.BackupsUnderVolumes;
+import com.azure.resourcemanager.netapp.models.Buckets;
 import com.azure.resourcemanager.netapp.models.NetAppResourceQuotaLimits;
+import com.azure.resourcemanager.netapp.models.NetAppResourceQuotaLimitsAccounts;
 import com.azure.resourcemanager.netapp.models.NetAppResourceRegionInfos;
 import com.azure.resourcemanager.netapp.models.NetAppResourceUsages;
 import com.azure.resourcemanager.netapp.models.NetAppResources;
@@ -107,6 +111,8 @@ public final class NetAppFilesManager {
 
     private Backups backups;
 
+    private NetAppResourceQuotaLimitsAccounts netAppResourceQuotaLimitsAccounts;
+
     private BackupVaults backupVaults;
 
     private BackupsUnderBackupVaults backupsUnderBackupVaults;
@@ -114,6 +120,8 @@ public final class NetAppFilesManager {
     private BackupsUnderVolumes backupsUnderVolumes;
 
     private BackupsUnderAccounts backupsUnderAccounts;
+
+    private Buckets buckets;
 
     private final NetAppManagementClient clientObject;
 
@@ -513,6 +521,19 @@ public final class NetAppFilesManager {
     }
 
     /**
+     * Gets the resource collection API of NetAppResourceQuotaLimitsAccounts.
+     * 
+     * @return Resource collection API of NetAppResourceQuotaLimitsAccounts.
+     */
+    public NetAppResourceQuotaLimitsAccounts netAppResourceQuotaLimitsAccounts() {
+        if (this.netAppResourceQuotaLimitsAccounts == null) {
+            this.netAppResourceQuotaLimitsAccounts
+                = new NetAppResourceQuotaLimitsAccountsImpl(clientObject.getNetAppResourceQuotaLimitsAccounts(), this);
+        }
+        return netAppResourceQuotaLimitsAccounts;
+    }
+
+    /**
      * Gets the resource collection API of BackupVaults. It manages BackupVault.
      * 
      * @return Resource collection API of BackupVaults.
@@ -559,6 +580,18 @@ public final class NetAppFilesManager {
             this.backupsUnderAccounts = new BackupsUnderAccountsImpl(clientObject.getBackupsUnderAccounts(), this);
         }
         return backupsUnderAccounts;
+    }
+
+    /**
+     * Gets the resource collection API of Buckets. It manages Bucket.
+     * 
+     * @return Resource collection API of Buckets.
+     */
+    public Buckets buckets() {
+        if (this.buckets == null) {
+            this.buckets = new BucketsImpl(clientObject.getBuckets(), this);
+        }
+        return buckets;
     }
 
     /**

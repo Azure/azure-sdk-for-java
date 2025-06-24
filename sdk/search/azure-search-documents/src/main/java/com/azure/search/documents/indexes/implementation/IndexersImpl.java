@@ -29,6 +29,7 @@ import com.azure.search.documents.indexes.implementation.models.DocumentKeysOrId
 import com.azure.search.documents.indexes.implementation.models.ErrorResponseException;
 import com.azure.search.documents.indexes.implementation.models.ListIndexersResult;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
+import com.azure.search.documents.indexes.models.IndexerResyncBody;
 import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 import java.util.UUID;
@@ -63,7 +64,7 @@ public final class IndexersImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "SearchServiceClientI")
+    @ServiceInterface(name = "SearchServiceClientIndexers")
     public interface IndexersService {
         @Post("/indexers('{indexerName}')/search.reset")
         @ExpectedResponses({ 204 })
@@ -96,6 +97,23 @@ public final class IndexersImpl {
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") DocumentKeysOrIds keysOrIds, Context context);
+
+        @Post("/indexers('{indexerName}')/search.resync")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> resync(@HostParam("endpoint") String endpoint,
+            @PathParam("indexerName") String indexerName,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") IndexerResyncBody indexerResync, Context context);
+
+        @Post("/indexers('{indexerName}')/search.resync")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<Void> resyncSync(@HostParam("endpoint") String endpoint, @PathParam("indexerName") String indexerName,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") IndexerResyncBody indexerResync, Context context);
 
         @Post("/indexers('{indexerName}')/search.run")
         @ExpectedResponses({ 202 })
@@ -455,6 +473,124 @@ public final class IndexersImpl {
     public void resetDocs(String indexerName, Boolean overwrite, DocumentKeysOrIds keysOrIds,
         RequestOptions requestOptions) {
         resetDocsWithResponse(indexerName, overwrite, keysOrIds, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Resync selective options from the datasource to be re-ingested by the indexer.
+     * 
+     * @param indexerName The name of the indexer to resync for.
+     * @param indexerResync The indexerResync parameter.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> resyncWithResponseAsync(String indexerName, IndexerResyncBody indexerResync,
+        RequestOptions requestOptions) {
+        return FluxUtil
+            .withContext(context -> resyncWithResponseAsync(indexerName, indexerResync, requestOptions, context));
+    }
+
+    /**
+     * Resync selective options from the datasource to be re-ingested by the indexer.
+     * 
+     * @param indexerName The name of the indexer to resync for.
+     * @param indexerResync The indexerResync parameter.
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> resyncWithResponseAsync(String indexerName, IndexerResyncBody indexerResync,
+        RequestOptions requestOptions, Context context) {
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return service.resync(this.client.getEndpoint(), indexerName, xMsClientRequestId, this.client.getApiVersion(),
+            accept, indexerResync, context);
+    }
+
+    /**
+     * Resync selective options from the datasource to be re-ingested by the indexer.
+     * 
+     * @param indexerName The name of the indexer to resync for.
+     * @param indexerResync The indexerResync parameter.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> resyncAsync(String indexerName, IndexerResyncBody indexerResync, RequestOptions requestOptions) {
+        return resyncWithResponseAsync(indexerName, indexerResync, requestOptions).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Resync selective options from the datasource to be re-ingested by the indexer.
+     * 
+     * @param indexerName The name of the indexer to resync for.
+     * @param indexerResync The indexerResync parameter.
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> resyncAsync(String indexerName, IndexerResyncBody indexerResync, RequestOptions requestOptions,
+        Context context) {
+        return resyncWithResponseAsync(indexerName, indexerResync, requestOptions, context)
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Resync selective options from the datasource to be re-ingested by the indexer.
+     * 
+     * @param indexerName The name of the indexer to resync for.
+     * @param indexerResync The indexerResync parameter.
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> resyncWithResponse(String indexerName, IndexerResyncBody indexerResync,
+        RequestOptions requestOptions, Context context) {
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return service.resyncSync(this.client.getEndpoint(), indexerName, xMsClientRequestId,
+            this.client.getApiVersion(), accept, indexerResync, context);
+    }
+
+    /**
+     * Resync selective options from the datasource to be re-ingested by the indexer.
+     * 
+     * @param indexerName The name of the indexer to resync for.
+     * @param indexerResync The indexerResync parameter.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void resync(String indexerName, IndexerResyncBody indexerResync, RequestOptions requestOptions) {
+        resyncWithResponse(indexerName, indexerResync, requestOptions, Context.NONE);
     }
 
     /**

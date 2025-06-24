@@ -27,9 +27,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.durabletask.fluent.DurableTaskManagementClient;
 import com.azure.resourcemanager.durabletask.implementation.DurableTaskManagementClientBuilder;
 import com.azure.resourcemanager.durabletask.implementation.OperationsImpl;
+import com.azure.resourcemanager.durabletask.implementation.RetentionPoliciesImpl;
 import com.azure.resourcemanager.durabletask.implementation.SchedulersImpl;
 import com.azure.resourcemanager.durabletask.implementation.TaskHubsImpl;
 import com.azure.resourcemanager.durabletask.models.Operations;
+import com.azure.resourcemanager.durabletask.models.RetentionPolicies;
 import com.azure.resourcemanager.durabletask.models.Schedulers;
 import com.azure.resourcemanager.durabletask.models.TaskHubs;
 import java.time.Duration;
@@ -49,6 +51,8 @@ public final class DurableTaskManager {
     private Schedulers schedulers;
 
     private TaskHubs taskHubs;
+
+    private RetentionPolicies retentionPolicies;
 
     private final DurableTaskManagementClient clientObject;
 
@@ -299,6 +303,18 @@ public final class DurableTaskManager {
             this.taskHubs = new TaskHubsImpl(clientObject.getTaskHubs(), this);
         }
         return taskHubs;
+    }
+
+    /**
+     * Gets the resource collection API of RetentionPolicies.
+     * 
+     * @return Resource collection API of RetentionPolicies.
+     */
+    public RetentionPolicies retentionPolicies() {
+        if (this.retentionPolicies == null) {
+            this.retentionPolicies = new RetentionPoliciesImpl(clientObject.getRetentionPolicies(), this);
+        }
+        return retentionPolicies;
     }
 
     /**

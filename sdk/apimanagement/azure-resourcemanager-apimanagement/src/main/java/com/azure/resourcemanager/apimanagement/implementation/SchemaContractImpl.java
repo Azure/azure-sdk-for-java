@@ -29,6 +29,10 @@ public final class SchemaContractImpl implements SchemaContract, SchemaContract.
         return this.innerModel().contentType();
     }
 
+    public String provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
     public String value() {
         return this.innerModel().value();
     }

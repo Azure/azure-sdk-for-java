@@ -81,6 +81,11 @@ public final class InMageRcmNicDetails implements JsonSerializable<InMageRcmNicD
      */
     private EthernetAddressType testIpAddressType;
 
+    /*
+     * The target NIC name.
+     */
+    private String targetNicName;
+
     /**
      * Creates an instance of InMageRcmNicDetails class.
      */
@@ -293,6 +298,26 @@ public final class InMageRcmNicDetails implements JsonSerializable<InMageRcmNicD
     }
 
     /**
+     * Get the targetNicName property: The target NIC name.
+     * 
+     * @return the targetNicName value.
+     */
+    public String targetNicName() {
+        return this.targetNicName;
+    }
+
+    /**
+     * Set the targetNicName property: The target NIC name.
+     * 
+     * @param targetNicName the targetNicName value to set.
+     * @return the InMageRcmNicDetails object itself.
+     */
+    public InMageRcmNicDetails withTargetNicName(String targetNicName) {
+        this.targetNicName = targetNicName;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -316,6 +341,7 @@ public final class InMageRcmNicDetails implements JsonSerializable<InMageRcmNicD
         jsonWriter.writeStringField("testIPAddress", this.testIpAddress);
         jsonWriter.writeStringField("testIPAddressType",
             this.testIpAddressType == null ? null : this.testIpAddressType.toString());
+        jsonWriter.writeStringField("targetNicName", this.targetNicName);
         return jsonWriter.writeEndObject();
     }
 
@@ -363,6 +389,8 @@ public final class InMageRcmNicDetails implements JsonSerializable<InMageRcmNicD
                 } else if ("testIPAddressType".equals(fieldName)) {
                     deserializedInMageRcmNicDetails.testIpAddressType
                         = EthernetAddressType.fromString(reader.getString());
+                } else if ("targetNicName".equals(fieldName)) {
+                    deserializedInMageRcmNicDetails.targetNicName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -6,6 +6,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
@@ -35,6 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -90,7 +92,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             userAgentContainer = new UserAgentContainer();
         }
 
-        this.defaultHeaders = this.getDefaultHeaders(apiType, userAgentContainer, defaultConsistencyLevel);
+        this.defaultHeaders = this.getDefaultHeaders(apiType, userAgentContainer);
 
         this.defaultConsistencyLevel = defaultConsistencyLevel;
         this.globalEndpointManager = globalEndpointManager;
@@ -113,12 +115,11 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
     protected Map<String, String> getDefaultHeaders(
         ApiType apiType,
-        UserAgentContainer userAgentContainer,
-        ConsistencyLevel clientDefaultConsistencyLevel) {
+        UserAgentContainer userAgentContainer) {
 
         checkNotNull(userAgentContainer, "Argument 'userAGentContainer' must not be null.");
 
-        Map<String, String> defaultHeaders = new HashMap<>();
+        Map<String, String> defaultHeaders = new HashMap<>(6 * 4 / 3); // load factor is 0.75
         defaultHeaders.put(HttpConstants.HttpHeaders.CACHE_CONTROL,
             "no-cache");
         defaultHeaders.put(HttpConstants.HttpHeaders.VERSION,
@@ -131,16 +132,11 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             defaultHeaders.put(HttpConstants.HttpHeaders.API_TYPE, apiType.toString());
         }
 
-        if (userAgentContainer == null) {
-            userAgentContainer = new UserAgentContainer();
-        }
+        String userAgent = userAgentContainer == null
+            ? UserAgentContainer.BASE_USER_AGENT_STRING
+            : userAgentContainer.getUserAgent();
 
-        defaultHeaders.put(HttpConstants.HttpHeaders.USER_AGENT, userAgentContainer.getUserAgent());
-
-        if (clientDefaultConsistencyLevel != null) {
-            defaultHeaders.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL,
-                clientDefaultConsistencyLevel.toString());
-        }
+        defaultHeaders.put(HttpConstants.HttpHeaders.USER_AGENT, userAgent);
 
         return defaultHeaders;
     }
@@ -497,6 +493,23 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             }
 
             return Mono.error(dce);
+        }).doFinally(signalType -> {
+
+            if (signalType != SignalType.CANCEL) {
+                return;
+            }
+
+            if (httpRequest.reactorNettyRequestRecord() != null) {
+
+                ReactorNettyRequestRecord reactorNettyRequestRecord = httpRequest.reactorNettyRequestRecord();
+
+                RequestTimeline requestTimeline = reactorNettyRequestRecord.takeTimelineSnapshot();
+                long transportRequestId = reactorNettyRequestRecord.getTransportRequestId();
+
+                GatewayRequestTimelineContext gatewayRequestTimelineContext = new GatewayRequestTimelineContext(requestTimeline, transportRequestId);
+
+                request.requestContext.cancelledGatewayRequestTimelineContexts.add(gatewayRequestTimelineContext);
+            }
         });
     }
 
@@ -714,8 +727,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             return Mono.empty();
         }
 
-        boolean sessionConsistency = RequestHelper.getConsistencyLevelToUse(this.gatewayServiceConfigurationReader,
-            request) == ConsistencyLevel.SESSION;
+        boolean sessionConsistency = (RequestHelper.getReadConsistencyStrategyToUse(this.gatewayServiceConfigurationReader,
+            request) == ReadConsistencyStrategy.SESSION);
 
         if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
             if (!sessionConsistency ||

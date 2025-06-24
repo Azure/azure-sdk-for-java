@@ -15,12 +15,12 @@ public final class VaultSettingCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VaultSettingCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"migrationSolutionId\":\"v\",\"vmwareToAzureProviderType\":\"oakizvoai\"},\"location\":\"a\",\"id\":\"lnuwiguy\",\"name\":\"lykwphvxz\",\"type\":\"wxh\"},{\"properties\":{\"migrationSolutionId\":\"jtlkexaonwivkcqh\",\"vmwareToAzureProviderType\":\"hxknlccrmmkyupi\"},\"location\":\"byqjfkakfqfrkem\",\"id\":\"il\",\"name\":\"udxjascowv\",\"type\":\"djkpdxph\"},{\"properties\":{\"migrationSolutionId\":\"snmgzvyfi\",\"vmwareToAzureProviderType\":\"kzuqnwsith\"},\"location\":\"olyahluqwqulsut\",\"id\":\"jb\",\"name\":\"xykfhyq\",\"type\":\"zvqqugdrftbcvexr\"}],\"nextLink\":\"quowtljvfwhrea\"}")
+            "{\"value\":[{\"properties\":{\"migrationSolutionId\":\"cvd\",\"vmwareToAzureProviderType\":\"wrzregzgyufu\"},\"location\":\"wpwerye\",\"id\":\"z\",\"name\":\"dhme\",\"type\":\"tta\"},{\"properties\":{\"migrationSolutionId\":\"osxw\",\"vmwareToAzureProviderType\":\"nhjtf\"},\"location\":\"n\",\"id\":\"pmil\",\"name\":\"pnwy\",\"type\":\"udqll\"},{\"properties\":{\"migrationSolutionId\":\"uzpjlxeehux\",\"vmwareToAzureProviderType\":\"hzlraymezxlsk\"},\"location\":\"mxrfdsa\",\"id\":\"rednw\",\"name\":\"yshtuwgmev\",\"type\":\"afpwzyifrkgwl\"},{\"properties\":{\"migrationSolutionId\":\"qipxgzdyimsf\",\"vmwareToAzureProviderType\":\"orpravkjoges\"},\"location\":\"bnsmjkwynqxaek\",\"id\":\"sykvwjtqpke\",\"name\":\"myltj\",\"type\":\"rspxklur\"}],\"nextLink\":\"lfg\"}")
             .toObject(VaultSettingCollection.class);
-        Assertions.assertEquals("v", model.value().get(0).properties().migrationSolutionId());
-        Assertions.assertEquals("oakizvoai", model.value().get(0).properties().vmwareToAzureProviderType());
-        Assertions.assertEquals("a", model.value().get(0).location());
-        Assertions.assertEquals("quowtljvfwhrea", model.nextLink());
+        Assertions.assertEquals("cvd", model.value().get(0).properties().migrationSolutionId());
+        Assertions.assertEquals("wrzregzgyufu", model.value().get(0).properties().vmwareToAzureProviderType());
+        Assertions.assertEquals("wpwerye", model.value().get(0).location());
+        Assertions.assertEquals("lfg", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -28,21 +28,23 @@ public final class VaultSettingCollectionTests {
         VaultSettingCollection model
             = new VaultSettingCollection()
                 .withValue(Arrays.asList(
-                    new VaultSettingInner().withProperties(new VaultSettingProperties().withMigrationSolutionId("v")
-                        .withVmwareToAzureProviderType("oakizvoai")).withLocation("a"),
+                    new VaultSettingInner().withProperties(new VaultSettingProperties().withMigrationSolutionId("cvd")
+                        .withVmwareToAzureProviderType("wrzregzgyufu")).withLocation("wpwerye"),
+                    new VaultSettingInner().withProperties(new VaultSettingProperties().withMigrationSolutionId("osxw")
+                        .withVmwareToAzureProviderType("nhjtf")).withLocation("n"),
                     new VaultSettingInner()
-                        .withProperties(new VaultSettingProperties().withMigrationSolutionId("jtlkexaonwivkcqh")
-                            .withVmwareToAzureProviderType("hxknlccrmmkyupi"))
-                        .withLocation("byqjfkakfqfrkem"),
+                        .withProperties(new VaultSettingProperties().withMigrationSolutionId("uzpjlxeehux")
+                            .withVmwareToAzureProviderType("hzlraymezxlsk"))
+                        .withLocation("mxrfdsa"),
                     new VaultSettingInner()
-                        .withProperties(new VaultSettingProperties().withMigrationSolutionId("snmgzvyfi")
-                            .withVmwareToAzureProviderType("kzuqnwsith"))
-                        .withLocation("olyahluqwqulsut")))
-                .withNextLink("quowtljvfwhrea");
+                        .withProperties(new VaultSettingProperties().withMigrationSolutionId("qipxgzdyimsf")
+                            .withVmwareToAzureProviderType("orpravkjoges"))
+                        .withLocation("bnsmjkwynqxaek")))
+                .withNextLink("lfg");
         model = BinaryData.fromObject(model).toObject(VaultSettingCollection.class);
-        Assertions.assertEquals("v", model.value().get(0).properties().migrationSolutionId());
-        Assertions.assertEquals("oakizvoai", model.value().get(0).properties().vmwareToAzureProviderType());
-        Assertions.assertEquals("a", model.value().get(0).location());
-        Assertions.assertEquals("quowtljvfwhrea", model.nextLink());
+        Assertions.assertEquals("cvd", model.value().get(0).properties().migrationSolutionId());
+        Assertions.assertEquals("wrzregzgyufu", model.value().get(0).properties().vmwareToAzureProviderType());
+        Assertions.assertEquals("wpwerye", model.value().get(0).location());
+        Assertions.assertEquals("lfg", model.nextLink());
     }
 }

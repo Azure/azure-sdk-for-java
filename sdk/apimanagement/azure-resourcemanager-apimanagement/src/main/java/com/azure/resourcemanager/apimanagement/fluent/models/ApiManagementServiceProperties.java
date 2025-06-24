@@ -14,7 +14,10 @@ import com.azure.resourcemanager.apimanagement.models.AdditionalLocation;
 import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceBaseProperties;
 import com.azure.resourcemanager.apimanagement.models.ApiVersionConstraint;
 import com.azure.resourcemanager.apimanagement.models.CertificateConfiguration;
+import com.azure.resourcemanager.apimanagement.models.ConfigurationApi;
+import com.azure.resourcemanager.apimanagement.models.DeveloperPortalStatus;
 import com.azure.resourcemanager.apimanagement.models.HostnameConfiguration;
+import com.azure.resourcemanager.apimanagement.models.LegacyPortalStatus;
 import com.azure.resourcemanager.apimanagement.models.NatGatewayState;
 import com.azure.resourcemanager.apimanagement.models.PlatformVersion;
 import com.azure.resourcemanager.apimanagement.models.PublicNetworkAccess;
@@ -336,6 +339,15 @@ public final class ApiManagementServiceProperties extends ApiManagementServiceBa
      * {@inheritDoc}
      */
     @Override
+    public ApiManagementServiceProperties withConfigurationApi(ConfigurationApi configurationApi) {
+        super.withConfigurationApi(configurationApi);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public ApiManagementServiceProperties
         withVirtualNetworkConfiguration(VirtualNetworkConfiguration virtualNetworkConfiguration) {
         super.withVirtualNetworkConfiguration(virtualNetworkConfiguration);
@@ -434,6 +446,24 @@ public final class ApiManagementServiceProperties extends ApiManagementServiceBa
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApiManagementServiceProperties withLegacyPortalStatus(LegacyPortalStatus legacyPortalStatus) {
+        super.withLegacyPortalStatus(legacyPortalStatus);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApiManagementServiceProperties withDeveloperPortalStatus(DeveloperPortalStatus developerPortalStatus) {
+        super.withDeveloperPortalStatus(developerPortalStatus);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -452,6 +482,9 @@ public final class ApiManagementServiceProperties extends ApiManagementServiceBa
         }
         if (hostnameConfigurations() != null) {
             hostnameConfigurations().forEach(e -> e.validate());
+        }
+        if (configurationApi() != null) {
+            configurationApi().validate();
         }
         if (virtualNetworkConfiguration() != null) {
             virtualNetworkConfiguration().validate();
@@ -484,6 +517,7 @@ public final class ApiManagementServiceProperties extends ApiManagementServiceBa
         jsonWriter.writeStringField("publicIpAddressId", publicIpAddressId());
         jsonWriter.writeStringField("publicNetworkAccess",
             publicNetworkAccess() == null ? null : publicNetworkAccess().toString());
+        jsonWriter.writeJsonField("configurationApi", configurationApi());
         jsonWriter.writeJsonField("virtualNetworkConfiguration", virtualNetworkConfiguration());
         jsonWriter.writeArrayField("additionalLocations", additionalLocations(),
             (writer, element) -> writer.writeJson(element));
@@ -499,6 +533,10 @@ public final class ApiManagementServiceProperties extends ApiManagementServiceBa
         jsonWriter.writeBooleanField("restore", restore());
         jsonWriter.writeArrayField("privateEndpointConnections", privateEndpointConnections(),
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("legacyPortalStatus",
+            legacyPortalStatus() == null ? null : legacyPortalStatus().toString());
+        jsonWriter.writeStringField("developerPortalStatus",
+            developerPortalStatus() == null ? null : developerPortalStatus().toString());
         jsonWriter.writeStringField("publisherEmail", this.publisherEmail);
         jsonWriter.writeStringField("publisherName", this.publisherName);
         return jsonWriter.writeEndObject();
@@ -557,6 +595,8 @@ public final class ApiManagementServiceProperties extends ApiManagementServiceBa
                 } else if ("publicNetworkAccess".equals(fieldName)) {
                     deserializedApiManagementServiceProperties
                         .withPublicNetworkAccess(PublicNetworkAccess.fromString(reader.getString()));
+                } else if ("configurationApi".equals(fieldName)) {
+                    deserializedApiManagementServiceProperties.withConfigurationApi(ConfigurationApi.fromJson(reader));
                 } else if ("virtualNetworkConfiguration".equals(fieldName)) {
                     deserializedApiManagementServiceProperties
                         .withVirtualNetworkConfiguration(VirtualNetworkConfiguration.fromJson(reader));
@@ -599,6 +639,12 @@ public final class ApiManagementServiceProperties extends ApiManagementServiceBa
                 } else if ("platformVersion".equals(fieldName)) {
                     deserializedApiManagementServiceProperties.platformVersion
                         = PlatformVersion.fromString(reader.getString());
+                } else if ("legacyPortalStatus".equals(fieldName)) {
+                    deserializedApiManagementServiceProperties
+                        .withLegacyPortalStatus(LegacyPortalStatus.fromString(reader.getString()));
+                } else if ("developerPortalStatus".equals(fieldName)) {
+                    deserializedApiManagementServiceProperties
+                        .withDeveloperPortalStatus(DeveloperPortalStatus.fromString(reader.getString()));
                 } else if ("publisherEmail".equals(fieldName)) {
                     deserializedApiManagementServiceProperties.publisherEmail = reader.getString();
                 } else if ("publisherName".equals(fieldName)) {

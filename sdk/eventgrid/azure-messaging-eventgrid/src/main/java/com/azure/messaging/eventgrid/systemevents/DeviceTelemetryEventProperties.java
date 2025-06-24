@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public class DeviceTelemetryEventProperties implements JsonSerializable<DeviceTe
     /*
      * The content of the message from the device.
      */
+    @Generated
     private Object body;
 
     /*
      * Application properties are user-defined strings that can be added to the message. These fields are optional.
      */
+    @Generated
     private Map<String, String> properties;
 
     /*
      * System properties help identify contents and source of the messages.
      */
+    @Generated
     private Map<String, String> systemProperties;
 
     /**
      * Creates an instance of DeviceTelemetryEventProperties class.
      */
+    @Generated
     public DeviceTelemetryEventProperties() {
     }
 
@@ -43,6 +48,7 @@ public class DeviceTelemetryEventProperties implements JsonSerializable<DeviceTe
      * 
      * @return the body value.
      */
+    @Generated
     public Object getBody() {
         return this.body;
     }
@@ -53,6 +59,7 @@ public class DeviceTelemetryEventProperties implements JsonSerializable<DeviceTe
      * @param body the body value to set.
      * @return the DeviceTelemetryEventProperties object itself.
      */
+    @Generated
     public DeviceTelemetryEventProperties setBody(Object body) {
         this.body = body;
         return this;
@@ -64,6 +71,7 @@ public class DeviceTelemetryEventProperties implements JsonSerializable<DeviceTe
      * 
      * @return the properties value.
      */
+    @Generated
     public Map<String, String> getProperties() {
         return this.properties;
     }
@@ -75,6 +83,7 @@ public class DeviceTelemetryEventProperties implements JsonSerializable<DeviceTe
      * @param properties the properties value to set.
      * @return the DeviceTelemetryEventProperties object itself.
      */
+    @Generated
     public DeviceTelemetryEventProperties setProperties(Map<String, String> properties) {
         this.properties = properties;
         return this;
@@ -85,6 +94,7 @@ public class DeviceTelemetryEventProperties implements JsonSerializable<DeviceTe
      * 
      * @return the systemProperties value.
      */
+    @Generated
     public Map<String, String> getSystemProperties() {
         return this.systemProperties;
     }
@@ -95,6 +105,7 @@ public class DeviceTelemetryEventProperties implements JsonSerializable<DeviceTe
      * @param systemProperties the systemProperties value to set.
      * @return the DeviceTelemetryEventProperties object itself.
      */
+    @Generated
     public DeviceTelemetryEventProperties setSystemProperties(Map<String, String> systemProperties) {
         this.systemProperties = systemProperties;
         return this;
@@ -103,10 +114,13 @@ public class DeviceTelemetryEventProperties implements JsonSerializable<DeviceTe
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("body", this.body);
+        if (this.body != null) {
+            jsonWriter.writeUntypedField("body", this.body);
+        }
         jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("systemProperties", this.systemProperties,
             (writer, element) -> writer.writeString(element));
@@ -121,6 +135,7 @@ public class DeviceTelemetryEventProperties implements JsonSerializable<DeviceTe
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DeviceTelemetryEventProperties.
      */
+    @Generated
     public static DeviceTelemetryEventProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DeviceTelemetryEventProperties deserializedDeviceTelemetryEventProperties

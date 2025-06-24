@@ -4,21 +4,20 @@ package com.azure.security.keyvault.jca.tls;
 
 import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
 import com.azure.security.keyvault.jca.KeyVaultKeyStore;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.config.RegistryBuilder;
-import org.apache.http.conn.socket.ConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.ssl.SSLContexts;
-import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.util.EntityUtils;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
+import org.apache.hc.client5.http.socket.ConnectionSocketFactory;
+import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
+import org.apache.hc.client5.http.ssl.TrustSelfSignedStrategy;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.config.RegistryBuilder;
+import org.apache.hc.core5.http.io.HttpClientResponseHandler;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.apache.hc.core5.ssl.SSLContexts;
 
 import javax.net.ssl.SSLContext;
-
 import java.io.IOException;
 import java.security.KeyStore;
 import java.security.Security;
@@ -57,8 +56,8 @@ public class ClientSSLSample {
 
         try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
             HttpGet httpGet = new HttpGet("https://localhost:8765");
-            ResponseHandler<String> responseHandler = (HttpResponse response) -> {
-                int status = response.getStatusLine().getStatusCode();
+            HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
+                int status = response.getCode();
                 String result1 = "Not success";
                 if (status == 200) {
                     result1 = EntityUtils.toString(response.getEntity());

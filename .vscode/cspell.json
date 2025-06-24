@@ -16,6 +16,7 @@
     "**/checkstyle-suppressions.xml",
     "**/spotbugs-exclude.xml",
     "**/sdk/**/target/**",
+    "**/sdk/**/target/**",
     "**/session-records/**",
     "**/sdk/**/**/assets.json",
     "**/sdk/**/*-matrix.json",
@@ -199,7 +200,8 @@
     "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/SnowballTokenFilterLanguage.java",
     "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/TextTranslationSkillLanguage.java",
     "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/TokenFilterName.java",
-    "sdk/openai/azure-ai-openai-realtime/tsp-location.yaml"
+    "sdk/openai/azure-ai-openai-realtime/tsp-location.yaml",
+    ".github/CODEOWNERS"
   ],
   "words": [
     "adal",
@@ -331,6 +333,7 @@
     "kvlt",
     "linecoverage",
     "linksource",
+    "LINUXVMIMAGE",
     "listbyconfigurationprofileassignments",
     "localizable",
     "logit",
@@ -417,6 +420,7 @@
     "VNET",
     "westcentralus",
     "westus",
+    "WINDOWSVMIMAGE",
     "windowtitle",
     "wordomatic",
     "xlint",
@@ -474,7 +478,9 @@
         "TGIANT",
         "tiktoken",
         "AITOKENS",
-        "Matryoshka"
+        "Matryoshka",
+        "OMINI",
+        "resyncing"
       ]
     },
     {
@@ -575,7 +581,23 @@
       "words": [
         "pericholecystic",
         "craniocaudally",
-        "angiomyolipomas"
+        "angiomyolipomas",
+        "acrad",
+        "mednax",
+        "birads",
+        "frax",
+        "ascvd",
+        "tyrer",
+        "cusick",
+        "agatston",
+        "kellgren",
+        "tonnis",
+	"CEUS",
+	"HNPCC",
+	"hilar",
+	"Fleischner",
+	"CTCHWO",
+	"USTHY"
       ]
     },
     {
@@ -918,7 +940,8 @@
         "Dokuka",
         "Netifi",
         "Zaugg",
-        "lrgrwrks"
+        "lrgrwrks",
+        "Brotli"
       ]
     },
     {
@@ -1363,6 +1386,86 @@
         "rservice", // appears in the name SignalRService
         "gcch",
         "updation" // current typo in a swagger
+      ]
+    },
+    {
+      "filename": "sdk/ai/azure-ai-projects/**",
+      "words": [
+        "UPIA",
+        "ANSII",
+        "ansii",
+        "AISEARCH",
+        "azureai",
+        "gleu",
+        "GLEU"
+      ]
+    },
+    {
+      "filename": "sdk/ai/azure-ai-agents-persistent/**",
+      "words": [
+        "AISEARCH"
+      ]
+    },
+    {
+      "filename": "sdk/keyvault-v2/*",
+      "words": [
+        "azsdkengsys",
+        "baos",
+        "centralus",
+        "ekus",
+        "FIPS",
+        "IMDS",
+        "inprogress",
+        "mhsm",
+        "myaccount",
+        "myalias",
+        "mydomain",
+        "myissuer",
+        "northcentralus",
+        "OAEP",
+        "RLSIGN",
+        "RSAES",
+        "RSNULL",
+        "SECG",
+        "SECP",
+        "southcentralus",
+        "uksouth",
+        "upns",
+        "vcolin" // TODO: Remove after all TODOs are removed from the codebase
+      ]
+    },
+    {
+      "filename": "sdk/storage-v2/azure-storage-blob/**",
+      "words": [
+        "clientime",
+        "ctxt",
+        "etags",
+        "HTBB",
+        "IPMISMATCH",
+        "myaccountname",
+        "myblob",
+        "myblobmetadata",
+        "myblobsforlisting",
+        "myblockblob",
+        "mycontainer",
+        "mycontainermetadata",
+        "mycontainersforlisting",
+        "myimage",
+        "myjavacontainerbasic",
+        "myjavacontainerbufferedupload",
+        "myjavacontainerbuffereduploadlength",
+        "myjavacontainerparallelupload",
+        "RAGRS",
+        "saoid",
+        "IPMISMATCH"
+      ]
+    },
+    {
+      "filename": "sdk/onlineexperimentation/**",
+      "words": [
+        "momo",
+        "RESOURCEID"
+
       ]
     }
   ],

@@ -11,9 +11,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 // Package marked to be deprecated
 @LiveOnly()
@@ -49,7 +47,7 @@ public class DeleteAsyncLiveTests extends CallAutomationLiveTestBase {
     private void deleteRecording(CallAutomationAsyncClient callAutomationAsyncClient) {
         StepVerifier
             .create(callAutomationAsyncClient.getCallRecordingAsync().deleteRecordingWithResponse(RECORDING_DELETE_URL))
-            .consumeNextWith(response -> assertThat(response.getStatusCode(), is(equalTo(200))))
+            .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
 
@@ -65,7 +63,7 @@ public class DeleteAsyncLiveTests extends CallAutomationLiveTestBase {
         CallAutomationAsyncClient callAutomationAsyncClient = setupAsyncClient(builder, "deleteRecording404Async");
         StepVerifier
             .create(callAutomationAsyncClient.getCallRecordingAsync().deleteRecordingWithResponse(RECORDING_DELETE_URL))
-            .consumeNextWith(response -> assertThat(response.getStatusCode(), is(equalTo(401))))
+            .consumeNextWith(response -> assertEquals(401, response.getStatusCode()))
             .verifyComplete();
     }
 
@@ -82,7 +80,7 @@ public class DeleteAsyncLiveTests extends CallAutomationLiveTestBase {
         StepVerifier
             .create(
                 callAutomationAsyncClient.getCallRecordingAsync().deleteRecordingWithResponse(RECORDING_DELETE_URL_404))
-            .consumeNextWith(response -> assertThat(response.getStatusCode(), is(equalTo(404))))
+            .consumeNextWith(response -> assertEquals(404, response.getStatusCode()))
             .verifyComplete();
     }
 

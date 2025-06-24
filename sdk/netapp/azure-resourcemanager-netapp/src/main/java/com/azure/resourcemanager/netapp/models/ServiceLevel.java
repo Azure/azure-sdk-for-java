@@ -34,6 +34,11 @@ public final class ServiceLevel extends ExpandableStringEnum<ServiceLevel> {
     public static final ServiceLevel STANDARD_ZRS = fromString("StandardZRS");
 
     /**
+     * Static value Flexible for ServiceLevel.
+     */
+    public static final ServiceLevel FLEXIBLE = fromString("Flexible");
+
+    /**
      * Creates a new instance of ServiceLevel value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

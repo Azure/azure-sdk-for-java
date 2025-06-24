@@ -38,6 +38,11 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
     private String osType;
 
     /*
+     * The OS name selected by user.
+     */
+    private String userSelectedOSName;
+
+    /*
      * The OS disk VHD id associated with VM.
      */
     private String vhdId;
@@ -114,6 +119,16 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
     private SqlServerLicenseType sqlServerLicenseType;
 
     /*
+     * The license type for Linux VM's.
+     */
+    private LinuxLicenseType linuxLicenseType;
+
+    /*
+     * The target VM security profile.
+     */
+    private SecurityProfileProperties targetVmSecurityProfile;
+
+    /*
      * The target VM size.
      */
     private String targetVmSize;
@@ -129,7 +144,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
     private String useManagedDisksForReplication;
 
     /*
-     * The DiskType.
+     * The disk type.
      */
     private DiskAccountType diskType;
 
@@ -236,6 +251,26 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
      */
     public HyperVReplicaAzureEnableProtectionInput withOsType(String osType) {
         this.osType = osType;
+        return this;
+    }
+
+    /**
+     * Get the userSelectedOSName property: The OS name selected by user.
+     * 
+     * @return the userSelectedOSName value.
+     */
+    public String userSelectedOSName() {
+        return this.userSelectedOSName;
+    }
+
+    /**
+     * Set the userSelectedOSName property: The OS name selected by user.
+     * 
+     * @param userSelectedOSName the userSelectedOSName value to set.
+     * @return the HyperVReplicaAzureEnableProtectionInput object itself.
+     */
+    public HyperVReplicaAzureEnableProtectionInput withUserSelectedOSName(String userSelectedOSName) {
+        this.userSelectedOSName = userSelectedOSName;
         return this;
     }
 
@@ -548,6 +583,47 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
     }
 
     /**
+     * Get the linuxLicenseType property: The license type for Linux VM's.
+     * 
+     * @return the linuxLicenseType value.
+     */
+    public LinuxLicenseType linuxLicenseType() {
+        return this.linuxLicenseType;
+    }
+
+    /**
+     * Set the linuxLicenseType property: The license type for Linux VM's.
+     * 
+     * @param linuxLicenseType the linuxLicenseType value to set.
+     * @return the HyperVReplicaAzureEnableProtectionInput object itself.
+     */
+    public HyperVReplicaAzureEnableProtectionInput withLinuxLicenseType(LinuxLicenseType linuxLicenseType) {
+        this.linuxLicenseType = linuxLicenseType;
+        return this;
+    }
+
+    /**
+     * Get the targetVmSecurityProfile property: The target VM security profile.
+     * 
+     * @return the targetVmSecurityProfile value.
+     */
+    public SecurityProfileProperties targetVmSecurityProfile() {
+        return this.targetVmSecurityProfile;
+    }
+
+    /**
+     * Set the targetVmSecurityProfile property: The target VM security profile.
+     * 
+     * @param targetVmSecurityProfile the targetVmSecurityProfile value to set.
+     * @return the HyperVReplicaAzureEnableProtectionInput object itself.
+     */
+    public HyperVReplicaAzureEnableProtectionInput
+        withTargetVmSecurityProfile(SecurityProfileProperties targetVmSecurityProfile) {
+        this.targetVmSecurityProfile = targetVmSecurityProfile;
+        return this;
+    }
+
+    /**
      * Get the targetVmSize property: The target VM size.
      * 
      * @return the targetVmSize value.
@@ -612,7 +688,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
     }
 
     /**
-     * Get the diskType property: The DiskType.
+     * Get the diskType property: The disk type.
      * 
      * @return the diskType value.
      */
@@ -621,7 +697,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
     }
 
     /**
-     * Set the diskType property: The DiskType.
+     * Set the diskType property: The disk type.
      * 
      * @param diskType the diskType value to set.
      * @return the HyperVReplicaAzureEnableProtectionInput object itself.
@@ -760,6 +836,9 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
      */
     @Override
     public void validate() {
+        if (targetVmSecurityProfile() != null) {
+            targetVmSecurityProfile().validate();
+        }
         if (disksToIncludeForManagedDisks() != null) {
             disksToIncludeForManagedDisks().forEach(e -> e.validate());
         }
@@ -775,6 +854,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
         jsonWriter.writeStringField("hvHostVmId", this.hvHostVmId);
         jsonWriter.writeStringField("vmName", this.vmName);
         jsonWriter.writeStringField("osType", this.osType);
+        jsonWriter.writeStringField("userSelectedOSName", this.userSelectedOSName);
         jsonWriter.writeStringField("vhdId", this.vhdId);
         jsonWriter.writeStringField("targetStorageAccountId", this.targetStorageAccountId);
         jsonWriter.writeStringField("targetAzureNetworkId", this.targetAzureNetworkId);
@@ -792,6 +872,9 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
         jsonWriter.writeStringField("licenseType", this.licenseType == null ? null : this.licenseType.toString());
         jsonWriter.writeStringField("sqlServerLicenseType",
             this.sqlServerLicenseType == null ? null : this.sqlServerLicenseType.toString());
+        jsonWriter.writeStringField("linuxLicenseType",
+            this.linuxLicenseType == null ? null : this.linuxLicenseType.toString());
+        jsonWriter.writeJsonField("targetVmSecurityProfile", this.targetVmSecurityProfile);
         jsonWriter.writeStringField("targetVmSize", this.targetVmSize);
         jsonWriter.writeStringField("targetProximityPlacementGroupId", this.targetProximityPlacementGroupId);
         jsonWriter.writeStringField("useManagedDisksForReplication", this.useManagedDisksForReplication);
@@ -832,6 +915,8 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
                     deserializedHyperVReplicaAzureEnableProtectionInput.vmName = reader.getString();
                 } else if ("osType".equals(fieldName)) {
                     deserializedHyperVReplicaAzureEnableProtectionInput.osType = reader.getString();
+                } else if ("userSelectedOSName".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureEnableProtectionInput.userSelectedOSName = reader.getString();
                 } else if ("vhdId".equals(fieldName)) {
                     deserializedHyperVReplicaAzureEnableProtectionInput.vhdId = reader.getString();
                 } else if ("targetStorageAccountId".equals(fieldName)) {
@@ -867,6 +952,12 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
                 } else if ("sqlServerLicenseType".equals(fieldName)) {
                     deserializedHyperVReplicaAzureEnableProtectionInput.sqlServerLicenseType
                         = SqlServerLicenseType.fromString(reader.getString());
+                } else if ("linuxLicenseType".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureEnableProtectionInput.linuxLicenseType
+                        = LinuxLicenseType.fromString(reader.getString());
+                } else if ("targetVmSecurityProfile".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureEnableProtectionInput.targetVmSecurityProfile
+                        = SecurityProfileProperties.fromJson(reader);
                 } else if ("targetVmSize".equals(fieldName)) {
                     deserializedHyperVReplicaAzureEnableProtectionInput.targetVmSize = reader.getString();
                 } else if ("targetProximityPlacementGroupId".equals(fieldName)) {

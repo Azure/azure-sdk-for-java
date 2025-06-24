@@ -17,7 +17,7 @@ import java.util.Arrays;
 public final class ReplicationRecoveryPlansCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationRecoveryPlans_Create.json
      */
     /**
@@ -29,7 +29,7 @@ public final class ReplicationRecoveryPlansCreateSamples {
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager.replicationRecoveryPlans()
             .define("RPtest1")
-            .withExistingVault("vault1", "resourceGroupPS1")
+            .withExistingVault("resourceGroupPS1", "vault1")
             .withProperties(new CreateRecoveryPlanInputProperties().withPrimaryFabricId(
                 "/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1")
                 .withRecoveryFabricId("Microsoft Azure")

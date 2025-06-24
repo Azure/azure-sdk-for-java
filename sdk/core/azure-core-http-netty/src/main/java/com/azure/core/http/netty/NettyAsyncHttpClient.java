@@ -97,9 +97,7 @@ class NettyAsyncHttpClient implements HttpClient {
     private static final byte[] EMPTY_BYTES = new byte[0];
 
     final boolean disableBufferCopy;
-
     final boolean addProxyHandler;
-
     final reactor.netty.http.client.HttpClient nettyClient;
 
     /**
@@ -107,6 +105,7 @@ class NettyAsyncHttpClient implements HttpClient {
      *
      * @param nettyClient the reactor-netty http client
      * @param disableBufferCopy Determines whether deep cloning of response buffers should be disabled.
+     * @param addProxyHandler Whether the custom proxy handler was added to the Netty pipeline.
      */
     NettyAsyncHttpClient(reactor.netty.http.client.HttpClient nettyClient, boolean disableBufferCopy,
         boolean addProxyHandler) {
@@ -388,10 +387,9 @@ class NettyAsyncHttpClient implements HttpClient {
                 return HttpMethod.OPTIONS;
 
             default:
+                // Should never happen
                 throw LOGGER
-                    .logExceptionAsError(new IllegalStateException("Unknown HttpMethod '" + azureHttpMethod + "'.")); // Should
-                                                                                                                                 // never
-                                                                                                                                 // happen
+                    .logExceptionAsError(new IllegalStateException("Unknown HttpMethod '" + azureHttpMethod + "'."));
         }
     }
 }

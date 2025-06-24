@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,36 +15,43 @@ public final class RouteAvoidType extends ExpandableStringEnum<RouteAvoidType> {
     /**
      * Avoids toll roads.
      */
+    @Generated
     public static final RouteAvoidType TOLL_ROADS = fromString("tollRoads");
 
     /**
      * Avoids motorways.
      */
+    @Generated
     public static final RouteAvoidType MOTORWAYS = fromString("motorways");
 
     /**
      * Avoids ferries.
      */
+    @Generated
     public static final RouteAvoidType FERRIES = fromString("ferries");
 
     /**
      * Avoids unpaved roads.
      */
+    @Generated
     public static final RouteAvoidType UNPAVED_ROADS = fromString("unpavedRoads");
 
     /**
      * Avoids routes that require the use of carpool (HOV/High Occupancy Vehicle) lanes.
      */
+    @Generated
     public static final RouteAvoidType CARPOOLS = fromString("carpools");
 
     /**
      * Avoids using the same road multiple times. Most useful in conjunction with `routeType`=thrilling.
      */
+    @Generated
     public static final RouteAvoidType ALREADY_USED_ROADS = fromString("alreadyUsedRoads");
 
     /**
      * Avoids border crossings in route calculation.
      */
+    @Generated
     public static final RouteAvoidType BORDER_CROSSINGS = fromString("borderCrossings");
 
     /**
@@ -51,6 +59,7 @@ public final class RouteAvoidType extends ExpandableStringEnum<RouteAvoidType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public RouteAvoidType() {
     }
@@ -61,6 +70,7 @@ public final class RouteAvoidType extends ExpandableStringEnum<RouteAvoidType> {
      * @param name a name to look for.
      * @return the corresponding RouteAvoidType.
      */
+    @Generated
     public static RouteAvoidType fromString(String name) {
         return fromString(name, RouteAvoidType.class);
     }
@@ -70,6 +80,7 @@ public final class RouteAvoidType extends ExpandableStringEnum<RouteAvoidType> {
      * 
      * @return known RouteAvoidType values.
      */
+    @Generated
     public static Collection<RouteAvoidType> values() {
         return values(RouteAvoidType.class);
     }

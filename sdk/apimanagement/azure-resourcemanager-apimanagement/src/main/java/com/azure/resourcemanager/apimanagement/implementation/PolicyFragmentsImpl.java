@@ -4,15 +4,14 @@
 
 package com.azure.resourcemanager.apimanagement.implementation;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.PolicyFragmentsClient;
-import com.azure.resourcemanager.apimanagement.fluent.models.PolicyFragmentCollectionInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.PolicyFragmentContractInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.ResourceCollectionInner;
-import com.azure.resourcemanager.apimanagement.models.PolicyFragmentCollection;
 import com.azure.resourcemanager.apimanagement.models.PolicyFragmentContentFormat;
 import com.azure.resourcemanager.apimanagement.models.PolicyFragmentContract;
 import com.azure.resourcemanager.apimanagement.models.PolicyFragments;
@@ -33,25 +32,17 @@ public final class PolicyFragmentsImpl implements PolicyFragments {
         this.serviceManager = serviceManager;
     }
 
-    public Response<PolicyFragmentCollection> listByServiceWithResponse(String resourceGroupName, String serviceName,
-        String filter, String orderby, Integer top, Integer skip, Context context) {
-        Response<PolicyFragmentCollectionInner> inner = this.serviceClient()
-            .listByServiceWithResponse(resourceGroupName, serviceName, filter, orderby, top, skip, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new PolicyFragmentCollectionImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public PagedIterable<PolicyFragmentContract> listByService(String resourceGroupName, String serviceName) {
+        PagedIterable<PolicyFragmentContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PolicyFragmentContractImpl(inner1, this.manager()));
     }
 
-    public PolicyFragmentCollection listByService(String resourceGroupName, String serviceName) {
-        PolicyFragmentCollectionInner inner = this.serviceClient().listByService(resourceGroupName, serviceName);
-        if (inner != null) {
-            return new PolicyFragmentCollectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public PagedIterable<PolicyFragmentContract> listByService(String resourceGroupName, String serviceName,
+        String filter, String orderby, Integer top, Integer skip, Context context) {
+        PagedIterable<PolicyFragmentContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName, filter, orderby, top, skip, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PolicyFragmentContractImpl(inner1, this.manager()));
     }
 
     public PolicyFragmentsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,

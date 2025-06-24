@@ -4,9 +4,8 @@
 
 <suppressions>
   <suppress files="io.clientcore.http.netty4.NettyHttpClientBuilder.java" checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="io.clientcore.http.netty4.implementation.Netty4ChannelBinaryData.java" checks="com.azure.tools.checkstyle.checks.RawExceptionThrowCheck" />
+  <suppress files="io.clientcore.http.netty4.implementation.Netty4ChannelInputStream.java" checks="com.azure.tools.checkstyle.checks.RawExceptionThrowCheck" />
+  <suppress files="io.clientcore.http.netty4.implementation.WrappedHttpHeaders.java" checks="com.azure.tools.checkstyle.checks.RawExceptionThrowCheck" />
   <suppress files="io.clientcore.http.netty4.NettyHttpClientBuilder.java" checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" />
-  <suppress files="io.clientcore.http.netty4.NettyHttpClient.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="io.clientcore.http.netty4.implementation.Netty4ChannelBinaryData.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="io.clientcore.http.netty4.implementation.Netty4HttpProxyHandler.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="io.clientcore.http.netty4.implementation.Netty4ResponseHandler.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
 </suppressions>

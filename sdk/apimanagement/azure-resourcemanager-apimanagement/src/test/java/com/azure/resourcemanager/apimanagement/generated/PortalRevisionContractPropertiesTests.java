@@ -12,18 +12,18 @@ public final class PortalRevisionContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PortalRevisionContractProperties model = BinaryData.fromString(
-            "{\"description\":\"ktfowzkroyrdur\",\"statusDetails\":\"lzqjimejtgzjxx\",\"status\":\"pending\",\"isCurrent\":true,\"createdDateTime\":\"2020-12-29T22:30:19Z\",\"updatedDateTime\":\"2021-01-09T20:44Z\"}")
+            "{\"description\":\"uxuva\",\"statusDetails\":\"pfpdof\",\"status\":\"failed\",\"isCurrent\":true,\"createdDateTime\":\"2021-10-08T02:43:01Z\",\"updatedDateTime\":\"2021-10-18T11:20:13Z\",\"provisioningState\":\"evsolzwilf\"}")
             .toObject(PortalRevisionContractProperties.class);
-        Assertions.assertEquals("ktfowzkroyrdur", model.description());
-        Assertions.assertEquals(true, model.isCurrent());
+        Assertions.assertEquals("uxuva", model.description());
+        Assertions.assertTrue(model.isCurrent());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PortalRevisionContractProperties model
-            = new PortalRevisionContractProperties().withDescription("ktfowzkroyrdur").withIsCurrent(true);
+            = new PortalRevisionContractProperties().withDescription("uxuva").withIsCurrent(true);
         model = BinaryData.fromObject(model).toObject(PortalRevisionContractProperties.class);
-        Assertions.assertEquals("ktfowzkroyrdur", model.description());
-        Assertions.assertEquals(true, model.isCurrent());
+        Assertions.assertEquals("uxuva", model.description());
+        Assertions.assertTrue(model.isCurrent());
     }
 }

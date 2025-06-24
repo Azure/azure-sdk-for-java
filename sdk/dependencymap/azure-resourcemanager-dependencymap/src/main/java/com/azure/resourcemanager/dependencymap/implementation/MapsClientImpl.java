@@ -29,8 +29,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.dependencymap.fluent.MapsClient;
@@ -74,13 +76,22 @@ public final class MapsClientImpl implements MapsClient {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DependencyMapManagem")
+    @ServiceInterface(name = "DependencyMapManagementClientMaps")
     public interface MapsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MapsResourceInner>> getByResourceGroup(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mapName") String mapName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<MapsResourceInner> getByResourceGroupSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mapName") String mapName,
             @HeaderParam("Accept") String accept, Context context);
@@ -94,10 +105,28 @@ public final class MapsClientImpl implements MapsClient {
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") MapsResourceInner resource, Context context);
 
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mapName") String mapName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") MapsResourceInner resource, Context context);
+
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mapName") String mapName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") MapsResourceTagsUpdate properties, Context context);
+
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> updateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mapName") String mapName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
@@ -113,10 +142,28 @@ public final class MapsClientImpl implements MapsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mapName") String mapName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MapsResourceListResult>> listByResourceGroup(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<MapsResourceListResult> listByResourceGroupSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
@@ -129,6 +176,14 @@ public final class MapsClientImpl implements MapsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DependencyMap/maps")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<MapsResourceListResult> listSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/getDependencyViewForFocusedMachine")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -138,10 +193,30 @@ public final class MapsClientImpl implements MapsClient {
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") GetDependencyViewForFocusedMachineRequest body, Context context);
 
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/getDependencyViewForFocusedMachine")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> getDependencyViewForFocusedMachineSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mapName") String mapName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") GetDependencyViewForFocusedMachineRequest body, Context context);
+
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/getConnectionsWithConnectedMachineForFocusedMachine")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> getConnectionsWithConnectedMachineForFocusedMachine(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mapName") String mapName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") GetConnectionsWithConnectedMachineForFocusedMachineRequest body,
+            Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/getConnectionsWithConnectedMachineForFocusedMachine")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> getConnectionsWithConnectedMachineForFocusedMachineSync(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mapName") String mapName,
@@ -159,10 +234,28 @@ public final class MapsClientImpl implements MapsClient {
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") GetConnectionsForProcessOnFocusedMachineRequest body, Context context);
 
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/getConnectionsForProcessOnFocusedMachine")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> getConnectionsForProcessOnFocusedMachineSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mapName") String mapName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") GetConnectionsForProcessOnFocusedMachineRequest body, Context context);
+
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/exportDependencies")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> exportDependencies(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mapName") String mapName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ExportDependenciesRequest body, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/exportDependencies")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> exportDependenciesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mapName") String mapName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
@@ -180,7 +273,23 @@ public final class MapsClientImpl implements MapsClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<MapsResourceListResult> listByResourceGroupNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MapsResourceListResult>> listBySubscriptionNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<MapsResourceListResult> listBySubscriptionNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -225,41 +334,6 @@ public final class MapsClientImpl implements MapsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mapName Maps resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a MapsResource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MapsResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
-        String mapName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (mapName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, mapName, accept, context);
-    }
-
-    /**
-     * Get a MapsResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -285,7 +359,27 @@ public final class MapsClientImpl implements MapsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MapsResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String mapName,
         Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, mapName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (mapName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, mapName, accept, context);
     }
 
     /**
@@ -351,39 +445,86 @@ public final class MapsClientImpl implements MapsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mapName Maps resource name.
      * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Maps resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return a Maps resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String mapName,
-        MapsResourceInner resource, Context context) {
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String mapName,
+        MapsResourceInner resource) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (mapName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
         }
         if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
         } else {
             resource.validate();
         }
         final String contentType = "application/json";
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, mapName, contentType, accept, resource, Context.NONE);
+    }
+
+    /**
+     * Create a MapsResource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mapName Maps resource name.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Maps resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String mapName,
+        MapsResourceInner resource, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (mapName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
+        }
+        if (resource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+        } else {
+            resource.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, mapName, contentType, accept, resource, context);
     }
 
@@ -412,28 +553,6 @@ public final class MapsClientImpl implements MapsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mapName Maps resource name.
      * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a Maps resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<MapsResourceInner>, MapsResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String mapName, MapsResourceInner resource, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, mapName, resource, context);
-        return this.client.<MapsResourceInner, MapsResourceInner>getLroResult(mono, this.client.getHttpPipeline(),
-            MapsResourceInner.class, MapsResourceInner.class, context);
-    }
-
-    /**
-     * Create a MapsResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -442,7 +561,9 @@ public final class MapsClientImpl implements MapsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MapsResourceInner>, MapsResourceInner> beginCreateOrUpdate(String resourceGroupName,
         String mapName, MapsResourceInner resource) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, mapName, resource).getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, mapName, resource);
+        return this.client.<MapsResourceInner, MapsResourceInner>getLroResult(response, MapsResourceInner.class,
+            MapsResourceInner.class, Context.NONE);
     }
 
     /**
@@ -460,7 +581,9 @@ public final class MapsClientImpl implements MapsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MapsResourceInner>, MapsResourceInner> beginCreateOrUpdate(String resourceGroupName,
         String mapName, MapsResourceInner resource, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, mapName, resource, context).getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, mapName, resource, context);
+        return this.client.<MapsResourceInner, MapsResourceInner>getLroResult(response, MapsResourceInner.class,
+            MapsResourceInner.class, context);
     }
 
     /**
@@ -487,25 +610,6 @@ public final class MapsClientImpl implements MapsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mapName Maps resource name.
      * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Maps resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MapsResourceInner> createOrUpdateAsync(String resourceGroupName, String mapName,
-        MapsResourceInner resource, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, mapName, resource, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create a MapsResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -513,7 +617,7 @@ public final class MapsClientImpl implements MapsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MapsResourceInner createOrUpdate(String resourceGroupName, String mapName, MapsResourceInner resource) {
-        return createOrUpdateAsync(resourceGroupName, mapName, resource).block();
+        return beginCreateOrUpdate(resourceGroupName, mapName, resource).getFinalResult();
     }
 
     /**
@@ -531,7 +635,7 @@ public final class MapsClientImpl implements MapsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MapsResourceInner createOrUpdate(String resourceGroupName, String mapName, MapsResourceInner resource,
         Context context) {
-        return createOrUpdateAsync(resourceGroupName, mapName, resource, context).block();
+        return beginCreateOrUpdate(resourceGroupName, mapName, resource, context).getFinalResult();
     }
 
     /**
@@ -582,40 +686,87 @@ public final class MapsClientImpl implements MapsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mapName Maps resource name.
      * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Maps resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return a Maps resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String mapName,
-        MapsResourceTagsUpdate properties, Context context) {
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String mapName,
+        MapsResourceTagsUpdate properties) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (mapName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
         }
         if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
         } else {
             properties.validate();
         }
         final String contentType = "application/json";
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, mapName, contentType, accept, properties, context);
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, mapName, contentType, accept, properties, Context.NONE);
+    }
+
+    /**
+     * Update a MapsResource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mapName Maps resource name.
+     * @param properties The resource properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Maps resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String mapName,
+        MapsResourceTagsUpdate properties, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (mapName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
+        }
+        if (properties == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, mapName, contentType, accept, properties, context);
     }
 
     /**
@@ -643,28 +794,6 @@ public final class MapsClientImpl implements MapsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mapName Maps resource name.
      * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a Maps resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<MapsResourceInner>, MapsResourceInner> beginUpdateAsync(String resourceGroupName,
-        String mapName, MapsResourceTagsUpdate properties, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateWithResponseAsync(resourceGroupName, mapName, properties, context);
-        return this.client.<MapsResourceInner, MapsResourceInner>getLroResult(mono, this.client.getHttpPipeline(),
-            MapsResourceInner.class, MapsResourceInner.class, context);
-    }
-
-    /**
-     * Update a MapsResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -673,7 +802,9 @@ public final class MapsClientImpl implements MapsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MapsResourceInner>, MapsResourceInner> beginUpdate(String resourceGroupName,
         String mapName, MapsResourceTagsUpdate properties) {
-        return this.beginUpdateAsync(resourceGroupName, mapName, properties).getSyncPoller();
+        Response<BinaryData> response = updateWithResponse(resourceGroupName, mapName, properties);
+        return this.client.<MapsResourceInner, MapsResourceInner>getLroResult(response, MapsResourceInner.class,
+            MapsResourceInner.class, Context.NONE);
     }
 
     /**
@@ -691,7 +822,9 @@ public final class MapsClientImpl implements MapsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MapsResourceInner>, MapsResourceInner> beginUpdate(String resourceGroupName,
         String mapName, MapsResourceTagsUpdate properties, Context context) {
-        return this.beginUpdateAsync(resourceGroupName, mapName, properties, context).getSyncPoller();
+        Response<BinaryData> response = updateWithResponse(resourceGroupName, mapName, properties, context);
+        return this.client.<MapsResourceInner, MapsResourceInner>getLroResult(response, MapsResourceInner.class,
+            MapsResourceInner.class, context);
     }
 
     /**
@@ -718,25 +851,6 @@ public final class MapsClientImpl implements MapsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mapName Maps resource name.
      * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Maps resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MapsResourceInner> updateAsync(String resourceGroupName, String mapName,
-        MapsResourceTagsUpdate properties, Context context) {
-        return beginUpdateAsync(resourceGroupName, mapName, properties, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update a MapsResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -744,7 +858,7 @@ public final class MapsClientImpl implements MapsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MapsResourceInner update(String resourceGroupName, String mapName, MapsResourceTagsUpdate properties) {
-        return updateAsync(resourceGroupName, mapName, properties).block();
+        return beginUpdate(resourceGroupName, mapName, properties).getFinalResult();
     }
 
     /**
@@ -762,7 +876,7 @@ public final class MapsClientImpl implements MapsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MapsResourceInner update(String resourceGroupName, String mapName, MapsResourceTagsUpdate properties,
         Context context) {
-        return updateAsync(resourceGroupName, mapName, properties, context).block();
+        return beginUpdate(resourceGroupName, mapName, properties, context).getFinalResult();
     }
 
     /**
@@ -804,34 +918,70 @@ public final class MapsClientImpl implements MapsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mapName Maps resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String mapName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (mapName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, mapName, accept, Context.NONE);
+    }
+
+    /**
+     * Delete a MapsResource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mapName Maps resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String mapName,
-        Context context) {
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String mapName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (mapName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, mapName, accept, context);
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, mapName, accept, context);
     }
 
     /**
@@ -856,26 +1006,6 @@ public final class MapsClientImpl implements MapsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mapName Maps resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String mapName,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, mapName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Delete a MapsResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -883,7 +1013,8 @@ public final class MapsClientImpl implements MapsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mapName) {
-        return this.beginDeleteAsync(resourceGroupName, mapName).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, mapName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -899,7 +1030,8 @@ public final class MapsClientImpl implements MapsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mapName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, mapName, context).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, mapName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -922,30 +1054,13 @@ public final class MapsClientImpl implements MapsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mapName Maps resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String mapName, Context context) {
-        return beginDeleteAsync(resourceGroupName, mapName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Delete a MapsResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String mapName) {
-        deleteAsync(resourceGroupName, mapName).block();
+        beginDelete(resourceGroupName, mapName).getFinalResult();
     }
 
     /**
@@ -960,7 +1075,7 @@ public final class MapsClientImpl implements MapsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String mapName, Context context) {
-        deleteAsync(resourceGroupName, mapName, context).block();
+        beginDelete(resourceGroupName, mapName, context).getFinalResult();
     }
 
     /**
@@ -1000,41 +1115,6 @@ public final class MapsClientImpl implements MapsClient {
      * List MapsResource resources by resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MapsResource list operation along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MapsResourceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List MapsResource resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1050,16 +1130,65 @@ public final class MapsClientImpl implements MapsClient {
      * List MapsResource resources by resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a MapsResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<MapsResourceInner> listByResourceGroupSinglePage(String resourceGroupName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<MapsResourceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List MapsResource resources by resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MapsResource list operation as paginated response with {@link PagedFlux}.
+     * @return the response of a MapsResource list operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MapsResourceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<MapsResourceInner> listByResourceGroupSinglePage(String resourceGroupName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<MapsResourceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1073,7 +1202,8 @@ public final class MapsClientImpl implements MapsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MapsResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink));
     }
 
     /**
@@ -1088,7 +1218,8 @@ public final class MapsClientImpl implements MapsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MapsResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1121,35 +1252,6 @@ public final class MapsClientImpl implements MapsClient {
     /**
      * List MapsResource resources by subscription ID.
      * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MapsResource list operation along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MapsResourceInner>> listSinglePageAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
-                context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List MapsResource resources by subscription ID.
-     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a MapsResource list operation as paginated response with {@link PagedFlux}.
@@ -1163,16 +1265,55 @@ public final class MapsClientImpl implements MapsClient {
     /**
      * List MapsResource resources by subscription ID.
      * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a MapsResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<MapsResourceInner> listSinglePage() {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<MapsResourceListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List MapsResource resources by subscription ID.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MapsResource list operation as paginated response with {@link PagedFlux}.
+     * @return the response of a MapsResource list operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MapsResourceInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context),
-            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<MapsResourceInner> listSinglePage(Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<MapsResourceListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1184,7 +1325,7 @@ public final class MapsClientImpl implements MapsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MapsResourceInner> list() {
-        return new PagedIterable<>(listAsync());
+        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
     }
 
     /**
@@ -1198,7 +1339,8 @@ public final class MapsClientImpl implements MapsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MapsResourceInner> list(Context context) {
-        return new PagedIterable<>(listAsync(context));
+        return new PagedIterable<>(() -> listSinglePage(context),
+            nextLink -> listBySubscriptionNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1250,39 +1392,84 @@ public final class MapsClientImpl implements MapsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mapName Maps resource name.
      * @param body The content of the action request.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dependency map of single machine along with {@link Response} on successful completion of {@link Mono}.
+     * @return dependency map of single machine along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> getDependencyViewForFocusedMachineWithResponseAsync(
-        String resourceGroupName, String mapName, GetDependencyViewForFocusedMachineRequest body, Context context) {
+    private Response<BinaryData> getDependencyViewForFocusedMachineWithResponse(String resourceGroupName,
+        String mapName, GetDependencyViewForFocusedMachineRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (mapName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
         }
         if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
         } else {
             body.validate();
         }
         final String contentType = "application/json";
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getDependencyViewForFocusedMachine(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.getDependencyViewForFocusedMachineSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, mapName, contentType, accept, body, Context.NONE);
+    }
+
+    /**
+     * Get dependency map of single machine.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mapName Maps resource name.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dependency map of single machine along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> getDependencyViewForFocusedMachineWithResponse(String resourceGroupName,
+        String mapName, GetDependencyViewForFocusedMachineRequest body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (mapName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
+        }
+        if (body == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.getDependencyViewForFocusedMachineSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, mapName, contentType, accept, body, context);
     }
 
@@ -1312,28 +1499,6 @@ public final class MapsClientImpl implements MapsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mapName Maps resource name.
      * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of dependency map of single machine.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginGetDependencyViewForFocusedMachineAsync(String resourceGroupName,
-        String mapName, GetDependencyViewForFocusedMachineRequest body, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = getDependencyViewForFocusedMachineWithResponseAsync(resourceGroupName, mapName, body, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Get dependency map of single machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1342,7 +1507,9 @@ public final class MapsClientImpl implements MapsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginGetDependencyViewForFocusedMachine(String resourceGroupName,
         String mapName, GetDependencyViewForFocusedMachineRequest body) {
-        return this.beginGetDependencyViewForFocusedMachineAsync(resourceGroupName, mapName, body).getSyncPoller();
+        Response<BinaryData> response
+            = getDependencyViewForFocusedMachineWithResponse(resourceGroupName, mapName, body);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1360,8 +1527,9 @@ public final class MapsClientImpl implements MapsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginGetDependencyViewForFocusedMachine(String resourceGroupName,
         String mapName, GetDependencyViewForFocusedMachineRequest body, Context context) {
-        return this.beginGetDependencyViewForFocusedMachineAsync(resourceGroupName, mapName, body, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = getDependencyViewForFocusedMachineWithResponse(resourceGroupName, mapName, body, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -1388,25 +1556,6 @@ public final class MapsClientImpl implements MapsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mapName Maps resource name.
      * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dependency map of single machine on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> getDependencyViewForFocusedMachineAsync(String resourceGroupName, String mapName,
-        GetDependencyViewForFocusedMachineRequest body, Context context) {
-        return beginGetDependencyViewForFocusedMachineAsync(resourceGroupName, mapName, body, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Get dependency map of single machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1414,7 +1563,7 @@ public final class MapsClientImpl implements MapsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void getDependencyViewForFocusedMachine(String resourceGroupName, String mapName,
         GetDependencyViewForFocusedMachineRequest body) {
-        getDependencyViewForFocusedMachineAsync(resourceGroupName, mapName, body).block();
+        beginGetDependencyViewForFocusedMachine(resourceGroupName, mapName, body).getFinalResult();
     }
 
     /**
@@ -1431,7 +1580,7 @@ public final class MapsClientImpl implements MapsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void getDependencyViewForFocusedMachine(String resourceGroupName, String mapName,
         GetDependencyViewForFocusedMachineRequest body, Context context) {
-        getDependencyViewForFocusedMachineAsync(resourceGroupName, mapName, body, context).block();
+        beginGetDependencyViewForFocusedMachine(resourceGroupName, mapName, body, context).getFinalResult();
     }
 
     /**
@@ -1484,41 +1633,86 @@ public final class MapsClientImpl implements MapsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mapName Maps resource name.
      * @param body The content of the action request.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network connections between machines along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return network connections between machines along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> getConnectionsWithConnectedMachineForFocusedMachineWithResponseAsync(
-        String resourceGroupName, String mapName, GetConnectionsWithConnectedMachineForFocusedMachineRequest body,
-        Context context) {
+    private Response<BinaryData> getConnectionsWithConnectedMachineForFocusedMachineWithResponse(
+        String resourceGroupName, String mapName, GetConnectionsWithConnectedMachineForFocusedMachineRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (mapName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
         }
         if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
         } else {
             body.validate();
         }
         final String contentType = "application/json";
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getConnectionsWithConnectedMachineForFocusedMachine(this.client.getEndpoint(),
+        return service.getConnectionsWithConnectedMachineForFocusedMachineSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, mapName, contentType,
+            accept, body, Context.NONE);
+    }
+
+    /**
+     * Get network connections between machines.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mapName Maps resource name.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network connections between machines along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> getConnectionsWithConnectedMachineForFocusedMachineWithResponse(
+        String resourceGroupName, String mapName, GetConnectionsWithConnectedMachineForFocusedMachineRequest body,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (mapName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
+        }
+        if (body == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.getConnectionsWithConnectedMachineForFocusedMachineSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, mapName, contentType,
             accept, body, context);
     }
@@ -1549,29 +1743,6 @@ public final class MapsClientImpl implements MapsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mapName Maps resource name.
      * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of network connections between machines.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginGetConnectionsWithConnectedMachineForFocusedMachineAsync(
-        String resourceGroupName, String mapName, GetConnectionsWithConnectedMachineForFocusedMachineRequest body,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = getConnectionsWithConnectedMachineForFocusedMachineWithResponseAsync(
-            resourceGroupName, mapName, body, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Get network connections between machines.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1580,8 +1751,9 @@ public final class MapsClientImpl implements MapsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginGetConnectionsWithConnectedMachineForFocusedMachine(
         String resourceGroupName, String mapName, GetConnectionsWithConnectedMachineForFocusedMachineRequest body) {
-        return this.beginGetConnectionsWithConnectedMachineForFocusedMachineAsync(resourceGroupName, mapName, body)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = getConnectionsWithConnectedMachineForFocusedMachineWithResponse(resourceGroupName, mapName, body);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1600,9 +1772,9 @@ public final class MapsClientImpl implements MapsClient {
     public SyncPoller<PollResult<Void>, Void> beginGetConnectionsWithConnectedMachineForFocusedMachine(
         String resourceGroupName, String mapName, GetConnectionsWithConnectedMachineForFocusedMachineRequest body,
         Context context) {
-        return this
-            .beginGetConnectionsWithConnectedMachineForFocusedMachineAsync(resourceGroupName, mapName, body, context)
-            .getSyncPoller();
+        Response<BinaryData> response = getConnectionsWithConnectedMachineForFocusedMachineWithResponse(
+            resourceGroupName, mapName, body, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -1629,26 +1801,6 @@ public final class MapsClientImpl implements MapsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mapName Maps resource name.
      * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network connections between machines on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> getConnectionsWithConnectedMachineForFocusedMachineAsync(String resourceGroupName,
-        String mapName, GetConnectionsWithConnectedMachineForFocusedMachineRequest body, Context context) {
-        return beginGetConnectionsWithConnectedMachineForFocusedMachineAsync(resourceGroupName, mapName, body, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Get network connections between machines.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1656,7 +1808,7 @@ public final class MapsClientImpl implements MapsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void getConnectionsWithConnectedMachineForFocusedMachine(String resourceGroupName, String mapName,
         GetConnectionsWithConnectedMachineForFocusedMachineRequest body) {
-        getConnectionsWithConnectedMachineForFocusedMachineAsync(resourceGroupName, mapName, body).block();
+        beginGetConnectionsWithConnectedMachineForFocusedMachine(resourceGroupName, mapName, body).getFinalResult();
     }
 
     /**
@@ -1673,7 +1825,8 @@ public final class MapsClientImpl implements MapsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void getConnectionsWithConnectedMachineForFocusedMachine(String resourceGroupName, String mapName,
         GetConnectionsWithConnectedMachineForFocusedMachineRequest body, Context context) {
-        getConnectionsWithConnectedMachineForFocusedMachineAsync(resourceGroupName, mapName, body, context).block();
+        beginGetConnectionsWithConnectedMachineForFocusedMachine(resourceGroupName, mapName, body, context)
+            .getFinalResult();
     }
 
     /**
@@ -1725,41 +1878,87 @@ public final class MapsClientImpl implements MapsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mapName Maps resource name.
      * @param body The content of the action request.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network connections of a process along with {@link Response} on successful completion of {@link Mono}.
+     * @return network connections of a process along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> getConnectionsForProcessOnFocusedMachineWithResponseAsync(
-        String resourceGroupName, String mapName, GetConnectionsForProcessOnFocusedMachineRequest body,
-        Context context) {
+    private Response<BinaryData> getConnectionsForProcessOnFocusedMachineWithResponse(String resourceGroupName,
+        String mapName, GetConnectionsForProcessOnFocusedMachineRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (mapName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
         }
         if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
         } else {
             body.validate();
         }
         final String contentType = "application/json";
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getConnectionsForProcessOnFocusedMachine(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, mapName, contentType, accept, body, context);
+        return service.getConnectionsForProcessOnFocusedMachineSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, mapName, contentType,
+            accept, body, Context.NONE);
+    }
+
+    /**
+     * Get network connections of a process.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mapName Maps resource name.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network connections of a process along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> getConnectionsForProcessOnFocusedMachineWithResponse(String resourceGroupName,
+        String mapName, GetConnectionsForProcessOnFocusedMachineRequest body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (mapName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
+        }
+        if (body == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.getConnectionsForProcessOnFocusedMachineSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, mapName, contentType,
+            accept, body, context);
     }
 
     /**
@@ -1788,29 +1987,6 @@ public final class MapsClientImpl implements MapsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mapName Maps resource name.
      * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of network connections of a process.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginGetConnectionsForProcessOnFocusedMachineAsync(
-        String resourceGroupName, String mapName, GetConnectionsForProcessOnFocusedMachineRequest body,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = getConnectionsForProcessOnFocusedMachineWithResponseAsync(resourceGroupName, mapName, body, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Get network connections of a process.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1819,8 +1995,9 @@ public final class MapsClientImpl implements MapsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginGetConnectionsForProcessOnFocusedMachine(String resourceGroupName,
         String mapName, GetConnectionsForProcessOnFocusedMachineRequest body) {
-        return this.beginGetConnectionsForProcessOnFocusedMachineAsync(resourceGroupName, mapName, body)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = getConnectionsForProcessOnFocusedMachineWithResponse(resourceGroupName, mapName, body);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1838,8 +2015,9 @@ public final class MapsClientImpl implements MapsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginGetConnectionsForProcessOnFocusedMachine(String resourceGroupName,
         String mapName, GetConnectionsForProcessOnFocusedMachineRequest body, Context context) {
-        return this.beginGetConnectionsForProcessOnFocusedMachineAsync(resourceGroupName, mapName, body, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = getConnectionsForProcessOnFocusedMachineWithResponse(resourceGroupName, mapName, body, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -1866,25 +2044,6 @@ public final class MapsClientImpl implements MapsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mapName Maps resource name.
      * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network connections of a process on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> getConnectionsForProcessOnFocusedMachineAsync(String resourceGroupName, String mapName,
-        GetConnectionsForProcessOnFocusedMachineRequest body, Context context) {
-        return beginGetConnectionsForProcessOnFocusedMachineAsync(resourceGroupName, mapName, body, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Get network connections of a process.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1892,7 +2051,7 @@ public final class MapsClientImpl implements MapsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void getConnectionsForProcessOnFocusedMachine(String resourceGroupName, String mapName,
         GetConnectionsForProcessOnFocusedMachineRequest body) {
-        getConnectionsForProcessOnFocusedMachineAsync(resourceGroupName, mapName, body).block();
+        beginGetConnectionsForProcessOnFocusedMachine(resourceGroupName, mapName, body).getFinalResult();
     }
 
     /**
@@ -1909,7 +2068,7 @@ public final class MapsClientImpl implements MapsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void getConnectionsForProcessOnFocusedMachine(String resourceGroupName, String mapName,
         GetConnectionsForProcessOnFocusedMachineRequest body, Context context) {
-        getConnectionsForProcessOnFocusedMachineAsync(resourceGroupName, mapName, body, context).block();
+        beginGetConnectionsForProcessOnFocusedMachine(resourceGroupName, mapName, body, context).getFinalResult();
     }
 
     /**
@@ -1960,39 +2119,84 @@ public final class MapsClientImpl implements MapsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mapName Maps resource name.
      * @param body The content of the action request.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> exportDependenciesWithResponseAsync(String resourceGroupName,
-        String mapName, ExportDependenciesRequest body, Context context) {
+    private Response<BinaryData> exportDependenciesWithResponse(String resourceGroupName, String mapName,
+        ExportDependenciesRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (mapName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
         }
         if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
         } else {
             body.validate();
         }
         final String contentType = "application/json";
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.exportDependencies(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.exportDependenciesSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, mapName, contentType, accept, body, Context.NONE);
+    }
+
+    /**
+     * Export dependencies.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mapName Maps resource name.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> exportDependenciesWithResponse(String resourceGroupName, String mapName,
+        ExportDependenciesRequest body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (mapName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
+        }
+        if (body == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.exportDependenciesSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, mapName, contentType, accept, body, context);
     }
 
@@ -2021,28 +2225,6 @@ public final class MapsClientImpl implements MapsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mapName Maps resource name.
      * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginExportDependenciesAsync(String resourceGroupName, String mapName,
-        ExportDependenciesRequest body, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = exportDependenciesWithResponseAsync(resourceGroupName, mapName, body, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Export dependencies.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2051,7 +2233,8 @@ public final class MapsClientImpl implements MapsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExportDependencies(String resourceGroupName, String mapName,
         ExportDependenciesRequest body) {
-        return this.beginExportDependenciesAsync(resourceGroupName, mapName, body).getSyncPoller();
+        Response<BinaryData> response = exportDependenciesWithResponse(resourceGroupName, mapName, body);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2069,7 +2252,8 @@ public final class MapsClientImpl implements MapsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExportDependencies(String resourceGroupName, String mapName,
         ExportDependenciesRequest body, Context context) {
-        return this.beginExportDependenciesAsync(resourceGroupName, mapName, body, context).getSyncPoller();
+        Response<BinaryData> response = exportDependenciesWithResponse(resourceGroupName, mapName, body, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -2096,32 +2280,13 @@ public final class MapsClientImpl implements MapsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mapName Maps resource name.
      * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> exportDependenciesAsync(String resourceGroupName, String mapName, ExportDependenciesRequest body,
-        Context context) {
-        return beginExportDependenciesAsync(resourceGroupName, mapName, body, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Export dependencies.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void exportDependencies(String resourceGroupName, String mapName, ExportDependenciesRequest body) {
-        exportDependenciesAsync(resourceGroupName, mapName, body).block();
+        beginExportDependencies(resourceGroupName, mapName, body).getFinalResult();
     }
 
     /**
@@ -2138,7 +2303,7 @@ public final class MapsClientImpl implements MapsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void exportDependencies(String resourceGroupName, String mapName, ExportDependenciesRequest body,
         Context context) {
-        exportDependenciesAsync(resourceGroupName, mapName, body, context).block();
+        beginExportDependencies(resourceGroupName, mapName, body, context).getFinalResult();
     }
 
     /**
@@ -2173,28 +2338,55 @@ public final class MapsClientImpl implements MapsClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a MapsResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<MapsResourceInner> listByResourceGroupNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<MapsResourceListResult> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MapsResource list operation along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return the response of a MapsResource list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MapsResourceInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
-        Context context) {
+    private PagedResponse<MapsResourceInner> listByResourceGroupNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<MapsResourceListResult> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -2229,27 +2421,56 @@ public final class MapsClientImpl implements MapsClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a MapsResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<MapsResourceInner> listBySubscriptionNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<MapsResourceListResult> res
+            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MapsResource list operation along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return the response of a MapsResource list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MapsResourceInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
-        Context context) {
+    private PagedResponse<MapsResourceInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<MapsResourceListResult> res
+            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MapsClientImpl.class);
 }

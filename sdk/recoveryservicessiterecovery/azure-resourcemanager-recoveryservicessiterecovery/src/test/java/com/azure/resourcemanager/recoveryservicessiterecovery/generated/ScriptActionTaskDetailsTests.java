@@ -12,24 +12,24 @@ public final class ScriptActionTaskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScriptActionTaskDetails model = BinaryData.fromString(
-            "{\"instanceType\":\"ScriptActionTaskDetails\",\"name\":\"pzwwytbdjzgh\",\"path\":\"mkgfmxpqkjnp\",\"output\":\"iwntotcxmmqmts\",\"isPrimarySideScript\":true}")
+            "{\"instanceType\":\"ScriptActionTaskDetails\",\"name\":\"ctsmwpgweoqhbjq\",\"path\":\"fblerufol\",\"output\":\"shjucihbymjjvt\",\"isPrimarySideScript\":false}")
             .toObject(ScriptActionTaskDetails.class);
-        Assertions.assertEquals("pzwwytbdjzgh", model.name());
-        Assertions.assertEquals("mkgfmxpqkjnp", model.path());
-        Assertions.assertEquals("iwntotcxmmqmts", model.output());
-        Assertions.assertEquals(true, model.isPrimarySideScript());
+        Assertions.assertEquals("ctsmwpgweoqhbjq", model.name());
+        Assertions.assertEquals("fblerufol", model.path());
+        Assertions.assertEquals("shjucihbymjjvt", model.output());
+        Assertions.assertFalse(model.isPrimarySideScript());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScriptActionTaskDetails model = new ScriptActionTaskDetails().withName("pzwwytbdjzgh")
-            .withPath("mkgfmxpqkjnp")
-            .withOutput("iwntotcxmmqmts")
-            .withIsPrimarySideScript(true);
+        ScriptActionTaskDetails model = new ScriptActionTaskDetails().withName("ctsmwpgweoqhbjq")
+            .withPath("fblerufol")
+            .withOutput("shjucihbymjjvt")
+            .withIsPrimarySideScript(false);
         model = BinaryData.fromObject(model).toObject(ScriptActionTaskDetails.class);
-        Assertions.assertEquals("pzwwytbdjzgh", model.name());
-        Assertions.assertEquals("mkgfmxpqkjnp", model.path());
-        Assertions.assertEquals("iwntotcxmmqmts", model.output());
-        Assertions.assertEquals(true, model.isPrimarySideScript());
+        Assertions.assertEquals("ctsmwpgweoqhbjq", model.name());
+        Assertions.assertEquals("fblerufol", model.path());
+        Assertions.assertEquals("shjucihbymjjvt", model.output());
+        Assertions.assertFalse(model.isPrimarySideScript());
     }
 }

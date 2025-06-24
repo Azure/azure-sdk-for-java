@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class DrivingSide extends ExpandableStringEnum<DrivingSide> {
     /**
      * Left side.
      */
+    @Generated
     public static final DrivingSide LEFT = fromString("LEFT");
 
     /**
      * Right side.
      */
+    @Generated
     public static final DrivingSide RIGHT = fromString("RIGHT");
 
     /**
@@ -26,6 +29,7 @@ public final class DrivingSide extends ExpandableStringEnum<DrivingSide> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DrivingSide() {
     }
@@ -36,6 +40,7 @@ public final class DrivingSide extends ExpandableStringEnum<DrivingSide> {
      * @param name a name to look for.
      * @return the corresponding DrivingSide.
      */
+    @Generated
     public static DrivingSide fromString(String name) {
         return fromString(name, DrivingSide.class);
     }
@@ -45,6 +50,7 @@ public final class DrivingSide extends ExpandableStringEnum<DrivingSide> {
      * 
      * @return known DrivingSide values.
      */
+    @Generated
     public static Collection<DrivingSide> values() {
         return values(DrivingSide.class);
     }

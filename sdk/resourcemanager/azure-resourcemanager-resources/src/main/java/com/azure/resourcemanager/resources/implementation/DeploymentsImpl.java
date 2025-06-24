@@ -5,23 +5,32 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.ResourceManager;
-import com.azure.resourcemanager.resources.models.Deployment;
-import com.azure.resourcemanager.resources.models.Deployments;
+import com.azure.resourcemanager.resources.fluent.DeploymentsClient;
+import com.azure.resourcemanager.resources.fluent.models.DeploymentExtendedInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.SupportsGettingByResourceGroupImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
+import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
-import com.azure.resourcemanager.resources.fluent.models.DeploymentExtendedInner;
-import com.azure.resourcemanager.resources.fluent.DeploymentsClient;
+import com.azure.resourcemanager.resources.models.Deployment;
+import com.azure.resourcemanager.resources.models.Deployments;
 import reactor.core.publisher.Mono;
+
+import java.util.function.Function;
 
 /**
  * The implementation for {@link Deployments}.
  */
 public final class DeploymentsImpl extends SupportsGettingByResourceGroupImpl<Deployment>
     implements Deployments, HasManager<ResourceManager> {
+
+    private final ClientLogger logger = new ClientLogger(this.getClass());
 
     private final ResourceManager resourceManager;
 
@@ -36,7 +45,7 @@ public final class DeploymentsImpl extends SupportsGettingByResourceGroupImpl<De
 
     @Override
     public PagedIterable<Deployment> listByResourceGroup(String groupName) {
-        return PagedConverter.mapPage(this.manager().serviceClient().getDeployments().listByResourceGroup(groupName),
+        return PagedConverter.mapPage(this.manager().deploymentClient().getDeployments().listByResourceGroup(groupName),
             inner -> createFluentModel(inner));
     }
 
@@ -48,7 +57,7 @@ public final class DeploymentsImpl extends SupportsGettingByResourceGroupImpl<De
     @Override
     public Mono<Deployment> getByNameAsync(String name) {
         return this.manager()
-            .serviceClient()
+            .deploymentClient()
             .getDeployments()
             .getAtTenantScopeAsync(name)
             .map(inner -> new DeploymentImpl(inner, inner.name(), this.resourceManager));
@@ -64,7 +73,7 @@ public final class DeploymentsImpl extends SupportsGettingByResourceGroupImpl<De
             return Mono.error(new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
         }
         return this.manager()
-            .serviceClient()
+            .deploymentClient()
             .getDeployments()
             .getByResourceGroupAsync(resourceGroupName, name)
             .map(deploymentExtendedInner -> {
@@ -90,7 +99,7 @@ public final class DeploymentsImpl extends SupportsGettingByResourceGroupImpl<De
         if (CoreUtils.isNullOrEmpty(name)) {
             return Mono.error(new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
         }
-        return this.manager().serviceClient().getDeployments().deleteAsync(resourceGroupName, name);
+        return this.manager().deploymentClient().getDeployments().deleteAsync(resourceGroupName, name);
     }
 
     @Override
@@ -100,7 +109,36 @@ public final class DeploymentsImpl extends SupportsGettingByResourceGroupImpl<De
 
     @Override
     public boolean checkExistence(String resourceGroupName, String deploymentName) {
-        return this.manager().serviceClient().getDeployments().checkExistence(resourceGroupName, deploymentName);
+        return this.manager().deploymentClient().getDeployments().checkExistence(resourceGroupName, deploymentName);
+    }
+
+    @Override
+    public Accepted<Void> beginDeleteById(String id) {
+        return beginDeleteById(id, Context.NONE);
+    }
+
+    @Override
+    public Accepted<Void> beginDeleteById(String id, Context context) {
+        return beginDeleteByResourceGroup(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id),
+            context);
+    }
+
+    @Override
+    public Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name) {
+        return beginDeleteByResourceGroup(resourceGroupName, name, Context.NONE);
+    }
+
+    @Override
+    public Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, Context context) {
+        return AcceptedImpl.newAccepted(logger, this.manager().serviceClient().getHttpPipeline(),
+            this.manager().serviceClient().getDefaultPollInterval(),
+            () -> this.manager()
+                .deploymentClient()
+                .getDeployments()
+                .deleteWithResponseAsync(resourceGroupName, name)
+                .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
+                .block(),
+            Function.identity(), Void.class, null, context);
     }
 
     protected DeploymentImpl createFluentModel(String name) {
@@ -143,7 +181,7 @@ public final class DeploymentsImpl extends SupportsGettingByResourceGroupImpl<De
             return new PagedFlux<>(() -> Mono
                 .error(new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
         }
-        final DeploymentsClient client = this.manager().serviceClient().getDeployments();
+        final DeploymentsClient client = this.manager().deploymentClient().getDeployments();
         return PagedConverter.mapPage(client.listByResourceGroupAsync(resourceGroupName),
             deploymentExtendedInner -> createFluentModel(deploymentExtendedInner));
     }

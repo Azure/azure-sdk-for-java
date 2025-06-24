@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.CacheContract;
@@ -21,28 +21,28 @@ public final class CachesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"wjqvs\",\"connectionString\":\"twonadezmzxvfybx\",\"useFromLocation\":\"mrvnuvqkrrsguogk\",\"resourceId\":\"rotpyabensjflw\"},\"id\":\"ftvvqtmvif\",\"name\":\"cv\",\"type\":\"im\"}";
+            = "{\"properties\":{\"description\":\"wdxgyypm\",\"connectionString\":\"qzlmln\",\"useFromLocation\":\"rcatkuhskegdkvv\",\"resourceId\":\"l\"},\"id\":\"eshoxfzzjd\",\"name\":\"upbusxyugoz\",\"type\":\"plxzg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CacheContract response = manager.caches()
-            .define("shhovtuer")
-            .withExistingService("jjpduibsrrrq", "neqrypyur")
-            .withDescription("hbwcxybtdzycx")
-            .withConnectionString("aoegj")
-            .withUseFromLocation("gpljbnwczsraz")
-            .withResourceId("ybicqhxhjpuapas")
-            .withIfMatch("jzffp")
+            .define("dlxbaeyocpkv")
+            .withExistingService("tjnjuvtz", "j")
+            .withDescription("fdz")
+            .withConnectionString("mnpbdrcibj")
+            .withUseFromLocation("nnno")
+            .withResourceId("nhvdtuoam")
+            .withIfMatch("wckzeb")
             .create();
 
-        Assertions.assertEquals("wjqvs", response.description());
-        Assertions.assertEquals("twonadezmzxvfybx", response.connectionString());
-        Assertions.assertEquals("mrvnuvqkrrsguogk", response.useFromLocation());
-        Assertions.assertEquals("rotpyabensjflw", response.resourceId());
+        Assertions.assertEquals("wdxgyypm", response.description());
+        Assertions.assertEquals("qzlmln", response.connectionString());
+        Assertions.assertEquals("rcatkuhskegdkvv", response.useFromLocation());
+        Assertions.assertEquals("l", response.resourceId());
     }
 }

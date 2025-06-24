@@ -10,7 +10,7 @@ package com.azure.resourcemanager.apimanagement.generated;
 public final class GatewayHostnameConfigurationCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateGatewayHostnameConfiguration.json
      */
     /**
@@ -25,7 +25,7 @@ public final class GatewayHostnameConfigurationCreateOrUpdateSamples {
             .withExistingGateway("rg1", "apimService1", "gw1")
             .withHostname("*")
             .withCertificateId(
-                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert1")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert1")
             .withNegotiateClientCertificate(false)
             .withTls10Enabled(false)
             .withTls11Enabled(false)

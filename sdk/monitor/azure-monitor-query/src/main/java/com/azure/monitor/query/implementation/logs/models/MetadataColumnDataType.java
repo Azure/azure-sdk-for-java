@@ -4,6 +4,7 @@
 
 package com.azure.monitor.query.implementation.logs.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,51 +15,61 @@ public final class MetadataColumnDataType extends ExpandableStringEnum<MetadataC
     /**
      * Static value bool for MetadataColumnDataType.
      */
+    @Generated
     public static final MetadataColumnDataType BOOL = fromString("bool");
 
     /**
      * Static value datetime for MetadataColumnDataType.
      */
+    @Generated
     public static final MetadataColumnDataType DATETIME = fromString("datetime");
 
     /**
      * Static value dynamic for MetadataColumnDataType.
      */
+    @Generated
     public static final MetadataColumnDataType DYNAMIC = fromString("dynamic");
 
     /**
      * Static value int for MetadataColumnDataType.
      */
+    @Generated
     public static final MetadataColumnDataType INT = fromString("int");
 
     /**
      * Static value long for MetadataColumnDataType.
      */
+    @Generated
     public static final MetadataColumnDataType LONG = fromString("long");
 
     /**
      * Static value real for MetadataColumnDataType.
      */
+    @Generated
     public static final MetadataColumnDataType REAL = fromString("real");
 
     /**
      * Static value string for MetadataColumnDataType.
      */
+    @Generated
     public static final MetadataColumnDataType STRING = fromString("string");
 
     /**
      * Static value guid for MetadataColumnDataType.
      */
+    @Generated
     public static final MetadataColumnDataType GUID = fromString("guid");
 
     /**
      * Static value decimal for MetadataColumnDataType.
      */
+    @Generated
     public static final MetadataColumnDataType DECIMAL = fromString("decimal");
 
     /**
      * Static value timespan for MetadataColumnDataType.
      */
+    @Generated
     public static final MetadataColumnDataType TIMESPAN = fromString("timespan");
 
     /**
@@ -66,6 +77,7 @@ public final class MetadataColumnDataType extends ExpandableStringEnum<MetadataC
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public MetadataColumnDataType() {
     }
@@ -76,6 +88,7 @@ public final class MetadataColumnDataType extends ExpandableStringEnum<MetadataC
      * @param name a name to look for.
      * @return the corresponding MetadataColumnDataType.
      */
+    @Generated
     public static MetadataColumnDataType fromString(String name) {
         return fromString(name, MetadataColumnDataType.class);
     }
@@ -85,6 +98,7 @@ public final class MetadataColumnDataType extends ExpandableStringEnum<MetadataC
      * 
      * @return known MetadataColumnDataType values.
      */
+    @Generated
     public static Collection<MetadataColumnDataType> values() {
         return values(MetadataColumnDataType.class);
     }

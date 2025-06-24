@@ -12,17 +12,18 @@ public final class ApiReleaseContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApiReleaseContractInner model = BinaryData.fromString(
-            "{\"properties\":{\"apiId\":\"xmnteiwaop\",\"createdDateTime\":\"2021-04-07T17:13:30Z\",\"updatedDateTime\":\"2021-09-18T09:57:46Z\",\"notes\":\"mmxdcu\"},\"id\":\"uf\",\"name\":\"rpymzidnsez\",\"type\":\"xtbzsgfyccsne\"}")
+            "{\"properties\":{\"apiId\":\"lihkaetcktvfc\",\"createdDateTime\":\"2021-07-13T01:18:13Z\",\"updatedDateTime\":\"2021-09-20T06:05:50Z\",\"notes\":\"ymuctqhjfbebrj\"},\"id\":\"xerf\",\"name\":\"wutttxfvjrbi\",\"type\":\"phxepcyvahf\"}")
             .toObject(ApiReleaseContractInner.class);
-        Assertions.assertEquals("xmnteiwaop", model.apiId());
-        Assertions.assertEquals("mmxdcu", model.notes());
+        Assertions.assertEquals("lihkaetcktvfc", model.apiId());
+        Assertions.assertEquals("ymuctqhjfbebrj", model.notes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiReleaseContractInner model = new ApiReleaseContractInner().withApiId("xmnteiwaop").withNotes("mmxdcu");
+        ApiReleaseContractInner model
+            = new ApiReleaseContractInner().withApiId("lihkaetcktvfc").withNotes("ymuctqhjfbebrj");
         model = BinaryData.fromObject(model).toObject(ApiReleaseContractInner.class);
-        Assertions.assertEquals("xmnteiwaop", model.apiId());
-        Assertions.assertEquals("mmxdcu", model.notes());
+        Assertions.assertEquals("lihkaetcktvfc", model.apiId());
+        Assertions.assertEquals("ymuctqhjfbebrj", model.notes());
     }
 }

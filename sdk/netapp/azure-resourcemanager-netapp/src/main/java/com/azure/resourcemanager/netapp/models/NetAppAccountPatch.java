@@ -227,6 +227,29 @@ public final class NetAppAccountPatch extends Resource {
     }
 
     /**
+     * Get the ldapConfiguration property: LDAP Configuration for the account.
+     * 
+     * @return the ldapConfiguration value.
+     */
+    public LdapConfiguration ldapConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().ldapConfiguration();
+    }
+
+    /**
+     * Set the ldapConfiguration property: LDAP Configuration for the account.
+     * 
+     * @param ldapConfiguration the ldapConfiguration value to set.
+     * @return the NetAppAccountPatch object itself.
+     */
+    public NetAppAccountPatch withLdapConfiguration(LdapConfiguration ldapConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccountProperties();
+        }
+        this.innerProperties().withLdapConfiguration(ldapConfiguration);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

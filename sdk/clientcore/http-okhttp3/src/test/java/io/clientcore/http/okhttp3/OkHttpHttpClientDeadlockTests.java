@@ -4,6 +4,7 @@
 package io.clientcore.http.okhttp3;
 
 import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.http.client.HttpProtocolVersion;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
@@ -41,7 +42,7 @@ public class OkHttpHttpClientDeadlockTests {
 
     @BeforeEach
     public void startTestServer() {
-        server = new LocalTestServer((req, resp, responseBody) -> {
+        server = new LocalTestServer(HttpProtocolVersion.HTTP_1_1, false, (req, resp, responseBody) -> {
             if ("GET".equalsIgnoreCase(req.getMethod()) && GET_ENDPOINT.equals(req.getServletPath())) {
                 resp.setContentType("application/octet-stream");
                 resp.setContentLength(EXPECTED_GET_BYTES.length);
@@ -65,9 +66,9 @@ public class OkHttpHttpClientDeadlockTests {
     public void attemptToDeadlock() throws InterruptedException, ExecutionException {
         HttpClient httpClient = new OkHttpHttpClientProvider().getSharedInstance();
 
-        String endpoint = server.getHttpUri() + GET_ENDPOINT;
+        String endpoint = server.getUri() + GET_ENDPOINT;
 
-        ForkJoinPool pool = new ForkJoinPool();
+        ForkJoinPool pool = new ForkJoinPool((int) Math.ceil(Runtime.getRuntime().availableProcessors() / 2.0));
         try {
             List<Future<Response<BinaryData>>> futures = pool.invokeAll(IntStream.range(0, 100)
                 .mapToObj(ignored -> (Callable<Response<BinaryData>>) () -> httpClient

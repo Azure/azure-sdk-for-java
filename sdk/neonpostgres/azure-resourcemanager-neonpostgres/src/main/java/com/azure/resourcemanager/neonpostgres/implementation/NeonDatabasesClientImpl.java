@@ -4,17 +4,13 @@
 
 package com.azure.resourcemanager.neonpostgres.implementation;
 
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
@@ -27,16 +23,12 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.polling.PollerFlux;
-import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.neonpostgres.fluent.NeonDatabasesClient;
 import com.azure.resourcemanager.neonpostgres.fluent.models.NeonDatabaseInner;
 import com.azure.resourcemanager.neonpostgres.implementation.models.NeonDatabaseListResult;
-import java.nio.ByteBuffer;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -69,52 +61,8 @@ public final class NeonDatabasesClientImpl implements NeonDatabasesClient {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "NeonPostgresManageme")
+    @ServiceInterface(name = "NeonPostgresManagementClientNeonDatabases")
     public interface NeonDatabasesService {
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/neonDatabases/{neonDatabaseName}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NeonDatabaseInner>> get(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("organizationName") String organizationName, @PathParam("projectName") String projectName,
-            @PathParam("branchName") String branchName, @PathParam("neonDatabaseName") String neonDatabaseName,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/neonDatabases/{neonDatabaseName}")
-        @ExpectedResponses({ 200, 201 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("organizationName") String organizationName, @PathParam("projectName") String projectName,
-            @PathParam("branchName") String branchName, @PathParam("neonDatabaseName") String neonDatabaseName,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") NeonDatabaseInner resource, Context context);
-
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/neonDatabases/{neonDatabaseName}")
-        @ExpectedResponses({ 200, 202 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("organizationName") String organizationName, @PathParam("projectName") String projectName,
-            @PathParam("branchName") String branchName, @PathParam("neonDatabaseName") String neonDatabaseName,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") NeonDatabaseInner properties, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/neonDatabases/{neonDatabaseName}")
-        @ExpectedResponses({ 200, 204 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("organizationName") String organizationName, @PathParam("projectName") String projectName,
-            @PathParam("branchName") String branchName, @PathParam("neonDatabaseName") String neonDatabaseName,
-            @HeaderParam("Accept") String accept, Context context);
-
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/neonDatabases")
         @ExpectedResponses({ 200 })
@@ -126,930 +74,28 @@ public final class NeonDatabasesClientImpl implements NeonDatabasesClient {
             @PathParam("branchName") String branchName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/neonDatabases")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<NeonDatabaseListResult> listSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName, @PathParam("projectName") String projectName,
+            @PathParam("branchName") String branchName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NeonDatabaseListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
-    }
 
-    /**
-     * Get a NeonDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonDatabaseName The name of the NeonDatabase.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a NeonDatabase along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NeonDatabaseInner>> getWithResponseAsync(String resourceGroupName, String organizationName,
-        String projectName, String branchName, String neonDatabaseName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        if (branchName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter branchName is required and cannot be null."));
-        }
-        if (neonDatabaseName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter neonDatabaseName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, branchName,
-                neonDatabaseName, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get a NeonDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonDatabaseName The name of the NeonDatabase.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a NeonDatabase along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NeonDatabaseInner>> getWithResponseAsync(String resourceGroupName, String organizationName,
-        String projectName, String branchName, String neonDatabaseName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        if (branchName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter branchName is required and cannot be null."));
-        }
-        if (neonDatabaseName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter neonDatabaseName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, organizationName, projectName, branchName, neonDatabaseName, accept, context);
-    }
-
-    /**
-     * Get a NeonDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonDatabaseName The name of the NeonDatabase.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a NeonDatabase on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NeonDatabaseInner> getAsync(String resourceGroupName, String organizationName, String projectName,
-        String branchName, String neonDatabaseName) {
-        return getWithResponseAsync(resourceGroupName, organizationName, projectName, branchName, neonDatabaseName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get a NeonDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonDatabaseName The name of the NeonDatabase.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a NeonDatabase along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NeonDatabaseInner> getWithResponse(String resourceGroupName, String organizationName,
-        String projectName, String branchName, String neonDatabaseName, Context context) {
-        return getWithResponseAsync(resourceGroupName, organizationName, projectName, branchName, neonDatabaseName,
-            context).block();
-    }
-
-    /**
-     * Get a NeonDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonDatabaseName The name of the NeonDatabase.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a NeonDatabase.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NeonDatabaseInner get(String resourceGroupName, String organizationName, String projectName,
-        String branchName, String neonDatabaseName) {
-        return getWithResponse(resourceGroupName, organizationName, projectName, branchName, neonDatabaseName,
-            Context.NONE).getValue();
-    }
-
-    /**
-     * Create a NeonDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonDatabaseName The name of the NeonDatabase.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Neon Database resource type along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String organizationName, String projectName, String branchName, String neonDatabaseName,
-        NeonDatabaseInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        if (branchName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter branchName is required and cannot be null."));
-        }
-        if (neonDatabaseName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter neonDatabaseName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, branchName,
-                neonDatabaseName, contentType, accept, resource, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Create a NeonDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonDatabaseName The name of the NeonDatabase.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Neon Database resource type along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String organizationName, String projectName, String branchName, String neonDatabaseName,
-        NeonDatabaseInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        if (branchName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter branchName is required and cannot be null."));
-        }
-        if (neonDatabaseName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter neonDatabaseName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, branchName,
-            neonDatabaseName, contentType, accept, resource, context);
-    }
-
-    /**
-     * Create a NeonDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonDatabaseName The name of the NeonDatabase.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the Neon Database resource type.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NeonDatabaseInner>, NeonDatabaseInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String organizationName, String projectName, String branchName,
-        String neonDatabaseName, NeonDatabaseInner resource) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, organizationName,
-            projectName, branchName, neonDatabaseName, resource);
-        return this.client.<NeonDatabaseInner, NeonDatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
-            NeonDatabaseInner.class, NeonDatabaseInner.class, this.client.getContext());
-    }
-
-    /**
-     * Create a NeonDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonDatabaseName The name of the NeonDatabase.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the Neon Database resource type.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NeonDatabaseInner>, NeonDatabaseInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String organizationName, String projectName, String branchName,
-        String neonDatabaseName, NeonDatabaseInner resource, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, organizationName,
-            projectName, branchName, neonDatabaseName, resource, context);
-        return this.client.<NeonDatabaseInner, NeonDatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
-            NeonDatabaseInner.class, NeonDatabaseInner.class, context);
-    }
-
-    /**
-     * Create a NeonDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonDatabaseName The name of the NeonDatabase.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Neon Database resource type.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NeonDatabaseInner>, NeonDatabaseInner> beginCreateOrUpdate(String resourceGroupName,
-        String organizationName, String projectName, String branchName, String neonDatabaseName,
-        NeonDatabaseInner resource) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, organizationName, projectName, branchName, neonDatabaseName,
-                resource)
-            .getSyncPoller();
-    }
-
-    /**
-     * Create a NeonDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonDatabaseName The name of the NeonDatabase.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Neon Database resource type.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NeonDatabaseInner>, NeonDatabaseInner> beginCreateOrUpdate(String resourceGroupName,
-        String organizationName, String projectName, String branchName, String neonDatabaseName,
-        NeonDatabaseInner resource, Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, organizationName, projectName, branchName, neonDatabaseName,
-                resource, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Create a NeonDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonDatabaseName The name of the NeonDatabase.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Neon Database resource type on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NeonDatabaseInner> createOrUpdateAsync(String resourceGroupName, String organizationName,
-        String projectName, String branchName, String neonDatabaseName, NeonDatabaseInner resource) {
-        return beginCreateOrUpdateAsync(resourceGroupName, organizationName, projectName, branchName, neonDatabaseName,
-            resource).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create a NeonDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonDatabaseName The name of the NeonDatabase.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Neon Database resource type on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NeonDatabaseInner> createOrUpdateAsync(String resourceGroupName, String organizationName,
-        String projectName, String branchName, String neonDatabaseName, NeonDatabaseInner resource, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, organizationName, projectName, branchName, neonDatabaseName,
-            resource, context).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create a NeonDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonDatabaseName The name of the NeonDatabase.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Neon Database resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NeonDatabaseInner createOrUpdate(String resourceGroupName, String organizationName, String projectName,
-        String branchName, String neonDatabaseName, NeonDatabaseInner resource) {
-        return createOrUpdateAsync(resourceGroupName, organizationName, projectName, branchName, neonDatabaseName,
-            resource).block();
-    }
-
-    /**
-     * Create a NeonDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonDatabaseName The name of the NeonDatabase.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Neon Database resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NeonDatabaseInner createOrUpdate(String resourceGroupName, String organizationName, String projectName,
-        String branchName, String neonDatabaseName, NeonDatabaseInner resource, Context context) {
-        return createOrUpdateAsync(resourceGroupName, organizationName, projectName, branchName, neonDatabaseName,
-            resource, context).block();
-    }
-
-    /**
-     * Update a NeonDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonDatabaseName The name of the NeonDatabase.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Neon Database resource type along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String organizationName,
-        String projectName, String branchName, String neonDatabaseName, NeonDatabaseInner properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        if (branchName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter branchName is required and cannot be null."));
-        }
-        if (neonDatabaseName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter neonDatabaseName is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, branchName,
-                neonDatabaseName, contentType, accept, properties, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Update a NeonDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonDatabaseName The name of the NeonDatabase.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Neon Database resource type along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String organizationName,
-        String projectName, String branchName, String neonDatabaseName, NeonDatabaseInner properties, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        if (branchName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter branchName is required and cannot be null."));
-        }
-        if (neonDatabaseName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter neonDatabaseName is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, organizationName, projectName, branchName, neonDatabaseName, contentType, accept,
-            properties, context);
-    }
-
-    /**
-     * Update a NeonDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonDatabaseName The name of the NeonDatabase.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the Neon Database resource type.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NeonDatabaseInner>, NeonDatabaseInner> beginUpdateAsync(String resourceGroupName,
-        String organizationName, String projectName, String branchName, String neonDatabaseName,
-        NeonDatabaseInner properties) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, organizationName,
-            projectName, branchName, neonDatabaseName, properties);
-        return this.client.<NeonDatabaseInner, NeonDatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
-            NeonDatabaseInner.class, NeonDatabaseInner.class, this.client.getContext());
-    }
-
-    /**
-     * Update a NeonDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonDatabaseName The name of the NeonDatabase.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the Neon Database resource type.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NeonDatabaseInner>, NeonDatabaseInner> beginUpdateAsync(String resourceGroupName,
-        String organizationName, String projectName, String branchName, String neonDatabaseName,
-        NeonDatabaseInner properties, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, organizationName,
-            projectName, branchName, neonDatabaseName, properties, context);
-        return this.client.<NeonDatabaseInner, NeonDatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
-            NeonDatabaseInner.class, NeonDatabaseInner.class, context);
-    }
-
-    /**
-     * Update a NeonDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonDatabaseName The name of the NeonDatabase.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Neon Database resource type.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NeonDatabaseInner>, NeonDatabaseInner> beginUpdate(String resourceGroupName,
-        String organizationName, String projectName, String branchName, String neonDatabaseName,
-        NeonDatabaseInner properties) {
-        return this
-            .beginUpdateAsync(resourceGroupName, organizationName, projectName, branchName, neonDatabaseName,
-                properties)
-            .getSyncPoller();
-    }
-
-    /**
-     * Update a NeonDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonDatabaseName The name of the NeonDatabase.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Neon Database resource type.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NeonDatabaseInner>, NeonDatabaseInner> beginUpdate(String resourceGroupName,
-        String organizationName, String projectName, String branchName, String neonDatabaseName,
-        NeonDatabaseInner properties, Context context) {
-        return this
-            .beginUpdateAsync(resourceGroupName, organizationName, projectName, branchName, neonDatabaseName,
-                properties, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Update a NeonDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonDatabaseName The name of the NeonDatabase.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Neon Database resource type on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NeonDatabaseInner> updateAsync(String resourceGroupName, String organizationName, String projectName,
-        String branchName, String neonDatabaseName, NeonDatabaseInner properties) {
-        return beginUpdateAsync(resourceGroupName, organizationName, projectName, branchName, neonDatabaseName,
-            properties).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update a NeonDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonDatabaseName The name of the NeonDatabase.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Neon Database resource type on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NeonDatabaseInner> updateAsync(String resourceGroupName, String organizationName, String projectName,
-        String branchName, String neonDatabaseName, NeonDatabaseInner properties, Context context) {
-        return beginUpdateAsync(resourceGroupName, organizationName, projectName, branchName, neonDatabaseName,
-            properties, context).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update a NeonDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonDatabaseName The name of the NeonDatabase.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Neon Database resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NeonDatabaseInner update(String resourceGroupName, String organizationName, String projectName,
-        String branchName, String neonDatabaseName, NeonDatabaseInner properties) {
-        return updateAsync(resourceGroupName, organizationName, projectName, branchName, neonDatabaseName, properties)
-            .block();
-    }
-
-    /**
-     * Update a NeonDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonDatabaseName The name of the NeonDatabase.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Neon Database resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NeonDatabaseInner update(String resourceGroupName, String organizationName, String projectName,
-        String branchName, String neonDatabaseName, NeonDatabaseInner properties, Context context) {
-        return updateAsync(resourceGroupName, organizationName, projectName, branchName, neonDatabaseName, properties,
-            context).block();
-    }
-
-    /**
-     * Delete a NeonDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonDatabaseName The name of the NeonDatabase.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String organizationName,
-        String projectName, String branchName, String neonDatabaseName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        if (branchName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter branchName is required and cannot be null."));
-        }
-        if (neonDatabaseName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter neonDatabaseName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, branchName,
-                neonDatabaseName, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Delete a NeonDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonDatabaseName The name of the NeonDatabase.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String organizationName,
-        String projectName, String branchName, String neonDatabaseName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        if (branchName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter branchName is required and cannot be null."));
-        }
-        if (neonDatabaseName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter neonDatabaseName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, organizationName, projectName, branchName, neonDatabaseName, accept, context);
-    }
-
-    /**
-     * Delete a NeonDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonDatabaseName The name of the NeonDatabase.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String organizationName, String projectName,
-        String branchName, String neonDatabaseName) {
-        return deleteWithResponseAsync(resourceGroupName, organizationName, projectName, branchName, neonDatabaseName)
-            .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Delete a NeonDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonDatabaseName The name of the NeonDatabase.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String resourceGroupName, String organizationName, String projectName,
-        String branchName, String neonDatabaseName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, organizationName, projectName, branchName, neonDatabaseName,
-            context).block();
-    }
-
-    /**
-     * Delete a NeonDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonDatabaseName The name of the NeonDatabase.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String organizationName, String projectName, String branchName,
-        String neonDatabaseName) {
-        deleteWithResponse(resourceGroupName, organizationName, projectName, branchName, neonDatabaseName,
-            Context.NONE);
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<NeonDatabaseListResult> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -1107,54 +153,6 @@ public final class NeonDatabasesClientImpl implements NeonDatabasesClient {
      * @param organizationName Name of the Neon Organizations resource.
      * @param projectName The name of the Project.
      * @param branchName The name of the Branch.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NeonDatabase list operation along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NeonDatabaseInner>> listSinglePageAsync(String resourceGroupName,
-        String organizationName, String projectName, String branchName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        if (branchName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter branchName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, organizationName, projectName, branchName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List NeonDatabase resources by Branch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1174,18 +172,96 @@ public final class NeonDatabasesClientImpl implements NeonDatabasesClient {
      * @param organizationName Name of the Neon Organizations resource.
      * @param projectName The name of the Project.
      * @param branchName The name of the Branch.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a NeonDatabase list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<NeonDatabaseInner> listSinglePage(String resourceGroupName, String organizationName,
+        String projectName, String branchName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (organizationName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
+        }
+        if (projectName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
+        }
+        if (branchName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter branchName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<NeonDatabaseListResult> res
+            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, organizationName, projectName, branchName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List NeonDatabase resources by Branch.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NeonDatabase list operation as paginated response with {@link PagedFlux}.
+     * @return the response of a NeonDatabase list operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<NeonDatabaseInner> listAsync(String resourceGroupName, String organizationName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<NeonDatabaseInner> listSinglePage(String resourceGroupName, String organizationName,
         String projectName, String branchName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, organizationName, projectName, branchName, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (organizationName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
+        }
+        if (projectName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
+        }
+        if (branchName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter branchName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<NeonDatabaseListResult> res
+            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, organizationName, projectName, branchName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1203,7 +279,8 @@ public final class NeonDatabasesClientImpl implements NeonDatabasesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NeonDatabaseInner> list(String resourceGroupName, String organizationName, String projectName,
         String branchName) {
-        return new PagedIterable<>(listAsync(resourceGroupName, organizationName, projectName, branchName));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, organizationName, projectName, branchName),
+            nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -1222,7 +299,9 @@ public final class NeonDatabasesClientImpl implements NeonDatabasesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NeonDatabaseInner> list(String resourceGroupName, String organizationName, String projectName,
         String branchName, Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, organizationName, projectName, branchName, context));
+        return new PagedIterable<>(
+            () -> listSinglePage(resourceGroupName, organizationName, projectName, branchName, context),
+            nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1255,26 +334,56 @@ public final class NeonDatabasesClientImpl implements NeonDatabasesClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a NeonDatabase list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<NeonDatabaseInner> listNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<NeonDatabaseListResult> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NeonDatabase list operation along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return the response of a NeonDatabase list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NeonDatabaseInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<NeonDatabaseInner> listNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<NeonDatabaseListResult> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NeonDatabasesClientImpl.class);
 }

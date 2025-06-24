@@ -361,7 +361,7 @@ public class RegionScopedSessionContainerTest {
                 true,
                 "range_0",
                 null,
-                "2#14#2=21#3=15#7=1"
+                "2#13#2=21#3=15#7=1"
             }
         };
     }
@@ -1688,7 +1688,7 @@ public class RegionScopedSessionContainerTest {
                 .thenReturn(readEndpointsInUnmodifiableList);
 
             Mockito
-                .when(globalEndpointManagerMock.getApplicableWriteEndpoints(Mockito.anyList()))
+                .when(globalEndpointManagerMock.getApplicableWriteRegionalRoutingContexts(Mockito.anyList()))
                 .thenReturn(new UnmodifiableList<>(consolidatedWriteRegionalEndpointRoutingContexts));
 
             Mockito

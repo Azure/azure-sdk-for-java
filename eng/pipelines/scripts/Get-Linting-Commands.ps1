@@ -60,9 +60,10 @@ $diffFiles = (git diff $TargetBranch $SourceBranch --name-only --relative)
 $runAll = $diffFiles -contains 'eng/code-quality-reports/ci.yml' `
     -or $diffFiles -contains 'eng/pipelines/code-quality-reports.yml' `
     -or $diffFiles -contains 'eng/pipelines/scripts/Get-Linting-Commands.ps1' `
-    -or $diffFiles -contains 'eng/pipelines/scripts/Get-Linting-Reports.ps1'
+    -or $diffFiles -contains 'eng/pipelines/scripts/Get-Linting-Reports.ps1' `
+    -or $diffFiles -contains 'eng/code-quality-reports/pom.xml'
 if ($runAll) {
-    Write-Host "PR changed the CI configuration, running all linting steps."
+    Write-Host "PR changed the CI or project configuration, running all linting steps."
     Write-Host "##vso[task.setvariable variable=${LintingPipelineVariable};]-Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.failBuildOnProblemsFound=false"
     Write-Host "##vso[task.setvariable variable=RunLinting;]true"
     exit 0

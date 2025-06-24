@@ -4,16 +4,19 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.exception.UnexpectedLengthException;
+import com.azure.core.http.HttpAuthorization;
 import com.azure.core.http.HttpRange;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.utils.TestUtils;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
+import com.azure.storage.blob.models.FileShareTokenIntent;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -35,6 +38,7 @@ import com.azure.storage.blob.options.ListPageRangesDiffOptions;
 import com.azure.storage.blob.options.ListPageRangesOptions;
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
+import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.Constants;
@@ -50,6 +54,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
@@ -1715,5 +1720,40 @@ public class PageBlobApiTests extends BlobTestBase {
             = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl()).audience(audience).buildPageBlobClient();
 
         assertTrue(aadBlob.exists());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
+    @Test
+    @LiveOnly
+    public void uploadPagesFromUriSourceBearerTokenFilesSource() throws IOException {
+        BlobServiceClient blobServiceClient = getOAuthServiceClient();
+        BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(generateContainerName());
+        containerClient.create();
+
+        byte[] data = getRandomByteArray(Constants.KB);
+
+        //Create destination page blob
+        PageBlobClient destBlob = containerClient.getBlobClient(generateBlobName()).getPageBlobClient();
+        destBlob.create(Constants.KB);
+
+        // Set up source URL with bearer token
+        String shareName = generateContainerName();
+        String sourceUrl = createFileAndDirectoryWithoutFileShareDependency(data, shareName);
+
+        PageBlobUploadPagesFromUrlOptions options
+            = new PageBlobUploadPagesFromUrlOptions(new PageRange().setStart(0).setEnd(Constants.KB - 1), sourceUrl);
+        options.setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
+        options.setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()));
+
+        // Upload page from URL with bearer token
+        destBlob.uploadPagesFromUrlWithResponse(options, null, Context.NONE);
+
+        // Validate data was appended correctly
+        ByteArrayOutputStream downloadedData = new ByteArrayOutputStream();
+        destBlob.downloadStream(downloadedData);
+        TestUtils.assertArraysEqual(data, downloadedData.toByteArray());
+
+        //cleanup
+        deleteFileShareWithoutDependency(shareName);
     }
 }

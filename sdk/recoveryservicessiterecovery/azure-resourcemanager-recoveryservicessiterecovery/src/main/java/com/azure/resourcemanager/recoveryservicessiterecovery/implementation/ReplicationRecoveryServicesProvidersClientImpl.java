@@ -79,30 +79,28 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RecoveryServicesProviderCollection>> listByReplicationFabrics(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationRecoveryServicesProviders/{providerName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RecoveryServicesProviderInner>> get(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
-            @PathParam("providerName") String providerName, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName, @PathParam("providerName") String providerName,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationRecoveryServicesProviders/{providerName}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
-            @PathParam("providerName") String providerName,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName, @PathParam("providerName") String providerName,
             @BodyParam("application/json") AddRecoveryServicesProviderInput addProviderInput,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -111,39 +109,39 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> purge(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
-            @PathParam("providerName") String providerName, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName, @PathParam("providerName") String providerName,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationRecoveryServicesProviders/{providerName}/refreshProvider")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> refreshProvider(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
-            @PathParam("providerName") String providerName, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName, @PathParam("providerName") String providerName,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationRecoveryServicesProviders/{providerName}/remove")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
-            @PathParam("providerName") String providerName, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName, @PathParam("providerName") String providerName,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryServicesProviders")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RecoveryServicesProviderCollection>> list(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -167,8 +165,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * Lists the registered recovery services providers for the specified fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -177,17 +175,17 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoveryServicesProviderInner>>
-        listByReplicationFabricsSinglePageAsync(String resourceName, String resourceGroupName, String fabricName) {
+        listByReplicationFabricsSinglePageAsync(String resourceGroupName, String resourceName, String fabricName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -200,7 +198,7 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
         return FluxUtil
             .withContext(
                 context -> service.listByReplicationFabrics(this.client.getEndpoint(), this.client.getApiVersion(),
-                    resourceName, resourceGroupName, this.client.getSubscriptionId(), fabricName, accept, context))
+                    resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, accept, context))
             .<PagedResponse<RecoveryServicesProviderInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -211,8 +209,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * Lists the registered recovery services providers for the specified fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -222,17 +220,17 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoveryServicesProviderInner>> listByReplicationFabricsSinglePageAsync(
-        String resourceName, String resourceGroupName, String fabricName, Context context) {
+        String resourceGroupName, String resourceName, String fabricName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -244,8 +242,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByReplicationFabrics(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), fabricName, accept, context)
+            .listByReplicationFabrics(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+                resourceName, this.client.getSubscriptionId(), fabricName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -255,8 +253,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * Lists the registered recovery services providers for the specified fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -264,10 +262,10 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * @return collection of providers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RecoveryServicesProviderInner> listByReplicationFabricsAsync(String resourceName,
-        String resourceGroupName, String fabricName) {
+    private PagedFlux<RecoveryServicesProviderInner> listByReplicationFabricsAsync(String resourceGroupName,
+        String resourceName, String fabricName) {
         return new PagedFlux<>(
-            () -> listByReplicationFabricsSinglePageAsync(resourceName, resourceGroupName, fabricName),
+            () -> listByReplicationFabricsSinglePageAsync(resourceGroupName, resourceName, fabricName),
             nextLink -> listByReplicationFabricsNextSinglePageAsync(nextLink));
     }
 
@@ -276,8 +274,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * Lists the registered recovery services providers for the specified fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -286,10 +284,10 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * @return collection of providers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RecoveryServicesProviderInner> listByReplicationFabricsAsync(String resourceName,
-        String resourceGroupName, String fabricName, Context context) {
+    private PagedFlux<RecoveryServicesProviderInner> listByReplicationFabricsAsync(String resourceGroupName,
+        String resourceName, String fabricName, Context context) {
         return new PagedFlux<>(
-            () -> listByReplicationFabricsSinglePageAsync(resourceName, resourceGroupName, fabricName, context),
+            () -> listByReplicationFabricsSinglePageAsync(resourceGroupName, resourceName, fabricName, context),
             nextLink -> listByReplicationFabricsNextSinglePageAsync(nextLink, context));
     }
 
@@ -298,8 +296,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * Lists the registered recovery services providers for the specified fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -307,9 +305,9 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * @return collection of providers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecoveryServicesProviderInner> listByReplicationFabrics(String resourceName,
-        String resourceGroupName, String fabricName) {
-        return new PagedIterable<>(listByReplicationFabricsAsync(resourceName, resourceGroupName, fabricName));
+    public PagedIterable<RecoveryServicesProviderInner> listByReplicationFabrics(String resourceGroupName,
+        String resourceName, String fabricName) {
+        return new PagedIterable<>(listByReplicationFabricsAsync(resourceGroupName, resourceName, fabricName));
     }
 
     /**
@@ -317,8 +315,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * Lists the registered recovery services providers for the specified fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -327,9 +325,9 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * @return collection of providers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecoveryServicesProviderInner> listByReplicationFabrics(String resourceName,
-        String resourceGroupName, String fabricName, Context context) {
-        return new PagedIterable<>(listByReplicationFabricsAsync(resourceName, resourceGroupName, fabricName, context));
+    public PagedIterable<RecoveryServicesProviderInner> listByReplicationFabrics(String resourceGroupName,
+        String resourceName, String fabricName, Context context) {
+        return new PagedIterable<>(listByReplicationFabricsAsync(resourceGroupName, resourceName, fabricName, context));
     }
 
     /**
@@ -337,8 +335,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * Gets the details of registered recovery services provider.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param providerName Recovery services provider name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -348,726 +346,18 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RecoveryServicesProviderInner>> getWithResponseAsync(String resourceName,
-        String resourceGroupName, String fabricName, String providerName) {
+    private Mono<Response<RecoveryServicesProviderInner>> getWithResponseAsync(String resourceGroupName,
+        String resourceName, String fabricName, String providerName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (providerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter providerName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), fabricName, providerName, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets the details of a recovery services provider.
-     * 
-     * Gets the details of registered recovery services provider.
-     * 
-     * @param resourceName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name.
-     * @param providerName Recovery services provider name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of registered recovery services provider along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RecoveryServicesProviderInner>> getWithResponseAsync(String resourceName,
-        String resourceGroupName, String fabricName, String providerName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (providerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter providerName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
-            this.client.getSubscriptionId(), fabricName, providerName, accept, context);
-    }
-
-    /**
-     * Gets the details of a recovery services provider.
-     * 
-     * Gets the details of registered recovery services provider.
-     * 
-     * @param resourceName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name.
-     * @param providerName Recovery services provider name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of registered recovery services provider on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RecoveryServicesProviderInner> getAsync(String resourceName, String resourceGroupName,
-        String fabricName, String providerName) {
-        return getWithResponseAsync(resourceName, resourceGroupName, fabricName, providerName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets the details of a recovery services provider.
-     * 
-     * Gets the details of registered recovery services provider.
-     * 
-     * @param resourceName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name.
-     * @param providerName Recovery services provider name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of registered recovery services provider along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecoveryServicesProviderInner> getWithResponse(String resourceName, String resourceGroupName,
-        String fabricName, String providerName, Context context) {
-        return getWithResponseAsync(resourceName, resourceGroupName, fabricName, providerName, context).block();
-    }
-
-    /**
-     * Gets the details of a recovery services provider.
-     * 
-     * Gets the details of registered recovery services provider.
-     * 
-     * @param resourceName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name.
-     * @param providerName Recovery services provider name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of registered recovery services provider.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecoveryServicesProviderInner get(String resourceName, String resourceGroupName, String fabricName,
-        String providerName) {
-        return getWithResponse(resourceName, resourceGroupName, fabricName, providerName, Context.NONE).getValue();
-    }
-
-    /**
-     * Adds a recovery services provider.
-     * 
-     * The operation to add a recovery services provider.
-     * 
-     * @param resourceName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name.
-     * @param providerName Recovery services provider name.
-     * @param addProviderInput Add provider input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provider details along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceName, String resourceGroupName,
-        String fabricName, String providerName, AddRecoveryServicesProviderInput addProviderInput) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (providerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter providerName is required and cannot be null."));
-        }
-        if (addProviderInput == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter addProviderInput is required and cannot be null."));
-        } else {
-            addProviderInput.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), fabricName, providerName, addProviderInput, accept,
-                context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Adds a recovery services provider.
-     * 
-     * The operation to add a recovery services provider.
-     * 
-     * @param resourceName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name.
-     * @param providerName Recovery services provider name.
-     * @param addProviderInput Add provider input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provider details along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceName, String resourceGroupName,
-        String fabricName, String providerName, AddRecoveryServicesProviderInput addProviderInput, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (providerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter providerName is required and cannot be null."));
-        }
-        if (addProviderInput == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter addProviderInput is required and cannot be null."));
-        } else {
-            addProviderInput.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
-            this.client.getSubscriptionId(), fabricName, providerName, addProviderInput, accept, context);
-    }
-
-    /**
-     * Adds a recovery services provider.
-     * 
-     * The operation to add a recovery services provider.
-     * 
-     * @param resourceName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name.
-     * @param providerName Recovery services provider name.
-     * @param addProviderInput Add provider input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of provider details.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<RecoveryServicesProviderInner>, RecoveryServicesProviderInner> beginCreateAsync(
-        String resourceName, String resourceGroupName, String fabricName, String providerName,
-        AddRecoveryServicesProviderInput addProviderInput) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createWithResponseAsync(resourceName, resourceGroupName, fabricName, providerName, addProviderInput);
-        return this.client.<RecoveryServicesProviderInner, RecoveryServicesProviderInner>getLroResult(mono,
-            this.client.getHttpPipeline(), RecoveryServicesProviderInner.class, RecoveryServicesProviderInner.class,
-            this.client.getContext());
-    }
-
-    /**
-     * Adds a recovery services provider.
-     * 
-     * The operation to add a recovery services provider.
-     * 
-     * @param resourceName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name.
-     * @param providerName Recovery services provider name.
-     * @param addProviderInput Add provider input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of provider details.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<RecoveryServicesProviderInner>, RecoveryServicesProviderInner> beginCreateAsync(
-        String resourceName, String resourceGroupName, String fabricName, String providerName,
-        AddRecoveryServicesProviderInput addProviderInput, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceName, resourceGroupName, fabricName,
-            providerName, addProviderInput, context);
-        return this.client.<RecoveryServicesProviderInner, RecoveryServicesProviderInner>getLroResult(mono,
-            this.client.getHttpPipeline(), RecoveryServicesProviderInner.class, RecoveryServicesProviderInner.class,
-            context);
-    }
-
-    /**
-     * Adds a recovery services provider.
-     * 
-     * The operation to add a recovery services provider.
-     * 
-     * @param resourceName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name.
-     * @param providerName Recovery services provider name.
-     * @param addProviderInput Add provider input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of provider details.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RecoveryServicesProviderInner>, RecoveryServicesProviderInner> beginCreate(
-        String resourceName, String resourceGroupName, String fabricName, String providerName,
-        AddRecoveryServicesProviderInput addProviderInput) {
-        return this.beginCreateAsync(resourceName, resourceGroupName, fabricName, providerName, addProviderInput)
-            .getSyncPoller();
-    }
-
-    /**
-     * Adds a recovery services provider.
-     * 
-     * The operation to add a recovery services provider.
-     * 
-     * @param resourceName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name.
-     * @param providerName Recovery services provider name.
-     * @param addProviderInput Add provider input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of provider details.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RecoveryServicesProviderInner>, RecoveryServicesProviderInner> beginCreate(
-        String resourceName, String resourceGroupName, String fabricName, String providerName,
-        AddRecoveryServicesProviderInput addProviderInput, Context context) {
-        return this
-            .beginCreateAsync(resourceName, resourceGroupName, fabricName, providerName, addProviderInput, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Adds a recovery services provider.
-     * 
-     * The operation to add a recovery services provider.
-     * 
-     * @param resourceName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name.
-     * @param providerName Recovery services provider name.
-     * @param addProviderInput Add provider input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provider details on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RecoveryServicesProviderInner> createAsync(String resourceName, String resourceGroupName,
-        String fabricName, String providerName, AddRecoveryServicesProviderInput addProviderInput) {
-        return beginCreateAsync(resourceName, resourceGroupName, fabricName, providerName, addProviderInput).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Adds a recovery services provider.
-     * 
-     * The operation to add a recovery services provider.
-     * 
-     * @param resourceName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name.
-     * @param providerName Recovery services provider name.
-     * @param addProviderInput Add provider input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provider details on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RecoveryServicesProviderInner> createAsync(String resourceName, String resourceGroupName,
-        String fabricName, String providerName, AddRecoveryServicesProviderInput addProviderInput, Context context) {
-        return beginCreateAsync(resourceName, resourceGroupName, fabricName, providerName, addProviderInput, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Adds a recovery services provider.
-     * 
-     * The operation to add a recovery services provider.
-     * 
-     * @param resourceName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name.
-     * @param providerName Recovery services provider name.
-     * @param addProviderInput Add provider input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provider details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecoveryServicesProviderInner create(String resourceName, String resourceGroupName, String fabricName,
-        String providerName, AddRecoveryServicesProviderInput addProviderInput) {
-        return createAsync(resourceName, resourceGroupName, fabricName, providerName, addProviderInput).block();
-    }
-
-    /**
-     * Adds a recovery services provider.
-     * 
-     * The operation to add a recovery services provider.
-     * 
-     * @param resourceName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name.
-     * @param providerName Recovery services provider name.
-     * @param addProviderInput Add provider input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provider details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecoveryServicesProviderInner create(String resourceName, String resourceGroupName, String fabricName,
-        String providerName, AddRecoveryServicesProviderInput addProviderInput, Context context) {
-        return createAsync(resourceName, resourceGroupName, fabricName, providerName, addProviderInput, context)
-            .block();
-    }
-
-    /**
-     * Purges recovery service provider from fabric.
-     * 
-     * The operation to purge(force delete) a recovery services provider from the vault.
-     * 
-     * @param resourceName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name.
-     * @param providerName Recovery services provider name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> purgeWithResponseAsync(String resourceName, String resourceGroupName,
-        String fabricName, String providerName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (providerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter providerName is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.purge(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), fabricName, providerName, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Purges recovery service provider from fabric.
-     * 
-     * The operation to purge(force delete) a recovery services provider from the vault.
-     * 
-     * @param resourceName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name.
-     * @param providerName Recovery services provider name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> purgeWithResponseAsync(String resourceName, String resourceGroupName,
-        String fabricName, String providerName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (providerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter providerName is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service.purge(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
-            this.client.getSubscriptionId(), fabricName, providerName, context);
-    }
-
-    /**
-     * Purges recovery service provider from fabric.
-     * 
-     * The operation to purge(force delete) a recovery services provider from the vault.
-     * 
-     * @param resourceName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name.
-     * @param providerName Recovery services provider name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginPurgeAsync(String resourceName, String resourceGroupName,
-        String fabricName, String providerName) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = purgeWithResponseAsync(resourceName, resourceGroupName, fabricName, providerName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
-    }
-
-    /**
-     * Purges recovery service provider from fabric.
-     * 
-     * The operation to purge(force delete) a recovery services provider from the vault.
-     * 
-     * @param resourceName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name.
-     * @param providerName Recovery services provider name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginPurgeAsync(String resourceName, String resourceGroupName,
-        String fabricName, String providerName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = purgeWithResponseAsync(resourceName, resourceGroupName, fabricName, providerName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Purges recovery service provider from fabric.
-     * 
-     * The operation to purge(force delete) a recovery services provider from the vault.
-     * 
-     * @param resourceName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name.
-     * @param providerName Recovery services provider name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginPurge(String resourceName, String resourceGroupName,
-        String fabricName, String providerName) {
-        return this.beginPurgeAsync(resourceName, resourceGroupName, fabricName, providerName).getSyncPoller();
-    }
-
-    /**
-     * Purges recovery service provider from fabric.
-     * 
-     * The operation to purge(force delete) a recovery services provider from the vault.
-     * 
-     * @param resourceName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name.
-     * @param providerName Recovery services provider name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginPurge(String resourceName, String resourceGroupName,
-        String fabricName, String providerName, Context context) {
-        return this.beginPurgeAsync(resourceName, resourceGroupName, fabricName, providerName, context).getSyncPoller();
-    }
-
-    /**
-     * Purges recovery service provider from fabric.
-     * 
-     * The operation to purge(force delete) a recovery services provider from the vault.
-     * 
-     * @param resourceName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name.
-     * @param providerName Recovery services provider name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> purgeAsync(String resourceName, String resourceGroupName, String fabricName,
-        String providerName) {
-        return beginPurgeAsync(resourceName, resourceGroupName, fabricName, providerName).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Purges recovery service provider from fabric.
-     * 
-     * The operation to purge(force delete) a recovery services provider from the vault.
-     * 
-     * @param resourceName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name.
-     * @param providerName Recovery services provider name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> purgeAsync(String resourceName, String resourceGroupName, String fabricName, String providerName,
-        Context context) {
-        return beginPurgeAsync(resourceName, resourceGroupName, fabricName, providerName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Purges recovery service provider from fabric.
-     * 
-     * The operation to purge(force delete) a recovery services provider from the vault.
-     * 
-     * @param resourceName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name.
-     * @param providerName Recovery services provider name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void purge(String resourceName, String resourceGroupName, String fabricName, String providerName) {
-        purgeAsync(resourceName, resourceGroupName, fabricName, providerName).block();
-    }
-
-    /**
-     * Purges recovery service provider from fabric.
-     * 
-     * The operation to purge(force delete) a recovery services provider from the vault.
-     * 
-     * @param resourceName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name.
-     * @param providerName Recovery services provider name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void purge(String resourceName, String resourceGroupName, String fabricName, String providerName,
-        Context context) {
-        purgeAsync(resourceName, resourceGroupName, fabricName, providerName, context).block();
-    }
-
-    /**
-     * Refresh details from the recovery services provider.
-     * 
-     * The operation to refresh the information from the recovery services provider.
-     * 
-     * @param resourceName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name.
-     * @param providerName Recovery services provider name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provider details along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> refreshProviderWithResponseAsync(String resourceName,
-        String resourceGroupName, String fabricName, String providerName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -1082,39 +372,40 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.refreshProvider(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                    resourceGroupName, this.client.getSubscriptionId(), fabricName, providerName, accept, context))
+                context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+                    resourceName, this.client.getSubscriptionId(), fabricName, providerName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Refresh details from the recovery services provider.
+     * Gets the details of a recovery services provider.
      * 
-     * The operation to refresh the information from the recovery services provider.
+     * Gets the details of registered recovery services provider.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param providerName Recovery services provider name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provider details along with {@link Response} on successful completion of {@link Mono}.
+     * @return the details of registered recovery services provider along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> refreshProviderWithResponseAsync(String resourceName,
-        String resourceGroupName, String fabricName, String providerName, Context context) {
+    private Mono<Response<RecoveryServicesProviderInner>> getWithResponseAsync(String resourceGroupName,
+        String resourceName, String fabricName, String providerName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -1128,8 +419,625 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.refreshProvider(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-            resourceGroupName, this.client.getSubscriptionId(), fabricName, providerName, accept, context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
+            this.client.getSubscriptionId(), fabricName, providerName, accept, context);
+    }
+
+    /**
+     * Gets the details of a recovery services provider.
+     * 
+     * Gets the details of registered recovery services provider.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param providerName Recovery services provider name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of registered recovery services provider on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<RecoveryServicesProviderInner> getAsync(String resourceGroupName, String resourceName,
+        String fabricName, String providerName) {
+        return getWithResponseAsync(resourceGroupName, resourceName, fabricName, providerName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the details of a recovery services provider.
+     * 
+     * Gets the details of registered recovery services provider.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param providerName Recovery services provider name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of registered recovery services provider along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RecoveryServicesProviderInner> getWithResponse(String resourceGroupName, String resourceName,
+        String fabricName, String providerName, Context context) {
+        return getWithResponseAsync(resourceGroupName, resourceName, fabricName, providerName, context).block();
+    }
+
+    /**
+     * Gets the details of a recovery services provider.
+     * 
+     * Gets the details of registered recovery services provider.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param providerName Recovery services provider name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of registered recovery services provider.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RecoveryServicesProviderInner get(String resourceGroupName, String resourceName, String fabricName,
+        String providerName) {
+        return getWithResponse(resourceGroupName, resourceName, fabricName, providerName, Context.NONE).getValue();
+    }
+
+    /**
+     * Adds a recovery services provider.
+     * 
+     * The operation to add a recovery services provider.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param providerName Recovery services provider name.
+     * @param addProviderInput Add provider input.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provider details along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String resourceName,
+        String fabricName, String providerName, AddRecoveryServicesProviderInput addProviderInput) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (fabricName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
+        }
+        if (providerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter providerName is required and cannot be null."));
+        }
+        if (addProviderInput == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter addProviderInput is required and cannot be null."));
+        } else {
+            addProviderInput.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, providerName,
+                addProviderInput, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Adds a recovery services provider.
+     * 
+     * The operation to add a recovery services provider.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param providerName Recovery services provider name.
+     * @param addProviderInput Add provider input.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provider details along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String resourceName,
+        String fabricName, String providerName, AddRecoveryServicesProviderInput addProviderInput, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (fabricName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
+        }
+        if (providerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter providerName is required and cannot be null."));
+        }
+        if (addProviderInput == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter addProviderInput is required and cannot be null."));
+        } else {
+            addProviderInput.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
+            this.client.getSubscriptionId(), fabricName, providerName, addProviderInput, accept, context);
+    }
+
+    /**
+     * Adds a recovery services provider.
+     * 
+     * The operation to add a recovery services provider.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param providerName Recovery services provider name.
+     * @param addProviderInput Add provider input.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of provider details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<RecoveryServicesProviderInner>, RecoveryServicesProviderInner> beginCreateAsync(
+        String resourceGroupName, String resourceName, String fabricName, String providerName,
+        AddRecoveryServicesProviderInput addProviderInput) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, resourceName, fabricName, providerName, addProviderInput);
+        return this.client.<RecoveryServicesProviderInner, RecoveryServicesProviderInner>getLroResult(mono,
+            this.client.getHttpPipeline(), RecoveryServicesProviderInner.class, RecoveryServicesProviderInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Adds a recovery services provider.
+     * 
+     * The operation to add a recovery services provider.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param providerName Recovery services provider name.
+     * @param addProviderInput Add provider input.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of provider details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<RecoveryServicesProviderInner>, RecoveryServicesProviderInner> beginCreateAsync(
+        String resourceGroupName, String resourceName, String fabricName, String providerName,
+        AddRecoveryServicesProviderInput addProviderInput, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, resourceName, fabricName,
+            providerName, addProviderInput, context);
+        return this.client.<RecoveryServicesProviderInner, RecoveryServicesProviderInner>getLroResult(mono,
+            this.client.getHttpPipeline(), RecoveryServicesProviderInner.class, RecoveryServicesProviderInner.class,
+            context);
+    }
+
+    /**
+     * Adds a recovery services provider.
+     * 
+     * The operation to add a recovery services provider.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param providerName Recovery services provider name.
+     * @param addProviderInput Add provider input.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of provider details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<RecoveryServicesProviderInner>, RecoveryServicesProviderInner> beginCreate(
+        String resourceGroupName, String resourceName, String fabricName, String providerName,
+        AddRecoveryServicesProviderInput addProviderInput) {
+        return this.beginCreateAsync(resourceGroupName, resourceName, fabricName, providerName, addProviderInput)
+            .getSyncPoller();
+    }
+
+    /**
+     * Adds a recovery services provider.
+     * 
+     * The operation to add a recovery services provider.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param providerName Recovery services provider name.
+     * @param addProviderInput Add provider input.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of provider details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<RecoveryServicesProviderInner>, RecoveryServicesProviderInner> beginCreate(
+        String resourceGroupName, String resourceName, String fabricName, String providerName,
+        AddRecoveryServicesProviderInput addProviderInput, Context context) {
+        return this
+            .beginCreateAsync(resourceGroupName, resourceName, fabricName, providerName, addProviderInput, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Adds a recovery services provider.
+     * 
+     * The operation to add a recovery services provider.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param providerName Recovery services provider name.
+     * @param addProviderInput Add provider input.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provider details on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<RecoveryServicesProviderInner> createAsync(String resourceGroupName, String resourceName,
+        String fabricName, String providerName, AddRecoveryServicesProviderInput addProviderInput) {
+        return beginCreateAsync(resourceGroupName, resourceName, fabricName, providerName, addProviderInput).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Adds a recovery services provider.
+     * 
+     * The operation to add a recovery services provider.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param providerName Recovery services provider name.
+     * @param addProviderInput Add provider input.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provider details on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<RecoveryServicesProviderInner> createAsync(String resourceGroupName, String resourceName,
+        String fabricName, String providerName, AddRecoveryServicesProviderInput addProviderInput, Context context) {
+        return beginCreateAsync(resourceGroupName, resourceName, fabricName, providerName, addProviderInput, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Adds a recovery services provider.
+     * 
+     * The operation to add a recovery services provider.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param providerName Recovery services provider name.
+     * @param addProviderInput Add provider input.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provider details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RecoveryServicesProviderInner create(String resourceGroupName, String resourceName, String fabricName,
+        String providerName, AddRecoveryServicesProviderInput addProviderInput) {
+        return createAsync(resourceGroupName, resourceName, fabricName, providerName, addProviderInput).block();
+    }
+
+    /**
+     * Adds a recovery services provider.
+     * 
+     * The operation to add a recovery services provider.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param providerName Recovery services provider name.
+     * @param addProviderInput Add provider input.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provider details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RecoveryServicesProviderInner create(String resourceGroupName, String resourceName, String fabricName,
+        String providerName, AddRecoveryServicesProviderInput addProviderInput, Context context) {
+        return createAsync(resourceGroupName, resourceName, fabricName, providerName, addProviderInput, context)
+            .block();
+    }
+
+    /**
+     * Purges recovery service provider from fabric.
+     * 
+     * The operation to purge(force delete) a recovery services provider from the vault.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param providerName Recovery services provider name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> purgeWithResponseAsync(String resourceGroupName, String resourceName,
+        String fabricName, String providerName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (fabricName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
+        }
+        if (providerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter providerName is required and cannot be null."));
+        }
+        return FluxUtil
+            .withContext(context -> service.purge(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, providerName, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Purges recovery service provider from fabric.
+     * 
+     * The operation to purge(force delete) a recovery services provider from the vault.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param providerName Recovery services provider name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> purgeWithResponseAsync(String resourceGroupName, String resourceName,
+        String fabricName, String providerName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (fabricName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
+        }
+        if (providerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter providerName is required and cannot be null."));
+        }
+        context = this.client.mergeContext(context);
+        return service.purge(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
+            this.client.getSubscriptionId(), fabricName, providerName, context);
+    }
+
+    /**
+     * Purges recovery service provider from fabric.
+     * 
+     * The operation to purge(force delete) a recovery services provider from the vault.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param providerName Recovery services provider name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginPurgeAsync(String resourceGroupName, String resourceName,
+        String fabricName, String providerName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = purgeWithResponseAsync(resourceGroupName, resourceName, fabricName, providerName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Purges recovery service provider from fabric.
+     * 
+     * The operation to purge(force delete) a recovery services provider from the vault.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param providerName Recovery services provider name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginPurgeAsync(String resourceGroupName, String resourceName,
+        String fabricName, String providerName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = purgeWithResponseAsync(resourceGroupName, resourceName, fabricName, providerName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Purges recovery service provider from fabric.
+     * 
+     * The operation to purge(force delete) a recovery services provider from the vault.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param providerName Recovery services provider name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginPurge(String resourceGroupName, String resourceName,
+        String fabricName, String providerName) {
+        return this.beginPurgeAsync(resourceGroupName, resourceName, fabricName, providerName).getSyncPoller();
+    }
+
+    /**
+     * Purges recovery service provider from fabric.
+     * 
+     * The operation to purge(force delete) a recovery services provider from the vault.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param providerName Recovery services provider name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginPurge(String resourceGroupName, String resourceName,
+        String fabricName, String providerName, Context context) {
+        return this.beginPurgeAsync(resourceGroupName, resourceName, fabricName, providerName, context).getSyncPoller();
+    }
+
+    /**
+     * Purges recovery service provider from fabric.
+     * 
+     * The operation to purge(force delete) a recovery services provider from the vault.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param providerName Recovery services provider name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> purgeAsync(String resourceGroupName, String resourceName, String fabricName,
+        String providerName) {
+        return beginPurgeAsync(resourceGroupName, resourceName, fabricName, providerName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Purges recovery service provider from fabric.
+     * 
+     * The operation to purge(force delete) a recovery services provider from the vault.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param providerName Recovery services provider name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> purgeAsync(String resourceGroupName, String resourceName, String fabricName, String providerName,
+        Context context) {
+        return beginPurgeAsync(resourceGroupName, resourceName, fabricName, providerName, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Purges recovery service provider from fabric.
+     * 
+     * The operation to purge(force delete) a recovery services provider from the vault.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param providerName Recovery services provider name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void purge(String resourceGroupName, String resourceName, String fabricName, String providerName) {
+        purgeAsync(resourceGroupName, resourceName, fabricName, providerName).block();
+    }
+
+    /**
+     * Purges recovery service provider from fabric.
+     * 
+     * The operation to purge(force delete) a recovery services provider from the vault.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param providerName Recovery services provider name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void purge(String resourceGroupName, String resourceName, String fabricName, String providerName,
+        Context context) {
+        purgeAsync(resourceGroupName, resourceName, fabricName, providerName, context).block();
     }
 
     /**
@@ -1137,8 +1045,99 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * The operation to refresh the information from the recovery services provider.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param providerName Recovery services provider name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provider details along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> refreshProviderWithResponseAsync(String resourceGroupName,
+        String resourceName, String fabricName, String providerName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (fabricName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
+        }
+        if (providerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter providerName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.refreshProvider(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, providerName, accept,
+                context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Refresh details from the recovery services provider.
+     * 
+     * The operation to refresh the information from the recovery services provider.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param providerName Recovery services provider name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provider details along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> refreshProviderWithResponseAsync(String resourceGroupName,
+        String resourceName, String fabricName, String providerName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (fabricName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
+        }
+        if (providerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter providerName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.refreshProvider(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+            resourceName, this.client.getSubscriptionId(), fabricName, providerName, accept, context);
+    }
+
+    /**
+     * Refresh details from the recovery services provider.
+     * 
+     * The operation to refresh the information from the recovery services provider.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param providerName Recovery services provider name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1148,10 +1147,10 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RecoveryServicesProviderInner>, RecoveryServicesProviderInner>
-        beginRefreshProviderAsync(String resourceName, String resourceGroupName, String fabricName,
+        beginRefreshProviderAsync(String resourceGroupName, String resourceName, String fabricName,
             String providerName) {
         Mono<Response<Flux<ByteBuffer>>> mono
-            = refreshProviderWithResponseAsync(resourceName, resourceGroupName, fabricName, providerName);
+            = refreshProviderWithResponseAsync(resourceGroupName, resourceName, fabricName, providerName);
         return this.client.<RecoveryServicesProviderInner, RecoveryServicesProviderInner>getLroResult(mono,
             this.client.getHttpPipeline(), RecoveryServicesProviderInner.class, RecoveryServicesProviderInner.class,
             this.client.getContext());
@@ -1162,8 +1161,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * The operation to refresh the information from the recovery services provider.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param providerName Recovery services provider name.
      * @param context The context to associate with this operation.
@@ -1174,11 +1173,11 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RecoveryServicesProviderInner>, RecoveryServicesProviderInner>
-        beginRefreshProviderAsync(String resourceName, String resourceGroupName, String fabricName, String providerName,
+        beginRefreshProviderAsync(String resourceGroupName, String resourceName, String fabricName, String providerName,
             Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
-            = refreshProviderWithResponseAsync(resourceName, resourceGroupName, fabricName, providerName, context);
+            = refreshProviderWithResponseAsync(resourceGroupName, resourceName, fabricName, providerName, context);
         return this.client.<RecoveryServicesProviderInner, RecoveryServicesProviderInner>getLroResult(mono,
             this.client.getHttpPipeline(), RecoveryServicesProviderInner.class, RecoveryServicesProviderInner.class,
             context);
@@ -1189,8 +1188,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * The operation to refresh the information from the recovery services provider.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param providerName Recovery services provider name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1200,8 +1199,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryServicesProviderInner>, RecoveryServicesProviderInner>
-        beginRefreshProvider(String resourceName, String resourceGroupName, String fabricName, String providerName) {
-        return this.beginRefreshProviderAsync(resourceName, resourceGroupName, fabricName, providerName)
+        beginRefreshProvider(String resourceGroupName, String resourceName, String fabricName, String providerName) {
+        return this.beginRefreshProviderAsync(resourceGroupName, resourceName, fabricName, providerName)
             .getSyncPoller();
     }
 
@@ -1210,8 +1209,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * The operation to refresh the information from the recovery services provider.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param providerName Recovery services provider name.
      * @param context The context to associate with this operation.
@@ -1222,8 +1221,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryServicesProviderInner>, RecoveryServicesProviderInner> beginRefreshProvider(
-        String resourceName, String resourceGroupName, String fabricName, String providerName, Context context) {
-        return this.beginRefreshProviderAsync(resourceName, resourceGroupName, fabricName, providerName, context)
+        String resourceGroupName, String resourceName, String fabricName, String providerName, Context context) {
+        return this.beginRefreshProviderAsync(resourceGroupName, resourceName, fabricName, providerName, context)
             .getSyncPoller();
     }
 
@@ -1232,8 +1231,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * The operation to refresh the information from the recovery services provider.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param providerName Recovery services provider name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1242,9 +1241,9 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * @return provider details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RecoveryServicesProviderInner> refreshProviderAsync(String resourceName, String resourceGroupName,
+    private Mono<RecoveryServicesProviderInner> refreshProviderAsync(String resourceGroupName, String resourceName,
         String fabricName, String providerName) {
-        return beginRefreshProviderAsync(resourceName, resourceGroupName, fabricName, providerName).last()
+        return beginRefreshProviderAsync(resourceGroupName, resourceName, fabricName, providerName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1253,8 +1252,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * The operation to refresh the information from the recovery services provider.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param providerName Recovery services provider name.
      * @param context The context to associate with this operation.
@@ -1264,9 +1263,9 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * @return provider details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RecoveryServicesProviderInner> refreshProviderAsync(String resourceName, String resourceGroupName,
+    private Mono<RecoveryServicesProviderInner> refreshProviderAsync(String resourceGroupName, String resourceName,
         String fabricName, String providerName, Context context) {
-        return beginRefreshProviderAsync(resourceName, resourceGroupName, fabricName, providerName, context).last()
+        return beginRefreshProviderAsync(resourceGroupName, resourceName, fabricName, providerName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1275,8 +1274,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * The operation to refresh the information from the recovery services provider.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param providerName Recovery services provider name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1285,9 +1284,9 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * @return provider details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecoveryServicesProviderInner refreshProvider(String resourceName, String resourceGroupName,
+    public RecoveryServicesProviderInner refreshProvider(String resourceGroupName, String resourceName,
         String fabricName, String providerName) {
-        return refreshProviderAsync(resourceName, resourceGroupName, fabricName, providerName).block();
+        return refreshProviderAsync(resourceGroupName, resourceName, fabricName, providerName).block();
     }
 
     /**
@@ -1295,8 +1294,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * The operation to refresh the information from the recovery services provider.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param providerName Recovery services provider name.
      * @param context The context to associate with this operation.
@@ -1306,9 +1305,9 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * @return provider details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecoveryServicesProviderInner refreshProvider(String resourceName, String resourceGroupName,
+    public RecoveryServicesProviderInner refreshProvider(String resourceGroupName, String resourceName,
         String fabricName, String providerName, Context context) {
-        return refreshProviderAsync(resourceName, resourceGroupName, fabricName, providerName, context).block();
+        return refreshProviderAsync(resourceGroupName, resourceName, fabricName, providerName, context).block();
     }
 
     /**
@@ -1318,8 +1317,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * The operation to removes/delete(unregister) a recovery services provider from the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param providerName Recovery services provider name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1328,18 +1327,18 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String providerName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -1352,8 +1351,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
             return Mono.error(new IllegalArgumentException("Parameter providerName is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), fabricName, providerName, context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, providerName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1364,8 +1363,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * The operation to removes/delete(unregister) a recovery services provider from the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param providerName Recovery services provider name.
      * @param context The context to associate with this operation.
@@ -1375,18 +1374,18 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String providerName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -1399,7 +1398,7 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
             return Mono.error(new IllegalArgumentException("Parameter providerName is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
             this.client.getSubscriptionId(), fabricName, providerName, context);
     }
 
@@ -1410,8 +1409,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * The operation to removes/delete(unregister) a recovery services provider from the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param providerName Recovery services provider name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1420,10 +1419,10 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceName, String resourceGroupName,
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName,
         String fabricName, String providerName) {
         Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceName, resourceGroupName, fabricName, providerName);
+            = deleteWithResponseAsync(resourceGroupName, resourceName, fabricName, providerName);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
     }
@@ -1435,8 +1434,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * The operation to removes/delete(unregister) a recovery services provider from the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param providerName Recovery services provider name.
      * @param context The context to associate with this operation.
@@ -1446,11 +1445,11 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceName, String resourceGroupName,
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName,
         String fabricName, String providerName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceName, resourceGroupName, fabricName, providerName, context);
+            = deleteWithResponseAsync(resourceGroupName, resourceName, fabricName, providerName, context);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             context);
     }
@@ -1462,8 +1461,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * The operation to removes/delete(unregister) a recovery services provider from the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param providerName Recovery services provider name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1472,9 +1471,9 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName,
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String fabricName, String providerName) {
-        return this.beginDeleteAsync(resourceName, resourceGroupName, fabricName, providerName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, resourceName, fabricName, providerName).getSyncPoller();
     }
 
     /**
@@ -1484,8 +1483,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * The operation to removes/delete(unregister) a recovery services provider from the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param providerName Recovery services provider name.
      * @param context The context to associate with this operation.
@@ -1495,9 +1494,9 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName,
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String fabricName, String providerName, Context context) {
-        return this.beginDeleteAsync(resourceName, resourceGroupName, fabricName, providerName, context)
+        return this.beginDeleteAsync(resourceGroupName, resourceName, fabricName, providerName, context)
             .getSyncPoller();
     }
 
@@ -1508,8 +1507,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * The operation to removes/delete(unregister) a recovery services provider from the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param providerName Recovery services provider name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1518,9 +1517,9 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String fabricName,
         String providerName) {
-        return beginDeleteAsync(resourceName, resourceGroupName, fabricName, providerName).last()
+        return beginDeleteAsync(resourceGroupName, resourceName, fabricName, providerName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1531,8 +1530,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * The operation to removes/delete(unregister) a recovery services provider from the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param providerName Recovery services provider name.
      * @param context The context to associate with this operation.
@@ -1542,9 +1541,9 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String fabricName,
         String providerName, Context context) {
-        return beginDeleteAsync(resourceName, resourceGroupName, fabricName, providerName, context).last()
+        return beginDeleteAsync(resourceGroupName, resourceName, fabricName, providerName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1555,8 +1554,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * The operation to removes/delete(unregister) a recovery services provider from the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param providerName Recovery services provider name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1564,8 +1563,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceName, String resourceGroupName, String fabricName, String providerName) {
-        deleteAsync(resourceName, resourceGroupName, fabricName, providerName).block();
+    public void delete(String resourceGroupName, String resourceName, String fabricName, String providerName) {
+        deleteAsync(resourceGroupName, resourceName, fabricName, providerName).block();
     }
 
     /**
@@ -1575,8 +1574,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * The operation to removes/delete(unregister) a recovery services provider from the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param providerName Recovery services provider name.
      * @param context The context to associate with this operation.
@@ -1585,9 +1584,9 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceName, String resourceGroupName, String fabricName, String providerName,
+    public void delete(String resourceGroupName, String resourceName, String fabricName, String providerName,
         Context context) {
-        deleteAsync(resourceName, resourceGroupName, fabricName, providerName, context).block();
+        deleteAsync(resourceGroupName, resourceName, fabricName, providerName, context).block();
     }
 
     /**
@@ -1595,26 +1594,26 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * Lists the registered recovery services providers in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of providers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RecoveryServicesProviderInner>> listSinglePageAsync(String resourceName,
-        String resourceGroupName) {
+    private Mono<PagedResponse<RecoveryServicesProviderInner>> listSinglePageAsync(String resourceGroupName,
+        String resourceName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -1622,8 +1621,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), accept, context))
             .<PagedResponse<RecoveryServicesProviderInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1634,8 +1633,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * Lists the registered recovery services providers in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1643,18 +1642,18 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * @return collection of providers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RecoveryServicesProviderInner>> listSinglePageAsync(String resourceName,
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<RecoveryServicesProviderInner>> listSinglePageAsync(String resourceGroupName,
+        String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -1663,7 +1662,7 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
                 this.client.getSubscriptionId(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
@@ -1674,16 +1673,16 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * Lists the registered recovery services providers in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of providers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RecoveryServicesProviderInner> listAsync(String resourceName, String resourceGroupName) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceName, resourceGroupName),
+    private PagedFlux<RecoveryServicesProviderInner> listAsync(String resourceGroupName, String resourceName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -1692,8 +1691,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * Lists the registered recovery services providers in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1701,9 +1700,9 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * @return collection of providers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RecoveryServicesProviderInner> listAsync(String resourceName, String resourceGroupName,
+    private PagedFlux<RecoveryServicesProviderInner> listAsync(String resourceGroupName, String resourceName,
         Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceName, resourceGroupName, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -1712,16 +1711,16 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * Lists the registered recovery services providers in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of providers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecoveryServicesProviderInner> list(String resourceName, String resourceGroupName) {
-        return new PagedIterable<>(listAsync(resourceName, resourceGroupName));
+    public PagedIterable<RecoveryServicesProviderInner> list(String resourceGroupName, String resourceName) {
+        return new PagedIterable<>(listAsync(resourceGroupName, resourceName));
     }
 
     /**
@@ -1729,8 +1728,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * 
      * Lists the registered recovery services providers in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1738,9 +1737,9 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
      * @return collection of providers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecoveryServicesProviderInner> list(String resourceName, String resourceGroupName,
+    public PagedIterable<RecoveryServicesProviderInner> list(String resourceGroupName, String resourceName,
         Context context) {
-        return new PagedIterable<>(listAsync(resourceName, resourceGroupName, context));
+        return new PagedIterable<>(listAsync(resourceGroupName, resourceName, context));
     }
 
     /**

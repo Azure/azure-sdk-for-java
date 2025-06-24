@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,51 +22,61 @@ public final class LibraryResourceInfo implements JsonSerializable<LibraryResour
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
      * resourceType}/{resourceName}
      */
+    @Generated
     private String id;
 
     /*
      * record Id of the library/package.
      */
+    @Generated
     private Integer recordId;
 
     /*
      * Provisioning status of the library/package.
      */
+    @Generated
     private String state;
 
     /*
      * The creation time of the library/package.
      */
+    @Generated
     private String created;
 
     /*
      * The last updated time of the library/package.
      */
+    @Generated
     private String changed;
 
     /*
      * The type of the resource. E.g. LibraryArtifact
      */
+    @Generated
     private String type;
 
     /*
      * Name of the library/package.
      */
+    @Generated
     private String name;
 
     /*
      * Operation Id of the operation performed on library/package.
      */
+    @Generated
     private String operationId;
 
     /*
      * artifact Id of the library/package.
      */
+    @Generated
     private String artifactId;
 
     /**
      * Creates an instance of LibraryResourceInfo class.
      */
+    @Generated
     public LibraryResourceInfo() {
     }
 
@@ -75,6 +86,7 @@ public final class LibraryResourceInfo implements JsonSerializable<LibraryResour
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -84,6 +96,7 @@ public final class LibraryResourceInfo implements JsonSerializable<LibraryResour
      * 
      * @return the recordId value.
      */
+    @Generated
     public Integer getRecordId() {
         return this.recordId;
     }
@@ -93,6 +106,7 @@ public final class LibraryResourceInfo implements JsonSerializable<LibraryResour
      * 
      * @return the state value.
      */
+    @Generated
     public String getState() {
         return this.state;
     }
@@ -102,6 +116,7 @@ public final class LibraryResourceInfo implements JsonSerializable<LibraryResour
      * 
      * @return the created value.
      */
+    @Generated
     public String getCreated() {
         return this.created;
     }
@@ -111,6 +126,7 @@ public final class LibraryResourceInfo implements JsonSerializable<LibraryResour
      * 
      * @return the changed value.
      */
+    @Generated
     public String getChanged() {
         return this.changed;
     }
@@ -120,6 +136,7 @@ public final class LibraryResourceInfo implements JsonSerializable<LibraryResour
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -129,6 +146,7 @@ public final class LibraryResourceInfo implements JsonSerializable<LibraryResour
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -138,6 +156,7 @@ public final class LibraryResourceInfo implements JsonSerializable<LibraryResour
      * 
      * @return the operationId value.
      */
+    @Generated
     public String getOperationId() {
         return this.operationId;
     }
@@ -147,6 +166,7 @@ public final class LibraryResourceInfo implements JsonSerializable<LibraryResour
      * 
      * @return the artifactId value.
      */
+    @Generated
     public String getArtifactId() {
         return this.artifactId;
     }
@@ -154,6 +174,7 @@ public final class LibraryResourceInfo implements JsonSerializable<LibraryResour
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -168,6 +189,7 @@ public final class LibraryResourceInfo implements JsonSerializable<LibraryResour
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the LibraryResourceInfo.
      */
+    @Generated
     public static LibraryResourceInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LibraryResourceInfo deserializedLibraryResourceInfo = new LibraryResourceInfo();

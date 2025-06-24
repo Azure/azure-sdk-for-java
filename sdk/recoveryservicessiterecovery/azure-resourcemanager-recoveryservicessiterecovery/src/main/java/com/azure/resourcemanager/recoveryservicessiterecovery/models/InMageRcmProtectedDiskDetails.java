@@ -37,6 +37,11 @@ public final class InMageRcmProtectedDiskDetails implements JsonSerializable<InM
     private Long capacityInBytes;
 
     /*
+     * The disk state.
+     */
+    private DiskState diskState;
+
+    /*
      * The log storage account ARM Id.
      */
     private String logStorageAccountId;
@@ -91,6 +96,16 @@ public final class InMageRcmProtectedDiskDetails implements JsonSerializable<InM
      */
     private InMageRcmSyncDetails resyncDetails;
 
+    /*
+     * The custom target Azure disk name.
+     */
+    private String customTargetDiskName;
+
+    /*
+     * The logical sector size (in bytes), 512 by default.
+     */
+    private Integer sectorSizeInBytes;
+
     /**
      * Creates an instance of InMageRcmProtectedDiskDetails class.
      */
@@ -131,6 +146,15 @@ public final class InMageRcmProtectedDiskDetails implements JsonSerializable<InM
      */
     public Long capacityInBytes() {
         return this.capacityInBytes;
+    }
+
+    /**
+     * Get the diskState property: The disk state.
+     * 
+     * @return the diskState value.
+     */
+    public DiskState diskState() {
+        return this.diskState;
     }
 
     /**
@@ -266,6 +290,46 @@ public final class InMageRcmProtectedDiskDetails implements JsonSerializable<InM
     }
 
     /**
+     * Get the customTargetDiskName property: The custom target Azure disk name.
+     * 
+     * @return the customTargetDiskName value.
+     */
+    public String customTargetDiskName() {
+        return this.customTargetDiskName;
+    }
+
+    /**
+     * Set the customTargetDiskName property: The custom target Azure disk name.
+     * 
+     * @param customTargetDiskName the customTargetDiskName value to set.
+     * @return the InMageRcmProtectedDiskDetails object itself.
+     */
+    public InMageRcmProtectedDiskDetails withCustomTargetDiskName(String customTargetDiskName) {
+        this.customTargetDiskName = customTargetDiskName;
+        return this;
+    }
+
+    /**
+     * Get the sectorSizeInBytes property: The logical sector size (in bytes), 512 by default.
+     * 
+     * @return the sectorSizeInBytes value.
+     */
+    public Integer sectorSizeInBytes() {
+        return this.sectorSizeInBytes;
+    }
+
+    /**
+     * Set the sectorSizeInBytes property: The logical sector size (in bytes), 512 by default.
+     * 
+     * @param sectorSizeInBytes the sectorSizeInBytes value to set.
+     * @return the InMageRcmProtectedDiskDetails object itself.
+     */
+    public InMageRcmProtectedDiskDetails withSectorSizeInBytes(Integer sectorSizeInBytes) {
+        this.sectorSizeInBytes = sectorSizeInBytes;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -288,6 +352,8 @@ public final class InMageRcmProtectedDiskDetails implements JsonSerializable<InM
         jsonWriter.writeStringField("diskType", this.diskType == null ? null : this.diskType.toString());
         jsonWriter.writeJsonField("irDetails", this.irDetails);
         jsonWriter.writeJsonField("resyncDetails", this.resyncDetails);
+        jsonWriter.writeStringField("customTargetDiskName", this.customTargetDiskName);
+        jsonWriter.writeNumberField("sectorSizeInBytes", this.sectorSizeInBytes);
         return jsonWriter.writeEndObject();
     }
 
@@ -315,6 +381,8 @@ public final class InMageRcmProtectedDiskDetails implements JsonSerializable<InM
                     deserializedInMageRcmProtectedDiskDetails.isOSDisk = reader.getString();
                 } else if ("capacityInBytes".equals(fieldName)) {
                     deserializedInMageRcmProtectedDiskDetails.capacityInBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("diskState".equals(fieldName)) {
+                    deserializedInMageRcmProtectedDiskDetails.diskState = DiskState.fromString(reader.getString());
                 } else if ("logStorageAccountId".equals(fieldName)) {
                     deserializedInMageRcmProtectedDiskDetails.logStorageAccountId = reader.getString();
                 } else if ("diskEncryptionSetId".equals(fieldName)) {
@@ -339,6 +407,11 @@ public final class InMageRcmProtectedDiskDetails implements JsonSerializable<InM
                     deserializedInMageRcmProtectedDiskDetails.irDetails = InMageRcmSyncDetails.fromJson(reader);
                 } else if ("resyncDetails".equals(fieldName)) {
                     deserializedInMageRcmProtectedDiskDetails.resyncDetails = InMageRcmSyncDetails.fromJson(reader);
+                } else if ("customTargetDiskName".equals(fieldName)) {
+                    deserializedInMageRcmProtectedDiskDetails.customTargetDiskName = reader.getString();
+                } else if ("sectorSizeInBytes".equals(fieldName)) {
+                    deserializedInMageRcmProtectedDiskDetails.sectorSizeInBytes
+                        = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }

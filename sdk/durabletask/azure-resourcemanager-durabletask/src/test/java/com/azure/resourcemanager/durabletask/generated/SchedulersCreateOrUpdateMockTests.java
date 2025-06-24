@@ -26,7 +26,7 @@ public final class SchedulersCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"endpoint\":\"z\",\"ipAllowlist\":[\"vvtpgvdfgio\",\"kftutqxlngxlefg\",\"gnxkrxdqmidtth\"],\"sku\":{\"name\":\"rvqdra\",\"capacity\":1546969178,\"redundancyState\":\"None\"}},\"location\":\"gehoqfbowskany\",\"tags\":{\"ynhz\":\"lcuiywgqywgndr\",\"pec\":\"pphrcgynco\",\"lzevgbmqjqab\":\"vmmcoofs\",\"mivkwlzuvcc\":\"y\"},\"id\":\"wnfnbacf\",\"name\":\"onlebxetqgtzxdpn\",\"type\":\"bqqwxrj\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"endpoint\":\"nwsubisnj\",\"ipAllowlist\":[\"pmng\",\"zscxaqwo\",\"chcbonqvpkvlrxnj\",\"ase\"],\"sku\":{\"name\":\"pheoflokeyy\",\"capacity\":354708232,\"redundancyState\":\"Zone\"}},\"location\":\"lwtgrhpdj\",\"tags\":{\"lhbxxhejjzzvdud\":\"masxazjpqyegu\",\"pwlbjnpg\":\"wdslfhotwmcy\",\"nltyfsoppusuesnz\":\"cftadeh\"},\"id\":\"dejbavo\",\"name\":\"xzdmohctb\",\"type\":\"vudwx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,19 +36,21 @@ public final class SchedulersCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Scheduler response = manager.schedulers()
-            .define("dkexxppofm")
-            .withRegion("ddntwndei")
-            .withExistingResourceGroup("qsycbkbfkgu")
-            .withTags(mapOf("pzaoqvuhr", "w", "hjq", "cffcyddglmj", "hix", "wpyeicxmqciwqvh", "og", "igdtopbob"))
-            .withProperties(new SchedulerProperties().withIpAllowlist(Arrays.asList("ocjjxhvpmouexh"))
-                .withSku(new SchedulerSku().withName("zxibqeoj").withCapacity(799299355)))
+            .define("a")
+            .withRegion("gehoqfbowskany")
+            .withExistingResourceGroup("w")
+            .withTags(
+                mapOf("ynhz", "lcuiywgqywgndr", "pec", "pphrcgynco", "lzevgbmqjqab", "vmmcoofs", "mivkwlzuvcc", "y"))
+            .withProperties(new SchedulerProperties()
+                .withIpAllowlist(Arrays.asList("vvtpgvdfgio", "kftutqxlngxlefg", "gnxkrxdqmidtth"))
+                .withSku(new SchedulerSku().withName("rvqdra").withCapacity(1546969178)))
             .create();
 
-        Assertions.assertEquals("gehoqfbowskany", response.location());
-        Assertions.assertEquals("lcuiywgqywgndr", response.tags().get("ynhz"));
-        Assertions.assertEquals("vvtpgvdfgio", response.properties().ipAllowlist().get(0));
-        Assertions.assertEquals("rvqdra", response.properties().sku().name());
-        Assertions.assertEquals(1546969178, response.properties().sku().capacity());
+        Assertions.assertEquals("lwtgrhpdj", response.location());
+        Assertions.assertEquals("masxazjpqyegu", response.tags().get("lhbxxhejjzzvdud"));
+        Assertions.assertEquals("pmng", response.properties().ipAllowlist().get(0));
+        Assertions.assertEquals("pheoflokeyy", response.properties().sku().name());
+        Assertions.assertEquals(354708232, response.properties().sku().capacity());
     }
 
     // Use "Map.of" if available

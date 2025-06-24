@@ -27,8 +27,7 @@ public final class VolumesReInitializeReplicationMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.volumes()
-            .reInitializeReplication("otngfdgu", "eyzihgrky", "i", "absnmfpp", com.azure.core.util.Context.NONE);
+        manager.volumes().reInitializeReplication("tmwwi", "h", "hfqpofv", "bcblemb", com.azure.core.util.Context.NONE);
 
     }
 }

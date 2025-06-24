@@ -54,6 +54,15 @@ public class ShouldRetryResult {
             false);
     }
 
+    public static ShouldRetryResult noRetry(Exception exception, Quadruple<Boolean, Boolean, Duration, Integer> policyArg) {
+        return new ShouldRetryResult(
+            null,
+            exception,
+            false,
+            policyArg,
+            false);
+    }
+
     public static ShouldRetryResult retryAfter(Duration dur,
                                                Quadruple<Boolean, Boolean, Duration, Integer> policyArg) {
         Utils.checkNotNullOrThrow(dur, "duration", "cannot be null");

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.ApiVersionSetContract;
@@ -22,30 +22,30 @@ public final class ApiVersionSetsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"fjczgohvpsuwi\",\"versioningScheme\":\"Header\",\"description\":\"xczbyfkoc\",\"versionQueryName\":\"zdct\",\"versionHeaderName\":\"lwscrngtwgxrol\"},\"id\":\"vplksdksutac\",\"name\":\"ctihavishbv\",\"type\":\"hxvpmqququxlp\"}";
+            = "{\"properties\":{\"displayName\":\"i\",\"versioningScheme\":\"Header\",\"description\":\"lx\",\"versionQueryName\":\"b\",\"versionHeaderName\":\"ewfzvvpay\"},\"id\":\"qwh\",\"name\":\"dcyandblkb\",\"type\":\"tcvpvdfmo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ApiVersionSetContract response = manager.apiVersionSets()
-            .define("oduomtxjbrixym")
-            .withExistingService("lmxoz", "sn")
-            .withDisplayName("ikkqyvurhwishyfm")
+            .define("tkajqhsnsej")
+            .withExistingService("ywjiaaosla", "agwaakktbjort")
+            .withDisplayName("islxyljzbk")
             .withVersioningScheme(VersioningScheme.HEADER)
-            .withDescription("qfev")
-            .withVersionQueryName("yakcktehognsd")
-            .withVersionHeaderName("kkdede")
-            .withIfMatch("umtcqxmyvkxixypa")
+            .withDescription("fjwxgvtkjctvrpea")
+            .withVersionQueryName("zkvfccozvqxsph")
+            .withVersionHeaderName("aitrms")
+            .withIfMatch("mwrv")
             .create();
 
-        Assertions.assertEquals("fjczgohvpsuwi", response.displayName());
+        Assertions.assertEquals("i", response.displayName());
         Assertions.assertEquals(VersioningScheme.HEADER, response.versioningScheme());
-        Assertions.assertEquals("xczbyfkoc", response.description());
-        Assertions.assertEquals("zdct", response.versionQueryName());
-        Assertions.assertEquals("lwscrngtwgxrol", response.versionHeaderName());
+        Assertions.assertEquals("lx", response.description());
+        Assertions.assertEquals("b", response.versionQueryName());
+        Assertions.assertEquals("ewfzvvpay", response.versionHeaderName());
     }
 }

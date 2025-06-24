@@ -60,9 +60,9 @@ public final class StorageClassificationMappingImpl
         return this.serviceManager;
     }
 
-    private String resourceName;
-
     private String resourceGroupName;
+
+    private String resourceName;
 
     private String fabricName;
 
@@ -72,10 +72,10 @@ public final class StorageClassificationMappingImpl
 
     private StorageClassificationMappingInput createPairingInput;
 
-    public StorageClassificationMappingImpl withExistingReplicationStorageClassification(String resourceName,
-        String resourceGroupName, String fabricName, String storageClassificationName) {
-        this.resourceName = resourceName;
+    public StorageClassificationMappingImpl withExistingReplicationStorageClassification(String resourceGroupName,
+        String resourceName, String fabricName, String storageClassificationName) {
         this.resourceGroupName = resourceGroupName;
+        this.resourceName = resourceName;
         this.fabricName = fabricName;
         this.storageClassificationName = storageClassificationName;
         return this;
@@ -84,7 +84,7 @@ public final class StorageClassificationMappingImpl
     public StorageClassificationMapping create() {
         this.innerObject = serviceManager.serviceClient()
             .getStorageClassificationMappings()
-            .create(resourceName, resourceGroupName, fabricName, storageClassificationName,
+            .create(resourceGroupName, resourceName, fabricName, storageClassificationName,
                 storageClassificationMappingName, createPairingInput, Context.NONE);
         return this;
     }
@@ -92,7 +92,7 @@ public final class StorageClassificationMappingImpl
     public StorageClassificationMapping create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getStorageClassificationMappings()
-            .create(resourceName, resourceGroupName, fabricName, storageClassificationName,
+            .create(resourceGroupName, resourceName, fabricName, storageClassificationName,
                 storageClassificationMappingName, createPairingInput, context);
         return this;
     }
@@ -108,7 +108,7 @@ public final class StorageClassificationMappingImpl
     public StorageClassificationMapping refresh() {
         this.innerObject = serviceManager.serviceClient()
             .getStorageClassificationMappings()
-            .getWithResponse(resourceName, resourceGroupName, fabricName, storageClassificationName,
+            .getWithResponse(resourceGroupName, resourceName, fabricName, storageClassificationName,
                 storageClassificationMappingName, Context.NONE)
             .getValue();
         return this;
@@ -117,7 +117,7 @@ public final class StorageClassificationMappingImpl
     public StorageClassificationMapping refresh(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getStorageClassificationMappings()
-            .getWithResponse(resourceName, resourceGroupName, fabricName, storageClassificationName,
+            .getWithResponse(resourceGroupName, resourceName, fabricName, storageClassificationName,
                 storageClassificationMappingName, context)
             .getValue();
         return this;

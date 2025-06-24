@@ -11,7 +11,7 @@ public final class WikiCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WikiCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"documents\":[{\"documentationId\":\"banf\"}]},\"id\":\"ndscxmxeatk\",\"name\":\"bmwnrdjyibqb\",\"type\":\"aomhjrmkuhmaxl\"}],\"nextLink\":\"lfihcj\"}")
+            "{\"value\":[{\"properties\":{\"documents\":[{\"documentationId\":\"ncq\"},{\"documentationId\":\"zqicqchygtvxbyja\"},{\"documentationId\":\"pubdpkx\"}]},\"id\":\"qvgx\",\"name\":\"aodetv\",\"type\":\"hkxdxuwsaifmc\"},{\"properties\":{\"documents\":[{\"documentationId\":\"zlehgcvkbcknjolg\"}]},\"id\":\"y\",\"name\":\"xpvelszerqzevxo\",\"type\":\"eintxwaljglzobl\"},{\"properties\":{\"documents\":[{\"documentationId\":\"r\"},{\"documentationId\":\"lhm\"}]},\"id\":\"yqbhd\",\"name\":\"afjrqpjiyrqjcrg\",\"type\":\"xwmzwdfkbnrz\"},{\"properties\":{\"documents\":[{\"documentationId\":\"tbqctqjfgx\"}]},\"id\":\"saetgzdgvpyig\",\"name\":\"aqqilzdcduwjoed\",\"type\":\"ngucaifpaurww\"}],\"nextLink\":\"l\"}")
             .toObject(WikiCollection.class);
     }
 

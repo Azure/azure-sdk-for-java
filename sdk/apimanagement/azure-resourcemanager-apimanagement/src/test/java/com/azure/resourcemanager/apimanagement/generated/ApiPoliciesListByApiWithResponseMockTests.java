@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.PolicyCollection;
@@ -22,22 +22,22 @@ public final class ApiPoliciesListByApiWithResponseMockTests {
     @Test
     public void testListByApiWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"value\":\"wvmbjecfwlb\",\"format\":\"xml-link\"},\"id\":\"kfrwxohlydsnjz\",\"name\":\"chiypbfhm\",\"type\":\"hi\"},{\"properties\":{\"value\":\"qozewbr\",\"format\":\"rawxml\"},\"id\":\"zgkbr\",\"name\":\"uxboufqnnqbjxgj\",\"type\":\"srerukbuudriz\"},{\"properties\":{\"value\":\"wkjxlaaced\",\"format\":\"rawxml\"},\"id\":\"e\",\"name\":\"ssybzbe\",\"type\":\"gbnrommkiqhypwt\"}],\"count\":5358576253422068660,\"nextLink\":\"yut\"}";
+            = "{\"value\":[{\"properties\":{\"value\":\"gjgylsacagifl\",\"format\":\"xml-link\"},\"id\":\"got\",\"name\":\"hzwtoidhbxitrapw\",\"type\":\"hlutjs\"},{\"properties\":{\"value\":\"elsriemvupmeako\",\"format\":\"xml-link\"},\"id\":\"ycvldeehcbsaip\",\"name\":\"suo\",\"type\":\"kegbvbbdledf\"}],\"count\":5320218898969932419,\"nextLink\":\"luazzx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PolicyCollection response = manager.apiPolicies()
-            .listByApiWithResponse("mwdz", "zlhcu", "x", com.azure.core.util.Context.NONE)
+            .listByApiWithResponse("fc", "cpvfqjckmp", "yvlhnhhcik", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wvmbjecfwlb", response.value().get(0).value());
+        Assertions.assertEquals("gjgylsacagifl", response.value().get(0).value());
         Assertions.assertEquals(PolicyContentFormat.XML_LINK, response.value().get(0).format());
-        Assertions.assertEquals(5358576253422068660L, response.count());
-        Assertions.assertEquals("yut", response.nextLink());
+        Assertions.assertEquals(5320218898969932419L, response.count());
+        Assertions.assertEquals("luazzx", response.nextLink());
     }
 }

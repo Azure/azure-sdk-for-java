@@ -13,84 +13,84 @@ public final class ReportRecordContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReportRecordContractInner model = BinaryData.fromString(
-            "{\"name\":\"cxbeuuqutkzwtjww\",\"timestamp\":\"2021-06-11T12:35:16Z\",\"interval\":\"tijcxfnondegjdy\",\"country\":\"qkkkbjuckcatuqbh\",\"region\":\"wcnxtpzdlyseid\",\"zip\":\"akatprytg\",\"userId\":\"zbqfdpfawrptvcsh\",\"productId\":\"utzcttbqgdirda\",\"apiId\":\"tzjgcfjfxtbwj\",\"operationId\":\"rmuydgfttmdofg\",\"apiRegion\":\"agfuoftnxod\",\"subscriptionId\":\"m\",\"callCountSuccess\":1870102340,\"callCountBlocked\":1504707561,\"callCountFailed\":190262848,\"callCountOther\":1629273800,\"callCountTotal\":1123209033,\"bandwidth\":5317199108479544168,\"cacheHitCount\":599346072,\"cacheMissCount\":1654770372,\"apiTimeAvg\":72.81362625330617,\"apiTimeMin\":17.50198089256362,\"apiTimeMax\":42.78017849996877,\"serviceTimeAvg\":4.703675291538644,\"serviceTimeMin\":15.036176575966053,\"serviceTimeMax\":84.82847328847627}")
+            "{\"name\":\"jmxmlitqdsj\",\"timestamp\":\"2021-03-30T21:03:37Z\",\"interval\":\"iscotyx\",\"country\":\"iifef\",\"region\":\"s\",\"zip\":\"rqoemwsieeailwdq\",\"userId\":\"fydeotmfxlkd\",\"productId\":\"wgnamkuuy\",\"apiId\":\"yuafixlxic\",\"operationId\":\"pthdcfmf\",\"apiRegion\":\"fasfod\",\"subscriptionId\":\"palvngtw\",\"callCountSuccess\":1533954229,\"callCountBlocked\":152975937,\"callCountFailed\":273945869,\"callCountOther\":1563493706,\"callCountTotal\":271286222,\"bandwidth\":7602270508750168905,\"cacheHitCount\":925148390,\"cacheMissCount\":347450395,\"apiTimeAvg\":85.69347188183981,\"apiTimeMin\":29.85951231579438,\"apiTimeMax\":66.09388207743682,\"serviceTimeAvg\":54.84380419426665,\"serviceTimeMin\":67.38000546962745,\"serviceTimeMax\":56.49755247458209}")
             .toObject(ReportRecordContractInner.class);
-        Assertions.assertEquals("cxbeuuqutkzwtjww", model.name());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-11T12:35:16Z"), model.timestamp());
-        Assertions.assertEquals("tijcxfnondegjdy", model.interval());
-        Assertions.assertEquals("qkkkbjuckcatuqbh", model.country());
-        Assertions.assertEquals("wcnxtpzdlyseid", model.region());
-        Assertions.assertEquals("akatprytg", model.zip());
-        Assertions.assertEquals("tzjgcfjfxtbwj", model.apiId());
-        Assertions.assertEquals("rmuydgfttmdofg", model.operationId());
-        Assertions.assertEquals("agfuoftnxod", model.apiRegion());
-        Assertions.assertEquals("m", model.subscriptionId());
-        Assertions.assertEquals(1870102340, model.callCountSuccess());
-        Assertions.assertEquals(1504707561, model.callCountBlocked());
-        Assertions.assertEquals(190262848, model.callCountFailed());
-        Assertions.assertEquals(1629273800, model.callCountOther());
-        Assertions.assertEquals(1123209033, model.callCountTotal());
-        Assertions.assertEquals(5317199108479544168L, model.bandwidth());
-        Assertions.assertEquals(599346072, model.cacheHitCount());
-        Assertions.assertEquals(1654770372, model.cacheMissCount());
-        Assertions.assertEquals(72.81362625330617D, model.apiTimeAvg());
-        Assertions.assertEquals(17.50198089256362D, model.apiTimeMin());
-        Assertions.assertEquals(42.78017849996877D, model.apiTimeMax());
-        Assertions.assertEquals(4.703675291538644D, model.serviceTimeAvg());
-        Assertions.assertEquals(15.036176575966053D, model.serviceTimeMin());
-        Assertions.assertEquals(84.82847328847627D, model.serviceTimeMax());
+        Assertions.assertEquals("jmxmlitqdsj", model.name());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-30T21:03:37Z"), model.timestamp());
+        Assertions.assertEquals("iscotyx", model.interval());
+        Assertions.assertEquals("iifef", model.country());
+        Assertions.assertEquals("s", model.region());
+        Assertions.assertEquals("rqoemwsieeailwdq", model.zip());
+        Assertions.assertEquals("yuafixlxic", model.apiId());
+        Assertions.assertEquals("pthdcfmf", model.operationId());
+        Assertions.assertEquals("fasfod", model.apiRegion());
+        Assertions.assertEquals("palvngtw", model.subscriptionId());
+        Assertions.assertEquals(1533954229, model.callCountSuccess());
+        Assertions.assertEquals(152975937, model.callCountBlocked());
+        Assertions.assertEquals(273945869, model.callCountFailed());
+        Assertions.assertEquals(1563493706, model.callCountOther());
+        Assertions.assertEquals(271286222, model.callCountTotal());
+        Assertions.assertEquals(7602270508750168905L, model.bandwidth());
+        Assertions.assertEquals(925148390, model.cacheHitCount());
+        Assertions.assertEquals(347450395, model.cacheMissCount());
+        Assertions.assertEquals(85.69347188183981D, model.apiTimeAvg());
+        Assertions.assertEquals(29.85951231579438D, model.apiTimeMin());
+        Assertions.assertEquals(66.09388207743682D, model.apiTimeMax());
+        Assertions.assertEquals(54.84380419426665D, model.serviceTimeAvg());
+        Assertions.assertEquals(67.38000546962745D, model.serviceTimeMin());
+        Assertions.assertEquals(56.49755247458209D, model.serviceTimeMax());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReportRecordContractInner model = new ReportRecordContractInner().withName("cxbeuuqutkzwtjww")
-            .withTimestamp(OffsetDateTime.parse("2021-06-11T12:35:16Z"))
-            .withInterval("tijcxfnondegjdy")
-            .withCountry("qkkkbjuckcatuqbh")
-            .withRegion("wcnxtpzdlyseid")
-            .withZip("akatprytg")
-            .withApiId("tzjgcfjfxtbwj")
-            .withOperationId("rmuydgfttmdofg")
-            .withApiRegion("agfuoftnxod")
-            .withSubscriptionId("m")
-            .withCallCountSuccess(1870102340)
-            .withCallCountBlocked(1504707561)
-            .withCallCountFailed(190262848)
-            .withCallCountOther(1629273800)
-            .withCallCountTotal(1123209033)
-            .withBandwidth(5317199108479544168L)
-            .withCacheHitCount(599346072)
-            .withCacheMissCount(1654770372)
-            .withApiTimeAvg(72.81362625330617D)
-            .withApiTimeMin(17.50198089256362D)
-            .withApiTimeMax(42.78017849996877D)
-            .withServiceTimeAvg(4.703675291538644D)
-            .withServiceTimeMin(15.036176575966053D)
-            .withServiceTimeMax(84.82847328847627D);
+        ReportRecordContractInner model = new ReportRecordContractInner().withName("jmxmlitqdsj")
+            .withTimestamp(OffsetDateTime.parse("2021-03-30T21:03:37Z"))
+            .withInterval("iscotyx")
+            .withCountry("iifef")
+            .withRegion("s")
+            .withZip("rqoemwsieeailwdq")
+            .withApiId("yuafixlxic")
+            .withOperationId("pthdcfmf")
+            .withApiRegion("fasfod")
+            .withSubscriptionId("palvngtw")
+            .withCallCountSuccess(1533954229)
+            .withCallCountBlocked(152975937)
+            .withCallCountFailed(273945869)
+            .withCallCountOther(1563493706)
+            .withCallCountTotal(271286222)
+            .withBandwidth(7602270508750168905L)
+            .withCacheHitCount(925148390)
+            .withCacheMissCount(347450395)
+            .withApiTimeAvg(85.69347188183981D)
+            .withApiTimeMin(29.85951231579438D)
+            .withApiTimeMax(66.09388207743682D)
+            .withServiceTimeAvg(54.84380419426665D)
+            .withServiceTimeMin(67.38000546962745D)
+            .withServiceTimeMax(56.49755247458209D);
         model = BinaryData.fromObject(model).toObject(ReportRecordContractInner.class);
-        Assertions.assertEquals("cxbeuuqutkzwtjww", model.name());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-11T12:35:16Z"), model.timestamp());
-        Assertions.assertEquals("tijcxfnondegjdy", model.interval());
-        Assertions.assertEquals("qkkkbjuckcatuqbh", model.country());
-        Assertions.assertEquals("wcnxtpzdlyseid", model.region());
-        Assertions.assertEquals("akatprytg", model.zip());
-        Assertions.assertEquals("tzjgcfjfxtbwj", model.apiId());
-        Assertions.assertEquals("rmuydgfttmdofg", model.operationId());
-        Assertions.assertEquals("agfuoftnxod", model.apiRegion());
-        Assertions.assertEquals("m", model.subscriptionId());
-        Assertions.assertEquals(1870102340, model.callCountSuccess());
-        Assertions.assertEquals(1504707561, model.callCountBlocked());
-        Assertions.assertEquals(190262848, model.callCountFailed());
-        Assertions.assertEquals(1629273800, model.callCountOther());
-        Assertions.assertEquals(1123209033, model.callCountTotal());
-        Assertions.assertEquals(5317199108479544168L, model.bandwidth());
-        Assertions.assertEquals(599346072, model.cacheHitCount());
-        Assertions.assertEquals(1654770372, model.cacheMissCount());
-        Assertions.assertEquals(72.81362625330617D, model.apiTimeAvg());
-        Assertions.assertEquals(17.50198089256362D, model.apiTimeMin());
-        Assertions.assertEquals(42.78017849996877D, model.apiTimeMax());
-        Assertions.assertEquals(4.703675291538644D, model.serviceTimeAvg());
-        Assertions.assertEquals(15.036176575966053D, model.serviceTimeMin());
-        Assertions.assertEquals(84.82847328847627D, model.serviceTimeMax());
+        Assertions.assertEquals("jmxmlitqdsj", model.name());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-30T21:03:37Z"), model.timestamp());
+        Assertions.assertEquals("iscotyx", model.interval());
+        Assertions.assertEquals("iifef", model.country());
+        Assertions.assertEquals("s", model.region());
+        Assertions.assertEquals("rqoemwsieeailwdq", model.zip());
+        Assertions.assertEquals("yuafixlxic", model.apiId());
+        Assertions.assertEquals("pthdcfmf", model.operationId());
+        Assertions.assertEquals("fasfod", model.apiRegion());
+        Assertions.assertEquals("palvngtw", model.subscriptionId());
+        Assertions.assertEquals(1533954229, model.callCountSuccess());
+        Assertions.assertEquals(152975937, model.callCountBlocked());
+        Assertions.assertEquals(273945869, model.callCountFailed());
+        Assertions.assertEquals(1563493706, model.callCountOther());
+        Assertions.assertEquals(271286222, model.callCountTotal());
+        Assertions.assertEquals(7602270508750168905L, model.bandwidth());
+        Assertions.assertEquals(925148390, model.cacheHitCount());
+        Assertions.assertEquals(347450395, model.cacheMissCount());
+        Assertions.assertEquals(85.69347188183981D, model.apiTimeAvg());
+        Assertions.assertEquals(29.85951231579438D, model.apiTimeMin());
+        Assertions.assertEquals(66.09388207743682D, model.apiTimeMax());
+        Assertions.assertEquals(54.84380419426665D, model.serviceTimeAvg());
+        Assertions.assertEquals(67.38000546962745D, model.serviceTimeMin());
+        Assertions.assertEquals(56.49755247458209D, model.serviceTimeMax());
     }
 }

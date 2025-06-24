@@ -13,7 +13,7 @@ import java.util.Arrays;
 public final class VirtualEndpointsCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
      * VirtualEndpointCreate.json
      */
     /**

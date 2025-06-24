@@ -21,6 +21,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -109,7 +110,8 @@ public class TypeConverterTest {
 
     @Test
     public void getAstTypeDeclaredType() {
-        DeclaredType declaredType = new MockDeclaredType(TypeKind.DECLARED, "java.util.List<String>");
+        DeclaredType declaredType = new MockDeclaredType(TypeKind.DECLARED, "java.util.List",
+            new MockDeclaredType(TypeKind.DECLARED, "java.lang.String"));
         com.github.javaparser.ast.type.Type result = TypeConverter.getAstType(declaredType);
         assertTrue(result.toString().contains("java.util.List"));
     }
@@ -118,7 +120,7 @@ public class TypeConverterTest {
     public void handleArrayType() {
         ArrayType arrayType = mockArrayType(mockPrimitiveType(TypeKind.INT));
         Type result = TypeConverter.handleArrayType(arrayType);
-        assertTrue(result instanceof Class);
+        assertInstanceOf(Class.class, result);
         assertTrue(((Class<?>) result).isArray());
     }
 
@@ -126,12 +128,20 @@ public class TypeConverterTest {
     public void handleDeclaredType() {
         DeclaredType declaredType = new MockDeclaredType(TypeKind.DECLARED, "java.util.List");
         Type result = TypeConverter.handleDeclaredType(declaredType);
-        assertNotNull(result);
+        assertEquals(List.class, result);
+    }
+
+    @Test
+    public void handleDeclaredTypeThatCannotBeLoaded() {
+        DeclaredType declaredType = new MockDeclaredType(TypeKind.DECLARED, "com.class.that.cannot.be.Loaded");
+        Type result = TypeConverter.handleDeclaredType(declaredType);
+        assertEquals(Object.class, result);
     }
 
     @Test
     public void handleDeclaredTypeGeneric() {
-        DeclaredType declaredType = new MockDeclaredType(TypeKind.DECLARED, "java.util.Map<String, int>");
+        DeclaredType declaredType = new MockDeclaredType(TypeKind.DECLARED, "java.util.Map",
+            new MockDeclaredType(TypeKind.DECLARED, "java.lang.String"), new MockDeclaredType(TypeKind.INT, "int"));
         Type result = TypeConverter.handleDeclaredType(declaredType);
         assertNotNull(result);
     }

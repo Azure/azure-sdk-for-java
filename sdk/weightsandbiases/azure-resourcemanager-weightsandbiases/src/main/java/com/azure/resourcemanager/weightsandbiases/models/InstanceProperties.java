@@ -155,7 +155,11 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
         } else {
             user().validate();
         }
-        if (partnerProperties() != null) {
+        if (partnerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property partnerProperties in model InstanceProperties"));
+        } else {
             partnerProperties().validate();
         }
         if (singleSignOnProperties() != null) {
@@ -198,11 +202,11 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
                     deserializedInstanceProperties.marketplace = MarketplaceDetails.fromJson(reader);
                 } else if ("user".equals(fieldName)) {
                     deserializedInstanceProperties.user = UserDetails.fromJson(reader);
+                } else if ("partnerProperties".equals(fieldName)) {
+                    deserializedInstanceProperties.partnerProperties = PartnerProperties.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedInstanceProperties.provisioningState
                         = ResourceProvisioningState.fromString(reader.getString());
-                } else if ("partnerProperties".equals(fieldName)) {
-                    deserializedInstanceProperties.partnerProperties = PartnerProperties.fromJson(reader);
                 } else if ("singleSignOnProperties".equals(fieldName)) {
                     deserializedInstanceProperties.singleSignOnProperties = SingleSignOnPropertiesV2.fromJson(reader);
                 } else {

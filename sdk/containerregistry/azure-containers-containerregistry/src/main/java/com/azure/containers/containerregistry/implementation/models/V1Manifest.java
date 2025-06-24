@@ -5,6 +5,7 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,36 +20,43 @@ public final class V1Manifest extends Manifest {
     /*
      * CPU architecture
      */
+    @Generated
     private String architecture;
 
     /*
      * Image name
      */
+    @Generated
     private String name;
 
     /*
      * Image tag
      */
+    @Generated
     private String tag;
 
     /*
      * List of layer information
      */
+    @Generated
     private List<FsLayer> fsLayers;
 
     /*
      * Image history
      */
+    @Generated
     private List<History> history;
 
     /*
      * Image signature
      */
+    @Generated
     private List<ImageSignature> signatures;
 
     /**
      * Creates an instance of V1Manifest class.
      */
+    @Generated
     public V1Manifest() {
     }
 
@@ -57,6 +65,7 @@ public final class V1Manifest extends Manifest {
      * 
      * @return the architecture value.
      */
+    @Generated
     public String getArchitecture() {
         return this.architecture;
     }
@@ -67,6 +76,7 @@ public final class V1Manifest extends Manifest {
      * @param architecture the architecture value to set.
      * @return the V1Manifest object itself.
      */
+    @Generated
     public V1Manifest setArchitecture(String architecture) {
         this.architecture = architecture;
         return this;
@@ -77,6 +87,7 @@ public final class V1Manifest extends Manifest {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -87,6 +98,7 @@ public final class V1Manifest extends Manifest {
      * @param name the name value to set.
      * @return the V1Manifest object itself.
      */
+    @Generated
     public V1Manifest setName(String name) {
         this.name = name;
         return this;
@@ -97,6 +109,7 @@ public final class V1Manifest extends Manifest {
      * 
      * @return the tag value.
      */
+    @Generated
     public String getTag() {
         return this.tag;
     }
@@ -107,6 +120,7 @@ public final class V1Manifest extends Manifest {
      * @param tag the tag value to set.
      * @return the V1Manifest object itself.
      */
+    @Generated
     public V1Manifest setTag(String tag) {
         this.tag = tag;
         return this;
@@ -117,6 +131,7 @@ public final class V1Manifest extends Manifest {
      * 
      * @return the fsLayers value.
      */
+    @Generated
     public List<FsLayer> getFsLayers() {
         return this.fsLayers;
     }
@@ -127,6 +142,7 @@ public final class V1Manifest extends Manifest {
      * @param fsLayers the fsLayers value to set.
      * @return the V1Manifest object itself.
      */
+    @Generated
     public V1Manifest setFsLayers(List<FsLayer> fsLayers) {
         this.fsLayers = fsLayers;
         return this;
@@ -137,6 +153,7 @@ public final class V1Manifest extends Manifest {
      * 
      * @return the history value.
      */
+    @Generated
     public List<History> getHistory() {
         return this.history;
     }
@@ -147,6 +164,7 @@ public final class V1Manifest extends Manifest {
      * @param history the history value to set.
      * @return the V1Manifest object itself.
      */
+    @Generated
     public V1Manifest setHistory(List<History> history) {
         this.history = history;
         return this;
@@ -157,6 +175,7 @@ public final class V1Manifest extends Manifest {
      * 
      * @return the signatures value.
      */
+    @Generated
     public List<ImageSignature> getSignatures() {
         return this.signatures;
     }
@@ -167,6 +186,7 @@ public final class V1Manifest extends Manifest {
      * @param signatures the signatures value to set.
      * @return the V1Manifest object itself.
      */
+    @Generated
     public V1Manifest setSignatures(List<ImageSignature> signatures) {
         this.signatures = signatures;
         return this;
@@ -175,6 +195,7 @@ public final class V1Manifest extends Manifest {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public V1Manifest setSchemaVersion(Integer schemaVersion) {
         super.setSchemaVersion(schemaVersion);
@@ -184,6 +205,7 @@ public final class V1Manifest extends Manifest {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -205,6 +227,7 @@ public final class V1Manifest extends Manifest {
      * to JSON null.
      * @throws IOException If an error occurs while reading the V1Manifest.
      */
+    @Generated
     public static V1Manifest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             V1Manifest deserializedV1Manifest = new V1Manifest();

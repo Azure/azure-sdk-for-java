@@ -23,6 +23,8 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.ClusterRecoveryPointOperationsClient;
+import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.ClusterRecoveryPointsClient;
 import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.MigrationRecoveryPointsClient;
 import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.OperationsClient;
 import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.RecoveryPointsClient;
@@ -39,6 +41,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.Replication
 import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.ReplicationPoliciesClient;
 import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.ReplicationProtectableItemsClient;
 import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.ReplicationProtectedItemsClient;
+import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.ReplicationProtectionClustersClient;
 import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.ReplicationProtectionContainerMappingsClient;
 import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.ReplicationProtectionContainersClient;
 import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.ReplicationProtectionIntentsClient;
@@ -375,6 +378,48 @@ public final class SiteRecoveryManagementClientImpl implements SiteRecoveryManag
     }
 
     /**
+     * The ReplicationProtectionClustersClient object to access its operations.
+     */
+    private final ReplicationProtectionClustersClient replicationProtectionClusters;
+
+    /**
+     * Gets the ReplicationProtectionClustersClient object to access its operations.
+     * 
+     * @return the ReplicationProtectionClustersClient object.
+     */
+    public ReplicationProtectionClustersClient getReplicationProtectionClusters() {
+        return this.replicationProtectionClusters;
+    }
+
+    /**
+     * The ClusterRecoveryPointsClient object to access its operations.
+     */
+    private final ClusterRecoveryPointsClient clusterRecoveryPoints;
+
+    /**
+     * Gets the ClusterRecoveryPointsClient object to access its operations.
+     * 
+     * @return the ClusterRecoveryPointsClient object.
+     */
+    public ClusterRecoveryPointsClient getClusterRecoveryPoints() {
+        return this.clusterRecoveryPoints;
+    }
+
+    /**
+     * The ClusterRecoveryPointOperationsClient object to access its operations.
+     */
+    private final ClusterRecoveryPointOperationsClient clusterRecoveryPointOperations;
+
+    /**
+     * Gets the ClusterRecoveryPointOperationsClient object to access its operations.
+     * 
+     * @return the ClusterRecoveryPointOperationsClient object.
+     */
+    public ClusterRecoveryPointOperationsClient getClusterRecoveryPointOperations() {
+        return this.clusterRecoveryPointOperations;
+    }
+
+    /**
      * The ReplicationProtectionContainerMappingsClient object to access its operations.
      */
     private final ReplicationProtectionContainerMappingsClient replicationProtectionContainerMappings;
@@ -559,7 +604,7 @@ public final class SiteRecoveryManagementClientImpl implements SiteRecoveryManag
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-08-01";
+        this.apiVersion = "2025-01-01";
         this.operations = new OperationsClientImpl(this);
         this.replicationAlertSettings = new ReplicationAlertSettingsClientImpl(this);
         this.replicationAppliances = new ReplicationAppliancesClientImpl(this);
@@ -576,6 +621,9 @@ public final class SiteRecoveryManagementClientImpl implements SiteRecoveryManag
         this.replicationProtectedItems = new ReplicationProtectedItemsClientImpl(this);
         this.recoveryPoints = new RecoveryPointsClientImpl(this);
         this.targetComputeSizes = new TargetComputeSizesClientImpl(this);
+        this.replicationProtectionClusters = new ReplicationProtectionClustersClientImpl(this);
+        this.clusterRecoveryPoints = new ClusterRecoveryPointsClientImpl(this);
+        this.clusterRecoveryPointOperations = new ClusterRecoveryPointOperationsClientImpl(this);
         this.replicationProtectionContainerMappings = new ReplicationProtectionContainerMappingsClientImpl(this);
         this.replicationRecoveryServicesProviders = new ReplicationRecoveryServicesProvidersClientImpl(this);
         this.storageClassifications = new StorageClassificationsClientImpl(this);

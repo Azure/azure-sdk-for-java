@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.apimanagement.models;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.PolicyContractInner;
@@ -17,25 +18,25 @@ public interface Policies {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list policy operation along with {@link Response}.
+     * @return the response of the list policy operation as paginated response with {@link PagedIterable}.
      */
-    Response<PolicyCollection> listByServiceWithResponse(String resourceGroupName, String serviceName, Context context);
+    PagedIterable<PolicyContract> listByService(String resourceGroupName, String serviceName);
 
     /**
      * Lists all the Global Policy definitions of the Api Management service.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list policy operation.
+     * @return the response of the list policy operation as paginated response with {@link PagedIterable}.
      */
-    PolicyCollection listByService(String resourceGroupName, String serviceName);
+    PagedIterable<PolicyContract> listByService(String resourceGroupName, String serviceName, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Global policy definition in the Api Management service.

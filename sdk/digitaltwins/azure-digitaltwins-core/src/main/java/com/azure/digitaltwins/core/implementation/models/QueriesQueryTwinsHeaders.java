@@ -5,6 +5,7 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -16,6 +17,7 @@ public final class QueriesQueryTwinsHeaders {
     /*
      * The query-charge property.
      */
+    @Generated
     private Float queryCharge;
 
     private static final HttpHeaderName QUERY_CHARGE = HttpHeaderName.fromString("query-charge");
@@ -30,6 +32,8 @@ public final class QueriesQueryTwinsHeaders {
         String queryCharge = rawHeaders.getValue(QUERY_CHARGE);
         if (queryCharge != null) {
             this.queryCharge = Float.parseFloat(queryCharge);
+        } else {
+            this.queryCharge = null;
         }
     }
 
@@ -38,6 +42,7 @@ public final class QueriesQueryTwinsHeaders {
      * 
      * @return the queryCharge value.
      */
+    @Generated
     public Float getQueryCharge() {
         return this.queryCharge;
     }
@@ -48,6 +53,7 @@ public final class QueriesQueryTwinsHeaders {
      * @param queryCharge the queryCharge value to set.
      * @return the QueriesQueryTwinsHeaders object itself.
      */
+    @Generated
     public QueriesQueryTwinsHeaders setQueryCharge(Float queryCharge) {
         this.queryCharge = queryCharge;
         return this;

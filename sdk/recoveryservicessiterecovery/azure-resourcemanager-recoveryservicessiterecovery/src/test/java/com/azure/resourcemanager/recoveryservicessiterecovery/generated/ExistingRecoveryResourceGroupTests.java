@@ -12,16 +12,15 @@ public final class ExistingRecoveryResourceGroupTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExistingRecoveryResourceGroup model
-            = BinaryData.fromString("{\"resourceType\":\"Existing\",\"recoveryResourceGroupId\":\"svvoqsbpkflanfk\"}")
+            = BinaryData.fromString("{\"resourceType\":\"Existing\",\"recoveryResourceGroupId\":\"moj\"}")
                 .toObject(ExistingRecoveryResourceGroup.class);
-        Assertions.assertEquals("svvoqsbpkflanfk", model.recoveryResourceGroupId());
+        Assertions.assertEquals("moj", model.recoveryResourceGroupId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExistingRecoveryResourceGroup model
-            = new ExistingRecoveryResourceGroup().withRecoveryResourceGroupId("svvoqsbpkflanfk");
+        ExistingRecoveryResourceGroup model = new ExistingRecoveryResourceGroup().withRecoveryResourceGroupId("moj");
         model = BinaryData.fromObject(model).toObject(ExistingRecoveryResourceGroup.class);
-        Assertions.assertEquals("svvoqsbpkflanfk", model.recoveryResourceGroupId());
+        Assertions.assertEquals("moj", model.recoveryResourceGroupId());
     }
 }
