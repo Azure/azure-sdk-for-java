@@ -14,6 +14,7 @@ import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithJavadoc;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.javadoc.Javadoc;
+import java.time.OffsetDateTime;
 import org.slf4j.Logger;
 
 import java.time.Duration;
@@ -165,18 +166,17 @@ public class EventGridSystemEventsCustomization extends Customization {
 
     public void customizeIothubEventData(PackageCustomization customization) {
         customization.getClass("DeviceTwinMetadata").customizeAst(ast -> ast.getClassByName("DeviceTwinMetadata")
-            .ifPresent(clazz -> clazz.getMethodsByName("getLastUpdated").forEach(m -> m.setType(Duration.class)
-                .setBody(parseBlock("{ return lastUpdated == null ? null : Duration.between(java.time.Instant.EPOCH, java.time.Instant.parse(lastUpdated)); }")))));
+            .ifPresent(clazz -> clazz.getMethodsByName("getLastUpdated").forEach(m -> m.setType(OffsetDateTime.class)
+                .setBody(parseBlock("{ return lastUpdated == null ? null : OffsetDateTime.parse(lastUpdated); }")))));
 
         customization.getClass("DeviceTwinInfo").customizeAst(ast -> ast.getClassByName("DeviceTwinInfo")
-            .ifPresent(clazz -> clazz.getMethodsByName("getLastActivityTime").forEach(m -> m.setType(Duration.class)
-                .setBody(parseBlock("{ return lastActivityTime == null ? null : Duration.between(java.time.Instant" +
-                    ".EPOCH, java.time.Instant.parse(lastActivityTime)); }")))));
+            .ifPresent(clazz -> clazz.getMethodsByName("getLastActivityTime").forEach(m -> m.setType(OffsetDateTime.class)
+                .setBody(parseBlock("{ return lastActivityTime == null ? null : OffsetDateTime.parse" +
+                    "(lastActivityTime); }")))));
 
         customization.getClass("DeviceTwinInfo").customizeAst(ast -> ast.getClassByName("DeviceTwinInfo")
-            .ifPresent(clazz -> clazz.getMethodsByName("getStatusUpdateTime").forEach(m -> m.setType(Duration.class)
-                .setBody(parseBlock("{ return statusUpdateTime == null ? null : Duration.between(java.time.Instant.EPOCH" +
-                    ", java.time.Instant.parse(statusUpdateTime)); }")))));
+            .ifPresent(clazz -> clazz.getMethodsByName("getStatusUpdateTime").forEach(m -> m.setType(OffsetDateTime.class)
+                .setBody(parseBlock("{ return statusUpdateTime == null ? null : OffsetDateTime.parse(statusUpdateTime); }")))));
     }
 
     public void customizeAcsRouterEvents(PackageCustomization customization) {

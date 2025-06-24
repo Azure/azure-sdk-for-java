@@ -10,7 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.time.Duration;
+import java.time.OffsetDateTime;
 
 /**
  * Metadata information for the properties JSON document.
@@ -40,10 +40,8 @@ public final class DeviceTwinMetadata implements JsonSerializable<DeviceTwinMeta
      * @return the lastUpdated value.
      */
     @Generated
-    public Duration getLastUpdated() {
-        return lastUpdated == null
-            ? null
-            : Duration.between(java.time.Instant.EPOCH, java.time.Instant.parse(lastUpdated));
+    public OffsetDateTime getLastUpdated() {
+        return lastUpdated == null ? null : OffsetDateTime.parse(lastUpdated);
     }
 
     /**

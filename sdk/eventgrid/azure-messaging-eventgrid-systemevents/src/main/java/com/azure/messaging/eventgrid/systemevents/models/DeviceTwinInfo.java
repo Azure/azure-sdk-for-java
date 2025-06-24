@@ -10,7 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.time.Duration;
+import java.time.OffsetDateTime;
 
 /**
  * Information about the device twin, which is the cloud representation of application device metadata.
@@ -177,10 +177,8 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
      * @return the lastActivityTime value.
      */
     @Generated
-    public Duration getLastActivityTime() {
-        return lastActivityTime == null
-            ? null
-            : Duration.between(java.time.Instant.EPOCH, java.time.Instant.parse(lastActivityTime));
+    public OffsetDateTime getLastActivityTime() {
+        return lastActivityTime == null ? null : OffsetDateTime.parse(lastActivityTime);
     }
 
     /**
@@ -209,10 +207,8 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
      * @return the statusUpdateTime value.
      */
     @Generated
-    public Duration getStatusUpdateTime() {
-        return statusUpdateTime == null
-            ? null
-            : Duration.between(java.time.Instant.EPOCH, java.time.Instant.parse(statusUpdateTime));
+    public OffsetDateTime getStatusUpdateTime() {
+        return statusUpdateTime == null ? null : OffsetDateTime.parse(statusUpdateTime);
     }
 
     /**
