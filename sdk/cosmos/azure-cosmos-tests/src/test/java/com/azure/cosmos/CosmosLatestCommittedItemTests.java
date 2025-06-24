@@ -212,6 +212,7 @@ public class CosmosLatestCommittedItemTests extends TestSuiteBase {
         String id = UUID.randomUUID().toString();
         ObjectNode properties = getDocumentDefinition(id, id);
         container.createItem(properties);
+
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions()
             .setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
 
