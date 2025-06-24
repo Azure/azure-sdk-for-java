@@ -17,5 +17,4 @@ variables:
   - name: MACVMIMAGE
     value: macos-latest
 
-  - name: LinuxImageDemand
-    value: ImageOverride -equals $(LINUXVMIMAGE)
+

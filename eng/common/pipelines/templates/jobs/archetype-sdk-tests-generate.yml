@@ -30,7 +30,7 @@ parameters:
   default: azsdk-pool
 - name: OsVmImage
   type: string
-  default: ubuntu-24.04
+  default: $(LINUXVMIMAGE)
 # This parameter is only necessary if there are multiple invocations of this template within the SAME STAGE.
 # When that occurs, provide a name other than the default value.
 - name: GenerateJobName
