@@ -1,15 +1,12 @@
 ## Release History
 
-### 2.4.0-beta.1 (Unreleased)
+### 2.4.0 (2025-06-24)
 
-#### Features Added
-
-#### Breaking Changes
+#### Other Changes
+* Updated `azure-cosmos` to version `4.72.0`.
 
 #### Bugs Fixed
 * Fixed an issue where Cosmos client is not being closed properly when connector failed to start - See [PR 45633](https://github.com/Azure/azure-sdk-for-java/pull/45633)
-
-#### Other Changes
 
 ### 2.3.1 (2025-05-14)
 
