@@ -15,9 +15,8 @@ recipeList:
       recursive: true
 
   - org.openrewrite.java.ChangeMethodName:
-      methodPattern: "com.azure.v2.identity.ClientCertificateCredentialBuilder"
-
-
+      methodPattern: "com.azure.v2.identity.ClientCertificateCredentialBuilder pemCertificate(..)"
+      newMethodName: "clientCertificate"
 
   - org.openrewrite.java.OrderImports
 

@@ -9,21 +9,16 @@ public class ClientSecretCredentialSample {
     private String clientSecret = System.getenv("AZURE_CLIENT_SECRET");
 
     public void clientSecretCredentialCodeSnippets() {
-        // BEGIN: com.azure.identity.credential.clientsecretcredential.construct
         TokenCredential clientSecretCredential = new ClientSecretCredentialBuilder().tenantId(tenantId)
             .clientId(clientId)
             .clientSecret(clientSecret)
             .build();
-        // END: com.azure.identity.credential.clientsecretcredential.construct
 
-        // BEGIN: com.azure.identity.credential.clientsecretcredential.constructwithproxy
         TokenCredential secretCredential;
-        // END: com.azure.identity.credential.clientsecretcredential.constructwithproxy
         secretCredential = new ClientSecretCredentialBuilder().tenantId(tenantId)
-                .clientId(clientId)
-                .clientSecret(clientSecret)
-                .build();
+            .clientId(clientId)
+            .clientSecret(clientSecret)
+            .build();
     }
 
 }
-

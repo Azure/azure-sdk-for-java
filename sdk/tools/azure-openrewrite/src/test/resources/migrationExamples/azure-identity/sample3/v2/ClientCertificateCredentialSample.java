@@ -12,28 +12,22 @@ public class ClientCertificateCredentialSample {
     private String serviceConnectionId = System.getenv("SERVICE_CONNECTION_ID");
 
     public void clientCertificateCredentialCodeSnippets() {
-        // BEGIN: com.azure.identity.credential.ClientCertificateCredentialSample.construct
         TokenCredential ClientCertificateCredentialInstance = new ClientCertificateCredentialBuilder().tenantId(tenantId)
             .clientId(clientId)
             .clientCertificate("<PATH-TO-PEM-CERTIFICATE>")
             .build();
-        // END: com.azure.identity.credential.ClientCertificateCredentialSample.construct
 
         byte[] certificateBytes = new byte[0];
 
-        // BEGIN: com.azure.identity.credential.ClientCertificateCredentialSample.constructWithStream
         ByteArrayInputStream certificateStream = new ByteArrayInputStream(certificateBytes);
         TokenCredential certificateCredentialWithStream = new ClientCertificateCredentialBuilder().tenantId(tenantId)
             .clientId(clientId)
             .clientCertificate(certificateStream)
             .build();
-        // END: com.azure.identity.credential.ClientCertificateCredentialSample.constructWithStream
 
-        // BEGIN: com.azure.identity.credential.ClientCertificateCredentialSample.constructwithproxy
         TokenCredential certificateCredential = new ClientCertificateCredentialBuilder().tenantId(tenantId)
             .clientId(clientId)
             .build();
-        // END: com.azure.identity.credential.ClientCertificateCredentialSample.constructwithproxy
     }
 
 }
