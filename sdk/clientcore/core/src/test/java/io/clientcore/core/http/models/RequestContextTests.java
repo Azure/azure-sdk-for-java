@@ -73,21 +73,21 @@ public class RequestContextTests {
     }
 
     @Test
-    @SuppressWarnings("deprecation")
-    public void addRequestCallbackBackwardCompatibility() {
+    public void multipleBeforeRequestHooks() {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
 
         RequestContext context = RequestContext.builder()
-            .addRequestCallback(r -> r.getHeaders().add(new HttpHeader(X_MS_FOO, "legacy")))
+            .addBeforeRequestHook(r -> r.getHeaders().add(new HttpHeader(X_MS_FOO, "first")))
             .addBeforeRequestHook(r -> r.setMethod(HttpMethod.GET))
-            .addRequestCallback(r -> r.setUri("https://mixed.uri"))
+            .addBeforeRequestHook(r -> r.setUri("https://mixed.uri"))
+            .addBeforeRequestHook(r -> r.getHeaders().set(X_MS_FOO, "last"))
             .build();
 
         context.getRequestCallback().accept(request);
 
         HttpHeaders headers = request.getHeaders();
-        assertEquals("legacy", headers.getValue(X_MS_FOO));
+        assertEquals("last", headers.getValue(X_MS_FOO));
         assertEquals(HttpMethod.GET, request.getHttpMethod());
         assertEquals("https://mixed.uri", request.getUri().toString());
     }

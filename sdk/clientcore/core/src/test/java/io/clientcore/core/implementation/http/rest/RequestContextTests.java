@@ -88,21 +88,20 @@ public class RequestContextTests {
     }
 
     @Test
-    @SuppressWarnings("deprecation")
-    public void addRequestCallbackStillWorks() {
+    public void addBeforeRequestHookWorks() {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
         RequestContext context = RequestContext.builder()
-            .addRequestCallback(request2 -> request2.setUri("https://deprecated.uri")
+            .addBeforeRequestHook(request2 -> request2.setUri("https://updated.uri")
                 .setMethod(HttpMethod.GET)
                 .getHeaders()
-                .set(X_MS_FOO, "deprecated"))
+                .set(X_MS_FOO, "updated"))
             .build();
         context.getRequestCallback().accept(request);
 
         HttpHeaders headers = request.getHeaders();
-        assertEquals("deprecated", headers.getValue(X_MS_FOO));
+        assertEquals("updated", headers.getValue(X_MS_FOO));
         assertEquals(HttpMethod.GET, request.getHttpMethod());
-        assertEquals("https://deprecated.uri", request.getUri().toString());
+        assertEquals("https://updated.uri", request.getUri().toString());
     }
 }

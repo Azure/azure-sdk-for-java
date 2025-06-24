@@ -239,22 +239,6 @@ public final class RequestContext {
         }
 
         /**
-         * Adds a custom request callback to modify the {@link HttpRequest} before it's sent by the {@link HttpClient}. The
-         * modifications made on a {@link RequestContext} object are applied in order on the request.
-         *
-         * @param requestCallback The request callback.
-         * @return The updated {@link Builder} object.
-         * @throws NullPointerException If {@code requestCallback} is null.
-         * @deprecated Use {@link #addBeforeRequestHook(Consumer)} as it better conveys that the hook executes before the request is sent.
-         */
-        @Deprecated
-        public Builder addRequestCallback(Consumer<HttpRequest> requestCallback) {
-            Objects.requireNonNull(requestCallback, "'requestCallback' cannot be null.");
-            this.requestCallback = this.requestCallback.andThen(requestCallback);
-            return this;
-        }
-
-        /**
          * Adds a custom hook to modify the {@link HttpRequest} before it's sent by the {@link HttpClient}. The
          * modifications made on a {@link RequestContext} object are applied in order on the request.
          *
