@@ -31,13 +31,9 @@ jobs:
       Matrix:
         Java_${{ parameters.OS }}_(AzureCloud):
           JavaTestVersion: $(LatestNonLtsJavaVersion)
-          Pool: ${{ parameters.Pool }}
-          OSVmImage: ${{ parameters.OSVmImage }}
           PomFile: common/smoke-tests/pom.xml
           ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
         JavaLTS_${{ parameters.OS }}_(AzureCloud):
           JavaTestVersion: $(JavaTestVersion)
-          Pool: ${{ parameters.Pool }}
-          OSVmImage: ${{ parameters.OSVmImage }}
           PomFile: common/smoke-tests/pom.xml
           ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
