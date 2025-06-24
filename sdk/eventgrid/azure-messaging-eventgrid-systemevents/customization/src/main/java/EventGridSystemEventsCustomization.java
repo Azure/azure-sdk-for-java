@@ -160,6 +160,23 @@ public class EventGridSystemEventsCustomization extends Customization {
         customizeAcsRecordingFileStatusUpdatedEventDataDuration(systemEvent);
         customizeStorageDirectoryDeletedEventData(systemEvent);
         customizeAcsMessageEventDataAndInheritingClasses(systemEvent);
+        customizeIothubEventData(systemEvent);
+    }
+
+    public void customizeIothubEventData(PackageCustomization customization) {
+        customization.getClass("DeviceTwinMetadata").customizeAst(ast -> ast.getClassByName("DeviceTwinMetadata")
+            .ifPresent(clazz -> clazz.getMethodsByName("getLastUpdated").forEach(m -> m.setType(Duration.class)
+                .setBody(parseBlock("{ return lastUpdated == null ? null : Duration.between(java.time.Instant.EPOCH, java.time.Instant.parse(lastUpdated)); }")))));
+
+        customization.getClass("DeviceTwinInfo").customizeAst(ast -> ast.getClassByName("DeviceTwinInfo")
+            .ifPresent(clazz -> clazz.getMethodsByName("getLastActivityTime").forEach(m -> m.setType(Duration.class)
+                .setBody(parseBlock("{ return lastActivityTime == null ? null : Duration.between(java.time.Instant" +
+                    ".EPOCH, java.time.Instant.parse(lastActivityTime)); }")))));
+
+        customization.getClass("DeviceTwinInfo").customizeAst(ast -> ast.getClassByName("DeviceTwinInfo")
+            .ifPresent(clazz -> clazz.getMethodsByName("getStatusUpdateTime").forEach(m -> m.setType(Duration.class)
+                .setBody(parseBlock("{ return statusUpdateTime == null ? null : Duration.between(java.time.Instant.EPOCH" +
+                    ", java.time.Instant.parse(statusUpdateTime)); }")))));
     }
 
     public void customizeAcsRouterEvents(PackageCustomization customization) {
