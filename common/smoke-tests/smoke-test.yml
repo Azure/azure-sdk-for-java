@@ -1,13 +1,33 @@
 trigger: none
 
-variables:
-  - template: /eng/pipelines/templates/variables/globals.yml
 
 stages:
   - stage: smoke_tests
     displayName: Smoke Tests
+
+    variables:
+      - template: /eng/pipelines/templates/variables/globals.yml
+      - template: /eng/pipelines/templates/variables/image.yml
+
     jobs:
       - template: ./smoke-test-dependencies.yml
+        parameters:
+          OS: Windows
+          Pool: $(WINDOWSPOOL)
+          OSVmImage: $(WINDOWSVMIMAGE)
+
+      - template: ./smoke-test-dependencies.yml
+        parameters:
+          OS: Linux
+          Pool: $(LINUXPOOL)
+          OSVmImage: $(LINUXVMIMAGE)
+
+      - template: ./smoke-test-dependencies.yml
+        parameters:
+          OS: macOS
+          Pool: $(MACPOOL)
+          OSVmImage: $(MACVMIMAGE)
+
 #  - stage: smoke_tests_samples
 #    displayName: Smoke Test Samples
 #    dependsOn: []

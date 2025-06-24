@@ -1,6 +1,8 @@
 parameters:
   - name: Matrix
     type: object
+  - name: OS
+    type: string
   - name: TestTask
     type: object
   - name: MaxParallel
@@ -11,7 +13,8 @@ parameters:
     default: 90
 
 jobs:
-  - job: SmokeTest
+  - job:
+    displayName: Smoke Tests - ${{ parameters.OS }}
     timeoutInMinutes: ${{ parameters.Timeout }}
 
     strategy:
@@ -20,7 +23,10 @@ jobs:
 
     pool:
       name: $(Pool)
-      vmImage: $(OSVmImage)
+      ${{ if eq(parameters.OS, 'macOs') }}:
+        vmImage: $(OSVmImage)
+      ${{ else }}:
+        demands: ImageOverride -equals $(OSVmImage)
 
     steps:
       - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
@@ -84,5 +90,5 @@ jobs:
 
       - template: /eng/common/TestResources/remove-test-resources.yml
         parameters:
-          ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
+          ServiceDirectory: $(ServiceDirectory)
           ServiceConnection: azure-sdk-tests-public
