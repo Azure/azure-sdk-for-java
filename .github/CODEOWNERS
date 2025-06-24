@@ -458,7 +458,7 @@
 /sdk/eventgrid/                                      @samvaity @srnagar @lmolkova @Azure/azure-java-sdk
 
 # ServiceLabel: %Event Grid
-# AzureSdkOwners:                                    @samvaity
+# AzureSdkOwners:                                    @Kishp01 @shankarsama @rajeshka
 # ServiceOwners:                                     @Kishp01 @shankarsama @rajeshka
 
 # PRLabel: %Event Hubs
