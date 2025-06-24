@@ -1516,7 +1516,7 @@ public class TestInterfaceServiceClientGenerationTests {
 
         HttpBinJSON response = service.put(getServerUri(isSecure()), 42,
             RequestContext.builder()
-                .addBeforeRequestHook(httpRequest -> httpRequest.setBody(BinaryData.fromString("24")))
+                .addBeforeRequestInterceptor(httpRequest -> httpRequest.setBody(BinaryData.fromString("24")))
                 .build());
 
         assertNotNull(response);
@@ -1533,7 +1533,7 @@ public class TestInterfaceServiceClientGenerationTests {
 
         HttpBinJSON response = service.put(getServerUri(isSecure()), 42,
             RequestContext.builder()
-                .addBeforeRequestHook(httpRequest -> httpRequest.setBody(BinaryData.fromString("4242"))
+                .addBeforeRequestInterceptor(httpRequest -> httpRequest.setBody(BinaryData.fromString("4242"))
                     .getHeaders()
                     .add(HttpHeaderName.CONTENT_LENGTH, "4"))
                 .build());
@@ -1555,7 +1555,7 @@ public class TestInterfaceServiceClientGenerationTests {
 
         HttpBinJSON response = service.put(getServerUri(isSecure()), 42,
             RequestContext.builder()
-                .addBeforeRequestHook(
+                .addBeforeRequestInterceptor(
                     httpRequest -> httpRequest.getHeaders().add(new HttpHeader(RANDOM_HEADER, "randomValue")))
                 .build());
 
@@ -1574,7 +1574,7 @@ public class TestInterfaceServiceClientGenerationTests {
 
         HttpBinJSON response = service.put(getServerUri(isSecure()), 42,
             RequestContext.builder()
-                .addBeforeRequestHook(httpRequest -> httpRequest.getHeaders()
+                .addBeforeRequestInterceptor(httpRequest -> httpRequest.getHeaders()
                     .add(new HttpHeader(RANDOM_HEADER, "randomValue"))
                     .add(RANDOM_HEADER, "randomValue2"))
                 .build());

@@ -37,7 +37,7 @@ public class RequestContextTests {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
         RequestContext context = RequestContext.builder()
-            .addBeforeRequestHook(request2 -> request2.getHeaders()
+            .addBeforeRequestInterceptor(request2 -> request2.getHeaders()
                 .add(new HttpHeader(X_MS_FOO, "bar"))
                 .set(HttpHeaderName.CONTENT_TYPE, "application/json"))
             .build();
@@ -58,7 +58,7 @@ public class RequestContextTests {
 
         BinaryData requestBody = BinaryData.fromString(expected);
         RequestContext context
-            = RequestContext.builder().addBeforeRequestHook(request2 -> request2.setBody(requestBody)).build();
+            = RequestContext.builder().addBeforeRequestInterceptor(request2 -> request2.setBody(requestBody)).build();
         context.getRequestCallback().accept(request);
         BinaryData actual = request.getBody();
 
@@ -67,11 +67,11 @@ public class RequestContextTests {
     }
 
     @Test
-    public void addBeforeRequestHook() {
+    public void addBeforeRequestInterceptor() {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
         RequestContext context = RequestContext.builder()
-            .addBeforeRequestHook(request2 -> request2
+            .addBeforeRequestInterceptor(request2 -> request2
                 // may already be set if request is created from a client
                 .setUri("https://request.uri")
                 .setMethod(HttpMethod.GET)
@@ -88,11 +88,11 @@ public class RequestContextTests {
     }
 
     @Test
-    public void addBeforeRequestHookWorks() {
+    public void addBeforeRequestInterceptorWorks() {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
         RequestContext context = RequestContext.builder()
-            .addBeforeRequestHook(request2 -> request2.setUri("https://updated.uri")
+            .addBeforeRequestInterceptor(request2 -> request2.setUri("https://updated.uri")
                 .setMethod(HttpMethod.GET)
                 .getHeaders()
                 .set(X_MS_FOO, "updated"))
