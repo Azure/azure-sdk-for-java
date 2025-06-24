@@ -10,6 +10,8 @@ jobs:
   - template: ./smoke-test-job.yml
     parameters:
       OS: ${{ parameters.OS }}
+      Pool: ${{ parameters.Pool }}
+      OSVmImage: ${{ parameters.OSVmImage }}
       TestTask:
         task: AzurePowerShell@5
         displayName: 'Run Smoke Test Samples'

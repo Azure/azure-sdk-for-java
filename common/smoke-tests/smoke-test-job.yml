@@ -22,11 +22,11 @@ jobs:
       matrix: ${{ parameters.Matrix }}
 
     pool:
-      name: $(Pool)
+      name: ${{ parameters.Pool }}
       ${{ if eq(parameters.OS, 'macOs') }}:
-        vmImage: $(OSVmImage)
+        vmImage: ${{ parameters.OSVmImage }}
       ${{ else }}:
-        demands: ImageOverride -equals $(OSVmImage)
+        demands: ImageOverride -equals ${{ parameters.OSVmImage }}
 
     steps:
       - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
