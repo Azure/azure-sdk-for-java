@@ -8,6 +8,8 @@ import org.openrewrite.java.MethodMatcher;
 import org.openrewrite.java.tree.J;
 import org.openrewrite.java.tree.Space;
 
+import com.azure.openrewrite.util.ConfiguredParserJavaTemplateBuilder;
+
 /**
  * A custom OpenRewrite recipe to migrate the use of HttpHeaders.
  *
