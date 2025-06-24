@@ -38,7 +38,7 @@ To update generated files for chat service, run the following command
 tag: package-chat-2025-03-15
 use: '@autorest/java@4.1.33'
 require:
-    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/b97334ac101d4a5e6556e4d67d1bcdd46fc12139/specification/communication/data-plane/Chat/readme.md
+    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/e5f9d3b1d33ee4e98eef7ec302966f5b0b6efeeb/specification/communication/data-plane/Chat/readme.md
 java: true
 title: AzureCommunicationChatService
 output-folder: ..\
