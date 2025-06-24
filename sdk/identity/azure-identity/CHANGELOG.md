@@ -6,9 +6,9 @@
 
 ### Breaking Changes
 
-### Bugs Fixed
-
 ### Other Changes
+
+- Deprecated `SharedTokenCacheCredential` and `SharedTokenCacheCredentialBuilder` and removed `SharedTokenCacheCredential` from the `DefaultAzureCredential` authentication chain. [#45795](https://github.com/Azure/azure-sdk-for-java/pull/45795)
 
 ## 1.16.2 (2025-06-09)
 
