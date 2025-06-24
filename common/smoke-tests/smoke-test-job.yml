@@ -3,6 +3,10 @@ parameters:
     type: object
   - name: OS
     type: string
+  - name: Pool
+    type: string
+  - name: OSVmImage
+    type: string
   - name: TestTask
     type: object
   - name: MaxParallel
