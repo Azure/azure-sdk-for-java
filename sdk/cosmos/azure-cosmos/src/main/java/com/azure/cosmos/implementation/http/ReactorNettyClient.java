@@ -6,7 +6,6 @@ import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http.HttpMethod;
@@ -33,7 +32,6 @@ import reactor.util.context.Context;
 import java.lang.invoke.WrongMethodTypeException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
@@ -105,37 +103,6 @@ public class ReactorNettyClient implements HttpClient {
         }
     }
 
-    private String getChannelPipelineLog(String name, ChannelPipeline channelPipeline) {
-        Map<String, ChannelHandler> handlerMap = channelPipeline.toMap();
-        StringBuilder sb = new StringBuilder();
-        sb.append("====================================================================================");
-        sb.append(System.lineSeparator());
-        sb.append(name + ": " + this);
-        sb.append(System.lineSeparator());
-        sb.append("====================================================================================");
-        sb.append(System.lineSeparator());
-        handlerMap.entrySet().forEach(
-            entry -> {
-                sb.append("Http2Handler " + entry.getKey() + ": " + entry.getValue());
-                sb.append(System.lineSeparator());
-            });
-        sb.append("====================================================================================");
-        sb.append(System.lineSeparator());
-        return sb.toString();
-    }
-    private void logChannelPipelineAsTrace(String name, ChannelPipeline channelPipeline) {
-        if (logger.isTraceEnabled()) {
-            logger.trace(getChannelPipelineLog(name, channelPipeline));
-        }
-    }
-
-    private void logChannelPipelineAsDebug(String name, ChannelPipeline channelPipeline) {
-        if (logger.isTraceEnabled()) {
-            logger.trace(getChannelPipelineLog(name, channelPipeline));
-        }
-    }
-
-
     private void configureChannelPipelineHandlers() {
         Configs configs = this.httpClientConfig.getConfigs();
 
@@ -169,8 +136,6 @@ public class ReactorNettyClient implements HttpClient {
             ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
         Http2ConnectionConfig http2Cfg = httpClientConfig.getHttp2ConnectionConfig();
         if (http2CfgAccessor.isEffectivelyEnabled(http2Cfg)) {
-            final AtomicReference<Http2SettingsSpec.Builder> settingsBuilderRef = new AtomicReference<>(null);
-
             this.httpClient = this.httpClient
                 .secure(sslContextSpec ->
                     sslContextSpec.sslContext(
@@ -179,12 +144,10 @@ public class ReactorNettyClient implements HttpClient {
                             true
                         )))
                 .protocol(HttpProtocol.H2, HttpProtocol.HTTP11)
-                .http2Settings(settings -> settingsBuilderRef.set(
-                    settings
-                        .initialWindowSize(1024 * 1024) // 1MB initial window size
-                        .maxFrameSize(64 * 1024)        // 64KB max frame size
-                        .maxConcurrentStreams(http2CfgAccessor.getEffectiveMaxConcurrentStreams(http2Cfg))  // Increased from default 30
-                    )
+                .http2Settings(settings -> settings
+                    .initialWindowSize(1024 * 1024) // 1MB initial window size
+                    .maxFrameSize(64 * 1024)        // 64KB max frame size
+                    .maxConcurrentStreams(http2CfgAccessor.getEffectiveMaxConcurrentStreams(http2Cfg))  // Increased from default 30
                 )
                 .doOnConnected((connection -> {
                     // The response header clean up pipeline is being added due to an error getting when calling gateway:
@@ -355,7 +318,9 @@ public class ReactorNettyClient implements HttpClient {
     }
 
     private static class ReactorNettyHttpResponse extends HttpResponse {
+
         private final AtomicReference<ReactorNettyResponseState> state = new AtomicReference<>(ReactorNettyResponseState.NOT_SUBSCRIBED);
+
         private final HttpClientResponse reactorNettyResponse;
         private final Connection reactorNettyConnection;
 
