@@ -905,7 +905,9 @@ public class ImplementationBridgeHelpers {
 
             OverridableRequestOptions getRequestOptions(CosmosDiagnosticsContext ctx);
 
-            void setRequestOptions(CosmosDiagnosticsContext ctx, OverridableRequestOptions requestOptions);
+            void setRequestOptions(CosmosDiagnosticsContext ctx,
+                                   OverridableRequestOptions requestOptions,
+                                   ReadConsistencyStrategy updatedEffectiveReadConsistencyStrategy);
 
             CosmosDiagnosticsSystemUsageSnapshot createSystemUsageSnapshot(
                 String cpu,
@@ -1892,6 +1894,11 @@ public class ImplementationBridgeHelpers {
 
         public interface ReadConsistencyStrategyAccessor {
             ReadConsistencyStrategy createFromServiceSerializedFormat(String serviceSerializedFormat);
+            ReadConsistencyStrategy getEffectiveReadConsistencyStrategy(
+                ResourceType resourceType,
+                OperationType operationType,
+                ReadConsistencyStrategy desiredReadConsistencyStrategyOfOperation,
+                ReadConsistencyStrategy clientLevelReadConsistencyStrategy);
         }
     }
 }
