@@ -51,13 +51,13 @@ public final class BinaryDataHelper {
      * @throws NullPointerException If {@code content} is null.
      */
     public static BinaryData createBinaryData(BinaryDataContent content) {
-        ClientLogger staticBlockLocalLogger = new ClientLogger(BinaryDataHelper.class);
+        ClientLogger logger = new ClientLogger(BinaryDataHelper.class);
 
         try {
             ensureAccessorSet();
             return accessor.createBinaryData(content);
         } catch (Throwable t) {
-            staticBlockLocalLogger.error("createBinary failed with message : {}", t.getMessage(), t);
+            logger.error("createBinary failed with message : {}", t.getMessage(), t);
             throw t;
         }
     }
@@ -79,14 +79,14 @@ public final class BinaryDataHelper {
      * which in turns populates the accessor.
      */
     private static void ensureAccessorSet() {
-        ClientLogger staticBlockLocalLogger = new ClientLogger(BinaryDataHelper.class);
+        ClientLogger logger = new ClientLogger(BinaryDataHelper.class);
 
         try {
             if (accessor == null) {
                 BinaryData.fromString("");
             }
         } catch (Exception e) {
-            staticBlockLocalLogger.error("ensureAccessorSet failed with message : {}", e.getMessage(), e);
+            logger.error("ensureAccessorSet failed with message : {}", e.getMessage(), e);
             throw e;
         }
 

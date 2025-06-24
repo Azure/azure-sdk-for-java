@@ -188,7 +188,7 @@ public final class BinaryData {
 
     static {
 
-        ClientLogger staticBlockLocalLogger = new ClientLogger(BinaryData.class);
+        ClientLogger logger = new ClientLogger(BinaryData.class);
 
         try {
             BinaryDataHelper.setAccessor(new BinaryDataHelper.BinaryDataAccessor() {
@@ -204,7 +204,7 @@ public final class BinaryData {
                 }
             });
         } catch (Throwable t) {
-            staticBlockLocalLogger.error("BinaryData's static initializer failed with message : {}", t.getMessage(), t);
+            logger.error("BinaryData's static initializer failed with message : {}", t.getMessage(), t);
             throw t;
         }
     }
