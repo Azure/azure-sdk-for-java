@@ -62,7 +62,6 @@ The easiest way to build is by running the following command from the service ro
 mvn -f sdk/storage/pom.service.xml -Dgpg.skip -DskipTests clean install
 ```
 - `-f sdk/storage/pom.service.xml`: tells maven to target latest storage library for Azure SDK for Java project.
-- `-Dgpg.skip`: disables [gpg](https://mran.microsoft.com/snapshot/2016-12-19/web/packages/gpg/vignettes/intro.html) signing.
 - `-DskipTests:` Building without running unit tests would speed operation up, however, make sure all tests pass before creating a new PR.
 - `clean:` will remove any previous generated output.
 - `install:`  compiles project and installs it in the local Maven cache.
