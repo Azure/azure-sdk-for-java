@@ -20,7 +20,7 @@ public class GetLedgerEntriesByCollectionIdAndTagsSample {
         // will be a part of:
         // requestOptions = new RequestOptions().addQueryParam("collectionId", "" + 2);
         RequestOptions requestOptions =
-                new RequestOptions().addQueryParam("collectionId", "Collection1").addQueryParam("tags", "tag1,tag2");
+                new RequestOptions().addQueryParam("collectionId", "Collection1").addQueryParam("tag", "tag1");
         PagedIterable<BinaryData> response = confidentialLedgerClient.listLedgerEntries(requestOptions);
     }
 }
