@@ -81,8 +81,8 @@
     </dependency>
     <dependency>
       <groupId>org.glassfish.tyrus</groupId>
-      <artifactId>tyrus-client</artifactId>
-      <version>1.16</version>  <!-- {x-version-update;org.glassfish.tyrus:tyrus-client;external_dependency} -->
+      <artifactId>tyrus-container-grizzly-client</artifactId>
+      <version>1.21</version>  <!-- {x-version-update;org.glassfish.tyrus:tyrus-client;external_dependency} -->
       <scope>test</scope>
       <exclusions>
         <exclusion>
