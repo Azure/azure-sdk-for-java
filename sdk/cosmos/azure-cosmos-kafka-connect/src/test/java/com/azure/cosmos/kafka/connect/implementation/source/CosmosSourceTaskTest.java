@@ -170,7 +170,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
         CosmosClientCacheItem clientItem =
             CosmosClientCache.getCosmosClient(
                 sourceConfig.getAccountConfig(),
-                "poll");
+                "pollSplitwhenStartup");
 
         // create a new container with multi-partition
         CosmosContainerProperties testContainer =
