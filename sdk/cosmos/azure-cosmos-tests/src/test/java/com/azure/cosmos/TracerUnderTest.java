@@ -169,7 +169,7 @@ public class TracerUnderTest implements Tracer {
     }
 
     public SpanRecord[] getAllCollectedSiblingSpans() {
-        return this.collectedSiblingSpans.toArray(c -> new SpanRecord[c]);
+        return this.collectedSiblingSpans.toArray(new SpanRecord[0]);
     }
 
     public Collection<EventRecord> getEventsOfAllCollectedSiblingSpans() {
