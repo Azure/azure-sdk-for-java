@@ -146,7 +146,7 @@ group:artifact defined in the tag."
 
 What if I've got something that, for whatever reason, shouldn't be updated? There's a tag for that.
 
-`<!-- {x-version-exempt;<groupId>:<artifactId>;reason for excemption} -->`
+`<!-- {x-version-exempt;<groupId>:<artifactId>;reason for exemption} -->`
 
 In theory, absence of an x-version-update tag would do the same thing but the tooling is still being developed and eventually there will be check-in blockers if xml has a version element with no tag.
 
