@@ -17,10 +17,20 @@ import java.net.URI;
  * Mock implementation of {@link JavaFileObject}.
  */
 public class MockJavaFileObject implements JavaFileObject {
+    private final StringWriter contentWriter = new StringWriter();
+    
     /**
      * Creates an instance of {@link JavaFileObject}.
      */
     public MockJavaFileObject() {
+    }
+
+    /**
+     * Gets the content that was written to this file object.
+     * @return the written content as a string
+     */
+    public String getContent() {
+        return contentWriter.toString();
     }
 
     @Override
@@ -75,7 +85,7 @@ public class MockJavaFileObject implements JavaFileObject {
 
     @Override
     public Writer openWriter() throws IOException {
-        return new StringWriter();
+        return contentWriter;
     }
 
     @Override
