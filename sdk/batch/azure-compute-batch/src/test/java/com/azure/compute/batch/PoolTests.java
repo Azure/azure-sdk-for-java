@@ -355,12 +355,14 @@ public class PoolTests extends BatchClientTestBase {
                 .setSku("2022-datacenter-smalldisk-g2");
 
             // Set the security profile for the Confidential VM
-            SecurityProfile securityProfile = new SecurityProfile(true, SecurityTypes.CONFIDENTIAL_VM,
-                new BatchUefiSettings().setSecureBootEnabled(true).setVTpmEnabled(true));
+            SecurityProfile securityProfile = new SecurityProfile();
+            securityProfile.setEncryptionAtHost(true);
+            securityProfile.setSecurityType(SecurityTypes.CONFIDENTIAL_VM);
+            securityProfile.setUefiSettings(new BatchUefiSettings().setSecureBootEnabled(true).setVTpmEnabled(true));
 
             // Set the VM disk security profile
-            VmDiskSecurityProfile diskSecurityProfile
-                = new VmDiskSecurityProfile().setSecurityEncryptionType(SecurityEncryptionTypes.VMGUEST_STATE_ONLY);
+            BatchVmDiskSecurityProfile diskSecurityProfile = new BatchVmDiskSecurityProfile()
+                .setSecurityEncryptionType(SecurityEncryptionTypes.VMGUEST_STATE_ONLY);
 
             ManagedDisk managedDisk = new ManagedDisk().setSecurityProfile(diskSecurityProfile);
 

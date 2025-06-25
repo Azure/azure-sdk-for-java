@@ -2898,9 +2898,9 @@ public final class BatchClientImpl {
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
-     *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *             uefiSettings (Required): {
+     *             encryptionAtHost: Boolean (Optional)
+     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
      *             }
@@ -3210,9 +3210,9 @@ public final class BatchClientImpl {
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
-     *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *             uefiSettings (Required): {
+     *             encryptionAtHost: Boolean (Optional)
+     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
      *             }
@@ -3536,9 +3536,9 @@ public final class BatchClientImpl {
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
-     *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *             uefiSettings (Required): {
+     *             encryptionAtHost: Boolean (Optional)
+     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
      *             }
@@ -3925,9 +3925,9 @@ public final class BatchClientImpl {
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
-     *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *             uefiSettings (Required): {
+     *             encryptionAtHost: Boolean (Optional)
+     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
      *             }
@@ -4332,9 +4332,9 @@ public final class BatchClientImpl {
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
-     *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *             uefiSettings (Required): {
+     *             encryptionAtHost: Boolean (Optional)
+     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
      *             }
@@ -4719,9 +4719,9 @@ public final class BatchClientImpl {
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
-     *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *             uefiSettings (Required): {
+     *             encryptionAtHost: Boolean (Optional)
+     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
      *             }
@@ -5376,9 +5376,9 @@ public final class BatchClientImpl {
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
-     *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *             uefiSettings (Required): {
+     *             encryptionAtHost: Boolean (Optional)
+     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
      *             }
@@ -5779,9 +5779,9 @@ public final class BatchClientImpl {
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
-     *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *             uefiSettings (Required): {
+     *             encryptionAtHost: Boolean (Optional)
+     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
      *             }
@@ -6237,9 +6237,9 @@ public final class BatchClientImpl {
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
-     *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *             uefiSettings (Required): {
+     *             encryptionAtHost: Boolean (Optional)
+     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
      *             }
@@ -6566,9 +6566,9 @@ public final class BatchClientImpl {
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
-     *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *             uefiSettings (Required): {
+     *             encryptionAtHost: Boolean (Optional)
+     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
      *             }
@@ -8619,9 +8619,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -8780,7 +8780,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -9102,9 +9102,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -9263,7 +9263,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -9460,9 +9460,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -9654,7 +9654,7 @@ public final class BatchClientImpl {
      *     ]
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      * }
      * }
@@ -9818,9 +9818,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -10012,7 +10012,7 @@ public final class BatchClientImpl {
      *     ]
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      * }
      * }
@@ -10300,9 +10300,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -10461,7 +10461,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -10786,9 +10786,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -10947,7 +10947,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -11648,9 +11648,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -11809,7 +11809,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -12075,9 +12075,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -12236,7 +12236,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -12510,9 +12510,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -12671,7 +12671,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -12980,9 +12980,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -13141,7 +13141,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -13468,9 +13468,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -13629,7 +13629,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -13936,9 +13936,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -14097,7 +14097,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -14424,9 +14424,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -14585,7 +14585,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -14896,9 +14896,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -15057,7 +15057,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -15385,9 +15385,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -15546,7 +15546,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -15855,9 +15855,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -16016,7 +16016,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -17619,7 +17619,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -17830,9 +17830,9 @@ public final class BatchClientImpl {
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -18107,7 +18107,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -18318,9 +18318,9 @@ public final class BatchClientImpl {
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -18585,7 +18585,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -18796,9 +18796,9 @@ public final class BatchClientImpl {
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -19043,7 +19043,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -19254,9 +19254,9 @@ public final class BatchClientImpl {
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -19510,7 +19510,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -19721,9 +19721,9 @@ public final class BatchClientImpl {
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -20002,7 +20002,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -20213,9 +20213,9 @@ public final class BatchClientImpl {
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -20762,7 +20762,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -20973,9 +20973,9 @@ public final class BatchClientImpl {
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -21192,7 +21192,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -21403,9 +21403,9 @@ public final class BatchClientImpl {
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -21639,7 +21639,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -21850,9 +21850,9 @@ public final class BatchClientImpl {
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -22112,7 +22112,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -22323,9 +22323,9 @@ public final class BatchClientImpl {
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -22603,7 +22603,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -22814,9 +22814,9 @@ public final class BatchClientImpl {
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -23074,7 +23074,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -23285,9 +23285,9 @@ public final class BatchClientImpl {
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -24996,7 +24996,7 @@ public final class BatchClientImpl {
      *             lastModified: OffsetDateTime (Optional)
      *             location: String (Optional)
      *             error (Optional): {
-     *                 code: String (Required)
+     *                 code: String (Optional)
      *                 message (Optional): {
      *                     lang: String (Optional)
      *                     value: String (Optional)
@@ -25212,7 +25212,7 @@ public final class BatchClientImpl {
      *             lastModified: OffsetDateTime (Optional)
      *             location: String (Optional)
      *             error (Optional): {
-     *                 code: String (Required)
+     *                 code: String (Optional)
      *                 message (Optional): {
      *                     lang: String (Optional)
      *                     value: String (Optional)
@@ -30988,9 +30988,9 @@ public final class BatchClientImpl {
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
-     *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *             uefiSettings (Required): {
+     *             encryptionAtHost: Boolean (Optional)
+     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
      *             }
@@ -31362,9 +31362,9 @@ public final class BatchClientImpl {
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
-     *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *             uefiSettings (Required): {
+     *             encryptionAtHost: Boolean (Optional)
+     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
      *             }
@@ -32060,9 +32060,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -32221,7 +32221,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -32514,9 +32514,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -32675,7 +32675,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -32966,9 +32966,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -33127,7 +33127,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -33420,9 +33420,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -33581,7 +33581,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -33930,7 +33930,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -34141,9 +34141,9 @@ public final class BatchClientImpl {
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -34388,7 +34388,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -34599,9 +34599,9 @@ public final class BatchClientImpl {
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
