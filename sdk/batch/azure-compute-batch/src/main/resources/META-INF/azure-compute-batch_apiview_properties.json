@@ -492,6 +492,7 @@
     "com.azure.compute.batch.models.BatchTasksListOptions": null,
     "com.azure.compute.batch.models.BatchUefiSettings": "Azure.Batch.BatchUefiSettings",
     "com.azure.compute.batch.models.BatchUserAssignedIdentity": "Azure.Batch.BatchUserAssignedIdentity",
+    "com.azure.compute.batch.models.BatchVmDiskSecurityProfile": "Azure.Batch.BatchVmDiskSecurityProfile",
     "com.azure.compute.batch.models.BatchVmImageReference": "Azure.Batch.BatchVmImageReference",
     "com.azure.compute.batch.models.CachingType": "Azure.Batch.CachingType",
     "com.azure.compute.batch.models.CifsMountConfiguration": "Azure.Batch.CifsMountConfiguration",
@@ -558,7 +559,6 @@
     "com.azure.compute.batch.models.VMExtensionInstanceView": "Azure.Batch.VMExtensionInstanceView",
     "com.azure.compute.batch.models.VirtualMachineConfiguration": "Azure.Batch.VirtualMachineConfiguration",
     "com.azure.compute.batch.models.VirtualMachineInfo": "Azure.Batch.VirtualMachineInfo",
-    "com.azure.compute.batch.models.VmDiskSecurityProfile": "Azure.Batch.BatchVMDiskSecurityProfile",
     "com.azure.compute.batch.models.WindowsConfiguration": "Azure.Batch.WindowsConfiguration",
     "com.azure.compute.batch.models.WindowsUserConfiguration": "Azure.Batch.WindowsUserConfiguration"
   }
