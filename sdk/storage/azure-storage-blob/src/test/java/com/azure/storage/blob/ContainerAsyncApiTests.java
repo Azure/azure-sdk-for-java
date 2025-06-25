@@ -22,7 +22,6 @@ import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.PageBlobAsyncClient;
-import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.TestHttpClientType;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
@@ -2151,7 +2150,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         StepVerifier.create(containerAsyncClient.createIfNotExists()).verifyErrorSatisfies(ex -> {
             BlobStorageException exception = assertInstanceOf(BlobStorageException.class, ex);
             assertEquals(400, exception.getStatusCode());
-            assertTrue(exception.getMessage().contains(Constants.INVALID_VERSION_HEADER_MESSAGE));
+            assertTrue(exception.getMessage().contains(INVALID_VERSION_HEADER_MESSAGE));
         });
     }
 

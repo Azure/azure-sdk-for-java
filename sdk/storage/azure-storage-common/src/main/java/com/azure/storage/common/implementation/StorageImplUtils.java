@@ -76,6 +76,9 @@ public class StorageImplUtils {
         Constants.STORAGE_LOG_STRING_TO_SIGN, Constants.STORAGE_LOG_STRING_TO_SIGN,
         Constants.STORAGE_LOG_STRING_TO_SIGN);
 
+    public static final String INVALID_VERSION_HEADER_MESSAGE
+        = "The provided service version is not enabled on this storage account.  Please see https://learn.microsoft.com/rest/api/storageservices/versioning-for-the-azure-storage-services for additional information.\n";
+
     private static final String INVALID_BASE64_KEY
         = "'base64Key' was not a valid Base64 scheme. Ensure the Storage account key or SAS key is properly formatted.";
 
@@ -332,7 +335,7 @@ public class StorageImplUtils {
                 String headerName = extractXmlTagValue(message, "HeaderName");
                 if (Constants.HeaderConstants.INVALID_HEADER_VALUE.equals(errorCode)
                     && Constants.HeaderConstants.VERSION.equalsIgnoreCase(headerName)) {
-                    return Constants.INVALID_VERSION_HEADER_MESSAGE;
+                    return INVALID_VERSION_HEADER_MESSAGE;
                 }
             }
         }

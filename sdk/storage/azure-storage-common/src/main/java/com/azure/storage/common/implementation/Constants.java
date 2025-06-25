@@ -67,13 +67,6 @@ public final class Constants {
         = "File already exists. Specify overwrite to true to force update the file.";
 
     /**
-     * Defines constants for use Invalid version header Message.
-     *
-     */
-    public static final String INVALID_VERSION_HEADER_MESSAGE
-        = "The provided service version is not enabled on this storage account.  Please see https://learn.microsoft.com/rest/api/storageservices/versioning-for-the-azure-storage-services for additional information.\n";
-
-    /**
      * Buffer width used to copy data to output streams.
      */
     public static final int BUFFER_COPY_LENGTH = 8 * KB;
