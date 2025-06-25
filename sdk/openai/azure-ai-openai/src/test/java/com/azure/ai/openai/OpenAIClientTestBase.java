@@ -668,6 +668,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
     private SpeechGenerationOptions getSpeechGenerationOptions() {
         return new SpeechGenerationOptions("Today is a wonderful day to build something people love!",
+            "You are a helpful assistant.",
             SpeechVoice.ALLOY);
     }
 
