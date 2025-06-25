@@ -10,7 +10,6 @@ import com.azure.core.util.logging.LoggingEventBuilder;
 import io.netty.buffer.ByteBuf;
 import io.netty.util.Version;
 import reactor.netty.Connection;
-import reactor.netty.channel.ChannelOperations;
 
 import java.io.IOException;
 import java.net.URL;
@@ -45,6 +44,11 @@ public final class NettyUtility {
     private static final String NETTY_TCNATIVE_VERSION_ARTIFACT = "netty-tcnative-boringssl-static";
 
     /**
+     * Key for the context to indicate that the content length was not set by the SDK.
+     */
+    public static final String DID_NOT_SET_CONTENT_LENGTH_CONTEXT_KEY = "sdk-did-not-set-content-length";
+
+    /**
      * Deep copies the passed {@link ByteBuf} into a {@link ByteBuffer}.
      * <p>
      * Using this method ensures that data returned by the network is resilient against Reactor Netty releasing the
@@ -65,29 +69,8 @@ public final class NettyUtility {
      * @param reactorNettyConnection The connection to close.
      */
     public static void closeConnection(Connection reactorNettyConnection) {
-        // ChannelOperations is generally the default implementation of Connection used.
-        //
-        // Using the specific subclass allows for a finer grain handling.
-        if (reactorNettyConnection instanceof ChannelOperations) {
-            ChannelOperations<?, ?> channelOperations = (ChannelOperations<?, ?>) reactorNettyConnection;
-
-            // Given that this is an HttpResponse the only time this will be called is when the outbound has completed.
-            //
-            // From there the only thing that needs to be checked is whether the inbound has been disposed (completed),
-            // and if not dispose it (aka drain it).
-            if (!channelOperations.isInboundDisposed()) {
-                if (channelOperations.channel().isRegistered()) {
-                    channelOperations.channel().eventLoop().execute(channelOperations::discard);
-                } else {
-                    channelOperations.discard();
-                }
-            }
-        } else if (!reactorNettyConnection.isDisposed()) {
-            if (reactorNettyConnection.channel().isRegistered()) {
-                reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
-            } else {
-                reactorNettyConnection.dispose();
-            }
+        if (!reactorNettyConnection.isDisposed()) {
+            reactorNettyConnection.dispose();
         }
     }
 

@@ -11,7 +11,7 @@ import com.azure.core.util.HttpClientOptions;
 import io.netty.channel.ChannelOption;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import reactor.netty.transport.ProxyProvider;
+import reactor.netty.http.client.HttpClientConfig;
 
 import java.net.InetSocketAddress;
 import java.time.Duration;
@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Tests {@link NettyAsyncHttpClientProvider}.
@@ -35,10 +36,7 @@ public class NettyAsyncHttpClientProviderTests {
         if (environmentProxy == null) {
             assertFalse(httpClient.nettyClient.configuration().hasProxy());
         } else {
-            assertTrue(httpClient.nettyClient.configuration().hasProxy());
-
-            ProxyProvider proxyProvider = httpClient.nettyClient.configuration().proxyProvider();
-            assertEquals(environmentProxy.getAddress(), proxyProvider.getAddress().get());
+            verifyProxyAddress(environmentProxy, httpClient.nettyClient.configuration());
         }
     }
 
@@ -51,10 +49,7 @@ public class NettyAsyncHttpClientProviderTests {
         if (environmentProxy == null) {
             assertFalse(httpClient.nettyClient.configuration().hasProxy());
         } else {
-            assertTrue(httpClient.nettyClient.configuration().hasProxy());
-
-            ProxyProvider proxyProvider = httpClient.nettyClient.configuration().proxyProvider();
-            assertEquals(environmentProxy.getAddress(), proxyProvider.getAddress().get());
+            verifyProxyAddress(environmentProxy, httpClient.nettyClient.configuration());
         }
     }
 
@@ -66,10 +61,20 @@ public class NettyAsyncHttpClientProviderTests {
         NettyAsyncHttpClient httpClient
             = (NettyAsyncHttpClient) new NettyAsyncHttpClientProvider().createInstance(clientOptions);
 
-        assertTrue(httpClient.nettyClient.configuration().hasProxy());
+        verifyProxyAddress(proxyOptions, httpClient.nettyClient.configuration());
+    }
 
-        ProxyProvider proxyProvider = httpClient.nettyClient.configuration().proxyProvider();
-        assertEquals(proxyOptions.getAddress(), proxyProvider.getAddress().get());
+    @SuppressWarnings("deprecation")
+    private static void verifyProxyAddress(ProxyOptions proxyOptions, HttpClientConfig httpClientConfig) {
+        assertTrue(httpClientConfig.hasProxy());
+
+        if (httpClientConfig.proxyProvider() != null) {
+            assertEquals(proxyOptions.getAddress(), httpClientConfig.proxyProvider().getAddress().get());
+        } else if (httpClientConfig.proxyProviderSupplier() != null) {
+            assertEquals(proxyOptions.getAddress(), httpClientConfig.proxyProviderSupplier().get().getAddress().get());
+        } else {
+            fail("No proxy provider or proxy provider supplier found in the http client configuration.");
+        }
     }
 
     @Test
@@ -121,7 +126,7 @@ public class NettyAsyncHttpClientProviderTests {
         assertThrows(IllegalStateException.class, () -> HttpClient.createDefault(options));
     }
 
-    class AnotherHttpClientProvider implements HttpClientProvider {
+    static class AnotherHttpClientProvider implements HttpClientProvider {
         @Override
         public HttpClient createInstance() {
             throw new IllegalStateException("should never be called");
