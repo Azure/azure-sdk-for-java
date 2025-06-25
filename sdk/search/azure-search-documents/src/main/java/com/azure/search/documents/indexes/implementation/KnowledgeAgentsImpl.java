@@ -66,7 +66,7 @@ public final class KnowledgeAgentsImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "SearchServiceClientK")
+    @ServiceInterface(name = "SearchServiceClientKnowledgeAgents")
     public interface KnowledgeAgentsService {
         @Put("/agents('{agentName}')")
         @ExpectedResponses({ 200, 201 })
@@ -679,7 +679,7 @@ public final class KnowledgeAgentsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KnowledgeAgent> list(RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> listSinglePage(requestOptions, Context.NONE));
+        return new PagedIterable<>(() -> listSinglePage(requestOptions));
     }
 
     /**

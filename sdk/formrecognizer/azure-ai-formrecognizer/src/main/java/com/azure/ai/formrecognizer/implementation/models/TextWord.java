@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public final class TextWord implements JsonSerializable<TextWord> {
     /*
      * The text content of the word.
      */
+    @Generated
     private String text;
 
     /*
      * Bounding box of an extracted word.
      */
+    @Generated
     private List<Float> boundingBox;
 
     /*
      * Confidence value.
      */
+    @Generated
     private Float confidence;
 
     /**
      * Creates an instance of TextWord class.
      */
+    @Generated
     public TextWord() {
     }
 
@@ -43,6 +48,7 @@ public final class TextWord implements JsonSerializable<TextWord> {
      * 
      * @return the text value.
      */
+    @Generated
     public String getText() {
         return this.text;
     }
@@ -53,6 +59,7 @@ public final class TextWord implements JsonSerializable<TextWord> {
      * @param text the text value to set.
      * @return the TextWord object itself.
      */
+    @Generated
     public TextWord setText(String text) {
         this.text = text;
         return this;
@@ -63,6 +70,7 @@ public final class TextWord implements JsonSerializable<TextWord> {
      * 
      * @return the boundingBox value.
      */
+    @Generated
     public List<Float> getBoundingBox() {
         return this.boundingBox;
     }
@@ -73,6 +81,7 @@ public final class TextWord implements JsonSerializable<TextWord> {
      * @param boundingBox the boundingBox value to set.
      * @return the TextWord object itself.
      */
+    @Generated
     public TextWord setBoundingBox(List<Float> boundingBox) {
         this.boundingBox = boundingBox;
         return this;
@@ -83,6 +92,7 @@ public final class TextWord implements JsonSerializable<TextWord> {
      * 
      * @return the confidence value.
      */
+    @Generated
     public Float getConfidence() {
         return this.confidence;
     }
@@ -93,6 +103,7 @@ public final class TextWord implements JsonSerializable<TextWord> {
      * @param confidence the confidence value to set.
      * @return the TextWord object itself.
      */
+    @Generated
     public TextWord setConfidence(Float confidence) {
         this.confidence = confidence;
         return this;
@@ -101,6 +112,7 @@ public final class TextWord implements JsonSerializable<TextWord> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -119,6 +131,7 @@ public final class TextWord implements JsonSerializable<TextWord> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TextWord.
      */
+    @Generated
     public static TextWord fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TextWord deserializedTextWord = new TextWord();

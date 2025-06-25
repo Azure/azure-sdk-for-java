@@ -51,6 +51,13 @@ public interface Cluster {
     Map<String, String> tags();
 
     /**
+     * Gets the etag property: Resource ETag.
+     * 
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
      * Gets the extendedLocation property: The extended location of the cluster manager associated with the cluster.
      * 
      * @return the extendedLocation value.
@@ -462,7 +469,8 @@ public interface Cluster {
             DefinitionStages.WithComputeRackDefinitions, DefinitionStages.WithManagedResourceGroupConfiguration,
             DefinitionStages.WithRuntimeProtectionConfiguration, DefinitionStages.WithSecretArchive,
             DefinitionStages.WithSecretArchiveSettings, DefinitionStages.WithUpdateStrategy,
-            DefinitionStages.WithVulnerabilityScanningSettings {
+            DefinitionStages.WithVulnerabilityScanningSettings, DefinitionStages.WithIfMatch,
+            DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
              * 
@@ -697,6 +705,37 @@ public interface Cluster {
              */
             WithCreate withVulnerabilityScanningSettings(VulnerabilityScanningSettings vulnerabilityScanningSettings);
         }
+
+        /**
+         * The stage of the Cluster definition allowing to specify ifMatch.
+         */
+        interface WithIfMatch {
+            /**
+             * Specifies the ifMatch property: The ETag of the transformation. Omit this value to always overwrite the
+             * current resource. Specify the last-seen ETag value to prevent accidentally overwriting concurrent
+             * changes..
+             * 
+             * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource.
+             * Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+             * @return the next definition stage.
+             */
+            WithCreate withIfMatch(String ifMatch);
+        }
+
+        /**
+         * The stage of the Cluster definition allowing to specify ifNoneMatch.
+         */
+        interface WithIfNoneMatch {
+            /**
+             * Specifies the ifNoneMatch property: Set to '*' to allow a new record set to be created, but to prevent
+             * updating an existing resource. Other values will result in error from server as they are not supported..
+             * 
+             * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an
+             * existing resource. Other values will result in error from server as they are not supported.
+             * @return the next definition stage.
+             */
+            WithCreate withIfNoneMatch(String ifNoneMatch);
+        }
     }
 
     /**
@@ -715,7 +754,7 @@ public interface Cluster {
         UpdateStages.WithCommandOutputSettings, UpdateStages.WithComputeDeploymentThreshold,
         UpdateStages.WithComputeRackDefinitions, UpdateStages.WithRuntimeProtectionConfiguration,
         UpdateStages.WithSecretArchive, UpdateStages.WithSecretArchiveSettings, UpdateStages.WithUpdateStrategy,
-        UpdateStages.WithVulnerabilityScanningSettings {
+        UpdateStages.WithVulnerabilityScanningSettings, UpdateStages.WithIfMatch, UpdateStages.WithIfNoneMatch {
         /**
          * Executes the update request.
          * 
@@ -936,6 +975,37 @@ public interface Cluster {
              * @return the next definition stage.
              */
             Update withVulnerabilityScanningSettings(VulnerabilityScanningSettingsPatch vulnerabilityScanningSettings);
+        }
+
+        /**
+         * The stage of the Cluster update allowing to specify ifMatch.
+         */
+        interface WithIfMatch {
+            /**
+             * Specifies the ifMatch property: The ETag of the transformation. Omit this value to always overwrite the
+             * current resource. Specify the last-seen ETag value to prevent accidentally overwriting concurrent
+             * changes..
+             * 
+             * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource.
+             * Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+             * @return the next definition stage.
+             */
+            Update withIfMatch(String ifMatch);
+        }
+
+        /**
+         * The stage of the Cluster update allowing to specify ifNoneMatch.
+         */
+        interface WithIfNoneMatch {
+            /**
+             * Specifies the ifNoneMatch property: Set to '*' to allow a new record set to be created, but to prevent
+             * updating an existing resource. Other values will result in error from server as they are not supported..
+             * 
+             * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an
+             * existing resource. Other values will result in error from server as they are not supported.
+             * @return the next definition stage.
+             */
+            Update withIfNoneMatch(String ifNoneMatch);
         }
     }
 

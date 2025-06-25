@@ -4,6 +4,7 @@
 
 package com.azure.maps.traffic.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class TileFormat extends ExpandableStringEnum<TileFormat> {
     /**
      * An image in the png format. Supports zoom levels 0 through 18.
      */
+    @Generated
     public static final TileFormat PNG = fromString("png");
 
     /**
      * Vector graphic in the pbf format. Supports zoom levels 0 through 22.
      */
+    @Generated
     public static final TileFormat PBF = fromString("pbf");
 
     /**
@@ -26,6 +29,7 @@ public final class TileFormat extends ExpandableStringEnum<TileFormat> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public TileFormat() {
     }
@@ -36,6 +40,7 @@ public final class TileFormat extends ExpandableStringEnum<TileFormat> {
      * @param name a name to look for.
      * @return the corresponding TileFormat.
      */
+    @Generated
     public static TileFormat fromString(String name) {
         return fromString(name, TileFormat.class);
     }
@@ -45,6 +50,7 @@ public final class TileFormat extends ExpandableStringEnum<TileFormat> {
      * 
      * @return known TileFormat values.
      */
+    @Generated
     public static Collection<TileFormat> values() {
         return values(TileFormat.class);
     }

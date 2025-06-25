@@ -894,6 +894,7 @@ public class ImplementationBridgeHelpers {
                 OperationType operationType,
                 String operationId,
                 ConsistencyLevel consistencyLevel,
+                ReadConsistencyStrategy readConsistencyStrategy,
                 Integer maxItemCount,
                 CosmosDiagnosticsThresholds thresholds,
                 String trackingId,
@@ -905,7 +906,9 @@ public class ImplementationBridgeHelpers {
 
             OverridableRequestOptions getRequestOptions(CosmosDiagnosticsContext ctx);
 
-            void setRequestOptions(CosmosDiagnosticsContext ctx, OverridableRequestOptions requestOptions);
+            void setRequestOptions(CosmosDiagnosticsContext ctx,
+                                   OverridableRequestOptions requestOptions,
+                                   ReadConsistencyStrategy updatedEffectiveReadConsistencyStrategy);
 
             CosmosDiagnosticsSystemUsageSnapshot createSystemUsageSnapshot(
                 String cpu,
@@ -1447,6 +1450,12 @@ public class ImplementationBridgeHelpers {
                 OperationType operationType,
                 ConsistencyLevel desiredConsistencyLevelOfOperation);
 
+            ReadConsistencyStrategy getEffectiveReadConsistencyStrategy(
+                CosmosAsyncClient client,
+                ResourceType resourceType,
+                OperationType operationType,
+                ReadConsistencyStrategy desiredReadConsistencyStrategy);
+
             CosmosDiagnosticsThresholds getEffectiveDiagnosticsThresholds(
                 CosmosAsyncClient client,
                 CosmosDiagnosticsThresholds operationLevelThresholds);
@@ -1886,6 +1895,11 @@ public class ImplementationBridgeHelpers {
 
         public interface ReadConsistencyStrategyAccessor {
             ReadConsistencyStrategy createFromServiceSerializedFormat(String serviceSerializedFormat);
+            ReadConsistencyStrategy getEffectiveReadConsistencyStrategy(
+                ResourceType resourceType,
+                OperationType operationType,
+                ReadConsistencyStrategy desiredReadConsistencyStrategyOfOperation,
+                ReadConsistencyStrategy clientLevelReadConsistencyStrategy);
         }
     }
 

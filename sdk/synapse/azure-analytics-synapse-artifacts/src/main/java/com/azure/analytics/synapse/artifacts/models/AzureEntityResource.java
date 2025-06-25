@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public class AzureEntityResource extends Resource {
     /*
      * Resource Etag.
      */
+    @Generated
     private String etag;
 
     /*
      * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
      */
+    @Generated
     private String type;
 
     /*
      * The name of the resource
      */
+    @Generated
     private String name;
 
     /*
@@ -37,11 +41,13 @@ public class AzureEntityResource extends Resource {
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
      * resourceType}/{resourceName}
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of AzureEntityResource class.
      */
+    @Generated
     public AzureEntityResource() {
     }
 
@@ -50,6 +56,7 @@ public class AzureEntityResource extends Resource {
      * 
      * @return the etag value.
      */
+    @Generated
     public String getEtag() {
         return this.etag;
     }
@@ -60,6 +67,7 @@ public class AzureEntityResource extends Resource {
      * @param etag the etag value to set.
      * @return the AzureEntityResource object itself.
      */
+    @Generated
     AzureEntityResource setEtag(String etag) {
         this.etag = etag;
         return this;
@@ -71,6 +79,7 @@ public class AzureEntityResource extends Resource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -81,6 +90,7 @@ public class AzureEntityResource extends Resource {
      * 
      * @return the name value.
      */
+    @Generated
     @Override
     public String getName() {
         return this.name;
@@ -92,6 +102,7 @@ public class AzureEntityResource extends Resource {
      * 
      * @return the id value.
      */
+    @Generated
     @Override
     public String getId() {
         return this.id;
@@ -100,6 +111,7 @@ public class AzureEntityResource extends Resource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -114,6 +126,7 @@ public class AzureEntityResource extends Resource {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the AzureEntityResource.
      */
+    @Generated
     public static AzureEntityResource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureEntityResource deserializedAzureEntityResource = new AzureEntityResource();

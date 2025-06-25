@@ -6,45 +6,4 @@
     <Bug pattern="DM_DEFAULT_ENCODING" />
     <Class name="com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy" />
   </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP" />
-    <Or>
-      <Class name="com.azure.security.keyvault.administration.implementation.KeyVaultAccessControlClientImpl" />
-      <Class name="com.azure.security.keyvault.administration.implementation.models.Permission" />
-      <Class name="com.azure.security.keyvault.administration.implementation.models.RoleAssignmentListResult" />
-      <Class name="com.azure.security.keyvault.administration.implementation.models.RoleDefinition" />
-      <Class name="com.azure.security.keyvault.administration.implementation.models.RoleDefinitionListResult" />
-      <Class name="com.azure.security.keyvault.administration.implementation.models.RoleDefinitionProperties" />
-      <Class name="com.azure.security.keyvault.administration.implementation.models.SettingsListResult" />
-      <Class name="com.azure.security.keyvault.administration.models.KeyVaultGetSettingsResult" />
-      <Class name="com.azure.security.keyvault.administration.models.KeyVaultPermission" />
-      <Class name="com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition" />
-      <Class name="com.azure.security.keyvault.administration.models.SetRoleDefinitionOptions" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP2" />
-    <Or>
-      <Class name="com.azure.security.keyvault.administration.KeyVaultAccessControlClientBuilder" />
-      <Class name="com.azure.security.keyvault.administration.KeyVaultBackupClientBuilder" />
-      <Class name="com.azure.security.keyvault.administration.KeyVaultSettingsClientBuilder" />
-      <Class name="com.azure.security.keyvault.administration.implementation.models.Permission" />
-      <Class name="com.azure.security.keyvault.administration.implementation.models.RoleAssignmentListResult" />
-      <Class name="com.azure.security.keyvault.administration.implementation.models.RoleDefinition" />
-      <Class name="com.azure.security.keyvault.administration.implementation.models.RoleDefinitionListResult" />
-      <Class name="com.azure.security.keyvault.administration.implementation.models.RoleDefinitionProperties" />
-      <Class name="com.azure.security.keyvault.administration.models.KeyVaultGetSettingsResult" />
-      <Class name="com.azure.security.keyvault.administration.models.KeyVaultPermission" />
-      <Class name="com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition" />
-      <Class name="com.azure.security.keyvault.administration.models.SetRoleDefinitionOptions" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="NP_UNWRITTEN_FIELD" />
-    <Class name="com.azure.security.keyvault.administration.KeyVaultBackupClient" />
-  </Match>
-  <Match>
-    <Bug pattern="UWF_NULL_FIELD" />
-    <Class name="com.azure.security.keyvault.administration.KeyVaultBackupClient" />
-  </Match>
 </FindBugsFilter>

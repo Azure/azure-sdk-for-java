@@ -52,7 +52,7 @@ public final class ImportJobsImpl {
 
     /**
      * Initializes an instance of ImportJobsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ImportJobsImpl(AzureDigitalTwinsAPIImpl client) {
@@ -66,20 +66,8 @@ public final class ImportJobsImpl {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureDigitalTwinsAPI")
+    @ServiceInterface(name = "AzureDigitalTwinsAPIImportJobs")
     public interface ImportJobsService {
-        /**
-         * Lists all import jobs.
-         *
-         * @param host The host URL.
-         * @param traceparent The traceparent header.
-         * @param tracestate The tracestate header.
-         * @param maxItemsPerPage The maximum number of items per page.
-         * @param apiVersion The API version.
-         * @param accept The accept header.
-         * @param context The context to associate with this operation.
-         * @return A Mono that emits the response containing the list of import jobs.
-         */
         @Get("/jobs/imports")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
@@ -88,19 +76,6 @@ public final class ImportJobsImpl {
             @HeaderParam("max-items-per-page") Integer maxItemsPerPage, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
-        /**
-         * Adds a new import job.
-         *
-         * @param host The host URL.
-         * @param traceparent The traceparent header.
-         * @param tracestate The tracestate header.
-         * @param id The ID of the import job.
-         * @param apiVersion The API version.
-         * @param importJob The import job to add.
-         * @param accept The accept header.
-         * @param context The context to associate with this operation.
-         * @return A Mono that emits the response containing the added import job.
-         */
         @Put("/jobs/imports/{id}")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
@@ -109,18 +84,6 @@ public final class ImportJobsImpl {
             @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ImportJob importJob,
             @HeaderParam("Accept") String accept, Context context);
 
-        /**
-         * Gets an import job by ID.
-         *
-         * @param host The host URL.
-         * @param traceparent The traceparent header.
-         * @param tracestate The tracestate header.
-         * @param id The ID of the import job.
-         * @param apiVersion The API version.
-         * @param accept The accept header.
-         * @param context The context to associate with this operation.
-         * @return A Mono that emits the response containing the import job.
-         */
         @Get("/jobs/imports/{id}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
@@ -129,18 +92,6 @@ public final class ImportJobsImpl {
             @PathParam("id") String id, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
-        /**
-         * Deletes an import job by ID.
-         *
-         * @param host The host URL.
-         * @param traceparent The traceparent header.
-         * @param tracestate The tracestate header.
-         * @param id The ID of the import job.
-         * @param apiVersion The API version.
-         * @param accept The accept header.
-         * @param context The context to associate with this operation.
-         * @return A Mono that emits the response indicating the result of the delete operation.
-         */
         @Delete("/jobs/imports/{id}")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
@@ -148,18 +99,6 @@ public final class ImportJobsImpl {
             @HeaderParam("tracestate") String tracestate, @PathParam("id") String id,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        /**
-         * Cancels an import job by ID.
-         *
-         * @param host The host URL.
-         * @param traceparent The traceparent header.
-         * @param tracestate The tracestate header.
-         * @param id The ID of the import job.
-         * @param apiVersion The API version.
-         * @param accept The accept header.
-         * @param context The context to associate with this operation.
-         * @return A Mono that emits the response containing the canceled import job.
-         */
         @Post("/jobs/imports/{id}/cancel")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
@@ -168,18 +107,6 @@ public final class ImportJobsImpl {
             @PathParam("id") String id, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
-        /**
-         * Lists the next set of import jobs using a nextLink URL.
-         *
-         * @param nextLink The nextLink URL to retrieve the next set of results.
-         * @param host The host URL.
-         * @param traceparent The traceparent header.
-         * @param tracestate The tracestate header.
-         * @param maxItemsPerPage The maximum number of items per page.
-         * @param accept The accept header.
-         * @param context The context to associate with this operation.
-         * @return A Mono that emits the response containing the list of import jobs from the nextLink URL.
-         */
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
@@ -193,7 +120,7 @@ public final class ImportJobsImpl {
      * Retrieves all import jobs.
      * Status codes:
      * * 200 OK.
-     *
+     * 
      * @param importJobsListOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -232,7 +159,7 @@ public final class ImportJobsImpl {
      * Retrieves all import jobs.
      * Status codes:
      * * 200 OK.
-     *
+     * 
      * @param importJobsListOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -253,7 +180,7 @@ public final class ImportJobsImpl {
      * * 400 Bad Request
      * * JobLimitReached - The maximum number of import jobs allowed has been reached.
      * * ValidationFailed - The import job request is not valid.
-     *
+     * 
      * @param id The id for the import job. The id is unique within the service and case sensitive.
      * @param importJob The import job being added.
      * @param importJobsAddOptions Parameter group.
@@ -276,7 +203,7 @@ public final class ImportJobsImpl {
      * * 400 Bad Request
      * * JobLimitReached - The maximum number of import jobs allowed has been reached.
      * * ValidationFailed - The import job request is not valid.
-     *
+     * 
      * @param id The id for the import job. The id is unique within the service and case sensitive.
      * @param importJob The import job being added.
      * @param importJobsAddOptions Parameter group.
@@ -312,7 +239,7 @@ public final class ImportJobsImpl {
      * * 400 Bad Request
      * * JobLimitReached - The maximum number of import jobs allowed has been reached.
      * * ValidationFailed - The import job request is not valid.
-     *
+     * 
      * @param id The id for the import job. The id is unique within the service and case sensitive.
      * @param importJob The import job being added.
      * @param importJobsAddOptions Parameter group.
@@ -335,7 +262,7 @@ public final class ImportJobsImpl {
      * * 400 Bad Request
      * * JobLimitReached - The maximum number of import jobs allowed has been reached.
      * * ValidationFailed - The import job request is not valid.
-     *
+     * 
      * @param id The id for the import job. The id is unique within the service and case sensitive.
      * @param importJob The import job being added.
      * @param importJobsAddOptions Parameter group.
@@ -359,7 +286,7 @@ public final class ImportJobsImpl {
      * * 200 OK
      * * 404 Not Found
      * * ImportJobNotFound - The import job was not found.
-     *
+     * 
      * @param id The id for the import job. The id is unique within the service and case sensitive.
      * @param importJobsGetByIdOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -380,7 +307,7 @@ public final class ImportJobsImpl {
      * * 200 OK
      * * 404 Not Found
      * * ImportJobNotFound - The import job was not found.
-     *
+     * 
      * @param id The id for the import job. The id is unique within the service and case sensitive.
      * @param importJobsGetByIdOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -414,7 +341,7 @@ public final class ImportJobsImpl {
      * * 200 OK
      * * 404 Not Found
      * * ImportJobNotFound - The import job was not found.
-     *
+     * 
      * @param id The id for the import job. The id is unique within the service and case sensitive.
      * @param importJobsGetByIdOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -434,7 +361,7 @@ public final class ImportJobsImpl {
      * * 200 OK
      * * 404 Not Found
      * * ImportJobNotFound - The import job was not found.
-     *
+     * 
      * @param id The id for the import job. The id is unique within the service and case sensitive.
      * @param importJobsGetByIdOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -457,7 +384,7 @@ public final class ImportJobsImpl {
      * * 204 No Content
      * * 400 Bad Request
      * * ValidationFailed - The import job request is not valid.
-     *
+     * 
      * @param id The id for the import job. The id is unique within the service and case sensitive.
      * @param importJobsDeleteOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -477,7 +404,7 @@ public final class ImportJobsImpl {
      * * 204 No Content
      * * 400 Bad Request
      * * ValidationFailed - The import job request is not valid.
-     *
+     * 
      * @param id The id for the import job. The id is unique within the service and case sensitive.
      * @param importJobsDeleteOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -511,7 +438,7 @@ public final class ImportJobsImpl {
      * * 204 No Content
      * * 400 Bad Request
      * * ValidationFailed - The import job request is not valid.
-     *
+     * 
      * @param id The id for the import job. The id is unique within the service and case sensitive.
      * @param importJobsDeleteOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -531,7 +458,7 @@ public final class ImportJobsImpl {
      * * 204 No Content
      * * 400 Bad Request
      * * ValidationFailed - The import job request is not valid.
-     *
+     * 
      * @param id The id for the import job. The id is unique within the service and case sensitive.
      * @param importJobsDeleteOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -553,7 +480,7 @@ public final class ImportJobsImpl {
      * * 200 Request Accepted
      * * 400 Bad Request
      * * ValidationFailed - The import job request is not valid.
-     *
+     * 
      * @param id The id for the import job. The id is unique within the service and case sensitive.
      * @param importJobsCancelOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -576,7 +503,7 @@ public final class ImportJobsImpl {
      * * 200 Request Accepted
      * * 400 Bad Request
      * * ValidationFailed - The import job request is not valid.
-     *
+     * 
      * @param id The id for the import job. The id is unique within the service and case sensitive.
      * @param importJobsCancelOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -612,7 +539,7 @@ public final class ImportJobsImpl {
      * * 200 Request Accepted
      * * 400 Bad Request
      * * ValidationFailed - The import job request is not valid.
-     *
+     * 
      * @param id The id for the import job. The id is unique within the service and case sensitive.
      * @param importJobsCancelOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -634,7 +561,7 @@ public final class ImportJobsImpl {
      * * 200 Request Accepted
      * * 400 Bad Request
      * * ValidationFailed - The import job request is not valid.
-     *
+     * 
      * @param id The id for the import job. The id is unique within the service and case sensitive.
      * @param importJobsCancelOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -652,7 +579,7 @@ public final class ImportJobsImpl {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param importJobsListOptions Parameter group.
      * @param context The context to associate with this operation.

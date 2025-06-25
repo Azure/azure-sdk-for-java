@@ -5,6 +5,7 @@
 package com.azure.maps.route.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class LatLongPair implements JsonSerializable<LatLongPair> {
     /*
      * Latitude property
      */
+    @Generated
     private Double latitude;
 
     /*
      * Longitude property
      */
+    @Generated
     private Double longitude;
 
     /**
      * Creates an instance of LatLongPair class.
      */
+    @Generated
     public LatLongPair() {
     }
 
@@ -37,6 +41,7 @@ public final class LatLongPair implements JsonSerializable<LatLongPair> {
      * 
      * @return the latitude value.
      */
+    @Generated
     public Double getLatitude() {
         return this.latitude;
     }
@@ -47,6 +52,7 @@ public final class LatLongPair implements JsonSerializable<LatLongPair> {
      * @param latitude the latitude value to set.
      * @return the LatLongPair object itself.
      */
+    @Generated
     public LatLongPair setLatitude(Double latitude) {
         this.latitude = latitude;
         return this;
@@ -57,6 +63,7 @@ public final class LatLongPair implements JsonSerializable<LatLongPair> {
      * 
      * @return the longitude value.
      */
+    @Generated
     public Double getLongitude() {
         return this.longitude;
     }
@@ -67,6 +74,7 @@ public final class LatLongPair implements JsonSerializable<LatLongPair> {
      * @param longitude the longitude value to set.
      * @return the LatLongPair object itself.
      */
+    @Generated
     public LatLongPair setLongitude(Double longitude) {
         this.longitude = longitude;
         return this;
@@ -75,6 +83,7 @@ public final class LatLongPair implements JsonSerializable<LatLongPair> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -91,6 +100,7 @@ public final class LatLongPair implements JsonSerializable<LatLongPair> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the LatLongPair.
      */
+    @Generated
     public static LatLongPair fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LatLongPair deserializedLatLongPair = new LatLongPair();

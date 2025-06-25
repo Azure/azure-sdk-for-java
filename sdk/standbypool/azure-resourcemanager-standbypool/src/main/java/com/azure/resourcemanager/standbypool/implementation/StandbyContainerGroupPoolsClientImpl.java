@@ -72,7 +72,7 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
      * the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "StandbyPoolManagemen")
+    @ServiceInterface(name = "StandbyPoolManagementClientStandbyContainerGroupPools")
     public interface StandbyContainerGroupPoolsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}")

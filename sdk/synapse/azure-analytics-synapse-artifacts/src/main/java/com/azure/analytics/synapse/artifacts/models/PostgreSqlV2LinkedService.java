@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,116 +22,138 @@ public class PostgreSqlV2LinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "PostgreSqlV2";
 
     /*
      * Server name for connection. Type: string.
      */
+    @Generated
     private Object server;
 
     /*
      * The port for the connection. Type: integer.
      */
+    @Generated
     private Object port;
 
     /*
      * Username for authentication. Type: string.
      */
+    @Generated
     private Object username;
 
     /*
      * Database name for connection. Type: string.
      */
+    @Generated
     private Object database;
 
     /*
      * The authentication type to use. Type: string.
      */
+    @Generated
     private Object authenticationType;
 
     /*
      * SSL mode for connection. Type: integer. 0: disable, 1:allow, 2: prefer, 3: require, 4: verify-ca, 5: verify-full.
      * Type: integer.
      */
+    @Generated
     private Object sslMode;
 
     /*
      * Sets the schema search path. Type: string.
      */
+    @Generated
     private Object schema;
 
     /*
      * Whether connection pooling should be used. Type: boolean.
      */
+    @Generated
     private Object pooling;
 
     /*
      * The time to wait (in seconds) while trying to establish a connection before terminating the attempt and
      * generating an error. Type: integer.
      */
+    @Generated
     private Object connectionTimeout;
 
     /*
      * The time to wait (in seconds) while trying to execute a command before terminating the attempt and generating an
      * error. Set to zero for infinity. Type: integer.
      */
+    @Generated
     private Object commandTimeout;
 
     /*
      * Whether to trust the server certificate without validating it. Type: boolean.
      */
+    @Generated
     private Object trustServerCertificate;
 
     /*
      * Location of a client certificate to be sent to the server. Type: string.
      */
+    @Generated
     private Object sslCertificate;
 
     /*
      * Location of a client key for a client certificate to be sent to the server. Type: string.
      */
+    @Generated
     private Object sslKey;
 
     /*
      * Password for a key for a client certificate. Type: string.
      */
+    @Generated
     private Object sslPassword;
 
     /*
      * Determines the size of the internal buffer uses when reading. Increasing may improve performance if transferring
      * large values from the database. Type: integer.
      */
+    @Generated
     private Object readBufferSize;
 
     /*
      * When enabled, parameter values are logged when commands are executed. Type: boolean.
      */
+    @Generated
     private Object logParameters;
 
     /*
      * Gets or sets the session timezone. Type: string.
      */
+    @Generated
     private Object timezone;
 
     /*
      * Gets or sets the .NET encoding that will be used to encode/decode PostgreSQL string data. Type: string
      */
+    @Generated
     private Object encoding;
 
     /*
      * The Azure key vault secret reference of password in connection string. Type: string.
      */
+    @Generated
     private AzureKeyVaultSecretReference password;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of PostgreSqlV2LinkedService class.
      */
+    @Generated
     public PostgreSqlV2LinkedService() {
     }
 
@@ -139,6 +162,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -149,6 +173,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * 
      * @return the server value.
      */
+    @Generated
     public Object getServer() {
         return this.server;
     }
@@ -159,6 +184,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * @param server the server value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
+    @Generated
     public PostgreSqlV2LinkedService setServer(Object server) {
         this.server = server;
         return this;
@@ -169,6 +195,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * 
      * @return the port value.
      */
+    @Generated
     public Object getPort() {
         return this.port;
     }
@@ -179,6 +206,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * @param port the port value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
+    @Generated
     public PostgreSqlV2LinkedService setPort(Object port) {
         this.port = port;
         return this;
@@ -189,6 +217,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * 
      * @return the username value.
      */
+    @Generated
     public Object getUsername() {
         return this.username;
     }
@@ -199,6 +228,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * @param username the username value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
+    @Generated
     public PostgreSqlV2LinkedService setUsername(Object username) {
         this.username = username;
         return this;
@@ -209,6 +239,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * 
      * @return the database value.
      */
+    @Generated
     public Object getDatabase() {
         return this.database;
     }
@@ -219,6 +250,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * @param database the database value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
+    @Generated
     public PostgreSqlV2LinkedService setDatabase(Object database) {
         this.database = database;
         return this;
@@ -229,6 +261,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * 
      * @return the authenticationType value.
      */
+    @Generated
     public Object getAuthenticationType() {
         return this.authenticationType;
     }
@@ -239,6 +272,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * @param authenticationType the authenticationType value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
+    @Generated
     public PostgreSqlV2LinkedService setAuthenticationType(Object authenticationType) {
         this.authenticationType = authenticationType;
         return this;
@@ -250,6 +284,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * 
      * @return the sslMode value.
      */
+    @Generated
     public Object getSslMode() {
         return this.sslMode;
     }
@@ -261,6 +296,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * @param sslMode the sslMode value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
+    @Generated
     public PostgreSqlV2LinkedService setSslMode(Object sslMode) {
         this.sslMode = sslMode;
         return this;
@@ -271,6 +307,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * 
      * @return the schema value.
      */
+    @Generated
     public Object getSchema() {
         return this.schema;
     }
@@ -281,6 +318,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * @param schema the schema value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
+    @Generated
     public PostgreSqlV2LinkedService setSchema(Object schema) {
         this.schema = schema;
         return this;
@@ -291,6 +329,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * 
      * @return the pooling value.
      */
+    @Generated
     public Object getPooling() {
         return this.pooling;
     }
@@ -301,6 +340,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * @param pooling the pooling value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
+    @Generated
     public PostgreSqlV2LinkedService setPooling(Object pooling) {
         this.pooling = pooling;
         return this;
@@ -312,6 +352,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * 
      * @return the connectionTimeout value.
      */
+    @Generated
     public Object getConnectionTimeout() {
         return this.connectionTimeout;
     }
@@ -323,6 +364,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * @param connectionTimeout the connectionTimeout value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
+    @Generated
     public PostgreSqlV2LinkedService setConnectionTimeout(Object connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
         return this;
@@ -334,6 +376,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * 
      * @return the commandTimeout value.
      */
+    @Generated
     public Object getCommandTimeout() {
         return this.commandTimeout;
     }
@@ -345,6 +388,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * @param commandTimeout the commandTimeout value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
+    @Generated
     public PostgreSqlV2LinkedService setCommandTimeout(Object commandTimeout) {
         this.commandTimeout = commandTimeout;
         return this;
@@ -356,6 +400,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * 
      * @return the trustServerCertificate value.
      */
+    @Generated
     public Object getTrustServerCertificate() {
         return this.trustServerCertificate;
     }
@@ -367,6 +412,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * @param trustServerCertificate the trustServerCertificate value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
+    @Generated
     public PostgreSqlV2LinkedService setTrustServerCertificate(Object trustServerCertificate) {
         this.trustServerCertificate = trustServerCertificate;
         return this;
@@ -377,6 +423,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * 
      * @return the sslCertificate value.
      */
+    @Generated
     public Object getSslCertificate() {
         return this.sslCertificate;
     }
@@ -387,6 +434,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * @param sslCertificate the sslCertificate value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
+    @Generated
     public PostgreSqlV2LinkedService setSslCertificate(Object sslCertificate) {
         this.sslCertificate = sslCertificate;
         return this;
@@ -398,6 +446,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * 
      * @return the sslKey value.
      */
+    @Generated
     public Object getSslKey() {
         return this.sslKey;
     }
@@ -409,6 +458,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * @param sslKey the sslKey value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
+    @Generated
     public PostgreSqlV2LinkedService setSslKey(Object sslKey) {
         this.sslKey = sslKey;
         return this;
@@ -419,6 +469,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * 
      * @return the sslPassword value.
      */
+    @Generated
     public Object getSslPassword() {
         return this.sslPassword;
     }
@@ -429,6 +480,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * @param sslPassword the sslPassword value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
+    @Generated
     public PostgreSqlV2LinkedService setSslPassword(Object sslPassword) {
         this.sslPassword = sslPassword;
         return this;
@@ -440,6 +492,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * 
      * @return the readBufferSize value.
      */
+    @Generated
     public Object getReadBufferSize() {
         return this.readBufferSize;
     }
@@ -451,6 +504,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * @param readBufferSize the readBufferSize value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
+    @Generated
     public PostgreSqlV2LinkedService setReadBufferSize(Object readBufferSize) {
         this.readBufferSize = readBufferSize;
         return this;
@@ -462,6 +516,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * 
      * @return the logParameters value.
      */
+    @Generated
     public Object getLogParameters() {
         return this.logParameters;
     }
@@ -473,6 +528,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * @param logParameters the logParameters value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
+    @Generated
     public PostgreSqlV2LinkedService setLogParameters(Object logParameters) {
         this.logParameters = logParameters;
         return this;
@@ -483,6 +539,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * 
      * @return the timezone value.
      */
+    @Generated
     public Object getTimezone() {
         return this.timezone;
     }
@@ -493,6 +550,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * @param timezone the timezone value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
+    @Generated
     public PostgreSqlV2LinkedService setTimezone(Object timezone) {
         this.timezone = timezone;
         return this;
@@ -504,6 +562,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * 
      * @return the encoding value.
      */
+    @Generated
     public Object getEncoding() {
         return this.encoding;
     }
@@ -515,6 +574,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * @param encoding the encoding value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
+    @Generated
     public PostgreSqlV2LinkedService setEncoding(Object encoding) {
         this.encoding = encoding;
         return this;
@@ -525,6 +585,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public AzureKeyVaultSecretReference getPassword() {
         return this.password;
     }
@@ -535,6 +596,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
+    @Generated
     public PostgreSqlV2LinkedService setPassword(AzureKeyVaultSecretReference password) {
         this.password = password;
         return this;
@@ -546,6 +608,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -557,6 +620,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
+    @Generated
     public PostgreSqlV2LinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -565,6 +629,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public PostgreSqlV2LinkedService setVersion(String version) {
         super.setVersion(version);
@@ -574,6 +639,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public PostgreSqlV2LinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -583,6 +649,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public PostgreSqlV2LinkedService setDescription(String description) {
         super.setDescription(description);
@@ -592,6 +659,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public PostgreSqlV2LinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -601,6 +669,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public PostgreSqlV2LinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -610,6 +679,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -641,25 +711,53 @@ public class PostgreSqlV2LinkedService extends LinkedService {
             || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("server", this.server);
-            jsonWriter.writeUntypedField("port", this.port);
+            if (this.port != null) {
+                jsonWriter.writeUntypedField("port", this.port);
+            }
             jsonWriter.writeUntypedField("username", this.username);
             jsonWriter.writeUntypedField("database", this.database);
             jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
             jsonWriter.writeUntypedField("sslMode", this.sslMode);
-            jsonWriter.writeUntypedField("schema", this.schema);
-            jsonWriter.writeUntypedField("pooling", this.pooling);
-            jsonWriter.writeUntypedField("connectionTimeout", this.connectionTimeout);
-            jsonWriter.writeUntypedField("commandTimeout", this.commandTimeout);
-            jsonWriter.writeUntypedField("trustServerCertificate", this.trustServerCertificate);
-            jsonWriter.writeUntypedField("sslCertificate", this.sslCertificate);
-            jsonWriter.writeUntypedField("sslKey", this.sslKey);
-            jsonWriter.writeUntypedField("sslPassword", this.sslPassword);
-            jsonWriter.writeUntypedField("readBufferSize", this.readBufferSize);
-            jsonWriter.writeUntypedField("logParameters", this.logParameters);
-            jsonWriter.writeUntypedField("timezone", this.timezone);
-            jsonWriter.writeUntypedField("encoding", this.encoding);
+            if (this.schema != null) {
+                jsonWriter.writeUntypedField("schema", this.schema);
+            }
+            if (this.pooling != null) {
+                jsonWriter.writeUntypedField("pooling", this.pooling);
+            }
+            if (this.connectionTimeout != null) {
+                jsonWriter.writeUntypedField("connectionTimeout", this.connectionTimeout);
+            }
+            if (this.commandTimeout != null) {
+                jsonWriter.writeUntypedField("commandTimeout", this.commandTimeout);
+            }
+            if (this.trustServerCertificate != null) {
+                jsonWriter.writeUntypedField("trustServerCertificate", this.trustServerCertificate);
+            }
+            if (this.sslCertificate != null) {
+                jsonWriter.writeUntypedField("sslCertificate", this.sslCertificate);
+            }
+            if (this.sslKey != null) {
+                jsonWriter.writeUntypedField("sslKey", this.sslKey);
+            }
+            if (this.sslPassword != null) {
+                jsonWriter.writeUntypedField("sslPassword", this.sslPassword);
+            }
+            if (this.readBufferSize != null) {
+                jsonWriter.writeUntypedField("readBufferSize", this.readBufferSize);
+            }
+            if (this.logParameters != null) {
+                jsonWriter.writeUntypedField("logParameters", this.logParameters);
+            }
+            if (this.timezone != null) {
+                jsonWriter.writeUntypedField("timezone", this.timezone);
+            }
+            if (this.encoding != null) {
+                jsonWriter.writeUntypedField("encoding", this.encoding);
+            }
             jsonWriter.writeJsonField("password", this.password);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -679,6 +777,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PostgreSqlV2LinkedService.
      */
+    @Generated
     public static PostgreSqlV2LinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PostgreSqlV2LinkedService deserializedPostgreSqlV2LinkedService = new PostgreSqlV2LinkedService();

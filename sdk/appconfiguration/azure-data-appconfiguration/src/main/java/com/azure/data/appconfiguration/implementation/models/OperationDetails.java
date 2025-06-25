@@ -5,6 +5,7 @@
 package com.azure.data.appconfiguration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,16 +22,19 @@ public final class OperationDetails implements JsonSerializable<OperationDetails
     /*
      * The unique id of the operation.
      */
+    @Generated
     private final String id;
 
     /*
      * The current status of the operation
      */
+    @Generated
     private final State status;
 
     /*
      * An error, available when the status is `Failed`, describing why the operation failed.
      */
+    @Generated
     private ErrorDetail error;
 
     /**
@@ -39,6 +43,7 @@ public final class OperationDetails implements JsonSerializable<OperationDetails
      * @param id the id value to set.
      * @param status the status value to set.
      */
+    @Generated
     public OperationDetails(String id, State status) {
         this.id = id;
         this.status = status;
@@ -49,6 +54,7 @@ public final class OperationDetails implements JsonSerializable<OperationDetails
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -58,6 +64,7 @@ public final class OperationDetails implements JsonSerializable<OperationDetails
      * 
      * @return the status value.
      */
+    @Generated
     public State getStatus() {
         return this.status;
     }
@@ -67,6 +74,7 @@ public final class OperationDetails implements JsonSerializable<OperationDetails
      * 
      * @return the error value.
      */
+    @Generated
     public ErrorDetail getError() {
         return this.error;
     }
@@ -77,6 +85,7 @@ public final class OperationDetails implements JsonSerializable<OperationDetails
      * @param error the error value to set.
      * @return the OperationDetails object itself.
      */
+    @Generated
     public OperationDetails setError(ErrorDetail error) {
         this.error = error;
         return this;
@@ -85,6 +94,7 @@ public final class OperationDetails implements JsonSerializable<OperationDetails
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -103,6 +113,7 @@ public final class OperationDetails implements JsonSerializable<OperationDetails
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the OperationDetails.
      */
+    @Generated
     public static OperationDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean idFound = false;

@@ -4,6 +4,7 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,31 +15,37 @@ public final class AcsRouterUpdatedWorkerProperty extends ExpandableStringEnum<A
     /**
      * Static value AvailableForOffers for AcsRouterUpdatedWorkerProperty.
      */
+    @Generated
     public static final AcsRouterUpdatedWorkerProperty AVAILABLE_FOR_OFFERS = fromString("AvailableForOffers");
 
     /**
      * Static value TotalCapacity for AcsRouterUpdatedWorkerProperty.
      */
+    @Generated
     public static final AcsRouterUpdatedWorkerProperty TOTAL_CAPACITY = fromString("TotalCapacity");
 
     /**
      * Static value QueueAssignments for AcsRouterUpdatedWorkerProperty.
      */
+    @Generated
     public static final AcsRouterUpdatedWorkerProperty QUEUE_ASSIGNMENTS = fromString("QueueAssignments");
 
     /**
      * Static value Labels for AcsRouterUpdatedWorkerProperty.
      */
+    @Generated
     public static final AcsRouterUpdatedWorkerProperty LABELS = fromString("Labels");
 
     /**
      * Static value Tags for AcsRouterUpdatedWorkerProperty.
      */
+    @Generated
     public static final AcsRouterUpdatedWorkerProperty TAGS = fromString("Tags");
 
     /**
      * Static value ChannelConfigurations for AcsRouterUpdatedWorkerProperty.
      */
+    @Generated
     public static final AcsRouterUpdatedWorkerProperty CHANNEL_CONFIGURATIONS = fromString("ChannelConfigurations");
 
     /**
@@ -46,6 +53,7 @@ public final class AcsRouterUpdatedWorkerProperty extends ExpandableStringEnum<A
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AcsRouterUpdatedWorkerProperty() {
     }
@@ -56,6 +64,7 @@ public final class AcsRouterUpdatedWorkerProperty extends ExpandableStringEnum<A
      * @param name a name to look for.
      * @return the corresponding AcsRouterUpdatedWorkerProperty.
      */
+    @Generated
     public static AcsRouterUpdatedWorkerProperty fromString(String name) {
         return fromString(name, AcsRouterUpdatedWorkerProperty.class);
     }
@@ -65,6 +74,7 @@ public final class AcsRouterUpdatedWorkerProperty extends ExpandableStringEnum<A
      * 
      * @return known AcsRouterUpdatedWorkerProperty values.
      */
+    @Generated
     public static Collection<AcsRouterUpdatedWorkerProperty> values() {
         return values(AcsRouterUpdatedWorkerProperty.class);
     }

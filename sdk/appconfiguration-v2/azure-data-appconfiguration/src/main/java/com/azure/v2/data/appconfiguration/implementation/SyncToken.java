@@ -65,7 +65,7 @@ public final class SyncToken {
         try {
             token.sequenceNumber = Long.parseLong(snParts[1]);
         } catch (NumberFormatException ex) {
-            throw LOGGER.throwableAtError().log(SEQUENCE_NUMBER_CANNOT_PARSED, IllegalArgumentException::new);
+            throw LOGGER.throwableAtError().log(SEQUENCE_NUMBER_CANNOT_PARSED, ex, IllegalArgumentException::new);
         }
         token.id = idParts[0];
         token.value = idParts[1];

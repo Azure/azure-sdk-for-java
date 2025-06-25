@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class RouteGuidance implements JsonSerializable<RouteGuidance> {
     /*
      * A list of instructions describing maneuvers.
      */
+    @Generated
     private List<RouteInstruction> instructions;
 
     /*
      * Groups a sequence of instruction elements which are related to each other.
      */
+    @Generated
     private List<RouteInstructionGroup> instructionGroups;
 
     /**
      * Creates an instance of RouteGuidance class.
      */
+    @Generated
     public RouteGuidance() {
     }
 
@@ -38,6 +42,7 @@ public final class RouteGuidance implements JsonSerializable<RouteGuidance> {
      * 
      * @return the instructions value.
      */
+    @Generated
     public List<RouteInstruction> getInstructions() {
         return this.instructions;
     }
@@ -47,6 +52,7 @@ public final class RouteGuidance implements JsonSerializable<RouteGuidance> {
      * 
      * @return the instructionGroups value.
      */
+    @Generated
     public List<RouteInstructionGroup> getInstructionGroups() {
         return this.instructionGroups;
     }
@@ -54,6 +60,7 @@ public final class RouteGuidance implements JsonSerializable<RouteGuidance> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -68,6 +75,7 @@ public final class RouteGuidance implements JsonSerializable<RouteGuidance> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the RouteGuidance.
      */
+    @Generated
     public static RouteGuidance fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RouteGuidance deserializedRouteGuidance = new RouteGuidance();

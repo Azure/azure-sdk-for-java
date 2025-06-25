@@ -37,7 +37,7 @@ input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/764484f
 
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
-use: '@autorest/java@4.1.42'
+use: '@autorest/java@4.1.52'
 java: true
 namespace: com.azure.digitaltwins.core
 add-credentials: true

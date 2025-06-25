@@ -8,7 +8,6 @@
   <suppress checks="JavadocMethod" files="com.azure.v2.data.appconfiguration.implementation.*"  />
   <suppress checks="JavaDocFormatting" files="com.azure.v2.data.appconfiguration.implementation.*"  />
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.v2.data.appconfiguration.*" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.v2.data.appconfiguration.*" />
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.v2.data.appconfiguration.implementation.*" />
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck" files="com.azure.v2.data.appconfiguration.implementation.*" />
   <suppress checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck" files="com.azure.v2.data.appconfiguration.implementation.*" />
@@ -18,4 +17,7 @@
   <suppress checks="FinalClass" files="com.azure.v2.data.appconfiguration.models.Key.java" />
   <suppress checks="FinalClass" files="com.azure.v2.data.appconfiguration.implementation.AzureAppConfigurationClientServiceImpl.java" />
   <suppress checks="RedundantModifier" files="com.azure.v2.data.appconfiguration.models.KeyValue.java" />
+
+  <!-- TODO (lmolkova): update codegen to log exceptions -->
+  <suppress checks="RawExceptionThrow" files="com.azure.v2.data.appconfiguration.implementation.AzureAppConfigurationClientImpl.java" />
 </suppressions>

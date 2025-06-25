@@ -5,7 +5,7 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlWriter;
@@ -19,16 +19,19 @@ public final class StringEncoded implements XmlSerializable<StringEncoded> {
     /*
      * The Encoded property.
      */
+    @Generated
     private Boolean encoded;
 
     /*
      * The content property.
      */
+    @Generated
     private String content;
 
     /**
      * Creates an instance of StringEncoded class.
      */
+    @Generated
     public StringEncoded() {
     }
 
@@ -37,6 +40,7 @@ public final class StringEncoded implements XmlSerializable<StringEncoded> {
      * 
      * @return the encoded value.
      */
+    @Generated
     public Boolean isEncoded() {
         return this.encoded;
     }
@@ -47,6 +51,7 @@ public final class StringEncoded implements XmlSerializable<StringEncoded> {
      * @param encoded the encoded value to set.
      * @return the StringEncoded object itself.
      */
+    @Generated
     public StringEncoded setEncoded(Boolean encoded) {
         this.encoded = encoded;
         return this;
@@ -57,6 +62,7 @@ public final class StringEncoded implements XmlSerializable<StringEncoded> {
      * 
      * @return the content value.
      */
+    @Generated
     public String getContent() {
         return this.content;
     }
@@ -67,19 +73,22 @@ public final class StringEncoded implements XmlSerializable<StringEncoded> {
      * @param content the content value to set.
      * @return the StringEncoded object itself.
      */
+    @Generated
     public StringEncoded setContent(String content) {
         this.content = content;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "StringEncoded" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "StringEncoded" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeBooleanAttribute("Encoded", this.encoded);
         xmlWriter.writeString(this.content);
@@ -94,6 +103,7 @@ public final class StringEncoded implements XmlSerializable<StringEncoded> {
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the StringEncoded.
      */
+    @Generated
     public static StringEncoded fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -108,8 +118,10 @@ public final class StringEncoded implements XmlSerializable<StringEncoded> {
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the StringEncoded.
      */
+    @Generated
     public static StringEncoded fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "StringEncoded" : rootElementName;
+        String finalRootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "StringEncoded" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             StringEncoded deserializedStringEncoded = new StringEncoded();
             deserializedStringEncoded.encoded = reader.getNullableAttribute(null, "Encoded", Boolean::parseBoolean);

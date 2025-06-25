@@ -27,7 +27,7 @@ autorest
 ```
 
 ```yaml
-use: '@autorest/java@4.1.42'
+use: '@autorest/java@4.1.52'
 java: true
 title: EventGridPublisherClient
 description: EventGrid Publisher Client
@@ -82,7 +82,6 @@ directive:
 
 custom-types-subpackage: implementation.models
 custom-types: CloudEvent,EventGridEvent,AcsRouterCommunicationError,AcsMessageChannelEventError
-
 
 
 input-file:
@@ -172,4 +171,13 @@ directive:
   transform: >
       $["NBF"]["x-ms-client-name"] = "Nbf";
       $["EXP"]["x-ms-client-name"] = "Exp";
+```
+
+### Rename CommunicationIdentifierModelKind to AcsCommunicationIdentifierKind
+```yaml
+directive:
+- from: swagger-document
+  where: $.definitions.CommunicationIdentifierModelKind
+  transform: >
+    $["x-ms-enum"].name = "AcsCommunicationIdentifierKind";
 ```

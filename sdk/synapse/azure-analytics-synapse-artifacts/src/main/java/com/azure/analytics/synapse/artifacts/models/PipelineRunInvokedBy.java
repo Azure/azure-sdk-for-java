@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,21 +20,25 @@ public final class PipelineRunInvokedBy implements JsonSerializable<PipelineRunI
     /*
      * Name of the entity that started the pipeline run.
      */
+    @Generated
     private String name;
 
     /*
      * The ID of the entity that started the run.
      */
+    @Generated
     private String id;
 
     /*
      * The type of the entity that started the run.
      */
+    @Generated
     private String invokedByType;
 
     /**
      * Creates an instance of PipelineRunInvokedBy class.
      */
+    @Generated
     public PipelineRunInvokedBy() {
     }
 
@@ -42,6 +47,7 @@ public final class PipelineRunInvokedBy implements JsonSerializable<PipelineRunI
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -51,6 +57,7 @@ public final class PipelineRunInvokedBy implements JsonSerializable<PipelineRunI
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -60,6 +67,7 @@ public final class PipelineRunInvokedBy implements JsonSerializable<PipelineRunI
      * 
      * @return the invokedByType value.
      */
+    @Generated
     public String getInvokedByType() {
         return this.invokedByType;
     }
@@ -67,6 +75,7 @@ public final class PipelineRunInvokedBy implements JsonSerializable<PipelineRunI
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -81,6 +90,7 @@ public final class PipelineRunInvokedBy implements JsonSerializable<PipelineRunI
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the PipelineRunInvokedBy.
      */
+    @Generated
     public static PipelineRunInvokedBy fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PipelineRunInvokedBy deserializedPipelineRunInvokedBy = new PipelineRunInvokedBy();

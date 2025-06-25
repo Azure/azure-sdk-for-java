@@ -49,7 +49,7 @@ public final class DeleteJobsImpl {
 
     /**
      * Initializes an instance of DeleteJobsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DeleteJobsImpl(AzureDigitalTwinsAPIImpl client) {
@@ -63,22 +63,8 @@ public final class DeleteJobsImpl {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureDigitalTwinsAPI")
+    @ServiceInterface(name = "AzureDigitalTwinsAPIDeleteJobs")
     public interface DeleteJobsService {
-        /**
-         * Initiates a deletion job.
-         *
-         * @param host The host URL.
-         * @param traceparent The traceparent header for distributed tracing.
-         * @param tracestate The tracestate header for distributed tracing.
-         * @param apiVersion The API version to use for the request.
-         * @param operationId The operation ID for the request.
-         * @param timeoutInMinutes The timeout duration in minutes for the request.
-         * @param accept The Accept header specifying the response format.
-         * @param context The context to associate with this operation.
-         * @return A Mono that emits the response containing the headers and the deletion job details.
-         * @throws ErrorResponseException If an unexpected response is received.
-         */
         @Post("/jobs/deletions")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
@@ -88,20 +74,6 @@ public final class DeleteJobsImpl {
             @QueryParam("timeoutInMinutes") Integer timeoutInMinutes, @HeaderParam("Accept") String accept,
             Context context);
 
-        /**
-         * Initiates a deletion job without custom headers.
-         *
-         * @param host The host URL.
-         * @param traceparent The traceparent header for distributed tracing.
-         * @param tracestate The tracestate header for distributed tracing.
-         * @param apiVersion The API version to use for the request.
-         * @param operationId The operation ID for the request.
-         * @param timeoutInMinutes The timeout duration in minutes for the request.
-         * @param accept The Accept header specifying the response format.
-         * @param context The context to associate with this operation.
-         * @return A Mono that emits the response containing the deletion job details.
-         * @throws ErrorResponseException If an unexpected response is received.
-         */
         @Post("/jobs/deletions")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
@@ -111,19 +83,6 @@ public final class DeleteJobsImpl {
             @QueryParam("timeoutInMinutes") Integer timeoutInMinutes, @HeaderParam("Accept") String accept,
             Context context);
 
-        /**
-         * Retrieves a collection of deletion jobs.
-         *
-         * @param host The host URL.
-         * @param traceparent The traceparent header for distributed tracing.
-         * @param tracestate The tracestate header for distributed tracing.
-         * @param apiVersion The API version to use for the request.
-         * @param maxItemsPerPage The maximum number of items to return per page.
-         * @param accept The Accept header specifying the response format.
-         * @param context The context to associate with this operation.
-         * @return A Mono that emits the response containing the collection of deletion jobs.
-         * @throws ErrorResponseException If an unexpected response is received.
-         */
         @Get("/jobs/deletions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
@@ -132,19 +91,6 @@ public final class DeleteJobsImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("max-items-per-page") Integer maxItemsPerPage,
             @HeaderParam("Accept") String accept, Context context);
 
-        /**
-         * Retrieves the details of a specific deletion job by its ID.
-         *
-         * @param host The host URL.
-         * @param traceparent The traceparent header for distributed tracing.
-         * @param tracestate The tracestate header for distributed tracing.
-         * @param id The ID of the deletion job to retrieve.
-         * @param apiVersion The API version to use for the request.
-         * @param accept The Accept header specifying the response format.
-         * @param context The context to associate with this operation.
-         * @return A Mono that emits the response containing the details of the deletion job.
-         * @throws ErrorResponseException If an unexpected response is received.
-         */
         @Get("/jobs/deletions/{id}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
@@ -153,19 +99,6 @@ public final class DeleteJobsImpl {
             @PathParam("id") String id, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
-        /**
-         * Retrieves the next page of deletion jobs using the provided next link.
-         *
-         * @param nextLink The URL to the next page of results, encoded as needed.
-         * @param host The host URL.
-         * @param traceparent The traceparent header for distributed tracing.
-         * @param tracestate The tracestate header for distributed tracing.
-         * @param maxItemsPerPage The maximum number of items to return per page.
-         * @param accept The Accept header specifying the response format.
-         * @param context The context to associate with this operation.
-         * @return A Mono that emits the response containing the next page of deletion jobs.
-         * @throws ErrorResponseException If an unexpected response is received.
-         */
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
@@ -183,7 +116,7 @@ public final class DeleteJobsImpl {
      * * 400 Bad Request
      * * JobLimitReached - The maximum number of delete jobs allowed has been reached.
      * * ValidationFailed - Operation-Id already exists.
-     *
+     * 
      * @param deleteJobsAddOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -205,7 +138,7 @@ public final class DeleteJobsImpl {
      * * 400 Bad Request
      * * JobLimitReached - The maximum number of delete jobs allowed has been reached.
      * * ValidationFailed - Operation-Id already exists.
-     *
+     * 
      * @param deleteJobsAddOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -240,7 +173,7 @@ public final class DeleteJobsImpl {
      * * 400 Bad Request
      * * JobLimitReached - The maximum number of delete jobs allowed has been reached.
      * * ValidationFailed - Operation-Id already exists.
-     *
+     * 
      * @param deleteJobsAddOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -261,7 +194,7 @@ public final class DeleteJobsImpl {
      * * 400 Bad Request
      * * JobLimitReached - The maximum number of delete jobs allowed has been reached.
      * * ValidationFailed - Operation-Id already exists.
-     *
+     * 
      * @param deleteJobsAddOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -283,7 +216,7 @@ public final class DeleteJobsImpl {
      * * 400 Bad Request
      * * JobLimitReached - The maximum number of delete jobs allowed has been reached.
      * * ValidationFailed - Operation-Id already exists.
-     *
+     * 
      * @param deleteJobsAddOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -304,7 +237,7 @@ public final class DeleteJobsImpl {
      * * 400 Bad Request
      * * JobLimitReached - The maximum number of delete jobs allowed has been reached.
      * * ValidationFailed - Operation-Id already exists.
-     *
+     * 
      * @param deleteJobsAddOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -336,7 +269,7 @@ public final class DeleteJobsImpl {
      * history of delete jobs that have run or are currently running on the instance.
      * Status codes:
      * * 200 OK.
-     *
+     * 
      * @param deleteJobsListOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -376,7 +309,7 @@ public final class DeleteJobsImpl {
      * history of delete jobs that have run or are currently running on the instance.
      * Status codes:
      * * 200 OK.
-     *
+     * 
      * @param deleteJobsListOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -396,7 +329,7 @@ public final class DeleteJobsImpl {
      * * 200 OK
      * * 404 Not Found
      * * DeleteJobNotFound - The delete job was not found.
-     *
+     * 
      * @param id The id for the delete job. The id is unique within the service and case sensitive.
      * @param deleteJobsGetByIdOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -417,7 +350,7 @@ public final class DeleteJobsImpl {
      * * 200 OK
      * * 404 Not Found
      * * DeleteJobNotFound - The delete job was not found.
-     *
+     * 
      * @param id The id for the delete job. The id is unique within the service and case sensitive.
      * @param deleteJobsGetByIdOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -451,7 +384,7 @@ public final class DeleteJobsImpl {
      * * 200 OK
      * * 404 Not Found
      * * DeleteJobNotFound - The delete job was not found.
-     *
+     * 
      * @param id The id for the delete job. The id is unique within the service and case sensitive.
      * @param deleteJobsGetByIdOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -471,7 +404,7 @@ public final class DeleteJobsImpl {
      * * 200 OK
      * * 404 Not Found
      * * DeleteJobNotFound - The delete job was not found.
-     *
+     * 
      * @param id The id for the delete job. The id is unique within the service and case sensitive.
      * @param deleteJobsGetByIdOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -489,7 +422,7 @@ public final class DeleteJobsImpl {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param deleteJobsListOptions Parameter group.
      * @param context The context to associate with this operation.

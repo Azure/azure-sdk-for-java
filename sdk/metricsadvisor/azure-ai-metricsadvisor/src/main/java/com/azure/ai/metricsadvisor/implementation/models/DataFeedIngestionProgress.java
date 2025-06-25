@@ -4,6 +4,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
@@ -22,17 +23,20 @@ public final class DataFeedIngestionProgress implements JsonSerializable<DataFee
      * the timestamp of latest success ingestion job.
      * null indicates not available
      */
+    @Generated
     private OffsetDateTime latestSuccessTimestamp;
 
     /*
      * the timestamp of latest ingestion job with status update.
      * null indicates not available
      */
+    @Generated
     private OffsetDateTime latestActiveTimestamp;
 
     /**
      * Creates an instance of DataFeedIngestionProgress class.
      */
+    @Generated
     public DataFeedIngestionProgress() {
     }
 
@@ -42,6 +46,7 @@ public final class DataFeedIngestionProgress implements JsonSerializable<DataFee
      * 
      * @return the latestSuccessTimestamp value.
      */
+    @Generated
     public OffsetDateTime getLatestSuccessTimestamp() {
         return this.latestSuccessTimestamp;
     }
@@ -52,6 +57,7 @@ public final class DataFeedIngestionProgress implements JsonSerializable<DataFee
      * 
      * @return the latestActiveTimestamp value.
      */
+    @Generated
     public OffsetDateTime getLatestActiveTimestamp() {
         return this.latestActiveTimestamp;
     }
@@ -59,6 +65,7 @@ public final class DataFeedIngestionProgress implements JsonSerializable<DataFee
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -73,6 +80,7 @@ public final class DataFeedIngestionProgress implements JsonSerializable<DataFee
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DataFeedIngestionProgress.
      */
+    @Generated
     public static DataFeedIngestionProgress fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataFeedIngestionProgress deserializedDataFeedIngestionProgress = new DataFeedIngestionProgress();

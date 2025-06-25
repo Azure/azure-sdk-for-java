@@ -61,7 +61,7 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
      * the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DevOpsInfrastructure")
+    @ServiceInterface(name = "DevOpsInfrastructureManagementClientSubscriptionUsages")
     public interface SubscriptionUsagesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DevOpsInfrastructure/locations/{location}/usages")

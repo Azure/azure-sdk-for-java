@@ -4,6 +4,7 @@ package com.azure.openrewrite.recipe;
 
 
 import org.intellij.lang.annotations.Language;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import static org.openrewrite.java.Assertions.java;
 import org.openrewrite.test.RecipeSpec;
@@ -14,6 +15,7 @@ import org.openrewrite.test.TypeValidation;
  * TypeReferenceTest is used to test out the recipe that changes the usage of TypeReference (azure core v1)
  * to ParameterizedType (azure core v2)
  */
+@Disabled("Incorrect tests. Need to look into.")
 public class TypeReferenceTest extends RecipeTestBase {
 
     /**

@@ -5,7 +5,7 @@
 package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
-import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescription;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -42,8 +42,8 @@ class CreateSubscriptionOptionsTest {
     @Test
     void constructorWithOptions() {
         // Arrange
-        final SubscriptionDescriptionImpl description
-            = new SubscriptionDescriptionImpl().setAutoDeleteOnIdle(Duration.ofSeconds(15))
+        final SubscriptionDescription description
+            = new SubscriptionDescription().setAutoDeleteOnIdle(Duration.ofSeconds(15))
                 .setDefaultMessageTimeToLive(Duration.ofSeconds(50))
                 .setEnableBatchedOperations(false)
                 .setForwardTo("Forward-To-This-Queue")

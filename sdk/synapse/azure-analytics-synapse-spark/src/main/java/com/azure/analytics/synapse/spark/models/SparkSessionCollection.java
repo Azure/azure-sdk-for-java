@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.spark.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public final class SparkSessionCollection implements JsonSerializable<SparkSessi
     /*
      * The from property.
      */
+    @Generated
     private int from;
 
     /*
      * The total property.
      */
+    @Generated
     private int total;
 
     /*
      * The sessions property.
      */
+    @Generated
     private List<SparkSession> sessions;
 
     /**
      * Creates an instance of SparkSessionCollection class.
      */
+    @Generated
     public SparkSessionCollection() {
     }
 
@@ -43,6 +48,7 @@ public final class SparkSessionCollection implements JsonSerializable<SparkSessi
      * 
      * @return the from value.
      */
+    @Generated
     public int getFrom() {
         return this.from;
     }
@@ -53,6 +59,7 @@ public final class SparkSessionCollection implements JsonSerializable<SparkSessi
      * @param from the from value to set.
      * @return the SparkSessionCollection object itself.
      */
+    @Generated
     public SparkSessionCollection setFrom(int from) {
         this.from = from;
         return this;
@@ -63,6 +70,7 @@ public final class SparkSessionCollection implements JsonSerializable<SparkSessi
      * 
      * @return the total value.
      */
+    @Generated
     public int getTotal() {
         return this.total;
     }
@@ -73,6 +81,7 @@ public final class SparkSessionCollection implements JsonSerializable<SparkSessi
      * @param total the total value to set.
      * @return the SparkSessionCollection object itself.
      */
+    @Generated
     public SparkSessionCollection setTotal(int total) {
         this.total = total;
         return this;
@@ -83,6 +92,7 @@ public final class SparkSessionCollection implements JsonSerializable<SparkSessi
      * 
      * @return the sessions value.
      */
+    @Generated
     public List<SparkSession> getSessions() {
         return this.sessions;
     }
@@ -93,6 +103,7 @@ public final class SparkSessionCollection implements JsonSerializable<SparkSessi
      * @param sessions the sessions value to set.
      * @return the SparkSessionCollection object itself.
      */
+    @Generated
     public SparkSessionCollection setSessions(List<SparkSession> sessions) {
         this.sessions = sessions;
         return this;
@@ -101,6 +112,7 @@ public final class SparkSessionCollection implements JsonSerializable<SparkSessi
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -119,6 +131,7 @@ public final class SparkSessionCollection implements JsonSerializable<SparkSessi
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SparkSessionCollection.
      */
+    @Generated
     public static SparkSessionCollection fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SparkSessionCollection deserializedSparkSessionCollection = new SparkSessionCollection();

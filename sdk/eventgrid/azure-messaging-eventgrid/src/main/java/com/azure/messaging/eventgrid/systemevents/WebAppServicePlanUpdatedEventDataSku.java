@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,31 +21,37 @@ public final class WebAppServicePlanUpdatedEventDataSku
     /*
      * name of app service plan sku.
      */
+    @Generated
     private String name;
 
     /*
      * tier of app service plan sku.
      */
+    @Generated
     private String tier;
 
     /*
      * size of app service plan sku.
      */
+    @Generated
     private String size;
 
     /*
      * family of app service plan sku.
      */
+    @Generated
     private String family;
 
     /*
      * capacity of app service plan sku.
      */
+    @Generated
     private String capacity;
 
     /**
      * Creates an instance of WebAppServicePlanUpdatedEventDataSku class.
      */
+    @Generated
     public WebAppServicePlanUpdatedEventDataSku() {
     }
 
@@ -53,6 +60,7 @@ public final class WebAppServicePlanUpdatedEventDataSku
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -63,6 +71,7 @@ public final class WebAppServicePlanUpdatedEventDataSku
      * @param name the name value to set.
      * @return the WebAppServicePlanUpdatedEventDataSku object itself.
      */
+    @Generated
     public WebAppServicePlanUpdatedEventDataSku setName(String name) {
         this.name = name;
         return this;
@@ -73,6 +82,7 @@ public final class WebAppServicePlanUpdatedEventDataSku
      * 
      * @return the tier value.
      */
+    @Generated
     public String getTier() {
         return this.tier;
     }
@@ -83,6 +93,7 @@ public final class WebAppServicePlanUpdatedEventDataSku
      * @param tier the tier value to set.
      * @return the WebAppServicePlanUpdatedEventDataSku object itself.
      */
+    @Generated
     public WebAppServicePlanUpdatedEventDataSku setTier(String tier) {
         this.tier = tier;
         return this;
@@ -93,6 +104,7 @@ public final class WebAppServicePlanUpdatedEventDataSku
      * 
      * @return the size value.
      */
+    @Generated
     public String getSize() {
         return this.size;
     }
@@ -103,6 +115,7 @@ public final class WebAppServicePlanUpdatedEventDataSku
      * @param size the size value to set.
      * @return the WebAppServicePlanUpdatedEventDataSku object itself.
      */
+    @Generated
     public WebAppServicePlanUpdatedEventDataSku setSize(String size) {
         this.size = size;
         return this;
@@ -113,6 +126,7 @@ public final class WebAppServicePlanUpdatedEventDataSku
      * 
      * @return the family value.
      */
+    @Generated
     public String getFamily() {
         return this.family;
     }
@@ -123,6 +137,7 @@ public final class WebAppServicePlanUpdatedEventDataSku
      * @param family the family value to set.
      * @return the WebAppServicePlanUpdatedEventDataSku object itself.
      */
+    @Generated
     public WebAppServicePlanUpdatedEventDataSku setFamily(String family) {
         this.family = family;
         return this;
@@ -133,6 +148,7 @@ public final class WebAppServicePlanUpdatedEventDataSku
      * 
      * @return the capacity value.
      */
+    @Generated
     public String getCapacity() {
         return this.capacity;
     }
@@ -143,6 +159,7 @@ public final class WebAppServicePlanUpdatedEventDataSku
      * @param capacity the capacity value to set.
      * @return the WebAppServicePlanUpdatedEventDataSku object itself.
      */
+    @Generated
     public WebAppServicePlanUpdatedEventDataSku setCapacity(String capacity) {
         this.capacity = capacity;
         return this;
@@ -151,6 +168,7 @@ public final class WebAppServicePlanUpdatedEventDataSku
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -170,6 +188,7 @@ public final class WebAppServicePlanUpdatedEventDataSku
      * or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the WebAppServicePlanUpdatedEventDataSku.
      */
+    @Generated
     public static WebAppServicePlanUpdatedEventDataSku fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WebAppServicePlanUpdatedEventDataSku deserializedWebAppServicePlanUpdatedEventDataSku

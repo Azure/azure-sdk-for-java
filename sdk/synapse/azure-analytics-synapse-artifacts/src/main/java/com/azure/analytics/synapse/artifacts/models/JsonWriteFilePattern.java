@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class JsonWriteFilePattern extends ExpandableStringEnum<JsonWriteFi
     /**
      * Static value setOfObjects for JsonWriteFilePattern.
      */
+    @Generated
     public static final JsonWriteFilePattern SET_OF_OBJECTS = fromString("setOfObjects");
 
     /**
      * Static value arrayOfObjects for JsonWriteFilePattern.
      */
+    @Generated
     public static final JsonWriteFilePattern ARRAY_OF_OBJECTS = fromString("arrayOfObjects");
 
     /**
@@ -26,6 +29,7 @@ public final class JsonWriteFilePattern extends ExpandableStringEnum<JsonWriteFi
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public JsonWriteFilePattern() {
     }
@@ -36,6 +40,7 @@ public final class JsonWriteFilePattern extends ExpandableStringEnum<JsonWriteFi
      * @param name a name to look for.
      * @return the corresponding JsonWriteFilePattern.
      */
+    @Generated
     public static JsonWriteFilePattern fromString(String name) {
         return fromString(name, JsonWriteFilePattern.class);
     }
@@ -45,6 +50,7 @@ public final class JsonWriteFilePattern extends ExpandableStringEnum<JsonWriteFi
      * 
      * @return known JsonWriteFilePattern values.
      */
+    @Generated
     public static Collection<JsonWriteFilePattern> values() {
         return values(JsonWriteFilePattern.class);
     }

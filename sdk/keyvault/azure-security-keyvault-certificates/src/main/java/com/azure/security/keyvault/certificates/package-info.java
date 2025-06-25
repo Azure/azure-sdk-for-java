@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 /**
  * <!-- @formatter:off -->
  * <p><a href="https://learn.microsoft.com/azure/certificate-vault/general/">Azure Key Vault</a> is a cloud-based service
@@ -111,12 +112,15 @@
  *
  * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy -->
  * <pre>
- * CertificatePolicy certPolicy = new CertificatePolicy&#40;&quot;Self&quot;,
- *     &quot;CN=SelfSignedJavaPkcs12&quot;&#41;;
- * SyncPoller&lt;CertificateOperation, KeyVaultCertificateWithPolicy&gt; certPoller = certificateClient
- *     .beginCreateCertificate&#40;&quot;certificateName&quot;, certPolicy&#41;;
+ * CertificatePolicy certPolicy = new CertificatePolicy&#40;&quot;Self&quot;, &quot;CN=SelfSignedJavaPkcs12&quot;&#41;;
+ *
+ * SyncPoller&lt;CertificateOperation, KeyVaultCertificateWithPolicy&gt; certPoller =
+ *     certificateClient.beginCreateCertificate&#40;&quot;certificateName&quot;, certPolicy&#41;;
+ *
  * certPoller.waitUntil&#40;LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41;;
+ *
  * KeyVaultCertificate cert = certPoller.getFinalResult&#40;&#41;;
+ *
  * System.out.printf&#40;&quot;Certificate created with name %s%n&quot;, cert.getName&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy -->
