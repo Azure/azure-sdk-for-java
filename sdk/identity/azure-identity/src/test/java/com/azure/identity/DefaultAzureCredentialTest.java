@@ -301,11 +301,6 @@ public class DefaultAzureCredentialTest {
                 when(identityClient.authenticateWithManagedIdentityMsalClient(request)).thenReturn(
                     Mono.error(new CredentialUnavailableException("Cannot get token from managed identity")));
             });
-            MockedConstruction<SharedTokenCacheCredential> sharedTokenCacheCredentialMock
-                = mockConstruction(SharedTokenCacheCredential.class, (sharedTokenCacheCredential, context) -> {
-                    when(sharedTokenCacheCredential.getToken(request)).thenReturn(
-                        Mono.error(new CredentialUnavailableException("Cannot get token from shared token cache")));
-                });
             MockedConstruction<AzureDeveloperCliCredential> azureDeveloperCliCredentialMock
                 = mockConstruction(AzureDeveloperCliCredential.class, (AzureDeveloperCliCredential, context) -> {
                     when(AzureDeveloperCliCredential.getToken(request)).thenReturn(Mono.error(
@@ -335,7 +330,6 @@ public class DefaultAzureCredentialTest {
                     && t.getMessage().startsWith("EnvironmentCredential authentication unavailable. "))
                 .verify();
             Assertions.assertNotNull(identityClientMock);
-            Assertions.assertNotNull(sharedTokenCacheCredentialMock);
             Assertions.assertNotNull(azureCliCredentialMock);
             Assertions.assertNotNull(azureDeveloperCliCredentialMock);
             Assertions.assertNotNull(azurePowerShellCredentialMock);
@@ -663,15 +657,14 @@ public class DefaultAzureCredentialTest {
 
         List<TokenCredential> credentials = extractCredentials(credential);
 
-        // Only developer credentials should be present (5)
-        assertEquals(5, credentials.size());
+        // Only developer credentials should be present (4)
+        assertEquals(4, credentials.size());
 
         // Verify developer credentials in order
-        assertInstanceOf(SharedTokenCacheCredential.class, credentials.get(0));
-        assertInstanceOf(IntelliJCredential.class, credentials.get(1));
-        assertInstanceOf(AzureCliCredential.class, credentials.get(2));
-        assertInstanceOf(AzurePowerShellCredential.class, credentials.get(3));
-        assertInstanceOf(AzureDeveloperCliCredential.class, credentials.get(4));
+        assertInstanceOf(IntelliJCredential.class, credentials.get(0));
+        assertInstanceOf(AzureCliCredential.class, credentials.get(1));
+        assertInstanceOf(AzurePowerShellCredential.class, credentials.get(2));
+        assertInstanceOf(AzureDeveloperCliCredential.class, credentials.get(3));
     }
 
     @ParameterizedTest
@@ -702,16 +695,15 @@ public class DefaultAzureCredentialTest {
         // Extract credentials to check their types and order
         List<TokenCredential> credentials = extractCredentials(credential);
 
-        // Verify the complete chain with all 8 credentials
-        assertEquals(8, credentials.size());
+        // Verify the complete chain with all 7 credentials
+        assertEquals(7, credentials.size());
         assertInstanceOf(EnvironmentCredential.class, credentials.get(0));
         assertInstanceOf(WorkloadIdentityCredential.class, credentials.get(1));
         assertInstanceOf(ManagedIdentityCredential.class, credentials.get(2));
-        assertInstanceOf(SharedTokenCacheCredential.class, credentials.get(3));
-        assertInstanceOf(IntelliJCredential.class, credentials.get(4));
-        assertInstanceOf(AzureCliCredential.class, credentials.get(5));
-        assertInstanceOf(AzurePowerShellCredential.class, credentials.get(6));
-        assertInstanceOf(AzureDeveloperCliCredential.class, credentials.get(7));
+        assertInstanceOf(IntelliJCredential.class, credentials.get(3));
+        assertInstanceOf(AzureCliCredential.class, credentials.get(4));
+        assertInstanceOf(AzurePowerShellCredential.class, credentials.get(5));
+        assertInstanceOf(AzureDeveloperCliCredential.class, credentials.get(6));
     }
 
     /**
