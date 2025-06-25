@@ -153,6 +153,73 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
+    @Test(groups = { "kafka" }, timeOut = 60 * TIMEOUT)
+    public void poll_splitWhenStartFeedRangeTask() {
+        String testContainerName = "KafkaCosmosTestPoll-" + UUID.randomUUID();
+        String connectorName = "kafka-test-poll";
+        Map<String, String> sourceConfigMap = new HashMap<>();
+        sourceConfigMap.put("name", connectorName);
+        sourceConfigMap.put("azure.cosmos.account.endpoint", TestConfigurations.HOST);
+        sourceConfigMap.put("azure.cosmos.account.key", TestConfigurations.MASTER_KEY);
+        sourceConfigMap.put("azure.cosmos.source.database.name", databaseName);
+        List<String> containersIncludedList = Arrays.asList(testContainerName);
+        sourceConfigMap.put("azure.cosmos.source.containers.includedList", containersIncludedList.toString());
+        sourceConfigMap.put("azure.cosmos.source.task.id", UUID.randomUUID().toString());
+
+        CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConfigMap);
+        CosmosClientCacheItem clientItem =
+            CosmosClientCache.getCosmosClient(
+                sourceConfig.getAccountConfig(),
+                "poll");
+
+        // create a new container with multi-partition
+        CosmosContainerProperties testContainer =
+            clientItem
+                .getClient()
+                .getDatabase(databaseName)
+                .createContainer(testContainerName, "/id", ThroughputProperties.createManualThroughput(10100))
+                .onErrorResume(throwable -> {
+                    System.out.println(throwable.getMessage());
+                    return Mono.empty();
+                })
+                .block()
+                .getProperties();
+
+        try {
+            Map<String, String> taskConfigMap = sourceConfig.originalsStrings();
+            // define feedRanges task
+            FeedRangeTaskUnit feedRangeTaskUnit = new FeedRangeTaskUnit(
+                databaseName,
+                testContainerName,
+                testContainer.getResourceId(),
+                FeedRange.forFullRange(),
+                null,
+                testContainerName);
+            taskConfigMap.putAll(CosmosSourceTaskConfig.getFeedRangeTaskUnitsConfigMap(Arrays.asList(feedRangeTaskUnit)));
+
+            CosmosSourceTask sourceTask = new CosmosSourceTask();
+            sourceTask.start(taskConfigMap);
+
+            // first creating few items in the container
+            List<TestItem> createdItems =
+                this.createItems(clientItem.getClient(), databaseName, testContainerName, 10);
+
+            List<SourceRecord> sourceRecords = new ArrayList<>();
+            // the first poll will return 0 records as it will be the first time the task detect split happened
+            // internally it will create two new feedRange task units
+            // so here we will need to poll 3 times to get all newly created items
+            for (int i = 0; i < 3; i++) {
+                sourceRecords.addAll(sourceTask.poll());
+            }
+            validateFeedRangeRecords(sourceRecords, createdItems);
+        } finally {
+            if (clientItem != null) {
+                clientItem.getClient().getDatabase(databaseName).getContainer(testContainerName).delete().block();
+                CosmosClientCache.releaseCosmosClient(clientItem.getClientConfig());
+                clientItem.getClient().close();
+            }
+        }
+    }
     @Test(groups = { "kafka", "kafka-emulator" }, timeOut = TIMEOUT)
     public void pollWithSpecificFeedRange() {
         // Test only items belong to the feedRange defined in the feedRangeTaskUnit will be returned

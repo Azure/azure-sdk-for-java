@@ -308,18 +308,13 @@ public class CosmosSourceTask extends SourceTask {
                     );
 
                     for (FeedRange pkRange : overlappedRanges) {
-                        KafkaCosmosChangeFeedState childContinuationState =
-                            new KafkaCosmosChangeFeedState(
-                                feedRangeTaskUnit.getContinuationState().getResponseContinuation(),
-                                pkRange);
-
                         FeedRangeTaskUnit childTaskUnit =
                             new FeedRangeTaskUnit(
                                 feedRangeTaskUnit.getDatabaseName(),
                                 feedRangeTaskUnit.getContainerName(),
                                 feedRangeTaskUnit.getContainerRid(),
                                 pkRange,
-                                childContinuationState,
+                                getChildRangeChangeFeedState(feedRangeTaskUnit.getContinuationState(), pkRange),
                                 feedRangeTaskUnit.getTopic());
                         this.taskUnitsQueue.add(childTaskUnit);
                     }
@@ -344,6 +339,13 @@ public class CosmosSourceTask extends SourceTask {
         }
 
         return messageKey;
+    }
+
+    private KafkaCosmosChangeFeedState getChildRangeChangeFeedState(
+        KafkaCosmosChangeFeedState parent,
+        FeedRange feedRange) {
+        return parent == null
+            ? null : new KafkaCosmosChangeFeedState(parent.getResponseContinuation(), feedRange);
     }
 
     private CosmosChangeFeedRequestOptions getChangeFeedRequestOptions(FeedRangeTaskUnit feedRangeTaskUnit) {
