@@ -6306,8 +6306,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     ));
                 });
         } else {
-            return this.getDatabaseAccountFromEndpoint(this.serviceEndpoint)
-                .next()
+            return GlobalEndpointManager.getDatabaseAccountFromAnyLocationsAsync(this.serviceEndpoint, this.globalEndpointManager.getEffectivePreferredRegions(), uri -> this.globalEndpointManager.getDatabaseAccountAsync(uri, false))
                 .flatMap(databaseAccount -> {
 
                     List<String> readableRegions
