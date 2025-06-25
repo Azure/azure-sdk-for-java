@@ -1481,7 +1481,24 @@ public class CosmosTracerTest extends TestSuiteBase {
 
             assertThat(attributes.get("azure.cosmosdb.operation.request_charge")).isNotNull();
             assertThat(attributes.get("azure.cosmosdb.operation.request_charge")).isInstanceOf(Double.class);
-            assertThat(attributes.get("azure.cosmosdb.operation.request_charge")).isEqualTo(Double.valueOf(ctx.getTotalRequestCharge()));
+
+            if ((double)attributes.get("azure.cosmosdb.operation.request_charge") != 0d
+                || Double.valueOf(ctx.getTotalRequestCharge()) == 0d) {
+
+                assertThat(attributes.get("azure.cosmosdb.operation.request_charge"))
+                    .isEqualTo(Double.valueOf(ctx.getTotalRequestCharge()));
+            } else {
+                // in the tests we usually use Flux.blockFirst() - which also cancels the Flux.
+                // Flux cancellation is also evident as an OTel event (which would have 0 request charge)
+                // to validate that previously the correct event - with right RU charge - had been traced we use the
+                // last (most recently) collected sibling Spans for the assertion.
+                assertThat(mockTracer.getAllCollectedSiblingSpans()).isNotNull();
+                TracerUnderTest.SpanRecord[] siblingSpans = mockTracer.getAllCollectedSiblingSpans();
+                assertThat(siblingSpans).hasAtLeastOneElementOfType(TracerUnderTest.SpanRecord.class);
+                TracerUnderTest.SpanRecord lastSiblingSpan = siblingSpans[siblingSpans.length - 1];
+                assertThat(lastSiblingSpan.getAttributes().get("azure.cosmosdb.operation.request_charge"))
+                    .isEqualTo(Double.valueOf(ctx.getTotalRequestCharge()));
+            }
 
             assertThat(attributes.get("azure.cosmosdb.response.sub_status_code")).isNotNull();
             assertThat(attributes.get("azure.cosmosdb.response.sub_status_code")).isInstanceOf(Integer.class);
