@@ -13,6 +13,8 @@ import java.io.IOException;
 
 /**
  * Schema of the data property of an EventGridEvent for a Microsoft.ApiCenter.ApiDefinitionAdded event.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

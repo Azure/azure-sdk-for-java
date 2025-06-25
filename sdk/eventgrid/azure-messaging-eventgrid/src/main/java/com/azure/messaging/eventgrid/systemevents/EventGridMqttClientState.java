@@ -9,6 +9,8 @@ import java.util.Collection;
 
 /**
  * Configured state of the client. The value could be Enabled or Disabled.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Deprecated
 public final class EventGridMqttClientState extends ExpandableStringEnum<EventGridMqttClientState> {

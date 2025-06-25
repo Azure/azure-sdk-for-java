@@ -14,6 +14,8 @@ import java.util.Map;
 
 /**
  * Schema of the Data property of an EventGridEvent for a device telemetry event (DeviceTelemetry).
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

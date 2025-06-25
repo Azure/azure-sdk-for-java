@@ -14,6 +14,8 @@ import java.util.List;
 
 /**
  * Details of JobOutput errors.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Immutable
 @Deprecated

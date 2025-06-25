@@ -16,6 +16,8 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.DataBox.CopyStarted event.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

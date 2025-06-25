@@ -13,6 +13,8 @@ import java.util.Map;
 
 /**
  * Schema of common properties of all Router Job events.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

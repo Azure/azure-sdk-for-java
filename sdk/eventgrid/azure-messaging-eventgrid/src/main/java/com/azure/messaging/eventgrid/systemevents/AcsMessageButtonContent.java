@@ -13,6 +13,8 @@ import java.io.IOException;
 
 /**
  * Message Button Content.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

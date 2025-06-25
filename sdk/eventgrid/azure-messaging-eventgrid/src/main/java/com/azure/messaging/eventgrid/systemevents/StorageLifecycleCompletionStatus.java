@@ -9,6 +9,8 @@ import java.util.Collection;
 
 /**
  * Policy status can be Completed/CompletedWithError/Incomplete.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Deprecated
 public final class StorageLifecycleCompletionStatus extends ExpandableStringEnum<StorageLifecycleCompletionStatus> {

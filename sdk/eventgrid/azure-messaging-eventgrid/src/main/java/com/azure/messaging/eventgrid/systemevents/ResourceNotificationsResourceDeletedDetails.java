@@ -14,6 +14,8 @@ import java.io.IOException;
 /**
  * Describes the schema of the properties under resource info which are common across all ARN system topic delete
  * events.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

@@ -15,6 +15,8 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * Schema of common properties of all thread-level chat message events.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

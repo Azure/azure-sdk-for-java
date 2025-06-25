@@ -15,6 +15,8 @@ import java.util.Map;
 /**
  * Job Output Progress Event Data. Schema of the Data property of an EventGridEvent for a
  * Microsoft.Media.JobOutputProgress event.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

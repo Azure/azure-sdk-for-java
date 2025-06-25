@@ -15,6 +15,8 @@ import java.io.IOException;
  * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an Azure
  * communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may be set
  * which must match the kind enum value.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

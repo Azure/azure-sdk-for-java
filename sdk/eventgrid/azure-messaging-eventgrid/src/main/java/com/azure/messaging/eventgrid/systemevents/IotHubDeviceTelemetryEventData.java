@@ -13,6 +13,8 @@ import java.util.Map;
 
 /**
  * Event data for Microsoft.Devices.DeviceTelemetry event.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

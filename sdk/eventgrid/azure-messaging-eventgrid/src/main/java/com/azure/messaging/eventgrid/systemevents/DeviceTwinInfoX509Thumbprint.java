@@ -15,6 +15,8 @@ import java.io.IOException;
  * The thumbprint is a unique value for the x509 certificate, commonly used to find a particular certificate in a
  * certificate store. The thumbprint is dynamically generated using the SHA1 algorithm, and does not physically exist in
  * the certificate.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

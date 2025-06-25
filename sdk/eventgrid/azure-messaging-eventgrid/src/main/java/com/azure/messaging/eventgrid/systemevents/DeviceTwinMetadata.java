@@ -13,6 +13,8 @@ import java.io.IOException;
 
 /**
  * Metadata information for the properties JSON document.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

@@ -9,6 +9,8 @@ import java.util.Collection;
 
 /**
  * Asynchronous operation status of the operation on the app service plan.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Deprecated
 public final class AsyncStatus extends ExpandableStringEnum<AsyncStatus> {

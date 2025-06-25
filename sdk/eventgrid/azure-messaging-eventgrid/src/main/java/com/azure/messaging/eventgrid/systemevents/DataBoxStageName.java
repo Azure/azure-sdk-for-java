@@ -9,6 +9,8 @@ import java.util.Collection;
 
 /**
  * Schema of DataBox Stage Name enumeration.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Deprecated
 public final class DataBoxStageName extends ExpandableStringEnum<DataBoxStageName> {

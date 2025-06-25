@@ -13,6 +13,8 @@ import java.io.IOException;
 
 /**
  * A Microsoft Teams application.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

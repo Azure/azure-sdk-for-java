@@ -9,6 +9,8 @@ import java.util.Collection;
 
 /**
  * Router Job Worker Selector State.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Deprecated
 public final class AcsRouterWorkerSelectorState extends ExpandableStringEnum<AcsRouterWorkerSelectorState> {

@@ -14,6 +14,8 @@ import java.util.Map;
 
 /**
  * Information related to the circuit breaker configured on the backend.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

@@ -17,6 +17,8 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * Router Job Worker Selector.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

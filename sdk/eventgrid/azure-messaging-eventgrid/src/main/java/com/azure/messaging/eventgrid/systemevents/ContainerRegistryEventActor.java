@@ -13,6 +13,8 @@ import java.io.IOException;
 
 /**
  * The agent that initiated the event. For most situations, this could be from the authorization context of the request.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

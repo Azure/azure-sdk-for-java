@@ -9,6 +9,8 @@ import java.util.Collection;
 
 /**
  * The cloud that the identifier belongs to.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Deprecated
 public final class CommunicationCloudEnvironmentModel extends ExpandableStringEnum<CommunicationCloudEnvironmentModel> {

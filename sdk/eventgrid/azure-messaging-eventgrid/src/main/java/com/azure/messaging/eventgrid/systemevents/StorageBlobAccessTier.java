@@ -9,6 +9,8 @@ import java.util.Collection;
 
 /**
  * The access tier of the blob.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Deprecated
 public final class StorageBlobAccessTier extends ExpandableStringEnum<StorageBlobAccessTier> {

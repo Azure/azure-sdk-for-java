@@ -12,6 +12,8 @@ import java.io.IOException;
 
 /**
  * The event data for a Job output asset.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

@@ -13,6 +13,8 @@ import java.io.IOException;
 
 /**
  * A portion of the properties that can be written only by the application back-end, and read by the device.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

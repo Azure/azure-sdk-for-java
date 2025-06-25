@@ -13,6 +13,8 @@ import java.io.IOException;
 
 /**
  * Information related to a given self-hosted gateway deployment.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

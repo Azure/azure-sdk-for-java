@@ -13,6 +13,8 @@ import java.io.IOException;
 
 /**
  * Information about the device connection state event.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

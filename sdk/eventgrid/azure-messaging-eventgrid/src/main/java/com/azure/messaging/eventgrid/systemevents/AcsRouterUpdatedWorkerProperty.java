@@ -9,6 +9,8 @@ import java.util.Collection;
 
 /**
  * An individual property updated in the Router Worker.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Deprecated
 public final class AcsRouterUpdatedWorkerProperty extends ExpandableStringEnum<AcsRouterUpdatedWorkerProperty> {

@@ -9,6 +9,8 @@ import java.util.Collection;
 
 /**
  * The role of participant user.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Deprecated
 public final class AcsCallParticipantKind extends ExpandableStringEnum<AcsCallParticipantKind> {

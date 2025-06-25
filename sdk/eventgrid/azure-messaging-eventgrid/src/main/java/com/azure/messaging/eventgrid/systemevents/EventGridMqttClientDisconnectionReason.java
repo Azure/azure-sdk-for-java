@@ -10,6 +10,8 @@ import java.util.Collection;
 /**
  * Reason for the disconnection of the MQTT client's session. The value could be one of the values in the disconnection
  * reasons table.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Deprecated
 public final class EventGridMqttClientDisconnectionReason

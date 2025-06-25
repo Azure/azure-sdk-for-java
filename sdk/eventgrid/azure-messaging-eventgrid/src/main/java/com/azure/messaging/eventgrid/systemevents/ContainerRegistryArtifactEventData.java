@@ -16,6 +16,8 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * The content of the event request message.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

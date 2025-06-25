@@ -14,6 +14,8 @@ import java.io.IOException;
 /**
  * The registry node that generated the event. Put differently, while the actor initiates the event, the source
  * generates it.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

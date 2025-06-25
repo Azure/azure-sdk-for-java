@@ -14,6 +14,8 @@ import java.util.Map;
 
 /**
  * Custom Context of Incoming Call.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

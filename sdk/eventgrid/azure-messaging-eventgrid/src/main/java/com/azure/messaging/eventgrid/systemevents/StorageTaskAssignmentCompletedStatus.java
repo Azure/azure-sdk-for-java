@@ -9,6 +9,8 @@ import java.util.Collection;
 
 /**
  * The status for a storage task.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Deprecated
 public final class StorageTaskAssignmentCompletedStatus

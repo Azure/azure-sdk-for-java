@@ -9,6 +9,8 @@ import java.util.Collection;
 
 /**
  * Router Job Received Job Status.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Deprecated
 public final class AcsRouterJobStatus extends ExpandableStringEnum<AcsRouterJobStatus> {

@@ -14,6 +14,8 @@ import java.util.List;
 
 /**
  * Schema for all properties of Recording Storage Information.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

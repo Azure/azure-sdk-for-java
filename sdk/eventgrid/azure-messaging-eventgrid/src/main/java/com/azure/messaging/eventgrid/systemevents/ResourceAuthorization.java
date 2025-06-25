@@ -14,6 +14,8 @@ import java.util.Map;
 
 /**
  * The details of the authorization for the resource.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

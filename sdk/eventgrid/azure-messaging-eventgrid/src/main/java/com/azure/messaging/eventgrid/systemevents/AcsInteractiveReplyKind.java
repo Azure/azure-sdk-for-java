@@ -9,6 +9,8 @@ import java.util.Collection;
 
 /**
  * The Message interactive reply type.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Deprecated
 public final class AcsInteractiveReplyKind extends ExpandableStringEnum<AcsInteractiveReplyKind> {

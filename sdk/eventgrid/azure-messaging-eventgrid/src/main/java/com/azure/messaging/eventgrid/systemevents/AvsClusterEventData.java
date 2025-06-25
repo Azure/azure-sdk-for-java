@@ -14,6 +14,8 @@ import java.util.List;
 
 /**
  * Schema of the Data property of an EventGridEvent for Microsoft.AVS/clusters events.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

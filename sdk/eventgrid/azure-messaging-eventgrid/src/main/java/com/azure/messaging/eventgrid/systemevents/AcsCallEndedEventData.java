@@ -13,6 +13,8 @@ import java.time.Duration;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.CallEnded event.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

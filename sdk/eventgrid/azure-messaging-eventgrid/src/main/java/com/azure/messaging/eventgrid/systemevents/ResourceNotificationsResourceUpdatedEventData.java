@@ -13,6 +13,8 @@ import java.io.IOException;
 
 /**
  * Describes the schema of the common properties across all ARN system topic events.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

@@ -13,6 +13,8 @@ import java.io.IOException;
 
 /**
  * Schema of common properties of all thread-level chat events.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

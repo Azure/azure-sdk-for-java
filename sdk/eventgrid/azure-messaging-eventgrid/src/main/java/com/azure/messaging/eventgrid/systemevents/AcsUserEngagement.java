@@ -9,6 +9,8 @@ import java.util.Collection;
 
 /**
  * The type of engagement user have with email.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Deprecated
 public final class AcsUserEngagement extends ExpandableStringEnum<AcsUserEngagement> {

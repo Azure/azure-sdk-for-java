@@ -14,6 +14,8 @@ import java.io.IOException;
 /**
  * Ingest fragment dropped event data. Schema of the data property of an EventGridEvent for a
  * Microsoft.Media.LiveEventIncomingDataChunkDropped event.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Immutable
 @Deprecated

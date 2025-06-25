@@ -14,6 +14,8 @@ import java.util.Map;
 
 /**
  * Schema of the chat thread participant.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

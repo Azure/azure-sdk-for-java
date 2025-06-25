@@ -16,6 +16,8 @@ import java.util.Map;
 
 /**
  * Event data for Microsoft.EventGrid.MQTTClientCreatedOrUpdated event.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

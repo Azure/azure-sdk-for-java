@@ -13,6 +13,8 @@ import java.io.IOException;
 
 /**
  * Schema of calling event participant user.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

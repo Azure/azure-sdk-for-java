@@ -12,6 +12,8 @@ import java.io.IOException;
 
 /**
  * Event data for Microsoft.EventGrid.MQTTClientSessionDisconnected event.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

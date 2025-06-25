@@ -14,6 +14,8 @@ import java.util.Map;
 /**
  * Job processing event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobProcessing
  * event.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

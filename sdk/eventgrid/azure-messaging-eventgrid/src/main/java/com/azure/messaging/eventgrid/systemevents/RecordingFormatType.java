@@ -9,6 +9,8 @@ import java.util.Collection;
 
 /**
  * The recording format type - Mp4, Mp3, Wav.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Deprecated
 public final class RecordingFormatType extends ExpandableStringEnum<RecordingFormatType> {

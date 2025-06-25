@@ -9,6 +9,8 @@ import java.util.Collection;
 
 /**
  * The type of the call ended by.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Deprecated
 public final class AcsCallEndedByKind extends ExpandableStringEnum<AcsCallEndedByKind> {

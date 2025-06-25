@@ -227,6 +227,34 @@ public class EventGridCustomization extends Customization {
                 ast.getClassByName(classCustomization.getClassName())
                     .ifPresent(clazz -> {
                         clazz.addMarkerAnnotation("Deprecated");
+                        
+                        // Get existing Javadoc or create new one
+                        String existingJavadoc = clazz.getJavadocComment()
+                            .map(comment -> comment.getContent())
+                            .orElse("");
+                        
+                        // Append deprecation tag to existing Javadoc
+                        String deprecationTag = "@deprecated This class is deprecated and may be removed in future releases.";
+                        String newJavadocContent;
+                        
+                        if (existingJavadoc.isEmpty()) {
+                            newJavadocContent = deprecationTag;
+                        } else {
+                            // Remove existing asterisks and whitespace, then append
+                            String cleanedJavadoc = existingJavadoc.trim();
+                            if (cleanedJavadoc.endsWith("*/")) {
+                                cleanedJavadoc = cleanedJavadoc.substring(0, cleanedJavadoc.length() - 2).trim();
+                            }
+                            if (cleanedJavadoc.startsWith("/**")) {
+                                cleanedJavadoc = cleanedJavadoc.substring(3).trim();
+                            }
+                            if (cleanedJavadoc.startsWith("*")) {
+                                cleanedJavadoc = cleanedJavadoc.substring(1).trim();
+                            }
+                            newJavadocContent = cleanedJavadoc + "\n * " + deprecationTag;
+                        }
+                        
+                        clazz.setJavadocComment(newJavadocContent);
                     })
             );
         }

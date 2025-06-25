@@ -9,6 +9,8 @@ import java.util.Collection;
 
 /**
  * Type of action on the app service plan.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Deprecated
 public final class AppServicePlanAction extends ExpandableStringEnum<AppServicePlanAction> {

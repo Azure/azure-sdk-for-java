@@ -12,6 +12,8 @@ import java.io.IOException;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterWorkerDeleted event.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

@@ -13,6 +13,8 @@ import java.io.IOException;
 
 /**
  * Detail of action on the app.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

@@ -14,6 +14,8 @@ import java.io.IOException;
 /**
  * Incoming streams out of sync event data. Schema of the data property of an EventGridEvent for a
  * Microsoft.Media.LiveEventIncomingStreamsOutOfSync event.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Immutable
 @Deprecated

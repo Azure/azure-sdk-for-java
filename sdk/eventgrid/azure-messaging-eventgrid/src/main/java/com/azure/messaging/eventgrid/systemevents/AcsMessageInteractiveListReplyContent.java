@@ -13,6 +13,8 @@ import java.io.IOException;
 
 /**
  * Message Interactive list reply content for a user to business message.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

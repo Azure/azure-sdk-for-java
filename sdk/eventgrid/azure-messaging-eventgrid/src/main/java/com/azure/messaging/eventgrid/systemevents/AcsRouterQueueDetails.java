@@ -14,6 +14,8 @@ import java.util.Map;
 
 /**
  * Router Queue Details.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

@@ -16,6 +16,8 @@ import java.time.Duration;
 /**
  * Channel Archive heartbeat event data. Schema of the data property of an EventGridEvent for a
  * Microsoft.Media.LiveEventChannelArchiveHeartbeat event.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Immutable
 @Deprecated

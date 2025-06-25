@@ -12,6 +12,8 @@ import java.io.IOException;
 
 /**
  * Schema of common properties of participant events.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

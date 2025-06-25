@@ -20,6 +20,8 @@ import java.util.Map;
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceDeleteFailure event. This is
  * raised when a resource delete operation fails.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

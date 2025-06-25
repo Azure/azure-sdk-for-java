@@ -13,6 +13,8 @@ import java.util.List;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Maps.GeofenceEntered event.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

@@ -9,6 +9,8 @@ import java.util.Collection;
 
 /**
  * The status of the email. Any value other than Delivered is considered failed.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Deprecated
 public final class AcsEmailDeliveryReportStatus extends ExpandableStringEnum<AcsEmailDeliveryReportStatus> {

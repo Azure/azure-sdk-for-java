@@ -13,6 +13,8 @@ import java.util.Map;
 
 /**
  * Job canceling event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobCanceling event.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

@@ -13,6 +13,8 @@ import java.io.IOException;
 
 /**
  * A user that got created with an Azure Communication Services resource.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

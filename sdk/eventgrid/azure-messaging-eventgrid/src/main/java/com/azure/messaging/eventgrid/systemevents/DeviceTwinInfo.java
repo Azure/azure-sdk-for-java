@@ -13,6 +13,8 @@ import java.io.IOException;
 
 /**
  * Information about the device twin, which is the cloud representation of application device metadata.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

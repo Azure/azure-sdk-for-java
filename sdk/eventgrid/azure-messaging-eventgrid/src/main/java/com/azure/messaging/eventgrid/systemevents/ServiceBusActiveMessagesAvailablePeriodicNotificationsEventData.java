@@ -14,6 +14,8 @@ import java.io.IOException;
 /**
  * Schema of the Data property of an EventGridEvent for a
  * Microsoft.ServiceBus.ActiveMessagesAvailablePeriodicNotifications event.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

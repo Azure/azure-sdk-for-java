@@ -13,6 +13,8 @@ import java.io.IOException;
 
 /**
  * The details of the HTTP request.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

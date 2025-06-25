@@ -13,6 +13,8 @@ import java.io.IOException;
 
 /**
  * Schema for all properties of Recording Chunk Information.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

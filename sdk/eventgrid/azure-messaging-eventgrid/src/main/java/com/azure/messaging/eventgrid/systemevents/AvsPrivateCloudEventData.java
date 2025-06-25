@@ -13,6 +13,8 @@ import java.io.IOException;
 
 /**
  * Schema of the Data property of an EventGridEvent for Microsoft.AVS/privateClouds events.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

@@ -13,6 +13,8 @@ import java.io.IOException;
 
 /**
  * Execution statistics of a specific policy action in a Blob Management cycle.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated

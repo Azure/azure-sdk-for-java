@@ -16,6 +16,8 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * Schema for details of a delivery attempt.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Fluent
 @Deprecated
