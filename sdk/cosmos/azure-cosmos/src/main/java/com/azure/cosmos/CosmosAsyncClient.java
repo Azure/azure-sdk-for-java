@@ -729,8 +729,8 @@ public final class CosmosAsyncClient implements Closeable {
      * Reads the Cosmos database account.
      * @return the {@link CosmosDatabaseAccount} with the read database account.
      */
-    public Mono<CosmosDatabaseAccount> readDatabaseAccount() {
-        return this.asyncDocumentClient.readDatabaseAccount();
+    public Mono<CosmosDatabaseAccount> readDatabaseAccount(boolean shouldUseCache) {
+        return this.asyncDocumentClient.readDatabaseAccount(shouldUseCache);
     }
 
     ConsistencyLevel getEffectiveConsistencyLevel(

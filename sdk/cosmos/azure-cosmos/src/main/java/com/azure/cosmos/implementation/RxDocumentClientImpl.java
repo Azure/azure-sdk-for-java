@@ -6238,25 +6238,60 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Mono<CosmosDatabaseAccount> readDatabaseAccount() {
-        return this.getDatabaseAccountFromEndpoint(this.serviceEndpoint)
-            .next()
-            .flatMap(databaseAccount -> {
+    public Mono<CosmosDatabaseAccount> readDatabaseAccount(boolean shouldUseCache) {
 
-                List<String> readableRegions
-                    = Utils.iterableToList(databaseAccount.getReadableLocations()).stream().map(DatabaseAccountLocation::getName).collect(Collectors.toList());
-                List<String> writeableRegions
-                    = Utils.iterableToList(databaseAccount.getWritableLocations()).stream().map(DatabaseAccountLocation::getName).collect(Collectors.toList());
+        if (shouldUseCache) {
+            return Mono.just(this.globalEndpointManager.getLatestDatabaseAccount())
+                .flatMap(databaseAccount -> {
 
-                return Mono.just(databaseAccountAccessor.build(
-                    databaseAccount.getId(),
-                    databaseAccount.getETag(),
-                    readableRegions,
-                    writeableRegions,
-                    databaseAccount.getEnableMultipleWriteLocations(),
-                    databaseAccount.getConsistencyPolicy().getDefaultConsistencyLevel()
-                ));
-            });
+                    List<String> readableRegions
+                        = Utils.iterableToList(databaseAccount.getReadableLocations())
+                        .stream()
+                        .map(DatabaseAccountLocation::getName)
+                        .collect(Collectors.toList());
+
+                    List<String> writeableRegions
+                        = Utils.iterableToList(databaseAccount.getWritableLocations())
+                        .stream()
+                        .map(DatabaseAccountLocation::getName)
+                        .collect(Collectors.toList());
+
+                    return Mono.just(databaseAccountAccessor.build(
+                        databaseAccount.getId(),
+                        databaseAccount.getETag(),
+                        readableRegions,
+                        writeableRegions,
+                        databaseAccount.getEnableMultipleWriteLocations(),
+                        databaseAccount.getConsistencyPolicy().getDefaultConsistencyLevel()
+                    ));
+                });
+        } else {
+            return this.getDatabaseAccountFromEndpoint(this.serviceEndpoint)
+                .next()
+                .flatMap(databaseAccount -> {
+
+                    List<String> readableRegions
+                        = Utils.iterableToList(databaseAccount.getReadableLocations())
+                        .stream()
+                        .map(DatabaseAccountLocation::getName)
+                        .collect(Collectors.toList());
+
+                    List<String> writeableRegions
+                        = Utils.iterableToList(databaseAccount.getWritableLocations())
+                        .stream()
+                        .map(DatabaseAccountLocation::getName)
+                        .collect(Collectors.toList());
+
+                    return Mono.just(databaseAccountAccessor.build(
+                        databaseAccount.getId(),
+                        databaseAccount.getETag(),
+                        readableRegions,
+                        writeableRegions,
+                        databaseAccount.getEnableMultipleWriteLocations(),
+                        databaseAccount.getConsistencyPolicy().getDefaultConsistencyLevel()
+                    ));
+                });
+        }
     }
 
     /***

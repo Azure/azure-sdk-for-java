@@ -329,8 +329,8 @@ public final class CosmosClient implements Closeable {
      * Reads the Cosmos database account.
      * @return the {@link CosmosDatabaseAccount} with the read database account.
      */
-    public CosmosDatabaseAccount readDatabaseAccount() {
-        return blockReadDatabaseAccount(this.asyncClientWrapper.readDatabaseAccount());
+    public CosmosDatabaseAccount readDatabaseAccount(boolean shouldUseCache) {
+        return blockReadDatabaseAccount(this.asyncClientWrapper.readDatabaseAccount(shouldUseCache));
     }
 
     CosmosAsyncClient asyncClient() {
