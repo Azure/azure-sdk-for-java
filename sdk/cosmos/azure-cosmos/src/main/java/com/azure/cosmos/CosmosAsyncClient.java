@@ -732,6 +732,8 @@ public final class CosmosAsyncClient implements Closeable {
 
     /**
      * Reads the Cosmos database account.
+     *
+     * @param shouldUseCache whether to use the CosmosClient-internal cache for reading the database account.
      * @return the {@link CosmosDatabaseAccount} with the read database account.
      */
     public Mono<CosmosDatabaseAccount> readDatabaseAccount(boolean shouldUseCache) {
