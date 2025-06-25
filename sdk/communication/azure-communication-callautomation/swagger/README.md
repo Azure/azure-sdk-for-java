@@ -26,6 +26,7 @@ cd <swagger-folder>
 autorest README.md --java --v4
 ```
 
+
 ### Code generation settings
 
 ``` yaml
