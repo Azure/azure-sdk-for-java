@@ -10,6 +10,7 @@ module io.clientcore.http.okhttp3 {
     requires okhttp3;
     requires okio;
     requires kotlin.stdlib;
+    requires annotations;
 
     exports io.clientcore.http.okhttp3;
 

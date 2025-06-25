@@ -21,6 +21,7 @@ import java.net.HttpURLConnection;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -76,24 +77,36 @@ public final class JdkHttpClient implements HttpClient {
 
     @Override
     public Response<BinaryData> send(HttpRequest request) {
-        java.net.http.HttpRequest jdkRequest = toJdkHttpRequest(request);
         try {
-            // JDK HttpClient works differently than OkHttp and HttpUrlConnection where the response body handling has
-            // to be determined when the request is being sent, rather than being something that can be determined after
-            // the response has been received. Given that, we'll always consume the response body as an InputStream and
-            // after receiving it we'll handle ignoring, buffering, or streaming appropriately based on either the
-            // Content-Type header or the response body mode.
+            // JDK HttpClient requires the response body handling to be determined when the request is being sent,
+            // rather than being something that can be determined after the response has been received. Given that,
+            // we'll always consume the response body as an InputStream and after receiving it we'll handle ignoring,
+            // buffering, or streaming appropriately based on either the Content-Type header or the response body mode.
             java.net.http.HttpResponse.BodyHandler<InputStream> bodyHandler
                 = getResponseHandler(hasReadTimeout, readTimeout,
                     java.net.http.HttpResponse.BodyHandlers::ofInputStream, InputStreamTimeoutResponseSubscriber::new);
 
-            java.net.http.HttpResponse<InputStream> jdKResponse = jdkHttpClient.send(jdkRequest, bodyHandler);
-            return toResponse(request, jdKResponse);
+            java.net.http.HttpResponse<InputStream> jdkResponse = jdkHttpClient.send(toJdkHttpRequest(request), bodyHandler);
+            return toResponse(request, jdkResponse);
         } catch (IOException e) {
             throw LOGGER.throwableAtError().log(e, CoreException::from);
         } catch (InterruptedException e) {
             throw LOGGER.throwableAtError().log(e, RuntimeException::new);
         }
+    }
+
+    @Override
+    public CompletableFuture<Response<BinaryData>> sendAsync(HttpRequest request) {
+        // JDK HttpClient requires the response body handling to be determined when the request is being sent, rather
+        // than being something that can be determined after the response has been received. Given that, we'll always
+        // consume the response body as an InputStream and after receiving it we'll handle ignoring, buffering, or
+        // streaming appropriately based on either the Content-Type header or the response body mode.
+        java.net.http.HttpResponse.BodyHandler<InputStream> bodyHandler
+            = getResponseHandler(hasReadTimeout, readTimeout,
+            java.net.http.HttpResponse.BodyHandlers::ofInputStream, InputStreamTimeoutResponseSubscriber::new);
+
+        return jdkHttpClient.sendAsync(toJdkHttpRequest(request), bodyHandler)
+            .thenApply(jdkResponse -> toResponse(request, jdkResponse));
     }
 
     /**
