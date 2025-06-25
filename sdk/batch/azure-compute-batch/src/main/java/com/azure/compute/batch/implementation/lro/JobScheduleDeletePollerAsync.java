@@ -13,7 +13,6 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollingContext;
 import reactor.core.publisher.Mono;
 
-import java.time.OffsetDateTime;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -27,7 +26,6 @@ public final class JobScheduleDeletePollerAsync {
     private final String jobScheduleId;
     private final RequestOptions options;
     private final Context requestContext;
-    private OffsetDateTime initialCreationTime;
 
     /**
      * Creates a new {@link JobScheduleDeletePollerAsync}.
@@ -62,21 +60,14 @@ public final class JobScheduleDeletePollerAsync {
     public Function<PollingContext<BatchJobSchedule>, Mono<PollResponse<BatchJobSchedule>>> getPollOperation() {
         return context -> {
             RequestOptions pollOptions = new RequestOptions().setContext(this.requestContext);
-            return batchAsyncClient.getJobScheduleWithResponse(jobScheduleId, pollOptions).flatMap(response -> {
+            return batchAsyncClient.getJobScheduleWithResponse(jobScheduleId, pollOptions).map(response -> {
                 BatchJobSchedule jobSchedule = response.getValue().toObject(BatchJobSchedule.class);
 
-                if (initialCreationTime == null) {
-                    initialCreationTime = jobSchedule.getCreationTime();
-                }
-
-                boolean isSame = initialCreationTime.equals(jobSchedule.getCreationTime());
-                boolean isDeleting = BatchJobScheduleState.DELETING.equals(jobSchedule.getState());
-
-                LongRunningOperationStatus status = (isSame && isDeleting)
+                LongRunningOperationStatus status = BatchJobScheduleState.DELETING.equals(jobSchedule.getState())
                     ? LongRunningOperationStatus.IN_PROGRESS
                     : LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
 
-                return Mono.just(new PollResponse<>(status, jobSchedule));
+                return new PollResponse<>(status, jobSchedule);
             })
                 .onErrorResume(ResourceNotFoundException.class,
                     ex -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null)))
