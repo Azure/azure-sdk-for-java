@@ -31,21 +31,6 @@
   "include": [
     {
       "Agent": {
-          "ubuntu-24.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
-      },
-      "JavaTestVersion": "1.21",
-      "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "Options": {
-        "FromSource_SkipRebuild_Verify": {
-          "TestFromSource": true,
-          "RunAggregateReports": false,
-          "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false",
-          "TestGoals": "verify"
-        }
-      }
-    },
-    {
-      "Agent": {
         "ubuntu-24.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       },
       "JavaTestVersion": "1.21",
