@@ -45,7 +45,8 @@ import static com.azure.identity.implementation.util.IdentityUtil.loadVSCodeAuth
 public class VisualStudioCodeCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(VisualStudioCodeCredential.class);
     private static final String VSCODE_CLIENT_ID = "aebc6443-996d-45c2-90f0-388ff96faa56";
-    private static final String BROKER_BUILDER_CLASS = "com.azure.identity.broker.InteractiveBrowserBrokerCredentialBuilder";
+    private static final String BROKER_BUILDER_CLASS
+        = "com.azure.identity.broker.InteractiveBrowserBrokerCredentialBuilder";
     private final IdentityClientOptions clientOptions;
     private final String tenant;
 
@@ -57,8 +58,7 @@ public class VisualStudioCodeCredential implements TokenCredential {
      * @param identityClientOptions the options for configuring the identity client
      */
     VisualStudioCodeCredential(String tenantId, IdentityClientOptions identityClientOptions) {
-        clientOptions
-            = (identityClientOptions == null ? new IdentityClientOptions() : identityClientOptions);
+        clientOptions = (identityClientOptions == null ? new IdentityClientOptions() : identityClientOptions);
 
         if (!CoreUtils.isNullOrEmpty(tenantId)) {
             tenant = tenantId;
@@ -70,18 +70,18 @@ public class VisualStudioCodeCredential implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return Mono.defer(() -> {
-                TokenCredential brokerAuthCredential = getBrokerAuthCredential(VSCODE_CLIENT_ID);
-                if (brokerAuthCredential != null) {
-                    return brokerAuthCredential.getToken(request);
-                } else {
-                    return Mono.error(new CredentialUnavailableException("Visual Studio Code Authentication is not available."
+            TokenCredential brokerAuthCredential = getBrokerAuthCredential(VSCODE_CLIENT_ID);
+            if (brokerAuthCredential != null) {
+                return brokerAuthCredential.getToken(request);
+            } else {
+                return Mono
+                    .error(new CredentialUnavailableException("Visual Studio Code Authentication is not available."
                         + " Ensure you have azure-identity-broker dependency added to your application."
                         + " Then ensure, you have signed into Azure via VS Code and have Azure Resources Extension installed in VS Code."));
-                }
-            }).doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
-            .doOnError(error -> {
-                LoggingUtil.logTokenError(LOGGER, clientOptions, request, error);
-            });
+            }
+        }).doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request)).doOnError(error -> {
+            LoggingUtil.logTokenError(LOGGER, clientOptions, request, error);
+        });
     }
 
     TokenCredential getBrokerAuthCredential(String clientId) {
@@ -93,7 +93,8 @@ public class VisualStudioCodeCredential implements TokenCredential {
             Object builder = builderClass.getConstructor().newInstance();
             AuthenticationRecord authenticationRecord = loadVSCodeAuthRecord();
             builderClass.getMethod("setWindowHandle", long.class).invoke(builder, 0);
-            InteractiveBrowserCredentialBuilder browserCredentialBuilder = (InteractiveBrowserCredentialBuilder) builder;
+            InteractiveBrowserCredentialBuilder browserCredentialBuilder
+                = (InteractiveBrowserCredentialBuilder) builder;
             browserCredentialBuilder.clientId(clientId);
             browserCredentialBuilder.authenticationRecord(authenticationRecord);
             if (CoreUtils.isNullOrEmpty(tenant)) {
@@ -106,8 +107,7 @@ public class VisualStudioCodeCredential implements TokenCredential {
             // Broker not on classpath
             return null;
         } catch (Exception e) {
-            throw new CredentialUnavailableException("Failed to create VisualStudioCodeCredential dynamically",
-                e);
+            throw new CredentialUnavailableException("Failed to create VisualStudioCodeCredential dynamically", e);
         }
     }
 }
