@@ -31,25 +31,23 @@ import static com.azure.identity.implementation.util.IdentityUtil.loadVSCodeAuth
 
 /**
  * <p>Enables authentication to Microsoft Entra ID as the user signed in to Visual Studio Code via
- * the 'Azure Account' extension.</p>
+ * the 'Azure Resources' extension.</p>
  *
- * <p>It's a <a href="https://github.com/Azure/azure-sdk-for-java/issues/27364">known issue</a> that this credential
- * doesn't work with <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.azure-account">Azure
- * Account extension</a> versions newer than <strong>0.9.11</strong>. A long-term fix to this problem is in progress.
- * In the meantime, consider authenticating with {@link AzureCliCredential}.</p>
+ * <p>Pre-requisites:
+ *
+ * 1. Ensure you have Azure Resources extension installed in VS Code and have complete Azure:Sign In in VS Code IDE.
+ * 2. Ensure you have azure-identity-brokers dependency added in your application.
+ * </p>
  *
  * @see com.azure.identity
  * @see VisualStudioCodeCredentialBuilder
  */
 public class VisualStudioCodeCredential implements TokenCredential {
-    private static final String VSCODE_CLIENT_ID = "aebc6443-996d-45c2-90f0-388ff96faa56";
-    private final IdentityClient identityClient;
-    private final AtomicReference<MsalToken> cachedToken;
-    private final String cloudInstance;
     private static final ClientLogger LOGGER = new ClientLogger(VisualStudioCodeCredential.class);
-    private static final String BROKER_BUILDER_CLASS = "com.azure.identity.broker.InteractiveBrowserBrokerBuilder";
-    private static final String TROUBLESHOOTING
-        = "VisualStudioCodeCredential is affected by known issues. See https://aka.ms/azsdk/java/identity/troubleshoot#troubleshoot-visualstudiocodecredential-authentication-issues for more information.";
+    private static final String VSCODE_CLIENT_ID = "aebc6443-996d-45c2-90f0-388ff96faa56";
+    private static final String BROKER_BUILDER_CLASS = "com.azure.identity.broker.InteractiveBrowserBrokerCredentialBuilder";
+    private final IdentityClientOptions clientOptions;
+    private final String tenant;
 
     /**
      * Creates a public class VisualStudioCodeCredential implements TokenCredential with the given tenant and
@@ -59,64 +57,30 @@ public class VisualStudioCodeCredential implements TokenCredential {
      * @param identityClientOptions the options for configuring the identity client
      */
     VisualStudioCodeCredential(String tenantId, IdentityClientOptions identityClientOptions) {
-        IdentityClientOptions options
+        clientOptions
             = (identityClientOptions == null ? new IdentityClientOptions() : identityClientOptions);
-        String tenant;
-
-        VisualStudioCacheAccessor accessor = new VisualStudioCacheAccessor();
-        Map<String, String> userSettings = accessor.getUserSettingsDetails();
-
-        cloudInstance = userSettings.get("cloud");
-        if (CoreUtils.isNullOrEmpty(options.getAuthorityHost())) {
-            options.setAuthorityHost(accessor.getAzureAuthHost(cloudInstance));
-        }
 
         if (!CoreUtils.isNullOrEmpty(tenantId)) {
             tenant = tenantId;
         } else {
-            tenant = userSettings.getOrDefault("tenant", "common");
+            tenant = null;
         }
-
-        identityClient = new IdentityClientBuilder().tenantId(tenant)
-            .clientId("aebc6443-996d-45c2-90f0-388ff96faa56")
-            .identityClientOptions(options)
-            .build();
-
-        this.cachedToken = new AtomicReference<>();
     }
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return Mono.defer(() -> {
-            TokenCredential brokerAuthCredential = getBrokerAuthCredential(VSCODE_CLIENT_ID);
-            if (brokerAuthCredential != null) {
-                return brokerAuthCredential.getToken(request);
-            }
-
-            if (cachedToken.get() != null) {
-                return identityClient.authenticateWithPublicClientCache(request, cachedToken.get().getAccount())
-                    .onErrorResume(t -> Mono.empty());
-            } else {
-                return Mono.empty();
-            }
-        })
-            .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithVsCodeCredential(request, cloudInstance)))
-            .map(msalToken -> {
-                cachedToken.set((MsalToken) msalToken);
-                return msalToken;
-            })
-            .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
-            .doOnError(error -> {
-                Throwable other = null;
-                if (error instanceof CredentialUnavailableException) {
-                    other = new CredentialUnavailableException(TROUBLESHOOTING, error);
-
-                } else if (error instanceof ClientAuthenticationException) {
-                    other = new ClientAuthenticationException(TROUBLESHOOTING, null, error);
+                TokenCredential brokerAuthCredential = getBrokerAuthCredential(VSCODE_CLIENT_ID);
+                if (brokerAuthCredential != null) {
+                    return brokerAuthCredential.getToken(request);
                 } else {
-                    other = error;
+                    return Mono.error(new CredentialUnavailableException("Visual Studio Code Authentication is not available."
+                        + " Ensure you have azure-identity-broker dependency added to your application."
+                        + " Then ensure, you have signed into Azure via VS Code and have Azure Resources Extension installed in VS Code."));
                 }
-                LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, other);
+            }).doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
+            .doOnError(error -> {
+                LoggingUtil.logTokenError(LOGGER, clientOptions, request, error);
             });
     }
 
@@ -128,17 +92,21 @@ public class VisualStudioCodeCredential implements TokenCredential {
             Class<?> builderClass = Class.forName(BROKER_BUILDER_CLASS);
             Object builder = builderClass.getConstructor().newInstance();
             AuthenticationRecord authenticationRecord = loadVSCodeAuthRecord();
-            builderClass.getMethod("clientId", String.class).invoke(builder, clientId);
-            builderClass.getMethod("tenantId", String.class).invoke(builder, authenticationRecord.getTenantId());
-            builderClass.getMethod("authenticationRecord", AuthenticationRecord.class)
-                .invoke(builder, authenticationRecord);
             builderClass.getMethod("setWindowHandle", long.class).invoke(builder, 0);
-            return (TokenCredential) builderClass.getMethod("build").invoke(builder);
+            InteractiveBrowserCredentialBuilder browserCredentialBuilder = (InteractiveBrowserCredentialBuilder) builder;
+            browserCredentialBuilder.clientId(clientId);
+            browserCredentialBuilder.authenticationRecord(authenticationRecord);
+            if (CoreUtils.isNullOrEmpty(tenant)) {
+                builderClass.getMethod("tenantId", String.class).invoke(builder, authenticationRecord.getTenantId());
+            } else {
+                builderClass.getMethod("tenantId", String.class).invoke(builder, tenant);
+            }
+            return (TokenCredential) browserCredentialBuilder.build();
         } catch (ClassNotFoundException e) {
             // Broker not on classpath
             return null;
         } catch (Exception e) {
-            throw new CredentialUnavailableException("Failed to create InteractiveBrowserBrokerCredential dynamically",
+            throw new CredentialUnavailableException("Failed to create VisualStudioCodeCredential dynamically",
                 e);
         }
     }
