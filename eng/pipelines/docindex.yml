@@ -28,7 +28,7 @@ jobs:
   - job: UpdateDocsMsBuildConfig
     pool:
       name: $(LINUXPOOL)
-      demands: $(LinuxImageDemand)
+      demands: ImageOverride -equals $(LINUXVMIMAGE)
 
     timeoutInMinutes: 180
     variables:

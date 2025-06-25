@@ -130,8 +130,8 @@ stages:
               targetPath: '$(Pipeline.Workspace)/packages-esrp-flattened'
 
           pool:
-            name: azsdk-pool-mms-win-2022-general
-            image: azsdk-pool-mms-win-2022-1espt
+            name: azsdk-pool
+            image: windows-2022
             os: windows
           strategy:
             runOnce:
@@ -149,8 +149,8 @@ stages:
           timeoutInMinutes: 120
           dependsOn: PublishESRPPackage
           pool:
-            name: azsdk-pool-mms-win-2022-general
-            image: azsdk-pool-mms-win-2022-1espt
+            name: azsdk-pool
+            image: windows-2022
             os: windows
           steps:
             - checkout: azure-sdk-build-tools
