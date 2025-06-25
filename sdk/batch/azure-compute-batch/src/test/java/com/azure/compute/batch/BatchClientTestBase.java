@@ -158,18 +158,15 @@ class BatchClientTestBase extends TestProxyTestBase {
         // Check if pool exists
         if (!poolExists(batchClient, poolId)) {
             // Use IaaS VM with Ubuntu
-            BatchVmImageReference imgRef = new BatchVmImageReference().setPublisher("Canonical")
-                .setOffer("UbuntuServer")
-                .setSku("18.04-LTS")
-                .setVersion("latest");
+            BatchVmImageReference imgRef = new BatchVmImageReference().setPublisher("microsoftwindowsserver")
+                .setOffer("windowsserver")
+                .setSku("2022-datacenter-smalldisk");
 
             VirtualMachineConfiguration configuration
-                = new VirtualMachineConfiguration(imgRef, "batch.node.ubuntu 18.04");
+                = new VirtualMachineConfiguration(imgRef, "batch.node.windows amd64");
 
             List<UserAccount> userList = new ArrayList<>();
-            userList.add(new UserAccount("test-user", "kt#_gahr!@aGERDXA")
-                .setLinuxUserConfiguration(new LinuxUserConfiguration().setUid(5).setGid(5))
-                .setElevationLevel(ElevationLevel.ADMIN));
+            userList.add(new UserAccount("test-user", "kt#_gahr!@aGERDXA").setElevationLevel(ElevationLevel.ADMIN));
 
             // Need VNet to allow security to inject NSGs
             NetworkConfiguration networkConfiguration = createNetworkConfiguration();
@@ -412,6 +409,38 @@ class BatchClientTestBase extends TestProxyTestBase {
 
         Assertions.assertTrue(allocationStateReached,
             "The pool did not reach a allocationStateReached state in the allotted time");
+        return pool;
+    }
+
+    BatchPool waitForPoolStateAsync(String poolId, AllocationState targetState,
+        long poolAllocationTimeoutInMilliseconds) {
+        long startTime = System.currentTimeMillis();
+        long elapsedTime = 0L;
+        boolean allocationStateReached = false;
+        BatchPool pool = null;
+
+        // Wait for the pool to reach the desired allocation state
+        while (elapsedTime < poolAllocationTimeoutInMilliseconds) {
+            pool = batchAsyncClient.getPool(poolId).block();  // <-- updated to async client
+            Assertions.assertNotNull(pool);
+
+            if (pool.getAllocationState() == targetState) {
+                allocationStateReached = true;
+                break;
+            }
+
+            System.out.println("wait 30 seconds for pool allocationStateReached...");
+            sleepIfRunningAgainstService(30 * 1000);
+
+            if (interceptorManager.isPlaybackMode()) {
+                elapsedTime += 30 * 1000;
+            } else {
+                elapsedTime = System.currentTimeMillis() - startTime;
+            }
+        }
+
+        Assertions.assertTrue(allocationStateReached,
+            "The pool did not reach the allocationStateReached state in the allotted time");
         return pool;
     }
 
