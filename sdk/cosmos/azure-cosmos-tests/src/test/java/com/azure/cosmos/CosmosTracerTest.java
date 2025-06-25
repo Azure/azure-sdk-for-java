@@ -1482,9 +1482,11 @@ public class CosmosTracerTest extends TestSuiteBase {
             assertThat(attributes.get("azure.cosmosdb.operation.request_charge")).isNotNull();
             assertThat(attributes.get("azure.cosmosdb.operation.request_charge")).isInstanceOf(Double.class);
 
-            if ((double)attributes.get("azure.cosmosdb.operation.request_charge") != 0d
-                || Double.valueOf(ctx.getTotalRequestCharge()) == 0d) {
+            boolean isRequestChargeMismatch = 
+                (double)attributes.get("azure.cosmosdb.operation.request_charge") != 0d
+                || Double.valueOf(ctx.getTotalRequestCharge()) == 0d;
 
+            if (isRequestChargeMismatch) {
                 assertThat(attributes.get("azure.cosmosdb.operation.request_charge"))
                     .isEqualTo(Double.valueOf(ctx.getTotalRequestCharge()));
             } else {
