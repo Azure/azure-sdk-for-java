@@ -16,211 +16,208 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.SignalRService.ClientConnectionDisconnected event.
- *
- * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Fluent
 @Deprecated
 public final class SignalRServiceClientConnectionDisconnectedEventData
     implements JsonSerializable<SignalRServiceClientConnectionDisconnectedEventData> {
 
-        /*
-         * The time at which the event occurred.
-         */
-        @Generated
-        private OffsetDateTime timestamp;
+    /*
+     * The time at which the event occurred.
+     */
+    @Generated
+    private OffsetDateTime timestamp;
 
-        /*
-         * The hub of connected client connection.
-         */
-        @Generated
-        private String hubName;
+    /*
+     * The hub of connected client connection.
+     */
+    @Generated
+    private String hubName;
 
-        /*
-         * The connection Id of connected client connection.
-         */
-        @Generated
-        private String connectionId;
+    /*
+     * The connection Id of connected client connection.
+     */
+    @Generated
+    private String connectionId;
 
-        /*
-         * The user Id of connected client connection.
-         */
-        @Generated
-        private String userId;
+    /*
+     * The user Id of connected client connection.
+     */
+    @Generated
+    private String userId;
 
-        /*
-         * The message of error that cause the client connection disconnected.
-         */
-        @Generated
-        private String errorMessage;
+    /*
+     * The message of error that cause the client connection disconnected.
+     */
+    @Generated
+    private String errorMessage;
 
-        /**
-         * Creates an instance of SignalRServiceClientConnectionDisconnectedEventData class.
-         */
-        @Generated
-        public SignalRServiceClientConnectionDisconnectedEventData() {
-        }
+    /**
+     * Creates an instance of SignalRServiceClientConnectionDisconnectedEventData class.
+     */
+    @Generated
+    public SignalRServiceClientConnectionDisconnectedEventData() {
+    }
 
-        /**
-         * Get the timestamp property: The time at which the event occurred.
-         *
-         * @return the timestamp value.
-         */
-        @Generated
-        public OffsetDateTime getTimestamp() {
-            return this.timestamp;
-        }
+    /**
+     * Get the timestamp property: The time at which the event occurred.
+     *
+     * @return the timestamp value.
+     */
+    @Generated
+    public OffsetDateTime getTimestamp() {
+        return this.timestamp;
+    }
 
-        /**
-         * Set the timestamp property: The time at which the event occurred.
-         *
-         * @param timestamp the timestamp value to set.
-         * @return the SignalRServiceClientConnectionDisconnectedEventData object itself.
-         */
-        @Generated
-        public SignalRServiceClientConnectionDisconnectedEventData setTimestamp(OffsetDateTime timestamp) {
-            this.timestamp = timestamp;
-            return this;
-        }
+    /**
+     * Set the timestamp property: The time at which the event occurred.
+     *
+     * @param timestamp the timestamp value to set.
+     * @return the SignalRServiceClientConnectionDisconnectedEventData object itself.
+     */
+    @Generated
+    public SignalRServiceClientConnectionDisconnectedEventData setTimestamp(OffsetDateTime timestamp) {
+        this.timestamp = timestamp;
+        return this;
+    }
 
-        /**
-         * Get the hubName property: The hub of connected client connection.
-         *
-         * @return the hubName value.
-         */
-        @Generated
-        public String getHubName() {
-            return this.hubName;
-        }
+    /**
+     * Get the hubName property: The hub of connected client connection.
+     *
+     * @return the hubName value.
+     */
+    @Generated
+    public String getHubName() {
+        return this.hubName;
+    }
 
-        /**
-         * Set the hubName property: The hub of connected client connection.
-         *
-         * @param hubName the hubName value to set.
-         * @return the SignalRServiceClientConnectionDisconnectedEventData object itself.
-         */
-        @Generated
-        public SignalRServiceClientConnectionDisconnectedEventData setHubName(String hubName) {
-            this.hubName = hubName;
-            return this;
-        }
+    /**
+     * Set the hubName property: The hub of connected client connection.
+     *
+     * @param hubName the hubName value to set.
+     * @return the SignalRServiceClientConnectionDisconnectedEventData object itself.
+     */
+    @Generated
+    public SignalRServiceClientConnectionDisconnectedEventData setHubName(String hubName) {
+        this.hubName = hubName;
+        return this;
+    }
 
-        /**
-         * Get the connectionId property: The connection Id of connected client connection.
-         *
-         * @return the connectionId value.
-         */
-        @Generated
-        public String getConnectionId() {
-            return this.connectionId;
-        }
+    /**
+     * Get the connectionId property: The connection Id of connected client connection.
+     *
+     * @return the connectionId value.
+     */
+    @Generated
+    public String getConnectionId() {
+        return this.connectionId;
+    }
 
-        /**
-         * Set the connectionId property: The connection Id of connected client connection.
-         *
-         * @param connectionId the connectionId value to set.
-         * @return the SignalRServiceClientConnectionDisconnectedEventData object itself.
-         */
-        @Generated
-        public SignalRServiceClientConnectionDisconnectedEventData setConnectionId(String connectionId) {
-            this.connectionId = connectionId;
-            return this;
-        }
+    /**
+     * Set the connectionId property: The connection Id of connected client connection.
+     *
+     * @param connectionId the connectionId value to set.
+     * @return the SignalRServiceClientConnectionDisconnectedEventData object itself.
+     */
+    @Generated
+    public SignalRServiceClientConnectionDisconnectedEventData setConnectionId(String connectionId) {
+        this.connectionId = connectionId;
+        return this;
+    }
 
-        /**
-         * Get the userId property: The user Id of connected client connection.
-         *
-         * @return the userId value.
-         */
-        @Generated
-        public String getUserId() {
-            return this.userId;
-        }
+    /**
+     * Get the userId property: The user Id of connected client connection.
+     *
+     * @return the userId value.
+     */
+    @Generated
+    public String getUserId() {
+        return this.userId;
+    }
 
-        /**
-         * Set the userId property: The user Id of connected client connection.
-         *
-         * @param userId the userId value to set.
-         * @return the SignalRServiceClientConnectionDisconnectedEventData object itself.
-         */
-        @Generated
-        public SignalRServiceClientConnectionDisconnectedEventData setUserId(String userId) {
-            this.userId = userId;
-            return this;
-        }
+    /**
+     * Set the userId property: The user Id of connected client connection.
+     *
+     * @param userId the userId value to set.
+     * @return the SignalRServiceClientConnectionDisconnectedEventData object itself.
+     */
+    @Generated
+    public SignalRServiceClientConnectionDisconnectedEventData setUserId(String userId) {
+        this.userId = userId;
+        return this;
+    }
 
-        /**
-         * Get the errorMessage property: The message of error that cause the client connection disconnected.
-         *
-         * @return the errorMessage value.
-         */
-        @Generated
-        public String getErrorMessage() {
-            return this.errorMessage;
-        }
+    /**
+     * Get the errorMessage property: The message of error that cause the client connection disconnected.
+     *
+     * @return the errorMessage value.
+     */
+    @Generated
+    public String getErrorMessage() {
+        return this.errorMessage;
+    }
 
-        /**
-         * Set the errorMessage property: The message of error that cause the client connection disconnected.
-         *
-         * @param errorMessage the errorMessage value to set.
-         * @return the SignalRServiceClientConnectionDisconnectedEventData object itself.
-         */
-        @Generated
-        public SignalRServiceClientConnectionDisconnectedEventData setErrorMessage(String errorMessage) {
-            this.errorMessage = errorMessage;
-            return this;
-        }
+    /**
+     * Set the errorMessage property: The message of error that cause the client connection disconnected.
+     *
+     * @param errorMessage the errorMessage value to set.
+     * @return the SignalRServiceClientConnectionDisconnectedEventData object itself.
+     */
+    @Generated
+    public SignalRServiceClientConnectionDisconnectedEventData setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject();
-            jsonWriter.writeStringField("timestamp",
-                this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
-            jsonWriter.writeStringField("hubName", this.hubName);
-            jsonWriter.writeStringField("connectionId", this.connectionId);
-            jsonWriter.writeStringField("userId", this.userId);
-            jsonWriter.writeStringField("errorMessage", this.errorMessage);
-            return jsonWriter.writeEndObject();
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("timestamp",
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
+        jsonWriter.writeStringField("hubName", this.hubName);
+        jsonWriter.writeStringField("connectionId", this.connectionId);
+        jsonWriter.writeStringField("userId", this.userId);
+        jsonWriter.writeStringField("errorMessage", this.errorMessage);
+        return jsonWriter.writeEndObject();
+    }
 
-        /**
-         * Reads an instance of SignalRServiceClientConnectionDisconnectedEventData from the JsonReader.
-         *
-         * @param jsonReader The JsonReader being read.
-         * @return An instance of SignalRServiceClientConnectionDisconnectedEventData if the JsonReader was pointing to an
-         * instance of it, or null if it was pointing to JSON null.
-         * @throws IOException If an error occurs while reading the SignalRServiceClientConnectionDisconnectedEventData.
-         */
-        @Generated
-        public static SignalRServiceClientConnectionDisconnectedEventData fromJson(JsonReader jsonReader)
-            throws IOException {
-            return jsonReader.readObject(reader -> {
-                SignalRServiceClientConnectionDisconnectedEventData deserializedSignalRServiceClientConnectionDisconnectedEventData
-                    = new SignalRServiceClientConnectionDisconnectedEventData();
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
-                    if ("timestamp".equals(fieldName)) {
-                        deserializedSignalRServiceClientConnectionDisconnectedEventData.timestamp = reader
-                            .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                    } else if ("hubName".equals(fieldName)) {
-                        deserializedSignalRServiceClientConnectionDisconnectedEventData.hubName = reader.getString();
-                    } else if ("connectionId".equals(fieldName)) {
-                        deserializedSignalRServiceClientConnectionDisconnectedEventData.connectionId
-                            = reader.getString();
-                    } else if ("userId".equals(fieldName)) {
-                        deserializedSignalRServiceClientConnectionDisconnectedEventData.userId = reader.getString();
-                    } else if ("errorMessage".equals(fieldName)) {
-                        deserializedSignalRServiceClientConnectionDisconnectedEventData.errorMessage
-                            = reader.getString();
-                    } else {
-                        reader.skipChildren();
-                    }
+    /**
+     * Reads an instance of SignalRServiceClientConnectionDisconnectedEventData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SignalRServiceClientConnectionDisconnectedEventData if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SignalRServiceClientConnectionDisconnectedEventData.
+     */
+    @Generated
+    public static SignalRServiceClientConnectionDisconnectedEventData fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            SignalRServiceClientConnectionDisconnectedEventData deserializedSignalRServiceClientConnectionDisconnectedEventData
+                = new SignalRServiceClientConnectionDisconnectedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("timestamp".equals(fieldName)) {
+                    deserializedSignalRServiceClientConnectionDisconnectedEventData.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("hubName".equals(fieldName)) {
+                    deserializedSignalRServiceClientConnectionDisconnectedEventData.hubName = reader.getString();
+                } else if ("connectionId".equals(fieldName)) {
+                    deserializedSignalRServiceClientConnectionDisconnectedEventData.connectionId = reader.getString();
+                } else if ("userId".equals(fieldName)) {
+                    deserializedSignalRServiceClientConnectionDisconnectedEventData.userId = reader.getString();
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedSignalRServiceClientConnectionDisconnectedEventData.errorMessage = reader.getString();
+                } else {
+                    reader.skipChildren();
                 }
-                return deserializedSignalRServiceClientConnectionDisconnectedEventData;
-            });
-        }
+            }
+            return deserializedSignalRServiceClientConnectionDisconnectedEventData;
+        });
+    }
 }

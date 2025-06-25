@@ -13,103 +13,101 @@ import java.util.Map;
 
 /**
  * Job scheduled event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobScheduled event.
- *
- * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Fluent
 @Deprecated
 public final class MediaJobScheduledEventData extends MediaJobStateChangeEventData {
 
-        /*
-         * The new state of the Job.
-         */
-        @Generated
-        private MediaJobState state;
+    /*
+     * The new state of the Job.
+     */
+    @Generated
+    private MediaJobState state;
 
-        /*
-         * The previous state of the Job.
-         */
-        @Generated
-        private MediaJobState previousState;
+    /*
+     * The previous state of the Job.
+     */
+    @Generated
+    private MediaJobState previousState;
 
-        /**
-         * Creates an instance of MediaJobScheduledEventData class.
-         */
-        @Generated
-        public MediaJobScheduledEventData() {
-        }
+    /**
+     * Creates an instance of MediaJobScheduledEventData class.
+     */
+    @Generated
+    public MediaJobScheduledEventData() {
+    }
 
-        /**
-         * Get the state property: The new state of the Job.
-         *
-         * @return the state value.
-         */
-        @Generated
-        @Override
-        public MediaJobState getState() {
-            return this.state;
-        }
+    /**
+     * Get the state property: The new state of the Job.
+     *
+     * @return the state value.
+     */
+    @Generated
+    @Override
+    public MediaJobState getState() {
+        return this.state;
+    }
 
-        /**
-         * Get the previousState property: The previous state of the Job.
-         *
-         * @return the previousState value.
-         */
-        @Generated
-        @Override
-        public MediaJobState getPreviousState() {
-            return this.previousState;
-        }
+    /**
+     * Get the previousState property: The previous state of the Job.
+     *
+     * @return the previousState value.
+     */
+    @Generated
+    @Override
+    public MediaJobState getPreviousState() {
+        return this.previousState;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public MediaJobScheduledEventData setCorrelationData(Map<String, String> correlationData) {
-            super.setCorrelationData(correlationData);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public MediaJobScheduledEventData setCorrelationData(Map<String, String> correlationData) {
+        super.setCorrelationData(correlationData);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject();
-            jsonWriter.writeMapField("correlationData", getCorrelationData(),
-                (writer, element) -> writer.writeString(element));
-            return jsonWriter.writeEndObject();
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("correlationData", getCorrelationData(),
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
 
-        /**
-         * Reads an instance of MediaJobScheduledEventData from the JsonReader.
-         *
-         * @param jsonReader The JsonReader being read.
-         * @return An instance of MediaJobScheduledEventData if the JsonReader was pointing to an instance of it, or null if
-         * it was pointing to JSON null.
-         * @throws IOException If an error occurs while reading the MediaJobScheduledEventData.
-         */
-        @Generated
-        public static MediaJobScheduledEventData fromJson(JsonReader jsonReader) throws IOException {
-            return jsonReader.readObject(reader -> {
-                MediaJobScheduledEventData deserializedMediaJobScheduledEventData = new MediaJobScheduledEventData();
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
-                    if ("previousState".equals(fieldName)) {
-                        deserializedMediaJobScheduledEventData.previousState
-                            = MediaJobState.fromString(reader.getString());
-                    } else if ("state".equals(fieldName)) {
-                        deserializedMediaJobScheduledEventData.state = MediaJobState.fromString(reader.getString());
-                    } else if ("correlationData".equals(fieldName)) {
-                        Map<String, String> correlationData = reader.readMap(reader1 -> reader1.getString());
-                        deserializedMediaJobScheduledEventData.setCorrelationData(correlationData);
-                    } else {
-                        reader.skipChildren();
-                    }
+    /**
+     * Reads an instance of MediaJobScheduledEventData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MediaJobScheduledEventData if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MediaJobScheduledEventData.
+     */
+    @Generated
+    public static MediaJobScheduledEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MediaJobScheduledEventData deserializedMediaJobScheduledEventData = new MediaJobScheduledEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("previousState".equals(fieldName)) {
+                    deserializedMediaJobScheduledEventData.previousState = MediaJobState.fromString(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedMediaJobScheduledEventData.state = MediaJobState.fromString(reader.getString());
+                } else if ("correlationData".equals(fieldName)) {
+                    Map<String, String> correlationData = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMediaJobScheduledEventData.setCorrelationData(correlationData);
+                } else {
+                    reader.skipChildren();
                 }
-                return deserializedMediaJobScheduledEventData;
-            });
-        }
+            }
+            return deserializedMediaJobScheduledEventData;
+        });
+    }
 }

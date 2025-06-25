@@ -15,133 +15,132 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.ContainerRegistry.ChartDeleted event.
- *
- * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Fluent
 @Deprecated
 public final class ContainerRegistryChartDeletedEventData extends ContainerRegistryArtifactEventData {
 
-        /**
-         * Creates an instance of ContainerRegistryChartDeletedEventData class.
-         */
-        @Generated
-        public ContainerRegistryChartDeletedEventData() {
-        }
+    /**
+     * Creates an instance of ContainerRegistryChartDeletedEventData class.
+     */
+    @Generated
+    public ContainerRegistryChartDeletedEventData() {
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public ContainerRegistryChartDeletedEventData setId(String id) {
-            super.setId(id);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public ContainerRegistryChartDeletedEventData setId(String id) {
+        super.setId(id);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public ContainerRegistryChartDeletedEventData setTimestamp(OffsetDateTime timestamp) {
-            super.setTimestamp(timestamp);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public ContainerRegistryChartDeletedEventData setTimestamp(OffsetDateTime timestamp) {
+        super.setTimestamp(timestamp);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public ContainerRegistryChartDeletedEventData setAction(String action) {
-            super.setAction(action);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public ContainerRegistryChartDeletedEventData setAction(String action) {
+        super.setAction(action);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public ContainerRegistryChartDeletedEventData setLocation(String location) {
-            super.setLocation(location);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public ContainerRegistryChartDeletedEventData setLocation(String location) {
+        super.setLocation(location);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public ContainerRegistryChartDeletedEventData setTarget(ContainerRegistryArtifactEventTarget target) {
-            super.setTarget(target);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public ContainerRegistryChartDeletedEventData setTarget(ContainerRegistryArtifactEventTarget target) {
+        super.setTarget(target);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public ContainerRegistryChartDeletedEventData
-            setConnectedRegistry(ContainerRegistryEventConnectedRegistry connectedRegistry) {
-            super.setConnectedRegistry(connectedRegistry);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public ContainerRegistryChartDeletedEventData
+        setConnectedRegistry(ContainerRegistryEventConnectedRegistry connectedRegistry) {
+        super.setConnectedRegistry(connectedRegistry);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject();
-            jsonWriter.writeStringField("id", getId());
-            jsonWriter.writeStringField("timestamp",
-                getTimestamp() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getTimestamp()));
-            jsonWriter.writeStringField("action", getAction());
-            jsonWriter.writeStringField("location", getLocation());
-            jsonWriter.writeJsonField("target", getTarget());
-            jsonWriter.writeJsonField("connectedRegistry", getConnectedRegistry());
-            return jsonWriter.writeEndObject();
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", getId());
+        jsonWriter.writeStringField("timestamp",
+            getTimestamp() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getTimestamp()));
+        jsonWriter.writeStringField("action", getAction());
+        jsonWriter.writeStringField("location", getLocation());
+        jsonWriter.writeJsonField("target", getTarget());
+        jsonWriter.writeJsonField("connectedRegistry", getConnectedRegistry());
+        return jsonWriter.writeEndObject();
+    }
 
-        /**
-         * Reads an instance of ContainerRegistryChartDeletedEventData from the JsonReader.
-         *
-         * @param jsonReader The JsonReader being read.
-         * @return An instance of ContainerRegistryChartDeletedEventData if the JsonReader was pointing to an instance of
-         * it, or null if it was pointing to JSON null.
-         * @throws IOException If an error occurs while reading the ContainerRegistryChartDeletedEventData.
-         */
-        @Generated
-        public static ContainerRegistryChartDeletedEventData fromJson(JsonReader jsonReader) throws IOException {
-            return jsonReader.readObject(reader -> {
-                ContainerRegistryChartDeletedEventData deserializedContainerRegistryChartDeletedEventData
-                    = new ContainerRegistryChartDeletedEventData();
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
-                    if ("id".equals(fieldName)) {
-                        deserializedContainerRegistryChartDeletedEventData.setId(reader.getString());
-                    } else if ("timestamp".equals(fieldName)) {
-                        deserializedContainerRegistryChartDeletedEventData.setTimestamp(reader.getNullable(
-                            nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
-                    } else if ("action".equals(fieldName)) {
-                        deserializedContainerRegistryChartDeletedEventData.setAction(reader.getString());
-                    } else if ("location".equals(fieldName)) {
-                        deserializedContainerRegistryChartDeletedEventData.setLocation(reader.getString());
-                    } else if ("target".equals(fieldName)) {
-                        deserializedContainerRegistryChartDeletedEventData
-                            .setTarget(ContainerRegistryArtifactEventTarget.fromJson(reader));
-                    } else if ("connectedRegistry".equals(fieldName)) {
-                        deserializedContainerRegistryChartDeletedEventData
-                            .setConnectedRegistry(ContainerRegistryEventConnectedRegistry.fromJson(reader));
-                    } else {
-                        reader.skipChildren();
-                    }
+    /**
+     * Reads an instance of ContainerRegistryChartDeletedEventData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerRegistryChartDeletedEventData if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerRegistryChartDeletedEventData.
+     */
+    @Generated
+    public static ContainerRegistryChartDeletedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerRegistryChartDeletedEventData deserializedContainerRegistryChartDeletedEventData
+                = new ContainerRegistryChartDeletedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    deserializedContainerRegistryChartDeletedEventData.setId(reader.getString());
+                } else if ("timestamp".equals(fieldName)) {
+                    deserializedContainerRegistryChartDeletedEventData.setTimestamp(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("action".equals(fieldName)) {
+                    deserializedContainerRegistryChartDeletedEventData.setAction(reader.getString());
+                } else if ("location".equals(fieldName)) {
+                    deserializedContainerRegistryChartDeletedEventData.setLocation(reader.getString());
+                } else if ("target".equals(fieldName)) {
+                    deserializedContainerRegistryChartDeletedEventData
+                        .setTarget(ContainerRegistryArtifactEventTarget.fromJson(reader));
+                } else if ("connectedRegistry".equals(fieldName)) {
+                    deserializedContainerRegistryChartDeletedEventData
+                        .setConnectedRegistry(ContainerRegistryEventConnectedRegistry.fromJson(reader));
+                } else {
+                    reader.skipChildren();
                 }
-                return deserializedContainerRegistryChartDeletedEventData;
-            });
-        }
+            }
+            return deserializedContainerRegistryChartDeletedEventData;
+        });
+    }
 }

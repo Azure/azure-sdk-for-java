@@ -15,12 +15,10 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageDeletedInThread event.
- *
- * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Deprecated
 @Fluent
-public final class AcsChatMessageDeletedInThreadEventData extends AcsChatEventInThreadBaseProperties {
+@Deprecated
+public final class AcsChatMessageDeletedInThreadEventData extends AcsChatMessageEventInThreadBaseProperties {
 
     /*
      * The time at which the message was deleted

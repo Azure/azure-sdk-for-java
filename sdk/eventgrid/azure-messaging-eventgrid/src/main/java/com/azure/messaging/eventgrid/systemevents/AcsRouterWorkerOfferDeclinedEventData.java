@@ -12,164 +12,163 @@ import java.io.IOException;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterWorkerOfferDeclined event.
- *
- * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Fluent
 @Deprecated
 public final class AcsRouterWorkerOfferDeclinedEventData extends AcsRouterWorkerEventData {
 
-        /*
-         * Router Worker Offer Declined Queue Id
-         */
-        @Generated
-        private String queueId;
+    /*
+     * Router Worker Offer Declined Queue Id
+     */
+    @Generated
+    private String queueId;
 
-        /*
-         * Router Worker Offer Declined Offer Id
-         */
-        @Generated
-        private String offerId;
+    /*
+     * Router Worker Offer Declined Offer Id
+     */
+    @Generated
+    private String offerId;
 
-        /**
-         * Creates an instance of AcsRouterWorkerOfferDeclinedEventData class.
-         */
-        @Generated
-        public AcsRouterWorkerOfferDeclinedEventData() {
-        }
+    /**
+     * Creates an instance of AcsRouterWorkerOfferDeclinedEventData class.
+     */
+    @Generated
+    public AcsRouterWorkerOfferDeclinedEventData() {
+    }
 
-        /**
-         * Get the queueId property: Router Worker Offer Declined Queue Id.
-         *
-         * @return the queueId value.
-         */
-        @Generated
-        public String getQueueId() {
-            return this.queueId;
-        }
+    /**
+     * Get the queueId property: Router Worker Offer Declined Queue Id.
+     *
+     * @return the queueId value.
+     */
+    @Generated
+    public String getQueueId() {
+        return this.queueId;
+    }
 
-        /**
-         * Set the queueId property: Router Worker Offer Declined Queue Id.
-         *
-         * @param queueId the queueId value to set.
-         * @return the AcsRouterWorkerOfferDeclinedEventData object itself.
-         */
-        @Generated
-        public AcsRouterWorkerOfferDeclinedEventData setQueueId(String queueId) {
-            this.queueId = queueId;
-            return this;
-        }
+    /**
+     * Set the queueId property: Router Worker Offer Declined Queue Id.
+     *
+     * @param queueId the queueId value to set.
+     * @return the AcsRouterWorkerOfferDeclinedEventData object itself.
+     */
+    @Generated
+    public AcsRouterWorkerOfferDeclinedEventData setQueueId(String queueId) {
+        this.queueId = queueId;
+        return this;
+    }
 
-        /**
-         * Get the offerId property: Router Worker Offer Declined Offer Id.
-         *
-         * @return the offerId value.
-         */
-        @Generated
-        public String getOfferId() {
-            return this.offerId;
-        }
+    /**
+     * Get the offerId property: Router Worker Offer Declined Offer Id.
+     *
+     * @return the offerId value.
+     */
+    @Generated
+    public String getOfferId() {
+        return this.offerId;
+    }
 
-        /**
-         * Set the offerId property: Router Worker Offer Declined Offer Id.
-         *
-         * @param offerId the offerId value to set.
-         * @return the AcsRouterWorkerOfferDeclinedEventData object itself.
-         */
-        @Generated
-        public AcsRouterWorkerOfferDeclinedEventData setOfferId(String offerId) {
-            this.offerId = offerId;
-            return this;
-        }
+    /**
+     * Set the offerId property: Router Worker Offer Declined Offer Id.
+     *
+     * @param offerId the offerId value to set.
+     * @return the AcsRouterWorkerOfferDeclinedEventData object itself.
+     */
+    @Generated
+    public AcsRouterWorkerOfferDeclinedEventData setOfferId(String offerId) {
+        this.offerId = offerId;
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public AcsRouterWorkerOfferDeclinedEventData setWorkerId(String workerId) {
-            super.setWorkerId(workerId);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public AcsRouterWorkerOfferDeclinedEventData setWorkerId(String workerId) {
+        super.setWorkerId(workerId);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public AcsRouterWorkerOfferDeclinedEventData setJobId(String jobId) {
-            super.setJobId(jobId);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public AcsRouterWorkerOfferDeclinedEventData setJobId(String jobId) {
+        super.setJobId(jobId);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public AcsRouterWorkerOfferDeclinedEventData setChannelReference(String channelReference) {
-            super.setChannelReference(channelReference);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public AcsRouterWorkerOfferDeclinedEventData setChannelReference(String channelReference) {
+        super.setChannelReference(channelReference);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public AcsRouterWorkerOfferDeclinedEventData setChannelId(String channelId) {
-            super.setChannelId(channelId);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public AcsRouterWorkerOfferDeclinedEventData setChannelId(String channelId) {
+        super.setChannelId(channelId);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject();
-            jsonWriter.writeStringField("jobId", getJobId());
-            jsonWriter.writeStringField("channelReference", getChannelReference());
-            jsonWriter.writeStringField("channelId", getChannelId());
-            jsonWriter.writeStringField("workerId", getWorkerId());
-            jsonWriter.writeStringField("queueId", this.queueId);
-            jsonWriter.writeStringField("offerId", this.offerId);
-            return jsonWriter.writeEndObject();
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("jobId", getJobId());
+        jsonWriter.writeStringField("channelReference", getChannelReference());
+        jsonWriter.writeStringField("channelId", getChannelId());
+        jsonWriter.writeStringField("workerId", getWorkerId());
+        jsonWriter.writeStringField("queueId", this.queueId);
+        jsonWriter.writeStringField("offerId", this.offerId);
+        return jsonWriter.writeEndObject();
+    }
 
-        /**
-         * Reads an instance of AcsRouterWorkerOfferDeclinedEventData from the JsonReader.
-         *
-         * @param jsonReader The JsonReader being read.
-         * @return An instance of AcsRouterWorkerOfferDeclinedEventData if the JsonReader was pointing to an instance of it,
-         * or null if it was pointing to JSON null.
-         * @throws IOException If an error occurs while reading the AcsRouterWorkerOfferDeclinedEventData.
-         */
-        @Generated
-        public static AcsRouterWorkerOfferDeclinedEventData fromJson(JsonReader jsonReader) throws IOException {
-            return jsonReader.readObject(reader -> {
-                AcsRouterWorkerOfferDeclinedEventData deserializedAcsRouterWorkerOfferDeclinedEventData
-                    = new AcsRouterWorkerOfferDeclinedEventData();
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
-                    if ("jobId".equals(fieldName)) {
-                        deserializedAcsRouterWorkerOfferDeclinedEventData.setJobId(reader.getString());
-                    } else if ("channelReference".equals(fieldName)) {
-                        deserializedAcsRouterWorkerOfferDeclinedEventData.setChannelReference(reader.getString());
-                    } else if ("channelId".equals(fieldName)) {
-                        deserializedAcsRouterWorkerOfferDeclinedEventData.setChannelId(reader.getString());
-                    } else if ("workerId".equals(fieldName)) {
-                        deserializedAcsRouterWorkerOfferDeclinedEventData.setWorkerId(reader.getString());
-                    } else if ("queueId".equals(fieldName)) {
-                        deserializedAcsRouterWorkerOfferDeclinedEventData.queueId = reader.getString();
-                    } else if ("offerId".equals(fieldName)) {
-                        deserializedAcsRouterWorkerOfferDeclinedEventData.offerId = reader.getString();
-                    } else {
-                        reader.skipChildren();
-                    }
+    /**
+     * Reads an instance of AcsRouterWorkerOfferDeclinedEventData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsRouterWorkerOfferDeclinedEventData if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsRouterWorkerOfferDeclinedEventData.
+     */
+    @Generated
+    public static AcsRouterWorkerOfferDeclinedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsRouterWorkerOfferDeclinedEventData deserializedAcsRouterWorkerOfferDeclinedEventData
+                = new AcsRouterWorkerOfferDeclinedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("jobId".equals(fieldName)) {
+                    deserializedAcsRouterWorkerOfferDeclinedEventData.setJobId(reader.getString());
+                } else if ("channelReference".equals(fieldName)) {
+                    deserializedAcsRouterWorkerOfferDeclinedEventData.setChannelReference(reader.getString());
+                } else if ("channelId".equals(fieldName)) {
+                    deserializedAcsRouterWorkerOfferDeclinedEventData.setChannelId(reader.getString());
+                } else if ("workerId".equals(fieldName)) {
+                    deserializedAcsRouterWorkerOfferDeclinedEventData.setWorkerId(reader.getString());
+                } else if ("queueId".equals(fieldName)) {
+                    deserializedAcsRouterWorkerOfferDeclinedEventData.queueId = reader.getString();
+                } else if ("offerId".equals(fieldName)) {
+                    deserializedAcsRouterWorkerOfferDeclinedEventData.offerId = reader.getString();
+                } else {
+                    reader.skipChildren();
                 }
-                return deserializedAcsRouterWorkerOfferDeclinedEventData;
-            });
-        }
+            }
+            return deserializedAcsRouterWorkerOfferDeclinedEventData;
+        });
+    }
 }

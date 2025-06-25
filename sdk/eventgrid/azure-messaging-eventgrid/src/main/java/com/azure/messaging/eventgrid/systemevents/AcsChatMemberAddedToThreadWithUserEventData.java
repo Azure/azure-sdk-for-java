@@ -14,6 +14,8 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
+ * * The AcsChatMemberAddedToThreadWithUserEventData model.
+ *
  * @deprecated This class is deprecated and may be removed in future releases.
  */
 @Deprecated

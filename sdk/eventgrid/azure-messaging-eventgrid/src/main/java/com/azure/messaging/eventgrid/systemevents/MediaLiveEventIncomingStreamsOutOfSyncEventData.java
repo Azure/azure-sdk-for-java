@@ -14,166 +14,162 @@ import java.io.IOException;
 /**
  * Incoming streams out of sync event data. Schema of the data property of an EventGridEvent for a
  * Microsoft.Media.LiveEventIncomingStreamsOutOfSync event.
- *
- * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Immutable
 @Deprecated
 public final class MediaLiveEventIncomingStreamsOutOfSyncEventData
     implements JsonSerializable<MediaLiveEventIncomingStreamsOutOfSyncEventData> {
 
-        /*
-         * Gets the minimum last timestamp received.
-         */
-        @Generated
-        private String minLastTimestamp;
+    /*
+     * Gets the minimum last timestamp received.
+     */
+    @Generated
+    private String minLastTimestamp;
 
-        /*
-         * Gets the type of stream with minimum last timestamp.
-         */
-        @Generated
-        private String typeOfStreamWithMinLastTimestamp;
+    /*
+     * Gets the type of stream with minimum last timestamp.
+     */
+    @Generated
+    private String typeOfStreamWithMinLastTimestamp;
 
-        /*
-         * Gets the maximum timestamp among all the tracks (audio or video).
-         */
-        @Generated
-        private String maxLastTimestamp;
+    /*
+     * Gets the maximum timestamp among all the tracks (audio or video).
+     */
+    @Generated
+    private String maxLastTimestamp;
 
-        /*
-         * Gets the type of stream with maximum last timestamp.
-         */
-        @Generated
-        private String typeOfStreamWithMaxLastTimestamp;
+    /*
+     * Gets the type of stream with maximum last timestamp.
+     */
+    @Generated
+    private String typeOfStreamWithMaxLastTimestamp;
 
-        /*
-         * Gets the timescale in which "MinLastTimestamp" is represented.
-         */
-        @Generated
-        private String timescaleOfMinLastTimestamp;
+    /*
+     * Gets the timescale in which "MinLastTimestamp" is represented.
+     */
+    @Generated
+    private String timescaleOfMinLastTimestamp;
 
-        /*
-         * Gets the timescale in which "MaxLastTimestamp" is represented.
-         */
-        @Generated
-        private String timescaleOfMaxLastTimestamp;
+    /*
+     * Gets the timescale in which "MaxLastTimestamp" is represented.
+     */
+    @Generated
+    private String timescaleOfMaxLastTimestamp;
 
-        /**
-         * Creates an instance of MediaLiveEventIncomingStreamsOutOfSyncEventData class.
-         */
-        @Generated
-        public MediaLiveEventIncomingStreamsOutOfSyncEventData() {
-        }
+    /**
+     * Creates an instance of MediaLiveEventIncomingStreamsOutOfSyncEventData class.
+     */
+    @Generated
+    public MediaLiveEventIncomingStreamsOutOfSyncEventData() {
+    }
 
-        /**
-         * Get the minLastTimestamp property: Gets the minimum last timestamp received.
-         *
-         * @return the minLastTimestamp value.
-         */
-        @Generated
-        public String getMinLastTimestamp() {
-            return this.minLastTimestamp;
-        }
+    /**
+     * Get the minLastTimestamp property: Gets the minimum last timestamp received.
+     *
+     * @return the minLastTimestamp value.
+     */
+    @Generated
+    public String getMinLastTimestamp() {
+        return this.minLastTimestamp;
+    }
 
-        /**
-         * Get the typeOfStreamWithMinLastTimestamp property: Gets the type of stream with minimum last timestamp.
-         *
-         * @return the typeOfStreamWithMinLastTimestamp value.
-         */
-        @Generated
-        public String getTypeOfStreamWithMinLastTimestamp() {
-            return this.typeOfStreamWithMinLastTimestamp;
-        }
+    /**
+     * Get the typeOfStreamWithMinLastTimestamp property: Gets the type of stream with minimum last timestamp.
+     *
+     * @return the typeOfStreamWithMinLastTimestamp value.
+     */
+    @Generated
+    public String getTypeOfStreamWithMinLastTimestamp() {
+        return this.typeOfStreamWithMinLastTimestamp;
+    }
 
-        /**
-         * Get the maxLastTimestamp property: Gets the maximum timestamp among all the tracks (audio or video).
-         *
-         * @return the maxLastTimestamp value.
-         */
-        @Generated
-        public String getMaxLastTimestamp() {
-            return this.maxLastTimestamp;
-        }
+    /**
+     * Get the maxLastTimestamp property: Gets the maximum timestamp among all the tracks (audio or video).
+     *
+     * @return the maxLastTimestamp value.
+     */
+    @Generated
+    public String getMaxLastTimestamp() {
+        return this.maxLastTimestamp;
+    }
 
-        /**
-         * Get the typeOfStreamWithMaxLastTimestamp property: Gets the type of stream with maximum last timestamp.
-         *
-         * @return the typeOfStreamWithMaxLastTimestamp value.
-         */
-        @Generated
-        public String getTypeOfStreamWithMaxLastTimestamp() {
-            return this.typeOfStreamWithMaxLastTimestamp;
-        }
+    /**
+     * Get the typeOfStreamWithMaxLastTimestamp property: Gets the type of stream with maximum last timestamp.
+     *
+     * @return the typeOfStreamWithMaxLastTimestamp value.
+     */
+    @Generated
+    public String getTypeOfStreamWithMaxLastTimestamp() {
+        return this.typeOfStreamWithMaxLastTimestamp;
+    }
 
-        /**
-         * Get the timescaleOfMinLastTimestamp property: Gets the timescale in which "MinLastTimestamp" is represented.
-         *
-         * @return the timescaleOfMinLastTimestamp value.
-         */
-        @Generated
-        public String getTimescaleOfMinLastTimestamp() {
-            return this.timescaleOfMinLastTimestamp;
-        }
+    /**
+     * Get the timescaleOfMinLastTimestamp property: Gets the timescale in which "MinLastTimestamp" is represented.
+     *
+     * @return the timescaleOfMinLastTimestamp value.
+     */
+    @Generated
+    public String getTimescaleOfMinLastTimestamp() {
+        return this.timescaleOfMinLastTimestamp;
+    }
 
-        /**
-         * Get the timescaleOfMaxLastTimestamp property: Gets the timescale in which "MaxLastTimestamp" is represented.
-         *
-         * @return the timescaleOfMaxLastTimestamp value.
-         */
-        @Generated
-        public String getTimescaleOfMaxLastTimestamp() {
-            return this.timescaleOfMaxLastTimestamp;
-        }
+    /**
+     * Get the timescaleOfMaxLastTimestamp property: Gets the timescale in which "MaxLastTimestamp" is represented.
+     *
+     * @return the timescaleOfMaxLastTimestamp value.
+     */
+    @Generated
+    public String getTimescaleOfMaxLastTimestamp() {
+        return this.timescaleOfMaxLastTimestamp;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject();
-            return jsonWriter.writeEndObject();
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
 
-        /**
-         * Reads an instance of MediaLiveEventIncomingStreamsOutOfSyncEventData from the JsonReader.
-         *
-         * @param jsonReader The JsonReader being read.
-         * @return An instance of MediaLiveEventIncomingStreamsOutOfSyncEventData if the JsonReader was pointing to an
-         * instance of it, or null if it was pointing to JSON null.
-         * @throws IOException If an error occurs while reading the MediaLiveEventIncomingStreamsOutOfSyncEventData.
-         */
-        @Generated
-        public static MediaLiveEventIncomingStreamsOutOfSyncEventData fromJson(JsonReader jsonReader)
-            throws IOException {
-            return jsonReader.readObject(reader -> {
-                MediaLiveEventIncomingStreamsOutOfSyncEventData deserializedMediaLiveEventIncomingStreamsOutOfSyncEventData
-                    = new MediaLiveEventIncomingStreamsOutOfSyncEventData();
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
-                    if ("minLastTimestamp".equals(fieldName)) {
-                        deserializedMediaLiveEventIncomingStreamsOutOfSyncEventData.minLastTimestamp
-                            = reader.getString();
-                    } else if ("typeOfStreamWithMinLastTimestamp".equals(fieldName)) {
-                        deserializedMediaLiveEventIncomingStreamsOutOfSyncEventData.typeOfStreamWithMinLastTimestamp
-                            = reader.getString();
-                    } else if ("maxLastTimestamp".equals(fieldName)) {
-                        deserializedMediaLiveEventIncomingStreamsOutOfSyncEventData.maxLastTimestamp
-                            = reader.getString();
-                    } else if ("typeOfStreamWithMaxLastTimestamp".equals(fieldName)) {
-                        deserializedMediaLiveEventIncomingStreamsOutOfSyncEventData.typeOfStreamWithMaxLastTimestamp
-                            = reader.getString();
-                    } else if ("timescaleOfMinLastTimestamp".equals(fieldName)) {
-                        deserializedMediaLiveEventIncomingStreamsOutOfSyncEventData.timescaleOfMinLastTimestamp
-                            = reader.getString();
-                    } else if ("timescaleOfMaxLastTimestamp".equals(fieldName)) {
-                        deserializedMediaLiveEventIncomingStreamsOutOfSyncEventData.timescaleOfMaxLastTimestamp
-                            = reader.getString();
-                    } else {
-                        reader.skipChildren();
-                    }
+    /**
+     * Reads an instance of MediaLiveEventIncomingStreamsOutOfSyncEventData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MediaLiveEventIncomingStreamsOutOfSyncEventData if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MediaLiveEventIncomingStreamsOutOfSyncEventData.
+     */
+    @Generated
+    public static MediaLiveEventIncomingStreamsOutOfSyncEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MediaLiveEventIncomingStreamsOutOfSyncEventData deserializedMediaLiveEventIncomingStreamsOutOfSyncEventData
+                = new MediaLiveEventIncomingStreamsOutOfSyncEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("minLastTimestamp".equals(fieldName)) {
+                    deserializedMediaLiveEventIncomingStreamsOutOfSyncEventData.minLastTimestamp = reader.getString();
+                } else if ("typeOfStreamWithMinLastTimestamp".equals(fieldName)) {
+                    deserializedMediaLiveEventIncomingStreamsOutOfSyncEventData.typeOfStreamWithMinLastTimestamp
+                        = reader.getString();
+                } else if ("maxLastTimestamp".equals(fieldName)) {
+                    deserializedMediaLiveEventIncomingStreamsOutOfSyncEventData.maxLastTimestamp = reader.getString();
+                } else if ("typeOfStreamWithMaxLastTimestamp".equals(fieldName)) {
+                    deserializedMediaLiveEventIncomingStreamsOutOfSyncEventData.typeOfStreamWithMaxLastTimestamp
+                        = reader.getString();
+                } else if ("timescaleOfMinLastTimestamp".equals(fieldName)) {
+                    deserializedMediaLiveEventIncomingStreamsOutOfSyncEventData.timescaleOfMinLastTimestamp
+                        = reader.getString();
+                } else if ("timescaleOfMaxLastTimestamp".equals(fieldName)) {
+                    deserializedMediaLiveEventIncomingStreamsOutOfSyncEventData.timescaleOfMaxLastTimestamp
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
                 }
-                return deserializedMediaLiveEventIncomingStreamsOutOfSyncEventData;
-            });
-        }
+            }
+            return deserializedMediaLiveEventIncomingStreamsOutOfSyncEventData;
+        });
+    }
 }

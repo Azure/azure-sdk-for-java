@@ -20,502 +20,505 @@ import java.util.Map;
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceActionFailure event. This is
  * raised when a resource action operation fails.
- *
- * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Fluent
 @Deprecated
 public final class ResourceActionFailureEventData implements JsonSerializable<ResourceActionFailureEventData> {
 
-        /*
-         * The tenant ID of the resource.
-         */
-        @Generated
-        private String tenantId;
+    /*
+     * The tenant ID of the resource.
+     */
+    @Generated
+    private String tenantId;
 
-        /*
-         * The subscription ID of the resource.
-         */
-        @Generated
-        private String subscriptionId;
+    /*
+     * The subscription ID of the resource.
+     */
+    @Generated
+    private String subscriptionId;
 
-        /*
-         * The resource group of the resource.
-         */
-        @Generated
-        private String resourceGroup;
+    /*
+     * The resource group of the resource.
+     */
+    @Generated
+    private String resourceGroup;
 
-        /*
-         * The resource provider performing the operation.
-         */
-        @Generated
-        private String resourceProvider;
+    /*
+     * The resource provider performing the operation.
+     */
+    @Generated
+    private String resourceProvider;
 
-        /*
-         * The URI of the resource in the operation.
-         */
-        @Generated
-        private String resourceUri;
+    /*
+     * The URI of the resource in the operation.
+     */
+    @Generated
+    private String resourceUri;
 
-        /*
-         * The operation that was performed.
-         */
-        @Generated
-        private String operationName;
+    /*
+     * The operation that was performed.
+     */
+    @Generated
+    private String operationName;
 
-        /*
-         * The status of the operation.
-         */
-        @Generated
-        private String status;
+    /*
+     * The status of the operation.
+     */
+    @Generated
+    private String status;
 
-        /*
-         * The requested authorization for the operation.
-         */
-        @Generated
-        private ResourceAuthorization authorization;
+    /*
+     * The requested authorization for the operation.
+     */
+    @Generated
+    private ResourceAuthorization authorization;
 
-        /*
-         * The properties of the claims.
-         */
-        @Generated
-        private Map<String, String> claims;
+    /*
+     * The properties of the claims.
+     */
+    @Generated
+    private Map<String, String> claims;
 
-        /*
-         * An operation ID used for troubleshooting.
-         */
-        @Generated
-        private String correlationId;
+    /*
+     * An operation ID used for troubleshooting.
+     */
+    @Generated
+    private String correlationId;
 
-        /*
-         * The details of the operation.
-         */
-        @Generated
-        private ResourceHttpRequest httpRequest;
+    /*
+     * The details of the operation.
+     */
+    @Generated
+    private ResourceHttpRequest httpRequest;
 
-        /**
-         * Creates an instance of ResourceActionFailureEventData class.
-         */
-        @Generated
-        public ResourceActionFailureEventData() {
-        }
+    /**
+     * Creates an instance of ResourceActionFailureEventData class.
+     */
+    @Generated
+    public ResourceActionFailureEventData() {
+    }
 
-        /**
-         * Get the tenantId property: The tenant ID of the resource.
-         *
-         * @return the tenantId value.
-         */
-        @Generated
-        public String getTenantId() {
-            return this.tenantId;
-        }
+    /**
+     * Get the tenantId property: The tenant ID of the resource.
+     *
+     * @return the tenantId value.
+     */
+    @Generated
+    public String getTenantId() {
+        return this.tenantId;
+    }
 
-        /**
-         * Set the tenantId property: The tenant ID of the resource.
-         *
-         * @param tenantId the tenantId value to set.
-         * @return the ResourceActionFailureEventData object itself.
-         */
-        @Generated
-        public ResourceActionFailureEventData setTenantId(String tenantId) {
-            this.tenantId = tenantId;
-            return this;
-        }
+    /**
+     * Set the tenantId property: The tenant ID of the resource.
+     *
+     * @param tenantId the tenantId value to set.
+     * @return the ResourceActionFailureEventData object itself.
+     */
+    @Generated
+    public ResourceActionFailureEventData setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+        return this;
+    }
 
-        /**
-         * Get the subscriptionId property: The subscription ID of the resource.
-         *
-         * @return the subscriptionId value.
-         */
-        @Generated
-        public String getSubscriptionId() {
-            return this.subscriptionId;
-        }
+    /**
+     * Get the subscriptionId property: The subscription ID of the resource.
+     *
+     * @return the subscriptionId value.
+     */
+    @Generated
+    public String getSubscriptionId() {
+        return this.subscriptionId;
+    }
 
-        /**
-         * Set the subscriptionId property: The subscription ID of the resource.
-         *
-         * @param subscriptionId the subscriptionId value to set.
-         * @return the ResourceActionFailureEventData object itself.
-         */
-        @Generated
-        public ResourceActionFailureEventData setSubscriptionId(String subscriptionId) {
-            this.subscriptionId = subscriptionId;
-            return this;
-        }
+    /**
+     * Set the subscriptionId property: The subscription ID of the resource.
+     *
+     * @param subscriptionId the subscriptionId value to set.
+     * @return the ResourceActionFailureEventData object itself.
+     */
+    @Generated
+    public ResourceActionFailureEventData setSubscriptionId(String subscriptionId) {
+        this.subscriptionId = subscriptionId;
+        return this;
+    }
 
-        /**
-         * Get the resourceGroup property: The resource group of the resource.
-         *
-         * @return the resourceGroup value.
-         */
-        @Generated
-        public String getResourceGroup() {
-            return this.resourceGroup;
-        }
+    /**
+     * Get the resourceGroup property: The resource group of the resource.
+     *
+     * @return the resourceGroup value.
+     */
+    @Generated
+    public String getResourceGroup() {
+        return this.resourceGroup;
+    }
 
-        /**
-         * Set the resourceGroup property: The resource group of the resource.
-         *
-         * @param resourceGroup the resourceGroup value to set.
-         * @return the ResourceActionFailureEventData object itself.
-         */
-        @Generated
-        public ResourceActionFailureEventData setResourceGroup(String resourceGroup) {
-            this.resourceGroup = resourceGroup;
-            return this;
-        }
+    /**
+     * Set the resourceGroup property: The resource group of the resource.
+     *
+     * @param resourceGroup the resourceGroup value to set.
+     * @return the ResourceActionFailureEventData object itself.
+     */
+    @Generated
+    public ResourceActionFailureEventData setResourceGroup(String resourceGroup) {
+        this.resourceGroup = resourceGroup;
+        return this;
+    }
 
-        /**
-         * Get the resourceProvider property: The resource provider performing the operation.
-         *
-         * @return the resourceProvider value.
-         */
-        @Generated
-        public String getResourceProvider() {
-            return this.resourceProvider;
-        }
+    /**
+     * Get the resourceProvider property: The resource provider performing the operation.
+     *
+     * @return the resourceProvider value.
+     */
+    @Generated
+    public String getResourceProvider() {
+        return this.resourceProvider;
+    }
 
-        /**
-         * Set the resourceProvider property: The resource provider performing the operation.
-         *
-         * @param resourceProvider the resourceProvider value to set.
-         * @return the ResourceActionFailureEventData object itself.
-         */
-        @Generated
-        public ResourceActionFailureEventData setResourceProvider(String resourceProvider) {
-            this.resourceProvider = resourceProvider;
-            return this;
-        }
+    /**
+     * Set the resourceProvider property: The resource provider performing the operation.
+     *
+     * @param resourceProvider the resourceProvider value to set.
+     * @return the ResourceActionFailureEventData object itself.
+     */
+    @Generated
+    public ResourceActionFailureEventData setResourceProvider(String resourceProvider) {
+        this.resourceProvider = resourceProvider;
+        return this;
+    }
 
-        /**
-         * Get the resourceUri property: The URI of the resource in the operation.
-         *
-         * @return the resourceUri value.
-         */
-        @Generated
-        public String getResourceUri() {
-            return this.resourceUri;
-        }
+    /**
+     * Get the resourceUri property: The URI of the resource in the operation.
+     *
+     * @return the resourceUri value.
+     */
+    @Generated
+    public String getResourceUri() {
+        return this.resourceUri;
+    }
 
-        /**
-         * Set the resourceUri property: The URI of the resource in the operation.
-         *
-         * @param resourceUri the resourceUri value to set.
-         * @return the ResourceActionFailureEventData object itself.
-         */
-        @Generated
-        public ResourceActionFailureEventData setResourceUri(String resourceUri) {
-            this.resourceUri = resourceUri;
-            return this;
-        }
+    /**
+     * Set the resourceUri property: The URI of the resource in the operation.
+     *
+     * @param resourceUri the resourceUri value to set.
+     * @return the ResourceActionFailureEventData object itself.
+     */
+    @Generated
+    public ResourceActionFailureEventData setResourceUri(String resourceUri) {
+        this.resourceUri = resourceUri;
+        return this;
+    }
 
-        /**
-         * Get the operationName property: The operation that was performed.
-         *
-         * @return the operationName value.
-         */
-        @Generated
-        public String getOperationName() {
-            return this.operationName;
-        }
+    /**
+     * Get the operationName property: The operation that was performed.
+     *
+     * @return the operationName value.
+     */
+    @Generated
+    public String getOperationName() {
+        return this.operationName;
+    }
 
-        /**
-         * Set the operationName property: The operation that was performed.
-         *
-         * @param operationName the operationName value to set.
-         * @return the ResourceActionFailureEventData object itself.
-         */
-        @Generated
-        public ResourceActionFailureEventData setOperationName(String operationName) {
-            this.operationName = operationName;
-            return this;
-        }
+    /**
+     * Set the operationName property: The operation that was performed.
+     *
+     * @param operationName the operationName value to set.
+     * @return the ResourceActionFailureEventData object itself.
+     */
+    @Generated
+    public ResourceActionFailureEventData setOperationName(String operationName) {
+        this.operationName = operationName;
+        return this;
+    }
 
-        /**
-         * Get the status property: The status of the operation.
-         *
-         * @return the status value.
-         */
-        @Generated
-        public String getStatus() {
-            return this.status;
-        }
+    /**
+     * Get the status property: The status of the operation.
+     *
+     * @return the status value.
+     */
+    @Generated
+    public String getStatus() {
+        return this.status;
+    }
 
-        /**
-         * Set the status property: The status of the operation.
-         *
-         * @param status the status value to set.
-         * @return the ResourceActionFailureEventData object itself.
-         */
-        @Generated
-        public ResourceActionFailureEventData setStatus(String status) {
-            this.status = status;
-            return this;
-        }
+    /**
+     * Set the status property: The status of the operation.
+     *
+     * @param status the status value to set.
+     * @return the ResourceActionFailureEventData object itself.
+     */
+    @Generated
+    public ResourceActionFailureEventData setStatus(String status) {
+        this.status = status;
+        return this;
+    }
 
-        /**
-         * Get the authorization property: The requested authorization for the operation.
-         *
-         * @return the authorization value.
-         */
-        @Generated
-        public ResourceAuthorization getResourceAuthorization() {
-            return this.authorization;
-        }
+    /**
+     * Get the authorization property: The requested authorization for the operation.
+     *
+     * @return the authorization value.
+     */
+    @Generated
+    public ResourceAuthorization getResourceAuthorization() {
+        return this.authorization;
+    }
 
-        /**
-         * Set the authorization property: The requested authorization for the operation.
-         *
-         * @param authorization the authorization value to set.
-         * @return the ResourceActionFailureEventData object itself.
-         */
-        @Generated
-        public ResourceActionFailureEventData setResourceAuthorization(ResourceAuthorization authorization) {
-            this.authorization = authorization;
-            return this;
-        }
+    /**
+     * Set the authorization property: The requested authorization for the operation.
+     *
+     * @param authorization the authorization value to set.
+     * @return the ResourceActionFailureEventData object itself.
+     */
+    @Generated
+    public ResourceActionFailureEventData setResourceAuthorization(ResourceAuthorization authorization) {
+        this.authorization = authorization;
+        return this;
+    }
 
-        /**
-         * Get the claims property: The properties of the claims.
-         *
-         * @return the claims value.
-         */
-        @Generated
-        public Map<String, String> getResourceClaims() {
-            return this.claims;
-        }
+    /**
+     * Get the claims property: The properties of the claims.
+     *
+     * @return the claims value.
+     */
+    @Generated
+    public Map<String, String> getResourceClaims() {
+        return this.claims;
+    }
 
-        /**
-         * Set the claims property: The properties of the claims.
-         *
-         * @param claims the claims value to set.
-         * @return the ResourceActionFailureEventData object itself.
-         */
-        @Generated
-        public ResourceActionFailureEventData setResourceClaims(Map<String, String> claims) {
-            this.claims = claims;
-            return this;
-        }
+    /**
+     * Set the claims property: The properties of the claims.
+     *
+     * @param claims the claims value to set.
+     * @return the ResourceActionFailureEventData object itself.
+     */
+    @Generated
+    public ResourceActionFailureEventData setResourceClaims(Map<String, String> claims) {
+        this.claims = claims;
+        return this;
+    }
 
-        /**
-         * Get the correlationId property: An operation ID used for troubleshooting.
-         *
-         * @return the correlationId value.
-         */
-        @Generated
-        public String getCorrelationId() {
-            return this.correlationId;
-        }
+    /**
+     * Get the correlationId property: An operation ID used for troubleshooting.
+     *
+     * @return the correlationId value.
+     */
+    @Generated
+    public String getCorrelationId() {
+        return this.correlationId;
+    }
 
-        /**
-         * Set the correlationId property: An operation ID used for troubleshooting.
-         *
-         * @param correlationId the correlationId value to set.
-         * @return the ResourceActionFailureEventData object itself.
-         */
-        @Generated
-        public ResourceActionFailureEventData setCorrelationId(String correlationId) {
-            this.correlationId = correlationId;
-            return this;
-        }
+    /**
+     * Set the correlationId property: An operation ID used for troubleshooting.
+     *
+     * @param correlationId the correlationId value to set.
+     * @return the ResourceActionFailureEventData object itself.
+     */
+    @Generated
+    public ResourceActionFailureEventData setCorrelationId(String correlationId) {
+        this.correlationId = correlationId;
+        return this;
+    }
 
-        /**
-         * Get the httpRequest property: The details of the operation.
-         *
-         * @return the httpRequest value.
-         */
-        @Generated
-        public ResourceHttpRequest getResourceHttpRequest() {
-            return this.httpRequest;
-        }
+    /**
+     * Get the httpRequest property: The details of the operation.
+     *
+     * @return the httpRequest value.
+     */
+    @Generated
+    public ResourceHttpRequest getResourceHttpRequest() {
+        return this.httpRequest;
+    }
 
-        /**
-         * Set the httpRequest property: The details of the operation.
-         *
-         * @param httpRequest the httpRequest value to set.
-         * @return the ResourceActionFailureEventData object itself.
-         */
-        @Generated
-        public ResourceActionFailureEventData setResourceHttpRequest(ResourceHttpRequest httpRequest) {
-            this.httpRequest = httpRequest;
-            return this;
-        }
+    /**
+     * Set the httpRequest property: The details of the operation.
+     *
+     * @param httpRequest the httpRequest value to set.
+     * @return the ResourceActionFailureEventData object itself.
+     */
+    @Generated
+    public ResourceActionFailureEventData setResourceHttpRequest(ResourceHttpRequest httpRequest) {
+        this.httpRequest = httpRequest;
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject();
-            jsonWriter.writeStringField("tenantId", this.tenantId);
-            jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
-            jsonWriter.writeStringField("resourceGroup", this.resourceGroup);
-            jsonWriter.writeStringField("resourceProvider", this.resourceProvider);
-            jsonWriter.writeStringField("resourceUri", this.resourceUri);
-            jsonWriter.writeStringField("operationName", this.operationName);
-            jsonWriter.writeStringField("status", this.status);
-            jsonWriter.writeJsonField("authorization", this.authorization);
-            jsonWriter.writeMapField("claims", this.claims, (writer, element) -> writer.writeString(element));
-            jsonWriter.writeStringField("correlationId", this.correlationId);
-            jsonWriter.writeJsonField("httpRequest", this.httpRequest);
-            return jsonWriter.writeEndObject();
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
+        jsonWriter.writeStringField("resourceGroup", this.resourceGroup);
+        jsonWriter.writeStringField("resourceProvider", this.resourceProvider);
+        jsonWriter.writeStringField("resourceUri", this.resourceUri);
+        jsonWriter.writeStringField("operationName", this.operationName);
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeJsonField("authorization", this.authorization);
+        jsonWriter.writeMapField("claims", this.claims, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("correlationId", this.correlationId);
+        jsonWriter.writeJsonField("httpRequest", this.httpRequest);
+        return jsonWriter.writeEndObject();
+    }
 
-        /**
-         * Reads an instance of ResourceActionFailureEventData from the JsonReader.
-         *
-         * @param jsonReader The JsonReader being read.
-         * @return An instance of ResourceActionFailureEventData if the JsonReader was pointing to an instance of it, or
-         * null if it was pointing to JSON null.
-         * @throws IOException If an error occurs while reading the ResourceActionFailureEventData.
-         */
-        @Generated
-        public static ResourceActionFailureEventData fromJson(JsonReader jsonReader) throws IOException {
-            return jsonReader.readObject(reader -> {
-                ResourceActionFailureEventData deserializedResourceActionFailureEventData
-                    = new ResourceActionFailureEventData();
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
-                    if ("tenantId".equals(fieldName)) {
-                        deserializedResourceActionFailureEventData.tenantId = reader.getString();
-                    } else if ("subscriptionId".equals(fieldName)) {
-                        deserializedResourceActionFailureEventData.subscriptionId = reader.getString();
-                    } else if ("resourceGroup".equals(fieldName)) {
-                        deserializedResourceActionFailureEventData.resourceGroup = reader.getString();
-                    } else if ("resourceProvider".equals(fieldName)) {
-                        deserializedResourceActionFailureEventData.resourceProvider = reader.getString();
-                    } else if ("resourceUri".equals(fieldName)) {
-                        deserializedResourceActionFailureEventData.resourceUri = reader.getString();
-                    } else if ("operationName".equals(fieldName)) {
-                        deserializedResourceActionFailureEventData.operationName = reader.getString();
-                    } else if ("status".equals(fieldName)) {
-                        deserializedResourceActionFailureEventData.status = reader.getString();
-                    } else if ("authorization".equals(fieldName)) {
-                        deserializedResourceActionFailureEventData.authorization
-                            = ResourceAuthorization.fromJson(reader);
-                    } else if ("claims".equals(fieldName)) {
-                        Map<String, String> claims = reader.readMap(reader1 -> reader1.getString());
-                        deserializedResourceActionFailureEventData.claims = claims;
-                    } else if ("correlationId".equals(fieldName)) {
-                        deserializedResourceActionFailureEventData.correlationId = reader.getString();
-                    } else if ("httpRequest".equals(fieldName)) {
-                        deserializedResourceActionFailureEventData.httpRequest = ResourceHttpRequest.fromJson(reader);
-                    } else {
-                        reader.skipChildren();
-                    }
-                }
-                return deserializedResourceActionFailureEventData;
-            });
-        }
-
-        private static final ClientLogger LOGGER = new ClientLogger(ResourceActionFailureEventData.class);
-
-        private static final SerializerAdapter DEFAULT_SERIALIZER_ADAPTER
-            = JacksonAdapter.createDefaultSerializerAdapter();
-
-        /**
-         * Get the claims property: The properties of the claims.
-         *
-         * @return the claims value.
-         * @deprecated This method is no longer supported since v4.9.0. <p> Use
-         * {@link ResourceActionFailureEventData#getResourceClaims()} instead.
-          *`n * @deprecated This class is deprecated and may be removed in future releases.`n */*/`n@Deprecated
-        public String getClaims() {
-            final Map<String, String> resourceClaims = getResourceClaims();
-            if (!resourceClaims.isEmpty()) {
-                try {
-                    return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceClaims, SerializerEncoding.JSON);
-                } catch (IOException ex) {
-                    throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+    /**
+     * Reads an instance of ResourceActionFailureEventData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceActionFailureEventData if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceActionFailureEventData.
+     */
+    @Generated
+    public static ResourceActionFailureEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceActionFailureEventData deserializedResourceActionFailureEventData
+                = new ResourceActionFailureEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("tenantId".equals(fieldName)) {
+                    deserializedResourceActionFailureEventData.tenantId = reader.getString();
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedResourceActionFailureEventData.subscriptionId = reader.getString();
+                } else if ("resourceGroup".equals(fieldName)) {
+                    deserializedResourceActionFailureEventData.resourceGroup = reader.getString();
+                } else if ("resourceProvider".equals(fieldName)) {
+                    deserializedResourceActionFailureEventData.resourceProvider = reader.getString();
+                } else if ("resourceUri".equals(fieldName)) {
+                    deserializedResourceActionFailureEventData.resourceUri = reader.getString();
+                } else if ("operationName".equals(fieldName)) {
+                    deserializedResourceActionFailureEventData.operationName = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedResourceActionFailureEventData.status = reader.getString();
+                } else if ("authorization".equals(fieldName)) {
+                    deserializedResourceActionFailureEventData.authorization = ResourceAuthorization.fromJson(reader);
+                } else if ("claims".equals(fieldName)) {
+                    Map<String, String> claims = reader.readMap(reader1 -> reader1.getString());
+                    deserializedResourceActionFailureEventData.claims = claims;
+                } else if ("correlationId".equals(fieldName)) {
+                    deserializedResourceActionFailureEventData.correlationId = reader.getString();
+                } else if ("httpRequest".equals(fieldName)) {
+                    deserializedResourceActionFailureEventData.httpRequest = ResourceHttpRequest.fromJson(reader);
+                } else {
+                    reader.skipChildren();
                 }
             }
-            return null;
-        }
+            return deserializedResourceActionFailureEventData;
+        });
+    }
 
-        /**
-         * Set the claims property: The properties of the claims.
-         *
-         * @param claims the claims value to set.
-         * @return the ResourceActionFailureEventData object itself.
-         * @deprecated This method is no longer supported since v4.9.0. <p> Use
-         * {@link ResourceActionFailureEventData#setResourceClaims(Map)} instead.
-          *`n * @deprecated This class is deprecated and may be removed in future releases.`n */*/`n@Deprecated
-        public ResourceActionFailureEventData setClaims(String claims) {
-            try {
-                setResourceClaims(DEFAULT_SERIALIZER_ADAPTER.deserialize(claims, Map.class, SerializerEncoding.JSON));
-            } catch (IOException ex) {
-                throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
-            }
-            return this;
-        }
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceActionFailureEventData.class);
 
-        /**
-         * Get the httpRequest property: The details of the operation.
-         *
-         * @return the httpRequest value.
-         * @deprecated This method is no longer supported since v4.9.0. <p> Use
-         * {@link ResourceActionFailureEventData#getResourceHttpRequest()} instead.
-          *`n * @deprecated This class is deprecated and may be removed in future releases.`n */*/`n@Deprecated
-        public String getHttpRequest() {
-            ResourceHttpRequest resourceHttpRequest = getResourceHttpRequest();
+    private static final SerializerAdapter DEFAULT_SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
+
+    /**
+     * Get the claims property: The properties of the claims.
+     *
+     * @return the claims value.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceActionFailureEventData#getResourceClaims()} instead.
+     */
+    @Deprecated
+    public String getClaims() {
+        final Map<String, String> resourceClaims = getResourceClaims();
+        if (!resourceClaims.isEmpty()) {
             try {
-                return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceHttpRequest, SerializerEncoding.JSON);
+                return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceClaims, SerializerEncoding.JSON);
             } catch (IOException ex) {
                 throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
             }
         }
+        return null;
+    }
 
-        /**
-         * Set the httpRequest property: The details of the operation.
-         *
-         * @param httpRequest the httpRequest value to set.
-         * @return the ResourceActionFailureEventData object itself.
-         * @deprecated This method is no longer supported since v4.9.0. <p> Use
-         * {@link ResourceActionFailureEventData#setResourceHttpRequest(ResourceHttpRequest)} instead.
-          *`n * @deprecated This class is deprecated and may be removed in future releases.`n */*/`n@Deprecated
-        public ResourceActionFailureEventData setHttpRequest(String httpRequest) {
-            try {
-                setResourceHttpRequest(DEFAULT_SERIALIZER_ADAPTER.deserialize(httpRequest, ResourceHttpRequest.class,
-                    SerializerEncoding.JSON));
-            } catch (IOException ex) {
-                throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
-            }
-            return this;
+    /**
+     * Set the claims property: The properties of the claims.
+     *
+     * @param claims the claims value to set.
+     * @return the ResourceActionFailureEventData object itself.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceActionFailureEventData#setResourceClaims(Map)} instead.
+     */
+    @Deprecated
+    public ResourceActionFailureEventData setClaims(String claims) {
+        try {
+            setResourceClaims(DEFAULT_SERIALIZER_ADAPTER.deserialize(claims, Map.class, SerializerEncoding.JSON));
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
+        return this;
+    }
 
-        /**
-         * Get the authorization property: The requested authorization for the operation.
-         *
-         * @return the authorization value.
-         * @deprecated This method is no longer supported since v4.9.0. <p> Use
-         * {@link ResourceActionFailureEventData#getResourceAuthorization()} instead.
-          *`n * @deprecated This class is deprecated and may be removed in future releases.`n */*/`n@Deprecated
-        public String getAuthorization() {
-            final ResourceAuthorization resourceAuthorization = getResourceAuthorization();
-            try {
-                return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceAuthorization, SerializerEncoding.JSON);
-            } catch (IOException ex) {
-                throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
-            }
+    /**
+     * Get the httpRequest property: The details of the operation.
+     *
+     * @return the httpRequest value.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceActionFailureEventData#getResourceHttpRequest()} instead.
+     */
+    @Deprecated
+    public String getHttpRequest() {
+        ResourceHttpRequest resourceHttpRequest = getResourceHttpRequest();
+        try {
+            return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceHttpRequest, SerializerEncoding.JSON);
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
+    }
 
-        /**
-         * Set the authorization property: The requested authorization for the operation.
-         *
-         * @param authorization the authorization value to set.
-         * @return the ResourceActionFailureEventData object itself.
-         * @deprecated This method is no longer supported since v4.9.0. <p> Use
-         * {@link ResourceActionFailureEventData#setResourceAuthorization(ResourceAuthorization)} instead.
-          *`n * @deprecated This class is deprecated and may be removed in future releases.`n */*/`n@Deprecated
-        public ResourceActionFailureEventData setAuthorization(String authorization) {
-            try {
-                setResourceAuthorization(DEFAULT_SERIALIZER_ADAPTER.deserialize(authorization,
-                    ResourceAuthorization.class, SerializerEncoding.JSON));
-            } catch (IOException ex) {
-                throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
-            }
-            return this;
+    /**
+     * Set the httpRequest property: The details of the operation.
+     *
+     * @param httpRequest the httpRequest value to set.
+     * @return the ResourceActionFailureEventData object itself.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceActionFailureEventData#setResourceHttpRequest(ResourceHttpRequest)} instead.
+     */
+    @Deprecated
+    public ResourceActionFailureEventData setHttpRequest(String httpRequest) {
+        try {
+            setResourceHttpRequest(DEFAULT_SERIALIZER_ADAPTER.deserialize(httpRequest, ResourceHttpRequest.class,
+                SerializerEncoding.JSON));
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
+        return this;
+    }
+
+    /**
+     * Get the authorization property: The requested authorization for the operation.
+     *
+     * @return the authorization value.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceActionFailureEventData#getResourceAuthorization()} instead.
+     */
+    @Deprecated
+    public String getAuthorization() {
+        final ResourceAuthorization resourceAuthorization = getResourceAuthorization();
+        try {
+            return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceAuthorization, SerializerEncoding.JSON);
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+        }
+    }
+
+    /**
+     * Set the authorization property: The requested authorization for the operation.
+     *
+     * @param authorization the authorization value to set.
+     * @return the ResourceActionFailureEventData object itself.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceActionFailureEventData#setResourceAuthorization(ResourceAuthorization)} instead.
+     */
+    @Deprecated
+    public ResourceActionFailureEventData setAuthorization(String authorization) {
+        try {
+            setResourceAuthorization(DEFAULT_SERIALIZER_ADAPTER.deserialize(authorization, ResourceAuthorization.class,
+                SerializerEncoding.JSON));
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+        }
+        return this;
+    }
 }

@@ -18,8 +18,8 @@ import java.util.Map;
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadCreatedWithUser event.
  */
-@Deprecated
 @Fluent
+@Deprecated
 public final class AcsChatThreadCreatedWithUserEventData extends AcsChatThreadEventBaseProperties {
 
     /*

@@ -12,89 +12,88 @@ import java.io.IOException;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.AppConfiguration.SnapshotCreated event.
- *
- * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Fluent
 @Deprecated
 public final class AppConfigurationSnapshotCreatedEventData extends AppConfigurationSnapshotEventData {
 
-        /**
-         * Creates an instance of AppConfigurationSnapshotCreatedEventData class.
-         */
-        @Generated
-        public AppConfigurationSnapshotCreatedEventData() {
-        }
+    /**
+     * Creates an instance of AppConfigurationSnapshotCreatedEventData class.
+     */
+    @Generated
+    public AppConfigurationSnapshotCreatedEventData() {
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public AppConfigurationSnapshotCreatedEventData setName(String name) {
-            super.setName(name);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public AppConfigurationSnapshotCreatedEventData setName(String name) {
+        super.setName(name);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public AppConfigurationSnapshotCreatedEventData setEtag(String etag) {
-            super.setEtag(etag);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public AppConfigurationSnapshotCreatedEventData setEtag(String etag) {
+        super.setEtag(etag);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public AppConfigurationSnapshotCreatedEventData setSyncToken(String syncToken) {
-            super.setSyncToken(syncToken);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public AppConfigurationSnapshotCreatedEventData setSyncToken(String syncToken) {
+        super.setSyncToken(syncToken);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject();
-            jsonWriter.writeStringField("name", getName());
-            jsonWriter.writeStringField("etag", getEtag());
-            jsonWriter.writeStringField("syncToken", getSyncToken());
-            return jsonWriter.writeEndObject();
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("etag", getEtag());
+        jsonWriter.writeStringField("syncToken", getSyncToken());
+        return jsonWriter.writeEndObject();
+    }
 
-        /**
-         * Reads an instance of AppConfigurationSnapshotCreatedEventData from the JsonReader.
-         *
-         * @param jsonReader The JsonReader being read.
-         * @return An instance of AppConfigurationSnapshotCreatedEventData if the JsonReader was pointing to an instance of
-         * it, or null if it was pointing to JSON null.
-         * @throws IOException If an error occurs while reading the AppConfigurationSnapshotCreatedEventData.
-         */
-        @Generated
-        public static AppConfigurationSnapshotCreatedEventData fromJson(JsonReader jsonReader) throws IOException {
-            return jsonReader.readObject(reader -> {
-                AppConfigurationSnapshotCreatedEventData deserializedAppConfigurationSnapshotCreatedEventData
-                    = new AppConfigurationSnapshotCreatedEventData();
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
-                    if ("name".equals(fieldName)) {
-                        deserializedAppConfigurationSnapshotCreatedEventData.setName(reader.getString());
-                    } else if ("etag".equals(fieldName)) {
-                        deserializedAppConfigurationSnapshotCreatedEventData.setEtag(reader.getString());
-                    } else if ("syncToken".equals(fieldName)) {
-                        deserializedAppConfigurationSnapshotCreatedEventData.setSyncToken(reader.getString());
-                    } else {
-                        reader.skipChildren();
-                    }
+    /**
+     * Reads an instance of AppConfigurationSnapshotCreatedEventData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AppConfigurationSnapshotCreatedEventData if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AppConfigurationSnapshotCreatedEventData.
+     */
+    @Generated
+    public static AppConfigurationSnapshotCreatedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AppConfigurationSnapshotCreatedEventData deserializedAppConfigurationSnapshotCreatedEventData
+                = new AppConfigurationSnapshotCreatedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    deserializedAppConfigurationSnapshotCreatedEventData.setName(reader.getString());
+                } else if ("etag".equals(fieldName)) {
+                    deserializedAppConfigurationSnapshotCreatedEventData.setEtag(reader.getString());
+                } else if ("syncToken".equals(fieldName)) {
+                    deserializedAppConfigurationSnapshotCreatedEventData.setSyncToken(reader.getString());
+                } else {
+                    reader.skipChildren();
                 }
-                return deserializedAppConfigurationSnapshotCreatedEventData;
-            });
-        }
+            }
+            return deserializedAppConfigurationSnapshotCreatedEventData;
+        });
+    }
 }

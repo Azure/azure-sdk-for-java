@@ -12,89 +12,87 @@ import java.io.IOException;
 
 /**
  * Event data for Microsoft.Devices.DeviceCreated event.
- *
- * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Fluent
 @Deprecated
 public final class IotHubDeviceCreatedEventData extends DeviceLifeCycleEventProperties {
 
-        /**
-         * Creates an instance of IotHubDeviceCreatedEventData class.
-         */
-        @Generated
-        public IotHubDeviceCreatedEventData() {
-        }
+    /**
+     * Creates an instance of IotHubDeviceCreatedEventData class.
+     */
+    @Generated
+    public IotHubDeviceCreatedEventData() {
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public IotHubDeviceCreatedEventData setDeviceId(String deviceId) {
-            super.setDeviceId(deviceId);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public IotHubDeviceCreatedEventData setDeviceId(String deviceId) {
+        super.setDeviceId(deviceId);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public IotHubDeviceCreatedEventData setHubName(String hubName) {
-            super.setHubName(hubName);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public IotHubDeviceCreatedEventData setHubName(String hubName) {
+        super.setHubName(hubName);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public IotHubDeviceCreatedEventData setTwin(DeviceTwinInfo twin) {
-            super.setTwin(twin);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public IotHubDeviceCreatedEventData setTwin(DeviceTwinInfo twin) {
+        super.setTwin(twin);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject();
-            jsonWriter.writeStringField("deviceId", getDeviceId());
-            jsonWriter.writeStringField("hubName", getHubName());
-            jsonWriter.writeJsonField("twin", getTwin());
-            return jsonWriter.writeEndObject();
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deviceId", getDeviceId());
+        jsonWriter.writeStringField("hubName", getHubName());
+        jsonWriter.writeJsonField("twin", getTwin());
+        return jsonWriter.writeEndObject();
+    }
 
-        /**
-         * Reads an instance of IotHubDeviceCreatedEventData from the JsonReader.
-         *
-         * @param jsonReader The JsonReader being read.
-         * @return An instance of IotHubDeviceCreatedEventData if the JsonReader was pointing to an instance of it, or null
-         * if it was pointing to JSON null.
-         * @throws IOException If an error occurs while reading the IotHubDeviceCreatedEventData.
-         */
-        @Generated
-        public static IotHubDeviceCreatedEventData fromJson(JsonReader jsonReader) throws IOException {
-            return jsonReader.readObject(reader -> {
-                IotHubDeviceCreatedEventData deserializedIotHubDeviceCreatedEventData
-                    = new IotHubDeviceCreatedEventData();
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
-                    if ("deviceId".equals(fieldName)) {
-                        deserializedIotHubDeviceCreatedEventData.setDeviceId(reader.getString());
-                    } else if ("hubName".equals(fieldName)) {
-                        deserializedIotHubDeviceCreatedEventData.setHubName(reader.getString());
-                    } else if ("twin".equals(fieldName)) {
-                        deserializedIotHubDeviceCreatedEventData.setTwin(DeviceTwinInfo.fromJson(reader));
-                    } else {
-                        reader.skipChildren();
-                    }
+    /**
+     * Reads an instance of IotHubDeviceCreatedEventData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IotHubDeviceCreatedEventData if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IotHubDeviceCreatedEventData.
+     */
+    @Generated
+    public static IotHubDeviceCreatedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IotHubDeviceCreatedEventData deserializedIotHubDeviceCreatedEventData = new IotHubDeviceCreatedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("deviceId".equals(fieldName)) {
+                    deserializedIotHubDeviceCreatedEventData.setDeviceId(reader.getString());
+                } else if ("hubName".equals(fieldName)) {
+                    deserializedIotHubDeviceCreatedEventData.setHubName(reader.getString());
+                } else if ("twin".equals(fieldName)) {
+                    deserializedIotHubDeviceCreatedEventData.setTwin(DeviceTwinInfo.fromJson(reader));
+                } else {
+                    reader.skipChildren();
                 }
-                return deserializedIotHubDeviceCreatedEventData;
-            });
-        }
+            }
+            return deserializedIotHubDeviceCreatedEventData;
+        });
+    }
 }

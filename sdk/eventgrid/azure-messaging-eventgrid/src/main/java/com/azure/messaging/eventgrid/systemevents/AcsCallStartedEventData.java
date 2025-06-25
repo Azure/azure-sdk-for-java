@@ -13,8 +13,8 @@ import java.io.IOException;
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.CallStarted event.
  */
-@Deprecated
 @Fluent
+@Deprecated
 public final class AcsCallStartedEventData extends AcsCallingEventProperties {
 
     /**

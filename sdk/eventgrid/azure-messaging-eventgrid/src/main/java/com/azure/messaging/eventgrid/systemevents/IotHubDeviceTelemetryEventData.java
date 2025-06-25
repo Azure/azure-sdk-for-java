@@ -13,94 +13,93 @@ import java.util.Map;
 
 /**
  * Event data for Microsoft.Devices.DeviceTelemetry event.
- *
- * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Fluent
 @Deprecated
 public final class IotHubDeviceTelemetryEventData extends DeviceTelemetryEventProperties {
 
-        /**
-         * Creates an instance of IotHubDeviceTelemetryEventData class.
-         */
-        @Generated
-        public IotHubDeviceTelemetryEventData() {
-        }
+    /**
+     * Creates an instance of IotHubDeviceTelemetryEventData class.
+     */
+    @Generated
+    public IotHubDeviceTelemetryEventData() {
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public IotHubDeviceTelemetryEventData setBody(Object body) {
-            super.setBody(body);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public IotHubDeviceTelemetryEventData setBody(Object body) {
+        super.setBody(body);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public IotHubDeviceTelemetryEventData setProperties(Map<String, String> properties) {
-            super.setProperties(properties);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public IotHubDeviceTelemetryEventData setProperties(Map<String, String> properties) {
+        super.setProperties(properties);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public IotHubDeviceTelemetryEventData setSystemProperties(Map<String, String> systemProperties) {
-            super.setSystemProperties(systemProperties);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public IotHubDeviceTelemetryEventData setSystemProperties(Map<String, String> systemProperties) {
+        super.setSystemProperties(systemProperties);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject();
-            if (getBody() != null) {
-                jsonWriter.writeUntypedField("body", getBody());
-            }
-            jsonWriter.writeMapField("properties", getProperties(), (writer, element) -> writer.writeString(element));
-            jsonWriter.writeMapField("systemProperties", getSystemProperties(),
-                (writer, element) -> writer.writeString(element));
-            return jsonWriter.writeEndObject();
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        if (getBody() != null) {
+            jsonWriter.writeUntypedField("body", getBody());
         }
+        jsonWriter.writeMapField("properties", getProperties(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("systemProperties", getSystemProperties(),
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
 
-        /**
-         * Reads an instance of IotHubDeviceTelemetryEventData from the JsonReader.
-         *
-         * @param jsonReader The JsonReader being read.
-         * @return An instance of IotHubDeviceTelemetryEventData if the JsonReader was pointing to an instance of it, or
-         * null if it was pointing to JSON null.
-         * @throws IOException If an error occurs while reading the IotHubDeviceTelemetryEventData.
-         */
-        @Generated
-        public static IotHubDeviceTelemetryEventData fromJson(JsonReader jsonReader) throws IOException {
-            return jsonReader.readObject(reader -> {
-                IotHubDeviceTelemetryEventData deserializedIotHubDeviceTelemetryEventData
-                    = new IotHubDeviceTelemetryEventData();
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
-                    if ("body".equals(fieldName)) {
-                        deserializedIotHubDeviceTelemetryEventData.setBody(reader.readUntyped());
-                    } else if ("properties".equals(fieldName)) {
-                        Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
-                        deserializedIotHubDeviceTelemetryEventData.setProperties(properties);
-                    } else if ("systemProperties".equals(fieldName)) {
-                        Map<String, String> systemProperties = reader.readMap(reader1 -> reader1.getString());
-                        deserializedIotHubDeviceTelemetryEventData.setSystemProperties(systemProperties);
-                    } else {
-                        reader.skipChildren();
-                    }
+    /**
+     * Reads an instance of IotHubDeviceTelemetryEventData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IotHubDeviceTelemetryEventData if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IotHubDeviceTelemetryEventData.
+     */
+    @Generated
+    public static IotHubDeviceTelemetryEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IotHubDeviceTelemetryEventData deserializedIotHubDeviceTelemetryEventData
+                = new IotHubDeviceTelemetryEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("body".equals(fieldName)) {
+                    deserializedIotHubDeviceTelemetryEventData.setBody(reader.readUntyped());
+                } else if ("properties".equals(fieldName)) {
+                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedIotHubDeviceTelemetryEventData.setProperties(properties);
+                } else if ("systemProperties".equals(fieldName)) {
+                    Map<String, String> systemProperties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedIotHubDeviceTelemetryEventData.setSystemProperties(systemProperties);
+                } else {
+                    reader.skipChildren();
                 }
-                return deserializedIotHubDeviceTelemetryEventData;
-            });
-        }
+            }
+            return deserializedIotHubDeviceTelemetryEventData;
+        });
+    }
 }

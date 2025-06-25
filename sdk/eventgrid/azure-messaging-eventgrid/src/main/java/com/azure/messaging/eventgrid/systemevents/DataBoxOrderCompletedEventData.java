@@ -16,149 +16,148 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.DataBox.OrderCompleted event.
- *
- * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Fluent
 @Deprecated
 public final class DataBoxOrderCompletedEventData implements JsonSerializable<DataBoxOrderCompletedEventData> {
 
-        /*
-         * Serial Number of the device associated with the event. The list is comma separated if more than one serial number
-         * is associated.
-         */
-        @Generated
-        private String serialNumber;
+    /*
+     * Serial Number of the device associated with the event. The list is comma separated if more than one serial number
+     * is associated.
+     */
+    @Generated
+    private String serialNumber;
 
-        /*
-         * Name of the current Stage
-         */
-        @Generated
-        private DataBoxStageName stageName;
+    /*
+     * Name of the current Stage
+     */
+    @Generated
+    private DataBoxStageName stageName;
 
-        /*
-         * The time at which the stage happened.
-         */
-        @Generated
-        private OffsetDateTime stageTime;
+    /*
+     * The time at which the stage happened.
+     */
+    @Generated
+    private OffsetDateTime stageTime;
 
-        /**
-         * Creates an instance of DataBoxOrderCompletedEventData class.
-         */
-        @Generated
-        public DataBoxOrderCompletedEventData() {
-        }
+    /**
+     * Creates an instance of DataBoxOrderCompletedEventData class.
+     */
+    @Generated
+    public DataBoxOrderCompletedEventData() {
+    }
 
-        /**
-         * Get the serialNumber property: Serial Number of the device associated with the event. The list is comma separated
-         * if more than one serial number is associated.
-         *
-         * @return the serialNumber value.
-         */
-        @Generated
-        public String getSerialNumber() {
-            return this.serialNumber;
-        }
+    /**
+     * Get the serialNumber property: Serial Number of the device associated with the event. The list is comma separated
+     * if more than one serial number is associated.
+     *
+     * @return the serialNumber value.
+     */
+    @Generated
+    public String getSerialNumber() {
+        return this.serialNumber;
+    }
 
-        /**
-         * Set the serialNumber property: Serial Number of the device associated with the event. The list is comma separated
-         * if more than one serial number is associated.
-         *
-         * @param serialNumber the serialNumber value to set.
-         * @return the DataBoxOrderCompletedEventData object itself.
-         */
-        @Generated
-        public DataBoxOrderCompletedEventData setSerialNumber(String serialNumber) {
-            this.serialNumber = serialNumber;
-            return this;
-        }
+    /**
+     * Set the serialNumber property: Serial Number of the device associated with the event. The list is comma separated
+     * if more than one serial number is associated.
+     *
+     * @param serialNumber the serialNumber value to set.
+     * @return the DataBoxOrderCompletedEventData object itself.
+     */
+    @Generated
+    public DataBoxOrderCompletedEventData setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
+        return this;
+    }
 
-        /**
-         * Get the stageName property: Name of the current Stage.
-         *
-         * @return the stageName value.
-         */
-        @Generated
-        public DataBoxStageName getStageName() {
-            return this.stageName;
-        }
+    /**
+     * Get the stageName property: Name of the current Stage.
+     *
+     * @return the stageName value.
+     */
+    @Generated
+    public DataBoxStageName getStageName() {
+        return this.stageName;
+    }
 
-        /**
-         * Set the stageName property: Name of the current Stage.
-         *
-         * @param stageName the stageName value to set.
-         * @return the DataBoxOrderCompletedEventData object itself.
-         */
-        @Generated
-        public DataBoxOrderCompletedEventData setStageName(DataBoxStageName stageName) {
-            this.stageName = stageName;
-            return this;
-        }
+    /**
+     * Set the stageName property: Name of the current Stage.
+     *
+     * @param stageName the stageName value to set.
+     * @return the DataBoxOrderCompletedEventData object itself.
+     */
+    @Generated
+    public DataBoxOrderCompletedEventData setStageName(DataBoxStageName stageName) {
+        this.stageName = stageName;
+        return this;
+    }
 
-        /**
-         * Get the stageTime property: The time at which the stage happened.
-         *
-         * @return the stageTime value.
-         */
-        @Generated
-        public OffsetDateTime getStageTime() {
-            return this.stageTime;
-        }
+    /**
+     * Get the stageTime property: The time at which the stage happened.
+     *
+     * @return the stageTime value.
+     */
+    @Generated
+    public OffsetDateTime getStageTime() {
+        return this.stageTime;
+    }
 
-        /**
-         * Set the stageTime property: The time at which the stage happened.
-         *
-         * @param stageTime the stageTime value to set.
-         * @return the DataBoxOrderCompletedEventData object itself.
-         */
-        @Generated
-        public DataBoxOrderCompletedEventData setStageTime(OffsetDateTime stageTime) {
-            this.stageTime = stageTime;
-            return this;
-        }
+    /**
+     * Set the stageTime property: The time at which the stage happened.
+     *
+     * @param stageTime the stageTime value to set.
+     * @return the DataBoxOrderCompletedEventData object itself.
+     */
+    @Generated
+    public DataBoxOrderCompletedEventData setStageTime(OffsetDateTime stageTime) {
+        this.stageTime = stageTime;
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject();
-            jsonWriter.writeStringField("serialNumber", this.serialNumber);
-            jsonWriter.writeStringField("stageName", this.stageName == null ? null : this.stageName.toString());
-            jsonWriter.writeStringField("stageTime",
-                this.stageTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.stageTime));
-            return jsonWriter.writeEndObject();
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serialNumber", this.serialNumber);
+        jsonWriter.writeStringField("stageName", this.stageName == null ? null : this.stageName.toString());
+        jsonWriter.writeStringField("stageTime",
+            this.stageTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.stageTime));
+        return jsonWriter.writeEndObject();
+    }
 
-        /**
-         * Reads an instance of DataBoxOrderCompletedEventData from the JsonReader.
-         *
-         * @param jsonReader The JsonReader being read.
-         * @return An instance of DataBoxOrderCompletedEventData if the JsonReader was pointing to an instance of it, or
-         * null if it was pointing to JSON null.
-         * @throws IOException If an error occurs while reading the DataBoxOrderCompletedEventData.
-         */
-        @Generated
-        public static DataBoxOrderCompletedEventData fromJson(JsonReader jsonReader) throws IOException {
-            return jsonReader.readObject(reader -> {
-                DataBoxOrderCompletedEventData deserializedDataBoxOrderCompletedEventData
-                    = new DataBoxOrderCompletedEventData();
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
-                    if ("serialNumber".equals(fieldName)) {
-                        deserializedDataBoxOrderCompletedEventData.serialNumber = reader.getString();
-                    } else if ("stageName".equals(fieldName)) {
-                        deserializedDataBoxOrderCompletedEventData.stageName
-                            = DataBoxStageName.fromString(reader.getString());
-                    } else if ("stageTime".equals(fieldName)) {
-                        deserializedDataBoxOrderCompletedEventData.stageTime = reader
-                            .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                    } else {
-                        reader.skipChildren();
-                    }
+    /**
+     * Reads an instance of DataBoxOrderCompletedEventData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataBoxOrderCompletedEventData if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataBoxOrderCompletedEventData.
+     */
+    @Generated
+    public static DataBoxOrderCompletedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataBoxOrderCompletedEventData deserializedDataBoxOrderCompletedEventData
+                = new DataBoxOrderCompletedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("serialNumber".equals(fieldName)) {
+                    deserializedDataBoxOrderCompletedEventData.serialNumber = reader.getString();
+                } else if ("stageName".equals(fieldName)) {
+                    deserializedDataBoxOrderCompletedEventData.stageName
+                        = DataBoxStageName.fromString(reader.getString());
+                } else if ("stageTime".equals(fieldName)) {
+                    deserializedDataBoxOrderCompletedEventData.stageTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
                 }
-                return deserializedDataBoxOrderCompletedEventData;
-            });
-        }
+            }
+            return deserializedDataBoxOrderCompletedEventData;
+        });
+    }
 }

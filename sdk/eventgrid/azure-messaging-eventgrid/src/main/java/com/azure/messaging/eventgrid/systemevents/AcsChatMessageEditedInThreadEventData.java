@@ -16,12 +16,10 @@ import java.util.Map;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageEditedInThread event.
- *
- * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Deprecated
 @Fluent
-public final class AcsChatMessageEditedInThreadEventData extends AcsChatEventInThreadBaseProperties {
+@Deprecated
+public final class AcsChatMessageEditedInThreadEventData extends AcsChatMessageEventInThreadBaseProperties {
 
     /*
      * The body of the chat message

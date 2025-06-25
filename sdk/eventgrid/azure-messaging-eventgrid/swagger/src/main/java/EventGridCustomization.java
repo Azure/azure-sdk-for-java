@@ -197,7 +197,7 @@ public class EventGridCustomization extends Customization {
         customization.getRawEditor()
             .addFile("src/main/java/com/azure/messaging/eventgrid/SystemEventNames.java", compilationUnit.toString());
 
-
+        addDeprecationWarnings(customization, classCustomizations);
         customizeMediaJobOutputAsset(systemEvents);
         customizeStorageDirectoryDeletedEventData(systemEvents);
         customizeAcsRecordingFileStatusUpdatedEventDataDuration(systemEvents);
@@ -210,6 +210,26 @@ public class EventGridCustomization extends Customization {
         customizeAcsMessageChannelEventError(systemEvents);
         customizeCommuicationSMSEvents(systemEvents);
         customizeAcsCallEndedEventDataDuration(systemEvents);
+    }
+
+    private void addDeprecationWarnings(LibraryCustomization customization, List<ClassCustomization> classCustomizations) {
+        PackageCustomization systemEvent = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+        String packagePath = "src/main/java/com/azure/messaging/eventgrid/systemevents/";
+        List<ClassCustomization> systemEventClasses = customization.getRawEditor().getContents().keySet().stream()
+            .filter(fileName -> fileName.startsWith(packagePath))
+            .map(fileName -> fileName.substring(packagePath.length(), fileName.length() - 5))
+            .filter(className -> !className.contains("/") && !"package-info".equals(className))
+            .map(systemEvent::getClass)
+            .collect(Collectors.toList());
+
+        for (ClassCustomization classCustomization : systemEventClasses) {
+            classCustomization.customizeAst(ast ->
+                ast.getClassByName(classCustomization.getClassName())
+                    .ifPresent(clazz -> {
+                        clazz.addMarkerAnnotation("Deprecated");
+                    })
+            );
+        }
     }
 
     @SuppressWarnings("deprecation")

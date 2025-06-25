@@ -14,8 +14,8 @@ import java.io.IOException;
 /**
  * Schema of the Data property of an EventGridEvent for an Microsoft.Communication.IncomingCall event.
  */
-@Deprecated
 @Fluent
+@Deprecated
 public final class AcsIncomingCallEventData implements JsonSerializable<AcsIncomingCallEventData> {
 
     /*

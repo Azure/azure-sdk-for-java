@@ -13,212 +13,209 @@ import java.io.IOException;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.MachineLearningServices.ModelDeployed event.
- *
- * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Fluent
 @Deprecated
 public final class MachineLearningServicesModelDeployedEventData
     implements JsonSerializable<MachineLearningServicesModelDeployedEventData> {
 
-        /*
-         * The name of the deployed service.
-         */
-        @Generated
-        private String serviceName;
+    /*
+     * The name of the deployed service.
+     */
+    @Generated
+    private String serviceName;
 
-        /*
-         * The compute type (e.g. ACI, AKS) of the deployed service.
-         */
-        @Generated
-        private String serviceComputeType;
+    /*
+     * The compute type (e.g. ACI, AKS) of the deployed service.
+     */
+    @Generated
+    private String serviceComputeType;
 
-        /*
-         * A common separated list of model IDs. The IDs of the models deployed in the service.
-         */
-        @Generated
-        private String modelIds;
+    /*
+     * A common separated list of model IDs. The IDs of the models deployed in the service.
+     */
+    @Generated
+    private String modelIds;
 
-        /*
-         * The tags of the deployed service.
-         */
-        @Generated
-        private Object serviceTags;
+    /*
+     * The tags of the deployed service.
+     */
+    @Generated
+    private Object serviceTags;
 
-        /*
-         * The properties of the deployed service.
-         */
-        @Generated
-        private Object serviceProperties;
+    /*
+     * The properties of the deployed service.
+     */
+    @Generated
+    private Object serviceProperties;
 
-        /**
-         * Creates an instance of MachineLearningServicesModelDeployedEventData class.
-         */
-        @Generated
-        public MachineLearningServicesModelDeployedEventData() {
+    /**
+     * Creates an instance of MachineLearningServicesModelDeployedEventData class.
+     */
+    @Generated
+    public MachineLearningServicesModelDeployedEventData() {
+    }
+
+    /**
+     * Get the serviceName property: The name of the deployed service.
+     *
+     * @return the serviceName value.
+     */
+    @Generated
+    public String getServiceName() {
+        return this.serviceName;
+    }
+
+    /**
+     * Set the serviceName property: The name of the deployed service.
+     *
+     * @param serviceName the serviceName value to set.
+     * @return the MachineLearningServicesModelDeployedEventData object itself.
+     */
+    @Generated
+    public MachineLearningServicesModelDeployedEventData setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+        return this;
+    }
+
+    /**
+     * Get the serviceComputeType property: The compute type (e.g. ACI, AKS) of the deployed service.
+     *
+     * @return the serviceComputeType value.
+     */
+    @Generated
+    public String getServiceComputeType() {
+        return this.serviceComputeType;
+    }
+
+    /**
+     * Set the serviceComputeType property: The compute type (e.g. ACI, AKS) of the deployed service.
+     *
+     * @param serviceComputeType the serviceComputeType value to set.
+     * @return the MachineLearningServicesModelDeployedEventData object itself.
+     */
+    @Generated
+    public MachineLearningServicesModelDeployedEventData setServiceComputeType(String serviceComputeType) {
+        this.serviceComputeType = serviceComputeType;
+        return this;
+    }
+
+    /**
+     * Get the modelIds property: A common separated list of model IDs. The IDs of the models deployed in the service.
+     *
+     * @return the modelIds value.
+     */
+    @Generated
+    public String getModelIds() {
+        return this.modelIds;
+    }
+
+    /**
+     * Set the modelIds property: A common separated list of model IDs. The IDs of the models deployed in the service.
+     *
+     * @param modelIds the modelIds value to set.
+     * @return the MachineLearningServicesModelDeployedEventData object itself.
+     */
+    @Generated
+    public MachineLearningServicesModelDeployedEventData setModelIds(String modelIds) {
+        this.modelIds = modelIds;
+        return this;
+    }
+
+    /**
+     * Get the serviceTags property: The tags of the deployed service.
+     *
+     * @return the serviceTags value.
+     */
+    @Generated
+    public Object getServiceTags() {
+        return this.serviceTags;
+    }
+
+    /**
+     * Set the serviceTags property: The tags of the deployed service.
+     *
+     * @param serviceTags the serviceTags value to set.
+     * @return the MachineLearningServicesModelDeployedEventData object itself.
+     */
+    @Generated
+    public MachineLearningServicesModelDeployedEventData setServiceTags(Object serviceTags) {
+        this.serviceTags = serviceTags;
+        return this;
+    }
+
+    /**
+     * Get the serviceProperties property: The properties of the deployed service.
+     *
+     * @return the serviceProperties value.
+     */
+    @Generated
+    public Object getServiceProperties() {
+        return this.serviceProperties;
+    }
+
+    /**
+     * Set the serviceProperties property: The properties of the deployed service.
+     *
+     * @param serviceProperties the serviceProperties value to set.
+     * @return the MachineLearningServicesModelDeployedEventData object itself.
+     */
+    @Generated
+    public MachineLearningServicesModelDeployedEventData setServiceProperties(Object serviceProperties) {
+        this.serviceProperties = serviceProperties;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serviceName", this.serviceName);
+        jsonWriter.writeStringField("serviceComputeType", this.serviceComputeType);
+        jsonWriter.writeStringField("modelIds", this.modelIds);
+        if (this.serviceTags != null) {
+            jsonWriter.writeUntypedField("serviceTags", this.serviceTags);
         }
-
-        /**
-         * Get the serviceName property: The name of the deployed service.
-         *
-         * @return the serviceName value.
-         */
-        @Generated
-        public String getServiceName() {
-            return this.serviceName;
+        if (this.serviceProperties != null) {
+            jsonWriter.writeUntypedField("serviceProperties", this.serviceProperties);
         }
+        return jsonWriter.writeEndObject();
+    }
 
-        /**
-         * Set the serviceName property: The name of the deployed service.
-         *
-         * @param serviceName the serviceName value to set.
-         * @return the MachineLearningServicesModelDeployedEventData object itself.
-         */
-        @Generated
-        public MachineLearningServicesModelDeployedEventData setServiceName(String serviceName) {
-            this.serviceName = serviceName;
-            return this;
-        }
-
-        /**
-         * Get the serviceComputeType property: The compute type (e.g. ACI, AKS) of the deployed service.
-         *
-         * @return the serviceComputeType value.
-         */
-        @Generated
-        public String getServiceComputeType() {
-            return this.serviceComputeType;
-        }
-
-        /**
-         * Set the serviceComputeType property: The compute type (e.g. ACI, AKS) of the deployed service.
-         *
-         * @param serviceComputeType the serviceComputeType value to set.
-         * @return the MachineLearningServicesModelDeployedEventData object itself.
-         */
-        @Generated
-        public MachineLearningServicesModelDeployedEventData setServiceComputeType(String serviceComputeType) {
-            this.serviceComputeType = serviceComputeType;
-            return this;
-        }
-
-        /**
-         * Get the modelIds property: A common separated list of model IDs. The IDs of the models deployed in the service.
-         *
-         * @return the modelIds value.
-         */
-        @Generated
-        public String getModelIds() {
-            return this.modelIds;
-        }
-
-        /**
-         * Set the modelIds property: A common separated list of model IDs. The IDs of the models deployed in the service.
-         *
-         * @param modelIds the modelIds value to set.
-         * @return the MachineLearningServicesModelDeployedEventData object itself.
-         */
-        @Generated
-        public MachineLearningServicesModelDeployedEventData setModelIds(String modelIds) {
-            this.modelIds = modelIds;
-            return this;
-        }
-
-        /**
-         * Get the serviceTags property: The tags of the deployed service.
-         *
-         * @return the serviceTags value.
-         */
-        @Generated
-        public Object getServiceTags() {
-            return this.serviceTags;
-        }
-
-        /**
-         * Set the serviceTags property: The tags of the deployed service.
-         *
-         * @param serviceTags the serviceTags value to set.
-         * @return the MachineLearningServicesModelDeployedEventData object itself.
-         */
-        @Generated
-        public MachineLearningServicesModelDeployedEventData setServiceTags(Object serviceTags) {
-            this.serviceTags = serviceTags;
-            return this;
-        }
-
-        /**
-         * Get the serviceProperties property: The properties of the deployed service.
-         *
-         * @return the serviceProperties value.
-         */
-        @Generated
-        public Object getServiceProperties() {
-            return this.serviceProperties;
-        }
-
-        /**
-         * Set the serviceProperties property: The properties of the deployed service.
-         *
-         * @param serviceProperties the serviceProperties value to set.
-         * @return the MachineLearningServicesModelDeployedEventData object itself.
-         */
-        @Generated
-        public MachineLearningServicesModelDeployedEventData setServiceProperties(Object serviceProperties) {
-            this.serviceProperties = serviceProperties;
-            return this;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject();
-            jsonWriter.writeStringField("serviceName", this.serviceName);
-            jsonWriter.writeStringField("serviceComputeType", this.serviceComputeType);
-            jsonWriter.writeStringField("modelIds", this.modelIds);
-            if (this.serviceTags != null) {
-                jsonWriter.writeUntypedField("serviceTags", this.serviceTags);
-            }
-            if (this.serviceProperties != null) {
-                jsonWriter.writeUntypedField("serviceProperties", this.serviceProperties);
-            }
-            return jsonWriter.writeEndObject();
-        }
-
-        /**
-         * Reads an instance of MachineLearningServicesModelDeployedEventData from the JsonReader.
-         *
-         * @param jsonReader The JsonReader being read.
-         * @return An instance of MachineLearningServicesModelDeployedEventData if the JsonReader was pointing to an
-         * instance of it, or null if it was pointing to JSON null.
-         * @throws IOException If an error occurs while reading the MachineLearningServicesModelDeployedEventData.
-         */
-        @Generated
-        public static MachineLearningServicesModelDeployedEventData fromJson(JsonReader jsonReader) throws IOException {
-            return jsonReader.readObject(reader -> {
-                MachineLearningServicesModelDeployedEventData deserializedMachineLearningServicesModelDeployedEventData
-                    = new MachineLearningServicesModelDeployedEventData();
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
-                    if ("serviceName".equals(fieldName)) {
-                        deserializedMachineLearningServicesModelDeployedEventData.serviceName = reader.getString();
-                    } else if ("serviceComputeType".equals(fieldName)) {
-                        deserializedMachineLearningServicesModelDeployedEventData.serviceComputeType
-                            = reader.getString();
-                    } else if ("modelIds".equals(fieldName)) {
-                        deserializedMachineLearningServicesModelDeployedEventData.modelIds = reader.getString();
-                    } else if ("serviceTags".equals(fieldName)) {
-                        deserializedMachineLearningServicesModelDeployedEventData.serviceTags = reader.readUntyped();
-                    } else if ("serviceProperties".equals(fieldName)) {
-                        deserializedMachineLearningServicesModelDeployedEventData.serviceProperties
-                            = reader.readUntyped();
-                    } else {
-                        reader.skipChildren();
-                    }
+    /**
+     * Reads an instance of MachineLearningServicesModelDeployedEventData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MachineLearningServicesModelDeployedEventData if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MachineLearningServicesModelDeployedEventData.
+     */
+    @Generated
+    public static MachineLearningServicesModelDeployedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MachineLearningServicesModelDeployedEventData deserializedMachineLearningServicesModelDeployedEventData
+                = new MachineLearningServicesModelDeployedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("serviceName".equals(fieldName)) {
+                    deserializedMachineLearningServicesModelDeployedEventData.serviceName = reader.getString();
+                } else if ("serviceComputeType".equals(fieldName)) {
+                    deserializedMachineLearningServicesModelDeployedEventData.serviceComputeType = reader.getString();
+                } else if ("modelIds".equals(fieldName)) {
+                    deserializedMachineLearningServicesModelDeployedEventData.modelIds = reader.getString();
+                } else if ("serviceTags".equals(fieldName)) {
+                    deserializedMachineLearningServicesModelDeployedEventData.serviceTags = reader.readUntyped();
+                } else if ("serviceProperties".equals(fieldName)) {
+                    deserializedMachineLearningServicesModelDeployedEventData.serviceProperties = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
                 }
-                return deserializedMachineLearningServicesModelDeployedEventData;
-            });
-        }
+            }
+            return deserializedMachineLearningServicesModelDeployedEventData;
+        });
+    }
 }

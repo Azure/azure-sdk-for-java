@@ -14,135 +14,133 @@ import java.util.Map;
 
 /**
  * Job finished event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobFinished event.
- *
- * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Fluent
 @Deprecated
 public final class MediaJobFinishedEventData extends MediaJobStateChangeEventData {
 
-        /*
-         * Gets the Job outputs.
-         */
-        @Generated
-        private List<MediaJobOutput> outputs;
+    /*
+     * Gets the Job outputs.
+     */
+    @Generated
+    private List<MediaJobOutput> outputs;
 
-        /*
-         * The new state of the Job.
-         */
-        @Generated
-        private MediaJobState state;
+    /*
+     * The new state of the Job.
+     */
+    @Generated
+    private MediaJobState state;
 
-        /*
-         * The previous state of the Job.
-         */
-        @Generated
-        private MediaJobState previousState;
+    /*
+     * The previous state of the Job.
+     */
+    @Generated
+    private MediaJobState previousState;
 
-        /**
-         * Creates an instance of MediaJobFinishedEventData class.
-         */
-        @Generated
-        public MediaJobFinishedEventData() {
-        }
+    /**
+     * Creates an instance of MediaJobFinishedEventData class.
+     */
+    @Generated
+    public MediaJobFinishedEventData() {
+    }
 
-        /**
-         * Get the outputs property: Gets the Job outputs.
-         *
-         * @return the outputs value.
-         */
-        @Generated
-        public List<MediaJobOutput> getOutputs() {
-            return this.outputs;
-        }
+    /**
+     * Get the outputs property: Gets the Job outputs.
+     *
+     * @return the outputs value.
+     */
+    @Generated
+    public List<MediaJobOutput> getOutputs() {
+        return this.outputs;
+    }
 
-        /**
-         * Set the outputs property: Gets the Job outputs.
-         *
-         * @param outputs the outputs value to set.
-         * @return the MediaJobFinishedEventData object itself.
-         */
-        @Generated
-        public MediaJobFinishedEventData setOutputs(List<MediaJobOutput> outputs) {
-            this.outputs = outputs;
-            return this;
-        }
+    /**
+     * Set the outputs property: Gets the Job outputs.
+     *
+     * @param outputs the outputs value to set.
+     * @return the MediaJobFinishedEventData object itself.
+     */
+    @Generated
+    public MediaJobFinishedEventData setOutputs(List<MediaJobOutput> outputs) {
+        this.outputs = outputs;
+        return this;
+    }
 
-        /**
-         * Get the state property: The new state of the Job.
-         *
-         * @return the state value.
-         */
-        @Generated
-        @Override
-        public MediaJobState getState() {
-            return this.state;
-        }
+    /**
+     * Get the state property: The new state of the Job.
+     *
+     * @return the state value.
+     */
+    @Generated
+    @Override
+    public MediaJobState getState() {
+        return this.state;
+    }
 
-        /**
-         * Get the previousState property: The previous state of the Job.
-         *
-         * @return the previousState value.
-         */
-        @Generated
-        @Override
-        public MediaJobState getPreviousState() {
-            return this.previousState;
-        }
+    /**
+     * Get the previousState property: The previous state of the Job.
+     *
+     * @return the previousState value.
+     */
+    @Generated
+    @Override
+    public MediaJobState getPreviousState() {
+        return this.previousState;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public MediaJobFinishedEventData setCorrelationData(Map<String, String> correlationData) {
-            super.setCorrelationData(correlationData);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public MediaJobFinishedEventData setCorrelationData(Map<String, String> correlationData) {
+        super.setCorrelationData(correlationData);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject();
-            jsonWriter.writeMapField("correlationData", getCorrelationData(),
-                (writer, element) -> writer.writeString(element));
-            jsonWriter.writeArrayField("outputs", this.outputs, (writer, element) -> writer.writeJson(element));
-            return jsonWriter.writeEndObject();
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("correlationData", getCorrelationData(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("outputs", this.outputs, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
 
-        /**
-         * Reads an instance of MediaJobFinishedEventData from the JsonReader.
-         *
-         * @param jsonReader The JsonReader being read.
-         * @return An instance of MediaJobFinishedEventData if the JsonReader was pointing to an instance of it, or null if
-         * it was pointing to JSON null.
-         * @throws IOException If an error occurs while reading the MediaJobFinishedEventData.
-         */
-        @Generated
-        public static MediaJobFinishedEventData fromJson(JsonReader jsonReader) throws IOException {
-            return jsonReader.readObject(reader -> {
-                MediaJobFinishedEventData deserializedMediaJobFinishedEventData = new MediaJobFinishedEventData();
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
-                    if ("previousState".equals(fieldName)) {
-                        deserializedMediaJobFinishedEventData.previousState
-                            = MediaJobState.fromString(reader.getString());
-                    } else if ("state".equals(fieldName)) {
-                        deserializedMediaJobFinishedEventData.state = MediaJobState.fromString(reader.getString());
-                    } else if ("correlationData".equals(fieldName)) {
-                        Map<String, String> correlationData = reader.readMap(reader1 -> reader1.getString());
-                        deserializedMediaJobFinishedEventData.setCorrelationData(correlationData);
-                    } else if ("outputs".equals(fieldName)) {
-                        List<MediaJobOutput> outputs = reader.readArray(reader1 -> MediaJobOutput.fromJson(reader1));
-                        deserializedMediaJobFinishedEventData.outputs = outputs;
-                    } else {
-                        reader.skipChildren();
-                    }
+    /**
+     * Reads an instance of MediaJobFinishedEventData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MediaJobFinishedEventData if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MediaJobFinishedEventData.
+     */
+    @Generated
+    public static MediaJobFinishedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MediaJobFinishedEventData deserializedMediaJobFinishedEventData = new MediaJobFinishedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("previousState".equals(fieldName)) {
+                    deserializedMediaJobFinishedEventData.previousState = MediaJobState.fromString(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedMediaJobFinishedEventData.state = MediaJobState.fromString(reader.getString());
+                } else if ("correlationData".equals(fieldName)) {
+                    Map<String, String> correlationData = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMediaJobFinishedEventData.setCorrelationData(correlationData);
+                } else if ("outputs".equals(fieldName)) {
+                    List<MediaJobOutput> outputs = reader.readArray(reader1 -> MediaJobOutput.fromJson(reader1));
+                    deserializedMediaJobFinishedEventData.outputs = outputs;
+                } else {
+                    reader.skipChildren();
                 }
-                return deserializedMediaJobFinishedEventData;
-            });
-        }
+            }
+            return deserializedMediaJobFinishedEventData;
+        });
+    }
 }

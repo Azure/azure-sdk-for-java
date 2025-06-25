@@ -14,145 +14,144 @@ import java.util.Map;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Media.JobOutputStateChange event.
- *
- * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Fluent
 @Deprecated
 public class MediaJobOutputStateChangeEventData implements JsonSerializable<MediaJobOutputStateChangeEventData> {
 
-        /*
-         * The previous state of the Job.
-         */
-        @Generated
-        private MediaJobState previousState;
+    /*
+     * The previous state of the Job.
+     */
+    @Generated
+    private MediaJobState previousState;
 
-        /*
-         * Gets the output.
-         */
-        @Generated
-        private MediaJobOutput output;
+    /*
+     * Gets the output.
+     */
+    @Generated
+    private MediaJobOutput output;
 
-        /*
-         * Gets the Job correlation data.
-         */
-        @Generated
-        private Map<String, String> jobCorrelationData;
+    /*
+     * Gets the Job correlation data.
+     */
+    @Generated
+    private Map<String, String> jobCorrelationData;
 
-        /**
-         * Creates an instance of MediaJobOutputStateChangeEventData class.
-         */
-        @Generated
-        public MediaJobOutputStateChangeEventData() {
-        }
+    /**
+     * Creates an instance of MediaJobOutputStateChangeEventData class.
+     */
+    @Generated
+    public MediaJobOutputStateChangeEventData() {
+    }
 
-        /**
-         * Get the previousState property: The previous state of the Job.
-         *
-         * @return the previousState value.
-         */
-        @Generated
-        public MediaJobState getPreviousState() {
-            return this.previousState;
-        }
+    /**
+     * Get the previousState property: The previous state of the Job.
+     *
+     * @return the previousState value.
+     */
+    @Generated
+    public MediaJobState getPreviousState() {
+        return this.previousState;
+    }
 
-        /**
-         * Set the previousState property: The previous state of the Job.
-         *
-         * @param previousState the previousState value to set.
-         * @return the MediaJobOutputStateChangeEventData object itself.
-         */
-        @Generated
-        MediaJobOutputStateChangeEventData setPreviousState(MediaJobState previousState) {
-            this.previousState = previousState;
-            return this;
-        }
+    /**
+     * Set the previousState property: The previous state of the Job.
+     *
+     * @param previousState the previousState value to set.
+     * @return the MediaJobOutputStateChangeEventData object itself.
+     */
+    @Generated
+    MediaJobOutputStateChangeEventData setPreviousState(MediaJobState previousState) {
+        this.previousState = previousState;
+        return this;
+    }
 
-        /**
-         * Get the output property: Gets the output.
-         *
-         * @return the output value.
-         */
-        @Generated
-        public MediaJobOutput getOutput() {
-            return this.output;
-        }
+    /**
+     * Get the output property: Gets the output.
+     *
+     * @return the output value.
+     */
+    @Generated
+    public MediaJobOutput getOutput() {
+        return this.output;
+    }
 
-        /**
-         * Set the output property: Gets the output.
-         *
-         * @param output the output value to set.
-         * @return the MediaJobOutputStateChangeEventData object itself.
-         */
-        @Generated
-        public MediaJobOutputStateChangeEventData setOutput(MediaJobOutput output) {
-            this.output = output;
-            return this;
-        }
+    /**
+     * Set the output property: Gets the output.
+     *
+     * @param output the output value to set.
+     * @return the MediaJobOutputStateChangeEventData object itself.
+     */
+    @Generated
+    public MediaJobOutputStateChangeEventData setOutput(MediaJobOutput output) {
+        this.output = output;
+        return this;
+    }
 
-        /**
-         * Get the jobCorrelationData property: Gets the Job correlation data.
-         *
-         * @return the jobCorrelationData value.
-         */
-        @Generated
-        public Map<String, String> getJobCorrelationData() {
-            return this.jobCorrelationData;
-        }
+    /**
+     * Get the jobCorrelationData property: Gets the Job correlation data.
+     *
+     * @return the jobCorrelationData value.
+     */
+    @Generated
+    public Map<String, String> getJobCorrelationData() {
+        return this.jobCorrelationData;
+    }
 
-        /**
-         * Set the jobCorrelationData property: Gets the Job correlation data.
-         *
-         * @param jobCorrelationData the jobCorrelationData value to set.
-         * @return the MediaJobOutputStateChangeEventData object itself.
-         */
-        @Generated
-        public MediaJobOutputStateChangeEventData setJobCorrelationData(Map<String, String> jobCorrelationData) {
-            this.jobCorrelationData = jobCorrelationData;
-            return this;
-        }
+    /**
+     * Set the jobCorrelationData property: Gets the Job correlation data.
+     *
+     * @param jobCorrelationData the jobCorrelationData value to set.
+     * @return the MediaJobOutputStateChangeEventData object itself.
+     */
+    @Generated
+    public MediaJobOutputStateChangeEventData setJobCorrelationData(Map<String, String> jobCorrelationData) {
+        this.jobCorrelationData = jobCorrelationData;
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject();
-            jsonWriter.writeJsonField("output", this.output);
-            jsonWriter.writeMapField("jobCorrelationData", this.jobCorrelationData,
-                (writer, element) -> writer.writeString(element));
-            return jsonWriter.writeEndObject();
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("output", this.output);
+        jsonWriter.writeMapField("jobCorrelationData", this.jobCorrelationData,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
 
-        /**
-         * Reads an instance of MediaJobOutputStateChangeEventData from the JsonReader.
-         *
-         * @param jsonReader The JsonReader being read.
-         * @return An instance of MediaJobOutputStateChangeEventData if the JsonReader was pointing to an instance of it, or
-         * null if it was pointing to JSON null.
-         * @throws IOException If an error occurs while reading the MediaJobOutputStateChangeEventData.
-         */
-        @Generated
-        public static MediaJobOutputStateChangeEventData fromJson(JsonReader jsonReader) throws IOException {
-            return jsonReader.readObject(reader -> {
-                MediaJobOutputStateChangeEventData deserializedMediaJobOutputStateChangeEventData
-                    = new MediaJobOutputStateChangeEventData();
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
-                    if ("previousState".equals(fieldName)) {
-                        deserializedMediaJobOutputStateChangeEventData.previousState
-                            = MediaJobState.fromString(reader.getString());
-                    } else if ("output".equals(fieldName)) {
-                        deserializedMediaJobOutputStateChangeEventData.output = MediaJobOutput.fromJson(reader);
-                    } else if ("jobCorrelationData".equals(fieldName)) {
-                        Map<String, String> jobCorrelationData = reader.readMap(reader1 -> reader1.getString());
-                        deserializedMediaJobOutputStateChangeEventData.jobCorrelationData = jobCorrelationData;
-                    } else {
-                        reader.skipChildren();
-                    }
+    /**
+     * Reads an instance of MediaJobOutputStateChangeEventData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MediaJobOutputStateChangeEventData if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MediaJobOutputStateChangeEventData.
+     */
+    @Generated
+    public static MediaJobOutputStateChangeEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MediaJobOutputStateChangeEventData deserializedMediaJobOutputStateChangeEventData
+                = new MediaJobOutputStateChangeEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("previousState".equals(fieldName)) {
+                    deserializedMediaJobOutputStateChangeEventData.previousState
+                        = MediaJobState.fromString(reader.getString());
+                } else if ("output".equals(fieldName)) {
+                    deserializedMediaJobOutputStateChangeEventData.output = MediaJobOutput.fromJson(reader);
+                } else if ("jobCorrelationData".equals(fieldName)) {
+                    Map<String, String> jobCorrelationData = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMediaJobOutputStateChangeEventData.jobCorrelationData = jobCorrelationData;
+                } else {
+                    reader.skipChildren();
                 }
-                return deserializedMediaJobOutputStateChangeEventData;
-            });
-        }
+            }
+            return deserializedMediaJobOutputStateChangeEventData;
+        });
+    }
 }

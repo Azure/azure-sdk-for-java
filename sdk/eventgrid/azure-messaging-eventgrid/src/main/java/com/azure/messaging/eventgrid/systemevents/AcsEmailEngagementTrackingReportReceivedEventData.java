@@ -18,8 +18,8 @@ import java.time.format.DateTimeFormatter;
  * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.EmailEngagementTrackingReportReceived
  * event.
  */
-@Deprecated
 @Fluent
+@Deprecated
 public final class AcsEmailEngagementTrackingReportReceivedEventData
     implements JsonSerializable<AcsEmailEngagementTrackingReportReceivedEventData> {
 

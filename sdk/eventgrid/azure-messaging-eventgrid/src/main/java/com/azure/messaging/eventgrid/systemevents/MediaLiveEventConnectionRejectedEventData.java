@@ -14,141 +14,140 @@ import java.io.IOException;
 /**
  * Encoder connection rejected event data. Schema of the data property of an EventGridEvent for a
  * Microsoft.Media.LiveEventConnectionRejected event.
- *
- * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Immutable
 @Deprecated
 public final class MediaLiveEventConnectionRejectedEventData
     implements JsonSerializable<MediaLiveEventConnectionRejectedEventData> {
 
-        /*
-         * Gets the ingest URL provided by the live event.
-         */
-        @Generated
-        private String ingestUrl;
+    /*
+     * Gets the ingest URL provided by the live event.
+     */
+    @Generated
+    private String ingestUrl;
 
-        /*
-         * Gets the stream Id.
-         */
-        @Generated
-        private String streamId;
+    /*
+     * Gets the stream Id.
+     */
+    @Generated
+    private String streamId;
 
-        /*
-         * Gets the remote IP.
-         */
-        @Generated
-        private String encoderIp;
+    /*
+     * Gets the remote IP.
+     */
+    @Generated
+    private String encoderIp;
 
-        /*
-         * Gets the remote port.
-         */
-        @Generated
-        private String encoderPort;
+    /*
+     * Gets the remote port.
+     */
+    @Generated
+    private String encoderPort;
 
-        /*
-         * Gets the result code.
-         */
-        @Generated
-        private String resultCode;
+    /*
+     * Gets the result code.
+     */
+    @Generated
+    private String resultCode;
 
-        /**
-         * Creates an instance of MediaLiveEventConnectionRejectedEventData class.
-         */
-        @Generated
-        public MediaLiveEventConnectionRejectedEventData() {
-        }
+    /**
+     * Creates an instance of MediaLiveEventConnectionRejectedEventData class.
+     */
+    @Generated
+    public MediaLiveEventConnectionRejectedEventData() {
+    }
 
-        /**
-         * Get the ingestUrl property: Gets the ingest URL provided by the live event.
-         *
-         * @return the ingestUrl value.
-         */
-        @Generated
-        public String getIngestUrl() {
-            return this.ingestUrl;
-        }
+    /**
+     * Get the ingestUrl property: Gets the ingest URL provided by the live event.
+     *
+     * @return the ingestUrl value.
+     */
+    @Generated
+    public String getIngestUrl() {
+        return this.ingestUrl;
+    }
 
-        /**
-         * Get the streamId property: Gets the stream Id.
-         *
-         * @return the streamId value.
-         */
-        @Generated
-        public String getStreamId() {
-            return this.streamId;
-        }
+    /**
+     * Get the streamId property: Gets the stream Id.
+     *
+     * @return the streamId value.
+     */
+    @Generated
+    public String getStreamId() {
+        return this.streamId;
+    }
 
-        /**
-         * Get the encoderIp property: Gets the remote IP.
-         *
-         * @return the encoderIp value.
-         */
-        @Generated
-        public String getEncoderIp() {
-            return this.encoderIp;
-        }
+    /**
+     * Get the encoderIp property: Gets the remote IP.
+     *
+     * @return the encoderIp value.
+     */
+    @Generated
+    public String getEncoderIp() {
+        return this.encoderIp;
+    }
 
-        /**
-         * Get the encoderPort property: Gets the remote port.
-         *
-         * @return the encoderPort value.
-         */
-        @Generated
-        public String getEncoderPort() {
-            return this.encoderPort;
-        }
+    /**
+     * Get the encoderPort property: Gets the remote port.
+     *
+     * @return the encoderPort value.
+     */
+    @Generated
+    public String getEncoderPort() {
+        return this.encoderPort;
+    }
 
-        /**
-         * Get the resultCode property: Gets the result code.
-         *
-         * @return the resultCode value.
-         */
-        @Generated
-        public String getResultCode() {
-            return this.resultCode;
-        }
+    /**
+     * Get the resultCode property: Gets the result code.
+     *
+     * @return the resultCode value.
+     */
+    @Generated
+    public String getResultCode() {
+        return this.resultCode;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject();
-            return jsonWriter.writeEndObject();
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
 
-        /**
-         * Reads an instance of MediaLiveEventConnectionRejectedEventData from the JsonReader.
-         *
-         * @param jsonReader The JsonReader being read.
-         * @return An instance of MediaLiveEventConnectionRejectedEventData if the JsonReader was pointing to an instance of
-         * it, or null if it was pointing to JSON null.
-         * @throws IOException If an error occurs while reading the MediaLiveEventConnectionRejectedEventData.
-         */
-        @Generated
-        public static MediaLiveEventConnectionRejectedEventData fromJson(JsonReader jsonReader) throws IOException {
-            return jsonReader.readObject(reader -> {
-                MediaLiveEventConnectionRejectedEventData deserializedMediaLiveEventConnectionRejectedEventData
-                    = new MediaLiveEventConnectionRejectedEventData();
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
-                    if ("ingestUrl".equals(fieldName)) {
-                        deserializedMediaLiveEventConnectionRejectedEventData.ingestUrl = reader.getString();
-                    } else if ("streamId".equals(fieldName)) {
-                        deserializedMediaLiveEventConnectionRejectedEventData.streamId = reader.getString();
-                    } else if ("encoderIp".equals(fieldName)) {
-                        deserializedMediaLiveEventConnectionRejectedEventData.encoderIp = reader.getString();
-                    } else if ("encoderPort".equals(fieldName)) {
-                        deserializedMediaLiveEventConnectionRejectedEventData.encoderPort = reader.getString();
-                    } else if ("resultCode".equals(fieldName)) {
-                        deserializedMediaLiveEventConnectionRejectedEventData.resultCode = reader.getString();
-                    } else {
-                        reader.skipChildren();
-                    }
+    /**
+     * Reads an instance of MediaLiveEventConnectionRejectedEventData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MediaLiveEventConnectionRejectedEventData if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MediaLiveEventConnectionRejectedEventData.
+     */
+    @Generated
+    public static MediaLiveEventConnectionRejectedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MediaLiveEventConnectionRejectedEventData deserializedMediaLiveEventConnectionRejectedEventData
+                = new MediaLiveEventConnectionRejectedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("ingestUrl".equals(fieldName)) {
+                    deserializedMediaLiveEventConnectionRejectedEventData.ingestUrl = reader.getString();
+                } else if ("streamId".equals(fieldName)) {
+                    deserializedMediaLiveEventConnectionRejectedEventData.streamId = reader.getString();
+                } else if ("encoderIp".equals(fieldName)) {
+                    deserializedMediaLiveEventConnectionRejectedEventData.encoderIp = reader.getString();
+                } else if ("encoderPort".equals(fieldName)) {
+                    deserializedMediaLiveEventConnectionRejectedEventData.encoderPort = reader.getString();
+                } else if ("resultCode".equals(fieldName)) {
+                    deserializedMediaLiveEventConnectionRejectedEventData.resultCode = reader.getString();
+                } else {
+                    reader.skipChildren();
                 }
-                return deserializedMediaLiveEventConnectionRejectedEventData;
-            });
-        }
+            }
+            return deserializedMediaLiveEventConnectionRejectedEventData;
+        });
+    }
 }

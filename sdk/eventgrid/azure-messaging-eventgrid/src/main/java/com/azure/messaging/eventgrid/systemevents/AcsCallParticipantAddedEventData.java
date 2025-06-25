@@ -12,11 +12,9 @@ import java.io.IOException;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.CallParticipantAdded event.
- *
- * @deprecated This class is deprecated and may be removed in future releases.
  */
-@Deprecated
 @Fluent
+@Deprecated
 public final class AcsCallParticipantAddedEventData extends AcsCallParticipantEventData {
 
     /**

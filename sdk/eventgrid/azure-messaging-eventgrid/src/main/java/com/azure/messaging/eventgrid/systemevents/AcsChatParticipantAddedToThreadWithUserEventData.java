@@ -17,8 +17,8 @@ import java.time.format.DateTimeFormatter;
  * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatParticipantAddedToThreadWithUser
  * event.
  */
-@Deprecated
 @Fluent
+@Deprecated
 public final class AcsChatParticipantAddedToThreadWithUserEventData extends AcsChatThreadEventBaseProperties {
 
     /*

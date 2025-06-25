@@ -12,160 +12,158 @@ import java.io.IOException;
 
 /**
  * Event data for Microsoft.EventGrid.MQTTClientSessionConnected event.
- *
- * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Fluent
 @Deprecated
 public final class EventGridMqttClientSessionConnectedEventData extends EventGridMqttClientEventData {
 
-        /*
-         * Unique identifier for the MQTT client's session. This case-sensitive string can be up to 128 characters long, and
-         * supports UTF-8 characters.
-         */
-        @Generated
-        private String clientSessionName;
+    /*
+     * Unique identifier for the MQTT client's session. This case-sensitive string can be up to 128 characters long, and
+     * supports UTF-8 characters.
+     */
+    @Generated
+    private String clientSessionName;
 
-        /*
-         * A number that helps indicate order of MQTT client session connected or disconnected events. Latest event will
-         * have a sequence number that is higher than the previous event.
-         */
-        @Generated
-        private Long sequenceNumber;
+    /*
+     * A number that helps indicate order of MQTT client session connected or disconnected events. Latest event will
+     * have a sequence number that is higher than the previous event.
+     */
+    @Generated
+    private Long sequenceNumber;
 
-        /**
-         * Creates an instance of EventGridMqttClientSessionConnectedEventData class.
-         */
-        @Generated
-        public EventGridMqttClientSessionConnectedEventData() {
-        }
+    /**
+     * Creates an instance of EventGridMqttClientSessionConnectedEventData class.
+     */
+    @Generated
+    public EventGridMqttClientSessionConnectedEventData() {
+    }
 
-        /**
-         * Get the clientSessionName property: Unique identifier for the MQTT client's session. This case-sensitive string
-         * can be up to 128 characters long, and supports UTF-8 characters.
-         *
-         * @return the clientSessionName value.
-         */
-        @Generated
-        public String getClientSessionName() {
-            return this.clientSessionName;
-        }
+    /**
+     * Get the clientSessionName property: Unique identifier for the MQTT client's session. This case-sensitive string
+     * can be up to 128 characters long, and supports UTF-8 characters.
+     *
+     * @return the clientSessionName value.
+     */
+    @Generated
+    public String getClientSessionName() {
+        return this.clientSessionName;
+    }
 
-        /**
-         * Set the clientSessionName property: Unique identifier for the MQTT client's session. This case-sensitive string
-         * can be up to 128 characters long, and supports UTF-8 characters.
-         *
-         * @param clientSessionName the clientSessionName value to set.
-         * @return the EventGridMqttClientSessionConnectedEventData object itself.
-         */
-        @Generated
-        public EventGridMqttClientSessionConnectedEventData setClientSessionName(String clientSessionName) {
-            this.clientSessionName = clientSessionName;
-            return this;
-        }
+    /**
+     * Set the clientSessionName property: Unique identifier for the MQTT client's session. This case-sensitive string
+     * can be up to 128 characters long, and supports UTF-8 characters.
+     *
+     * @param clientSessionName the clientSessionName value to set.
+     * @return the EventGridMqttClientSessionConnectedEventData object itself.
+     */
+    @Generated
+    public EventGridMqttClientSessionConnectedEventData setClientSessionName(String clientSessionName) {
+        this.clientSessionName = clientSessionName;
+        return this;
+    }
 
-        /**
-         * Get the sequenceNumber property: A number that helps indicate order of MQTT client session connected or
-         * disconnected events. Latest event will have a sequence number that is higher than the previous event.
-         *
-         * @return the sequenceNumber value.
-         */
-        @Generated
-        public Long getSequenceNumber() {
-            return this.sequenceNumber;
-        }
+    /**
+     * Get the sequenceNumber property: A number that helps indicate order of MQTT client session connected or
+     * disconnected events. Latest event will have a sequence number that is higher than the previous event.
+     *
+     * @return the sequenceNumber value.
+     */
+    @Generated
+    public Long getSequenceNumber() {
+        return this.sequenceNumber;
+    }
 
-        /**
-         * Set the sequenceNumber property: A number that helps indicate order of MQTT client session connected or
-         * disconnected events. Latest event will have a sequence number that is higher than the previous event.
-         *
-         * @param sequenceNumber the sequenceNumber value to set.
-         * @return the EventGridMqttClientSessionConnectedEventData object itself.
-         */
-        @Generated
-        public EventGridMqttClientSessionConnectedEventData setSequenceNumber(Long sequenceNumber) {
-            this.sequenceNumber = sequenceNumber;
-            return this;
-        }
+    /**
+     * Set the sequenceNumber property: A number that helps indicate order of MQTT client session connected or
+     * disconnected events. Latest event will have a sequence number that is higher than the previous event.
+     *
+     * @param sequenceNumber the sequenceNumber value to set.
+     * @return the EventGridMqttClientSessionConnectedEventData object itself.
+     */
+    @Generated
+    public EventGridMqttClientSessionConnectedEventData setSequenceNumber(Long sequenceNumber) {
+        this.sequenceNumber = sequenceNumber;
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public EventGridMqttClientSessionConnectedEventData
-            setClientAuthenticationName(String clientAuthenticationName) {
-            super.setClientAuthenticationName(clientAuthenticationName);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public EventGridMqttClientSessionConnectedEventData setClientAuthenticationName(String clientAuthenticationName) {
+        super.setClientAuthenticationName(clientAuthenticationName);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public EventGridMqttClientSessionConnectedEventData setClientName(String clientName) {
-            super.setClientName(clientName);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public EventGridMqttClientSessionConnectedEventData setClientName(String clientName) {
+        super.setClientName(clientName);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public EventGridMqttClientSessionConnectedEventData setNamespaceName(String namespaceName) {
-            super.setNamespaceName(namespaceName);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public EventGridMqttClientSessionConnectedEventData setNamespaceName(String namespaceName) {
+        super.setNamespaceName(namespaceName);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject();
-            jsonWriter.writeStringField("clientAuthenticationName", getClientAuthenticationName());
-            jsonWriter.writeStringField("clientName", getClientName());
-            jsonWriter.writeStringField("namespaceName", getNamespaceName());
-            jsonWriter.writeStringField("clientSessionName", this.clientSessionName);
-            jsonWriter.writeNumberField("sequenceNumber", this.sequenceNumber);
-            return jsonWriter.writeEndObject();
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("clientAuthenticationName", getClientAuthenticationName());
+        jsonWriter.writeStringField("clientName", getClientName());
+        jsonWriter.writeStringField("namespaceName", getNamespaceName());
+        jsonWriter.writeStringField("clientSessionName", this.clientSessionName);
+        jsonWriter.writeNumberField("sequenceNumber", this.sequenceNumber);
+        return jsonWriter.writeEndObject();
+    }
 
-        /**
-         * Reads an instance of EventGridMqttClientSessionConnectedEventData from the JsonReader.
-         *
-         * @param jsonReader The JsonReader being read.
-         * @return An instance of EventGridMqttClientSessionConnectedEventData if the JsonReader was pointing to an instance
-         * of it, or null if it was pointing to JSON null.
-         * @throws IOException If an error occurs while reading the EventGridMqttClientSessionConnectedEventData.
-         */
-        @Generated
-        public static EventGridMqttClientSessionConnectedEventData fromJson(JsonReader jsonReader) throws IOException {
-            return jsonReader.readObject(reader -> {
-                EventGridMqttClientSessionConnectedEventData deserializedEventGridMqttClientSessionConnectedEventData
-                    = new EventGridMqttClientSessionConnectedEventData();
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
-                    if ("clientAuthenticationName".equals(fieldName)) {
-                        deserializedEventGridMqttClientSessionConnectedEventData
-                            .setClientAuthenticationName(reader.getString());
-                    } else if ("clientName".equals(fieldName)) {
-                        deserializedEventGridMqttClientSessionConnectedEventData.setClientName(reader.getString());
-                    } else if ("namespaceName".equals(fieldName)) {
-                        deserializedEventGridMqttClientSessionConnectedEventData.setNamespaceName(reader.getString());
-                    } else if ("clientSessionName".equals(fieldName)) {
-                        deserializedEventGridMqttClientSessionConnectedEventData.clientSessionName = reader.getString();
-                    } else if ("sequenceNumber".equals(fieldName)) {
-                        deserializedEventGridMqttClientSessionConnectedEventData.sequenceNumber
-                            = reader.getNullable(JsonReader::getLong);
-                    } else {
-                        reader.skipChildren();
-                    }
+    /**
+     * Reads an instance of EventGridMqttClientSessionConnectedEventData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventGridMqttClientSessionConnectedEventData if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventGridMqttClientSessionConnectedEventData.
+     */
+    @Generated
+    public static EventGridMqttClientSessionConnectedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventGridMqttClientSessionConnectedEventData deserializedEventGridMqttClientSessionConnectedEventData
+                = new EventGridMqttClientSessionConnectedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("clientAuthenticationName".equals(fieldName)) {
+                    deserializedEventGridMqttClientSessionConnectedEventData
+                        .setClientAuthenticationName(reader.getString());
+                } else if ("clientName".equals(fieldName)) {
+                    deserializedEventGridMqttClientSessionConnectedEventData.setClientName(reader.getString());
+                } else if ("namespaceName".equals(fieldName)) {
+                    deserializedEventGridMqttClientSessionConnectedEventData.setNamespaceName(reader.getString());
+                } else if ("clientSessionName".equals(fieldName)) {
+                    deserializedEventGridMqttClientSessionConnectedEventData.clientSessionName = reader.getString();
+                } else if ("sequenceNumber".equals(fieldName)) {
+                    deserializedEventGridMqttClientSessionConnectedEventData.sequenceNumber
+                        = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
                 }
-                return deserializedEventGridMqttClientSessionConnectedEventData;
-            });
-        }
+            }
+            return deserializedEventGridMqttClientSessionConnectedEventData;
+        });
+    }
 }

@@ -13,181 +13,178 @@ import java.io.IOException;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.MachineLearningServices.ModelRegistered event.
- *
- * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Fluent
 @Deprecated
 public final class MachineLearningServicesModelRegisteredEventData
     implements JsonSerializable<MachineLearningServicesModelRegisteredEventData> {
 
-        /*
-         * The name of the model that was registered.
-         */
-        @Generated
-        private String modelName;
+    /*
+     * The name of the model that was registered.
+     */
+    @Generated
+    private String modelName;
 
-        /*
-         * The version of the model that was registered.
-         */
-        @Generated
-        private String modelVersion;
+    /*
+     * The version of the model that was registered.
+     */
+    @Generated
+    private String modelVersion;
 
-        /*
-         * The tags of the model that was registered.
-         */
-        @Generated
-        private Object modelTags;
+    /*
+     * The tags of the model that was registered.
+     */
+    @Generated
+    private Object modelTags;
 
-        /*
-         * The properties of the model that was registered.
-         */
-        @Generated
-        private Object modelProperties;
+    /*
+     * The properties of the model that was registered.
+     */
+    @Generated
+    private Object modelProperties;
 
-        /**
-         * Creates an instance of MachineLearningServicesModelRegisteredEventData class.
-         */
-        @Generated
-        public MachineLearningServicesModelRegisteredEventData() {
+    /**
+     * Creates an instance of MachineLearningServicesModelRegisteredEventData class.
+     */
+    @Generated
+    public MachineLearningServicesModelRegisteredEventData() {
+    }
+
+    /**
+     * Get the modelName property: The name of the model that was registered.
+     *
+     * @return the modelName value.
+     */
+    @Generated
+    public String getModelName() {
+        return this.modelName;
+    }
+
+    /**
+     * Set the modelName property: The name of the model that was registered.
+     *
+     * @param modelName the modelName value to set.
+     * @return the MachineLearningServicesModelRegisteredEventData object itself.
+     */
+    @Generated
+    public MachineLearningServicesModelRegisteredEventData setModelName(String modelName) {
+        this.modelName = modelName;
+        return this;
+    }
+
+    /**
+     * Get the modelVersion property: The version of the model that was registered.
+     *
+     * @return the modelVersion value.
+     */
+    @Generated
+    public String getModelVersion() {
+        return this.modelVersion;
+    }
+
+    /**
+     * Set the modelVersion property: The version of the model that was registered.
+     *
+     * @param modelVersion the modelVersion value to set.
+     * @return the MachineLearningServicesModelRegisteredEventData object itself.
+     */
+    @Generated
+    public MachineLearningServicesModelRegisteredEventData setModelVersion(String modelVersion) {
+        this.modelVersion = modelVersion;
+        return this;
+    }
+
+    /**
+     * Get the modelTags property: The tags of the model that was registered.
+     *
+     * @return the modelTags value.
+     */
+    @Generated
+    public Object getModelTags() {
+        return this.modelTags;
+    }
+
+    /**
+     * Set the modelTags property: The tags of the model that was registered.
+     *
+     * @param modelTags the modelTags value to set.
+     * @return the MachineLearningServicesModelRegisteredEventData object itself.
+     */
+    @Generated
+    public MachineLearningServicesModelRegisteredEventData setModelTags(Object modelTags) {
+        this.modelTags = modelTags;
+        return this;
+    }
+
+    /**
+     * Get the modelProperties property: The properties of the model that was registered.
+     *
+     * @return the modelProperties value.
+     */
+    @Generated
+    public Object getModelProperties() {
+        return this.modelProperties;
+    }
+
+    /**
+     * Set the modelProperties property: The properties of the model that was registered.
+     *
+     * @param modelProperties the modelProperties value to set.
+     * @return the MachineLearningServicesModelRegisteredEventData object itself.
+     */
+    @Generated
+    public MachineLearningServicesModelRegisteredEventData setModelProperties(Object modelProperties) {
+        this.modelProperties = modelProperties;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("modelName", this.modelName);
+        jsonWriter.writeStringField("modelVersion", this.modelVersion);
+        if (this.modelTags != null) {
+            jsonWriter.writeUntypedField("modelTags", this.modelTags);
         }
-
-        /**
-         * Get the modelName property: The name of the model that was registered.
-         *
-         * @return the modelName value.
-         */
-        @Generated
-        public String getModelName() {
-            return this.modelName;
+        if (this.modelProperties != null) {
+            jsonWriter.writeUntypedField("modelProperties", this.modelProperties);
         }
+        return jsonWriter.writeEndObject();
+    }
 
-        /**
-         * Set the modelName property: The name of the model that was registered.
-         *
-         * @param modelName the modelName value to set.
-         * @return the MachineLearningServicesModelRegisteredEventData object itself.
-         */
-        @Generated
-        public MachineLearningServicesModelRegisteredEventData setModelName(String modelName) {
-            this.modelName = modelName;
-            return this;
-        }
-
-        /**
-         * Get the modelVersion property: The version of the model that was registered.
-         *
-         * @return the modelVersion value.
-         */
-        @Generated
-        public String getModelVersion() {
-            return this.modelVersion;
-        }
-
-        /**
-         * Set the modelVersion property: The version of the model that was registered.
-         *
-         * @param modelVersion the modelVersion value to set.
-         * @return the MachineLearningServicesModelRegisteredEventData object itself.
-         */
-        @Generated
-        public MachineLearningServicesModelRegisteredEventData setModelVersion(String modelVersion) {
-            this.modelVersion = modelVersion;
-            return this;
-        }
-
-        /**
-         * Get the modelTags property: The tags of the model that was registered.
-         *
-         * @return the modelTags value.
-         */
-        @Generated
-        public Object getModelTags() {
-            return this.modelTags;
-        }
-
-        /**
-         * Set the modelTags property: The tags of the model that was registered.
-         *
-         * @param modelTags the modelTags value to set.
-         * @return the MachineLearningServicesModelRegisteredEventData object itself.
-         */
-        @Generated
-        public MachineLearningServicesModelRegisteredEventData setModelTags(Object modelTags) {
-            this.modelTags = modelTags;
-            return this;
-        }
-
-        /**
-         * Get the modelProperties property: The properties of the model that was registered.
-         *
-         * @return the modelProperties value.
-         */
-        @Generated
-        public Object getModelProperties() {
-            return this.modelProperties;
-        }
-
-        /**
-         * Set the modelProperties property: The properties of the model that was registered.
-         *
-         * @param modelProperties the modelProperties value to set.
-         * @return the MachineLearningServicesModelRegisteredEventData object itself.
-         */
-        @Generated
-        public MachineLearningServicesModelRegisteredEventData setModelProperties(Object modelProperties) {
-            this.modelProperties = modelProperties;
-            return this;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject();
-            jsonWriter.writeStringField("modelName", this.modelName);
-            jsonWriter.writeStringField("modelVersion", this.modelVersion);
-            if (this.modelTags != null) {
-                jsonWriter.writeUntypedField("modelTags", this.modelTags);
-            }
-            if (this.modelProperties != null) {
-                jsonWriter.writeUntypedField("modelProperties", this.modelProperties);
-            }
-            return jsonWriter.writeEndObject();
-        }
-
-        /**
-         * Reads an instance of MachineLearningServicesModelRegisteredEventData from the JsonReader.
-         *
-         * @param jsonReader The JsonReader being read.
-         * @return An instance of MachineLearningServicesModelRegisteredEventData if the JsonReader was pointing to an
-         * instance of it, or null if it was pointing to JSON null.
-         * @throws IOException If an error occurs while reading the MachineLearningServicesModelRegisteredEventData.
-         */
-        @Generated
-        public static MachineLearningServicesModelRegisteredEventData fromJson(JsonReader jsonReader)
-            throws IOException {
-            return jsonReader.readObject(reader -> {
-                MachineLearningServicesModelRegisteredEventData deserializedMachineLearningServicesModelRegisteredEventData
-                    = new MachineLearningServicesModelRegisteredEventData();
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
-                    if ("modelName".equals(fieldName)) {
-                        deserializedMachineLearningServicesModelRegisteredEventData.modelName = reader.getString();
-                    } else if ("modelVersion".equals(fieldName)) {
-                        deserializedMachineLearningServicesModelRegisteredEventData.modelVersion = reader.getString();
-                    } else if ("modelTags".equals(fieldName)) {
-                        deserializedMachineLearningServicesModelRegisteredEventData.modelTags = reader.readUntyped();
-                    } else if ("modelProperties".equals(fieldName)) {
-                        deserializedMachineLearningServicesModelRegisteredEventData.modelProperties
-                            = reader.readUntyped();
-                    } else {
-                        reader.skipChildren();
-                    }
+    /**
+     * Reads an instance of MachineLearningServicesModelRegisteredEventData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MachineLearningServicesModelRegisteredEventData if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MachineLearningServicesModelRegisteredEventData.
+     */
+    @Generated
+    public static MachineLearningServicesModelRegisteredEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MachineLearningServicesModelRegisteredEventData deserializedMachineLearningServicesModelRegisteredEventData
+                = new MachineLearningServicesModelRegisteredEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("modelName".equals(fieldName)) {
+                    deserializedMachineLearningServicesModelRegisteredEventData.modelName = reader.getString();
+                } else if ("modelVersion".equals(fieldName)) {
+                    deserializedMachineLearningServicesModelRegisteredEventData.modelVersion = reader.getString();
+                } else if ("modelTags".equals(fieldName)) {
+                    deserializedMachineLearningServicesModelRegisteredEventData.modelTags = reader.readUntyped();
+                } else if ("modelProperties".equals(fieldName)) {
+                    deserializedMachineLearningServicesModelRegisteredEventData.modelProperties = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
                 }
-                return deserializedMachineLearningServicesModelRegisteredEventData;
-            });
-        }
+            }
+            return deserializedMachineLearningServicesModelRegisteredEventData;
+        });
+    }
 }

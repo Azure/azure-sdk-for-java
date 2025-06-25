@@ -14,92 +14,91 @@ import java.io.IOException;
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.GatewayCertificateAuthorityCreated
  * event.
- *
- * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Fluent
 @Deprecated
 public final class ApiManagementGatewayCertificateAuthorityCreatedEventData
     implements JsonSerializable<ApiManagementGatewayCertificateAuthorityCreatedEventData> {
 
-        /*
-         * The fully qualified ID of the resource that the compliance state change is for, including the resource name and
-         * resource type. Uses the format,
-         * `/subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/
-         * gateways/<GatewayName>/certificateAuthorities/<ResourceName>`
-         */
-        @Generated
-        private String resourceUri;
+    /*
+     * The fully qualified ID of the resource that the compliance state change is for, including the resource name and
+     * resource type. Uses the format,
+     * `/subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/
+     * gateways/<GatewayName>/certificateAuthorities/<ResourceName>`
+     */
+    @Generated
+    private String resourceUri;
 
-        /**
-         * Creates an instance of ApiManagementGatewayCertificateAuthorityCreatedEventData class.
-         */
-        @Generated
-        public ApiManagementGatewayCertificateAuthorityCreatedEventData() {
-        }
+    /**
+     * Creates an instance of ApiManagementGatewayCertificateAuthorityCreatedEventData class.
+     */
+    @Generated
+    public ApiManagementGatewayCertificateAuthorityCreatedEventData() {
+    }
 
-        /**
-         * Get the resourceUri property: The fully qualified ID of the resource that the compliance state change is for,
-         * including the resource name and resource type. Uses the format,
-         * `/subscriptions/&lt;SubscriptionID&gt;/resourceGroups/&lt;ResourceGroup&gt;/Microsoft.ApiManagement/service/&lt;ServiceName&gt;/gateways/&lt;GatewayName&gt;/certificateAuthorities/&lt;ResourceName&gt;`.
-         *
-         * @return the resourceUri value.
-         */
-        @Generated
-        public String getResourceUri() {
-            return this.resourceUri;
-        }
+    /**
+     * Get the resourceUri property: The fully qualified ID of the resource that the compliance state change is for,
+     * including the resource name and resource type. Uses the format,
+     * `/subscriptions/&lt;SubscriptionID&gt;/resourceGroups/&lt;ResourceGroup&gt;/Microsoft.ApiManagement/service/&lt;ServiceName&gt;/gateways/&lt;GatewayName&gt;/certificateAuthorities/&lt;ResourceName&gt;`.
+     *
+     * @return the resourceUri value.
+     */
+    @Generated
+    public String getResourceUri() {
+        return this.resourceUri;
+    }
 
-        /**
-         * Set the resourceUri property: The fully qualified ID of the resource that the compliance state change is for,
-         * including the resource name and resource type. Uses the format,
-         * `/subscriptions/&lt;SubscriptionID&gt;/resourceGroups/&lt;ResourceGroup&gt;/Microsoft.ApiManagement/service/&lt;ServiceName&gt;/gateways/&lt;GatewayName&gt;/certificateAuthorities/&lt;ResourceName&gt;`.
-         *
-         * @param resourceUri the resourceUri value to set.
-         * @return the ApiManagementGatewayCertificateAuthorityCreatedEventData object itself.
-         */
-        @Generated
-        public ApiManagementGatewayCertificateAuthorityCreatedEventData setResourceUri(String resourceUri) {
-            this.resourceUri = resourceUri;
-            return this;
-        }
+    /**
+     * Set the resourceUri property: The fully qualified ID of the resource that the compliance state change is for,
+     * including the resource name and resource type. Uses the format,
+     * `/subscriptions/&lt;SubscriptionID&gt;/resourceGroups/&lt;ResourceGroup&gt;/Microsoft.ApiManagement/service/&lt;ServiceName&gt;/gateways/&lt;GatewayName&gt;/certificateAuthorities/&lt;ResourceName&gt;`.
+     *
+     * @param resourceUri the resourceUri value to set.
+     * @return the ApiManagementGatewayCertificateAuthorityCreatedEventData object itself.
+     */
+    @Generated
+    public ApiManagementGatewayCertificateAuthorityCreatedEventData setResourceUri(String resourceUri) {
+        this.resourceUri = resourceUri;
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject();
-            jsonWriter.writeStringField("resourceUri", this.resourceUri);
-            return jsonWriter.writeEndObject();
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceUri", this.resourceUri);
+        return jsonWriter.writeEndObject();
+    }
 
-        /**
-         * Reads an instance of ApiManagementGatewayCertificateAuthorityCreatedEventData from the JsonReader.
-         *
-         * @param jsonReader The JsonReader being read.
-         * @return An instance of ApiManagementGatewayCertificateAuthorityCreatedEventData if the JsonReader was pointing to
-         * an instance of it, or null if it was pointing to JSON null.
-         * @throws IOException If an error occurs while reading the
-         * ApiManagementGatewayCertificateAuthorityCreatedEventData.
-         */
-        @Generated
-        public static ApiManagementGatewayCertificateAuthorityCreatedEventData fromJson(JsonReader jsonReader)
-            throws IOException {
-            return jsonReader.readObject(reader -> {
-                ApiManagementGatewayCertificateAuthorityCreatedEventData deserializedApiManagementGatewayCertificateAuthorityCreatedEventData
-                    = new ApiManagementGatewayCertificateAuthorityCreatedEventData();
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
-                    if ("resourceUri".equals(fieldName)) {
-                        deserializedApiManagementGatewayCertificateAuthorityCreatedEventData.resourceUri
-                            = reader.getString();
-                    } else {
-                        reader.skipChildren();
-                    }
+    /**
+     * Reads an instance of ApiManagementGatewayCertificateAuthorityCreatedEventData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiManagementGatewayCertificateAuthorityCreatedEventData if the JsonReader was pointing to
+     * an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * ApiManagementGatewayCertificateAuthorityCreatedEventData.
+     */
+    @Generated
+    public static ApiManagementGatewayCertificateAuthorityCreatedEventData fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiManagementGatewayCertificateAuthorityCreatedEventData deserializedApiManagementGatewayCertificateAuthorityCreatedEventData
+                = new ApiManagementGatewayCertificateAuthorityCreatedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("resourceUri".equals(fieldName)) {
+                    deserializedApiManagementGatewayCertificateAuthorityCreatedEventData.resourceUri
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
                 }
-                return deserializedApiManagementGatewayCertificateAuthorityCreatedEventData;
-            });
-        }
+            }
+            return deserializedApiManagementGatewayCertificateAuthorityCreatedEventData;
+        });
+    }
 }

@@ -14,214 +14,213 @@ import java.io.IOException;
 /**
  * Encoder connect event data. Schema of the data property of an EventGridEvent for a
  * Microsoft.Media.LiveEventIncomingStreamReceived event.
- *
- * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Immutable
 @Deprecated
 public final class MediaLiveEventIncomingStreamReceivedEventData
     implements JsonSerializable<MediaLiveEventIncomingStreamReceivedEventData> {
 
-        /*
-         * Gets the ingest URL provided by the live event.
-         */
-        @Generated
-        private String ingestUrl;
+    /*
+     * Gets the ingest URL provided by the live event.
+     */
+    @Generated
+    private String ingestUrl;
 
-        /*
-         * Gets the type of the track (Audio / Video).
-         */
-        @Generated
-        private String trackType;
+    /*
+     * Gets the type of the track (Audio / Video).
+     */
+    @Generated
+    private String trackType;
 
-        /*
-         * Gets the track name.
-         */
-        @Generated
-        private String trackName;
+    /*
+     * Gets the track name.
+     */
+    @Generated
+    private String trackName;
 
-        /*
-         * Gets the bitrate of the track.
-         */
-        @Generated
-        private Long bitrate;
+    /*
+     * Gets the bitrate of the track.
+     */
+    @Generated
+    private Long bitrate;
 
-        /*
-         * Gets the remote IP.
-         */
-        @Generated
-        private String encoderIp;
+    /*
+     * Gets the remote IP.
+     */
+    @Generated
+    private String encoderIp;
 
-        /*
-         * Gets the remote port.
-         */
-        @Generated
-        private String encoderPort;
+    /*
+     * Gets the remote port.
+     */
+    @Generated
+    private String encoderPort;
 
-        /*
-         * Gets the first timestamp of the data chunk received.
-         */
-        @Generated
-        private String timestamp;
+    /*
+     * Gets the first timestamp of the data chunk received.
+     */
+    @Generated
+    private String timestamp;
 
-        /*
-         * Gets the duration of the first data chunk.
-         */
-        @Generated
-        private String duration;
+    /*
+     * Gets the duration of the first data chunk.
+     */
+    @Generated
+    private String duration;
 
-        /*
-         * Gets the timescale in which timestamp is represented.
-         */
-        @Generated
-        private String timescale;
+    /*
+     * Gets the timescale in which timestamp is represented.
+     */
+    @Generated
+    private String timescale;
 
-        /**
-         * Creates an instance of MediaLiveEventIncomingStreamReceivedEventData class.
-         */
-        @Generated
-        public MediaLiveEventIncomingStreamReceivedEventData() {
-        }
+    /**
+     * Creates an instance of MediaLiveEventIncomingStreamReceivedEventData class.
+     */
+    @Generated
+    public MediaLiveEventIncomingStreamReceivedEventData() {
+    }
 
-        /**
-         * Get the ingestUrl property: Gets the ingest URL provided by the live event.
-         *
-         * @return the ingestUrl value.
-         */
-        @Generated
-        public String getIngestUrl() {
-            return this.ingestUrl;
-        }
+    /**
+     * Get the ingestUrl property: Gets the ingest URL provided by the live event.
+     *
+     * @return the ingestUrl value.
+     */
+    @Generated
+    public String getIngestUrl() {
+        return this.ingestUrl;
+    }
 
-        /**
-         * Get the trackType property: Gets the type of the track (Audio / Video).
-         *
-         * @return the trackType value.
-         */
-        @Generated
-        public String getTrackType() {
-            return this.trackType;
-        }
+    /**
+     * Get the trackType property: Gets the type of the track (Audio / Video).
+     *
+     * @return the trackType value.
+     */
+    @Generated
+    public String getTrackType() {
+        return this.trackType;
+    }
 
-        /**
-         * Get the trackName property: Gets the track name.
-         *
-         * @return the trackName value.
-         */
-        @Generated
-        public String getTrackName() {
-            return this.trackName;
-        }
+    /**
+     * Get the trackName property: Gets the track name.
+     *
+     * @return the trackName value.
+     */
+    @Generated
+    public String getTrackName() {
+        return this.trackName;
+    }
 
-        /**
-         * Get the bitrate property: Gets the bitrate of the track.
-         *
-         * @return the bitrate value.
-         */
-        @Generated
-        public Long getBitrate() {
-            return this.bitrate;
-        }
+    /**
+     * Get the bitrate property: Gets the bitrate of the track.
+     *
+     * @return the bitrate value.
+     */
+    @Generated
+    public Long getBitrate() {
+        return this.bitrate;
+    }
 
-        /**
-         * Get the encoderIp property: Gets the remote IP.
-         *
-         * @return the encoderIp value.
-         */
-        @Generated
-        public String getEncoderIp() {
-            return this.encoderIp;
-        }
+    /**
+     * Get the encoderIp property: Gets the remote IP.
+     *
+     * @return the encoderIp value.
+     */
+    @Generated
+    public String getEncoderIp() {
+        return this.encoderIp;
+    }
 
-        /**
-         * Get the encoderPort property: Gets the remote port.
-         *
-         * @return the encoderPort value.
-         */
-        @Generated
-        public String getEncoderPort() {
-            return this.encoderPort;
-        }
+    /**
+     * Get the encoderPort property: Gets the remote port.
+     *
+     * @return the encoderPort value.
+     */
+    @Generated
+    public String getEncoderPort() {
+        return this.encoderPort;
+    }
 
-        /**
-         * Get the timestamp property: Gets the first timestamp of the data chunk received.
-         *
-         * @return the timestamp value.
-         */
-        @Generated
-        public String getTimestamp() {
-            return this.timestamp;
-        }
+    /**
+     * Get the timestamp property: Gets the first timestamp of the data chunk received.
+     *
+     * @return the timestamp value.
+     */
+    @Generated
+    public String getTimestamp() {
+        return this.timestamp;
+    }
 
-        /**
-         * Get the duration property: Gets the duration of the first data chunk.
-         *
-         * @return the duration value.
-         */
-        @Generated
-        public String getDuration() {
-            return this.duration;
-        }
+    /**
+     * Get the duration property: Gets the duration of the first data chunk.
+     *
+     * @return the duration value.
+     */
+    @Generated
+    public String getDuration() {
+        return this.duration;
+    }
 
-        /**
-         * Get the timescale property: Gets the timescale in which timestamp is represented.
-         *
-         * @return the timescale value.
-         */
-        @Generated
-        public String getTimescale() {
-            return this.timescale;
-        }
+    /**
+     * Get the timescale property: Gets the timescale in which timestamp is represented.
+     *
+     * @return the timescale value.
+     */
+    @Generated
+    public String getTimescale() {
+        return this.timescale;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject();
-            return jsonWriter.writeEndObject();
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
 
-        /**
-         * Reads an instance of MediaLiveEventIncomingStreamReceivedEventData from the JsonReader.
-         *
-         * @param jsonReader The JsonReader being read.
-         * @return An instance of MediaLiveEventIncomingStreamReceivedEventData if the JsonReader was pointing to an
-         * instance of it, or null if it was pointing to JSON null.
-         * @throws IOException If an error occurs while reading the MediaLiveEventIncomingStreamReceivedEventData.
-         */
-        @Generated
-        public static MediaLiveEventIncomingStreamReceivedEventData fromJson(JsonReader jsonReader) throws IOException {
-            return jsonReader.readObject(reader -> {
-                MediaLiveEventIncomingStreamReceivedEventData deserializedMediaLiveEventIncomingStreamReceivedEventData
-                    = new MediaLiveEventIncomingStreamReceivedEventData();
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
-                    if ("ingestUrl".equals(fieldName)) {
-                        deserializedMediaLiveEventIncomingStreamReceivedEventData.ingestUrl = reader.getString();
-                    } else if ("trackType".equals(fieldName)) {
-                        deserializedMediaLiveEventIncomingStreamReceivedEventData.trackType = reader.getString();
-                    } else if ("trackName".equals(fieldName)) {
-                        deserializedMediaLiveEventIncomingStreamReceivedEventData.trackName = reader.getString();
-                    } else if ("bitrate".equals(fieldName)) {
-                        deserializedMediaLiveEventIncomingStreamReceivedEventData.bitrate
-                            = reader.getNullable(JsonReader::getLong);
-                    } else if ("encoderIp".equals(fieldName)) {
-                        deserializedMediaLiveEventIncomingStreamReceivedEventData.encoderIp = reader.getString();
-                    } else if ("encoderPort".equals(fieldName)) {
-                        deserializedMediaLiveEventIncomingStreamReceivedEventData.encoderPort = reader.getString();
-                    } else if ("timestamp".equals(fieldName)) {
-                        deserializedMediaLiveEventIncomingStreamReceivedEventData.timestamp = reader.getString();
-                    } else if ("duration".equals(fieldName)) {
-                        deserializedMediaLiveEventIncomingStreamReceivedEventData.duration = reader.getString();
-                    } else if ("timescale".equals(fieldName)) {
-                        deserializedMediaLiveEventIncomingStreamReceivedEventData.timescale = reader.getString();
-                    } else {
-                        reader.skipChildren();
-                    }
+    /**
+     * Reads an instance of MediaLiveEventIncomingStreamReceivedEventData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MediaLiveEventIncomingStreamReceivedEventData if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MediaLiveEventIncomingStreamReceivedEventData.
+     */
+    @Generated
+    public static MediaLiveEventIncomingStreamReceivedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MediaLiveEventIncomingStreamReceivedEventData deserializedMediaLiveEventIncomingStreamReceivedEventData
+                = new MediaLiveEventIncomingStreamReceivedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("ingestUrl".equals(fieldName)) {
+                    deserializedMediaLiveEventIncomingStreamReceivedEventData.ingestUrl = reader.getString();
+                } else if ("trackType".equals(fieldName)) {
+                    deserializedMediaLiveEventIncomingStreamReceivedEventData.trackType = reader.getString();
+                } else if ("trackName".equals(fieldName)) {
+                    deserializedMediaLiveEventIncomingStreamReceivedEventData.trackName = reader.getString();
+                } else if ("bitrate".equals(fieldName)) {
+                    deserializedMediaLiveEventIncomingStreamReceivedEventData.bitrate
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("encoderIp".equals(fieldName)) {
+                    deserializedMediaLiveEventIncomingStreamReceivedEventData.encoderIp = reader.getString();
+                } else if ("encoderPort".equals(fieldName)) {
+                    deserializedMediaLiveEventIncomingStreamReceivedEventData.encoderPort = reader.getString();
+                } else if ("timestamp".equals(fieldName)) {
+                    deserializedMediaLiveEventIncomingStreamReceivedEventData.timestamp = reader.getString();
+                } else if ("duration".equals(fieldName)) {
+                    deserializedMediaLiveEventIncomingStreamReceivedEventData.duration = reader.getString();
+                } else if ("timescale".equals(fieldName)) {
+                    deserializedMediaLiveEventIncomingStreamReceivedEventData.timescale = reader.getString();
+                } else {
+                    reader.skipChildren();
                 }
-                return deserializedMediaLiveEventIncomingStreamReceivedEventData;
-            });
-        }
+            }
+            return deserializedMediaLiveEventIncomingStreamReceivedEventData;
+        });
+    }
 }

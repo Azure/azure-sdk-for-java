@@ -14,256 +14,255 @@ import java.io.IOException;
 /**
  * Schema of the Data property of an EventGridEvent for a
  * Microsoft.ServiceBus.ActiveMessagesAvailablePeriodicNotifications event.
- *
- * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Fluent
 @Deprecated
 public final class ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData
     implements JsonSerializable<ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData> {
 
-        /*
-         * The namespace name of the Microsoft.ServiceBus resource.
-         */
-        @Generated
-        private String namespaceName;
+    /*
+     * The namespace name of the Microsoft.ServiceBus resource.
+     */
+    @Generated
+    private String namespaceName;
 
-        /*
-         * The endpoint of the Microsoft.ServiceBus resource.
-         */
-        @Generated
-        private String requestUri;
+    /*
+     * The endpoint of the Microsoft.ServiceBus resource.
+     */
+    @Generated
+    private String requestUri;
 
-        /*
-         * The entity type of the Microsoft.ServiceBus resource. Could be one of 'queue' or 'subscriber'.
-         */
-        @Generated
-        private String entityType;
+    /*
+     * The entity type of the Microsoft.ServiceBus resource. Could be one of 'queue' or 'subscriber'.
+     */
+    @Generated
+    private String entityType;
 
-        /*
-         * The name of the Microsoft.ServiceBus queue. If the entity type is of type 'subscriber', then this value will be
-         * null.
-         */
-        @Generated
-        private String queueName;
+    /*
+     * The name of the Microsoft.ServiceBus queue. If the entity type is of type 'subscriber', then this value will be
+     * null.
+     */
+    @Generated
+    private String queueName;
 
-        /*
-         * The name of the Microsoft.ServiceBus topic. If the entity type is of type 'queue', then this value will be null.
-         */
-        @Generated
-        private String topicName;
+    /*
+     * The name of the Microsoft.ServiceBus topic. If the entity type is of type 'queue', then this value will be null.
+     */
+    @Generated
+    private String topicName;
 
-        /*
-         * The name of the Microsoft.ServiceBus topic's subscription. If the entity type is of type 'queue', then this value
-         * will be null.
-         */
-        @Generated
-        private String subscriptionName;
+    /*
+     * The name of the Microsoft.ServiceBus topic's subscription. If the entity type is of type 'queue', then this value
+     * will be null.
+     */
+    @Generated
+    private String subscriptionName;
 
-        /**
-         * Creates an instance of ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData class.
-         */
-        @Generated
-        public ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData() {
-        }
+    /**
+     * Creates an instance of ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData class.
+     */
+    @Generated
+    public ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData() {
+    }
 
-        /**
-         * Get the namespaceName property: The namespace name of the Microsoft.ServiceBus resource.
-         *
-         * @return the namespaceName value.
-         */
-        @Generated
-        public String getNamespaceName() {
-            return this.namespaceName;
-        }
+    /**
+     * Get the namespaceName property: The namespace name of the Microsoft.ServiceBus resource.
+     *
+     * @return the namespaceName value.
+     */
+    @Generated
+    public String getNamespaceName() {
+        return this.namespaceName;
+    }
 
-        /**
-         * Set the namespaceName property: The namespace name of the Microsoft.ServiceBus resource.
-         *
-         * @param namespaceName the namespaceName value to set.
-         * @return the ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData object itself.
-         */
-        @Generated
-        public ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData setNamespaceName(String namespaceName) {
-            this.namespaceName = namespaceName;
-            return this;
-        }
+    /**
+     * Set the namespaceName property: The namespace name of the Microsoft.ServiceBus resource.
+     *
+     * @param namespaceName the namespaceName value to set.
+     * @return the ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData object itself.
+     */
+    @Generated
+    public ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData setNamespaceName(String namespaceName) {
+        this.namespaceName = namespaceName;
+        return this;
+    }
 
-        /**
-         * Get the requestUri property: The endpoint of the Microsoft.ServiceBus resource.
-         *
-         * @return the requestUri value.
-         */
-        @Generated
-        public String getRequestUri() {
-            return this.requestUri;
-        }
+    /**
+     * Get the requestUri property: The endpoint of the Microsoft.ServiceBus resource.
+     *
+     * @return the requestUri value.
+     */
+    @Generated
+    public String getRequestUri() {
+        return this.requestUri;
+    }
 
-        /**
-         * Set the requestUri property: The endpoint of the Microsoft.ServiceBus resource.
-         *
-         * @param requestUri the requestUri value to set.
-         * @return the ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData object itself.
-         */
-        @Generated
-        public ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData setRequestUri(String requestUri) {
-            this.requestUri = requestUri;
-            return this;
-        }
+    /**
+     * Set the requestUri property: The endpoint of the Microsoft.ServiceBus resource.
+     *
+     * @param requestUri the requestUri value to set.
+     * @return the ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData object itself.
+     */
+    @Generated
+    public ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData setRequestUri(String requestUri) {
+        this.requestUri = requestUri;
+        return this;
+    }
 
-        /**
-         * Get the entityType property: The entity type of the Microsoft.ServiceBus resource. Could be one of 'queue' or
-         * 'subscriber'.
-         *
-         * @return the entityType value.
-         */
-        @Generated
-        public String getEntityType() {
-            return this.entityType;
-        }
+    /**
+     * Get the entityType property: The entity type of the Microsoft.ServiceBus resource. Could be one of 'queue' or
+     * 'subscriber'.
+     *
+     * @return the entityType value.
+     */
+    @Generated
+    public String getEntityType() {
+        return this.entityType;
+    }
 
-        /**
-         * Set the entityType property: The entity type of the Microsoft.ServiceBus resource. Could be one of 'queue' or
-         * 'subscriber'.
-         *
-         * @param entityType the entityType value to set.
-         * @return the ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData object itself.
-         */
-        @Generated
-        public ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData setEntityType(String entityType) {
-            this.entityType = entityType;
-            return this;
-        }
+    /**
+     * Set the entityType property: The entity type of the Microsoft.ServiceBus resource. Could be one of 'queue' or
+     * 'subscriber'.
+     *
+     * @param entityType the entityType value to set.
+     * @return the ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData object itself.
+     */
+    @Generated
+    public ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData setEntityType(String entityType) {
+        this.entityType = entityType;
+        return this;
+    }
 
-        /**
-         * Get the queueName property: The name of the Microsoft.ServiceBus queue. If the entity type is of type
-         * 'subscriber', then this value will be null.
-         *
-         * @return the queueName value.
-         */
-        @Generated
-        public String getQueueName() {
-            return this.queueName;
-        }
+    /**
+     * Get the queueName property: The name of the Microsoft.ServiceBus queue. If the entity type is of type
+     * 'subscriber', then this value will be null.
+     *
+     * @return the queueName value.
+     */
+    @Generated
+    public String getQueueName() {
+        return this.queueName;
+    }
 
-        /**
-         * Set the queueName property: The name of the Microsoft.ServiceBus queue. If the entity type is of type
-         * 'subscriber', then this value will be null.
-         *
-         * @param queueName the queueName value to set.
-         * @return the ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData object itself.
-         */
-        @Generated
-        public ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData setQueueName(String queueName) {
-            this.queueName = queueName;
-            return this;
-        }
+    /**
+     * Set the queueName property: The name of the Microsoft.ServiceBus queue. If the entity type is of type
+     * 'subscriber', then this value will be null.
+     *
+     * @param queueName the queueName value to set.
+     * @return the ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData object itself.
+     */
+    @Generated
+    public ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData setQueueName(String queueName) {
+        this.queueName = queueName;
+        return this;
+    }
 
-        /**
-         * Get the topicName property: The name of the Microsoft.ServiceBus topic. If the entity type is of type 'queue',
-         * then this value will be null.
-         *
-         * @return the topicName value.
-         */
-        @Generated
-        public String getTopicName() {
-            return this.topicName;
-        }
+    /**
+     * Get the topicName property: The name of the Microsoft.ServiceBus topic. If the entity type is of type 'queue',
+     * then this value will be null.
+     *
+     * @return the topicName value.
+     */
+    @Generated
+    public String getTopicName() {
+        return this.topicName;
+    }
 
-        /**
-         * Set the topicName property: The name of the Microsoft.ServiceBus topic. If the entity type is of type 'queue',
-         * then this value will be null.
-         *
-         * @param topicName the topicName value to set.
-         * @return the ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData object itself.
-         */
-        @Generated
-        public ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData setTopicName(String topicName) {
-            this.topicName = topicName;
-            return this;
-        }
+    /**
+     * Set the topicName property: The name of the Microsoft.ServiceBus topic. If the entity type is of type 'queue',
+     * then this value will be null.
+     *
+     * @param topicName the topicName value to set.
+     * @return the ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData object itself.
+     */
+    @Generated
+    public ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData setTopicName(String topicName) {
+        this.topicName = topicName;
+        return this;
+    }
 
-        /**
-         * Get the subscriptionName property: The name of the Microsoft.ServiceBus topic's subscription. If the entity type
-         * is of type 'queue', then this value will be null.
-         *
-         * @return the subscriptionName value.
-         */
-        @Generated
-        public String getSubscriptionName() {
-            return this.subscriptionName;
-        }
+    /**
+     * Get the subscriptionName property: The name of the Microsoft.ServiceBus topic's subscription. If the entity type
+     * is of type 'queue', then this value will be null.
+     *
+     * @return the subscriptionName value.
+     */
+    @Generated
+    public String getSubscriptionName() {
+        return this.subscriptionName;
+    }
 
-        /**
-         * Set the subscriptionName property: The name of the Microsoft.ServiceBus topic's subscription. If the entity type
-         * is of type 'queue', then this value will be null.
-         *
-         * @param subscriptionName the subscriptionName value to set.
-         * @return the ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData object itself.
-         */
-        @Generated
-        public ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData
-            setSubscriptionName(String subscriptionName) {
-            this.subscriptionName = subscriptionName;
-            return this;
-        }
+    /**
+     * Set the subscriptionName property: The name of the Microsoft.ServiceBus topic's subscription. If the entity type
+     * is of type 'queue', then this value will be null.
+     *
+     * @param subscriptionName the subscriptionName value to set.
+     * @return the ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData object itself.
+     */
+    @Generated
+    public ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData
+        setSubscriptionName(String subscriptionName) {
+        this.subscriptionName = subscriptionName;
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject();
-            jsonWriter.writeStringField("namespaceName", this.namespaceName);
-            jsonWriter.writeStringField("requestUri", this.requestUri);
-            jsonWriter.writeStringField("entityType", this.entityType);
-            jsonWriter.writeStringField("queueName", this.queueName);
-            jsonWriter.writeStringField("topicName", this.topicName);
-            jsonWriter.writeStringField("subscriptionName", this.subscriptionName);
-            return jsonWriter.writeEndObject();
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("namespaceName", this.namespaceName);
+        jsonWriter.writeStringField("requestUri", this.requestUri);
+        jsonWriter.writeStringField("entityType", this.entityType);
+        jsonWriter.writeStringField("queueName", this.queueName);
+        jsonWriter.writeStringField("topicName", this.topicName);
+        jsonWriter.writeStringField("subscriptionName", this.subscriptionName);
+        return jsonWriter.writeEndObject();
+    }
 
-        /**
-         * Reads an instance of ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData from the JsonReader.
-         *
-         * @param jsonReader The JsonReader being read.
-         * @return An instance of ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData if the JsonReader was
-         * pointing to an instance of it, or null if it was pointing to JSON null.
-         * @throws IOException If an error occurs while reading the
-         * ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData.
-         */
-        @Generated
-        public static ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData fromJson(JsonReader jsonReader)
-            throws IOException {
-            return jsonReader.readObject(reader -> {
-                ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData deserializedServiceBusActiveMessagesAvailablePeriodicNotificationsEventData
-                    = new ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData();
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
-                    if ("namespaceName".equals(fieldName)) {
-                        deserializedServiceBusActiveMessagesAvailablePeriodicNotificationsEventData.namespaceName
-                            = reader.getString();
-                    } else if ("requestUri".equals(fieldName)) {
-                        deserializedServiceBusActiveMessagesAvailablePeriodicNotificationsEventData.requestUri
-                            = reader.getString();
-                    } else if ("entityType".equals(fieldName)) {
-                        deserializedServiceBusActiveMessagesAvailablePeriodicNotificationsEventData.entityType
-                            = reader.getString();
-                    } else if ("queueName".equals(fieldName)) {
-                        deserializedServiceBusActiveMessagesAvailablePeriodicNotificationsEventData.queueName
-                            = reader.getString();
-                    } else if ("topicName".equals(fieldName)) {
-                        deserializedServiceBusActiveMessagesAvailablePeriodicNotificationsEventData.topicName
-                            = reader.getString();
-                    } else if ("subscriptionName".equals(fieldName)) {
-                        deserializedServiceBusActiveMessagesAvailablePeriodicNotificationsEventData.subscriptionName
-                            = reader.getString();
-                    } else {
-                        reader.skipChildren();
-                    }
+    /**
+     * Reads an instance of ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData if the JsonReader was
+     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData.
+     */
+    @Generated
+    public static ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData deserializedServiceBusActiveMessagesAvailablePeriodicNotificationsEventData
+                = new ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("namespaceName".equals(fieldName)) {
+                    deserializedServiceBusActiveMessagesAvailablePeriodicNotificationsEventData.namespaceName
+                        = reader.getString();
+                } else if ("requestUri".equals(fieldName)) {
+                    deserializedServiceBusActiveMessagesAvailablePeriodicNotificationsEventData.requestUri
+                        = reader.getString();
+                } else if ("entityType".equals(fieldName)) {
+                    deserializedServiceBusActiveMessagesAvailablePeriodicNotificationsEventData.entityType
+                        = reader.getString();
+                } else if ("queueName".equals(fieldName)) {
+                    deserializedServiceBusActiveMessagesAvailablePeriodicNotificationsEventData.queueName
+                        = reader.getString();
+                } else if ("topicName".equals(fieldName)) {
+                    deserializedServiceBusActiveMessagesAvailablePeriodicNotificationsEventData.topicName
+                        = reader.getString();
+                } else if ("subscriptionName".equals(fieldName)) {
+                    deserializedServiceBusActiveMessagesAvailablePeriodicNotificationsEventData.subscriptionName
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
                 }
-                return deserializedServiceBusActiveMessagesAvailablePeriodicNotificationsEventData;
-            });
-        }
+            }
+            return deserializedServiceBusActiveMessagesAvailablePeriodicNotificationsEventData;
+        });
+    }
 }

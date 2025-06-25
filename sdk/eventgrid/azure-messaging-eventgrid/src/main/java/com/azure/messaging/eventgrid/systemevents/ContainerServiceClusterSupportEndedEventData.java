@@ -12,64 +12,62 @@ import java.io.IOException;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.ContainerService.ClusterSupportEnded event.
- *
- * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Fluent
 @Deprecated
 public final class ContainerServiceClusterSupportEndedEventData extends ContainerServiceClusterSupportEventData {
 
-        /**
-         * Creates an instance of ContainerServiceClusterSupportEndedEventData class.
-         */
-        @Generated
-        public ContainerServiceClusterSupportEndedEventData() {
-        }
+    /**
+     * Creates an instance of ContainerServiceClusterSupportEndedEventData class.
+     */
+    @Generated
+    public ContainerServiceClusterSupportEndedEventData() {
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public ContainerServiceClusterSupportEndedEventData setKubernetesVersion(String kubernetesVersion) {
-            super.setKubernetesVersion(kubernetesVersion);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public ContainerServiceClusterSupportEndedEventData setKubernetesVersion(String kubernetesVersion) {
+        super.setKubernetesVersion(kubernetesVersion);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject();
-            jsonWriter.writeStringField("kubernetesVersion", getKubernetesVersion());
-            return jsonWriter.writeEndObject();
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kubernetesVersion", getKubernetesVersion());
+        return jsonWriter.writeEndObject();
+    }
 
-        /**
-         * Reads an instance of ContainerServiceClusterSupportEndedEventData from the JsonReader.
-         *
-         * @param jsonReader The JsonReader being read.
-         * @return An instance of ContainerServiceClusterSupportEndedEventData if the JsonReader was pointing to an instance
-         * of it, or null if it was pointing to JSON null.
-         * @throws IOException If an error occurs while reading the ContainerServiceClusterSupportEndedEventData.
-         */
-        @Generated
-        public static ContainerServiceClusterSupportEndedEventData fromJson(JsonReader jsonReader) throws IOException {
-            return jsonReader.readObject(reader -> {
-                ContainerServiceClusterSupportEndedEventData deserializedContainerServiceClusterSupportEndedEventData
-                    = new ContainerServiceClusterSupportEndedEventData();
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
-                    if ("kubernetesVersion".equals(fieldName)) {
-                        deserializedContainerServiceClusterSupportEndedEventData
-                            .setKubernetesVersion(reader.getString());
-                    } else {
-                        reader.skipChildren();
-                    }
+    /**
+     * Reads an instance of ContainerServiceClusterSupportEndedEventData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerServiceClusterSupportEndedEventData if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerServiceClusterSupportEndedEventData.
+     */
+    @Generated
+    public static ContainerServiceClusterSupportEndedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerServiceClusterSupportEndedEventData deserializedContainerServiceClusterSupportEndedEventData
+                = new ContainerServiceClusterSupportEndedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("kubernetesVersion".equals(fieldName)) {
+                    deserializedContainerServiceClusterSupportEndedEventData.setKubernetesVersion(reader.getString());
+                } else {
+                    reader.skipChildren();
                 }
-                return deserializedContainerServiceClusterSupportEndedEventData;
-            });
-        }
+            }
+            return deserializedContainerServiceClusterSupportEndedEventData;
+        });
+    }
 }

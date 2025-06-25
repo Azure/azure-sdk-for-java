@@ -15,175 +15,174 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.ContainerRegistry.ImageDeleted event.
- *
- * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Fluent
 @Deprecated
 public final class ContainerRegistryImageDeletedEventData extends ContainerRegistryEventData {
 
-        /**
-         * Creates an instance of ContainerRegistryImageDeletedEventData class.
-         */
-        @Generated
-        public ContainerRegistryImageDeletedEventData() {
-        }
+    /**
+     * Creates an instance of ContainerRegistryImageDeletedEventData class.
+     */
+    @Generated
+    public ContainerRegistryImageDeletedEventData() {
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public ContainerRegistryImageDeletedEventData setId(String id) {
-            super.setId(id);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public ContainerRegistryImageDeletedEventData setId(String id) {
+        super.setId(id);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public ContainerRegistryImageDeletedEventData setTimestamp(OffsetDateTime timestamp) {
-            super.setTimestamp(timestamp);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public ContainerRegistryImageDeletedEventData setTimestamp(OffsetDateTime timestamp) {
+        super.setTimestamp(timestamp);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public ContainerRegistryImageDeletedEventData setAction(String action) {
-            super.setAction(action);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public ContainerRegistryImageDeletedEventData setAction(String action) {
+        super.setAction(action);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public ContainerRegistryImageDeletedEventData setLocation(String location) {
-            super.setLocation(location);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public ContainerRegistryImageDeletedEventData setLocation(String location) {
+        super.setLocation(location);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public ContainerRegistryImageDeletedEventData setTarget(ContainerRegistryEventTarget target) {
-            super.setTarget(target);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public ContainerRegistryImageDeletedEventData setTarget(ContainerRegistryEventTarget target) {
+        super.setTarget(target);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public ContainerRegistryImageDeletedEventData setRequest(ContainerRegistryEventRequest request) {
-            super.setRequest(request);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public ContainerRegistryImageDeletedEventData setRequest(ContainerRegistryEventRequest request) {
+        super.setRequest(request);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public ContainerRegistryImageDeletedEventData setActor(ContainerRegistryEventActor actor) {
-            super.setActor(actor);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public ContainerRegistryImageDeletedEventData setActor(ContainerRegistryEventActor actor) {
+        super.setActor(actor);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public ContainerRegistryImageDeletedEventData setSource(ContainerRegistryEventSource source) {
-            super.setSource(source);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public ContainerRegistryImageDeletedEventData setSource(ContainerRegistryEventSource source) {
+        super.setSource(source);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public ContainerRegistryImageDeletedEventData
-            setConnectedRegistry(ContainerRegistryEventConnectedRegistry connectedRegistry) {
-            super.setConnectedRegistry(connectedRegistry);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public ContainerRegistryImageDeletedEventData
+        setConnectedRegistry(ContainerRegistryEventConnectedRegistry connectedRegistry) {
+        super.setConnectedRegistry(connectedRegistry);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject();
-            jsonWriter.writeStringField("id", getId());
-            jsonWriter.writeStringField("timestamp",
-                getTimestamp() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getTimestamp()));
-            jsonWriter.writeStringField("action", getAction());
-            jsonWriter.writeStringField("location", getLocation());
-            jsonWriter.writeJsonField("target", getTarget());
-            jsonWriter.writeJsonField("request", getRequest());
-            jsonWriter.writeJsonField("actor", getActor());
-            jsonWriter.writeJsonField("source", getSource());
-            jsonWriter.writeJsonField("connectedRegistry", getConnectedRegistry());
-            return jsonWriter.writeEndObject();
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", getId());
+        jsonWriter.writeStringField("timestamp",
+            getTimestamp() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getTimestamp()));
+        jsonWriter.writeStringField("action", getAction());
+        jsonWriter.writeStringField("location", getLocation());
+        jsonWriter.writeJsonField("target", getTarget());
+        jsonWriter.writeJsonField("request", getRequest());
+        jsonWriter.writeJsonField("actor", getActor());
+        jsonWriter.writeJsonField("source", getSource());
+        jsonWriter.writeJsonField("connectedRegistry", getConnectedRegistry());
+        return jsonWriter.writeEndObject();
+    }
 
-        /**
-         * Reads an instance of ContainerRegistryImageDeletedEventData from the JsonReader.
-         *
-         * @param jsonReader The JsonReader being read.
-         * @return An instance of ContainerRegistryImageDeletedEventData if the JsonReader was pointing to an instance of
-         * it, or null if it was pointing to JSON null.
-         * @throws IOException If an error occurs while reading the ContainerRegistryImageDeletedEventData.
-         */
-        @Generated
-        public static ContainerRegistryImageDeletedEventData fromJson(JsonReader jsonReader) throws IOException {
-            return jsonReader.readObject(reader -> {
-                ContainerRegistryImageDeletedEventData deserializedContainerRegistryImageDeletedEventData
-                    = new ContainerRegistryImageDeletedEventData();
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
-                    if ("id".equals(fieldName)) {
-                        deserializedContainerRegistryImageDeletedEventData.setId(reader.getString());
-                    } else if ("timestamp".equals(fieldName)) {
-                        deserializedContainerRegistryImageDeletedEventData.setTimestamp(reader.getNullable(
-                            nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
-                    } else if ("action".equals(fieldName)) {
-                        deserializedContainerRegistryImageDeletedEventData.setAction(reader.getString());
-                    } else if ("location".equals(fieldName)) {
-                        deserializedContainerRegistryImageDeletedEventData.setLocation(reader.getString());
-                    } else if ("target".equals(fieldName)) {
-                        deserializedContainerRegistryImageDeletedEventData
-                            .setTarget(ContainerRegistryEventTarget.fromJson(reader));
-                    } else if ("request".equals(fieldName)) {
-                        deserializedContainerRegistryImageDeletedEventData
-                            .setRequest(ContainerRegistryEventRequest.fromJson(reader));
-                    } else if ("actor".equals(fieldName)) {
-                        deserializedContainerRegistryImageDeletedEventData
-                            .setActor(ContainerRegistryEventActor.fromJson(reader));
-                    } else if ("source".equals(fieldName)) {
-                        deserializedContainerRegistryImageDeletedEventData
-                            .setSource(ContainerRegistryEventSource.fromJson(reader));
-                    } else if ("connectedRegistry".equals(fieldName)) {
-                        deserializedContainerRegistryImageDeletedEventData
-                            .setConnectedRegistry(ContainerRegistryEventConnectedRegistry.fromJson(reader));
-                    } else {
-                        reader.skipChildren();
-                    }
+    /**
+     * Reads an instance of ContainerRegistryImageDeletedEventData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerRegistryImageDeletedEventData if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerRegistryImageDeletedEventData.
+     */
+    @Generated
+    public static ContainerRegistryImageDeletedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerRegistryImageDeletedEventData deserializedContainerRegistryImageDeletedEventData
+                = new ContainerRegistryImageDeletedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    deserializedContainerRegistryImageDeletedEventData.setId(reader.getString());
+                } else if ("timestamp".equals(fieldName)) {
+                    deserializedContainerRegistryImageDeletedEventData.setTimestamp(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("action".equals(fieldName)) {
+                    deserializedContainerRegistryImageDeletedEventData.setAction(reader.getString());
+                } else if ("location".equals(fieldName)) {
+                    deserializedContainerRegistryImageDeletedEventData.setLocation(reader.getString());
+                } else if ("target".equals(fieldName)) {
+                    deserializedContainerRegistryImageDeletedEventData
+                        .setTarget(ContainerRegistryEventTarget.fromJson(reader));
+                } else if ("request".equals(fieldName)) {
+                    deserializedContainerRegistryImageDeletedEventData
+                        .setRequest(ContainerRegistryEventRequest.fromJson(reader));
+                } else if ("actor".equals(fieldName)) {
+                    deserializedContainerRegistryImageDeletedEventData
+                        .setActor(ContainerRegistryEventActor.fromJson(reader));
+                } else if ("source".equals(fieldName)) {
+                    deserializedContainerRegistryImageDeletedEventData
+                        .setSource(ContainerRegistryEventSource.fromJson(reader));
+                } else if ("connectedRegistry".equals(fieldName)) {
+                    deserializedContainerRegistryImageDeletedEventData
+                        .setConnectedRegistry(ContainerRegistryEventConnectedRegistry.fromJson(reader));
+                } else {
+                    reader.skipChildren();
                 }
-                return deserializedContainerRegistryImageDeletedEventData;
-            });
-        }
+            }
+            return deserializedContainerRegistryImageDeletedEventData;
+        });
+    }
 }

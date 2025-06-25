@@ -16,264 +16,265 @@ import java.util.Map;
 
 /**
  * Describes the schema of the properties under resource info which are common across all ARN system topic events.
- *
- * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Fluent
 @Deprecated
 public final class ResourceNotificationsResourceUpdatedDetails
     implements JsonSerializable<ResourceNotificationsResourceUpdatedDetails> {
 
-        /*
-         * id of the resource for which the event is being emitted
-         */
-        @Generated
-        private String id;
+    /*
+     * id of the resource for which the event is being emitted
+     */
+    @Generated
+    private String id;
 
-        /*
-         * name of the resource for which the event is being emitted
-         */
-        @Generated
-        private String name;
+    /*
+     * name of the resource for which the event is being emitted
+     */
+    @Generated
+    private String name;
 
-        /*
-         * the type of the resource for which the event is being emitted
-         */
-        @Generated
-        private String type;
+    /*
+     * the type of the resource for which the event is being emitted
+     */
+    @Generated
+    private String type;
 
-        /*
-         * the location of the resource for which the event is being emitted
-         */
-        @Generated
-        private String location;
+    /*
+     * the location of the resource for which the event is being emitted
+     */
+    @Generated
+    private String location;
 
-        /*
-         * the tags on the resource for which the event is being emitted
-         */
-        @Generated
-        private Map<String, String> tags;
+    /*
+     * the tags on the resource for which the event is being emitted
+     */
+    @Generated
+    private Map<String, String> tags;
 
-        /*
-         * properties in the payload of the resource for which the event is being emitted
-         */
-        @Generated
-        private Map<String, Object> properties;
+    /*
+     * properties in the payload of the resource for which the event is being emitted
+     */
+    @Generated
+    private Map<String, Object> properties;
 
-        /**
-         * Creates an instance of ResourceNotificationsResourceUpdatedDetails class.
-         */
-        @Generated
-        public ResourceNotificationsResourceUpdatedDetails() {
-        }
+    /**
+     * Creates an instance of ResourceNotificationsResourceUpdatedDetails class.
+     */
+    @Generated
+    public ResourceNotificationsResourceUpdatedDetails() {
+    }
 
-        /**
-         * Get the id property: id of the resource for which the event is being emitted.
-         *
-         * @return the id value.
-         */
-        @Generated
-        public String getId() {
-            return this.id;
-        }
+    /**
+     * Get the id property: id of the resource for which the event is being emitted.
+     *
+     * @return the id value.
+     */
+    @Generated
+    public String getId() {
+        return this.id;
+    }
 
-        /**
-         * Set the id property: id of the resource for which the event is being emitted.
-         *
-         * @param id the id value to set.
-         * @return the ResourceNotificationsResourceUpdatedDetails object itself.
-         */
-        @Generated
-        public ResourceNotificationsResourceUpdatedDetails setId(String id) {
-            this.id = id;
-            return this;
-        }
+    /**
+     * Set the id property: id of the resource for which the event is being emitted.
+     *
+     * @param id the id value to set.
+     * @return the ResourceNotificationsResourceUpdatedDetails object itself.
+     */
+    @Generated
+    public ResourceNotificationsResourceUpdatedDetails setId(String id) {
+        this.id = id;
+        return this;
+    }
 
-        /**
-         * Get the name property: name of the resource for which the event is being emitted.
-         *
-         * @return the name value.
-         */
-        @Generated
-        public String getName() {
-            return this.name;
-        }
+    /**
+     * Get the name property: name of the resource for which the event is being emitted.
+     *
+     * @return the name value.
+     */
+    @Generated
+    public String getName() {
+        return this.name;
+    }
 
-        /**
-         * Set the name property: name of the resource for which the event is being emitted.
-         *
-         * @param name the name value to set.
-         * @return the ResourceNotificationsResourceUpdatedDetails object itself.
-         */
-        @Generated
-        public ResourceNotificationsResourceUpdatedDetails setName(String name) {
-            this.name = name;
-            return this;
-        }
+    /**
+     * Set the name property: name of the resource for which the event is being emitted.
+     *
+     * @param name the name value to set.
+     * @return the ResourceNotificationsResourceUpdatedDetails object itself.
+     */
+    @Generated
+    public ResourceNotificationsResourceUpdatedDetails setName(String name) {
+        this.name = name;
+        return this;
+    }
 
-        /**
-         * Get the type property: the type of the resource for which the event is being emitted.
-         *
-         * @return the type value.
-         */
-        @Generated
-        public String getType() {
-            return this.type;
-        }
+    /**
+     * Get the type property: the type of the resource for which the event is being emitted.
+     *
+     * @return the type value.
+     */
+    @Generated
+    public String getType() {
+        return this.type;
+    }
 
-        /**
-         * Set the type property: the type of the resource for which the event is being emitted.
-         *
-         * @param type the type value to set.
-         * @return the ResourceNotificationsResourceUpdatedDetails object itself.
-         */
-        @Generated
-        public ResourceNotificationsResourceUpdatedDetails setType(String type) {
-            this.type = type;
-            return this;
-        }
+    /**
+     * Set the type property: the type of the resource for which the event is being emitted.
+     *
+     * @param type the type value to set.
+     * @return the ResourceNotificationsResourceUpdatedDetails object itself.
+     */
+    @Generated
+    public ResourceNotificationsResourceUpdatedDetails setType(String type) {
+        this.type = type;
+        return this;
+    }
 
-        /**
-         * Get the location property: the location of the resource for which the event is being emitted.
-         *
-         * @return the location value.
-         */
-        @Generated
-        public String getLocation() {
-            return this.location;
-        }
+    /**
+     * Get the location property: the location of the resource for which the event is being emitted.
+     *
+     * @return the location value.
+     */
+    @Generated
+    public String getLocation() {
+        return this.location;
+    }
 
-        /**
-         * Set the location property: the location of the resource for which the event is being emitted.
-         *
-         * @param location the location value to set.
-         * @return the ResourceNotificationsResourceUpdatedDetails object itself.
-         */
-        @Generated
-        public ResourceNotificationsResourceUpdatedDetails setLocation(String location) {
-            this.location = location;
-            return this;
-        }
+    /**
+     * Set the location property: the location of the resource for which the event is being emitted.
+     *
+     * @param location the location value to set.
+     * @return the ResourceNotificationsResourceUpdatedDetails object itself.
+     */
+    @Generated
+    public ResourceNotificationsResourceUpdatedDetails setLocation(String location) {
+        this.location = location;
+        return this;
+    }
 
-        /**
-         * Get the tags property: the tags on the resource for which the event is being emitted.
-         *
-         * @return the tags value.
-         */
-        @Generated
-        public Map<String, String> getResourceTags() {
-            return this.tags;
-        }
+    /**
+     * Get the tags property: the tags on the resource for which the event is being emitted.
+     *
+     * @return the tags value.
+     */
+    @Generated
+    public Map<String, String> getResourceTags() {
+        return this.tags;
+    }
 
-        /**
-         * Set the tags property: the tags on the resource for which the event is being emitted.
-         *
-         * @param tags the tags value to set.
-         * @return the ResourceNotificationsResourceUpdatedDetails object itself.
-         */
-        @Generated
-        public ResourceNotificationsResourceUpdatedDetails setResourceTags(Map<String, String> tags) {
-            this.tags = tags;
-            return this;
-        }
+    /**
+     * Set the tags property: the tags on the resource for which the event is being emitted.
+     *
+     * @param tags the tags value to set.
+     * @return the ResourceNotificationsResourceUpdatedDetails object itself.
+     */
+    @Generated
+    public ResourceNotificationsResourceUpdatedDetails setResourceTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
 
-        /**
-         * Get the properties property: properties in the payload of the resource for which the event is being emitted.
-         *
-         * @return the properties value.
-         */
-        @Generated
-        public Map<String, Object> getProperties() {
-            return this.properties;
-        }
+    /**
+     * Get the properties property: properties in the payload of the resource for which the event is being emitted.
+     *
+     * @return the properties value.
+     */
+    @Generated
+    public Map<String, Object> getProperties() {
+        return this.properties;
+    }
 
-        /**
-         * Set the properties property: properties in the payload of the resource for which the event is being emitted.
-         *
-         * @param properties the properties value to set.
-         * @return the ResourceNotificationsResourceUpdatedDetails object itself.
-         */
-        @Generated
-        public ResourceNotificationsResourceUpdatedDetails setProperties(Map<String, Object> properties) {
-            this.properties = properties;
-            return this;
-        }
+    /**
+     * Set the properties property: properties in the payload of the resource for which the event is being emitted.
+     *
+     * @param properties the properties value to set.
+     * @return the ResourceNotificationsResourceUpdatedDetails object itself.
+     */
+    @Generated
+    public ResourceNotificationsResourceUpdatedDetails setProperties(Map<String, Object> properties) {
+        this.properties = properties;
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject();
-            jsonWriter.writeStringField("id", this.id);
-            jsonWriter.writeStringField("name", this.name);
-            jsonWriter.writeStringField("type", this.type);
-            jsonWriter.writeStringField("location", this.location);
-            jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-            jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeUntyped(element));
-            return jsonWriter.writeEndObject();
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeUntyped(element));
+        return jsonWriter.writeEndObject();
+    }
 
-        /**
-         * Reads an instance of ResourceNotificationsResourceUpdatedDetails from the JsonReader.
-         *
-         * @param jsonReader The JsonReader being read.
-         * @return An instance of ResourceNotificationsResourceUpdatedDetails if the JsonReader was pointing to an instance
-         * of it, or null if it was pointing to JSON null.
-         * @throws IOException If an error occurs while reading the ResourceNotificationsResourceUpdatedDetails.
-         */
-        @Generated
-        public static ResourceNotificationsResourceUpdatedDetails fromJson(JsonReader jsonReader) throws IOException {
-            return jsonReader.readObject(reader -> {
-                ResourceNotificationsResourceUpdatedDetails deserializedResourceNotificationsResourceUpdatedDetails
-                    = new ResourceNotificationsResourceUpdatedDetails();
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
-                    if ("id".equals(fieldName)) {
-                        deserializedResourceNotificationsResourceUpdatedDetails.id = reader.getString();
-                    } else if ("name".equals(fieldName)) {
-                        deserializedResourceNotificationsResourceUpdatedDetails.name = reader.getString();
-                    } else if ("type".equals(fieldName)) {
-                        deserializedResourceNotificationsResourceUpdatedDetails.type = reader.getString();
-                    } else if ("location".equals(fieldName)) {
-                        deserializedResourceNotificationsResourceUpdatedDetails.location = reader.getString();
-                    } else if ("tags".equals(fieldName)) {
-                        Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                        deserializedResourceNotificationsResourceUpdatedDetails.tags = tags;
-                    } else if ("properties".equals(fieldName)) {
-                        Map<String, Object> properties = reader.readMap(reader1 -> reader1.readUntyped());
-                        deserializedResourceNotificationsResourceUpdatedDetails.properties = properties;
-                    } else {
-                        reader.skipChildren();
-                    }
+    /**
+     * Reads an instance of ResourceNotificationsResourceUpdatedDetails from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceNotificationsResourceUpdatedDetails if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceNotificationsResourceUpdatedDetails.
+     */
+    @Generated
+    public static ResourceNotificationsResourceUpdatedDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceNotificationsResourceUpdatedDetails deserializedResourceNotificationsResourceUpdatedDetails
+                = new ResourceNotificationsResourceUpdatedDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    deserializedResourceNotificationsResourceUpdatedDetails.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedResourceNotificationsResourceUpdatedDetails.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedResourceNotificationsResourceUpdatedDetails.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedResourceNotificationsResourceUpdatedDetails.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedResourceNotificationsResourceUpdatedDetails.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    Map<String, Object> properties = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedResourceNotificationsResourceUpdatedDetails.properties = properties;
+                } else {
+                    reader.skipChildren();
                 }
-                return deserializedResourceNotificationsResourceUpdatedDetails;
-            });
-        }
+            }
+            return deserializedResourceNotificationsResourceUpdatedDetails;
+        });
+    }
 
-        private static final ClientLogger LOGGER = new ClientLogger(ResourceNotificationsResourceUpdatedDetails.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceNotificationsResourceUpdatedDetails.class);
 
-        /**
-         * Get the tags property: The resource tags.
-         *
-         * @return the tags value.
-         * @deprecated This property has been replaced with {@link #getResourceTags()}.
-          *`n * @deprecated This class is deprecated and may be removed in future releases.`n */*/`n@Deprecated
-        public String getTags() {
-            LOGGER.log(LogLevel.INFORMATIONAL, () -> "This method has been replaced with getResourceTags().");
-            return null;
-        }
+    /**
+     * Get the tags property: The resource tags.
+     *
+     * @return the tags value.
+     * @deprecated This property has been replaced with {@link #getResourceTags()}.
+     */
+    @Deprecated
+    public String getTags() {
+        LOGGER.log(LogLevel.INFORMATIONAL, () -> "This method has been replaced with getResourceTags().");
+        return null;
+    }
 
-        /**
-         * Set the tags property: The resource tags.
-         *
-         * @param tags the tags value to set.
-         * @return the ResourceNotificationsResourceUpdatedDetails object itself.
-         * @deprecated This property has been replaced with {@link #setResourceTags(Map)}.
-          *`n * @deprecated This class is deprecated and may be removed in future releases.`n */*/`n@Deprecated
-        public ResourceNotificationsResourceUpdatedDetails setTags(String tags) {
-            LOGGER.log(LogLevel.INFORMATIONAL, () -> "This method has been replaced with setResourceTags(Map).");
-            return this;
-        }
+    /**
+     * Set the tags property: The resource tags.
+     *
+     * @param tags the tags value to set.
+     * @return the ResourceNotificationsResourceUpdatedDetails object itself.
+     * @deprecated This property has been replaced with {@link #setResourceTags(Map)}.
+     */
+    @Deprecated
+    public ResourceNotificationsResourceUpdatedDetails setTags(String tags) {
+        LOGGER.log(LogLevel.INFORMATIONAL, () -> "This method has been replaced with setResourceTags(Map).");
+        return this;
+    }
 }

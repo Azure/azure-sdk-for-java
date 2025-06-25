@@ -16,145 +16,144 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Cache.PatchingCompleted event.
- *
- * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Fluent
 @Deprecated
 public final class RedisPatchingCompletedEventData implements JsonSerializable<RedisPatchingCompletedEventData> {
 
-        /*
-         * The time at which the event occurred.
-         */
-        @Generated
-        private OffsetDateTime timestamp;
+    /*
+     * The time at which the event occurred.
+     */
+    @Generated
+    private OffsetDateTime timestamp;
 
-        /*
-         * The name of this event.
-         */
-        @Generated
-        private String name;
+    /*
+     * The name of this event.
+     */
+    @Generated
+    private String name;
 
-        /*
-         * The status of this event. Failed or succeeded
-         */
-        @Generated
-        private String status;
+    /*
+     * The status of this event. Failed or succeeded
+     */
+    @Generated
+    private String status;
 
-        /**
-         * Creates an instance of RedisPatchingCompletedEventData class.
-         */
-        @Generated
-        public RedisPatchingCompletedEventData() {
-        }
+    /**
+     * Creates an instance of RedisPatchingCompletedEventData class.
+     */
+    @Generated
+    public RedisPatchingCompletedEventData() {
+    }
 
-        /**
-         * Get the timestamp property: The time at which the event occurred.
-         *
-         * @return the timestamp value.
-         */
-        @Generated
-        public OffsetDateTime getTimestamp() {
-            return this.timestamp;
-        }
+    /**
+     * Get the timestamp property: The time at which the event occurred.
+     *
+     * @return the timestamp value.
+     */
+    @Generated
+    public OffsetDateTime getTimestamp() {
+        return this.timestamp;
+    }
 
-        /**
-         * Set the timestamp property: The time at which the event occurred.
-         *
-         * @param timestamp the timestamp value to set.
-         * @return the RedisPatchingCompletedEventData object itself.
-         */
-        @Generated
-        public RedisPatchingCompletedEventData setTimestamp(OffsetDateTime timestamp) {
-            this.timestamp = timestamp;
-            return this;
-        }
+    /**
+     * Set the timestamp property: The time at which the event occurred.
+     *
+     * @param timestamp the timestamp value to set.
+     * @return the RedisPatchingCompletedEventData object itself.
+     */
+    @Generated
+    public RedisPatchingCompletedEventData setTimestamp(OffsetDateTime timestamp) {
+        this.timestamp = timestamp;
+        return this;
+    }
 
-        /**
-         * Get the name property: The name of this event.
-         *
-         * @return the name value.
-         */
-        @Generated
-        public String getName() {
-            return this.name;
-        }
+    /**
+     * Get the name property: The name of this event.
+     *
+     * @return the name value.
+     */
+    @Generated
+    public String getName() {
+        return this.name;
+    }
 
-        /**
-         * Set the name property: The name of this event.
-         *
-         * @param name the name value to set.
-         * @return the RedisPatchingCompletedEventData object itself.
-         */
-        @Generated
-        public RedisPatchingCompletedEventData setName(String name) {
-            this.name = name;
-            return this;
-        }
+    /**
+     * Set the name property: The name of this event.
+     *
+     * @param name the name value to set.
+     * @return the RedisPatchingCompletedEventData object itself.
+     */
+    @Generated
+    public RedisPatchingCompletedEventData setName(String name) {
+        this.name = name;
+        return this;
+    }
 
-        /**
-         * Get the status property: The status of this event. Failed or succeeded.
-         *
-         * @return the status value.
-         */
-        @Generated
-        public String getStatus() {
-            return this.status;
-        }
+    /**
+     * Get the status property: The status of this event. Failed or succeeded.
+     *
+     * @return the status value.
+     */
+    @Generated
+    public String getStatus() {
+        return this.status;
+    }
 
-        /**
-         * Set the status property: The status of this event. Failed or succeeded.
-         *
-         * @param status the status value to set.
-         * @return the RedisPatchingCompletedEventData object itself.
-         */
-        @Generated
-        public RedisPatchingCompletedEventData setStatus(String status) {
-            this.status = status;
-            return this;
-        }
+    /**
+     * Set the status property: The status of this event. Failed or succeeded.
+     *
+     * @param status the status value to set.
+     * @return the RedisPatchingCompletedEventData object itself.
+     */
+    @Generated
+    public RedisPatchingCompletedEventData setStatus(String status) {
+        this.status = status;
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject();
-            jsonWriter.writeStringField("timestamp",
-                this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
-            jsonWriter.writeStringField("name", this.name);
-            jsonWriter.writeStringField("status", this.status);
-            return jsonWriter.writeEndObject();
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("timestamp",
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("status", this.status);
+        return jsonWriter.writeEndObject();
+    }
 
-        /**
-         * Reads an instance of RedisPatchingCompletedEventData from the JsonReader.
-         *
-         * @param jsonReader The JsonReader being read.
-         * @return An instance of RedisPatchingCompletedEventData if the JsonReader was pointing to an instance of it, or
-         * null if it was pointing to JSON null.
-         * @throws IOException If an error occurs while reading the RedisPatchingCompletedEventData.
-         */
-        @Generated
-        public static RedisPatchingCompletedEventData fromJson(JsonReader jsonReader) throws IOException {
-            return jsonReader.readObject(reader -> {
-                RedisPatchingCompletedEventData deserializedRedisPatchingCompletedEventData
-                    = new RedisPatchingCompletedEventData();
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
-                    if ("timestamp".equals(fieldName)) {
-                        deserializedRedisPatchingCompletedEventData.timestamp = reader
-                            .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                    } else if ("name".equals(fieldName)) {
-                        deserializedRedisPatchingCompletedEventData.name = reader.getString();
-                    } else if ("status".equals(fieldName)) {
-                        deserializedRedisPatchingCompletedEventData.status = reader.getString();
-                    } else {
-                        reader.skipChildren();
-                    }
+    /**
+     * Reads an instance of RedisPatchingCompletedEventData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RedisPatchingCompletedEventData if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RedisPatchingCompletedEventData.
+     */
+    @Generated
+    public static RedisPatchingCompletedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RedisPatchingCompletedEventData deserializedRedisPatchingCompletedEventData
+                = new RedisPatchingCompletedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("timestamp".equals(fieldName)) {
+                    deserializedRedisPatchingCompletedEventData.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("name".equals(fieldName)) {
+                    deserializedRedisPatchingCompletedEventData.name = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedRedisPatchingCompletedEventData.status = reader.getString();
+                } else {
+                    reader.skipChildren();
                 }
-                return deserializedRedisPatchingCompletedEventData;
-            });
-        }
+            }
+            return deserializedRedisPatchingCompletedEventData;
+        });
+    }
 }

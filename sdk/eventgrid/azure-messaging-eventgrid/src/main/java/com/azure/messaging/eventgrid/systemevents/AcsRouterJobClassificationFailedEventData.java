@@ -17,200 +17,198 @@ import java.util.stream.Collectors;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobClassificationFailed event.
- *
- * @deprecated This class is deprecated and may be removed in future releases.
  */
+@Fluent
 @Deprecated
 public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJobEventData {
 
-        /*
-         * Router Job Classification Policy Id
-         */
-        @Generated
-        private String classificationPolicyId;
+    /*
+     * Router Job Classification Policy Id
+     */
+    @Generated
+    private String classificationPolicyId;
 
-        /*
-         * Router Job Classification Failed Errors
-         */
-        @Generated
-        private List<AcsRouterCommunicationError> errors;
+    /*
+     * Router Job Classification Failed Errors
+     */
+    @Generated
+    private List<AcsRouterCommunicationError> errors;
 
-        /**
-         * Creates an instance of AcsRouterJobClassificationFailedEventData class.
-         */
-        @Generated
-        public AcsRouterJobClassificationFailedEventData() {
-        }
+    /**
+     * Creates an instance of AcsRouterJobClassificationFailedEventData class.
+     */
+    @Generated
+    public AcsRouterJobClassificationFailedEventData() {
+    }
 
-        /**
-         * Get the classificationPolicyId property: Router Job Classification Policy Id.
-         *
-         * @return the classificationPolicyId value.
-         */
-        @Generated
-        public String getClassificationPolicyId() {
-            return this.classificationPolicyId;
-        }
+    /**
+     * Get the classificationPolicyId property: Router Job Classification Policy Id.
+     *
+     * @return the classificationPolicyId value.
+     */
+    @Generated
+    public String getClassificationPolicyId() {
+        return this.classificationPolicyId;
+    }
 
-        /**
-         * Set the classificationPolicyId property: Router Job Classification Policy Id.
-         *
-         * @param classificationPolicyId the classificationPolicyId value to set.
-         * @return the AcsRouterJobClassificationFailedEventData object itself.
-         */
-        @Generated
-        public AcsRouterJobClassificationFailedEventData setClassificationPolicyId(String classificationPolicyId) {
-            this.classificationPolicyId = classificationPolicyId;
-            return this;
-        }
+    /**
+     * Set the classificationPolicyId property: Router Job Classification Policy Id.
+     *
+     * @param classificationPolicyId the classificationPolicyId value to set.
+     * @return the AcsRouterJobClassificationFailedEventData object itself.
+     */
+    @Generated
+    public AcsRouterJobClassificationFailedEventData setClassificationPolicyId(String classificationPolicyId) {
+        this.classificationPolicyId = classificationPolicyId;
+        return this;
+    }
 
-        /**
-         * Get the errors property: Router Job Classification Failed Errors.
-         *
-         * @return the errors value.
-         */
-        @Generated
-        public List<ResponseError> getErrors() {
-            return this.errors.stream()
-                .map(e -> new ResponseError(e.getCode(), e.getMessage()))
-                .collect(Collectors.toList());
-        }
+    /**
+     * Get the errors property: Router Job Classification Failed Errors.
+     *
+     * @return the errors value.
+     */
+    @Generated
+    public List<ResponseError> getErrors() {
+        return this.errors.stream()
+            .map(e -> new ResponseError(e.getCode(), e.getMessage()))
+            .collect(Collectors.toList());
+    }
 
-        /**
-         * Set the errors property: Router Job Classification Failed Errors.
-         *
-         * @param errors the errors value to set.
-         * @return the AcsRouterJobClassificationFailedEventData object itself.
-         */
-        @Generated
-        public AcsRouterJobClassificationFailedEventData setErrors(List<ResponseError> errors) {
-            this.errors = errors.stream()
-                .map(e -> new AcsRouterCommunicationError().setCode(e.getCode()).setMessage(e.getMessage()))
-                .collect(Collectors.toList());
-            return this;
-        }
+    /**
+     * Set the errors property: Router Job Classification Failed Errors.
+     *
+     * @param errors the errors value to set.
+     * @return the AcsRouterJobClassificationFailedEventData object itself.
+     */
+    @Generated
+    public AcsRouterJobClassificationFailedEventData setErrors(List<ResponseError> errors) {
+        this.errors = errors.stream()
+            .map(e -> new AcsRouterCommunicationError().setCode(e.getCode()).setMessage(e.getMessage()))
+            .collect(Collectors.toList());
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public AcsRouterJobClassificationFailedEventData setQueueId(String queueId) {
-            super.setQueueId(queueId);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public AcsRouterJobClassificationFailedEventData setQueueId(String queueId) {
+        super.setQueueId(queueId);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public AcsRouterJobClassificationFailedEventData setLabels(Map<String, String> labels) {
-            super.setLabels(labels);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public AcsRouterJobClassificationFailedEventData setLabels(Map<String, String> labels) {
+        super.setLabels(labels);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public AcsRouterJobClassificationFailedEventData setTags(Map<String, String> tags) {
-            super.setTags(tags);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public AcsRouterJobClassificationFailedEventData setTags(Map<String, String> tags) {
+        super.setTags(tags);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public AcsRouterJobClassificationFailedEventData setJobId(String jobId) {
-            super.setJobId(jobId);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public AcsRouterJobClassificationFailedEventData setJobId(String jobId) {
+        super.setJobId(jobId);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public AcsRouterJobClassificationFailedEventData setChannelReference(String channelReference) {
-            super.setChannelReference(channelReference);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public AcsRouterJobClassificationFailedEventData setChannelReference(String channelReference) {
+        super.setChannelReference(channelReference);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public AcsRouterJobClassificationFailedEventData setChannelId(String channelId) {
-            super.setChannelId(channelId);
-            return this;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public AcsRouterJobClassificationFailedEventData setChannelId(String channelId) {
+        super.setChannelId(channelId);
+        return this;
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Generated
-        @Override
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject();
-            jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
-            jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
-            jsonWriter.writeStringField("jobId", getJobId());
-            jsonWriter.writeStringField("channelReference", getChannelReference());
-            jsonWriter.writeStringField("channelId", getChannelId());
-            jsonWriter.writeStringField("queueId", getQueueId());
-            jsonWriter.writeStringField("classificationPolicyId", this.classificationPolicyId);
-            jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
-            return jsonWriter.writeEndObject();
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("jobId", getJobId());
+        jsonWriter.writeStringField("channelReference", getChannelReference());
+        jsonWriter.writeStringField("channelId", getChannelId());
+        jsonWriter.writeStringField("queueId", getQueueId());
+        jsonWriter.writeStringField("classificationPolicyId", this.classificationPolicyId);
+        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
 
-        /**
-         * Reads an instance of AcsRouterJobClassificationFailedEventData from the JsonReader.
-         *
-         * @param jsonReader The JsonReader being read.
-         * @return An instance of AcsRouterJobClassificationFailedEventData if the JsonReader was pointing to an instance of
-         * it, or null if it was pointing to JSON null.
-         * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-         * @throws IOException If an error occurs while reading the AcsRouterJobClassificationFailedEventData.
-         */
-        @Generated
-        public static AcsRouterJobClassificationFailedEventData fromJson(JsonReader jsonReader) throws IOException {
-            return jsonReader.readObject(reader -> {
-                AcsRouterJobClassificationFailedEventData deserializedAcsRouterJobClassificationFailedEventData
-                    = new AcsRouterJobClassificationFailedEventData();
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
-                    if ("labels".equals(fieldName)) {
-                        Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
-                        deserializedAcsRouterJobClassificationFailedEventData.setLabels(labels);
-                    } else if ("tags".equals(fieldName)) {
-                        Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                        deserializedAcsRouterJobClassificationFailedEventData.setTags(tags);
-                    } else if ("jobId".equals(fieldName)) {
-                        deserializedAcsRouterJobClassificationFailedEventData.setJobId(reader.getString());
-                    } else if ("channelReference".equals(fieldName)) {
-                        deserializedAcsRouterJobClassificationFailedEventData.setChannelReference(reader.getString());
-                    } else if ("channelId".equals(fieldName)) {
-                        deserializedAcsRouterJobClassificationFailedEventData.setChannelId(reader.getString());
-                    } else if ("queueId".equals(fieldName)) {
-                        deserializedAcsRouterJobClassificationFailedEventData.setQueueId(reader.getString());
-                    } else if ("classificationPolicyId".equals(fieldName)) {
-                        deserializedAcsRouterJobClassificationFailedEventData.classificationPolicyId
-                            = reader.getString();
-                    } else if ("errors".equals(fieldName)) {
-                        List<AcsRouterCommunicationError> errors
-                            = reader.readArray(reader1 -> AcsRouterCommunicationError.fromJson(reader1));
-                        deserializedAcsRouterJobClassificationFailedEventData.errors = errors;
-                    } else {
-                        reader.skipChildren();
-                    }
+    /**
+     * Reads an instance of AcsRouterJobClassificationFailedEventData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsRouterJobClassificationFailedEventData if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AcsRouterJobClassificationFailedEventData.
+     */
+    @Generated
+    public static AcsRouterJobClassificationFailedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsRouterJobClassificationFailedEventData deserializedAcsRouterJobClassificationFailedEventData
+                = new AcsRouterJobClassificationFailedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("labels".equals(fieldName)) {
+                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsRouterJobClassificationFailedEventData.setLabels(labels);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsRouterJobClassificationFailedEventData.setTags(tags);
+                } else if ("jobId".equals(fieldName)) {
+                    deserializedAcsRouterJobClassificationFailedEventData.setJobId(reader.getString());
+                } else if ("channelReference".equals(fieldName)) {
+                    deserializedAcsRouterJobClassificationFailedEventData.setChannelReference(reader.getString());
+                } else if ("channelId".equals(fieldName)) {
+                    deserializedAcsRouterJobClassificationFailedEventData.setChannelId(reader.getString());
+                } else if ("queueId".equals(fieldName)) {
+                    deserializedAcsRouterJobClassificationFailedEventData.setQueueId(reader.getString());
+                } else if ("classificationPolicyId".equals(fieldName)) {
+                    deserializedAcsRouterJobClassificationFailedEventData.classificationPolicyId = reader.getString();
+                } else if ("errors".equals(fieldName)) {
+                    List<AcsRouterCommunicationError> errors
+                        = reader.readArray(reader1 -> AcsRouterCommunicationError.fromJson(reader1));
+                    deserializedAcsRouterJobClassificationFailedEventData.errors = errors;
+                } else {
+                    reader.skipChildren();
                 }
-                return deserializedAcsRouterJobClassificationFailedEventData;
-            });
-        }
+            }
+            return deserializedAcsRouterJobClassificationFailedEventData;
+        });
+    }
 }
