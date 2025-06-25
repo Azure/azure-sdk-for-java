@@ -142,7 +142,9 @@ public class ConfigsTests {
 
     @Test(groups = { "unit" })
     public void http2MinConnectionPoolSize() {
-        assertThat(Configs.getHttp2MinConnectionPoolSize()).isEqualTo(1);
+        assertThat(Configs.getHttp2MinConnectionPoolSize()).isEqualTo(
+            Math.max(8, Runtime.getRuntime().availableProcessors())
+        );
 
         System.clearProperty("COSMOS.HTTP2_MIN_CONNECTION_POOL_SIZE");
         System.setProperty("COSMOS.HTTP2_MIN_CONNECTION_POOL_SIZE", "10");
