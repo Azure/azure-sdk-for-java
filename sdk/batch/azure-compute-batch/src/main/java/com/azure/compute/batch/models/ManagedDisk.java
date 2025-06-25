@@ -27,7 +27,7 @@ public final class ManagedDisk implements JsonSerializable<ManagedDisk> {
      * Specifies the security profile settings for the managed disk.
      */
     @Generated
-    private VmDiskSecurityProfile securityProfile;
+    private BatchVmDiskSecurityProfile securityProfile;
 
     /**
      * Creates an instance of ManagedDisk class.
@@ -64,7 +64,7 @@ public final class ManagedDisk implements JsonSerializable<ManagedDisk> {
      * @return the securityProfile value.
      */
     @Generated
-    public VmDiskSecurityProfile getSecurityProfile() {
+    public BatchVmDiskSecurityProfile getSecurityProfile() {
         return this.securityProfile;
     }
 
@@ -99,7 +99,7 @@ public final class ManagedDisk implements JsonSerializable<ManagedDisk> {
                 if ("storageAccountType".equals(fieldName)) {
                     deserializedManagedDisk.storageAccountType = StorageAccountType.fromString(reader.getString());
                 } else if ("securityProfile".equals(fieldName)) {
-                    deserializedManagedDisk.securityProfile = VmDiskSecurityProfile.fromJson(reader);
+                    deserializedManagedDisk.securityProfile = BatchVmDiskSecurityProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -115,7 +115,7 @@ public final class ManagedDisk implements JsonSerializable<ManagedDisk> {
      * @return the ManagedDisk object itself.
      */
     @Generated
-    public ManagedDisk setSecurityProfile(VmDiskSecurityProfile securityProfile) {
+    public ManagedDisk setSecurityProfile(BatchVmDiskSecurityProfile securityProfile) {
         this.securityProfile = securityProfile;
         return this;
     }
