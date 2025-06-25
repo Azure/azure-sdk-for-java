@@ -779,5 +779,6 @@ public final class ModelBridgeInternal {
         CosmosClientTelemetryConfig.initialize();
         CosmosContainerIdentity.initialize();
         PriorityLevel.initialize();
+        CosmosDatabaseAccount.initialize();
     }
 }

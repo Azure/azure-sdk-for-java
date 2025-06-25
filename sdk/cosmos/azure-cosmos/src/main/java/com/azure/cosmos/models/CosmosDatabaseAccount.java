@@ -1,12 +1,9 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.directconnectivity.ContainerDirectConnectionMetadata;
 
 import java.util.List;
-import java.util.Map;
 
 /***
  * Represents the configuration of a Cosmos DB database account, including its read and write regions,
