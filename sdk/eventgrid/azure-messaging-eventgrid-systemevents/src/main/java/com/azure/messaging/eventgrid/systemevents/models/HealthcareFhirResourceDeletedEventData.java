@@ -28,7 +28,7 @@ public final class HealthcareFhirResourceDeletedEventData
      * Domain name of FHIR account for this resource.
      */
     @Generated
-    private final String resourceFhirAccount;
+    private final String fhirServiceHostName;
 
     /*
      * Id of HL7 FHIR resource.
@@ -46,15 +46,15 @@ public final class HealthcareFhirResourceDeletedEventData
      * Creates an instance of HealthcareFhirResourceDeletedEventData class.
      *
      * @param fhirResourceType the fhirResourceType value to set.
-     * @param resourceFhirAccount the resourceFhirAccount value to set.
+     * @param fhirServiceHostName the fhirServiceHostName value to set.
      * @param fhirResourceId the fhirResourceId value to set.
      * @param fhirResourceVersionId the fhirResourceVersionId value to set.
      */
     @Generated
     private HealthcareFhirResourceDeletedEventData(HealthcareFhirResourceType fhirResourceType,
-        String resourceFhirAccount, String fhirResourceId, long fhirResourceVersionId) {
+        String fhirServiceHostName, String fhirResourceId, long fhirResourceVersionId) {
         this.fhirResourceType = fhirResourceType;
-        this.resourceFhirAccount = resourceFhirAccount;
+        this.fhirServiceHostName = fhirServiceHostName;
         this.fhirResourceId = fhirResourceId;
         this.fhirResourceVersionId = fhirResourceVersionId;
     }
@@ -70,13 +70,13 @@ public final class HealthcareFhirResourceDeletedEventData
     }
 
     /**
-     * Get the resourceFhirAccount property: Domain name of FHIR account for this resource.
+     * Get the fhirServiceHostName property: Domain name of FHIR account for this resource.
      *
-     * @return the resourceFhirAccount value.
+     * @return the fhirServiceHostName value.
      */
     @Generated
-    public String getResourceFhirAccount() {
-        return this.resourceFhirAccount;
+    public String getFhirServiceHostName() {
+        return this.fhirServiceHostName;
     }
 
     /**
@@ -109,7 +109,7 @@ public final class HealthcareFhirResourceDeletedEventData
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("resourceType",
             this.fhirResourceType == null ? null : this.fhirResourceType.toString());
-        jsonWriter.writeStringField("resourceFhirAccount", this.resourceFhirAccount);
+        jsonWriter.writeStringField("resourceFhirAccount", this.fhirServiceHostName);
         jsonWriter.writeStringField("resourceFhirId", this.fhirResourceId);
         jsonWriter.writeLongField("resourceVersionId", this.fhirResourceVersionId);
         return jsonWriter.writeEndObject();
@@ -128,7 +128,7 @@ public final class HealthcareFhirResourceDeletedEventData
     public static HealthcareFhirResourceDeletedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HealthcareFhirResourceType fhirResourceType = null;
-            String resourceFhirAccount = null;
+            String fhirServiceHostName = null;
             String fhirResourceId = null;
             long fhirResourceVersionId = 0L;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -137,7 +137,7 @@ public final class HealthcareFhirResourceDeletedEventData
                 if ("resourceType".equals(fieldName)) {
                     fhirResourceType = HealthcareFhirResourceType.fromString(reader.getString());
                 } else if ("resourceFhirAccount".equals(fieldName)) {
-                    resourceFhirAccount = reader.getString();
+                    fhirServiceHostName = reader.getString();
                 } else if ("resourceFhirId".equals(fieldName)) {
                     fhirResourceId = reader.getString();
                 } else if ("resourceVersionId".equals(fieldName)) {
@@ -146,7 +146,7 @@ public final class HealthcareFhirResourceDeletedEventData
                     reader.skipChildren();
                 }
             }
-            return new HealthcareFhirResourceDeletedEventData(fhirResourceType, resourceFhirAccount, fhirResourceId,
+            return new HealthcareFhirResourceDeletedEventData(fhirResourceType, fhirServiceHostName, fhirResourceId,
                 fhirResourceVersionId);
         });
     }

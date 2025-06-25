@@ -21,16 +21,13 @@ public final class AppEventTypeDetail implements JsonSerializable<AppEventTypeDe
      * Type of action of the operation.
      */
     @Generated
-    private final AppAction action;
+    private AppAction action;
 
     /**
      * Creates an instance of AppEventTypeDetail class.
-     * 
-     * @param action the action value to set.
      */
     @Generated
-    private AppEventTypeDetail(AppAction action) {
-        this.action = action;
+    private AppEventTypeDetail() {
     }
 
     /**
@@ -60,24 +57,24 @@ public final class AppEventTypeDetail implements JsonSerializable<AppEventTypeDe
      * @param jsonReader The JsonReader being read.
      * @return An instance of AppEventTypeDetail if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AppEventTypeDetail.
      */
     @Generated
     public static AppEventTypeDetail fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AppAction action = null;
+            AppEventTypeDetail deserializedAppEventTypeDetail = new AppEventTypeDetail();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("action".equals(fieldName)) {
-                    action = AppAction.fromString(reader.getString());
+                    deserializedAppEventTypeDetail.action = AppAction.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new AppEventTypeDetail(action);
+
+            return deserializedAppEventTypeDetail;
         });
     }
 }

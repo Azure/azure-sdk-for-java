@@ -21,7 +21,7 @@ public final class WebSlotSwapStartedEventData implements JsonSerializable<WebSl
      * Detail of action on the app.
      */
     @Generated
-    private final AppEventTypeDetail appEventTypeDetail;
+    private AppEventTypeDetail appEventTypeDetail;
 
     /*
      * name of the web site that had this event.
@@ -61,12 +61,9 @@ public final class WebSlotSwapStartedEventData implements JsonSerializable<WebSl
 
     /**
      * Creates an instance of WebSlotSwapStartedEventData class.
-     *
-     * @param appEventTypeDetail the appEventTypeDetail value to set.
      */
     @Generated
-    private WebSlotSwapStartedEventData(AppEventTypeDetail appEventTypeDetail) {
-        this.appEventTypeDetail = appEventTypeDetail;
+    private WebSlotSwapStartedEventData() {
     }
 
     /**
@@ -165,48 +162,33 @@ public final class WebSlotSwapStartedEventData implements JsonSerializable<WebSl
      * @param jsonReader The JsonReader being read.
      * @return An instance of WebSlotSwapStartedEventData if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WebSlotSwapStartedEventData.
      */
     @Generated
     public static WebSlotSwapStartedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AppEventTypeDetail appEventTypeDetail = null;
-            String name = null;
-            String clientRequestId = null;
-            String correlationRequestId = null;
-            String requestId = null;
-            String address = null;
-            String verb = null;
+            WebSlotSwapStartedEventData deserializedWebSlotSwapStartedEventData = new WebSlotSwapStartedEventData();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("appEventTypeDetail".equals(fieldName)) {
-                    appEventTypeDetail = AppEventTypeDetail.fromJson(reader);
+                    deserializedWebSlotSwapStartedEventData.appEventTypeDetail = AppEventTypeDetail.fromJson(reader);
                 } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
+                    deserializedWebSlotSwapStartedEventData.name = reader.getString();
                 } else if ("clientRequestId".equals(fieldName)) {
-                    clientRequestId = reader.getString();
+                    deserializedWebSlotSwapStartedEventData.clientRequestId = reader.getString();
                 } else if ("correlationRequestId".equals(fieldName)) {
-                    correlationRequestId = reader.getString();
+                    deserializedWebSlotSwapStartedEventData.correlationRequestId = reader.getString();
                 } else if ("requestId".equals(fieldName)) {
-                    requestId = reader.getString();
+                    deserializedWebSlotSwapStartedEventData.requestId = reader.getString();
                 } else if ("address".equals(fieldName)) {
-                    address = reader.getString();
+                    deserializedWebSlotSwapStartedEventData.address = reader.getString();
                 } else if ("verb".equals(fieldName)) {
-                    verb = reader.getString();
+                    deserializedWebSlotSwapStartedEventData.verb = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            WebSlotSwapStartedEventData deserializedWebSlotSwapStartedEventData
-                = new WebSlotSwapStartedEventData(appEventTypeDetail);
-            deserializedWebSlotSwapStartedEventData.name = name;
-            deserializedWebSlotSwapStartedEventData.clientRequestId = clientRequestId;
-            deserializedWebSlotSwapStartedEventData.correlationRequestId = correlationRequestId;
-            deserializedWebSlotSwapStartedEventData.requestId = requestId;
-            deserializedWebSlotSwapStartedEventData.address = address;
-            deserializedWebSlotSwapStartedEventData.verb = verb;
             return deserializedWebSlotSwapStartedEventData;
         });
     }
