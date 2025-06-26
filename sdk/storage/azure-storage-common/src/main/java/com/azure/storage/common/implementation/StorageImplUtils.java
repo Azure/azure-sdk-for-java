@@ -316,8 +316,6 @@ public class StorageImplUtils {
     public static String convertStorageExceptionMessage(String message, HttpResponse response, String errorCode,
         String headerName) {
         if (response != null) {
-            String headerErrorCode = response.getHeaders().getValue(ERROR_CODE_HEADER_NAME);
-
             // Handle 403 Forbidden responses by appending detailed logging instructions for signature mismatches.
             if (response.getStatusCode() == 403) {
                 return STORAGE_EXCEPTION_LOG_STRING_TO_SIGN_MESSAGE + message;
@@ -327,10 +325,11 @@ public class StorageImplUtils {
             if (response.getRequest() != null
                 && response.getRequest().getHttpMethod() != null
                 && response.getRequest().getHttpMethod().equals(HttpMethod.HEAD)
-                && headerErrorCode != null) {
+                && response.getHeaders().getValue(ERROR_CODE_HEADER_NAME) != null) {
                 int indexOfEmptyBody = message.indexOf("(empty body)");
                 if (indexOfEmptyBody >= 0) {
-                    return message.substring(0, indexOfEmptyBody) + headerErrorCode
+                    return message.substring(0, indexOfEmptyBody)
+                        + response.getHeaders().getValue(ERROR_CODE_HEADER_NAME)
                         + message.substring(indexOfEmptyBody + 12);
                 }
             }
