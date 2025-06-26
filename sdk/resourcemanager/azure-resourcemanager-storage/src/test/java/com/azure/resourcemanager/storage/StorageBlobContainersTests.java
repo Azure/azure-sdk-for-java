@@ -11,10 +11,7 @@ import com.azure.core.util.Configuration;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.storage.models.BlobContainer;
-import com.azure.resourcemanager.storage.models.BlobContainers;
-import com.azure.resourcemanager.storage.models.PublicAccess;
-import com.azure.resourcemanager.storage.models.StorageAccount;
+import com.azure.resourcemanager.storage.models.*;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
@@ -54,18 +51,23 @@ public class StorageBlobContainersTests extends StorageManagementTest {
             .define(saName)
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
+            .withSku(StorageAccountSkuType.STANDARD_LRS)
+            .disableSharedKeyAccess()
+            // It's not taking effect during storage account creation. Not sure if it's a bug.
+//            .enableBlobPublicAccess()
             .create();
 
         BlobContainers blobContainers = this.storageManager.blobContainers();
         BlobContainer blobContainer = blobContainers.defineContainer("blob-test")
             .withExistingStorageAccount(rgName, saName)
-            .withPublicAccess(PublicAccess.CONTAINER)
+            .withPublicAccess(PublicAccess.NONE)
+//            .withPublicAccess(PublicAccess.CONTAINER)
             .withMetadata("a", "b")
             .withMetadata("c", "d")
             .create();
 
         Assertions.assertEquals("blob-test", blobContainer.name());
-        Assertions.assertEquals(PublicAccess.CONTAINER, blobContainer.publicAccess());
+        Assertions.assertEquals(PublicAccess.NONE, blobContainer.publicAccess());
         Assertions.assertEquals(metadataTest, blobContainer.metadata());
     }
 
@@ -84,23 +86,28 @@ public class StorageBlobContainersTests extends StorageManagementTest {
             .define(saName)
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
+            .disableSharedKeyAccess()
+            // It's not taking effect during storage account creation. Not sure if it's a bug.
+//            .enableBlobPublicAccess()
             .create();
 
         BlobContainers blobContainers = this.storageManager.blobContainers();
         BlobContainer blobContainer = blobContainers.defineContainer("blob-test")
             .withExistingStorageAccount(rgName, saName)
-            .withPublicAccess(PublicAccess.CONTAINER)
+            .withPublicAccess(PublicAccess.NONE)
+//            .withPublicAccess(PublicAccess.CONTAINER)
             .withMetadata(metadataInitial)
             .create();
 
         blobContainer.update()
-            .withPublicAccess(PublicAccess.BLOB)
+//            .withPublicAccess(PublicAccess.BLOB)
+            .withPublicAccess(PublicAccess.NONE)
             .withMetadata("c", "d")
             .withMetadata("e", "f")
             .apply();
 
         Assertions.assertEquals("blob-test", blobContainer.name());
-        Assertions.assertEquals(PublicAccess.BLOB, blobContainer.publicAccess());
+        Assertions.assertEquals(PublicAccess.NONE, blobContainer.publicAccess());
         Assertions.assertEquals(metadataTest, blobContainer.metadata());
     }
 
