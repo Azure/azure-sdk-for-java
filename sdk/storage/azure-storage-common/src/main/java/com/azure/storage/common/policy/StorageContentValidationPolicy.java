@@ -12,6 +12,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.storage.common.implementation.StorageCrc64Calculator;
 import com.azure.storage.common.implementation.structuredmessage.StructuredMessageEncoder;
 import com.azure.storage.common.implementation.structuredmessage.StructuredMessageFlags;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
@@ -76,16 +77,20 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
 
     private void applyStructuredMessage(HttpPipelineCallContext context) {
         // Implementation for applying structured message to the request body
-        ByteBuffer unencodedContent = context.getHttpRequest().getBodyAsBinaryData().toByteBuffer();
         int unencodedContentLength
             = Integer.parseInt(context.getHttpRequest().getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
 
         StructuredMessageEncoder structuredMessageEncoder = new StructuredMessageEncoder(unencodedContentLength,
             V1_DEFAULT_SEGMENT_CONTENT_LENGTH, StructuredMessageFlags.STORAGE_CRC64);
-        byte[] encodedContent = structuredMessageEncoder.encode(unencodedContent).array();
+        //System.out.println("With BinaryData:");
+        //byte[] encodedContent = structuredMessageEncoder.encode(context.getHttpRequest().getBodyAsBinaryData().toByteBuffer()).array();
+
+        System.out.println("With Flux:");
+        Flux<ByteBuffer> encodedContent = structuredMessageEncoder.encode(context.getHttpRequest().getBody());
 
         context.getHttpRequest().setBody(encodedContent);
-        context.getHttpRequest().setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(encodedContent.length));
+        context.getHttpRequest()
+            .setHeader(HttpHeaderName.CONTENT_LENGTH, structuredMessageEncoder.getEncodedMessageLength());
         // x-ms-structured-body
         context.getHttpRequest().setHeader(STRUCTURED_BODY_TYPE_HEADER_NAME, STRUCTUED_BODY_TYPE);
         // x-ms-structured-content-length

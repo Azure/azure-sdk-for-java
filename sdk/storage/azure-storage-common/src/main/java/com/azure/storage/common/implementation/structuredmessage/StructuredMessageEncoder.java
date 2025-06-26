@@ -6,6 +6,7 @@ package com.azure.storage.common.implementation.structuredmessage;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.StorageCrc64Calculator;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
 import java.io.ByteArrayOutputStream;
@@ -118,6 +119,10 @@ public class StructuredMessageEncoder {
         return buffer.array();
     }
 
+    public Flux<ByteBuffer> encode(Flux<ByteBuffer> unencodedBufferFlux) {
+        return unencodedBufferFlux.map(this::encode).filter(ByteBuffer::hasRemaining);
+    }
+
     /**
      * Encodes the given buffer into a structured message format.
      *
@@ -127,6 +132,7 @@ public class StructuredMessageEncoder {
      * encoded.
      */
     public ByteBuffer encode(ByteBuffer unencodedBuffer) {
+        System.out.println("remaining: " + unencodedBuffer.remaining());
         StorageImplUtils.assertNotNull("unencodedBuffer", unencodedBuffer);
 
         if (currentContentOffset == contentLength) {
@@ -246,5 +252,14 @@ public class StructuredMessageEncoder {
         if (structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64) {
             segmentCRC64s.putIfAbsent(currentSegmentNumber, 0L);
         }
+    }
+
+    /**
+     * Returns the length of the message.
+     *
+     * @return The length of the message.
+     */
+    public String getEncodedMessageLength() {
+        return String.valueOf(messageLength);
     }
 }

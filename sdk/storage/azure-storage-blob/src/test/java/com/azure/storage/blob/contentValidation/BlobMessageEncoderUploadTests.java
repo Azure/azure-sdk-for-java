@@ -26,9 +26,11 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
 
     @Test
     public void uploadBinaryDataFull() {
+        BlobClient blob = getBlobClientBuilderWithTokenCredential(bc.getBlobUrl()).buildClient();
+
         BlobParallelUploadOptions options = new BlobParallelUploadOptions(DATA.getDefaultBinaryData())
             .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO);
-        Response<BlockBlobItem> response = bc.uploadWithResponse(options, null, Context.NONE);
+        Response<BlockBlobItem> response = blob.uploadWithResponse(options, null, Context.NONE);
     }
 
     @Test
