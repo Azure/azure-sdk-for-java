@@ -256,7 +256,7 @@ cosmos_org.hdrhistogram:HdrHistogram;2.1.12
 cosmos_com.fasterxml.jackson.core:jackson-databind;2.15.2
 cosmos_com.fasterxml.jackson.module:jackson-module-scala_2.12;2.15.2
 
-## Cosmos Spark connector under sdk\cosmos\azure-cosmos-spark_3-1_2-12\pom.xml
+## Cosmos Spark connector under sdk\cosmos\azure-cosmos-spark_3-<version>_2-12\pom.xml
 # Cosmos Spark connector runtime dependencies - provided by Spark runtime/host
 cosmos-spark_3-3_org.apache.spark:spark-sql_2.12;3.3.0
 cosmos-spark_3-4_org.apache.spark:spark-sql_2.12;3.4.0

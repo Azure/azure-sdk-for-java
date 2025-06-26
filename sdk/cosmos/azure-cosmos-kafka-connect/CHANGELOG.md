@@ -8,6 +8,7 @@
 
 #### Bugs Fixed
 * Fixed an issue where Cosmos client is not being closed properly when connector failed to start - See [PR 45633](https://github.com/Azure/azure-sdk-for-java/pull/45633)
+* Fixed `NullReferenceException` in Kafka Source Connector when split happens - See [PR 45838](https://github.com/Azure/azure-sdk-for-java/pull/45838)
 
 #### Other Changes
 

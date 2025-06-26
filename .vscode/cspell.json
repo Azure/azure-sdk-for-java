@@ -873,6 +873,12 @@
       ]
     },
     {
+      "filename": "sdk/storage/CONTRIBUTING.md",
+      "words": [
+        "HKLM"
+      ]
+    },
+    {
       "filename": "sdk/storage/azure-storage-common/**",
       "words": [
         "alzimmer",
