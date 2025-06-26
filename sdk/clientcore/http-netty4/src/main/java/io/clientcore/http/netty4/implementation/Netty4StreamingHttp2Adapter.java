@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package io.clientcore.http.netty4.implementation;
 
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -37,13 +38,15 @@ import static io.netty.handler.codec.http2.HttpConversionUtil.parseStatus;
  * {@link FullHttpResponse}. Rather it streams frames as they arrive, allowing for more efficient memory usage.
  */
 final class Netty4StreamingHttp2Adapter extends Http2EventAdapter {
+    private static final ClientLogger LOGGER = new ClientLogger(Netty4StreamingHttp2Adapter.class);
+
     private final Http2Connection connection;
 
     Netty4StreamingHttp2Adapter(Http2Connection connection) {
         this.connection = connection;
     }
 
-    // TODO (alzimmer): This implementation is close but needs a way to control when WINDOWS_UPDARE frames are sent to
+    // TODO (alzimmer): This implementation is close but needs a way to control when WINDOWS_UPDATE frames are sent to
     //  prevent race conditions between switching from the initial response data handling in Netty4ResponseHandler and
     //  either eager or deferred content reading in the custom handlers.
     //  For now, while huge responses don't need to be supported yet, use InboundHttp2ToHttpAdapter to buffer the
@@ -56,6 +59,8 @@ final class Netty4StreamingHttp2Adapter extends Http2EventAdapter {
             throw connectionError(PROTOCOL_ERROR, "Data Frame received for unknown stream id %d", streamId);
         }
 
+        // data may be using pooled buffers (can't find a way to determine if it is pooled or not), and downstream may
+        // not eagerly consume the data. Create a copy to ensure that the data is not reclaimed / corrupted before use.
         int dataReadableBytes = data.readableBytes();
         data = Unpooled.copiedBuffer(data);
         if (endOfStream) {
@@ -79,7 +84,9 @@ final class Netty4StreamingHttp2Adapter extends Http2EventAdapter {
         short weight, boolean exclusive, int padding, boolean endOfStream) throws Http2Exception {
         Http2Stream stream = connection.stream(streamId);
         if (stream == null) {
-            throw connectionError(PROTOCOL_ERROR, "Header Frame received for unknown stream id %d", streamId);
+            throw LOGGER.throwableAtError()
+                .addKeyValue("streamId", streamId)
+                .log("Header Frame received for unknown stream", message -> connectionError(PROTOCOL_ERROR, message));
         }
 
         HttpHeaders httpHeaders = new WrappedHttp11Headers(new io.clientcore.core.http.models.HttpHeaders());
@@ -111,8 +118,8 @@ final class Netty4StreamingHttp2Adapter extends Http2EventAdapter {
 
     @Override
     public void onRstStreamRead(ChannelHandlerContext ctx, int streamId, long errorCode) throws Http2Exception {
-        throw Http2Exception.streamError(streamId, Http2Error.valueOf(errorCode),
-            "HTTP/2 to HTTP layer caught stream reset");
+        ctx.fireExceptionCaught(LOGGER.throwableAtError().log("HTTP/2 to HTTP layer caught stream reset",
+            message -> connectionError(Http2Error.valueOf(errorCode), message)));
     }
 
     @Override

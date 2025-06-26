@@ -9,6 +9,7 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http2.DefaultHttp2Connection;
 import io.netty.handler.codec.http2.DelegatingDecompressorFrameListener;
 import io.netty.handler.codec.http2.Http2Connection;
+import io.netty.handler.codec.http2.Http2FrameListener;
 import io.netty.handler.codec.http2.Http2Settings;
 import io.netty.handler.codec.http2.HttpToHttp2ConnectionHandler;
 import io.netty.handler.codec.http2.HttpToHttp2ConnectionHandlerBuilder;
@@ -28,6 +29,7 @@ import static io.clientcore.http.netty4.implementation.Netty4Utility.setOrSuppre
  * either HTTP/1.1 or HTTP/2 based on the result of negotiation.
  */
 public final class Netty4AlpnHandler extends ApplicationProtocolNegotiationHandler {
+    private static final int _256_KB = 256 * 1024;
     private final HttpRequest request;
     private final AtomicReference<ResponseStateInfo> responseReference;
     private final AtomicReference<Throwable> errorReference;
@@ -60,16 +62,19 @@ public final class Netty4AlpnHandler extends ApplicationProtocolNegotiationHandl
             // TODO (alzimmer): InboundHttp2ToHttpAdapter buffers the entire response into a FullHttpResponse. Need to
             //  create a streaming version of this to support huge response payloads.
             Http2Connection http2Connection = new DefaultHttp2Connection(false);
+            Http2Settings settings = new Http2Settings().headerTableSize(4096)
+                .maxHeaderListSize(_256_KB)
+                .pushEnabled(false)
+                .initialWindowSize(_256_KB);
+            Http2FrameListener frameListener = new DelegatingDecompressorFrameListener(http2Connection,
+                new InboundHttp2ToHttpAdapterBuilder(http2Connection).maxContentLength(Integer.MAX_VALUE)
+                    .propagateSettings(true)
+                    .validateHttpHeaders(true)
+                    .build());
+
             HttpToHttp2ConnectionHandler connectionHandler = new HttpToHttp2ConnectionHandlerBuilder()
-                .initialSettings(new Http2Settings().headerTableSize(4096)
-                    .maxHeaderListSize(256 * 1024)
-                    .pushEnabled(false)
-                    .initialWindowSize(256 * 1024))
-                .frameListener(new DelegatingDecompressorFrameListener(http2Connection,
-                    new InboundHttp2ToHttpAdapterBuilder(http2Connection).maxContentLength(Integer.MAX_VALUE)
-                        .propagateSettings(true)
-                        .validateHttpHeaders(true)
-                        .build()))
+                .initialSettings(settings)
+                .frameListener(frameListener)
                 .connection(http2Connection)
                 .validateHeaders(true)
                 .build();
