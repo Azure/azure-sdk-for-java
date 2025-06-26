@@ -4,7 +4,6 @@ package com.azure.compute.batch;
 
 import com.azure.compute.batch.models.*;
 import org.junit.jupiter.api.Assertions;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.test.SyncAsyncExtension;
 import com.azure.core.test.annotation.SyncAsyncTest;
 
@@ -16,8 +15,8 @@ public class BatchErrorTests extends BatchClientTestBase {
             BatchPoolResizeParameters emptyResizeParams = new BatchPoolResizeParameters();
             SyncAsyncExtension.execute(() -> batchClient.resizePool("fakepool-sync", emptyResizeParams),
                 () -> batchAsyncClient.resizePool("fakepool-async", emptyResizeParams));
-        } catch (HttpResponseException err) {
-            BatchError error = BatchError.fromException(err);
+        } catch (BatchErrorException err) {
+            BatchError error = err.getValue();
             Assertions.assertNotNull(error);
             Assertions.assertEquals("MissingRequiredProperty", error.getCode());
             Assertions.assertTrue(
@@ -31,8 +30,8 @@ public class BatchErrorTests extends BatchClientTestBase {
                 = new BatchPoolResizeParameters().setTargetDedicatedNodes(1).setTargetLowPriorityNodes(1);
             SyncAsyncExtension.execute(() -> batchClient.resizePool("fakepool-sync", resizeParams),
                 () -> batchAsyncClient.resizePool("fakepool-async", resizeParams));
-        } catch (HttpResponseException err) {
-            BatchError error = BatchError.fromException(err);
+        } catch (BatchErrorException err) {
+            BatchError error = err.getValue();
             Assertions.assertNotNull(error);
             Assertions.assertEquals("PoolNotFound", error.getCode());
             Assertions.assertTrue(error.getMessage().getValue().contains("The specified pool does not exist."));
