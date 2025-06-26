@@ -15,6 +15,10 @@ $EngScriptDir = Join-Path  $EngDir "scripts"
 $BomGeneratorPomFilePath = Join-Path ${PSScriptRoot} $PomFileName
 $NewBomFilePath = Join-Path $OutputDir $PomFileName
 $GroupIds = @("com.azure", "com.azure.resourcemanager")
+# This directory contains artifacts to include organized by {GroupId}.txt for each GroupId.
+# If this file is present for a given GroupId, only those artifacts in this file will be included.
+# Otherwise, no filter will be applied, meaning all artifacts under this GroupId will be included.
+$IncludesDirectoryPath = Join-Path ${PSScriptRoot} "includes"
 
 . (Join-Path $EngScriptDir syncversionclient.ps1)
 
@@ -48,6 +52,10 @@ if (!(Test-Path -Path $DefaultVersionClientFilePath)) {
 
 if (!(Test-Path -Path $DefaultPomFilePath)) {
   Copy-Item $BomPomFilePath -Destination $InputDir
+}
+
+if (Test-Path -Path $IncludesDirectoryPath) {
+  Copy-Item $IncludesDirectoryPath -Destination $InputDir -Recurse -Force
 }
 
 $groupIdString = $GroupIds -join ","

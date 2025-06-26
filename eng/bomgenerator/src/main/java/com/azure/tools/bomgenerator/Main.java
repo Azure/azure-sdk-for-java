@@ -4,6 +4,7 @@
 package com.azure.tools.bomgenerator;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,14 +30,14 @@ public class Main {
             }
 
             System.out.println("Completed successfully.");
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             System.out.println("Error occurred.");
             e.printStackTrace();
             System.exit(1);
         }
     }
 
-    private static BomGenerator parseCommandLine(String[] args) throws FileNotFoundException {
+    private static BomGenerator parseCommandLine(String[] args) throws IOException {
         String inputDir = null, outputDir = null, mode = null;
         List<String> groupIds = null;
         for (String arg : args) {

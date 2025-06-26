@@ -5,6 +5,7 @@ package com.azure.tools.bomgenerator;
 
 import com.azure.tools.bomgenerator.models.BomDependency;
 import com.azure.tools.bomgenerator.models.BomDependencyManagement;
+import com.azure.tools.bomgenerator.models.BomDependencyNoVersion;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
@@ -74,10 +75,11 @@ public class BomGenerator {
     private String inputDirectory;
     private final Pattern sdkDependencyPattern;
     private final Set<String> groupIds;
+    private final ArtifactFilter artifactFilter;
 
     private static Logger logger = LoggerFactory.getLogger(BomGenerator.class);
 
-    BomGenerator(String inputDirectory, String outputDirectory, String mode, List<String> groupIds) throws FileNotFoundException {
+    BomGenerator(String inputDirectory, String outputDirectory, String mode, List<String> groupIds) throws IOException {
         validateNotNullOrEmpty(inputDirectory, "inputDirectory");
         validateNotNullOrEmpty(outputDirectory, "outputDirectory");
 
@@ -95,6 +97,7 @@ public class BomGenerator {
 
         parseInputs();
         validateInputs();
+        this.artifactFilter = new ArtifactFilter(this.inputDirectory);
 
         Path outputDirPath = Paths.get(outputDirectory);
         outputDirPath.toFile().mkdirs();
@@ -179,17 +182,11 @@ public class BomGenerator {
         List<BomDependency> inputDependencies = new ArrayList<>();
 
         try {
-            Set<String> premiumLibraries = getPremiumLibraries();
             for (String line : Files.readAllLines(Paths.get(inputFileName))) {
                 BomDependency dependency = scanDependency(line);
 
-                if(dependency != null) {
-                    // Hack for including only premium ARM libraries into BOM as the first step.
-                    // TODO(xiaofei) In core-v2, we need to change this, or may include only those from patch_release_client.txt.
-                    //  Also, we may include all ARM libraries in the future and remove this hack.
-                    if (!"com.azure.resourcemanager".equals(dependency.getGroupId()) || premiumLibraries.contains(dependency.getArtifactId())) {
-                        inputDependencies.add(dependency);
-                    }
+                if(artifactFilter.apply(dependency)) {
+                    inputDependencies.add(dependency);
                 }
             }
         } catch (IOException exception) {
@@ -358,18 +355,44 @@ public class BomGenerator {
         dependencies.sort(new DependencyComparator());
 
         // Remove external dependencies from the BOM.
-        Set<String> premiumLibraries = getPremiumLibraries();
         dependencies = dependencies.stream().filter(dependency -> groupIds.contains(dependency.getGroupId())).collect(Collectors.toList());
         management.setDependencies(dependencies);
         writeModel(this.pomFileName, this.outputFileName, model);
     }
 
-    private Set<String> getPremiumLibraries() {
-        return Set.of("azure-resourcemanager", "azure-resourcemanager-appplatform", "azure-resourcemanager-appservice", "azure-resourcemanager-authorization",
-                "azure-resourcemanager-cdn", "azure-resourcemanager-compute", "azure-resourcemanager-containerinstance",
-                "azure-resourcemanager-containerregistry", "azure-resourcemanager-containerservice", "azure-resourcemanager-cosmos",
-                "azure-resourcemanager-dns", "azure-resourcemanager-eventhubs", "azure-resourcemanager-keyvault", "azure-resourcemanager-monitor"
-                , "azure-resourcemanager-msi", "azure-resourcemanagernetwork", "azure-resourcemanager-privatedns", "azure-resourcemanager-redis", "azure-resourcemanager-resources"
-                , "azure-resourcemanager-search", "azure-resourcemanager-servicebus", "azure-resourcemanager-sql", "azure-resourcemanager-storage", "azure-resourcemanager-trafficmanager");
+    private static class ArtifactFilter {
+        private final Map<String, Set<BomDependencyNoVersion>> groupIdArtifactsMap = new HashMap<>();
+        ArtifactFilter(String inputDirectory) throws IOException {
+            Path includesDirectory = Paths.get(inputDirectory, "includes");
+            String fileSuffix = ".txt";
+            Files.list(includesDirectory)
+                .filter(file -> Files.isRegularFile(file) && file.getFileName().toString().endsWith(fileSuffix))
+                .forEach(file -> {
+                    try {
+                        String fileName = file.getFileName().toString();
+                        String groupId = fileName.substring(0, fileName.length() - fileSuffix.length());
+                        Set<BomDependencyNoVersion> artifacts = groupIdArtifactsMap.computeIfAbsent(groupId, ignored -> new HashSet<>());
+                        for (String line : Files.readAllLines(file)) {
+                            if (line != null && !line.trim().isEmpty()) {
+                                artifacts.add(new BomDependencyNoVersion(groupId, line));
+                            }
+                        }
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+        }
+
+        boolean apply(BomDependency dependency) {
+            if (dependency == null) {
+                return false;
+            }
+            Set<BomDependencyNoVersion> allowedArtifacts = this.groupIdArtifactsMap.get(dependency.getGroupId());
+            // if allowed list is null, no filter will be applied
+            if (allowedArtifacts == null) {
+                return true;
+            }
+            return allowedArtifacts.contains(Utils.toBomDependencyNoVersion(dependency));
+        }
     }
 }
