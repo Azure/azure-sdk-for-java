@@ -372,22 +372,28 @@ public class DocumentQueryExecutionContextFactory {
                                                   queryPlanCache);
 
             return queryPlanTask
-                .flatMap(queryPlan -> createSpecializedDocumentQueryExecutionContextAsync(diagnosticsClientContext,
-                    client,
-                    resourceTypeEnum,
-                    resourceType,
-                    query,
-                    cosmosQueryRequestOptions,
-                    resourceLink,
-                    isContinuationExpected,
-                    queryPlan.getQueryInfo(),
-                    queryPlan.getHybridSearchQueryInfo(),
-                    queryPlan.getTargetRanges(),
-                    queryPlan.getAllRanges(),
-                    collectionValueHolder.v,
-                    correlatedActivityId,
-                    isQueryCancelledOnTimeout)
-                    .single());
+                .flatMap(queryPlan -> {
+                    if (queryPlan.getTargetRanges().size() == 0) {
+                        System.out.println("Something is soo wrong");
+                    }
+
+                    return createSpecializedDocumentQueryExecutionContextAsync(diagnosticsClientContext,
+                        client,
+                        resourceTypeEnum,
+                        resourceType,
+                        query,
+                        cosmosQueryRequestOptions,
+                        resourceLink,
+                        isContinuationExpected,
+                        queryPlan.getQueryInfo(),
+                        queryPlan.getHybridSearchQueryInfo(),
+                        queryPlan.getTargetRanges(),
+                        queryPlan.getAllRanges(),
+                        collectionValueHolder.v,
+                        correlatedActivityId,
+                        isQueryCancelledOnTimeout)
+                        .single();
+                });
         }).flux();
     }
 
@@ -508,6 +514,9 @@ public class DocumentQueryExecutionContextFactory {
         }
 
         List<FeedRangeEpkImpl> feedRangeEpks = getFeedRangeEpks(targetRanges, collection, cosmosQueryRequestOptions);
+        if (feedRangeEpks.isEmpty()) {
+            System.out.println("Something is wrong");
+        }
         List<FeedRangeEpkImpl> allFeedRangeEpks = getFeedRangeEpks(allRanges, collection, cosmosQueryRequestOptions);
         PipelinedDocumentQueryParams<T> documentQueryParams = new PipelinedDocumentQueryParams<>(
             resourceTypeEnum,

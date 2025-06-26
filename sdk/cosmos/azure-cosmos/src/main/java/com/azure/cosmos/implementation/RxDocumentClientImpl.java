@@ -1181,8 +1181,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.collectionCache,
             null,
             resourceLink,
-            ModelBridgeInternal.getPropertiesFromQueryRequestOptions(nonNullQueryOptions));
-
+            ModelBridgeInternal.getPropertiesFromQueryRequestOptions(nonNullQueryOptions),
+            this.sessionContainer);
 
         final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(innerDiagnosticsFactory, false);
         state.registerDiagnosticsFactory(
@@ -4622,7 +4622,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.collectionCache,
                 null,
                 resourceLink,
-                ModelBridgeInternal.getPropertiesFromQueryRequestOptions(effectiveOptions));
+                ModelBridgeInternal.getPropertiesFromQueryRequestOptions(effectiveOptions),
+                this.sessionContainer);
 
             Flux<FeedResponse<T>> innerFlux = ObservableHelper.fluxInlineIfPossibleAsObs(
                 () -> {
@@ -6341,7 +6342,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.collectionCache,
             null,
             collectionLink,
-            new HashMap<>());
+            new HashMap<>(),
+            this.sessionContainer);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
             this,

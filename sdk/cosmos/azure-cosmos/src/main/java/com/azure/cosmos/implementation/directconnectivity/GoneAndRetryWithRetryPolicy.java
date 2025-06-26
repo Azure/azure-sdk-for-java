@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -125,7 +126,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
 
             if (exception instanceof InvalidPartitionException) {
                 return this.request.getPartitionKeyRangeIdentity() != null &&
-                    this.request.getPartitionKeyRangeIdentity().getCollectionRid() != null;
+                    StringUtils.isNotEmpty(this.request.requestContext.resolvedCollectionRid);
             }
 
             return true;

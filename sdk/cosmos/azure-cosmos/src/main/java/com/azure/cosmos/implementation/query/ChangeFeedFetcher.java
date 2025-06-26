@@ -308,12 +308,6 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         DocumentClientRetryPolicy retryPolicyInstance =
             client.getResetSessionTokenRetryPolicy().getRequestPolicy(null);
 
-        retryPolicyInstance = new InvalidPartitionExceptionRetryPolicy(
-            client.getCollectionCache(),
-            retryPolicyInstance,
-            collectionLink,
-            requestOptionProperties);
-
         if (isSplitHandlingDisabled) {
             // True for ChangeFeedProcessor - where all retry-logic is handled
             feedRangeContinuationRetryPolicy = retryPolicyInstance;

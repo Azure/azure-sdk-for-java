@@ -149,12 +149,12 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             return Mono.just(this.shouldRetryOnSessionNotAvailable(this.request));
         }
 
-        // This is for gateway mode, collection recreate scenario is not handled there
-        if (clientException != null &&
-            Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.BADREQUEST) &&
-            Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.INCORRECT_CONTAINER_RID_SUB_STATUS)) {
-            return this.shouldRetryOnStaleContainer();
-        }
+//        // This is for gateway mode, collection recreate scenario is not handled there
+//        if (clientException != null &&
+//            Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.BADREQUEST) &&
+//            Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.INCORRECT_CONTAINER_RID_SUB_STATUS)) {
+//            return this.shouldRetryOnStaleContainer();
+//        }
 
         if (clientException != null &&
             Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.SERVICE_UNAVAILABLE)) {
