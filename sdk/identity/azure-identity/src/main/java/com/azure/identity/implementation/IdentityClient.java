@@ -442,18 +442,42 @@ public class IdentityClient extends IdentityClientBase {
         return Mono.defer(() -> {
             String sep = System.lineSeparator();
 
-            String command = "$ErrorActionPreference = 'Stop'" + sep + "[version]$minimumVersion = '2.2.0'" + sep + ""
-                + sep
-                + "$m = Import-Module Az.Accounts -MinimumVersion $minimumVersion -PassThru -ErrorAction SilentlyContinue"
-                + sep + "" + sep + "if (! $m) {" + sep + "    Write-Output 'VersionTooOld'" + sep + "    exit" + sep
-                + "}" + sep + "" + sep + "$useSecureString = $m.Version -ge [version]'2.17.0'" + sep + "" + sep
-                + "$params = @{" + sep + "    'WarningAction'='Ignore'" + sep + "    'ResourceUrl'='" + scope + "'"
-                + sep + "}" + sep + "" + sep + "if ($useSecureString) {" + sep + "    $params['AsSecureString'] = $true"
-                + sep + "}" + sep + "" + sep + "$token = Get-AzAccessToken @params" + sep
-                + "$customToken = New-Object -TypeName psobject" + sep + "" + sep
-                + "$customToken | Add-Member -MemberType NoteProperty -Name Token -Value ($useSecureString -eq $true ? (ConvertFrom-SecureString -AsPlainText $token.Token) : $token.Token)"
-                + sep + "$customToken | Add-Member -MemberType NoteProperty -Name ExpiresOn -Value $token.ExpiresOn"
-                + sep + "" + sep + "return $customToken | ConvertTo-Json";
+            String command = "$ErrorActionPreference = 'Stop'" + sep
+                + "[version]$minimumVersion = '2.2.0'" + sep
+                + "$m = Import-Module Az.Accounts -MinimumVersion $minimumVersion -PassThru -ErrorAction SilentlyContinue" + sep
+                + "if (! $m) {" + sep
+                + "    Write-Output 'VersionTooOld'" + sep
+                + "    exit" + sep
+                + "}" + sep
+                + "$params = @{ 'ResourceUrl' = '" + scope + "'; 'WarningAction' = 'Ignore' }" + sep
+                + "$tenantId = '" + tenantId + "'" + sep
+                + "if ($tenantId.Length -gt 0) {" + sep
+                + "    $params['TenantId'] = $tenantId" + sep
+                + "}" + sep
+                + "if ($m.Version -ge [version]'2.17.0' -and $m.Version -lt [version]'5.0.0') {" + sep
+                + "    $params['AsSecureString'] = $true" + sep
+                + "}" + sep
+                + "$token = Get-AzAccessToken @params" + sep
+                + "$tokenValue = $token.Token" + sep
+                + "if ($tokenValue -is [System.Security.SecureString]) {" + sep
+                + "    if ($PSVersionTable.PSVersion.Major -lt 7) {" + sep
+                + "        $ssPtr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($tokenValue)" + sep
+                + "        try {" + sep
+                + "            $tokenValue = [System.Runtime.InteropServices.Marshal]::PtrToStringBSTR($ssPtr)" + sep
+                + "        }" + sep
+                + "        finally {" + sep
+                + "            [System.Runtime.InteropServices.Marshal]::ZeroFreeBSTR($ssPtr)" + sep
+                + "        }" + sep
+                + "    } else {" + sep
+                + "        $tokenValue = $tokenValue | ConvertFrom-SecureString -AsPlainText" + sep
+                + "    }" + sep
+                + "}" + sep
+                + "$customToken = [PSCustomObject]@{" + sep
+                + "    Token = $tokenValue" + sep
+                + "    ExpiresOn = $token.ExpiresOn" + sep
+                + "}" + sep
+                + "$customToken | ConvertTo-Json -Compress";
+
             return powershellManager.runCommand(command).flatMap(output -> {
                 if (output.contains("VersionTooOld")) {
                     return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
