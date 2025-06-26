@@ -107,7 +107,7 @@ All code in the Azure SDKs for Java repository must pass Checkstyle before being
 
 ## Versions and versioning
 
-Tooling has been introduced to centralize versioning and help ease the pain of updating artifact versions in POM and README files. Under the eng\versioning directory there exists version text files, one for client ([version_client.txt](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/versioning/version_client.txt)) and one for data ([version_data.txt](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/versioning/version_data.txt)). The format of the version files is as follows:
+Tooling has been introduced to centralize versioning and help ease the pain of updating artifact versions in POM and README files. Under the eng\versioning directory there exists a version text file for libraries ([version_client.txt](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/versioning/version_client.txt)). The format of the version files is as follows:
 
 `groupId:artifactId;dependency-version;current-version`
 
@@ -162,10 +162,9 @@ External Dependencies refer to dependencies for things that are not built and re
 
 ### Tooling, version files and marker tags
 
-All of the tooling lives under the **eng\versioning** directory.
+All the tooling lives under the **eng\versioning** directory.
 
 - version_client.txt - Contains the Client library and versions
-- version_data.txt - Contains Data library and versions
 - external_dependencies.txt - Contains the external dependency versions
 - update_versions.py - This is just a basic python script that will climb through the source tree and update POM and README files. The script utilizes tags within the files to do replacements and the tags are slightly different between the POM and README files.
 - set_versions.py - This script should only be used by the build system when we start producing nightly ops builds.
