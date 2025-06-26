@@ -19,6 +19,7 @@ import com.azure.compute.batch.models.BatchCertificateGetOptions;
 import com.azure.compute.batch.models.BatchCertificatesListOptions;
 import com.azure.compute.batch.models.BatchClientParallelOptions;
 import com.azure.compute.batch.models.BatchCreateTaskCollectionResult;
+import com.azure.compute.batch.models.BatchErrorException;
 import com.azure.compute.batch.models.BatchFileProperties;
 import com.azure.compute.batch.models.BatchJob;
 import com.azure.compute.batch.models.BatchJobCreateOptions;
@@ -243,10 +244,7 @@ public final class BatchClient {
      * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the applications available in an Account as paginated response with
      * {@link PagedIterable}.
      */
@@ -289,10 +287,7 @@ public final class BatchClient {
      *
      * @param applicationId The ID of the Application.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Application.
      *
      * This operation returns only Applications and versions that are available for
@@ -352,10 +347,7 @@ public final class BatchClient {
      * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of a listing the usage metrics for an Account as paginated response with
      * {@link PagedIterable}.
      */
@@ -663,10 +655,7 @@ public final class BatchClient {
      *
      * @param pool The Pool to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -1047,10 +1036,7 @@ public final class BatchClient {
      * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Pools in an Account as paginated response with {@link PagedIterable}.
      */
     @Generated
@@ -1108,10 +1094,7 @@ public final class BatchClient {
      *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -1163,9 +1146,7 @@ public final class BatchClient {
      *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return basic properties of a Pool along with {@link Response}.
      */
     @Generated
@@ -1563,10 +1544,7 @@ public final class BatchClient {
      *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Pool along with {@link Response}.
      */
     @Generated
@@ -1889,10 +1867,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool to get.
      * @param pool The pool properties to update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -1915,10 +1890,7 @@ public final class BatchClient {
      *
      * @param poolId The ID of the Pool on which to disable automatic scaling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -1981,10 +1953,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for enabling automatic scaling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -2043,10 +2012,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
      * @param parameters The options to use for evaluating the automatic scaling formula.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of evaluating an automatic scaling formula on the Pool.
      *
      * This API is primarily for validating an autoscale formula, as it simply returns
@@ -2116,10 +2082,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for resizing the pool.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -2172,10 +2135,7 @@ public final class BatchClient {
      *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -2283,10 +2243,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool to update.
      * @param pool The options to use for replacing properties on the pool.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -2350,10 +2307,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for removing the node.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -2406,10 +2360,7 @@ public final class BatchClient {
      * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the supported Virtual Machine Images as paginated response with
      * {@link PagedIterable}.
      */
@@ -2469,10 +2420,7 @@ public final class BatchClient {
      * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the number of Compute Nodes in each state, grouped by Pool as paginated response with
      * {@link PagedIterable}.
      */
@@ -2529,10 +2477,7 @@ public final class BatchClient {
      *
      * @param jobId The ID of the Job to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -3011,10 +2956,7 @@ public final class BatchClient {
      *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Job along with {@link Response}.
      */
     @Generated
@@ -3366,10 +3308,7 @@ public final class BatchClient {
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job The options to use for updating the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -3849,10 +3788,7 @@ public final class BatchClient {
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job A job with updated properties.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -3916,10 +3852,7 @@ public final class BatchClient {
      * @param jobId The ID of the Job to disable.
      * @param parameters The options to use for disabling the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -3971,10 +3904,7 @@ public final class BatchClient {
      *
      * @param jobId The ID of the Job to enable.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -4039,10 +3969,7 @@ public final class BatchClient {
      *
      * @param jobId The ID of the Job to terminate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -4464,10 +4391,7 @@ public final class BatchClient {
      *
      * @param job The Job to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -4929,10 +4853,7 @@ public final class BatchClient {
      * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
      */
     @Generated
@@ -5395,10 +5316,7 @@ public final class BatchClient {
      *
      * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
      */
     @Generated
@@ -5486,10 +5404,7 @@ public final class BatchClient {
      *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the status of the Job Preparation and Job Release Tasks
      * for a Job as paginated response with {@link PagedIterable}.
      */
@@ -5541,10 +5456,7 @@ public final class BatchClient {
      *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the Task counts for the specified Job.
      *
      * Task counts provide a count of the Tasks by active, running or completed Task
@@ -5599,10 +5511,7 @@ public final class BatchClient {
      *
      * @param certificate The Certificate to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -5661,10 +5570,7 @@ public final class BatchClient {
      * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Certificates in the Account as paginated response with {@link PagedIterable}.
      */
     @Generated
@@ -5696,10 +5602,7 @@ public final class BatchClient {
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the Certificate being deleted.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -5735,10 +5638,7 @@ public final class BatchClient {
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the Certificate to be deleted.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -5794,10 +5694,7 @@ public final class BatchClient {
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the Certificate to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Certificate along with {@link Response}.
      */
     @Generated
@@ -5850,9 +5747,7 @@ public final class BatchClient {
      *
      * @param jobScheduleId The ID of the Job Schedule which you want to check.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return whether resource exists along with {@link Response}.
      */
     @Generated
@@ -5905,10 +5800,7 @@ public final class BatchClient {
      *
      * @param jobScheduleId The ID of the Job Schedule to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -6390,10 +6282,7 @@ public final class BatchClient {
      *
      * @param jobScheduleId The ID of the Job Schedule to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Job Schedule along with {@link Response}.
      */
     @Generated
@@ -6844,10 +6733,7 @@ public final class BatchClient {
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule The options to use for updating the Job Schedule.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -7333,10 +7219,7 @@ public final class BatchClient {
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule A Job Schedule with updated properties.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -7384,10 +7267,7 @@ public final class BatchClient {
      *
      * @param jobScheduleId The ID of the Job Schedule to disable.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -7432,10 +7312,7 @@ public final class BatchClient {
      *
      * @param jobScheduleId The ID of the Job Schedule to enable.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -7482,10 +7359,7 @@ public final class BatchClient {
      *
      * @param jobScheduleId The ID of the Job Schedule to terminates.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -7909,10 +7783,7 @@ public final class BatchClient {
      *
      * @param jobSchedule The Job Schedule to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -8377,10 +8248,7 @@ public final class BatchClient {
      * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Job Schedules in an Account as paginated response with {@link PagedIterable}.
      */
     @Generated
@@ -8542,10 +8410,7 @@ public final class BatchClient {
      * @param jobId The ID of the Job to which the Task is to be created.
      * @param task The Task to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -8771,10 +8636,7 @@ public final class BatchClient {
      *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Tasks in a Job as paginated response with {@link PagedIterable}.
      */
     @Generated
@@ -8982,10 +8844,7 @@ public final class BatchClient {
      * @param jobId The ID of the Job to which the Task collection is to be added.
      * @param taskCollection The Tasks to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of creating a collection of Tasks to a Job along with {@link Response}.
      */
     @Generated
@@ -9038,10 +8897,7 @@ public final class BatchClient {
      * @param jobId The ID of the Job from which to delete the Task.
      * @param taskId The ID of the Task to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -9284,10 +9140,7 @@ public final class BatchClient {
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task to get information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Task.
      *
      * For multi-instance Tasks, information such as affinityId, executionInfo and
@@ -9526,10 +9379,7 @@ public final class BatchClient {
      * @param taskId The ID of the Task to update.
      * @param task The Task to update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -9600,10 +9450,7 @@ public final class BatchClient {
      * @param jobId The ID of the Job.
      * @param taskId The ID of the Task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the subtasks of a Task as paginated response with {@link PagedIterable}.
      */
     @Generated
@@ -9653,10 +9500,7 @@ public final class BatchClient {
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to terminate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -9711,10 +9555,7 @@ public final class BatchClient {
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to reactivate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -9744,10 +9585,7 @@ public final class BatchClient {
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -9797,10 +9635,7 @@ public final class BatchClient {
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the response body along with {@link Response}.
      */
     @Generated
@@ -9840,10 +9675,7 @@ public final class BatchClient {
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the properties of the specified Task file along with {@link Response}.
      */
     @Generated
@@ -9895,10 +9727,7 @@ public final class BatchClient {
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose files you want to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the files on a Compute Node, or the files associated with
      * a Task on a Compute Node as paginated response with {@link PagedIterable}.
      */
@@ -9940,10 +9769,7 @@ public final class BatchClient {
      * @param nodeId The ID of the machine on which you want to create a user Account.
      * @param user The options to use for creating the user.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -9972,10 +9798,7 @@ public final class BatchClient {
      * @param nodeId The ID of the machine on which you want to delete a user Account.
      * @param userName The name of the user Account to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -10018,10 +9841,7 @@ public final class BatchClient {
      * @param userName The name of the user Account to update.
      * @param parameters The options to use for updating the user.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -10214,10 +10034,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to get information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Compute Node along with {@link Response}.
      */
     @Generated
@@ -10260,10 +10077,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -10289,10 +10103,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -10337,10 +10148,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -10383,10 +10191,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -10430,10 +10235,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -10461,10 +10263,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to enable Task scheduling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -10502,10 +10301,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the settings required for remote login to a Compute Node.
      *
      * Before you can remotely login to a Compute Node using the remote login settings,
@@ -10566,10 +10362,7 @@ public final class BatchClient {
      * Protocol file.
      * @param parameters The Azure Batch service log files upload options.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of uploading Batch service log files from a specific Compute Node along with {@link Response}.
      */
     @Generated
@@ -10767,10 +10560,7 @@ public final class BatchClient {
      *
      * @param poolId The ID of the Pool from which you want to list Compute Nodes.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Compute Nodes in a Pool as paginated response with {@link PagedIterable}.
      */
     @Generated
@@ -10838,10 +10628,7 @@ public final class BatchClient {
      * @param nodeId The ID of the Compute Node that contains the extensions.
      * @param extensionName The name of the Compute Node Extension that you want to get information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Compute Node Extension along with {@link Response}.
      */
     @Generated
@@ -10912,10 +10699,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool that contains Compute Node.
      * @param nodeId The ID of the Compute Node that you want to list extensions.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Compute Node extensions in a Node as paginated response with
      * {@link PagedIterable}.
      */
@@ -10946,10 +10730,7 @@ public final class BatchClient {
      * @param nodeId The ID of the Compute Node.
      * @param filePath The path to the file or directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -10999,10 +10780,7 @@ public final class BatchClient {
      * @param nodeId The ID of the Compute Node.
      * @param filePath The path to the file or directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the response body along with {@link Response}.
      */
     @Generated
@@ -11042,10 +10820,7 @@ public final class BatchClient {
      * @param nodeId The ID of the Compute Node.
      * @param filePath The path to the file or directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the properties of the specified Compute Node file along with {@link Response}.
      */
     @Generated
@@ -11095,10 +10870,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node whose files you want to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the files on a Compute Node, or the files associated with
      * a Task on a Compute Node as paginated response with {@link PagedIterable}.
      */
@@ -11117,10 +10889,7 @@ public final class BatchClient {
      * available to Compute Nodes, use the Azure portal or the Azure Resource Manager
      * API.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the applications available in an Account as paginated response with
      * {@link PagedIterable}.
@@ -11145,10 +10914,7 @@ public final class BatchClient {
      *
      * @param applicationId The ID of the Application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Application.
      *
@@ -11174,10 +10940,7 @@ public final class BatchClient {
      * times of the last aggregation interval currently available; that is, only the
      * last aggregation interval is returned.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a listing the usage metrics for an Account as paginated response with
      * {@link PagedIterable}.
@@ -11194,10 +10957,7 @@ public final class BatchClient {
     /**
      * Lists all of the Pools which be mounted.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Pools in an Account as paginated response with {@link PagedIterable}.
      */
@@ -11228,10 +10988,7 @@ public final class BatchClient {
      *
      * @param poolId The ID of the Pool to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -11249,9 +11006,7 @@ public final class BatchClient {
      * @param options Optional parameters for Pool Exists operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return basic properties of a Pool.
      */
@@ -11290,9 +11045,7 @@ public final class BatchClient {
      *
      * @param poolId The ID of the Pool to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return basic properties of a Pool.
      */
@@ -11309,10 +11062,7 @@ public final class BatchClient {
      *
      * @param poolId The ID of the Pool to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Pool.
      */
@@ -11329,10 +11079,7 @@ public final class BatchClient {
      *
      * @param poolId The ID of the Pool on which to disable automatic scaling.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -11356,10 +11103,7 @@ public final class BatchClient {
      *
      * @param poolId The ID of the Pool to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -11373,10 +11117,7 @@ public final class BatchClient {
     /**
      * Lists all Virtual Machine Images supported by the Azure Batch service.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the supported Virtual Machine Images as paginated response with
      * {@link PagedIterable}.
@@ -11395,10 +11136,7 @@ public final class BatchClient {
      * numbers returned may not always be up to date. If you need exact node counts,
      * use a list query.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the number of Compute Nodes in each state, grouped by Pool as paginated response with
      * {@link PagedIterable}.
@@ -11426,10 +11164,7 @@ public final class BatchClient {
      *
      * @param jobId The ID of the Job to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -11445,10 +11180,7 @@ public final class BatchClient {
      *
      * @param jobId The ID of the Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Job.
      */
@@ -11470,10 +11202,7 @@ public final class BatchClient {
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job A job with updated properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -11496,10 +11225,7 @@ public final class BatchClient {
      *
      * @param jobId The ID of the Job to enable.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -11522,10 +11248,7 @@ public final class BatchClient {
      *
      * @param jobId The ID of the Job to terminate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -11539,10 +11262,7 @@ public final class BatchClient {
     /**
      * Lists all of the Jobs in the specified Account.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
      */
@@ -11559,10 +11279,7 @@ public final class BatchClient {
      *
      * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
      */
@@ -11588,10 +11305,7 @@ public final class BatchClient {
      *
      * @param jobId The ID of the Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the status of the Job Preparation and Job Release Tasks
      * for a Job as paginated response with {@link PagedIterable}.
@@ -11615,10 +11329,7 @@ public final class BatchClient {
      *
      * @param jobId The ID of the Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Task counts for the specified Job.
      *
@@ -11638,10 +11349,7 @@ public final class BatchClient {
      *
      * @param certificate The Certificate to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -11655,10 +11363,7 @@ public final class BatchClient {
     /**
      * Lists all of the Certificates that have been added to the specified Account.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Certificates in the Account as paginated response with {@link PagedIterable}.
      */
@@ -11685,10 +11390,7 @@ public final class BatchClient {
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the Certificate being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -11715,10 +11417,7 @@ public final class BatchClient {
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the Certificate to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -11735,10 +11434,7 @@ public final class BatchClient {
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the Certificate to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Certificate.
      */
@@ -11758,9 +11454,7 @@ public final class BatchClient {
      * @param options Optional parameters for Job Schedule Exists operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -11800,9 +11494,7 @@ public final class BatchClient {
      *
      * @param jobScheduleId The ID of the Job Schedule which you want to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -11825,10 +11517,7 @@ public final class BatchClient {
      *
      * @param jobScheduleId The ID of the Job Schedule to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -11869,10 +11558,7 @@ public final class BatchClient {
      *
      * @param jobScheduleId The ID of the Job Schedule to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Job Schedule.
      */
@@ -11896,10 +11582,7 @@ public final class BatchClient {
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule A Job Schedule with updated properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -11917,10 +11600,7 @@ public final class BatchClient {
      *
      * @param jobScheduleId The ID of the Job Schedule to disable.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -11936,10 +11616,7 @@ public final class BatchClient {
      *
      * @param jobScheduleId The ID of the Job Schedule to enable.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -11955,10 +11632,7 @@ public final class BatchClient {
      *
      * @param jobScheduleId The ID of the Job Schedule to terminates.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -11993,10 +11667,7 @@ public final class BatchClient {
     /**
      * Lists all of the Job Schedules in the specified Account.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Job Schedules in an Account as paginated response with {@link PagedIterable}.
      */
@@ -12018,10 +11689,7 @@ public final class BatchClient {
      *
      * @param jobId The ID of the Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Tasks in a Job as paginated response with {@link PagedIterable}.
      */
@@ -12055,10 +11723,7 @@ public final class BatchClient {
      * @param jobId The ID of the Job to which the Task collection is to be added.
      * @param taskCollection The Tasks to be added.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of creating a collection of Tasks to a Job.
      */
@@ -12083,10 +11748,7 @@ public final class BatchClient {
      * @param jobId The ID of the Job from which to delete the Task.
      * @param taskId The ID of the Task to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -12107,10 +11769,7 @@ public final class BatchClient {
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task to get information about.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Task.
      *
@@ -12132,10 +11791,7 @@ public final class BatchClient {
      * @param taskId The ID of the Task to update.
      * @param task The Task to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -12155,10 +11811,7 @@ public final class BatchClient {
      * @param jobId The ID of the Job.
      * @param taskId The ID of the Task.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the subtasks of a Task as paginated response with {@link PagedIterable}.
      */
@@ -12181,10 +11834,7 @@ public final class BatchClient {
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to terminate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -12210,10 +11860,7 @@ public final class BatchClient {
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to reactivate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -12231,10 +11878,7 @@ public final class BatchClient {
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -12252,10 +11896,7 @@ public final class BatchClient {
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -12334,10 +11975,7 @@ public final class BatchClient {
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose files you want to list.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the files on a Compute Node, or the files associated with
      * a Task on a Compute Node as paginated response with {@link PagedIterable}.
@@ -12361,10 +11999,7 @@ public final class BatchClient {
      * @param nodeId The ID of the machine on which you want to delete a user Account.
      * @param userName The name of the user Account to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -12381,10 +12016,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to get information about.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Compute Node.
      */
@@ -12404,10 +12036,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -12426,10 +12055,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -12450,10 +12076,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -12472,10 +12095,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -12495,10 +12115,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -12518,10 +12135,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to enable Task scheduling.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -12541,10 +12155,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the settings required for remote login to a Compute Node.
      *
@@ -12565,10 +12176,7 @@ public final class BatchClient {
      *
      * @param poolId The ID of the Pool from which you want to list Compute Nodes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Compute Nodes in a Pool as paginated response with {@link PagedIterable}.
      */
@@ -12588,10 +12196,7 @@ public final class BatchClient {
      * @param nodeId The ID of the Compute Node that contains the extensions.
      * @param extensionName The name of the Compute Node Extension that you want to get information about.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Compute Node Extension.
      */
@@ -12610,10 +12215,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool that contains Compute Node.
      * @param nodeId The ID of the Compute Node that you want to list extensions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Compute Node extensions in a Node as paginated response with
      * {@link PagedIterable}.
@@ -12634,10 +12236,7 @@ public final class BatchClient {
      * @param nodeId The ID of the Compute Node.
      * @param filePath The path to the file or directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -12655,10 +12254,7 @@ public final class BatchClient {
      * @param nodeId The ID of the Compute Node.
      * @param filePath The path to the file or directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -12736,10 +12332,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node whose files you want to list.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the files on a Compute Node, or the files associated with
      * a Task on a Compute Node as paginated response with {@link PagedIterable}.
@@ -12764,10 +12357,7 @@ public final class BatchClient {
      *
      * @param options Optional parameters for List Applications operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the applications available in an Account as paginated response with
      * {@link PagedIterable}.
@@ -12801,10 +12391,7 @@ public final class BatchClient {
      * @param applicationId The ID of the Application.
      * @param options Optional parameters for Get Application operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Application.
      *
@@ -12836,10 +12423,7 @@ public final class BatchClient {
      *
      * @param options Optional parameters for List Pool Usage Metrics operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a listing the usage metrics for an Account as paginated response with
      * {@link PagedIterable}.
@@ -12878,10 +12462,7 @@ public final class BatchClient {
      *
      * @param options Optional parameters for List Pools operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Pools in an Account as paginated response with {@link PagedIterable}.
      */
@@ -12942,10 +12523,7 @@ public final class BatchClient {
      * @param options Optional parameters for Delete Pool operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -12985,10 +12563,7 @@ public final class BatchClient {
      * @param options Optional parameters for Get Pool operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Pool.
      */
@@ -13053,10 +12628,7 @@ public final class BatchClient {
      * @param options Optional parameters for Stop Pool Resize operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -13094,10 +12666,7 @@ public final class BatchClient {
      *
      * @param options Optional parameters for List Supported Images operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the supported Virtual Machine Images as paginated response with
      * {@link PagedIterable}.
@@ -13130,10 +12699,7 @@ public final class BatchClient {
      *
      * @param options Optional parameters for List Pool Node Counts operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the number of Compute Nodes in each state, grouped by Pool as paginated response with
      * {@link PagedIterable}.
@@ -13175,10 +12741,7 @@ public final class BatchClient {
      * @param options Optional parameters for Delete Job operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -13222,10 +12785,7 @@ public final class BatchClient {
      * @param options Optional parameters for Get Job operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Job.
      */
@@ -13287,10 +12847,7 @@ public final class BatchClient {
      * @param options Optional parameters for Replace Job operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -13338,10 +12895,7 @@ public final class BatchClient {
      * @param options Optional parameters for Enable Job operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -13388,10 +12942,7 @@ public final class BatchClient {
      * @param options Optional parameters for Terminate Job operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -13437,10 +12988,7 @@ public final class BatchClient {
      *
      * @param options Optional parameters for List Jobs operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
      */
@@ -13486,10 +13034,7 @@ public final class BatchClient {
      * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
      * @param options Optional parameters for List Jobs From Schedule operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
      */
@@ -13545,10 +13090,7 @@ public final class BatchClient {
      * @param jobId The ID of the Job.
      * @param options Optional parameters for List Jobs Preparation and Release Task Status operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the status of the Job Preparation and Job Release Tasks
      * for a Job as paginated response with {@link PagedIterable}.
@@ -13594,10 +13136,7 @@ public final class BatchClient {
      * @param jobId The ID of the Job.
      * @param options Optional parameters for Get Job Task Counts operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Task counts for the specified Job.
      *
@@ -13622,10 +13161,7 @@ public final class BatchClient {
      * @param certificate The Certificate to be created.
      * @param options Optional parameters for Create Certificate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -13645,10 +13181,7 @@ public final class BatchClient {
      *
      * @param options Optional parameters for List Certificates operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Certificates in the Account as paginated response with {@link PagedIterable}.
      */
@@ -13696,10 +13229,7 @@ public final class BatchClient {
      * @param thumbprint The thumbprint of the Certificate being deleted.
      * @param options Optional parameters for Cancel Certificate Deletion operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -13732,10 +13262,7 @@ public final class BatchClient {
      * @param thumbprint The thumbprint of the Certificate to be deleted.
      * @param options Optional parameters for Delete Certificate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -13758,10 +13285,7 @@ public final class BatchClient {
      * @param thumbprint The thumbprint of the Certificate to get.
      * @param options Optional parameters for Get Certificate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Certificate.
      */
@@ -13800,10 +13324,7 @@ public final class BatchClient {
      * @param options Optional parameters for Delete Job Schedule operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -13877,10 +13398,7 @@ public final class BatchClient {
      * @param options Optional parameters for Get Job Schedule operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Job Schedule.
      */
@@ -13945,10 +13463,7 @@ public final class BatchClient {
      * @param options Optional parameters for Replace Job Schedule operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -13991,10 +13506,7 @@ public final class BatchClient {
      * @param options Optional parameters for Disable Job Schedule operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -14035,10 +13547,7 @@ public final class BatchClient {
      * @param options Optional parameters for Enable Job Schedule operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -14079,10 +13588,7 @@ public final class BatchClient {
      * @param options Optional parameters for Terminate Job Schedule operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -14153,10 +13659,7 @@ public final class BatchClient {
      *
      * @param options Optional parameters for List Job Schedules operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Job Schedules in an Account as paginated response with {@link PagedIterable}.
      */
@@ -14207,10 +13710,7 @@ public final class BatchClient {
      * @param jobId The ID of the Job.
      * @param options Optional parameters for List Tasks operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Tasks in a Job as paginated response with {@link PagedIterable}.
      */
@@ -14273,10 +13773,7 @@ public final class BatchClient {
      * @param taskCollection The Tasks to be added.
      * @param options Optional parameters for Create Task Collection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of creating a collection of Tasks to a Job.
      */
@@ -14308,10 +13805,7 @@ public final class BatchClient {
      * @param options Optional parameters for Delete Task operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -14357,10 +13851,7 @@ public final class BatchClient {
      * @param options Optional parameters for Get Task operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Task.
      *
@@ -14423,10 +13914,7 @@ public final class BatchClient {
      * @param options Optional parameters for Replace Task operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -14470,10 +13958,7 @@ public final class BatchClient {
      * @param taskId The ID of the Task.
      * @param options Optional parameters for List SubTasks operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the subtasks of a Task as paginated response with {@link PagedIterable}.
      */
@@ -14510,10 +13995,7 @@ public final class BatchClient {
      * @param options Optional parameters for Terminate Task operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -14564,10 +14046,7 @@ public final class BatchClient {
      * @param options Optional parameters for Reactivate Task operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -14609,10 +14088,7 @@ public final class BatchClient {
      * @param filePath The path to the Task file that you want to get the content of.
      * @param options Optional parameters for Delete Task File operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -14639,10 +14115,7 @@ public final class BatchClient {
      * @param filePath The path to the Task file that you want to get the content of.
      * @param options Optional parameters for Get Task File operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -14679,10 +14152,7 @@ public final class BatchClient {
      * @param taskId The ID of the Task whose files you want to list.
      * @param options Optional parameters for List Task Files operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the files on a Compute Node, or the files associated with
      * a Task on a Compute Node as paginated response with {@link PagedIterable}.
@@ -14723,10 +14193,7 @@ public final class BatchClient {
      * @param userName The name of the user Account to delete.
      * @param options Optional parameters for Delete Node User operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -14748,10 +14215,7 @@ public final class BatchClient {
      * @param nodeId The ID of the Compute Node that you want to get information about.
      * @param options Optional parameters for Get Node operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Compute Node.
      */
@@ -14784,10 +14248,7 @@ public final class BatchClient {
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param options Optional parameters for Reboot Node operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -14815,10 +14276,7 @@ public final class BatchClient {
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param options Optional parameters for Start Node operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -14844,10 +14302,7 @@ public final class BatchClient {
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param options Optional parameters for Reimage Node operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -14875,10 +14330,7 @@ public final class BatchClient {
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param options Optional parameters for Deallocate Node operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -14907,10 +14359,7 @@ public final class BatchClient {
      * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
      * @param options Optional parameters for Disable Node Scheduling operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -14939,10 +14388,7 @@ public final class BatchClient {
      * @param nodeId The ID of the Compute Node on which you want to enable Task scheduling.
      * @param options Optional parameters for Enable Node Scheduling operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -14967,10 +14413,7 @@ public final class BatchClient {
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
      * @param options Optional parameters for Get Node Remote Login Settings operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the settings required for remote login to a Compute Node.
      *
@@ -14997,10 +14440,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool from which you want to list Compute Nodes.
      * @param options Optional parameters for List Nodes operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Compute Nodes in a Pool as paginated response with {@link PagedIterable}.
      */
@@ -15041,10 +14481,7 @@ public final class BatchClient {
      * @param extensionName The name of the Compute Node Extension that you want to get information about.
      * @param options Optional parameters for Get Node Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Compute Node Extension.
      */
@@ -15077,10 +14514,7 @@ public final class BatchClient {
      * @param nodeId The ID of the Compute Node that you want to list extensions.
      * @param options Optional parameters for List Node Extensions operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Compute Node extensions in a Node as paginated response with
      * {@link PagedIterable}.
@@ -15119,10 +14553,7 @@ public final class BatchClient {
      * @param filePath The path to the file or directory.
      * @param options Optional parameters for Delete Node File operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -15149,10 +14580,7 @@ public final class BatchClient {
      * @param filePath The path to the file or directory.
      * @param options Optional parameters for Get Node File operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -15189,10 +14617,7 @@ public final class BatchClient {
      * @param nodeId The ID of the Compute Node whose files you want to list.
      * @param options Optional parameters for List Node Files operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the files on a Compute Node, or the files associated with
      * a Task on a Compute Node as paginated response with {@link PagedIterable}.
@@ -15232,10 +14657,7 @@ public final class BatchClient {
      * @param pool The Pool to be created.
      * @param options Optional parameters for Create Pool operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -15259,10 +14681,7 @@ public final class BatchClient {
      *
      * @param pool The Pool to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -15285,10 +14704,7 @@ public final class BatchClient {
      * @param options Optional parameters for Update Pool operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -15332,10 +14748,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool to get.
      * @param pool The pool properties to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -15362,10 +14775,7 @@ public final class BatchClient {
      * @param options Optional parameters for Resize Pool operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -15413,10 +14823,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for resizing the pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -15438,10 +14845,7 @@ public final class BatchClient {
      * @param pool The options to use for replacing properties on the pool.
      * @param options Optional parameters for Replace Pool Properties operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -15467,10 +14871,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool to update.
      * @param pool The options to use for replacing properties on the pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -15493,10 +14894,7 @@ public final class BatchClient {
      * @param options Optional parameters for Remove Nodes operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -15540,10 +14938,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for removing the node.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -15566,10 +14961,7 @@ public final class BatchClient {
      * @param options Optional parameters for Update Job operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -15613,10 +15005,7 @@ public final class BatchClient {
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job The options to use for updating the Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -15644,10 +15033,7 @@ public final class BatchClient {
      * @param options Optional parameters for Disable Job operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -15696,10 +15082,7 @@ public final class BatchClient {
      * @param jobId The ID of the Job to disable.
      * @param parameters The options to use for disabling the Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -15726,10 +15109,7 @@ public final class BatchClient {
      * @param job The Job to be created.
      * @param options Optional parameters for Create Job operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -15759,10 +15139,7 @@ public final class BatchClient {
      *
      * @param job The Job to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -15787,10 +15164,7 @@ public final class BatchClient {
      * @param options Optional parameters for Update Job Schedule operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -15836,10 +15210,7 @@ public final class BatchClient {
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule The options to use for updating the Job Schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -15856,10 +15227,7 @@ public final class BatchClient {
      * @param jobSchedule The Job Schedule to be created.
      * @param options Optional parameters for Create Job Schedule operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -15879,10 +15247,7 @@ public final class BatchClient {
      *
      * @param jobSchedule The Job Schedule to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -15904,10 +15269,7 @@ public final class BatchClient {
      * @param task The Task to be created.
      * @param options Optional parameters for Create Task operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -15932,10 +15294,7 @@ public final class BatchClient {
      * @param jobId The ID of the Job to which the Task is to be created.
      * @param task The Task to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -15957,10 +15316,7 @@ public final class BatchClient {
      * @param user The options to use for creating the user.
      * @param options Optional parameters for Create Node User operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -15986,10 +15342,7 @@ public final class BatchClient {
      * @param nodeId The ID of the machine on which you want to create a user Account.
      * @param user The options to use for creating the user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -16014,10 +15367,7 @@ public final class BatchClient {
      * @param parameters The options to use for updating the user.
      * @param options Optional parameters for Replace Node User operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -16047,10 +15397,7 @@ public final class BatchClient {
      * @param userName The name of the user Account to update.
      * @param parameters The options to use for updating the user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -16078,10 +15425,7 @@ public final class BatchClient {
      * @param parameters The Azure Batch service log files upload options.
      * @param options Optional parameters for Upload Node Logs operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of uploading Batch service log files from a specific Compute Node.
      */
@@ -16113,10 +15457,7 @@ public final class BatchClient {
      * Protocol file.
      * @param parameters The Azure Batch service log files upload options.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of uploading Batch service log files from a specific Compute Node.
      */
@@ -16143,10 +15484,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for enabling automatic scaling.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -16167,10 +15505,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
      * @param parameters The options to use for evaluating the automatic scaling formula.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of evaluating an automatic scaling formula on the Pool.
      *
@@ -16201,10 +15536,7 @@ public final class BatchClient {
      * @param options Optional parameters for Enable Pool AutoScale operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -16249,10 +15581,7 @@ public final class BatchClient {
      * @param parameters The options to use for evaluating the automatic scaling formula.
      * @param options Optional parameters for Evaluate Pool AutoScale operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of evaluating an automatic scaling formula on the Pool.
      *
@@ -16279,10 +15608,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool on which to disable automatic scaling.
      * @param options Optional parameters for Disable Pool AutoScale operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
