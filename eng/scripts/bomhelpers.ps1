@@ -23,22 +23,22 @@ $CommonScriptFilePath = Join-Path $RepoRoot "eng" "common" "scripts" "common.ps1
 function SetDependencyVersion($GroupId = "com.azure", $ArtifactId, $Version) {
   $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
   $setVersionFilePath = Join-Path $repoRoot "eng" "versioning" "set_versions.py"
-  $cmdOutput = python $setVersionFilePath --bt client --new-version $Version --ar $ArtifactId --gi $GroupId
-  $cmdOutput = python $setVersionFilePath --bt client --ar $ArtifactId --gi $GroupId --increment-version
+  $cmdOutput = python $setVersionFilePath --new-version $Version --artifact-id $ArtifactId --group-id $GroupId
+  $cmdOutput = python $setVersionFilePath --artifact-id $ArtifactId --group-id $GroupId --increment-version
 }
 
 # Set the current version of an artifact in the version_client.txt file
 function SetCurrentVersion($GroupId, $ArtifactId, $Version) {
   $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
   $setVersionFilePath = Join-Path $repoRoot "eng" "versioning" "set_versions.py"
-  $cmdOutput = python $setVersionFilePath --bt client --new-version $Version --ar $ArtifactId --gi $GroupId
+  $cmdOutput = python $setVersionFilePath --new-version $Version --artifact-id $ArtifactId --group-id $GroupId
 }
 
 # Update dependencies of the artifact.
 function UpdateDependencyOfClientSDK() {
   $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
   $updateVersionFilePath = Join-Path $repoRoot "eng" "versioning" "update_versions.py"
-  $cmdOutput = python $updateVersionFilePath --ut all --bt client --sr
+  $cmdOutput = python $updateVersionFilePath --skip-readme
 }
 
 # Get all azure com client artifacts from Maven.

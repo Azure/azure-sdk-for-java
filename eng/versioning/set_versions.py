@@ -16,19 +16,19 @@
 # and the current versions.
 #
 #
-#    python eng/versioning/set_versions.py --bq <BuildQualifierString> --ar <artifactId>
+#    python eng/versioning/set_versions.py --build-qualifier <BuildQualifierString> --artifact-id <artifactId>
 #
 # Use case: increment the version of a given artifact
 #
 #    python eng/versioning/set_versions.py --increment-version --artifact-id <artifactId>
 # For example: To increment the version of azure-core
-#    python eng/versioning/set_versions.py --iv --ar azure-core
+#    python eng/versioning/set_versions.py --iv --ai azure-core
 #
 # Use case: verify the version of a given artifact
 #
 #    python eng/versioning/set_versions.py --verify-version --artifact-id <artifactId>
 # For example: To verify the version of azure-core
-#    python eng/versioning/set_versions.py --vv --ar azure-core
+#    python eng/versioning/set_versions.py --vv --ai azure-core
 
 import argparse
 from datetime import timedelta
@@ -332,7 +332,7 @@ def get_beta_version_to_use(group_id: str, artifact_id: str, major_version: int,
     with urllib.request.urlopen(urllib.request.Request(url = url, method='GET')) as f:
         if (f.status != 200):
             raise ValueError('Unable to get maven-metadata.xml for groupId {} and artifactId {}. The status code was {}'.format(group_id, artifact_id, f.status))
-        
+
         # maven-metadata.xml as the following format:
         # <metadata>
         #   <groupId>groupId</groupId>
@@ -361,7 +361,7 @@ def get_beta_version_to_use(group_id: str, artifact_id: str, major_version: int,
                     beta_version_int = int(beta_version_str)
                     if beta_version_int > highest_beta_version:
                         highest_beta_version = beta_version_int
-                
+
         return highest_beta_version + 1
 
 # Verify that the current version of an artifact matches our versioning scheme. This is meant to be called

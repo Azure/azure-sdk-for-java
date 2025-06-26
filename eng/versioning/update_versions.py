@@ -261,7 +261,7 @@ def main():
     parser.add_argument('--auto-version-increment', '--avi', action='store_true', help='If this script is being run after an auto version increment, add changelog entry for new version')
     # Comma separated list artifacts, has to be split into an array. If we're not skipping README updates, only update MD files for entries for the list of libraries passed in
     parser.add_argument('--library-list', '--ll', nargs='?', help='(Optional) Comma seperated list of groupId:artifactId. If updating MD files, only update entries in this list.')
-    parser.add_argument('--version_override', '--vo', nargs='?', help='(Optional) identifier of version update configuratation matching (exactly) first-level identifier in supported_external_dependency_versions.json')
+    parser.add_argument('--version-override', '--vo', nargs='?', help='(Optional) identifier of version update configuratation matching (exactly) first-level identifier in supported_external_dependency_versions.json')
     parser.add_argument('--include-perf-tests', '--ipt', action='store_true', help='Whether perf-tests.yml/perf-tests.yaml files are included in the update')
     parser.add_argument('--setting-dev-version', '--sdv', action='store_true', help='Whether the dev version is being set in the pom.xml files. This is used in CI only.')
     args = parser.parse_args()

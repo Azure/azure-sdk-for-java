@@ -155,7 +155,7 @@ I need to tick up the version of azure-storage libraries how would I do it? Guid
 
 1. I'd open up eng\versioning\version_client.txt and update the current-versions of the libraries that are built and released as part of the azure storage pipeline. This list can be found in pom.service.xml under the sdk/storage directory.It's worth noting that any module entry starting with "../" are external module dependencies and not something that's released as part of the pipeline. Once we GA, these build dependencies for library components outside a given area should go away and be replaced with downloading the appropriate dependency from Maven like we do for external dependencies.
 2. Execute the update_versions python script from the root of the enlistment
-`python eng/versioning/update_versions.py --ut libary --bt client`
+`python eng/versioning/update_versions.py --skip-readme`
 This will go through the entire source tree and update all the references in the POM and README files with the updated versions. Git status will show all of the modified files.
 3. Review and submit a PR with the modified files.
 
