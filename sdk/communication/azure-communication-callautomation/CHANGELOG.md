@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Support for recording result api.
+
 ### Breaking Changes
 
 ### Bugs Fixed
