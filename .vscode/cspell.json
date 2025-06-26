@@ -280,6 +280,7 @@
     "endtoend",
     "entra",
     "Entra",
+    "ESRP",
     "Esto",
     "etag",
     "euap",
@@ -299,6 +300,7 @@
     "hdfs",
     "hdinsight",
     "healthdataaiservices",
+    "HKLM",
     "hudha",
     "hvac",
     "hybridkubernetes",
@@ -870,12 +872,6 @@
         "linecoverage",
         "linksource",
         "listbyconfigurationprofileassignments"
-      ]
-    },
-    {
-      "filename": "sdk/storage/CONTRIBUTING.md",
-      "words": [
-        "HKLM"
       ]
     },
     {
