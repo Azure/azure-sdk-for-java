@@ -455,10 +455,11 @@ public final class WebPubSubServiceAsyncClient {
         RequestOptions requestOptions) {
         PagedFlux<BinaryData> binaryDataPagedFlux
             = this.serviceClient.listConnectionsInGroupAsync(hub, group, requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
-                ? binaryDataPagedFlux.byPage()
-                : binaryDataPagedFlux.byPage(continuationToken);
+
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? binaryDataPagedFlux.byPage().take(1)
+                : binaryDataPagedFlux.byPage(continuationTokenParam).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
