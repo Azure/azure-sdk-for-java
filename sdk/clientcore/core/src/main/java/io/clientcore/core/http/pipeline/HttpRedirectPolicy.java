@@ -21,6 +21,7 @@ import java.util.EnumSet;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
 
 import static io.clientcore.core.implementation.UrlRedactionUtil.getRedactedUri;
@@ -92,6 +93,15 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
     }
 
     @Override
+    public CompletableFuture<Response<BinaryData>> processAsync(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        // Reset the attemptedRedirectUris for each individual request.
+        InstrumentationContext instrumentationContext = httpRequest.getContext().getInstrumentationContext();
+
+        ClientLogger logger = getLogger(httpRequest);
+        return attemptRedirectAsync(logger, next, 0, new LinkedHashSet<>(), instrumentationContext);
+    }
+
+    @Override
     public HttpPipelinePosition getPipelinePosition() {
         return HttpPipelinePosition.REDIRECT;
     }
@@ -100,9 +110,8 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
      * Function to process through the HTTP Response received in the pipeline and redirect sending the request with a
      * new redirect URI.
      */
-    private Response<BinaryData> attemptRedirect(ClientLogger logger, final HttpPipelineNextPolicy next,
-        final int redirectAttempt, LinkedHashSet<String> attemptedRedirectUris,
-        InstrumentationContext instrumentationContext) {
+    private Response<BinaryData> attemptRedirect(ClientLogger logger, HttpPipelineNextPolicy next, int redirectAttempt,
+        LinkedHashSet<String> attemptedRedirectUris, InstrumentationContext instrumentationContext) {
 
         // Make sure the context is not modified during redirect, except for the URI
         Response<BinaryData> response = next.copy().process();
@@ -110,14 +119,41 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
         HttpRedirectCondition requestRedirectCondition
             = new HttpRedirectCondition(response, redirectAttempt, attemptedRedirectUris);
 
-        if ((shouldRedirectCondition != null && shouldRedirectCondition.test(requestRedirectCondition))
-            || (shouldRedirectCondition == null
-                && defaultShouldAttemptRedirect(logger, requestRedirectCondition, instrumentationContext))) {
+        boolean shouldRedirect = (shouldRedirectCondition != null)
+            ? shouldRedirectCondition.test(requestRedirectCondition)
+            : defaultShouldAttemptRedirect(logger, requestRedirectCondition, instrumentationContext);
+        if (shouldRedirect) {
             createRedirectRequest(response);
             return attemptRedirect(logger, next, redirectAttempt + 1, attemptedRedirectUris, instrumentationContext);
         }
 
         return response;
+    }
+
+    /**
+     * Function to process through the HTTP Response received in the pipeline and redirect sending the request with a
+     * new redirect URI.
+     */
+    private CompletableFuture<Response<BinaryData>> attemptRedirectAsync(ClientLogger logger,
+        HttpPipelineNextPolicy next, int redirectAttempt, LinkedHashSet<String> attemptedRedirectUris,
+        InstrumentationContext instrumentationContext) {
+
+        // Make sure the context is not modified during redirect, except for the URI
+        return next.copy().processAsync().thenCompose(response -> {
+            HttpRedirectCondition requestRedirectCondition
+                = new HttpRedirectCondition(response, redirectAttempt, attemptedRedirectUris);
+
+            boolean shouldRedirect = (shouldRedirectCondition != null)
+                ? shouldRedirectCondition.test(requestRedirectCondition)
+                : defaultShouldAttemptRedirect(logger, requestRedirectCondition, instrumentationContext);
+            if (shouldRedirect) {
+                createRedirectRequest(response);
+                return attemptRedirectAsync(logger, next, redirectAttempt + 1, attemptedRedirectUris,
+                    instrumentationContext);
+            }
+
+            return CompletableFuture.completedFuture(response);
+        });
     }
 
     private boolean defaultShouldAttemptRedirect(ClientLogger logger, HttpRedirectCondition requestRedirectCondition,

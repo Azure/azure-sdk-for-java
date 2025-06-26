@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * <p>The {@code OAuthBearerTokenAuthenticationPolicy} class is an implementation of the
@@ -110,6 +111,44 @@ public class OAuthBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
         return httpResponse;
     }
 
+    @Override
+    public CompletableFuture<Response<BinaryData>> processAsync(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        if (!"https".equals(httpRequest.getUri().getScheme())) {
+            throw LOGGER.throwableAtError()
+                .log("Token credentials require a URL using the HTTPS protocol scheme", IllegalStateException::new);
+        }
+
+        HttpPipelineNextPolicy nextPolicy = next.copy();
+
+        AuthMetadata authMetadata = (AuthMetadata) httpRequest.getContext().getMetadata(IO_CLIENTCORE_AUTH_METADATA);
+
+        OAuthTokenRequestContext tokenRequestContext = context;
+        if (authMetadata != null) {
+            List<AuthScheme> authSchemes = authMetadata.getAuthSchemes();
+            if (CoreUtils.isNullOrEmpty(authSchemes) || authSchemes.contains(AuthScheme.NO_AUTH)) {
+                return next.processAsync();
+            } else {
+                tokenRequestContext = mergeTokenRequestContext(authMetadata.getOAuthTokenRequestContext());
+            }
+        }
+
+        authorizeRequest(httpRequest, mergeTokenRequestContext(tokenRequestContext));
+
+        return next.processAsync().thenCompose(httpResponse -> {
+            String authHeader = httpResponse.getHeaders().getValue(HttpHeaderName.WWW_AUTHENTICATE);
+            if (httpResponse.getStatusCode() == 401 && authHeader != null) {
+                if (authorizeRequestOnChallenge(httpRequest, httpResponse)) {
+                    // body needs to be closed or read to the end to release the connection
+                    httpResponse.close();
+                    return nextPolicy.processAsync();
+                } else {
+                    return CompletableFuture.completedFuture(httpResponse);
+                }
+            }
+            return CompletableFuture.completedFuture(httpResponse);
+        });
+    }
+
     /**
      * Handles the authentication challenge in the event a 401 response with a WWW-Authenticate authentication challenge
      * header is received after the initial request and returns appropriate {@link OAuthTokenRequestContext} to be
@@ -125,6 +164,24 @@ public class OAuthBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
      */
     public boolean authorizeRequestOnChallenge(HttpRequest httpRequest, Response<BinaryData> response) {
         return false;
+    }
+
+    /**
+     * Handles the authentication challenge in the event a 401 response with a WWW-Authenticate authentication challenge
+     * header is received after the initial request and returns appropriate {@link OAuthTokenRequestContext} to be
+     * used for re-authentication.
+     *
+     * <p>
+     * The default implementation doesn't handle challenges. You can override and your implementation as needed.
+     * </p>
+     *
+     * @param httpRequest The http request.
+     * @param response The Http Response containing the authentication challenge header.
+     * @return A boolean indicating if the request was authorized again via re-authentication
+     */
+    public CompletableFuture<Boolean> authorizeRequestOnChallengeAsync(HttpRequest httpRequest,
+        Response<BinaryData> response) {
+        return CompletableFuture.completedFuture(false);
     }
 
     /**

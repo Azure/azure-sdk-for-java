@@ -38,6 +38,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -286,13 +287,82 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
                 metricAttributes.put(ERROR_TYPE_KEY, cause.getClass().getCanonicalName());
             }
             span.end(cause);
-            throw logException(logger, request, null, t, startNs, null, requestContentLength, redactedUrl, tryCount,
+            logException(logger, request, null, t, startNs, null, requestContentLength, redactedUrl, tryCount,
                 currentContext);
+            throw t;
         } finally {
             if (isMetricsEnabled) {
                 httpRequestDuration.record((System.nanoTime() - startNs) / 1_000_000_000.0,
                     instrumentation.createAttributes(metricAttributes), currentContext);
             }
+        }
+    }
+
+    @Override
+    public CompletableFuture<Response<BinaryData>> processAsync(HttpRequest request, HttpPipelineNextPolicy next) {
+        if (!isTracingEnabled && !isLoggingEnabled && !isMetricsEnabled) {
+            return next.processAsync();
+        }
+
+        ClientLogger logger = getLogger(request);
+        final long startNs = System.nanoTime();
+        final String redactedUrl = getRedactedUri(request.getUri(), allowedQueryParameterNames);
+        final int tryCount = HttpRequestAccessHelper.getTryCount(request);
+        final long requestContentLength = getContentLength(logger, request.getBody(), request.getHeaders(), true);
+
+        Map<String, Object> metricAttributes = isMetricsEnabled ? new HashMap<>(8) : null;
+
+        InstrumentationContext parentContext = request.getContext().getInstrumentationContext();
+
+        SpanBuilder spanBuilder = tracer.spanBuilder(request.getHttpMethod().toString(), CLIENT, parentContext);
+        setStartAttributes(request, redactedUrl, spanBuilder, metricAttributes);
+        Span span = spanBuilder.startSpan();
+
+        InstrumentationContext currentContext
+            = span.getInstrumentationContext().isValid() ? span.getInstrumentationContext() : parentContext;
+
+        if (currentContext != null && currentContext.isValid()) {
+            request.setContext(request.getContext().toBuilder().setInstrumentationContext(currentContext).build());
+            // even if tracing is disabled, we could have a valid context to propagate
+            // if it was provided by the application explicitly.
+            traceContextPropagator.inject(currentContext, request.getHeaders(), SETTER);
+        }
+
+        logRequest(logger, request, startNs, requestContentLength, redactedUrl, tryCount, currentContext);
+
+        try (TracingScope ignored = span.makeCurrent()) {
+            return next.processAsync().thenApply(response -> {
+                if (response == null) {
+                    LOGGER.atError()
+                        .setInstrumentationContext(span.getInstrumentationContext())
+                        .addKeyValue(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod())
+                        .addKeyValue(URL_FULL_KEY, redactedUrl)
+                        .log(
+                            "HTTP response is null and no exception is thrown. Please report it to the client library maintainers.");
+                    return response;
+                }
+
+                addDetails(request, response.getStatusCode(), tryCount, span, metricAttributes);
+                response = logResponse(logger, response, startNs, requestContentLength, redactedUrl, tryCount,
+                    currentContext);
+                span.end();
+                return response;
+            }).whenComplete((ignoredResult, exception) -> {
+                if (exception != null) {
+                    Throwable cause = unwrap(exception);
+                    if (metricAttributes != null) {
+                        metricAttributes.put(ERROR_TYPE_KEY, cause.getClass().getCanonicalName());
+                    }
+                    span.end(cause);
+                    logException(logger, request, null, exception, startNs, null, requestContentLength, redactedUrl,
+                        tryCount, currentContext);
+                }
+
+                if (isMetricsEnabled) {
+                    httpRequestDuration.record((System.nanoTime() - startNs) / 1_000_000_000.0,
+                        instrumentation.createAttributes(metricAttributes), currentContext);
+                }
+            });
         }
     }
 
@@ -423,8 +493,9 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
                 logBuilder.addKeyValue(HTTP_REQUEST_BODY_CONTENT_KEY, bufferedBody.toString());
             } catch (RuntimeException e) {
                 // we'll log exception at the appropriate level.
-                throw logException(logger, request, null, e, startNanoTime, null, requestContentLength, redactedUrl,
-                    tryCount, context);
+                logException(logger, request, null, e, startNanoTime, null, requestContentLength, redactedUrl, tryCount,
+                    context);
+                throw e;
             }
         }
 
@@ -474,13 +545,13 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         return response;
     }
 
-    private <T extends Throwable> T logException(ClientLogger logger, HttpRequest request,
-        Response<BinaryData> response, T throwable, long startNanoTime, Long responseStartNanoTime,
-        long requestContentLength, String redactedUrl, int tryCount, InstrumentationContext context) {
+    private void logException(ClientLogger logger, HttpRequest request, Response<BinaryData> response,
+        Throwable throwable, long startNanoTime, Long responseStartNanoTime, long requestContentLength,
+        String redactedUrl, int tryCount, InstrumentationContext context) {
 
         LoggingEvent log = logger.atLevel(LogLevel.WARNING);
         if (!log.isEnabled() || !isLoggingEnabled) {
-            return throwable;
+            return;
         }
 
         log.setThrowable(unwrap(throwable))
@@ -504,7 +575,6 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         }
 
         log.log();
-        return throwable;
     }
 
     private double getDurationMs(long startNs, long endNs) {

@@ -15,6 +15,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * <p>The {@code AddDatePolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy is
@@ -39,13 +40,25 @@ public class SetDatePolicy implements HttpPipelinePolicy {
 
     @Override
     public Response<BinaryData> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        setDateHeader(httpRequest);
+
+        return next.process();
+    }
+
+    @Override
+    public CompletableFuture<Response<BinaryData>> processAsync(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        setDateHeader(httpRequest);
+
+        return next.processAsync();
+    }
+
+    private static void setDateHeader(HttpRequest httpRequest) {
         OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
         try {
             httpRequest.getHeaders().set(HttpHeaderName.DATE, DateTimeRfc1123.toRfc1123String(now));
         } catch (IllegalArgumentException ignored) {
             httpRequest.getHeaders().set(HttpHeaderName.DATE, FORMATTER.format(now));
         }
-        return next.process();
     }
 
     @Override

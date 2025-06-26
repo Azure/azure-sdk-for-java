@@ -49,8 +49,8 @@ public final class JdkHttpClient implements HttpClient {
     @Override
     public CompletableFuture<Response<BinaryData>> sendAsync(HttpRequest request) {
         CompletableFuture<Response<BinaryData>> failedFuture = new CompletableFuture<>();
-        failedFuture.completeExceptionally(LOGGER.throwableAtError()
-            .log(ERROR_MESSAGE, UnsupportedOperationException::new));
+        failedFuture
+            .completeExceptionally(LOGGER.throwableAtError().log(ERROR_MESSAGE, UnsupportedOperationException::new));
         return failedFuture;
     }
 }

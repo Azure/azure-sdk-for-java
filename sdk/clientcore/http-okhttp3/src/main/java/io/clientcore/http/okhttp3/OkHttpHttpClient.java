@@ -26,7 +26,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
@@ -84,12 +83,12 @@ class OkHttpHttpClient implements HttpClient {
         }
 
         @Override
-        public void onFailure(@NotNull Call call, @NotNull IOException e) {
+        public void onFailure(Call call, IOException e) {
             future.completeExceptionally(CoreException.from(e));
         }
 
         @Override
-        public void onResponse(@NotNull Call call, @NotNull okhttp3.Response response) throws IOException {
+        public void onResponse(Call call, okhttp3.Response response) throws IOException {
             future.complete(toResponse(request, response));
         }
     }

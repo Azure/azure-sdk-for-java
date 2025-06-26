@@ -14,6 +14,7 @@ import io.clientcore.core.models.binarydata.BinaryData;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * The HTTP pipeline that HTTP requests and responses will flow through.
@@ -67,12 +68,23 @@ public final class HttpPipeline {
      * Sends the request through the pipeline.
      *
      * @param request THe HTTP request to send.
-     *
      * @return An {@link Response}.
      */
     public Response<BinaryData> send(HttpRequest request) {
         HttpPipelineNextPolicy next = new HttpPipelineNextPolicy(new HttpPipelineCallState(this, request));
 
         return next.process();
+    }
+
+    /**
+     * Sends the request through the pipeline asynchronously.
+     *
+     * @param request The HTTP request to send.
+     * @return A {@link CompletableFuture} that completes with an {@link Response}, or fails with an exception if
+     * the request could not be sent or the response could not be received.
+     */
+    public CompletableFuture<Response<BinaryData>> sendAsync(HttpRequest request) {
+        HttpPipelineNextPolicy next = new HttpPipelineNextPolicy(new HttpPipelineCallState(this, request));
+        return next.processAsync();
     }
 }

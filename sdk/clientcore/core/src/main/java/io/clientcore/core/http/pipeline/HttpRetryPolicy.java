@@ -27,6 +27,7 @@ import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
@@ -133,6 +134,11 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
     }
 
     @Override
+    public CompletableFuture<Response<BinaryData>> processAsync(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        return attemptAsync(httpRequest, next, 0, null);
+    }
+
+    @Override
     public HttpPipelinePosition getPipelinePosition() {
         return HttpPipelinePosition.RETRY;
     }
@@ -151,8 +157,8 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
         return calculateRetryDelay(tryCount);
     }
 
-    private Response<BinaryData> attempt(final HttpRequest httpRequest, final HttpPipelineNextPolicy next,
-        final int tryCount, final List<Exception> suppressed) {
+    private Response<BinaryData> attempt(HttpRequest httpRequest, HttpPipelineNextPolicy next, int tryCount,
+        List<Exception> suppressed) {
 
         // the tryCount is updated by the caller and represents the number of attempts made so far.
         // It can be used by the policies during the process call.
@@ -235,6 +241,99 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
         }
     }
 
+    private CompletableFuture<Response<BinaryData>> attemptAsync(HttpRequest httpRequest, HttpPipelineNextPolicy next,
+        final int tryCount, final List<Exception> suppressed) {
+
+        // the tryCount is updated by the caller and represents the number of attempts made so far.
+        // It can be used by the policies during the process call.
+        HttpRequestAccessHelper.setTryCount(httpRequest, tryCount);
+
+        final InstrumentationContext instrumentationContext = httpRequest.getContext().getInstrumentationContext();
+
+        ClientLogger logger = getLogger(httpRequest);
+
+        return next.copy().processAsync().thenCompose(response -> {
+            if (shouldRetryResponse(response, tryCount, suppressed)) {
+                final Duration delayDuration = determineDelayDuration(response, tryCount, delayFromHeaders);
+
+                logRetry(logger.atVerbose(), tryCount, delayDuration, null, false, instrumentationContext);
+
+                response.close();
+
+                long millis = delayDuration.toMillis();
+                if (millis > 0) {
+                    try {
+                        Thread.sleep(millis);
+                    } catch (InterruptedException ie) {
+                        throw logger.throwableAtError().log(ie, (m, c) -> CoreException.from(m, c, false));
+                    }
+                }
+
+                return attemptAsync(httpRequest, next, tryCount + 1, suppressed);
+            } else {
+                if (tryCount >= maxRetries) {
+                    // TODO (limolkova): do we have better heuristic to determine if we're retrying because of error
+                    // or because we got an unsuccessful response?
+                    logRetry(logger.atWarning(), tryCount, null, null, true, instrumentationContext);
+                }
+                return CompletableFuture.completedFuture(response);
+            }
+        }).exceptionallyCompose(exception -> {
+            if (!(exception instanceof Exception)) {
+                CompletableFuture<Response<BinaryData>> failedFuture = new CompletableFuture<>();
+                failedFuture.completeExceptionally(exception);
+                return failedFuture;
+            }
+
+            if (shouldRetryException(exception, tryCount, suppressed)) {
+
+                Duration delayDuration = calculateRetryDelay(tryCount);
+                logRetry(logger.atVerbose(), tryCount, delayDuration, exception, false, instrumentationContext);
+
+                boolean interrupted = false;
+                long millis = delayDuration.toMillis();
+
+                if (millis > 0) {
+                    try {
+                        Thread.sleep(millis);
+                    } catch (InterruptedException ie) {
+                        interrupted = true;
+                        exception.addSuppressed(ie);
+                        logger.atWarning().setThrowable(ie).log();
+                    }
+                }
+
+                if (interrupted) {
+                    // not logging err here since the err should have been logged in HTTP
+                    // instrumentation policy. We'll log it again if it's a terminal one
+                    return createFailedFuture(exception);
+                }
+
+                List<Exception> suppressedLocal = suppressed == null ? new LinkedList<>() : suppressed;
+
+                suppressedLocal.add((Exception) exception);
+
+                return attemptAsync(httpRequest, next, tryCount + 1, suppressedLocal);
+            } else {
+                if (suppressed != null) {
+                    suppressed.forEach(exception::addSuppressed);
+                }
+
+                logRetry(logger.atWarning(), tryCount, null, exception, true, instrumentationContext);
+
+                // we already logged the exception in the instrumentation policy
+                // and also logged retry information above.
+                return createFailedFuture(exception);
+            }
+        });
+    }
+
+    private static CompletableFuture<Response<BinaryData>> createFailedFuture(Throwable exception) {
+        CompletableFuture<Response<BinaryData>> failedFuture = new CompletableFuture<>();
+        failedFuture.completeExceptionally(exception);
+        return failedFuture;
+    }
+
     /*
      * Determines the delay duration that should be waited before retrying.
      */
@@ -265,15 +364,16 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
         }
     }
 
-    private boolean shouldRetryException(Exception exception, int tryCount, List<Exception> retriedExceptions) {
+    private boolean shouldRetryException(Throwable exception, int tryCount, List<Exception> retriedExceptions) {
         // Check if there are any retry attempts still available.
-        if (tryCount >= maxRetries) {
+        if (tryCount >= maxRetries || !(exception instanceof Exception)) {
             return false;
         }
 
         // Unwrap the throwable.
         Throwable causalThrowable = exception.getCause();
-        HttpRetryCondition requestRetryCondition = new HttpRetryCondition(null, exception, tryCount, retriedExceptions);
+        HttpRetryCondition requestRetryCondition
+            = new HttpRetryCondition(null, (Exception) exception, tryCount, retriedExceptions);
 
         // Check all causal exceptions in the exception chain.
         while (causalThrowable instanceof IOException || causalThrowable instanceof TimeoutException) {
@@ -292,8 +392,8 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
         return false;
     }
 
-    private void logRetry(LoggingEvent log, int tryCount, Duration delayDuration, RuntimeException throwable,
-        boolean lastTry, InstrumentationContext context) {
+    private void logRetry(LoggingEvent log, int tryCount, Duration delayDuration, Throwable throwable, boolean lastTry,
+        InstrumentationContext context) {
         if (log.isEnabled()) {
             log.addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount)
                 .addKeyValue(RETRY_MAX_ATTEMPT_COUNT_KEY, maxRetries)
