@@ -75,7 +75,7 @@ public class BomGenerator {
     private String inputDirectory;
     private final Pattern sdkDependencyPattern;
     private final Set<String> groupIds;
-    private final ArtifactFilter artifactFilter;
+    private final DependencyFilter dependencyFilter;
 
     private static Logger logger = LoggerFactory.getLogger(BomGenerator.class);
 
@@ -97,7 +97,7 @@ public class BomGenerator {
 
         parseInputs();
         validateInputs();
-        this.artifactFilter = new ArtifactFilter(this.inputDirectory);
+        this.dependencyFilter = new DependencyFilter(this.inputDirectory);
 
         Path outputDirPath = Paths.get(outputDirectory);
         outputDirPath.toFile().mkdirs();
@@ -185,7 +185,7 @@ public class BomGenerator {
             for (String line : Files.readAllLines(Paths.get(inputFileName))) {
                 BomDependency dependency = scanDependency(line);
 
-                if(artifactFilter.apply(dependency)) {
+                if(dependencyFilter.apply(dependency)) {
                     inputDependencies.add(dependency);
                 }
             }
@@ -360,9 +360,9 @@ public class BomGenerator {
         writeModel(this.pomFileName, this.outputFileName, model);
     }
 
-    private static class ArtifactFilter {
-        private final Map<String, Set<BomDependencyNoVersion>> groupIdArtifactsMap = new HashMap<>();
-        ArtifactFilter(String inputDirectory) throws IOException {
+    private static class DependencyFilter {
+        private final Map<String, Set<BomDependencyNoVersion>> groupIdDependenciesMap = new HashMap<>();
+        DependencyFilter(String inputDirectory) throws IOException {
             Path includesDirectory = Paths.get(inputDirectory, "includes");
             String fileSuffix = ".txt";
             Files.list(includesDirectory)
@@ -371,10 +371,10 @@ public class BomGenerator {
                     try {
                         String fileName = file.getFileName().toString();
                         String groupId = fileName.substring(0, fileName.length() - fileSuffix.length());
-                        Set<BomDependencyNoVersion> artifacts = groupIdArtifactsMap.computeIfAbsent(groupId, ignored -> new HashSet<>());
+                        Set<BomDependencyNoVersion> dependencies = groupIdDependenciesMap.computeIfAbsent(groupId, ignored -> new HashSet<>());
                         for (String line : Files.readAllLines(file)) {
                             if (line != null && !line.trim().isEmpty()) {
-                                artifacts.add(new BomDependencyNoVersion(groupId, line));
+                                dependencies.add(new BomDependencyNoVersion(groupId, line));
                             }
                         }
                     } catch (IOException e) {
@@ -387,12 +387,12 @@ public class BomGenerator {
             if (dependency == null) {
                 return false;
             }
-            Set<BomDependencyNoVersion> allowedArtifacts = this.groupIdArtifactsMap.get(dependency.getGroupId());
+            Set<BomDependencyNoVersion> allowedDependencies = this.groupIdDependenciesMap.get(dependency.getGroupId());
             // if allowed list is null, no filter will be applied
-            if (allowedArtifacts == null) {
+            if (allowedDependencies == null) {
                 return true;
             }
-            return allowedArtifacts.contains(Utils.toBomDependencyNoVersion(dependency));
+            return allowedDependencies.contains(Utils.toBomDependencyNoVersion(dependency));
         }
     }
 }
