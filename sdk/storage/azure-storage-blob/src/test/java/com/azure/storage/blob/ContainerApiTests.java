@@ -2018,7 +2018,7 @@ public class ContainerApiTests extends BlobTestBase {
         BlobContainerClient containerClient = serviceClient.getBlobContainerClient(generateContainerName());
 
         BlobStorageException exception
-            = assertThrows(BlobStorageException.class, () -> containerClient.createIfNotExists());
+            = assertThrows(BlobStorageException.class, containerClient::createIfNotExists);
 
         assertEquals(400, exception.getStatusCode());
         assertTrue(exception.getMessage().contains(INVALID_VERSION_HEADER_MESSAGE));

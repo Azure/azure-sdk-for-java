@@ -1569,7 +1569,7 @@ public class ShareApiTests extends FileShareTestBase {
         ShareClient shareClient = serviceClient.getShareClient(generateShareName());
 
         ShareStorageException exception
-            = assertThrows(ShareStorageException.class, () -> shareClient.createIfNotExists());
+            = assertThrows(ShareStorageException.class, shareClient::createIfNotExists);
 
         assertEquals(400, exception.getStatusCode());
         assertTrue(exception.getMessage().contains(INVALID_VERSION_HEADER_MESSAGE));
