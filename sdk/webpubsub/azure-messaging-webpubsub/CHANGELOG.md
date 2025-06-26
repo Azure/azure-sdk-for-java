@@ -1,8 +1,9 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.5.0 (Unreleased)
 
 ### Features Added
+- Add "listConnectionsInGroup" API.
 
 ### Breaking Changes
 
@@ -262,7 +263,7 @@
 ### Bugs Fixed
 
 - Fixed incorrect "audience" from `getClientAccessToken` method in `WebPubSubServiceAsyncClient`. ([#24741](https://github.com/Azure/azure-sdk-for-java/issues/24741))
-- Fixed bug of getting incorrect token in `getClientAccessToken` method from Azure token credential. 
+- Fixed bug of getting incorrect token in `getClientAccessToken` method from Azure token credential.
 
 ### Features Added
 
@@ -430,7 +431,7 @@
 
 ### Features Added
 - Added support for [Azure Active Directory](https://docs.microsoft.com/azure/active-directory/authentication/) based authentication.
-- Added support for API management by configuring `reverseProxyEndpoint` on the client builder. 
+- Added support for API management by configuring `reverseProxyEndpoint` on the client builder.
   https://github.com/Azure/azure-webpubsub/issues/194 describes how to integrate with the API Management service.
 
 ## 1.0.0-beta.3 (2021-07-29)
@@ -449,9 +450,9 @@
 - Fixed issue with generating token that included only the last role in the input list.
 
 ## 1.0.0-beta.1 (2021-04-22)
-Version 1.0.0-beta.1 is a preview of our efforts in creating a client library for Azure Web PubSub that is 
-developer-friendly, idiomatic to the Java ecosystem, and as consistent across different languages and platforms as 
-possible. The principles that guide our efforts can be found in the 
+Version 1.0.0-beta.1 is a preview of our efforts in creating a client library for Azure Web PubSub that is
+developer-friendly, idiomatic to the Java ecosystem, and as consistent across different languages and platforms as
+possible. The principles that guide our efforts can be found in the
 [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java_introduction.html).
 
 - Initial release. Please see the README and wiki for information on using the new library.
