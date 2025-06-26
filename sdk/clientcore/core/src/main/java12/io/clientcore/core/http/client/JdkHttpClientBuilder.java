@@ -257,11 +257,14 @@ public class JdkHttpClientBuilder {
     }
 
     /**
-     * Build a HttpClient with current configurations.
+     * Build a AsyncHttpClient and HttpClient implementation with current configurations.
      *
-     * @return a {@link HttpClient}.
+     * @param <T> The type of the client to build, which must implement both {@link AsyncHttpClient} and
+     * {@link HttpClient}.
+     * @return An implementation that implements both {@link AsyncHttpClient} and {@link HttpClient}.
      */
-    public HttpClient build() {
+    @SuppressWarnings("unchecked")
+    public <T extends AsyncHttpClient & HttpClient> T build() {
         java.net.http.HttpClient.Builder httpClientBuilder = java.net.http.HttpClient.newBuilder();
 
         httpClientBuilder = httpClientBuilder.connectTimeout(getTimeout(connectionTimeout, DEFAULT_CONNECTION_TIMEOUT));
@@ -301,7 +304,7 @@ public class JdkHttpClientBuilder {
             }
         }
 
-        return new JdkHttpClient(httpClientBuilder.build(), Collections.unmodifiableSet(getRestrictedHeaders()),
+        return (T) new JdkHttpClient(httpClientBuilder.build(), Collections.unmodifiableSet(getRestrictedHeaders()),
             writeTimeout, responseTimeout, readTimeout);
     }
 

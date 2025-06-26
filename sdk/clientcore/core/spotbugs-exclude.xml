@@ -173,7 +173,10 @@
   </Match>
   <Match>
     <Bug pattern="LI_LAZY_INIT_STATIC" />
-    <Class name="io.clientcore.core.http.client.HttpClientProvider" />
+    <Or>
+      <Class name="io.clientcore.core.http.client.AsyncHttpClientProvider" />
+      <Class name="io.clientcore.core.http.client.HttpClientProvider" />
+    </Or>
   </Match>
   <Match>
     <Bug pattern="LI_LAZY_INIT_UPDATE_STATIC" />
