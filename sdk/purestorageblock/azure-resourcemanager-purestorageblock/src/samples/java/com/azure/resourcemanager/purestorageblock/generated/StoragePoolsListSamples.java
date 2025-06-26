@@ -9,7 +9,7 @@ package com.azure.resourcemanager.purestorageblock.generated;
  */
 public final class StoragePoolsListSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/StoragePools_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-01/StoragePools_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_ListBySubscription.
