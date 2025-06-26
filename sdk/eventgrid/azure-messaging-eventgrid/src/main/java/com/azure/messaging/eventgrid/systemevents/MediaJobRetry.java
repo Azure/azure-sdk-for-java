@@ -6,7 +6,11 @@ package com.azure.messaging.eventgrid.systemevents;
 /**
  * Indicates that it may be possible to retry the Job. If retry is unsuccessful, please contact Azure support via Azure
  * Portal.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
+@Deprecated
 public enum MediaJobRetry {
 
     /**

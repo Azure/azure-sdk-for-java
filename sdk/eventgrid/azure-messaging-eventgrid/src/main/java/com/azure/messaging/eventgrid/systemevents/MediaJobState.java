@@ -5,7 +5,11 @@ package com.azure.messaging.eventgrid.systemevents;
 
 /**
  * The previous state of the Job.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
+@Deprecated
 public enum MediaJobState {
 
     /**

@@ -10,7 +10,8 @@ import java.util.Collection;
 /**
  * Type of action on the app service plan.
  * 
- * @deprecated This class is deprecated and may be removed in future releases.
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Deprecated
 public final class AppServicePlanAction extends ExpandableStringEnum<AppServicePlanAction> {

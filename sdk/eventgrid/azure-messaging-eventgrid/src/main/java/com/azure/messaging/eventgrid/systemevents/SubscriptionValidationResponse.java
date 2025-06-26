@@ -16,7 +16,8 @@ import java.io.IOException;
  * validationUrl received in a SubscriptionValidationEvent. When the validationCode is used, the
  * SubscriptionValidationResponse can be used to build the response.
  * 
- * @deprecated This class is deprecated and may be removed in future releases.
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Fluent
 @Deprecated

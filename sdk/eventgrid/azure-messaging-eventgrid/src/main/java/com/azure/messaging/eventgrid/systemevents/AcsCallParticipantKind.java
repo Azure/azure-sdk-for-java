@@ -10,7 +10,8 @@ import java.util.Collection;
 /**
  * The role of participant user.
  * 
- * @deprecated This class is deprecated and may be removed in future releases.
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Deprecated
 public final class AcsCallParticipantKind extends ExpandableStringEnum<AcsCallParticipantKind> {

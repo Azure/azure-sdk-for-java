@@ -14,7 +14,8 @@ import java.io.IOException;
 /**
  * Schema of calling event participant user.
  * 
- * @deprecated This class is deprecated and may be removed in future releases.
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Fluent
 @Deprecated

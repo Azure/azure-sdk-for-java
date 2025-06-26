@@ -15,7 +15,8 @@ import java.util.List;
 /**
  * Schema for all properties of Recording Storage Information.
  * 
- * @deprecated This class is deprecated and may be removed in future releases.
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Fluent
 @Deprecated

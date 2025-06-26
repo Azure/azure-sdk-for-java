@@ -16,7 +16,8 @@ import java.io.IOException;
  * communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may be set
  * which must match the kind enum value.
  * 
- * @deprecated This class is deprecated and may be removed in future releases.
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Fluent
 @Deprecated

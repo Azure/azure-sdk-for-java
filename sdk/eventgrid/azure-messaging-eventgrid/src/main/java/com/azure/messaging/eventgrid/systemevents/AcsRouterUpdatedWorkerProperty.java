@@ -10,7 +10,8 @@ import java.util.Collection;
 /**
  * An individual property updated in the Router Worker.
  * 
- * @deprecated This class is deprecated and may be removed in future releases.
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Deprecated
 public final class AcsRouterUpdatedWorkerProperty extends ExpandableStringEnum<AcsRouterUpdatedWorkerProperty> {

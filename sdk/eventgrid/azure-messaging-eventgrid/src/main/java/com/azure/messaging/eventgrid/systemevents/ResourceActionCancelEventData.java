@@ -21,7 +21,8 @@ import java.util.Map;
  * Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceActionCancel event. This is raised
  * when a resource action operation is canceled.
  * 
- * @deprecated This class is deprecated and may be removed in future releases.
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Fluent
 @Deprecated

@@ -15,7 +15,8 @@ import java.io.IOException;
  * Describes the schema of the properties under resource info which are common across all ARN system topic delete
  * events.
  * 
- * @deprecated This class is deprecated and may be removed in future releases.
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Fluent
 @Deprecated

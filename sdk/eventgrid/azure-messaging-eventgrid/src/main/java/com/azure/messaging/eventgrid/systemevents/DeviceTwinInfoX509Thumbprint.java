@@ -16,7 +16,8 @@ import java.io.IOException;
  * certificate store. The thumbprint is dynamically generated using the SHA1 algorithm, and does not physically exist in
  * the certificate.
  * 
- * @deprecated This class is deprecated and may be removed in future releases.
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Fluent
 @Deprecated

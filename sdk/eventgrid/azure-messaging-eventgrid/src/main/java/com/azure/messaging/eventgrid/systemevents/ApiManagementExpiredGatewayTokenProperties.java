@@ -17,7 +17,8 @@ import java.time.format.DateTimeFormatter;
 /**
  * Information related to a an expired gateway token for a self-hosted gateway deployment.
  * 
- * @deprecated This class is deprecated and may be removed in future releases.
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Fluent
 @Deprecated

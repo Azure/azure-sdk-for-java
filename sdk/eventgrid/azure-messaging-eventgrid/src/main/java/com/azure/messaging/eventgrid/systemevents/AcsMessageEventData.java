@@ -19,7 +19,8 @@ import java.time.format.DateTimeFormatter;
 /**
  * Schema of common properties of all chat thread events.
  * 
- * @deprecated This class is deprecated and may be removed in future releases.
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Fluent
 @Deprecated

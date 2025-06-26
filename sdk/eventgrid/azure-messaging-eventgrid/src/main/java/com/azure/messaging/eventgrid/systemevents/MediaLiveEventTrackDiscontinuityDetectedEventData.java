@@ -15,7 +15,8 @@ import java.io.IOException;
  * Ingest track discontinuity detected event data. Schema of the data property of an EventGridEvent for a
  * Microsoft.Media.LiveEventTrackDiscontinuityDetected event.
  * 
- * @deprecated This class is deprecated and may be removed in future releases.
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Immutable
 @Deprecated

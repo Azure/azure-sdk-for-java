@@ -10,7 +10,8 @@ import java.util.Collection;
 /**
  * Router Job Worker Selector Label Operator.
  * 
- * @deprecated This class is deprecated and may be removed in future releases.
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Deprecated
 public final class AcsRouterLabelOperator extends ExpandableStringEnum<AcsRouterLabelOperator> {

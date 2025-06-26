@@ -10,7 +10,8 @@ import java.util.Collection;
 /**
  * The type of engagement user have with email.
  * 
- * @deprecated This class is deprecated and may be removed in future releases.
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Deprecated
 public final class AcsUserEngagement extends ExpandableStringEnum<AcsUserEngagement> {

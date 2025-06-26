@@ -10,7 +10,8 @@ import java.util.Collection;
 /**
  * The access tier of the blob.
  * 
- * @deprecated This class is deprecated and may be removed in future releases.
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Deprecated
 public final class StorageBlobAccessTier extends ExpandableStringEnum<StorageBlobAccessTier> {
