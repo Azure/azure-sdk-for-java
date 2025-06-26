@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public final class OrganizationsUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-18-preview/Organizations_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-06-01/Organizations_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organizations_Update_MaximumSet.
