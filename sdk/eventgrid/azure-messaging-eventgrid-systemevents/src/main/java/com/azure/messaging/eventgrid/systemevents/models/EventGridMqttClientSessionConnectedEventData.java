@@ -31,19 +31,24 @@ public final class EventGridMqttClientSessionConnectedEventData extends EventGri
     @Generated
     private final long sequenceNumber;
 
+    /*
+     * Name of the client resource in the Event Grid namespace.
+     */
+    @Generated
+    private String clientName;
+
     /**
      * Creates an instance of EventGridMqttClientSessionConnectedEventData class.
      *
      * @param clientAuthenticationName the clientAuthenticationName value to set.
-     * @param clientName the clientName value to set.
      * @param namespaceName the namespaceName value to set.
      * @param clientSessionName the clientSessionName value to set.
      * @param sequenceNumber the sequenceNumber value to set.
      */
     @Generated
-    private EventGridMqttClientSessionConnectedEventData(String clientAuthenticationName, String clientName,
-        String namespaceName, String clientSessionName, long sequenceNumber) {
-        super(clientAuthenticationName, clientName, namespaceName);
+    private EventGridMqttClientSessionConnectedEventData(String clientAuthenticationName, String namespaceName,
+        String clientSessionName, long sequenceNumber) {
+        super(clientAuthenticationName, namespaceName);
         this.clientSessionName = clientSessionName;
         this.sequenceNumber = sequenceNumber;
     }
@@ -73,6 +78,17 @@ public final class EventGridMqttClientSessionConnectedEventData extends EventGri
     }
 
     /**
+     * Get the clientName property: Name of the client resource in the Event Grid namespace.
+     *
+     * @return the clientName value.
+     */
+    @Generated
+    @Override
+    public String getClientName() {
+        return this.clientName;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -80,8 +96,8 @@ public final class EventGridMqttClientSessionConnectedEventData extends EventGri
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("clientAuthenticationName", getClientAuthenticationName());
-        jsonWriter.writeStringField("clientName", getClientName());
         jsonWriter.writeStringField("namespaceName", getNamespaceName());
+        jsonWriter.writeStringField("clientName", getClientName());
         jsonWriter.writeStringField("clientSessionName", this.clientSessionName);
         jsonWriter.writeLongField("sequenceNumber", this.sequenceNumber);
         return jsonWriter.writeEndObject();
@@ -100,8 +116,8 @@ public final class EventGridMqttClientSessionConnectedEventData extends EventGri
     public static EventGridMqttClientSessionConnectedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String clientAuthenticationName = null;
-            String clientName = null;
             String namespaceName = null;
+            String clientName = null;
             String clientSessionName = null;
             long sequenceNumber = 0L;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -109,10 +125,10 @@ public final class EventGridMqttClientSessionConnectedEventData extends EventGri
                 reader.nextToken();
                 if ("clientAuthenticationName".equals(fieldName)) {
                     clientAuthenticationName = reader.getString();
-                } else if ("clientName".equals(fieldName)) {
-                    clientName = reader.getString();
                 } else if ("namespaceName".equals(fieldName)) {
                     namespaceName = reader.getString();
+                } else if ("clientName".equals(fieldName)) {
+                    clientName = reader.getString();
                 } else if ("clientSessionName".equals(fieldName)) {
                     clientSessionName = reader.getString();
                 } else if ("sequenceNumber".equals(fieldName)) {
@@ -121,8 +137,11 @@ public final class EventGridMqttClientSessionConnectedEventData extends EventGri
                     reader.skipChildren();
                 }
             }
-            return new EventGridMqttClientSessionConnectedEventData(clientAuthenticationName, clientName, namespaceName,
-                clientSessionName, sequenceNumber);
+            EventGridMqttClientSessionConnectedEventData deserializedEventGridMqttClientSessionConnectedEventData
+                = new EventGridMqttClientSessionConnectedEventData(clientAuthenticationName, namespaceName,
+                    clientSessionName, sequenceNumber);
+            deserializedEventGridMqttClientSessionConnectedEventData.clientName = clientName;
+            return deserializedEventGridMqttClientSessionConnectedEventData;
         });
     }
 }

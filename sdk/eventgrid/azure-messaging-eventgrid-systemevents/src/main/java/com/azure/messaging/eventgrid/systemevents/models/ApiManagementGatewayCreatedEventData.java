@@ -25,7 +25,7 @@ public final class ApiManagementGatewayCreatedEventData
      * gateways/<ResourceName>`
      */
     @Generated
-    private String resourceUri;
+    private String resourceUrl;
 
     /**
      * Creates an instance of ApiManagementGatewayCreatedEventData class.
@@ -35,15 +35,15 @@ public final class ApiManagementGatewayCreatedEventData
     }
 
     /**
-     * Get the resourceUri property: The fully qualified ID of the resource that the compliance state change is for,
+     * Get the resourceUrl property: The fully qualified ID of the resource that the compliance state change is for,
      * including the resource name and resource type. Uses the format,
      * `/subscriptions/&lt;SubscriptionID&gt;/resourceGroups/&lt;ResourceGroup&gt;/Microsoft.ApiManagement/service/&lt;ServiceName&gt;/gateways/&lt;ResourceName&gt;`.
      *
-     * @return the resourceUri value.
+     * @return the resourceUrl value.
      */
     @Generated
-    public String getResourceUri() {
-        return this.resourceUri;
+    public String getResourceUrl() {
+        return this.resourceUrl;
     }
 
     /**
@@ -53,7 +53,7 @@ public final class ApiManagementGatewayCreatedEventData
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("resourceUri", this.resourceUri);
+        jsonWriter.writeStringField("resourceUri", this.resourceUrl);
         return jsonWriter.writeEndObject();
     }
 
@@ -74,7 +74,7 @@ public final class ApiManagementGatewayCreatedEventData
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("resourceUri".equals(fieldName)) {
-                    deserializedApiManagementGatewayCreatedEventData.resourceUri = reader.getString();
+                    deserializedApiManagementGatewayCreatedEventData.resourceUrl = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

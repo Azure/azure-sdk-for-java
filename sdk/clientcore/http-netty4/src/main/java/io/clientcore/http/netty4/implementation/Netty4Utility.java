@@ -6,20 +6,43 @@ package io.clientcore.http.netty4.implementation;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;
 import io.clientcore.core.instrumentation.logging.LoggingEvent;
 import io.clientcore.core.models.CoreException;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.models.binarydata.FileBinaryData;
+import io.clientcore.core.models.binarydata.InputStreamBinaryData;
 import io.clientcore.core.utils.CoreUtils;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelPipeline;
+import io.netty.handler.codec.http.DefaultFullHttpRequest;
+import io.netty.handler.codec.http.DefaultHttpRequest;
 import io.netty.handler.codec.http.HttpClientCodec;
 import io.netty.handler.codec.http.HttpDecoderConfig;
 import io.netty.handler.codec.http.HttpHeadersFactory;
+import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http.HttpVersion;
+import io.netty.handler.codec.http2.DefaultHttp2DataFrame;
+import io.netty.handler.codec.http2.DefaultHttp2Headers;
+import io.netty.handler.codec.http2.DefaultHttp2HeadersFrame;
+import io.netty.handler.codec.http2.Http2DataChunkedInput;
+import io.netty.handler.codec.http2.Http2Headers;
+import io.netty.handler.codec.http2.Http2HeadersFrame;
+import io.netty.handler.stream.ChunkedInput;
+import io.netty.handler.stream.ChunkedNioFile;
+import io.netty.handler.stream.ChunkedStream;
+import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.util.Version;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.channels.FileChannel;
+import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -28,6 +51,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
+
+import static io.netty.handler.codec.http.DefaultHttpHeadersFactory.trailersFactory;
 
 /**
  * Helper class containing utility methods.
@@ -84,7 +109,7 @@ public final class Netty4Utility {
      *
      * @param latch The latch to wait for.
      */
-    static void awaitLatch(CountDownLatch latch) {
+    public static void awaitLatch(CountDownLatch latch) {
         try {
             latch.await();
         } catch (InterruptedException e) {
@@ -218,6 +243,182 @@ public final class Netty4Utility {
                 return existing;
             }
         });
+    }
+
+    /**
+     * Sends an HTTP/1.1 request using the provided {@link Channel}.
+     *
+     * @param request The HTTP request to send.
+     * @param channel The Channel to send the request.
+     * @param progressAndTimeoutHandlerAdded Whether the ChannelPipeline associated with the Channel had the progress
+     * and timeout handler added.
+     * @param errorReference An AtomicReference tracking exceptions seen during the request lifecycle.
+     * @return A ChannelFuture that will complete once the request has been sent.
+     */
+    public static ChannelFuture sendHttp11Request(HttpRequest request, Channel channel,
+        boolean progressAndTimeoutHandlerAdded, AtomicReference<Throwable> errorReference) {
+        HttpMethod nettyMethod = HttpMethod.valueOf(request.getHttpMethod().toString());
+        String uri = request.getUri().toString();
+        WrappedHttpHeaders wrappedHttpHeaders = new WrappedHttpHeaders(request.getHeaders());
+
+        // TODO (alzimmer): This will mutate the underlying ClientCore HttpHeaders. Will need to think about this design
+        //  more once it's closer to completion.
+        wrappedHttpHeaders.getCoreHeaders().set(HttpHeaderName.HOST, request.getUri().getHost());
+
+        BinaryData requestBody = request.getBody();
+        if (requestBody instanceof FileBinaryData) {
+            FileBinaryData fileBinaryData = (FileBinaryData) requestBody;
+            try {
+                return sendChunkedHttp11(channel,
+                    new ChunkedNioFile(FileChannel.open(fileBinaryData.getFile(), StandardOpenOption.READ),
+                        fileBinaryData.getPosition(), fileBinaryData.getLength(), 8192),
+                    new DefaultHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, wrappedHttpHeaders),
+                    progressAndTimeoutHandlerAdded, errorReference);
+            } catch (IOException ex) {
+                return channel.newFailedFuture(ex);
+            }
+        } else if (requestBody instanceof InputStreamBinaryData) {
+            return sendChunkedHttp11(channel, new ChunkedStream(requestBody.toStream()),
+                new DefaultHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, wrappedHttpHeaders),
+                progressAndTimeoutHandlerAdded, errorReference);
+        } else {
+            ByteBuf body = Unpooled.EMPTY_BUFFER;
+            if (requestBody != null && requestBody != BinaryData.empty()) {
+                // Longer term, see if there is a way to have BinaryData act as the ByteBuf body to further eliminate
+                // copying of byte[]s.
+                body = Unpooled.wrappedBuffer(requestBody.toBytes());
+            }
+            if (body.readableBytes() > 0) {
+                // TODO (alzimmer): Should we be setting Content-Length here again? Shouldn't this be handled externally
+                //  by the creator of the HttpRequest?
+                wrappedHttpHeaders.getCoreHeaders()
+                    .set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(body.readableBytes()));
+            }
+
+            Throwable error = errorReference.get();
+            if (error != null) {
+                return channel.newFailedFuture(error);
+            }
+
+            return channel.writeAndFlush(new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, body,
+                wrappedHttpHeaders, trailersFactory().newHeaders()));
+        }
+    }
+
+    private static ChannelFuture sendChunkedHttp11(Channel channel, ChunkedInput<ByteBuf> chunkedInput,
+        io.netty.handler.codec.http.HttpRequest initialLineAndHeaders, boolean progressAndTimeoutHandlerAdded,
+        AtomicReference<Throwable> errorReference) {
+        if (channel.pipeline().get(Netty4HandlerNames.CHUNKED_WRITER) == null) {
+            // Add the ChunkedWriteHandler which will handle sending the chunkedInput.
+            ChunkedWriteHandler chunkedWriteHandler = new ChunkedWriteHandler();
+            if (progressAndTimeoutHandlerAdded) {
+                channel.pipeline()
+                    .addBefore(Netty4HandlerNames.PROGRESS_AND_TIMEOUT, Netty4HandlerNames.CHUNKED_WRITER,
+                        chunkedWriteHandler);
+            } else {
+                channel.pipeline().addLast(Netty4HandlerNames.CHUNKED_WRITER, chunkedWriteHandler);
+            }
+        }
+
+        Throwable error = errorReference.get();
+        if (error != null) {
+            return channel.newFailedFuture(error);
+        }
+
+        channel.write(initialLineAndHeaders);
+        return channel.writeAndFlush(chunkedInput);
+    }
+
+    /**
+     * Sends an HTTP/2 request using the provided {@link Channel}.
+     *
+     * @param request The HTTP request to send.
+     * @param channel The Channel to send the request.
+     * @param progressAndTimeoutHandlerAdded Whether the ChannelPipeline associated with the Channel had the progress
+     * and timeout handler added.
+     * @param errorReference An AtomicReference tracking exceptions seen during the request lifecycle.
+     * @return A ChannelFuture that will complete once the request has been sent.
+     */
+    public static ChannelFuture sendHttp2Request(HttpRequest request, Channel channel,
+        boolean progressAndTimeoutHandlerAdded, AtomicReference<Throwable> errorReference) {
+        // HTTP/2 requests are more complicated than HTTP/1.1 as they are a stream of frames with specific purposes.
+        // Additionally, since we're using multiplexing, we need to associate a stream ID with each frame.
+
+        // Send the headers frame(s).
+        // Unlike in HTTP/1.1, there isn't a status line on requests. Rather pseudo headers are used.
+        // TODO (alzimmer): Create an Http2Headers implementations similar to WrappedHttpHeaders.
+        Http2Headers headers = new DefaultHttp2Headers();
+        headers.method(request.getHttpMethod().toString());
+        headers.scheme(request.getUri().getScheme());
+        headers.authority(request.getUri().getAuthority());
+        if (request.getUri().getPath() != null) {
+            headers.path(request.getUri().getPath());
+        }
+
+        // If the request doesn't have a body or is a HEAD request, only a headers frame should be sent before the
+        // client indicates closure of its half of the stream.
+        BinaryData requestBody = request.getBody();
+        Long bodyLength = requestBody == null ? null : requestBody.getLength();
+        boolean headersOnly = (bodyLength == null || bodyLength == 0)
+            || request.getHttpMethod() == io.clientcore.core.http.models.HttpMethod.HEAD;
+
+        request.getHeaders()
+            .stream()
+            .forEach(httpHeader -> headers.add(httpHeader.getName().getCaseInsensitiveName(), httpHeader.getValues()));
+        Http2HeadersFrame headersFrame = new DefaultHttp2HeadersFrame(headers, headersOnly);
+
+        if (headersOnly) {
+            return channel.write(headersFrame);
+        }
+
+        channel.write(headersFrame);
+
+        // Now it's time to write the data frames.
+        if (requestBody instanceof FileBinaryData) {
+            FileBinaryData fileBinaryData = (FileBinaryData) requestBody;
+            try {
+                return sendChunkedHttp2(channel,
+                    new ChunkedNioFile(FileChannel.open(fileBinaryData.getFile(), StandardOpenOption.READ),
+                        fileBinaryData.getPosition(), fileBinaryData.getLength(), 8192),
+                    progressAndTimeoutHandlerAdded, errorReference);
+            } catch (IOException ex) {
+                return channel.newFailedFuture(ex);
+            }
+        } else if (requestBody instanceof InputStreamBinaryData) {
+            return sendChunkedHttp2(channel, new ChunkedStream(requestBody.toStream()), progressAndTimeoutHandlerAdded,
+                errorReference);
+        } else {
+            ByteBuf body = Unpooled.wrappedBuffer(requestBody.toBytes());
+
+            Throwable error = errorReference.get();
+            if (error != null) {
+                return channel.newFailedFuture(error);
+            }
+
+            return channel.writeAndFlush(new DefaultHttp2DataFrame(body, true));
+        }
+    }
+
+    private static ChannelFuture sendChunkedHttp2(Channel channel, ChunkedInput<ByteBuf> chunkedInput,
+        boolean progressAndTimeoutHandlerAdded, AtomicReference<Throwable> errorReference) {
+        if (channel.pipeline().get(Netty4HandlerNames.CHUNKED_WRITER) == null) {
+            // Add the ChunkedWriteHandler which will handle sending the chunkedInput.
+            ChunkedWriteHandler chunkedWriteHandler = new ChunkedWriteHandler();
+            if (progressAndTimeoutHandlerAdded) {
+                channel.pipeline()
+                    .addBefore(Netty4HandlerNames.PROGRESS_AND_TIMEOUT, Netty4HandlerNames.CHUNKED_WRITER,
+                        chunkedWriteHandler);
+            } else {
+                channel.pipeline().addLast(Netty4HandlerNames.CHUNKED_WRITER, chunkedWriteHandler);
+            }
+        }
+
+        Throwable error = errorReference.get();
+        if (error != null) {
+            return channel.newFailedFuture(error);
+        }
+
+        return channel.writeAndFlush(new Http2DataChunkedInput(chunkedInput, null));
     }
 
     /**

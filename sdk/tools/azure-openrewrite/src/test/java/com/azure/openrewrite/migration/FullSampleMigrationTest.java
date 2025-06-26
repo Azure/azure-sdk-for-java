@@ -3,7 +3,6 @@ package com.azure.openrewrite.migration;
 
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,10 +17,7 @@ import org.openrewrite.test.RewriteTest;
 import org.openrewrite.test.SourceSpecs;
 import org.openrewrite.test.TypeValidation;
 
-import javax.swing.text.StyleContext;
 import java.io.IOException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -86,7 +82,7 @@ public class FullSampleMigrationTest implements RewriteTest {
         styles.add(new org.openrewrite.java.style.ImportLayoutStyle(
             9999,
             9999,
-            Collections.emptyList(),
+            org.openrewrite.java.style.Autodetect.detector().getImportLayoutStyle().getLayout(),
             Collections.emptyList()
         ));
         styles.add(new org.openrewrite.java.style.TabsAndIndentsStyle(
@@ -97,6 +93,8 @@ public class FullSampleMigrationTest implements RewriteTest {
             true,
             new TabsAndIndentsStyle.MethodDeclarationParameters(true)
         ));
+
+
 
         return Collections.singletonList(
             new NamedStyles(

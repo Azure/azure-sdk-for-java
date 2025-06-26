@@ -13,7 +13,7 @@ import com.azure.resourcemanager.purestorageblock.models.SoftDeletion;
  */
 public final class AvsStorageContainerVolumesUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/AvsStorageContainerVolumes_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-01/AvsStorageContainerVolumes_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsStorageContainerVolumes_Update.

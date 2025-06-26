@@ -883,13 +883,13 @@
 # AzureSdkOwners:                                    @jeanbisutti @trask @ramthi @heyams @harsimar @rajkumar-rangaraj @xiang17
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-appconfiguration-config*/        @mrm9084 @rujche @netyyyy @saragluna @moarychan
+/sdk/spring/spring-cloud-azure-appconfiguration-config*/        @mrm9084 @rujche @netyyyy @saragluna @moarychan @rossgrambo @samsadsam
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-feature-management*/             @mrm9084 @rujche @netyyyy @saragluna @moarychan
+/sdk/spring/spring-cloud-azure-feature-management*/             @mrm9084 @rujche @netyyyy @saragluna @moarychan @rossgrambo @samsadsam
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-starter-appconfiguration-config/ @mrm9084 @rujche @netyyyy @saragluna @moarychan
+/sdk/spring/spring-cloud-azure-starter-appconfiguration-config/ @mrm9084 @rujche @netyyyy @saragluna @moarychan @rossgrambo @samsadsam
 
 # PRLabel: %azure-spring
 /sdk/spring/azure-spring-data-cosmos/                @rujche @netyyyy @saragluna @moarychan @Azure/azure-cosmos-java-sdk-connectors
@@ -898,9 +898,6 @@
 
 # PRLabel: %Azure.Identity
 /sdk/e2e/                                            @g2vinay @joshfree @Azure/azure-java-sdk
-
-# PRLabel: %common
-/common/smoke-tests/                                 @alzimmermsft @srnagar @joshfree @jonathangiles @g2vinay @conniey @Azure/azure-java-sdk
 
 # PRLabel: %common
 /common/perf-test-core/                              @alzimmermsft @srnagar @g2vinay @Azure/azure-java-sdk
