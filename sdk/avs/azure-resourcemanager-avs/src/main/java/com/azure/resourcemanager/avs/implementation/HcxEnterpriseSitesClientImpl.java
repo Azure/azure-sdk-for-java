@@ -64,7 +64,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AvsClientHcxEnterpri")
+    @ServiceInterface(name = "AvsClientHcxEnterpriseSites")
     public interface HcxEnterpriseSitesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/hcxEnterpriseSites")

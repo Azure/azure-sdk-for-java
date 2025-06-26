@@ -101,7 +101,8 @@ public final class Netty4HttpProxyHandler extends ProxyHandler {
 
     @Override
     protected void addCodec(ChannelHandlerContext ctx) {
-        ctx.pipeline().addBefore(ctx.name(), "Netty4-Proxy-Codec", this.wrapper);
+        // TODO (alzimmer): Need to support HTTP/2 proxying. Check if Netty itself even supports this.
+        ctx.pipeline().addBefore(ctx.name(), Netty4HandlerNames.PROXY_CODEC, this.wrapper);
     }
 
     @Override

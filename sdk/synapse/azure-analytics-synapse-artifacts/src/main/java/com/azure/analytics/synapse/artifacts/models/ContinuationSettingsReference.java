@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class ContinuationSettingsReference implements JsonSerializable<Con
     /*
      * Continuation TTL in minutes.
      */
+    @Generated
     private Object continuationTtlInMinutes;
 
     /*
      * Idle condition.
      */
+    @Generated
     private Object idleCondition;
 
     /*
      * Customized checkpoint key.
      */
+    @Generated
     private Object customizedCheckpointKey;
 
     /**
      * Creates an instance of ContinuationSettingsReference class.
      */
+    @Generated
     public ContinuationSettingsReference() {
     }
 
@@ -42,6 +47,7 @@ public final class ContinuationSettingsReference implements JsonSerializable<Con
      * 
      * @return the continuationTtlInMinutes value.
      */
+    @Generated
     public Object getContinuationTtlInMinutes() {
         return this.continuationTtlInMinutes;
     }
@@ -52,6 +58,7 @@ public final class ContinuationSettingsReference implements JsonSerializable<Con
      * @param continuationTtlInMinutes the continuationTtlInMinutes value to set.
      * @return the ContinuationSettingsReference object itself.
      */
+    @Generated
     public ContinuationSettingsReference setContinuationTtlInMinutes(Object continuationTtlInMinutes) {
         this.continuationTtlInMinutes = continuationTtlInMinutes;
         return this;
@@ -62,6 +69,7 @@ public final class ContinuationSettingsReference implements JsonSerializable<Con
      * 
      * @return the idleCondition value.
      */
+    @Generated
     public Object getIdleCondition() {
         return this.idleCondition;
     }
@@ -72,6 +80,7 @@ public final class ContinuationSettingsReference implements JsonSerializable<Con
      * @param idleCondition the idleCondition value to set.
      * @return the ContinuationSettingsReference object itself.
      */
+    @Generated
     public ContinuationSettingsReference setIdleCondition(Object idleCondition) {
         this.idleCondition = idleCondition;
         return this;
@@ -82,6 +91,7 @@ public final class ContinuationSettingsReference implements JsonSerializable<Con
      * 
      * @return the customizedCheckpointKey value.
      */
+    @Generated
     public Object getCustomizedCheckpointKey() {
         return this.customizedCheckpointKey;
     }
@@ -92,6 +102,7 @@ public final class ContinuationSettingsReference implements JsonSerializable<Con
      * @param customizedCheckpointKey the customizedCheckpointKey value to set.
      * @return the ContinuationSettingsReference object itself.
      */
+    @Generated
     public ContinuationSettingsReference setCustomizedCheckpointKey(Object customizedCheckpointKey) {
         this.customizedCheckpointKey = customizedCheckpointKey;
         return this;
@@ -100,12 +111,19 @@ public final class ContinuationSettingsReference implements JsonSerializable<Con
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("continuationTtlInMinutes", this.continuationTtlInMinutes);
-        jsonWriter.writeUntypedField("idleCondition", this.idleCondition);
-        jsonWriter.writeUntypedField("customizedCheckpointKey", this.customizedCheckpointKey);
+        if (this.continuationTtlInMinutes != null) {
+            jsonWriter.writeUntypedField("continuationTtlInMinutes", this.continuationTtlInMinutes);
+        }
+        if (this.idleCondition != null) {
+            jsonWriter.writeUntypedField("idleCondition", this.idleCondition);
+        }
+        if (this.customizedCheckpointKey != null) {
+            jsonWriter.writeUntypedField("customizedCheckpointKey", this.customizedCheckpointKey);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -117,6 +135,7 @@ public final class ContinuationSettingsReference implements JsonSerializable<Con
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ContinuationSettingsReference.
      */
+    @Generated
     public static ContinuationSettingsReference fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ContinuationSettingsReference deserializedContinuationSettingsReference

@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Supported disabling SAS authentication for `ServiceBusNamespace`.
+- Supported chained declaration of `withListeningEnabled`, `withSendingEnabled` and `withManagingEnabled` during creation of `NamespaceAuthorizationRule`, `QueueAuthorizationRule` and `TopicAuthorizationRule`.
+
 ### Breaking Changes
 
 ### Bugs Fixed

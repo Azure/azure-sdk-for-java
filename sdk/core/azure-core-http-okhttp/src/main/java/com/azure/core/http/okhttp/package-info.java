@@ -3,7 +3,7 @@
 
 /**
  * <p>
- * <a href="https://learn.microsoft.com/en-us/java/api/overview/azure/core-http-okhttp-readme?view=azure-java-stable">
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/core-http-okhttp-readme?view=azure-java-stable">
  * Azure Core Http OkHttp</a> client library is a plugin for the azure-core HTTP client API. It allows you to use OkHttp
  * as the underlying HTTP client for communicating with Azure services. OkHttp is a popular and efficient HTTP client
  * that supports features such as HTTP/2, connection pooling, compression, and caching. To use the OkHttp client

@@ -1,5 +1,13 @@
 # Release History
 
+## 1.0.0-beta.31 (2025-06-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.4` to `1.55.5`.
+
 ## 1.0.0-beta.30 (2025-06-05)
 
 ### Other Changes

@@ -24,7 +24,7 @@ public class DatasetsSample {
 
     public static void main(String[] args) throws IOException, URISyntaxException {
 
-        //createDatasetWithFile();
+        createDatasetWithFile();
         listDatasets();
         //listDatasetVersions();
         //getDataset();

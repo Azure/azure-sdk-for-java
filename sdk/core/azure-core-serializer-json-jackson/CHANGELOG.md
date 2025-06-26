@@ -1,5 +1,14 @@
 # Release History
 
+## 1.5.10 (2025-06-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.4` to `1.55.5`.
+- Upgraded Jackson Core from `2.18.3` to `2.18.4.1`.
+
 ## 1.5.9 (2025-06-05)
 
 ### Other Changes

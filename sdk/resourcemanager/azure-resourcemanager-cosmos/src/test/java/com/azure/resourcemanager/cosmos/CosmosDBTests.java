@@ -299,4 +299,28 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
         cosmosDBAccount.update().enablePublicNetworkAccess().apply();
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, cosmosDBAccount.publicNetworkAccess());
     }
+
+    @Test
+    public void canEnableAutomaticFailover() {
+        final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
+
+        CosmosDBAccount cosmosDBAccount = cosmosManager.databaseAccounts()
+            .define(cosmosDbAccountName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withDataModelAzureTable()
+            .withEventualConsistency()
+            .withWriteReplication(Region.US_EAST2)
+            .withReadReplication(Region.US_WEST)
+            .disableLocalAuth()
+            .create();
+        // By default, it's enabled.
+        Assertions.assertTrue(cosmosDBAccount.automaticFailoverEnabled());
+
+        cosmosDBAccount.update().disableAutomaticFailover().apply();
+        Assertions.assertFalse(cosmosDBAccount.automaticFailoverEnabled());
+
+        cosmosDBAccount.update().enableAutomaticFailover().apply();
+        Assertions.assertTrue(cosmosDBAccount.automaticFailoverEnabled());
+    }
 }

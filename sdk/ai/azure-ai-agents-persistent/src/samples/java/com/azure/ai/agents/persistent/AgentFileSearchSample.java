@@ -2,10 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.ai.agents.persistent;
 
-import com.azure.ai.agents.persistent.implementation.models.FileDetails;
-import com.azure.ai.agents.persistent.implementation.models.UploadFileRequest;
 import com.azure.ai.agents.persistent.models.CreateAgentOptions;
 import com.azure.ai.agents.persistent.models.CreateRunOptions;
+import com.azure.ai.agents.persistent.models.FileDetails;
 import com.azure.ai.agents.persistent.models.FileInfo;
 import com.azure.ai.agents.persistent.models.FilePurpose;
 import com.azure.ai.agents.persistent.models.FileSearchToolDefinition;
@@ -16,6 +15,7 @@ import com.azure.ai.agents.persistent.models.PersistentAgentThread;
 import com.azure.ai.agents.persistent.models.ThreadMessage;
 import com.azure.ai.agents.persistent.models.ThreadRun;
 import com.azure.ai.agents.persistent.models.ToolResources;
+import com.azure.ai.agents.persistent.models.UploadFileRequest;
 import com.azure.ai.agents.persistent.models.VectorStore;
 import com.azure.ai.agents.persistent.models.VectorStoreStatus;
 import com.azure.core.util.BinaryData;
@@ -30,14 +30,15 @@ public class AgentFileSearchSample {
 
     public static void main(String[] args) throws InterruptedException {
 
-        PersistentAgentsAdministrationClientBuilder clientBuilder = new PersistentAgentsAdministrationClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+        PersistentAgentsClientBuilder clientBuilder = new PersistentAgentsClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build());
-        PersistentAgentsAdministrationClient agentsClient = clientBuilder.buildClient();
-        ThreadsClient threadsClient = clientBuilder.buildThreadsClient();
-        MessagesClient messagesClient = clientBuilder.buildMessagesClient();
-        RunsClient runsClient = clientBuilder.buildRunsClient();
-        FilesClient filesClient = clientBuilder.buildFilesClient();
-        VectorStoresClient vectorStoresClient = clientBuilder.buildVectorStoresClient();
+        PersistentAgentsClient agentsClient = clientBuilder.buildClient();
+        PersistentAgentsAdministrationClient administrationClient = agentsClient.getPersistentAgentsAdministrationClient();
+        ThreadsClient threadsClient = agentsClient.getThreadsClient();
+        MessagesClient messagesClient = agentsClient.getMessagesClient();
+        RunsClient runsClient = agentsClient.getRunsClient();
+        FilesClient filesClient = agentsClient.getFilesClient();
+        VectorStoresClient vectorStoresClient = agentsClient.getVectorStoresClient();
 
         FileInfo uploadedAgentFile = filesClient.uploadFile(
             new UploadFileRequest(
@@ -66,7 +67,7 @@ public class AgentFileSearchSample {
             .setInstructions("You are a helpful agent that can help fetch data from files you know about.")
             .setTools(Arrays.asList(new FileSearchToolDefinition()))
             .setToolResources(new ToolResources().setFileSearch(fileSearchToolResource));
-        PersistentAgent agent = agentsClient.createAgent(createAgentOptions);
+        PersistentAgent agent = administrationClient.createAgent(createAgentOptions);
 
         PersistentAgentThread thread = threadsClient.createThread();
         ThreadMessage createdMessage = messagesClient.createMessage(
@@ -87,7 +88,7 @@ public class AgentFileSearchSample {
         } finally {
             //cleanup
             threadsClient.deleteThread(thread.getId());
-            agentsClient.deleteAgent(agent.getId());
+            administrationClient.deleteAgent(agent.getId());
         }
     }
 }

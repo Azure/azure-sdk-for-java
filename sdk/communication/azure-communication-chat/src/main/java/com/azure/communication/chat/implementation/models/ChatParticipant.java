@@ -13,6 +13,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
 /**
  * A participant of the chat thread.
@@ -36,6 +37,12 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
      * `yyyy-MM-ddTHH:mm:ssZ`.
      */
     private OffsetDateTime shareHistoryTime;
+
+    /*
+     * Contextual metadata for the chat participant. The metadata consists of name/value pairs. The total size of all
+     * metadata pairs can be up to 1KB in size.
+     */
+    private Map<String, String> metadata;
 
     /**
      * Creates an instance of ChatParticipant class.
@@ -110,6 +117,28 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
     }
 
     /**
+     * Get the metadata property: Contextual metadata for the chat participant. The metadata consists of name/value
+     * pairs. The total size of all metadata pairs can be up to 1KB in size.
+     * 
+     * @return the metadata value.
+     */
+    public Map<String, String> getMetadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: Contextual metadata for the chat participant. The metadata consists of name/value
+     * pairs. The total size of all metadata pairs can be up to 1KB in size.
+     * 
+     * @param metadata the metadata value to set.
+     * @return the ChatParticipant object itself.
+     */
+    public ChatParticipant setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -121,6 +150,7 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
             this.shareHistoryTime == null
                 ? null
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.shareHistoryTime));
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -147,6 +177,9 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
                 } else if ("shareHistoryTime".equals(fieldName)) {
                     deserializedChatParticipant.shareHistoryTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedChatParticipant.metadata = metadata;
                 } else {
                     reader.skipChildren();
                 }

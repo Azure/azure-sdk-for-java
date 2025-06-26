@@ -1,5 +1,18 @@
 # Release History
 
+## 1.15.13 (2025-06-26)
+
+### Bugs Fixed
+
+- Fixed a bug where the `NoopAddressResolverGroup` would attempt to resolve an address when a non-proxied host was used.
+  This could lead to `UnknownHostException` being thrown. ([#45774](https://github.com/Azure/azure-sdk-for-java/pull/45774))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.4` to `1.55.5`.
+
 ## 1.15.12 (2025-06-05)
 
 ### Bugs Fixed

@@ -370,7 +370,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                                                                       RxDocumentServiceRequest request,
                                                                       HttpRequest httpRequest) {
 
-        return httpResponseMono.flatMap(httpResponse -> {
+        return httpResponseMono.publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC).flatMap(httpResponse -> {
 
             // header key/value pairs
             HttpHeaders httpResponseHeaders = httpResponse.headers();
@@ -378,7 +378,9 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
             Mono<ByteBuf> contentObservable = httpResponse
                 .body()
-                .switchIfEmpty(Mono.just(Unpooled.EMPTY_BUFFER));
+                .switchIfEmpty(Mono.just(Unpooled.EMPTY_BUFFER))
+                .map(bodyByteBuf -> bodyByteBuf.retain())
+                .publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC);
 
             return contentObservable
                 .map(content -> {

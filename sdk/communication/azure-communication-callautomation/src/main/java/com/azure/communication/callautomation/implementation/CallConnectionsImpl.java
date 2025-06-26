@@ -12,6 +12,8 @@ import com.azure.communication.callautomation.implementation.models.CancelAddPar
 import com.azure.communication.callautomation.implementation.models.CancelAddParticipantResponse;
 import com.azure.communication.callautomation.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.callautomation.implementation.models.GetParticipantsResponseInternal;
+import com.azure.communication.callautomation.implementation.models.MoveParticipantsRequest;
+import com.azure.communication.callautomation.implementation.models.MoveParticipantsResponse;
 import com.azure.communication.callautomation.implementation.models.MuteParticipantsRequestInternal;
 import com.azure.communication.callautomation.implementation.models.MuteParticipantsResultInternal;
 import com.azure.communication.callautomation.implementation.models.RemoveParticipantRequestInternal;
@@ -77,7 +79,7 @@ public final class CallConnectionsImpl {
      * the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AzureCommunicationCa")
+    @ServiceInterface(name = "AzureCommunicationCallAutomationServiceCallConnections")
     public interface CallConnectionsService {
         @Get("/calling/callConnections/{callConnectionId}")
         @ExpectedResponses({ 200 })
@@ -165,6 +167,16 @@ public final class CallConnectionsImpl {
         Mono<Response<CancelAddParticipantResponse>> cancelAddParticipant(@HostParam("endpoint") String endpoint,
             @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CancelAddParticipantRequest cancelAddParticipantRequest,
+            @HeaderParam("Accept") String accept,
+            @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
+            @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent, Context context);
+
+        @Post("/calling/callConnections/{callConnectionId}/participants:moveHere")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<MoveParticipantsResponse>> moveParticipants(@HostParam("endpoint") String endpoint,
+            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") MoveParticipantsRequest moveParticipantRequest,
             @HeaderParam("Accept") String accept,
             @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
             @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent, Context context);
@@ -1228,6 +1240,113 @@ public final class CallConnectionsImpl {
     public CancelAddParticipantResponse cancelAddParticipant(String callConnectionId,
         CancelAddParticipantRequest cancelAddParticipantRequest) {
         return cancelAddParticipantWithResponse(callConnectionId, cancelAddParticipantRequest, Context.NONE).getValue();
+    }
+
+    /**
+     * Add a participant to the call.
+     * 
+     * @param callConnectionId The call connection Id.
+     * @param moveParticipantRequest The move participants request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for moving participants to the call along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<MoveParticipantsResponse>> moveParticipantsWithResponseAsync(String callConnectionId,
+        MoveParticipantsRequest moveParticipantRequest) {
+        return FluxUtil.withContext(
+            context -> moveParticipantsWithResponseAsync(callConnectionId, moveParticipantRequest, context));
+    }
+
+    /**
+     * Add a participant to the call.
+     * 
+     * @param callConnectionId The call connection Id.
+     * @param moveParticipantRequest The move participants request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for moving participants to the call along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<MoveParticipantsResponse>> moveParticipantsWithResponseAsync(String callConnectionId,
+        MoveParticipantsRequest moveParticipantRequest, Context context) {
+        final String accept = "application/json";
+        return service.moveParticipants(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(),
+            moveParticipantRequest, accept, CoreUtils.randomUuid().toString(),
+            DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()), context);
+    }
+
+    /**
+     * Add a participant to the call.
+     * 
+     * @param callConnectionId The call connection Id.
+     * @param moveParticipantRequest The move participants request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for moving participants to the call on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MoveParticipantsResponse> moveParticipantsAsync(String callConnectionId,
+        MoveParticipantsRequest moveParticipantRequest) {
+        return moveParticipantsWithResponseAsync(callConnectionId, moveParticipantRequest)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Add a participant to the call.
+     * 
+     * @param callConnectionId The call connection Id.
+     * @param moveParticipantRequest The move participants request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for moving participants to the call on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MoveParticipantsResponse> moveParticipantsAsync(String callConnectionId,
+        MoveParticipantsRequest moveParticipantRequest, Context context) {
+        return moveParticipantsWithResponseAsync(callConnectionId, moveParticipantRequest, context)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Add a participant to the call.
+     * 
+     * @param callConnectionId The call connection Id.
+     * @param moveParticipantRequest The move participants request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for moving participants to the call along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MoveParticipantsResponse> moveParticipantsWithResponse(String callConnectionId,
+        MoveParticipantsRequest moveParticipantRequest, Context context) {
+        return moveParticipantsWithResponseAsync(callConnectionId, moveParticipantRequest, context).block();
+    }
+
+    /**
+     * Add a participant to the call.
+     * 
+     * @param callConnectionId The call connection Id.
+     * @param moveParticipantRequest The move participants request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for moving participants to the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MoveParticipantsResponse moveParticipants(String callConnectionId,
+        MoveParticipantsRequest moveParticipantRequest) {
+        return moveParticipantsWithResponse(callConnectionId, moveParticipantRequest, Context.NONE).getValue();
     }
 
     /**

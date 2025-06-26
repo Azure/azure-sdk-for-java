@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class ServiceNowAuthenticationType extends ExpandableStringEnum<Ser
     /**
      * Static value Basic for ServiceNowAuthenticationType.
      */
+    @Generated
     public static final ServiceNowAuthenticationType BASIC = fromString("Basic");
 
     /**
      * Static value OAuth2 for ServiceNowAuthenticationType.
      */
+    @Generated
     public static final ServiceNowAuthenticationType OAUTH2 = fromString("OAuth2");
 
     /**
@@ -26,6 +29,7 @@ public final class ServiceNowAuthenticationType extends ExpandableStringEnum<Ser
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ServiceNowAuthenticationType() {
     }
@@ -36,6 +40,7 @@ public final class ServiceNowAuthenticationType extends ExpandableStringEnum<Ser
      * @param name a name to look for.
      * @return the corresponding ServiceNowAuthenticationType.
      */
+    @Generated
     public static ServiceNowAuthenticationType fromString(String name) {
         return fromString(name, ServiceNowAuthenticationType.class);
     }
@@ -45,6 +50,7 @@ public final class ServiceNowAuthenticationType extends ExpandableStringEnum<Ser
      * 
      * @return known ServiceNowAuthenticationType values.
      */
+    @Generated
     public static Collection<ServiceNowAuthenticationType> values() {
         return values(ServiceNowAuthenticationType.class);
     }

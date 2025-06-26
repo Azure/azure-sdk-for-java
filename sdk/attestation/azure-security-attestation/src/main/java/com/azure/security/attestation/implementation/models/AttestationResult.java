@@ -5,6 +5,7 @@
 package com.azure.security.attestation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
@@ -22,178 +23,213 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
     /*
      * Unique Identifier for the token
      */
+    @Generated
     private String jti;
 
     /*
      * The Principal who issued the token
      */
+    @Generated
     private String iss;
 
     /*
      * The time at which the token was issued, in the number of seconds since 1970-01-0T00:00:00Z UTC
      */
+    @Generated
     private Float iat;
 
     /*
      * The expiration time after which the token is no longer valid, in the number of seconds since 1970-01-0T00:00:00Z
      * UTC
      */
+    @Generated
     private Float exp;
 
     /*
      * The not before time before which the token cannot be considered valid, in the number of seconds since
      * 1970-01-0T00:00:00Z UTC
      */
+    @Generated
     private Float nbf;
 
     /*
      * An RFC 7800 Proof of Possession Key
      */
+    @Generated
     private Object cnf;
 
     /*
      * The Nonce input to the attestation request, if provided.
      */
+    @Generated
     private String nonce;
 
     /*
      * The Schema version of this structure. Current Value: 1.0
      */
+    @Generated
     private String version;
 
     /*
      * Runtime Claims
      */
+    @Generated
     private Object runtimeClaims;
 
     /*
      * Inittime Claims
      */
+    @Generated
     private Object inittimeClaims;
 
     /*
      * Policy Generated Claims
      */
+    @Generated
     private Object policyClaims;
 
     /*
      * The Attestation type being attested.
      */
+    @Generated
     private String verifierType;
 
     /*
      * The certificate used to sign the policy object, if specified.
      */
+    @Generated
     private JsonWebKey policySigner;
 
     /*
      * The SHA256 hash of the BASE64URL encoded policy text used for attestation
      */
+    @Generated
     private Base64Url policyHash;
 
     /*
      * True if the enclave is debuggable, false otherwise
      */
+    @Generated
     private Boolean isDebuggable;
 
     /*
      * The SGX Product ID for the enclave.
      */
+    @Generated
     private Float productId;
 
     /*
      * The HEX encoded SGX MRENCLAVE value for the enclave.
      */
+    @Generated
     private String mrEnclave;
 
     /*
      * The HEX encoded SGX MRSIGNER value for the enclave.
      */
+    @Generated
     private String mrSigner;
 
     /*
      * The SGX SVN value for the enclave.
      */
+    @Generated
     private Float svn;
 
     /*
      * A copy of the RuntimeData specified as an input to the attest call.
      */
+    @Generated
     private Base64Url enclaveHeldData;
 
     /*
      * The SGX SVN value for the enclave.
      */
+    @Generated
     private Object sgxCollateral;
 
     /*
      * DEPRECATED: Private Preview version of x-ms-ver claim.
      */
+    @Generated
     private String deprecatedVersion;
 
     /*
      * DEPRECATED: Private Preview version of x-ms-sgx-is-debuggable claim.
      */
+    @Generated
     private Boolean deprecatedIsDebuggable;
 
     /*
      * DEPRECATED: Private Preview version of x-ms-sgx-collateral claim.
      */
+    @Generated
     private Object deprecatedSgxCollateral;
 
     /*
      * DEPRECATED: Private Preview version of x-ms-sgx-ehd claim.
      */
+    @Generated
     private Base64Url deprecatedEnclaveHeldData;
 
     /*
      * DEPRECATED: Private Preview version of x-ms-sgx-ehd claim.
      */
+    @Generated
     private Base64Url deprecatedEnclaveHeldData2;
 
     /*
      * DEPRECATED: Private Preview version of x-ms-sgx-product-id
      */
+    @Generated
     private Float deprecatedProductId;
 
     /*
      * DEPRECATED: Private Preview version of x-ms-sgx-mrenclave.
      */
+    @Generated
     private String deprecatedMrEnclave;
 
     /*
      * DEPRECATED: Private Preview version of x-ms-sgx-mrsigner.
      */
+    @Generated
     private String deprecatedMrSigner;
 
     /*
      * DEPRECATED: Private Preview version of x-ms-sgx-svn.
      */
+    @Generated
     private Float deprecatedSvn;
 
     /*
      * DEPRECATED: Private Preview version of x-ms-tee.
      */
+    @Generated
     private String deprecatedTee;
 
     /*
      * DEPRECATED: Private Preview version of x-ms-policy-signer
      */
+    @Generated
     private JsonWebKey deprecatedPolicySigner;
 
     /*
      * DEPRECATED: Private Preview version of x-ms-policy-hash
      */
+    @Generated
     private Base64Url deprecatedPolicyHash;
 
     /*
      * DEPRECATED: Private Preview version of nonce
      */
+    @Generated
     private String deprecatedRpData;
 
     /**
      * Creates an instance of AttestationResult class.
      */
+    @Generated
     public AttestationResult() {
     }
 
@@ -202,6 +238,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the jti value.
      */
+    @Generated
     public String getJti() {
         return this.jti;
     }
@@ -212,6 +249,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param jti the jti value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setJti(String jti) {
         this.jti = jti;
         return this;
@@ -222,6 +260,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the iss value.
      */
+    @Generated
     public String getIss() {
         return this.iss;
     }
@@ -232,6 +271,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param iss the iss value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setIss(String iss) {
         this.iss = iss;
         return this;
@@ -243,6 +283,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the iat value.
      */
+    @Generated
     public Float getIat() {
         return this.iat;
     }
@@ -254,6 +295,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param iat the iat value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setIat(Float iat) {
         this.iat = iat;
         return this;
@@ -265,6 +307,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the exp value.
      */
+    @Generated
     public Float getExp() {
         return this.exp;
     }
@@ -276,6 +319,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param exp the exp value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setExp(Float exp) {
         this.exp = exp;
         return this;
@@ -287,6 +331,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the nbf value.
      */
+    @Generated
     public Float getNbf() {
         return this.nbf;
     }
@@ -298,6 +343,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param nbf the nbf value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setNbf(Float nbf) {
         this.nbf = nbf;
         return this;
@@ -308,6 +354,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the cnf value.
      */
+    @Generated
     public Object getCnf() {
         return this.cnf;
     }
@@ -318,6 +365,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param cnf the cnf value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setCnf(Object cnf) {
         this.cnf = cnf;
         return this;
@@ -328,6 +376,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the nonce value.
      */
+    @Generated
     public String getNonce() {
         return this.nonce;
     }
@@ -338,6 +387,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param nonce the nonce value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setNonce(String nonce) {
         this.nonce = nonce;
         return this;
@@ -348,6 +398,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the version value.
      */
+    @Generated
     public String getVersion() {
         return this.version;
     }
@@ -358,6 +409,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param version the version value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setVersion(String version) {
         this.version = version;
         return this;
@@ -368,6 +420,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the runtimeClaims value.
      */
+    @Generated
     public Object getRuntimeClaims() {
         return this.runtimeClaims;
     }
@@ -378,6 +431,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param runtimeClaims the runtimeClaims value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setRuntimeClaims(Object runtimeClaims) {
         this.runtimeClaims = runtimeClaims;
         return this;
@@ -388,6 +442,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the inittimeClaims value.
      */
+    @Generated
     public Object getInittimeClaims() {
         return this.inittimeClaims;
     }
@@ -398,6 +453,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param inittimeClaims the inittimeClaims value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setInittimeClaims(Object inittimeClaims) {
         this.inittimeClaims = inittimeClaims;
         return this;
@@ -408,6 +464,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the policyClaims value.
      */
+    @Generated
     public Object getPolicyClaims() {
         return this.policyClaims;
     }
@@ -418,6 +475,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param policyClaims the policyClaims value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setPolicyClaims(Object policyClaims) {
         this.policyClaims = policyClaims;
         return this;
@@ -428,6 +486,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the verifierType value.
      */
+    @Generated
     public String getVerifierType() {
         return this.verifierType;
     }
@@ -438,6 +497,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param verifierType the verifierType value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setVerifierType(String verifierType) {
         this.verifierType = verifierType;
         return this;
@@ -448,6 +508,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the policySigner value.
      */
+    @Generated
     public JsonWebKey getPolicySigner() {
         return this.policySigner;
     }
@@ -458,6 +519,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param policySigner the policySigner value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setPolicySigner(JsonWebKey policySigner) {
         this.policySigner = policySigner;
         return this;
@@ -468,6 +530,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the policyHash value.
      */
+    @Generated
     public byte[] getPolicyHash() {
         if (this.policyHash == null) {
             return null;
@@ -481,6 +544,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param policyHash the policyHash value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setPolicyHash(byte[] policyHash) {
         if (policyHash == null) {
             this.policyHash = null;
@@ -495,6 +559,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the isDebuggable value.
      */
+    @Generated
     public Boolean isDebuggable() {
         return this.isDebuggable;
     }
@@ -505,6 +570,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param isDebuggable the isDebuggable value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setIsDebuggable(Boolean isDebuggable) {
         this.isDebuggable = isDebuggable;
         return this;
@@ -515,6 +581,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the productId value.
      */
+    @Generated
     public Float getProductId() {
         return this.productId;
     }
@@ -525,6 +592,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param productId the productId value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setProductId(Float productId) {
         this.productId = productId;
         return this;
@@ -535,6 +603,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the mrEnclave value.
      */
+    @Generated
     public String getMrEnclave() {
         return this.mrEnclave;
     }
@@ -545,6 +614,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param mrEnclave the mrEnclave value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setMrEnclave(String mrEnclave) {
         this.mrEnclave = mrEnclave;
         return this;
@@ -555,6 +625,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the mrSigner value.
      */
+    @Generated
     public String getMrSigner() {
         return this.mrSigner;
     }
@@ -565,6 +636,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param mrSigner the mrSigner value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setMrSigner(String mrSigner) {
         this.mrSigner = mrSigner;
         return this;
@@ -575,6 +647,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the svn value.
      */
+    @Generated
     public Float getSvn() {
         return this.svn;
     }
@@ -585,6 +658,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param svn the svn value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setSvn(Float svn) {
         this.svn = svn;
         return this;
@@ -595,6 +669,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the enclaveHeldData value.
      */
+    @Generated
     public byte[] getEnclaveHeldData() {
         if (this.enclaveHeldData == null) {
             return null;
@@ -608,6 +683,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param enclaveHeldData the enclaveHeldData value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setEnclaveHeldData(byte[] enclaveHeldData) {
         if (enclaveHeldData == null) {
             this.enclaveHeldData = null;
@@ -622,6 +698,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the sgxCollateral value.
      */
+    @Generated
     public Object getSgxCollateral() {
         return this.sgxCollateral;
     }
@@ -632,6 +709,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param sgxCollateral the sgxCollateral value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setSgxCollateral(Object sgxCollateral) {
         this.sgxCollateral = sgxCollateral;
         return this;
@@ -642,6 +720,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the deprecatedVersion value.
      */
+    @Generated
     public String getDeprecatedVersion() {
         return this.deprecatedVersion;
     }
@@ -652,6 +731,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param deprecatedVersion the deprecatedVersion value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setDeprecatedVersion(String deprecatedVersion) {
         this.deprecatedVersion = deprecatedVersion;
         return this;
@@ -662,6 +742,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the deprecatedIsDebuggable value.
      */
+    @Generated
     public Boolean isDeprecatedIsDebuggable() {
         return this.deprecatedIsDebuggable;
     }
@@ -672,6 +753,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param deprecatedIsDebuggable the deprecatedIsDebuggable value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setDeprecatedIsDebuggable(Boolean deprecatedIsDebuggable) {
         this.deprecatedIsDebuggable = deprecatedIsDebuggable;
         return this;
@@ -682,6 +764,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the deprecatedSgxCollateral value.
      */
+    @Generated
     public Object getDeprecatedSgxCollateral() {
         return this.deprecatedSgxCollateral;
     }
@@ -692,6 +775,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param deprecatedSgxCollateral the deprecatedSgxCollateral value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setDeprecatedSgxCollateral(Object deprecatedSgxCollateral) {
         this.deprecatedSgxCollateral = deprecatedSgxCollateral;
         return this;
@@ -702,6 +786,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the deprecatedEnclaveHeldData value.
      */
+    @Generated
     public byte[] getDeprecatedEnclaveHeldData() {
         if (this.deprecatedEnclaveHeldData == null) {
             return null;
@@ -715,6 +800,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param deprecatedEnclaveHeldData the deprecatedEnclaveHeldData value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setDeprecatedEnclaveHeldData(byte[] deprecatedEnclaveHeldData) {
         if (deprecatedEnclaveHeldData == null) {
             this.deprecatedEnclaveHeldData = null;
@@ -729,6 +815,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the deprecatedEnclaveHeldData2 value.
      */
+    @Generated
     public byte[] getDeprecatedEnclaveHeldData2() {
         if (this.deprecatedEnclaveHeldData2 == null) {
             return null;
@@ -742,6 +829,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param deprecatedEnclaveHeldData2 the deprecatedEnclaveHeldData2 value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setDeprecatedEnclaveHeldData2(byte[] deprecatedEnclaveHeldData2) {
         if (deprecatedEnclaveHeldData2 == null) {
             this.deprecatedEnclaveHeldData2 = null;
@@ -756,6 +844,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the deprecatedProductId value.
      */
+    @Generated
     public Float getDeprecatedProductId() {
         return this.deprecatedProductId;
     }
@@ -766,6 +855,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param deprecatedProductId the deprecatedProductId value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setDeprecatedProductId(Float deprecatedProductId) {
         this.deprecatedProductId = deprecatedProductId;
         return this;
@@ -776,6 +866,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the deprecatedMrEnclave value.
      */
+    @Generated
     public String getDeprecatedMrEnclave() {
         return this.deprecatedMrEnclave;
     }
@@ -786,6 +877,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param deprecatedMrEnclave the deprecatedMrEnclave value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setDeprecatedMrEnclave(String deprecatedMrEnclave) {
         this.deprecatedMrEnclave = deprecatedMrEnclave;
         return this;
@@ -796,6 +888,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the deprecatedMrSigner value.
      */
+    @Generated
     public String getDeprecatedMrSigner() {
         return this.deprecatedMrSigner;
     }
@@ -806,6 +899,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param deprecatedMrSigner the deprecatedMrSigner value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setDeprecatedMrSigner(String deprecatedMrSigner) {
         this.deprecatedMrSigner = deprecatedMrSigner;
         return this;
@@ -816,6 +910,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the deprecatedSvn value.
      */
+    @Generated
     public Float getDeprecatedSvn() {
         return this.deprecatedSvn;
     }
@@ -826,6 +921,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param deprecatedSvn the deprecatedSvn value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setDeprecatedSvn(Float deprecatedSvn) {
         this.deprecatedSvn = deprecatedSvn;
         return this;
@@ -836,6 +932,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the deprecatedTee value.
      */
+    @Generated
     public String getDeprecatedTee() {
         return this.deprecatedTee;
     }
@@ -846,6 +943,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param deprecatedTee the deprecatedTee value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setDeprecatedTee(String deprecatedTee) {
         this.deprecatedTee = deprecatedTee;
         return this;
@@ -856,6 +954,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the deprecatedPolicySigner value.
      */
+    @Generated
     public JsonWebKey getDeprecatedPolicySigner() {
         return this.deprecatedPolicySigner;
     }
@@ -866,6 +965,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param deprecatedPolicySigner the deprecatedPolicySigner value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setDeprecatedPolicySigner(JsonWebKey deprecatedPolicySigner) {
         this.deprecatedPolicySigner = deprecatedPolicySigner;
         return this;
@@ -876,6 +976,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the deprecatedPolicyHash value.
      */
+    @Generated
     public byte[] getDeprecatedPolicyHash() {
         if (this.deprecatedPolicyHash == null) {
             return null;
@@ -889,6 +990,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param deprecatedPolicyHash the deprecatedPolicyHash value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setDeprecatedPolicyHash(byte[] deprecatedPolicyHash) {
         if (deprecatedPolicyHash == null) {
             this.deprecatedPolicyHash = null;
@@ -903,6 +1005,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * 
      * @return the deprecatedRpData value.
      */
+    @Generated
     public String getDeprecatedRpData() {
         return this.deprecatedRpData;
     }
@@ -913,6 +1016,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * @param deprecatedRpData the deprecatedRpData value to set.
      * @return the AttestationResult object itself.
      */
+    @Generated
     public AttestationResult setDeprecatedRpData(String deprecatedRpData) {
         this.deprecatedRpData = deprecatedRpData;
         return this;
@@ -935,6 +1039,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -943,12 +1048,20 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
         jsonWriter.writeNumberField("iat", this.iat);
         jsonWriter.writeNumberField("exp", this.exp);
         jsonWriter.writeNumberField("nbf", this.nbf);
-        jsonWriter.writeUntypedField("cnf", this.cnf);
+        if (this.cnf != null) {
+            jsonWriter.writeUntypedField("cnf", this.cnf);
+        }
         jsonWriter.writeStringField("nonce", this.nonce);
         jsonWriter.writeStringField("x-ms-ver", this.version);
-        jsonWriter.writeUntypedField("x-ms-runtime", this.runtimeClaims);
-        jsonWriter.writeUntypedField("x-ms-inittime", this.inittimeClaims);
-        jsonWriter.writeUntypedField("x-ms-policy", this.policyClaims);
+        if (this.runtimeClaims != null) {
+            jsonWriter.writeUntypedField("x-ms-runtime", this.runtimeClaims);
+        }
+        if (this.inittimeClaims != null) {
+            jsonWriter.writeUntypedField("x-ms-inittime", this.inittimeClaims);
+        }
+        if (this.policyClaims != null) {
+            jsonWriter.writeUntypedField("x-ms-policy", this.policyClaims);
+        }
         jsonWriter.writeStringField("x-ms-attestation-type", this.verifierType);
         jsonWriter.writeJsonField("x-ms-policy-signer", this.policySigner);
         jsonWriter.writeStringField("x-ms-policy-hash", Objects.toString(this.policyHash, null));
@@ -958,10 +1071,14 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
         jsonWriter.writeStringField("x-ms-sgx-mrsigner", this.mrSigner);
         jsonWriter.writeNumberField("x-ms-sgx-svn", this.svn);
         jsonWriter.writeStringField("x-ms-sgx-ehd", Objects.toString(this.enclaveHeldData, null));
-        jsonWriter.writeUntypedField("x-ms-sgx-collateral", this.sgxCollateral);
+        if (this.sgxCollateral != null) {
+            jsonWriter.writeUntypedField("x-ms-sgx-collateral", this.sgxCollateral);
+        }
         jsonWriter.writeStringField("ver", this.deprecatedVersion);
         jsonWriter.writeBooleanField("is-debuggable", this.deprecatedIsDebuggable);
-        jsonWriter.writeUntypedField("maa-attestationcollateral", this.deprecatedSgxCollateral);
+        if (this.deprecatedSgxCollateral != null) {
+            jsonWriter.writeUntypedField("maa-attestationcollateral", this.deprecatedSgxCollateral);
+        }
         jsonWriter.writeStringField("aas-ehd", Objects.toString(this.deprecatedEnclaveHeldData, null));
         jsonWriter.writeStringField("maa-ehd", Objects.toString(this.deprecatedEnclaveHeldData2, null));
         jsonWriter.writeNumberField("product-id", this.deprecatedProductId);
@@ -983,6 +1100,7 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the AttestationResult.
      */
+    @Generated
     public static AttestationResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AttestationResult deserializedAttestationResult = new AttestationResult();

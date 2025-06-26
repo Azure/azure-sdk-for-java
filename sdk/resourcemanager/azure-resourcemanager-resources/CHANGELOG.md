@@ -2,6 +2,11 @@
 
 ## 2.52.0-beta.1 (Unreleased)
 
+### Features Added
+
+- Supported `beginDeleteByResourceGroup` and `beginDeleteById` in `Deployments`.
+- Supported `beginDeleteByName` in `ResourceGroups`.
+
 ### Breaking Changes
 
 - `DeploymentsClient` and `DeploymentOperationsClient` is now accessed via `ResourceManager::deploymentClient()`.

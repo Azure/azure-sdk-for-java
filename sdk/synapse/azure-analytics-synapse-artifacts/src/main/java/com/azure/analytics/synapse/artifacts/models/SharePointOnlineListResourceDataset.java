@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,16 +22,19 @@ public class SharePointOnlineListResourceDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "SharePointOnlineListResource";
 
     /*
      * The name of the SharePoint Online list. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object listName;
 
     /**
      * Creates an instance of SharePointOnlineListResourceDataset class.
      */
+    @Generated
     public SharePointOnlineListResourceDataset() {
     }
 
@@ -39,6 +43,7 @@ public class SharePointOnlineListResourceDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -50,6 +55,7 @@ public class SharePointOnlineListResourceDataset extends Dataset {
      * 
      * @return the listName value.
      */
+    @Generated
     public Object getListName() {
         return this.listName;
     }
@@ -61,6 +67,7 @@ public class SharePointOnlineListResourceDataset extends Dataset {
      * @param listName the listName value to set.
      * @return the SharePointOnlineListResourceDataset object itself.
      */
+    @Generated
     public SharePointOnlineListResourceDataset setListName(Object listName) {
         this.listName = listName;
         return this;
@@ -69,6 +76,7 @@ public class SharePointOnlineListResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SharePointOnlineListResourceDataset setDescription(String description) {
         super.setDescription(description);
@@ -78,6 +86,7 @@ public class SharePointOnlineListResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SharePointOnlineListResourceDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -87,6 +96,7 @@ public class SharePointOnlineListResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SharePointOnlineListResourceDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -96,6 +106,7 @@ public class SharePointOnlineListResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SharePointOnlineListResourceDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -105,6 +116,7 @@ public class SharePointOnlineListResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SharePointOnlineListResourceDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -114,6 +126,7 @@ public class SharePointOnlineListResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SharePointOnlineListResourceDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -123,6 +136,7 @@ public class SharePointOnlineListResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SharePointOnlineListResourceDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -132,20 +146,27 @@ public class SharePointOnlineListResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
         jsonWriter.writeStringField("type", this.type);
         if (listName != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("listName", this.listName);
+            if (this.listName != null) {
+                jsonWriter.writeUntypedField("listName", this.listName);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -165,6 +186,7 @@ public class SharePointOnlineListResourceDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SharePointOnlineListResourceDataset.
      */
+    @Generated
     public static SharePointOnlineListResourceDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SharePointOnlineListResourceDataset deserializedSharePointOnlineListResourceDataset
