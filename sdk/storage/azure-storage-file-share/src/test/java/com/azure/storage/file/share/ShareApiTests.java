@@ -1562,14 +1562,13 @@ public class ShareApiTests extends FileShareTestBase {
     @Test
     public void invalidServiceVersion() {
         ShareServiceClient serviceClient
-            = instrument(new ShareServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+            = instrument(new ShareServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint())
                 .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
                 .addPolicy(new InvalidServiceVersionPipelinePolicy())).buildClient();
 
         ShareClient shareClient = serviceClient.getShareClient(generateShareName());
 
-        ShareStorageException exception
-            = assertThrows(ShareStorageException.class, shareClient::createIfNotExists);
+        ShareStorageException exception = assertThrows(ShareStorageException.class, shareClient::createIfNotExists);
 
         assertEquals(400, exception.getStatusCode());
         assertTrue(exception.getMessage().contains(INVALID_VERSION_HEADER_MESSAGE));

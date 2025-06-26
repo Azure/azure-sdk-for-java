@@ -8,6 +8,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.common.test.shared.policy.InvalidServiceVersionPipelinePolicy;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
@@ -45,6 +46,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static com.azure.storage.common.implementation.StorageImplUtils.INVALID_VERSION_HEADER_MESSAGE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -1190,5 +1192,21 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             assertNotNull(r.getNextAllowedProvisionedIopsDowngradeTime());
             assertNotNull(r.getNextAllowedProvisionedBandwidthDowngradeTime());
         }).verifyComplete();
+    }
+
+    @Test
+    public void invalidServiceVersion() {
+        ShareServiceAsyncClient serviceAsyncClient
+            = instrument(new ShareServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint())
+                .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+                .addPolicy(new InvalidServiceVersionPipelinePolicy())).buildAsyncClient();
+
+        ShareAsyncClient shareAsyncClient = serviceAsyncClient.getShareAsyncClient(generateShareName());
+
+        StepVerifier.create(shareAsyncClient.createIfNotExists()).verifyErrorSatisfies(ex -> {
+            ShareStorageException exception = assertInstanceOf(ShareStorageException.class, ex);
+            assertEquals(400, exception.getStatusCode());
+            assertTrue(exception.getMessage().contains(INVALID_VERSION_HEADER_MESSAGE));
+        });
     }
 }
