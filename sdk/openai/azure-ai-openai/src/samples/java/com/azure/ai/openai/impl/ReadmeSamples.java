@@ -402,6 +402,7 @@ public final class ReadmeSamples {
         String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
         SpeechGenerationOptions options = new SpeechGenerationOptions(
                 "Today is a wonderful day to build something people love!",
+                "You are a helpful assistant.",
                 SpeechVoice.ALLOY);
         BinaryData speech = client.generateSpeechFromText(deploymentOrModelId, options);
         // Checkout your generated speech in the file system.

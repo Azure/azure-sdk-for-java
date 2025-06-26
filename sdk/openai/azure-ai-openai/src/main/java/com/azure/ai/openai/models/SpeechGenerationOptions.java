@@ -23,6 +23,12 @@ public final class SpeechGenerationOptions implements JsonSerializable<SpeechGen
     @Generated
     private final String input;
 
+    /**
+     * Control the voice of your generated audio with additional instructions. Does not work with tts-1 or tts-1-hd.
+     */
+    @Generated
+    private final String instructions;
+
     /*
      * The voice to use for text-to-speech.
      */
@@ -46,11 +52,13 @@ public final class SpeechGenerationOptions implements JsonSerializable<SpeechGen
      * Creates an instance of SpeechGenerationOptions class.
      *
      * @param input the input value to set.
+     * @param instructions the instructions value to set.
      * @param voice the voice value to set.
      */
     @Generated
-    public SpeechGenerationOptions(String input, SpeechVoice voice) {
+    public SpeechGenerationOptions(String input, String instructions, SpeechVoice voice) {
         this.input = input;
+        this.instructions = instructions;
         this.voice = voice;
     }
 
@@ -62,6 +70,16 @@ public final class SpeechGenerationOptions implements JsonSerializable<SpeechGen
     @Generated
     public String getInput() {
         return this.input;
+    }
+
+    /**
+     * Get the input property:      * Control the voice of your generated audio with additional instructions. Does not work with tts-1 or tts-1-hd.
+     *
+     * @return the input value.
+     */
+    @Generated
+    public String getInstructions() {
+        return this.instructions;
     }
 
     /**
@@ -158,6 +176,7 @@ public final class SpeechGenerationOptions implements JsonSerializable<SpeechGen
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("input", this.input);
+        jsonWriter.writeStringField("instructions", this.instructions);
         jsonWriter.writeStringField("voice", this.voice == null ? null : this.voice.toString());
         jsonWriter.writeStringField("response_format",
             this.responseFormat == null ? null : this.responseFormat.toString());
@@ -179,6 +198,7 @@ public final class SpeechGenerationOptions implements JsonSerializable<SpeechGen
     public static SpeechGenerationOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String input = null;
+            String instructions = null;
             SpeechVoice voice = null;
             SpeechGenerationResponseFormat responseFormat = null;
             Double speed = null;
@@ -188,6 +208,8 @@ public final class SpeechGenerationOptions implements JsonSerializable<SpeechGen
                 reader.nextToken();
                 if ("input".equals(fieldName)) {
                     input = reader.getString();
+                } else if ("instructions".equals(fieldName)) {
+                    instructions = reader.getString();
                 } else if ("voice".equals(fieldName)) {
                     voice = SpeechVoice.fromString(reader.getString());
                 } else if ("response_format".equals(fieldName)) {
@@ -200,7 +222,7 @@ public final class SpeechGenerationOptions implements JsonSerializable<SpeechGen
                     reader.skipChildren();
                 }
             }
-            SpeechGenerationOptions deserializedSpeechGenerationOptions = new SpeechGenerationOptions(input, voice);
+            SpeechGenerationOptions deserializedSpeechGenerationOptions = new SpeechGenerationOptions(input, instructions, voice);
             deserializedSpeechGenerationOptions.responseFormat = responseFormat;
             deserializedSpeechGenerationOptions.speed = speed;
             deserializedSpeechGenerationOptions.model = model;
