@@ -336,7 +336,6 @@ public class StorageImplUtils {
 
             /*
              * Provide meaningful error message for x-ms-version mismatch issues.
-             * Note : This is currently supported only for blob package.
              */
             if (Constants.HeaderConstants.INVALID_HEADER_VALUE.equals(errorCode)
                 && Constants.HeaderConstants.VERSION.equalsIgnoreCase(headerName)) {

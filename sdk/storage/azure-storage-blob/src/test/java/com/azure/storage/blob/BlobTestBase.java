@@ -149,13 +149,6 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected static final String GARBAGE_LEASE_ID = CoreUtils.randomUuid().toString();
 
-    /**
-     * Defines constants for use Invalid version header Message.
-     *
-     */
-    public static final String INVALID_VERSION_HEADER_MESSAGE
-        = "The provided service version is not enabled on this storage account.  Please see https://learn.microsoft.com/rest/api/storageservices/versioning-for-the-azure-storage-services for additional information.\n";
-
     protected BlobServiceClient primaryBlobServiceClient;
     protected BlobServiceAsyncClient primaryBlobServiceAsyncClient;
     protected BlobServiceClient alternateBlobServiceClient;

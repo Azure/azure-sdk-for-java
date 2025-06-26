@@ -24,7 +24,7 @@ public final class ShareStorageExceptionInternal extends HttpResponseException {
      * @param value the deserialized error response.
      */
     public ShareStorageExceptionInternal(String message, HttpResponse response, ShareStorageError value) {
-        super(StorageImplUtils.convertStorageExceptionMessage(message, response), response, value);
+        super(message, response, value);
     }
 
     @Override

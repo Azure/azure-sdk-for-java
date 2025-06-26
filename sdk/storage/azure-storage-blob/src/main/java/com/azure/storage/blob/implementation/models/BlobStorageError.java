@@ -50,6 +50,11 @@ public final class BlobStorageError implements JsonSerializable<BlobStorageError
         return message;
     }
 
+    /**
+     * Gets the header name returned by the Azure Storage Blob service.
+     *
+     * @return The name of the header parameter.
+     */
     public String getHeaderName() {
         return headerName;
     }
