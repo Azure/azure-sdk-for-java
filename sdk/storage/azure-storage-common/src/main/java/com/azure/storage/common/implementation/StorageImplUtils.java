@@ -10,13 +10,10 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.xml.XmlReader;
-import com.azure.xml.XmlToken;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import javax.xml.stream.XMLStreamException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -303,10 +300,23 @@ public class StorageImplUtils {
      * @param response The storage service response.
      * @return The converted storage exception message.
      */
-    //TODO (gunjan): Investigate why we do not parse the XML error bodies to pull out the error messages and codes.
     public static String convertStorageExceptionMessage(String message, HttpResponse response) {
+        return convertStorageExceptionMessage(message, response, null, null);
+    }
+
+    /**
+     * Converts the storage exception message.
+     *
+     * @param message The storage exception message
+     * @param response The storage service response.
+     * @param errorCode The error code from the response.
+     * @param headerName The header name from the response.
+     * @return The converted storage exception message.
+     */
+    public static String convertStorageExceptionMessage(String message, HttpResponse response, String errorCode,
+        String headerName) {
         if (response != null) {
-            String errorCode = response.getHeaders().getValue(ERROR_CODE_HEADER_NAME);
+            String headerErrorCode = response.getHeaders().getValue(ERROR_CODE_HEADER_NAME);
 
             // Handle 403 Forbidden responses by appending detailed logging instructions for signature mismatches.
             if (response.getStatusCode() == 403) {
@@ -317,54 +327,24 @@ public class StorageImplUtils {
             if (response.getRequest() != null
                 && response.getRequest().getHttpMethod() != null
                 && response.getRequest().getHttpMethod().equals(HttpMethod.HEAD)
-                && errorCode != null) {
+                && headerErrorCode != null) {
                 int indexOfEmptyBody = message.indexOf("(empty body)");
                 if (indexOfEmptyBody >= 0) {
-                    return message.substring(0, indexOfEmptyBody) + errorCode
+                    return message.substring(0, indexOfEmptyBody) + headerErrorCode
                         + message.substring(indexOfEmptyBody + 12);
                 }
             }
 
             /*
-             * Extract error details from XML when headers are missing to provide meaningful error message
-             * for x-ms-version mismatch issues.
+             * Provide meaningful error message for x-ms-version mismatch issues.
              * Note : This is currently supported only for blob package.
              */
-            if (errorCode == null) {
-                errorCode = extractXmlTagValue(message, "Code");
-                String headerName = extractXmlTagValue(message, "HeaderName");
-                if (Constants.HeaderConstants.INVALID_HEADER_VALUE.equals(errorCode)
-                    && Constants.HeaderConstants.VERSION.equalsIgnoreCase(headerName)) {
-                    return INVALID_VERSION_HEADER_MESSAGE;
-                }
+            if (Constants.HeaderConstants.INVALID_HEADER_VALUE.equals(errorCode)
+                && Constants.HeaderConstants.VERSION.equalsIgnoreCase(headerName)) {
+                return INVALID_VERSION_HEADER_MESSAGE;
             }
         }
         return message;
-    }
-
-    private static String extractXmlTagValue(String message, String tag) {
-        if (CoreUtils.isNullOrEmpty(message) || CoreUtils.isNullOrEmpty(tag)) {
-            return null;
-        }
-
-        int xmlStart = message.indexOf("<?xml");
-        if (xmlStart == -1) {
-            return null;
-        }
-
-        try {
-            XmlReader xmlReader = XmlReader.fromString(message.substring(xmlStart));
-            while (xmlReader.nextElement() != XmlToken.END_DOCUMENT) {
-                if (xmlReader.getElementName().getLocalPart().equals(tag)) {
-                    return xmlReader.getStringElement().trim();
-                }
-            }
-        } catch (XMLStreamException e) {
-            LOGGER.warning("Failed to parse XML tag '{}' from message: {}", tag, e.getMessage());
-            return null;
-        }
-
-        return null;
     }
 
     /**

@@ -26,6 +26,8 @@ public final class BlobStorageError implements JsonSerializable<BlobStorageError
     private String queryParameterValue;
     private String reason;
     private String extendedErrorDetail;
+    private String headerName;
+    private String headerValue;
 
     private BlobStorageError() {
     }
@@ -48,6 +50,10 @@ public final class BlobStorageError implements JsonSerializable<BlobStorageError
         return message;
     }
 
+    public String getHeaderName() {
+        return headerName;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         return jsonWriter.writeStartObject("Error")
@@ -57,6 +63,8 @@ public final class BlobStorageError implements JsonSerializable<BlobStorageError
             .writeStringField("QueryParameterValue", this.queryParameterValue)
             .writeStringField("Reason", this.reason)
             .writeStringField("ExtendedErrorDetail", this.extendedErrorDetail)
+            .writeStringField("HeaderName", this.headerName)
+            .writeStringField("HeaderValue", this.headerValue)
             .writeEndObject();
     }
 
@@ -113,6 +121,10 @@ public final class BlobStorageError implements JsonSerializable<BlobStorageError
                     deserializedStorageError.reason = reader.getString();
                 } else if ("extendedErrorDetail".equals(fieldName)) {
                     deserializedStorageError.extendedErrorDetail = reader.getString();
+                } else if ("headerName".equals(fieldName)) {
+                    deserializedStorageError.headerName = reader.getString();
+                } else if ("headerValue".equals(fieldName)) {
+                    deserializedStorageError.headerValue = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -132,6 +144,8 @@ public final class BlobStorageError implements JsonSerializable<BlobStorageError
         xmlWriter.writeStringElement("QueryParameterValue", this.queryParameterValue);
         xmlWriter.writeStringElement("Reason", this.reason);
         xmlWriter.writeStringElement("ExtendedErrorDetail", this.extendedErrorDetail);
+        xmlWriter.writeStringElement("HeaderName", this.headerName);
+        xmlWriter.writeStringElement("HeaderValue", this.headerValue);
         return xmlWriter.writeEndElement();
     }
 
@@ -176,6 +190,10 @@ public final class BlobStorageError implements JsonSerializable<BlobStorageError
                     deserializedStorageError.reason = reader.getStringElement();
                 } else if ("ExtendedErrorDetail".equals(elementName.getLocalPart())) {
                     deserializedStorageError.extendedErrorDetail = reader.getStringElement();
+                } else if ("HeaderName".equals(elementName.getLocalPart())) {
+                    deserializedStorageError.headerName = reader.getStringElement();
+                } else if ("HeaderValue".equals(elementName.getLocalPart())) {
+                    deserializedStorageError.headerValue = reader.getStringElement();
                 }
             }
 
