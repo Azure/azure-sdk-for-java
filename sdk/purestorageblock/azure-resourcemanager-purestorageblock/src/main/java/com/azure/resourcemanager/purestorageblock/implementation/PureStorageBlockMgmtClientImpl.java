@@ -247,7 +247,7 @@ public final class PureStorageBlockMgmtClientImpl implements PureStorageBlockMgm
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-11-01-preview";
+        this.apiVersion = "2024-11-01";
         this.operations = new OperationsClientImpl(this);
         this.reservations = new ReservationsClientImpl(this);
         this.storagePools = new StoragePoolsClientImpl(this);
