@@ -68,7 +68,7 @@ steps:
     displayName: 'Update external dependency versions'
     inputs:
       scriptPath: 'eng/versioning/update_versions.py'
-      arguments: '--update-type external_dependency --build-type client --sr --vo ${{ parameters.VersionOverride }}'
+      arguments: '--skip-readme --version-override ${{ parameters.VersionOverride }}'
     condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
 
   - task: Maven@4

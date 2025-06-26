@@ -41,7 +41,7 @@ steps:
       # Update the version in the build.gradle.kts file
       $updatedContent = $buildGradleContent -replace 'version\s*=\s*\"([^\"]+)\"', "version = `"$global:newVersion`""
       Set-Content -Path $buildGradlePath -Value $updatedContent
-     
+
       Write-Host "##vso[task.setvariable variable=NewVersion]$newVersion"
     displayName: Find current version and update to SNAPSHOT
     workingDirectory: $(Agent.TempDirectory)
@@ -61,7 +61,7 @@ steps:
 
       ./gradlew -version
       echo "Gradle version above"
-  
+
       ./gradlew clean build -x test -x dokkaJavadoc "-Dmaven.repo.local=$env:PIPELINE_WORKSPACE/.m2/repository" publishToMavenLocal
     displayName: Build the project and publish to the local Maven repository
     workingDirectory: $(Agent.TempDirectory)
@@ -69,11 +69,11 @@ steps:
   - pwsh: |
       # Define the path to the external_dependencies.txt file
       $dependenciesFilePath = "eng/versioning/external_dependencies.txt"
-      
+
       # Update the version in the external_dependencies.txt file
       $newVersionInExternalDependenciesFile = "com.openai:openai-java;$(NewVersion)"
       Write-Host "New version in external_dependencies.txt: $newVersionInExternalDependenciesFile"
-      
+
       $dependenciesContent = Get-Content -Path $dependenciesFilePath -Raw
       $updatedDependenciesContent = $dependenciesContent -replace 'com.openai:openai-java;[0-9.]+', $newVersionInExternalDependenciesFile
       Write-Host "Updated the version in the external_dependencies.txt file: $updatedDependenciesContent"
@@ -85,4 +85,4 @@ steps:
     displayName: 'Update versions for source build'
     inputs:
       scriptPath: 'eng/versioning/update_versions.py'
-      arguments: '--update-type external_dependency --build-type client --sr'
+      arguments: '--skip-readme'

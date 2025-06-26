@@ -38,14 +38,14 @@ steps:
     displayName: 'Set versions for source build'
     inputs:
       scriptPath: 'eng/versioning/set_versions.py'
-      arguments: '--build-type client --pst'
+      arguments: '--prep-source-testing'
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - task: PythonScript@0
     displayName: 'Update versions for source build'
     inputs:
       scriptPath: 'eng/versioning/update_versions.py'
-      arguments: '--update-type library --build-type client --sr'
+      arguments: '--skip-readme'
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
