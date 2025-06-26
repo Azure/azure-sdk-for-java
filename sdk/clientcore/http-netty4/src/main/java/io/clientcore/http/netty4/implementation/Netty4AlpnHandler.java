@@ -29,7 +29,7 @@ import static io.clientcore.http.netty4.implementation.Netty4Utility.setOrSuppre
  * either HTTP/1.1 or HTTP/2 based on the result of negotiation.
  */
 public final class Netty4AlpnHandler extends ApplicationProtocolNegotiationHandler {
-    private static final int _256_KB = 256 * 1024;
+    private static final int TWO_FIFTY_SIX_KB = 256 * 1024;
     private final HttpRequest request;
     private final AtomicReference<ResponseStateInfo> responseReference;
     private final AtomicReference<Throwable> errorReference;
@@ -63,21 +63,21 @@ public final class Netty4AlpnHandler extends ApplicationProtocolNegotiationHandl
             //  create a streaming version of this to support huge response payloads.
             Http2Connection http2Connection = new DefaultHttp2Connection(false);
             Http2Settings settings = new Http2Settings().headerTableSize(4096)
-                .maxHeaderListSize(_256_KB)
+                .maxHeaderListSize(TWO_FIFTY_SIX_KB)
                 .pushEnabled(false)
-                .initialWindowSize(_256_KB);
+                .initialWindowSize(TWO_FIFTY_SIX_KB);
             Http2FrameListener frameListener = new DelegatingDecompressorFrameListener(http2Connection,
                 new InboundHttp2ToHttpAdapterBuilder(http2Connection).maxContentLength(Integer.MAX_VALUE)
                     .propagateSettings(true)
                     .validateHttpHeaders(true)
                     .build());
 
-            HttpToHttp2ConnectionHandler connectionHandler = new HttpToHttp2ConnectionHandlerBuilder()
-                .initialSettings(settings)
-                .frameListener(frameListener)
-                .connection(http2Connection)
-                .validateHeaders(true)
-                .build();
+            HttpToHttp2ConnectionHandler connectionHandler
+                = new HttpToHttp2ConnectionHandlerBuilder().initialSettings(settings)
+                    .frameListener(frameListener)
+                    .connection(http2Connection)
+                    .validateHeaders(true)
+                    .build();
 
             if (ctx.pipeline().get(Netty4HandlerNames.PROGRESS_AND_TIMEOUT) != null) {
                 ctx.pipeline()

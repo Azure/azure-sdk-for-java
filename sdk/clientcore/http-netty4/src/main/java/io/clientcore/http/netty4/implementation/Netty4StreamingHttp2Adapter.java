@@ -56,7 +56,9 @@ final class Netty4StreamingHttp2Adapter extends Http2EventAdapter {
         throws Http2Exception {
         Http2Stream stream = connection.stream(streamId);
         if (stream == null) {
-            throw connectionError(PROTOCOL_ERROR, "Data Frame received for unknown stream id %d", streamId);
+            throw LOGGER.throwableAtError()
+                .addKeyValue("streamId", streamId)
+                .log("Data Frame received for unknown stream", message -> connectionError(PROTOCOL_ERROR, message));
         }
 
         // data may be using pooled buffers (can't find a way to determine if it is pooled or not), and downstream may
@@ -118,8 +120,9 @@ final class Netty4StreamingHttp2Adapter extends Http2EventAdapter {
 
     @Override
     public void onRstStreamRead(ChannelHandlerContext ctx, int streamId, long errorCode) throws Http2Exception {
-        ctx.fireExceptionCaught(LOGGER.throwableAtError().log("HTTP/2 to HTTP layer caught stream reset",
-            message -> connectionError(Http2Error.valueOf(errorCode), message)));
+        ctx.fireExceptionCaught(LOGGER.throwableAtError()
+            .log("HTTP/2 to HTTP layer caught stream reset",
+                message -> connectionError(Http2Error.valueOf(errorCode), message)));
     }
 
     @Override
