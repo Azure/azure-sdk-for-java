@@ -162,7 +162,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .withMinimumTlsVersion(MinimumTlsVersion.TLS1_1)
             .disableBlobPublicAccess()
             // Azure policy enforces shared key access to be disabled
-//            .disableSharedKeyAccess()
+            //            .disableSharedKeyAccess()
             .apply();
 
         Assertions.assertTrue(storageAccount.isHttpsTrafficOnly());

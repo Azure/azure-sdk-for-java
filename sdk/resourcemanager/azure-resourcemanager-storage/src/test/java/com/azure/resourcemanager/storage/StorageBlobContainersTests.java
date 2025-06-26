@@ -54,14 +54,14 @@ public class StorageBlobContainersTests extends StorageManagementTest {
             .withSku(StorageAccountSkuType.STANDARD_LRS)
             .disableSharedKeyAccess()
             // It's not taking effect during storage account creation. Not sure if it's a bug.
-//            .enableBlobPublicAccess()
+            //            .enableBlobPublicAccess()
             .create();
 
         BlobContainers blobContainers = this.storageManager.blobContainers();
         BlobContainer blobContainer = blobContainers.defineContainer("blob-test")
             .withExistingStorageAccount(rgName, saName)
             .withPublicAccess(PublicAccess.NONE)
-//            .withPublicAccess(PublicAccess.CONTAINER)
+            //            .withPublicAccess(PublicAccess.CONTAINER)
             .withMetadata("a", "b")
             .withMetadata("c", "d")
             .create();
@@ -88,19 +88,19 @@ public class StorageBlobContainersTests extends StorageManagementTest {
             .withNewResourceGroup(rgName)
             .disableSharedKeyAccess()
             // It's not taking effect during storage account creation. Not sure if it's a bug.
-//            .enableBlobPublicAccess()
+            //            .enableBlobPublicAccess()
             .create();
 
         BlobContainers blobContainers = this.storageManager.blobContainers();
         BlobContainer blobContainer = blobContainers.defineContainer("blob-test")
             .withExistingStorageAccount(rgName, saName)
             .withPublicAccess(PublicAccess.NONE)
-//            .withPublicAccess(PublicAccess.CONTAINER)
+            //            .withPublicAccess(PublicAccess.CONTAINER)
             .withMetadata(metadataInitial)
             .create();
 
         blobContainer.update()
-//            .withPublicAccess(PublicAccess.BLOB)
+            //            .withPublicAccess(PublicAccess.BLOB)
             .withPublicAccess(PublicAccess.NONE)
             .withMetadata("c", "d")
             .withMetadata("e", "f")
