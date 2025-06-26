@@ -16,6 +16,3 @@ variables:
     value: windows-2022
   - name: MACVMIMAGE
     value: macos-latest
-
-  - name: LinuxImageDemand
-    value: ImageOverride -equals $(LINUXVMIMAGE)

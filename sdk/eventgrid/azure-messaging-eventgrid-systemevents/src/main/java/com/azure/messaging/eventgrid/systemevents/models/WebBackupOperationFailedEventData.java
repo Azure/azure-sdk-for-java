@@ -21,7 +21,7 @@ public final class WebBackupOperationFailedEventData implements JsonSerializable
      * Detail of action on the app.
      */
     @Generated
-    private final AppEventTypeDetail appEventTypeDetail;
+    private AppEventTypeDetail appEventTypeDetail;
 
     /*
      * name of the web site that had this event.
@@ -61,12 +61,9 @@ public final class WebBackupOperationFailedEventData implements JsonSerializable
 
     /**
      * Creates an instance of WebBackupOperationFailedEventData class.
-     *
-     * @param appEventTypeDetail the appEventTypeDetail value to set.
      */
     @Generated
-    private WebBackupOperationFailedEventData(AppEventTypeDetail appEventTypeDetail) {
-        this.appEventTypeDetail = appEventTypeDetail;
+    private WebBackupOperationFailedEventData() {
     }
 
     /**
@@ -165,48 +162,35 @@ public final class WebBackupOperationFailedEventData implements JsonSerializable
      * @param jsonReader The JsonReader being read.
      * @return An instance of WebBackupOperationFailedEventData if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WebBackupOperationFailedEventData.
      */
     @Generated
     public static WebBackupOperationFailedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AppEventTypeDetail appEventTypeDetail = null;
-            String name = null;
-            String clientRequestId = null;
-            String correlationRequestId = null;
-            String requestId = null;
-            String address = null;
-            String verb = null;
+            WebBackupOperationFailedEventData deserializedWebBackupOperationFailedEventData
+                = new WebBackupOperationFailedEventData();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("appEventTypeDetail".equals(fieldName)) {
-                    appEventTypeDetail = AppEventTypeDetail.fromJson(reader);
+                    deserializedWebBackupOperationFailedEventData.appEventTypeDetail
+                        = AppEventTypeDetail.fromJson(reader);
                 } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
+                    deserializedWebBackupOperationFailedEventData.name = reader.getString();
                 } else if ("clientRequestId".equals(fieldName)) {
-                    clientRequestId = reader.getString();
+                    deserializedWebBackupOperationFailedEventData.clientRequestId = reader.getString();
                 } else if ("correlationRequestId".equals(fieldName)) {
-                    correlationRequestId = reader.getString();
+                    deserializedWebBackupOperationFailedEventData.correlationRequestId = reader.getString();
                 } else if ("requestId".equals(fieldName)) {
-                    requestId = reader.getString();
+                    deserializedWebBackupOperationFailedEventData.requestId = reader.getString();
                 } else if ("address".equals(fieldName)) {
-                    address = reader.getString();
+                    deserializedWebBackupOperationFailedEventData.address = reader.getString();
                 } else if ("verb".equals(fieldName)) {
-                    verb = reader.getString();
+                    deserializedWebBackupOperationFailedEventData.verb = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            WebBackupOperationFailedEventData deserializedWebBackupOperationFailedEventData
-                = new WebBackupOperationFailedEventData(appEventTypeDetail);
-            deserializedWebBackupOperationFailedEventData.name = name;
-            deserializedWebBackupOperationFailedEventData.clientRequestId = clientRequestId;
-            deserializedWebBackupOperationFailedEventData.correlationRequestId = correlationRequestId;
-            deserializedWebBackupOperationFailedEventData.requestId = requestId;
-            deserializedWebBackupOperationFailedEventData.address = address;
-            deserializedWebBackupOperationFailedEventData.verb = verb;
             return deserializedWebBackupOperationFailedEventData;
         });
     }

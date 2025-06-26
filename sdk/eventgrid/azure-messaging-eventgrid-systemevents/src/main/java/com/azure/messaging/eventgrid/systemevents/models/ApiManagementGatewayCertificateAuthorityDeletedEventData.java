@@ -26,7 +26,7 @@ public final class ApiManagementGatewayCertificateAuthorityDeletedEventData
      * gateways/<GatewayName>/certificateAuthorities/<ResourceName>`
      */
     @Generated
-    private String resourceUri;
+    private String resourceUrl;
 
     /**
      * Creates an instance of ApiManagementGatewayCertificateAuthorityDeletedEventData class.
@@ -36,15 +36,15 @@ public final class ApiManagementGatewayCertificateAuthorityDeletedEventData
     }
 
     /**
-     * Get the resourceUri property: The fully qualified ID of the resource that the compliance state change is for,
+     * Get the resourceUrl property: The fully qualified ID of the resource that the compliance state change is for,
      * including the resource name and resource type. Uses the format,
      * `/subscriptions/&lt;SubscriptionID&gt;/resourceGroups/&lt;ResourceGroup&gt;/Microsoft.ApiManagement/service/&lt;ServiceName&gt;/gateways/&lt;GatewayName&gt;/certificateAuthorities/&lt;ResourceName&gt;`.
      *
-     * @return the resourceUri value.
+     * @return the resourceUrl value.
      */
     @Generated
-    public String getResourceUri() {
-        return this.resourceUri;
+    public String getResourceUrl() {
+        return this.resourceUrl;
     }
 
     /**
@@ -54,7 +54,7 @@ public final class ApiManagementGatewayCertificateAuthorityDeletedEventData
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("resourceUri", this.resourceUri);
+        jsonWriter.writeStringField("resourceUri", this.resourceUrl);
         return jsonWriter.writeEndObject();
     }
 
@@ -77,7 +77,7 @@ public final class ApiManagementGatewayCertificateAuthorityDeletedEventData
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("resourceUri".equals(fieldName)) {
-                    deserializedApiManagementGatewayCertificateAuthorityDeletedEventData.resourceUri
+                    deserializedApiManagementGatewayCertificateAuthorityDeletedEventData.resourceUrl
                         = reader.getString();
                 } else {
                     reader.skipChildren();

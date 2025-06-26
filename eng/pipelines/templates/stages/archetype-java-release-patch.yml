@@ -130,8 +130,8 @@ stages:
               targetPath: '$(Pipeline.Workspace)/packages-esrp-flattened'
 
           pool:
-            name: azsdk-pool-mms-win-2022-general
-            image: azsdk-pool-mms-win-2022-1espt
+            name: azsdk-pool
+            image: windows-2022
             os: windows
           strategy:
             runOnce:
@@ -149,8 +149,8 @@ stages:
           timeoutInMinutes: 120
           dependsOn: PublishESRPPackage
           pool:
-            name: azsdk-pool-mms-win-2022-general
-            image: azsdk-pool-mms-win-2022-1espt
+            name: azsdk-pool
+            image: windows-2022
             os: windows
           steps:
             - checkout: azure-sdk-build-tools
@@ -171,11 +171,6 @@ stages:
             # this is that the azure-sdk-for-java feed will have the package available immediately
             # whereas Maven can take several hours for the package to become available.
             - template: /eng/pipelines/templates/steps/java-dev-feed-publishing.yml
-              parameters:
-                ArtifactDirectory: $(Pipeline.Workspace)/packages-signed
-                RepositoryUrl: https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1
-                Target: JavaDevFeed
-                JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
             - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
               parameters:
                 ArtifactName: packages-javadevfeed-$(System.JobAttempt)
