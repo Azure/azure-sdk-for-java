@@ -9,17 +9,11 @@ The dev version is based on the date and the build number. The dev version is th
 
 .PARAMETER BuildNumber
 The build number to use for the dev version.
-
-.PARAMETER SdkType
-The type of SDK to set the dev version for.
 #>
 
 param(
   [Parameter(Mandatory = $true)]
-  [string]$BuildNumber,
-
-  [Parameter(Mandatory = $true)]
-  [string]$SdkType
+  [string]$BuildNumber
 )
 
 $artifacts = $env:ARTIFACTSJSON | ConvertFrom-Json

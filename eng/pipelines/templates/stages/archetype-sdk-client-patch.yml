@@ -314,6 +314,5 @@ extends:
           parameters:
             DependsOn:
               - Build
-            SDKType: ${{ parameters.SDKType }}
             Artifacts: ${{ parameters.Artifacts }}
             TestPipeline: ${{ parameters.TestPipeline }}

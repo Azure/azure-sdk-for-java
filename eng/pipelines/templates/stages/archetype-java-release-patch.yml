@@ -1,8 +1,6 @@
 parameters:
   - name: DependsOn
     type: object
-  - name: SDKType
-    type: string
   - name: Artifacts
     type: object
     default: []
