@@ -36,6 +36,7 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
 
     private static final String MATCHER_PATTERN = String.format("%s/{%s}", REQUEST_BASE_URI, REGISTRATION_ID_NAME);
 
+    @SuppressWarnings({"deprecation", "removal"})
     private static final AntPathRequestMatcher REQUEST_MATCHER = new AntPathRequestMatcher(MATCHER_PATTERN);
 
     private final OAuth2AuthorizationRequestResolver delegateResolver;

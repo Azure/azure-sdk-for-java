@@ -18,7 +18,7 @@ public class AzureCompatibilityVerifierProperties {
     /**
      * Comma-delimited list of Spring Boot versions that are compatible with current Spring Cloud Azure's version.
      */
-    private List<String> compatibleBootVersions = Arrays.asList("3.0.x", "3.1.x", "3.2.x", "3.3.x", "3.4.x");
+    private List<String> compatibleBootVersions = Arrays.asList("3.0.x", "3.1.x", "3.2.x", "3.3.x", "3.4.x", "3.5.x");
 
     public boolean isEnabled() {
         return this.enabled;

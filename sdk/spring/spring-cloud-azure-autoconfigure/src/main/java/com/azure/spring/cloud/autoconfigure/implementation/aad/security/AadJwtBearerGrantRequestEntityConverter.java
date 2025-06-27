@@ -13,7 +13,7 @@ import org.springframework.util.MultiValueMap;
  * @since 4.3.0
  * @see <a href="https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow">OAuth 2.0 On-Behalf-Of</a>
  */
-@SuppressWarnings("deprecation")
+@SuppressWarnings({"deprecation", "removal"})
 public class AadJwtBearerGrantRequestEntityConverter extends JwtBearerGrantRequestEntityConverter {
 
     @Override

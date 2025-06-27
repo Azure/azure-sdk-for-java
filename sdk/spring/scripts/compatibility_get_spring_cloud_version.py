@@ -7,7 +7,7 @@
 
 import os
 import argparse
-import requests
+import json
 
 
 def get_args():
@@ -23,8 +23,10 @@ def change_to_repo_root_dir():
 
 def get_spring_cloud_version(spring_boot_version):
     spring_cloud_version = None
-    filepath = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/spring/pipeline/spring-cloud-azure-supported-spring.json"
-    data = requests.get(filepath).json()
+    scripts_dir = os.path.dirname(__file__)
+    filepath = os.path.join(scripts_dir, '..', 'pipeline', 'spring-cloud-azure-supported-spring.json')
+    with open(filepath, 'r', encoding='utf-8') as file:
+        data = json.load(file)
 
     # Only find the Spring Cloud Version that matches the special Spring Boot version first
     for entry in data:

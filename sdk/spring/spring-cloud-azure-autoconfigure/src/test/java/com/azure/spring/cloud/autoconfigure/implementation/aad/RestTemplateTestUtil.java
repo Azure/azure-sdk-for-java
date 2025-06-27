@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.implementation.aad;
 
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadAzureDelegatedOAuth2AuthorizedClientProvider;
+import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import com.nimbusds.jose.proc.JWSVerificationKeySelector;
 import com.nimbusds.jose.util.ResourceRetriever;
@@ -33,6 +34,7 @@ import java.util.stream.Collectors;
 import static com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.RestTemplateProxyCustomizerTestConfiguration.FACTORY;
 import static com.azure.spring.cloud.core.implementation.util.ReflectionUtils.getField;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public final class RestTemplateTestUtil {
@@ -104,12 +106,20 @@ public final class RestTemplateTestUtil {
     private static void assertRestTemplateWellConfiguredForJwtDecoderFactory(ApplicationContext context) {
         JwtDecoderFactory<ClientRegistration> factory = (JwtDecoderFactory<ClientRegistration>) context.getBean(JwtDecoderFactory.class);
         JwtDecoder jwtDecoder = factory.createDecoder(clientRegistration());
-        assertTrue(jwtDecoder instanceof NimbusJwtDecoder);
+        assertInstanceOf(NimbusJwtDecoder.class, jwtDecoder);
         DefaultJWTProcessor<?> processor = (DefaultJWTProcessor<?>) getField(NimbusJwtDecoder.class, "jwtProcessor", jwtDecoder);
         JWSVerificationKeySelector<?> selector = (JWSVerificationKeySelector<?>) processor.getJWSKeySelector();
-        RemoteJWKSet<?> source = (RemoteJWKSet<?>) selector.getJWKSource();
-        ResourceRetriever retriever = source.getResourceRetriever();
-        RestTemplate restTemplate = (RestTemplate) getField(retriever.getClass(), "restOperations", retriever);
+
+        RestTemplate restTemplate = null;
+        JWKSource<?> jwkSource = selector.getJWKSource();
+        if (jwkSource instanceof RemoteJWKSet<?> remoteJWKSet) {
+            ResourceRetriever retriever = remoteJWKSet.getResourceRetriever();
+            restTemplate = (RestTemplate) getField(retriever.getClass(), "restOperations", retriever);
+        } else {
+            Object source = getField(jwkSource.getClass(), "source", jwkSource);
+            source = getField(source.getClass(), "source", source);
+            restTemplate = (RestTemplate) getField(source.getClass(), "restOperations", source);
+        }
         assertEquals(FACTORY, restTemplate.getRequestFactory());
     }
 

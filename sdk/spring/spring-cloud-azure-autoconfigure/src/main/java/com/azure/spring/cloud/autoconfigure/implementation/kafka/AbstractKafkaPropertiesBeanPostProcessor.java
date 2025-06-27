@@ -22,11 +22,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,11 +62,8 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
         + " And configure Kafka bootstrap servers instead, which can be set as spring.kafka.boostrap-servers=EventHubsNamespacesFQDN:9093.";
 
     static {
-        Map<String, String> configs = new HashMap<>();
-        configs.put(SECURITY_PROTOCOL_CONFIG, SECURITY_PROTOCOL_CONFIG_SASL);
-        configs.put(SASL_MECHANISM, SASL_MECHANISM_OAUTH);
-        configs.put(SASL_LOGIN_CALLBACK_HANDLER_CLASS, SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH);
-        KAFKA_OAUTH_CONFIGS = Collections.unmodifiableMap(configs);
+        KAFKA_OAUTH_CONFIGS = Map.of(SECURITY_PROTOCOL_CONFIG, SECURITY_PROTOCOL_CONFIG_SASL, SASL_MECHANISM,
+            SASL_MECHANISM_OAUTH, SASL_LOGIN_CALLBACK_HANDLER_CLASS, SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH);
     }
 
     private AzureGlobalProperties azureGlobalProperties;
@@ -256,17 +253,29 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
      * Configure Spring Cloud Azure user-agent for Kafka client. This method is idempotent to avoid configuring UA repeatedly.
      */
     static synchronized void configureKafkaUserAgent() {
-        Method dataMethod = ReflectionUtils.findMethod(ApiVersionsRequest.class, "data");
-        if (dataMethod != null) {
-            ApiVersionsRequest apiVersionsRequest = new ApiVersionsRequest.Builder().build();
-            ApiVersionsRequestData apiVersionsRequestData = (ApiVersionsRequestData) ReflectionUtils.invokeMethod(dataMethod, apiVersionsRequest);
-            if (apiVersionsRequestData != null) {
-                String clientSoftwareName = apiVersionsRequestData.clientSoftwareName();
-                if (clientSoftwareName != null && !clientSoftwareName.contains(AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH)) {
-                    apiVersionsRequestData.setClientSoftwareName(apiVersionsRequestData.clientSoftwareName()
-                        + AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH);
-                    apiVersionsRequestData.setClientSoftwareVersion(VERSION);
-                }
+        ApiVersionsRequestData apiVersionsRequestData = null;
+        // In kafka-clients 3.9.1 and later the ApiVersionsRequestData is duplicated for each new ApiVersionsRequest.
+        // Need to mutate the shared field that gets duplicated.
+        Field defaultDataField = ReflectionUtils.findField(ApiVersionsRequest.Builder.class, "DEFAULT_DATA");
+        if (defaultDataField != null) {
+            ReflectionUtils.makeAccessible(defaultDataField);
+            apiVersionsRequestData = (ApiVersionsRequestData) ReflectionUtils.getField(defaultDataField, null);
+        } else {
+            Method dataMethod = ReflectionUtils.findMethod(ApiVersionsRequest.class, "data");
+            if (dataMethod != null) {
+                ApiVersionsRequest apiVersionsRequest = new ApiVersionsRequest.Builder().build();
+                apiVersionsRequestData = (ApiVersionsRequestData) ReflectionUtils.invokeMethod(dataMethod,
+                    apiVersionsRequest);
+            }
+        }
+
+        if (apiVersionsRequestData != null) {
+            String clientSoftwareName = apiVersionsRequestData.clientSoftwareName();
+            if (clientSoftwareName != null && !clientSoftwareName.contains(
+                AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH)) {
+                apiVersionsRequestData.setClientSoftwareName(
+                    apiVersionsRequestData.clientSoftwareName() + AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH);
+                apiVersionsRequestData.setClientSoftwareVersion(VERSION);
             }
         }
     }
