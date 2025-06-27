@@ -306,5 +306,4 @@ public class JobTests extends BatchClientTestBase {
             throw new RuntimeException(e);
         }
     }
-
 }
