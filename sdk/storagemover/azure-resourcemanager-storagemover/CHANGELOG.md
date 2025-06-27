@@ -1,14 +1,116 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (2025-06-27)
 
-### Features Added
+- Azure Resource Manager StorageMover client library for Java. This package contains Microsoft Azure SDK for StorageMover Management SDK. The Azure Storage Mover REST API. Package api-version 2024-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.UploadLimit` was removed
 
-### Other Changes
+#### `models.JobRunList` was removed
+
+#### `models.AgentList` was removed
+
+#### `models.Recurrence` was removed
+
+#### `models.WeeklyRecurrence` was removed
+
+#### `models.JobDefinitionList` was removed
+
+#### `models.StorageMoverList` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.EndpointList` was removed
+
+#### `models.ProjectList` was removed
+
+#### `models.JobDefinitions` was modified
+
+* `startJob(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
+* `startJobWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `stopJob(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
+* `stopJobWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.JobDefinition` was modified
+
+* `startJobWithResponse(com.azure.core.util.Context)` was removed
+* `stopJob()` was removed
+* `startJob()` was removed
+* `stopJobWithResponse(com.azure.core.util.Context)` was removed
+
+#### `models.JobRunError` was modified
+
+* `withMessage(java.lang.String)` was removed
+* `withTarget(java.lang.String)` was removed
+* `withCode(java.lang.String)` was removed
+
+#### `models.JobRun` was modified
+
+* `java.lang.Object targetProperties()` -> `com.azure.core.util.BinaryData targetProperties()`
+* `java.lang.Object jobDefinitionProperties()` -> `com.azure.core.util.BinaryData jobDefinitionProperties()`
+* `java.lang.Object sourceProperties()` -> `com.azure.core.util.BinaryData sourceProperties()`
+
+#### `models.UploadLimitWeeklyRecurrence` was modified
+
+* `withLimitInMbps(int)` was removed
+* `withDays(java.util.List)` was removed
+* `withEndTime(models.Time)` was removed
+* `withStartTime(models.Time)` was removed
+* `int limitInMbps()` -> `java.lang.Integer limitInMbps()`
+
+#### `models.Agent` was modified
+
+* `localIpAddress()` was removed
+
+#### `models.AgentPropertiesErrorDetails` was modified
+
+* `withMessage(java.lang.String)` was removed
+* `withCode(java.lang.String)` was removed
+
+### Features Added
+
+* `implementation.models.ProjectList` was added
+
+* `implementation.models.EndpointList` was added
+
+* `implementation.models.JobRunList` was added
+
+* `models.StopJobRequestContentType` was added
+
+* `models.StartJobRequestContentType` was added
+
+* `implementation.models.StorageMoverList` was added
+
+* `implementation.models.AgentList` was added
+
+* `implementation.models.JobDefinitionList` was added
+
+* `implementation.models.OperationListResult` was added
+
+#### `models.JobDefinitions` was modified
+
+* `startJobWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.StartJobRequestContentType,com.azure.core.util.Context)` was added
+* `stopJobWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.StopJobRequestContentType,com.azure.core.util.Context)` was added
+* `startJob(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.StartJobRequestContentType)` was added
+* `stopJob(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.StopJobRequestContentType)` was added
+
+#### `models.Minute` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.UploadLimitWeeklyRecurrence` was modified
+
+* `endTime()` was added
+* `startTime()` was added
+* `days()` was added
+* `withLimitInMbps(java.lang.Integer)` was added
+
+#### `models.Agent` was modified
+
+* `localIPAddress()` was added
 
 ## 1.3.0 (2024-12-23)
 
