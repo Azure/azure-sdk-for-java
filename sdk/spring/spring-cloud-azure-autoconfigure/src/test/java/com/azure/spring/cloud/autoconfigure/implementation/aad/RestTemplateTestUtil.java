@@ -4,9 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.implementation.aad;
 
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadAzureDelegatedOAuth2AuthorizedClientProvider;
-import com.nimbusds.jose.jwk.source.CachingJWKSetSource;
-import com.nimbusds.jose.jwk.source.JWKSetBasedJWKSource;
-import com.nimbusds.jose.jwk.source.JWKSetSource;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import com.nimbusds.jose.proc.JWSVerificationKeySelector;
@@ -39,7 +36,6 @@ import static com.azure.spring.cloud.core.implementation.util.ReflectionUtils.ge
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 public final class RestTemplateTestUtil {
 
@@ -119,11 +115,10 @@ public final class RestTemplateTestUtil {
         if (jwkSource instanceof RemoteJWKSet<?> remoteJWKSet) {
             ResourceRetriever retriever = remoteJWKSet.getResourceRetriever();
             restTemplate = (RestTemplate) getField(retriever.getClass(), "restOperations", retriever);
-        } else if (jwkSource instanceof JWKSetBasedJWKSource<?> jwkSetBasedJWKSource) {
-            JWKSetSource<?> cacheSource = ((CachingJWKSetSource<?>) jwkSetBasedJWKSource.getJWKSetSource()).getSource();
-            restTemplate = (RestTemplate) getField(cacheSource.getClass(), "restOperations", cacheSource);
         } else {
-            fail("Unexpected JWKSource type: " + jwkSource.getClass().getName());
+            Object source = getField(jwkSource.getClass(), "source", jwkSource);
+            source = getField(source.getClass(), "source", source);
+            restTemplate = (RestTemplate) getField(source.getClass(), "restOperations", source);
         }
         assertEquals(FACTORY, restTemplate.getRequestFactory());
     }
