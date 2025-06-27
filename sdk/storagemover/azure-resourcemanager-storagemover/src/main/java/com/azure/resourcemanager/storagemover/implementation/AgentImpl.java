@@ -216,6 +216,6 @@ public final class AgentImpl implements Agent, Agent.Definition, Agent.Update {
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }
