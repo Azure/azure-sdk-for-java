@@ -12,6 +12,7 @@ import io.clientcore.core.models.binarydata.BinaryData;
 import java.net.HttpURLConnection;
 import java.time.Duration;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * HttpClient implementation using {@link HttpURLConnection} to send requests and receive responses.
@@ -43,5 +44,13 @@ public final class JdkHttpClient implements HttpClient {
     @Override
     public Response<BinaryData> send(HttpRequest request) {
         throw LOGGER.throwableAtError().log(ERROR_MESSAGE, UnsupportedOperationException::new);
+    }
+
+    @Override
+    public CompletableFuture<Response<BinaryData>> sendAsync(HttpRequest request) {
+        CompletableFuture<Response<BinaryData>> failedFuture = new CompletableFuture<>();
+        failedFuture.completeExceptionally(LOGGER.throwableAtError()
+            .log(ERROR_MESSAGE, UnsupportedOperationException::new));
+        return failedFuture;
     }
 }

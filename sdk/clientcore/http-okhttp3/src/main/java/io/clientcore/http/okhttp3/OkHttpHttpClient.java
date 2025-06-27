@@ -19,13 +19,17 @@ import io.clientcore.core.models.binarydata.InputStreamBinaryData;
 import io.clientcore.core.utils.ServerSentEventUtils;
 import io.clientcore.http.okhttp3.implementation.OkHttpFileRequestBody;
 import io.clientcore.http.okhttp3.implementation.OkHttpInputStreamRequestBody;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 
 import static io.clientcore.core.http.models.HttpMethod.HEAD;
 import static io.clientcore.core.utils.ServerSentEventUtils.attemptRetry;
@@ -54,14 +58,39 @@ class OkHttpHttpClient implements HttpClient {
 
     @Override
     public Response<BinaryData> send(HttpRequest request) {
-        Request okHttpRequest = toOkHttpRequest(request);
-
         try {
-            okhttp3.Response okHttpResponse = httpClient.newCall(okHttpRequest).execute();
+            okhttp3.Response okHttpResponse = httpClient.newCall(toOkHttpRequest(request)).execute();
 
             return toResponse(request, okHttpResponse);
         } catch (IOException ex) {
             throw LOGGER.throwableAtError().log(ex, CoreException::from);
+        }
+    }
+
+    @Override
+    public CompletableFuture<Response<BinaryData>> sendAsync(HttpRequest request) {
+        CompletableFuture<Response<BinaryData>> future = new CompletableFuture<>();
+        httpClient.newCall(toOkHttpRequest(request)).enqueue(new OkHttpCallbackToClientCoreResponse(request, future));
+        return future;
+    }
+
+    private final class OkHttpCallbackToClientCoreResponse implements Callback {
+        private final HttpRequest request;
+        private final CompletableFuture<Response<BinaryData>> future;
+
+        OkHttpCallbackToClientCoreResponse(HttpRequest request, CompletableFuture<Response<BinaryData>> future) {
+            this.request = request;
+            this.future = future;
+        }
+
+        @Override
+        public void onFailure(@NotNull Call call, @NotNull IOException e) {
+            future.completeExceptionally(CoreException.from(e));
+        }
+
+        @Override
+        public void onResponse(@NotNull Call call, @NotNull okhttp3.Response response) throws IOException {
+            future.complete(toResponse(request, response));
         }
     }
 
