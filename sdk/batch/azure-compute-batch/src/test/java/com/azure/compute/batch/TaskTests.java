@@ -4,35 +4,39 @@ package com.azure.compute.batch;
 
 import com.azure.compute.batch.models.BatchApplicationPackageReference;
 import com.azure.compute.batch.models.BatchClientParallelOptions;
-import com.azure.compute.batch.models.BatchJobCreateContent;
+import com.azure.compute.batch.models.BatchErrorSourceCategory;
+import com.azure.compute.batch.models.BatchJobCreateParameters;
 import com.azure.compute.batch.models.BatchPoolInfo;
 import com.azure.compute.batch.models.BatchTask;
 import com.azure.compute.batch.models.BatchTaskConstraints;
 import com.azure.compute.batch.models.BatchTaskCounts;
 import com.azure.compute.batch.models.BatchTaskCountsResult;
-import com.azure.compute.batch.models.BatchTaskCreateContent;
+import com.azure.compute.batch.models.BatchTaskCreateParameters;
 import com.azure.compute.batch.models.BatchTaskExecutionResult;
 import com.azure.compute.batch.models.BatchTaskSlotCounts;
 import com.azure.compute.batch.models.BatchTaskStatistics;
-import com.azure.compute.batch.models.ErrorCategory;
 import com.azure.compute.batch.models.OutputFile;
 import com.azure.compute.batch.models.OutputFileBlobContainerDestination;
 import com.azure.compute.batch.models.OutputFileDestination;
 import com.azure.compute.batch.models.OutputFileUploadCondition;
 import com.azure.compute.batch.models.OutputFileUploadConfig;
 import com.azure.compute.batch.models.ResourceFile;
-import com.azure.compute.batch.models.UploadBatchServiceLogsContent;
+import com.azure.compute.batch.models.UploadBatchServiceLogsParameters;
 import com.azure.compute.batch.models.UploadBatchServiceLogsResult;
 import com.azure.compute.batch.models.UserIdentity;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.test.SyncAsyncExtension;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.storage.blob.BlobContainerClient;
+
+import reactor.core.publisher.Mono;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
@@ -47,6 +51,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class TaskTests extends BatchClientTestBase {
     private static String livePoolId;
@@ -71,64 +76,87 @@ public class TaskTests extends BatchClientTestBase {
     /*
      * Test TypeSpec Shared model among GET-PUT Roundtrip operation
      * */
-    @Test
+    @SyncAsyncTest
     public void testTaskUnifiedModel() {
-        String taskId = "task-canPut";
-        String jobId = getStringIdWithUserNamePrefix("-SampleJob");
+        String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
+        String taskId = "task-canPut" + testModeSuffix + "-" + System.currentTimeMillis();
+        String jobId = getStringIdWithUserNamePrefix("-SampleJob" + testModeSuffix + "-" + System.currentTimeMillis());
         try {
             //CREATE JOB
             BatchPoolInfo poolInfo = new BatchPoolInfo();
             poolInfo.setPoolId(livePoolId);
-            BatchJobCreateContent jobToCreate = new BatchJobCreateContent(jobId, poolInfo);
-            batchClient.createJob(jobToCreate);
+            BatchJobCreateParameters jobToCreate = new BatchJobCreateParameters(jobId, poolInfo);
+            SyncAsyncExtension.execute(() -> batchClient.createJob(jobToCreate),
+                () -> batchAsyncClient.createJob(jobToCreate));
 
             //CREATE TASK
-            BatchTaskCreateContent taskToCreate = new BatchTaskCreateContent(taskId, "echo hello world");
-            batchClient.createTask(jobId, taskToCreate);
+            BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "echo hello world");
+            SyncAsyncExtension.execute(() -> batchClient.createTask(jobId, taskToCreate),
+                () -> batchAsyncClient.createTask(jobId, taskToCreate));
 
             // GET
-            BatchTask task = batchClient.getTask(jobId, taskId);
+            BatchTask taskBeforeUpdate = SyncAsyncExtension.execute(() -> batchClient.getTask(jobId, taskId),
+                () -> batchAsyncClient.getTask(jobId, taskId));
 
             //UPDATE
             Integer maxRetrycount = 5;
             Duration retentionPeriod = Duration.ofDays(5);
-            task.setConstraints(
+            taskBeforeUpdate.setConstraints(
                 new BatchTaskConstraints().setMaxTaskRetryCount(maxRetrycount).setRetentionTime(retentionPeriod));
-            batchClient.replaceTask(jobId, taskId, task);
+
+            SyncAsyncExtension.execute(() -> batchClient.replaceTask(jobId, taskId, taskBeforeUpdate),
+                () -> batchAsyncClient.replaceTask(jobId, taskId, taskBeforeUpdate));
 
             //GET After UPDATE
-            task = batchClient.getTask(jobId, taskId);
-            Assertions.assertEquals(maxRetrycount, task.getConstraints().getMaxTaskRetryCount());
-            Assertions.assertEquals(retentionPeriod, task.getConstraints().getRetentionTime());
+            BatchTask taskAfterUpdate = SyncAsyncExtension.execute(() -> batchClient.getTask(jobId, taskId),
+                () -> batchAsyncClient.getTask(jobId, taskId));
+
+            Assertions.assertEquals(maxRetrycount, taskAfterUpdate.getConstraints().getMaxTaskRetryCount());
+            Assertions.assertEquals(retentionPeriod, taskAfterUpdate.getConstraints().getRetentionTime());
         } finally {
-            batchClient.deleteTask(jobId, taskId);
-            batchClient.deleteJob(jobId);
+            try {
+                SyncAsyncExtension.execute(() -> batchClient.deleteTask(jobId, taskId),
+                    () -> batchAsyncClient.deleteTask(jobId, taskId));
+            } catch (Exception e) {
+                // Ignore here
+            }
+
+            try {
+                SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
+            } catch (Exception e) {
+                // Ignore here
+            }
         }
     }
 
-    @Test
+    @SyncAsyncTest
     public void testJobUser() {
-        String jobId = getStringIdWithUserNamePrefix("-testJobUser");
-        String taskId = "mytask";
+        String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
+        String jobId
+            = getStringIdWithUserNamePrefix("-testJobUser" + testModeSuffix + "-" + System.currentTimeMillis());
+        String taskId = "mytask" + testModeSuffix + "-" + System.currentTimeMillis();
 
         BatchPoolInfo poolInfo = new BatchPoolInfo();
         poolInfo.setPoolId(livePoolId);
-        BatchJobCreateContent jobToCreate = new BatchJobCreateContent(jobId, poolInfo);
+        BatchJobCreateParameters jobToCreate = new BatchJobCreateParameters(jobId, poolInfo);
 
-        batchClient.createJob(jobToCreate);
+        SyncAsyncExtension.execute(() -> batchClient.createJob(jobToCreate),
+            () -> batchAsyncClient.createJob(jobToCreate));
 
         try {
             // CREATE
             List<BatchApplicationPackageReference> apps = new ArrayList<>();
             apps.add(new BatchApplicationPackageReference("MSMPI"));
-            BatchTaskCreateContent taskToCreate = new BatchTaskCreateContent(taskId, "cmd /c echo hello\"")
+            BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "cmd /c echo hello\"")
                 .setUserIdentity(new UserIdentity().setUsername("test-user"))
                 .setApplicationPackageReferences(apps);
 
-            batchClient.createTask(jobId, taskToCreate);
+            SyncAsyncExtension.execute(() -> batchClient.createTask(jobId, taskToCreate),
+                () -> batchAsyncClient.createTask(jobId, taskToCreate));
 
             // GET
-            BatchTask task = batchClient.getTask(jobId, taskId);
+            BatchTask task = SyncAsyncExtension.execute(() -> batchClient.getTask(jobId, taskId),
+                () -> batchAsyncClient.getTask(jobId, taskId));
             Assertions.assertNotNull(task);
             Assertions.assertEquals(taskId, task.getId());
             Assertions.assertEquals("test-user", task.getUserIdentity().getUsername());
@@ -140,29 +168,33 @@ public class TaskTests extends BatchClientTestBase {
 
         } finally {
             try {
-                batchClient.deleteJob(jobId);
+                SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
             } catch (Exception e) {
                 // Ignore here
             }
         }
     }
 
-    @Test
+    @SyncAsyncTest
     public void canCRUDTest() throws Exception {
+        String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
         int taskCompleteTimeoutInSeconds = 60; // 60 seconds timeout
         String standardConsoleOutputFilename = "stdout.txt";
-        String blobFileName = "test.txt";
-        String taskId = "mytask";
+        String blobFileName = "test-" + System.currentTimeMillis() + ".txt";
+        String taskId = "mytask" + testModeSuffix + "-" + System.currentTimeMillis();
         File temp = File.createTempFile("tempFile", ".tmp");
         BufferedWriter bw = new BufferedWriter(new FileWriter(temp));
         bw.write("This is an example");
         bw.close();
         temp.deleteOnExit();
-        String jobId = getStringIdWithUserNamePrefix("-canCRUDTest");
+        String jobId
+            = getStringIdWithUserNamePrefix("-canCRUDTest" + testModeSuffix + "-" + System.currentTimeMillis());
 
         BatchPoolInfo poolInfo = new BatchPoolInfo();
         poolInfo.setPoolId(liveIaasPoolId);
-        batchClient.createJob(new BatchJobCreateContent(jobId, poolInfo));
+        BatchJobCreateParameters parameters = new BatchJobCreateParameters(jobId, poolInfo);
+        SyncAsyncExtension.execute(() -> batchClient.createJob(parameters),
+            () -> batchAsyncClient.createJob(parameters));
 
         String storageAccountName = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_NAME");
         String storageAccountKey = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_KEY");
@@ -175,7 +207,8 @@ public class TaskTests extends BatchClientTestBase {
             // Playback mode is configured to test Batch operations only.
             if (getTestMode() != TestMode.PLAYBACK) {
                 // Create storage container
-                container = createBlobContainer(storageAccountName, storageAccountKey, "testingtaskcreate");
+                String containerName = "testingtaskcreate" + testModeSuffix + "-" + System.currentTimeMillis();
+                container = createBlobContainer(storageAccountName, storageAccountKey, containerName);
                 sas = uploadFileToCloud(container, blobFileName, temp.getAbsolutePath());
             } else {
                 sas = redacted;
@@ -189,27 +222,34 @@ public class TaskTests extends BatchClientTestBase {
             files.add(file);
 
             // CREATE
-            BatchTaskCreateContent taskToCreate = new BatchTaskCreateContent(taskId,
-                String.format("/bin/bash -c 'set -e; set -o pipefail; cat %s'", blobFileName)).setResourceFiles(files);
-            batchClient.createTask(jobId, taskToCreate);
+            BatchTaskCreateParameters taskToCreate
+                = new BatchTaskCreateParameters(taskId, String.format("cmd /c type %s", blobFileName))
+                    .setResourceFiles(files);
+            SyncAsyncExtension.execute(() -> batchClient.createTask(jobId, taskToCreate),
+                () -> batchAsyncClient.createTask(jobId, taskToCreate));
 
             // GET
-            BatchTask task = batchClient.getTask(jobId, taskId);
-            Assertions.assertNotNull(task);
-            Assertions.assertEquals(taskId, task.getId());
+            BatchTask taskBeforeUpdate = SyncAsyncExtension.execute(() -> batchClient.getTask(jobId, taskId),
+                () -> batchAsyncClient.getTask(jobId, taskId));
+            Assertions.assertNotNull(taskBeforeUpdate);
+            Assertions.assertEquals(taskId, taskBeforeUpdate.getId());
 
             // Verify default retention time
-            Assertions.assertEquals(Duration.ofDays(7), task.getConstraints().getRetentionTime());
+            Assertions.assertEquals(Duration.ofDays(7), taskBeforeUpdate.getConstraints().getRetentionTime());
 
-            // TODO (Update) UPDATE - modifying taskToAdd vs creating new BatchTask instance
-            task.setConstraints(new BatchTaskConstraints().setMaxTaskRetryCount(5));
-            batchClient.replaceTask(jobId, taskId, task);
+            // UPDATE
+            taskBeforeUpdate.setConstraints(new BatchTaskConstraints().setMaxTaskRetryCount(5));
+            SyncAsyncExtension.execute(() -> batchClient.replaceTask(jobId, taskId, taskBeforeUpdate),
+                () -> batchAsyncClient.replaceTask(jobId, taskId, taskBeforeUpdate));
 
-            task = batchClient.getTask(jobId, taskId);
-            Assertions.assertEquals((Integer) 5, task.getConstraints().getMaxTaskRetryCount());
+            BatchTask taskAfterUpdate = SyncAsyncExtension.execute(() -> batchClient.getTask(jobId, taskId),
+                () -> batchAsyncClient.getTask(jobId, taskId));
+
+            Assertions.assertEquals((Integer) 5, taskAfterUpdate.getConstraints().getMaxTaskRetryCount());
 
             // LIST
-            PagedIterable<BatchTask> tasks = batchClient.listTasks(jobId);
+            Iterable<BatchTask> tasks = SyncAsyncExtension.execute(() -> batchClient.listTasks(jobId),
+                () -> Mono.fromCallable(() -> batchAsyncClient.listTasks(jobId).toIterable()));
             Assertions.assertNotNull(tasks);
 
             boolean found = false;
@@ -222,11 +262,18 @@ public class TaskTests extends BatchClientTestBase {
 
             Assertions.assertTrue(found);
 
-            if (waitForTasksToComplete(batchClient, jobId, taskCompleteTimeoutInSeconds)) {
-                // Get the task command output file
-                task = batchClient.getTask(jobId, taskId);
+            boolean completed = SyncAsyncExtension
+                .execute(() -> waitForTasksToComplete(batchClient, jobId, taskCompleteTimeoutInSeconds), () -> Mono
+                    .fromCallable(() -> waitForTasksToComplete(batchAsyncClient, jobId, taskCompleteTimeoutInSeconds)));
 
-                BinaryData binaryData = batchClient.getTaskFile(jobId, taskId, standardConsoleOutputFilename);
+            if (completed) {
+                // Get the task command output file
+                BatchTask taskAfterUpdate2 = SyncAsyncExtension.execute(() -> batchClient.getTask(jobId, taskId),
+                    () -> batchAsyncClient.getTask(jobId, taskId));
+
+                BinaryData binaryData = SyncAsyncExtension.execute(
+                    () -> batchClient.getTaskFile(jobId, taskId, standardConsoleOutputFilename),
+                    () -> batchAsyncClient.getTaskFile(jobId, taskId, standardConsoleOutputFilename));
 
                 String fileContent = new String(binaryData.toBytes(), StandardCharsets.UTF_8);
                 Assertions.assertEquals("This is an example", fileContent);
@@ -241,10 +288,13 @@ public class TaskTests extends BatchClientTestBase {
                     outputSas = redacted;
                 }
                 // UPLOAD LOG
-                UploadBatchServiceLogsContent logsContent
-                    = new UploadBatchServiceLogsContent(outputSas, OffsetDateTime.now().minusMinutes(-10));
-                UploadBatchServiceLogsResult uploadBatchServiceLogsResult
-                    = batchClient.uploadNodeLogs(liveIaasPoolId, task.getNodeInfo().getNodeId(), logsContent);
+                UploadBatchServiceLogsParameters logsParameters
+                    = new UploadBatchServiceLogsParameters(outputSas, OffsetDateTime.now().minusMinutes(-10));
+                UploadBatchServiceLogsResult uploadBatchServiceLogsResult = SyncAsyncExtension.execute(
+                    () -> batchClient.uploadNodeLogs(liveIaasPoolId, taskAfterUpdate2.getNodeInfo().getNodeId(),
+                        logsParameters),
+                    () -> batchAsyncClient.uploadNodeLogs(liveIaasPoolId, taskAfterUpdate2.getNodeInfo().getNodeId(),
+                        logsParameters));
 
                 Assertions.assertNotNull(uploadBatchServiceLogsResult);
                 Assertions.assertTrue(uploadBatchServiceLogsResult.getNumberOfFilesUploaded() > 0);
@@ -254,9 +304,11 @@ public class TaskTests extends BatchClientTestBase {
             }
 
             // DELETE
-            batchClient.deleteTask(jobId, taskId);
+            SyncAsyncExtension.execute(() -> batchClient.deleteTask(jobId, taskId),
+                () -> batchAsyncClient.deleteTask(jobId, taskId));
             try {
-                batchClient.getTask(jobId, taskId);
+                SyncAsyncExtension.execute(() -> batchClient.getTask(jobId, taskId),
+                    () -> batchAsyncClient.getTask(jobId, taskId));
                 Assertions.assertTrue(true, "Shouldn't be here, the job should be deleted");
             } catch (Exception e) {
                 //TODO (error) Integrate BatchErrorException
@@ -268,39 +320,56 @@ public class TaskTests extends BatchClientTestBase {
             throw e;
         } finally {
             try {
-                batchClient.deleteJob(jobId);
+                SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
+            } catch (Exception e) {
+                // Ignore here
+            }
+            try {
                 container.deleteIfExists();
-                batchClient.deletePool(liveIaasPoolId);
+            } catch (Exception e) {
+                // Ignore here
+            }
+            try {
+                SyncAsyncExtension.execute(() -> batchClient.deletePool(liveIaasPoolId),
+                    () -> batchAsyncClient.deletePool(liveIaasPoolId));
             } catch (Exception e) {
                 // Ignore here
             }
         }
     }
 
-    @Test
+    @SyncAsyncTest
     public void testAddMultiTasks() {
-        String jobId = getStringIdWithUserNamePrefix("-testAddMultiTasks");
+        String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
+        String jobId = getStringIdWithUserNamePrefix("-testAddMultiTasks" + testModeSuffix + "-" + UUID.randomUUID());
 
         BatchPoolInfo poolInfo = new BatchPoolInfo();
         poolInfo.setPoolId(livePoolId);
-        batchClient.createJob(new BatchJobCreateContent(jobId, poolInfo));
+        BatchJobCreateParameters parameters = new BatchJobCreateParameters(jobId, poolInfo);
+        SyncAsyncExtension.execute(() -> batchClient.createJob(parameters),
+            () -> batchAsyncClient.createJob(parameters));
 
         int taskCount = 1000;
 
         try {
             // CREATE
-            List<BatchTaskCreateContent> tasksToAdd = new ArrayList<>();
+            List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<>();
             for (int i = 0; i < taskCount; i++) {
-                BatchTaskCreateContent taskCreateContent = new BatchTaskCreateContent(String.format("mytask%d", i),
-                    String.format("cmd /c echo hello %d", i));
-                tasksToAdd.add(taskCreateContent);
+                BatchTaskCreateParameters taskCreateParameters = new BatchTaskCreateParameters(
+                    String.format("mytask%d", i) + testModeSuffix, String.format("cmd /c echo hello %d", i));
+                tasksToAdd.add(taskCreateParameters);
             }
             BatchClientParallelOptions option = new BatchClientParallelOptions();
-            option.setMaxDegreeOfParallelism(10);
-            batchClient.createTasks(jobId, tasksToAdd, option);
+            option.setMaxConcurrency(10);
+            SyncAsyncExtension.execute(() -> batchClient.createTasks(jobId, tasksToAdd, option),
+                () -> batchAsyncClient.createTasks(jobId, tasksToAdd, option));
+
+            // Wait to ensure all tasks are visible in listTasks()
+            sleepIfRunningAgainstService(15000);
 
             // LIST
-            PagedIterable<BatchTask> tasks = batchClient.listTasks(jobId);
+            Iterable<BatchTask> tasks = SyncAsyncExtension.execute(() -> batchClient.listTasks(jobId),
+                () -> Mono.fromCallable(() -> batchAsyncClient.listTasks(jobId).toIterable()));
             Assertions.assertNotNull(tasks);
             int taskListCount = 0;
             for (BatchTask task : tasks) {
@@ -309,57 +378,67 @@ public class TaskTests extends BatchClientTestBase {
             Assertions.assertEquals(taskListCount, taskCount);
         } finally {
             try {
-                batchClient.deleteJob(jobId);
+                SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
             } catch (Exception e) {
                 // Ignore here
             }
         }
     }
 
-    @Test
+    @SyncAsyncTest
     public void testAddMultiTasksWithError() {
+        String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
         String accessKey = Configuration.getGlobalConfiguration().get("AZURE_BATCH_ACCESS_KEY");
         accessKey = (accessKey == null || accessKey.isEmpty()) ? "RANDOM_KEY" : accessKey;
 
         AzureNamedKeyCredential noExistCredentials1 = new AzureNamedKeyCredential("noexistaccount", accessKey);
         batchClientBuilder.credential(noExistCredentials1);
 
-        String jobId = getStringIdWithUserNamePrefix("-testAddMultiTasksWithError");
+        batchClient = batchClientBuilder.buildClient();
+        batchAsyncClient = batchClientBuilder.buildAsyncClient();
+
+        String jobId = getStringIdWithUserNamePrefix(
+            "-testAddMultiTasksWithError" + testModeSuffix + "-" + System.currentTimeMillis());
         int taskCount = 1000;
 
         try {
             // CREATE
-            List<BatchTaskCreateContent> tasksToAdd = new ArrayList<>();
+            List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<>();
             for (int i = 0; i < taskCount; i++) {
-                BatchTaskCreateContent taskCreateContent = new BatchTaskCreateContent(String.format("mytask%d", i),
-                    String.format("cmd /c echo hello %d", i));
-                tasksToAdd.add(taskCreateContent);
+                BatchTaskCreateParameters taskCreateParameters = new BatchTaskCreateParameters(
+                    String.format("mytask%d", i) + testModeSuffix, String.format("cmd /c echo hello %d", i));
+                tasksToAdd.add(taskCreateParameters);
             }
             BatchClientParallelOptions option = new BatchClientParallelOptions();
-            option.setMaxDegreeOfParallelism(10);
-            batchClient.createTasks(jobId, tasksToAdd, option);
-            // batchClient.createTaskCollection(jobId, new BatchTaskCollection(tasksToAdd));
+            option.setMaxConcurrency(10);
+            SyncAsyncExtension.execute(() -> batchClient.createTasks(jobId, tasksToAdd, option),
+                () -> batchAsyncClient.createTasks(jobId, tasksToAdd, option));
+
             Assertions.assertTrue(true, "Should not here");
         } catch (RuntimeException ex) {
             System.out.printf("Expect exception %s", ex.toString());
         }
     }
 
-    @Test
+    @SyncAsyncTest
     public void failIfPoisonTaskTooLarge() throws Exception {
         //This test will temporarily only run in Live/Record mode. It runs fine in Playback mode too on Mac and Windows machines.
         // Linux machines are causing issues. This issue is under investigation.
         Assumptions.assumeFalse(getTestMode() == TestMode.PLAYBACK, "This Test only runs in Live/Record mode");
 
-        String jobId = getStringIdWithUserNamePrefix("-failIfPoisonTaskTooLarge");
-        String taskId = "mytask";
+        String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
+        String jobId = getStringIdWithUserNamePrefix(
+            "-failIfPoisonTaskTooLarge" + testModeSuffix + "-" + System.currentTimeMillis());
+        String taskId = "mytask" + testModeSuffix;
 
         BatchPoolInfo poolInfo = new BatchPoolInfo();
         poolInfo.setPoolId(liveIaasPoolId);
-        batchClient.createJob(new BatchJobCreateContent(jobId, poolInfo));
+        BatchJobCreateParameters parameters = new BatchJobCreateParameters(jobId, poolInfo);
+        SyncAsyncExtension.execute(() -> batchClient.createJob(parameters),
+            () -> batchAsyncClient.createJob(parameters));
 
-        List<BatchTaskCreateContent> tasksToAdd = new ArrayList<BatchTaskCreateContent>();
-        BatchTaskCreateContent taskToAdd = new BatchTaskCreateContent(taskId, "sleep 1");
+        List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<BatchTaskCreateParameters>();
+        BatchTaskCreateParameters taskToAdd = new BatchTaskCreateParameters(taskId, "sleep 1");
         List<ResourceFile> resourceFiles = new ArrayList<ResourceFile>();
         ResourceFile resourceFile;
 
@@ -370,27 +449,29 @@ public class TaskTests extends BatchClientTestBase {
                     .setFilePath("resourceFile" + i);
             resourceFiles.add(resourceFile);
         }
+
         taskToAdd.setResourceFiles(resourceFiles);
         tasksToAdd.add(taskToAdd);
 
         try {
             batchClient.createTasks(jobId, tasksToAdd);
             try {
-                batchClient.deleteJob(jobId);
+                SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
             } catch (Exception e) {
                 // Ignore here
             }
+
             Assertions.fail("Expected RequestBodyTooLarge error");
         } catch (HttpResponseException err) {
             try {
-                batchClient.deleteJob(jobId);
+                SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
             } catch (Exception e) {
                 // Ignore here
             }
             Assertions.assertEquals(413, err.getResponse().getStatusCode());
         } catch (Exception err) {
             try {
-                batchClient.deleteJob(jobId);
+                SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
             } catch (Exception e) {
                 // Ignore here
             }
@@ -398,27 +479,31 @@ public class TaskTests extends BatchClientTestBase {
         }
     }
 
-    @Test
+    @SyncAsyncTest
     public void succeedWithRetry() {
         //This test does not run in Playback mode. It only runs in Record/Live mode.
         // This test uses multi threading. Playing back the test doesn't match its recorded sequence always.
         // Hence Playback of this test is disabled.
         Assumptions.assumeFalse(getTestMode() == TestMode.PLAYBACK, "This Test only runs in Live/Record mode");
 
-        String jobId = getStringIdWithUserNamePrefix("-succeedWithRetry");
-        String taskId = "mytask";
+        String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
+        String jobId
+            = getStringIdWithUserNamePrefix("-succeedWithRetry" + testModeSuffix + "-" + System.currentTimeMillis());
+        String taskId = "mytask" + testModeSuffix + "-" + System.currentTimeMillis();
 
         BatchPoolInfo poolInfo = new BatchPoolInfo();
         poolInfo.setPoolId(liveIaasPoolId);
-        batchClient.createJob(new BatchJobCreateContent(jobId, poolInfo));
+        BatchJobCreateParameters jobToCreate = new BatchJobCreateParameters(jobId, poolInfo);
+        SyncAsyncExtension.execute(() -> batchClient.createJob(jobToCreate),
+            () -> batchAsyncClient.createJob(jobToCreate));
 
-        List<BatchTaskCreateContent> tasksToAdd = new ArrayList<BatchTaskCreateContent>();
-        BatchTaskCreateContent taskToAdd;
+        List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<BatchTaskCreateParameters>();
+        BatchTaskCreateParameters taskToAdd;
         List<ResourceFile> resourceFiles = new ArrayList<ResourceFile>();
         ResourceFile resourceFile;
 
         BatchClientParallelOptions option = new BatchClientParallelOptions();
-        option.setMaxDegreeOfParallelism(10);
+        option.setMaxConcurrency(10);
 
         // Num Resource Files * Max Chunk Size should be greater than or equal to the limit which triggers the PoisonTask test to ensure we encounter the error in the initial chunk.
         for (int i = 0; i < 100; i++) {
@@ -429,21 +514,22 @@ public class TaskTests extends BatchClientTestBase {
         }
         // Num tasks to add
         for (int i = 0; i < 1500; i++) {
-            taskToAdd = new BatchTaskCreateContent(taskId + i, "sleep 1");
+            taskToAdd = new BatchTaskCreateParameters(taskId + i, "sleep 1");
             taskToAdd.setResourceFiles(resourceFiles);
             tasksToAdd.add(taskToAdd);
         }
 
         try {
-            batchClient.createTasks(jobId, tasksToAdd, option);
+            SyncAsyncExtension.execute(() -> batchClient.createTasks(jobId, tasksToAdd, option),
+                () -> batchAsyncClient.createTasks(jobId, tasksToAdd, option));
             try {
-                batchClient.deleteJob(jobId);
+                SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
             } catch (Exception e) {
                 // Ignore here
             }
         } catch (Exception err) {
             try {
-                batchClient.deleteJob(jobId);
+                SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
             } catch (Exception e) {
                 // Ignore here
             }
@@ -451,19 +537,24 @@ public class TaskTests extends BatchClientTestBase {
         }
     }
 
-    @Test
+    @SyncAsyncTest
     public void testGetTaskCounts() {
-        String jobId = getStringIdWithUserNamePrefix("-testGetTaskCounts");
+        String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
+        String jobId
+            = getStringIdWithUserNamePrefix("-testGetTaskCounts" + testModeSuffix + "-" + System.currentTimeMillis());
 
         BatchPoolInfo poolInfo = new BatchPoolInfo();
         poolInfo.setPoolId(livePoolId);
-        batchClient.createJob(new BatchJobCreateContent(jobId, poolInfo));
+        BatchJobCreateParameters jobToCreate = new BatchJobCreateParameters(jobId, poolInfo);
+        SyncAsyncExtension.execute(() -> batchClient.createJob(jobToCreate),
+            () -> batchAsyncClient.createJob(jobToCreate));
 
         int taskCount = 1000;
 
         try {
             // Test Job count
-            BatchTaskCountsResult countResult = batchClient.getJobTaskCounts(jobId);
+            BatchTaskCountsResult countResult = SyncAsyncExtension.execute(() -> batchClient.getJobTaskCounts(jobId),
+                () -> batchAsyncClient.getJobTaskCounts(jobId));
 
             BatchTaskCounts counts = countResult.getTaskCounts();
             int all = counts.getActive() + counts.getCompleted() + counts.getRunning();
@@ -474,21 +565,23 @@ public class TaskTests extends BatchClientTestBase {
             Assertions.assertEquals(0, allSlots);
 
             // CREATE
-            List<BatchTaskCreateContent> tasksToAdd = new ArrayList<>();
+            List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<>();
             for (int i = 0; i < taskCount; i++) {
-                BatchTaskCreateContent taskCreateContent = new BatchTaskCreateContent(String.format("mytask%d", i),
-                    String.format("cmd /c echo hello %d", i));
-                tasksToAdd.add(taskCreateContent);
+                BatchTaskCreateParameters taskCreateParameters = new BatchTaskCreateParameters(
+                    String.format("mytask%d", i), String.format("cmd /c echo hello %d", i));
+                tasksToAdd.add(taskCreateParameters);
             }
             BatchClientParallelOptions option = new BatchClientParallelOptions();
-            option.setMaxDegreeOfParallelism(10);
-            batchClient.createTasks(jobId, tasksToAdd, option);
+            option.setMaxConcurrency(10);
+            SyncAsyncExtension.execute(() -> batchClient.createTasks(jobId, tasksToAdd, option),
+                () -> batchAsyncClient.createTasks(jobId, tasksToAdd, option));
 
             //The Waiting period is only needed in record mode.
             sleepIfRunningAgainstService(30 * 1000);
 
             // Test Job count
-            countResult = batchClient.getJobTaskCounts(jobId);
+            countResult = SyncAsyncExtension.execute(() -> batchClient.getJobTaskCounts(jobId),
+                () -> batchAsyncClient.getJobTaskCounts(jobId));
             counts = countResult.getTaskCounts();
             all = counts.getActive() + counts.getCompleted() + counts.getRunning();
             Assertions.assertEquals(taskCount, all);
@@ -499,25 +592,29 @@ public class TaskTests extends BatchClientTestBase {
             Assertions.assertEquals(taskCount, allSlots);
         } finally {
             try {
-                batchClient.deleteJob(jobId);
+                SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
             } catch (Exception e) {
                 // Ignore here
             }
         }
     }
 
-    @Test
+    @SyncAsyncTest
     public void testOutputFiles() {
+        String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
         int taskCompleteTimeoutInSeconds = 60; // 60 seconds timeout
-        String jobId = getStringIdWithUserNamePrefix("-testOutputFiles");
-        String taskId = "mytask";
-        String badTaskId = "mytask1";
+        String jobId
+            = getStringIdWithUserNamePrefix("-testOutputFiles" + testModeSuffix + "-" + System.currentTimeMillis());
+        String taskId = "mytask" + testModeSuffix + "-" + System.currentTimeMillis();
+        String badTaskId = "mytask1" + testModeSuffix + "-" + System.currentTimeMillis();
         String storageAccountName = System.getenv("STORAGE_ACCOUNT_NAME");
         String storageAccountKey = System.getenv("STORAGE_ACCOUNT_KEY");
 
         BatchPoolInfo poolInfo = new BatchPoolInfo();
         poolInfo.setPoolId(liveIaasPoolId);
-        batchClient.createJob(new BatchJobCreateContent(jobId, poolInfo));
+        BatchJobCreateParameters jobToCreate = new BatchJobCreateParameters(jobId, poolInfo);
+        SyncAsyncExtension.execute(() -> batchClient.createJob(jobToCreate),
+            () -> batchAsyncClient.createJob(jobToCreate));
         BlobContainerClient containerClient = null;
         String containerUrl = "";
 
@@ -549,13 +646,15 @@ public class TaskTests extends BatchClientTestBase {
                 new OutputFileDestination().setContainer(fileBlobErrContainerDestination),
                 new OutputFileUploadConfig(OutputFileUploadCondition.TASK_FAILURE)));
 
-            BatchTaskCreateContent taskToCreate = new BatchTaskCreateContent(taskId, "bash -c \"echo hello\"");
+            BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "cmd /c echo hello");
             taskToCreate.setOutputFiles(outputs);
 
-            batchClient.createTask(jobId, taskToCreate);
+            SyncAsyncExtension.execute(() -> batchClient.createTask(jobId, taskToCreate),
+                () -> batchAsyncClient.createTask(jobId, taskToCreate));
 
             if (waitForTasksToComplete(batchClient, jobId, taskCompleteTimeoutInSeconds)) {
-                BatchTask task = batchClient.getTask(jobId, taskId);
+                BatchTask task = SyncAsyncExtension.execute(() -> batchClient.getTask(jobId, taskId),
+                    () -> batchAsyncClient.getTask(jobId, taskId));
                 Assertions.assertNotNull(task);
                 Assertions.assertEquals(BatchTaskExecutionResult.SUCCESS, task.getExecutionInfo().getResult());
                 Assertions.assertNull(task.getExecutionInfo().getFailureInfo());
@@ -563,20 +662,23 @@ public class TaskTests extends BatchClientTestBase {
                 if (getTestMode() == TestMode.RECORD) {
                     // Get the task command output file
                     String result = getContentFromContainer(containerClient, "taskLogs/output.txt");
-                    Assertions.assertEquals("hello\n", result);
+                    Assertions.assertEquals("hello", result.trim());
                 }
             }
 
-            taskToCreate = new BatchTaskCreateContent(badTaskId, "bash -c \"bad command\"").setOutputFiles(outputs);
+            BatchTaskCreateParameters badTask
+                = new BatchTaskCreateParameters(badTaskId, "cmd /c badcommand").setOutputFiles(outputs);
 
-            batchClient.createTask(jobId, taskToCreate);
+            SyncAsyncExtension.execute(() -> batchClient.createTask(jobId, badTask),
+                () -> batchAsyncClient.createTask(jobId, badTask));
 
             if (waitForTasksToComplete(batchClient, jobId, taskCompleteTimeoutInSeconds)) {
-                BatchTask task = batchClient.getTask(jobId, badTaskId);
+                BatchTask task = SyncAsyncExtension.execute(() -> batchClient.getTask(jobId, badTaskId),
+                    () -> batchAsyncClient.getTask(jobId, badTaskId));
                 Assertions.assertNotNull(task);
                 Assertions.assertEquals(BatchTaskExecutionResult.FAILURE, task.getExecutionInfo().getResult());
                 Assertions.assertNotNull(task.getExecutionInfo().getFailureInfo());
-                Assertions.assertEquals(ErrorCategory.USER_ERROR.toString().toLowerCase(),
+                Assertions.assertEquals(BatchErrorSourceCategory.USER_ERROR.toString().toLowerCase(),
                     task.getExecutionInfo().getFailureInfo().getCategory().toString().toLowerCase());
                 Assertions.assertEquals("FailureExitCode", task.getExecutionInfo().getFailureInfo().getCode());
 
@@ -585,7 +687,7 @@ public class TaskTests extends BatchClientTestBase {
                 if (getTestMode() == TestMode.RECORD) {
                     // Get the task command output file
                     String result = getContentFromContainer(containerClient, "taskLogs/err.txt");
-                    Assertions.assertEquals("bash: bad: command not found\n", result);
+                    Assertions.assertTrue(result.toLowerCase().contains("not recognized"));
                 }
             }
 
@@ -594,35 +696,43 @@ public class TaskTests extends BatchClientTestBase {
                 if (getTestMode() == TestMode.RECORD) {
                     containerClient.delete();
                 }
-                batchClient.deleteJob(jobId);
+                SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
             } catch (Exception e) {
                 // Ignore here
             }
         }
     }
 
-    @Test
+    @SyncAsyncTest
     public void testCreateTasks() {
-        String jobId = getStringIdWithUserNamePrefix("-testCreateTasks");
+        String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
+        String jobId = getStringIdWithUserNamePrefix("-testCreateTasks" + testModeSuffix + "-" + UUID.randomUUID());
         BatchPoolInfo poolInfo = new BatchPoolInfo();
         poolInfo.setPoolId(livePoolId);
-        batchClient.createJob(new BatchJobCreateContent(jobId, poolInfo));
+        BatchJobCreateParameters jobToCreate = new BatchJobCreateParameters(jobId, poolInfo);
+        SyncAsyncExtension.execute(() -> batchClient.createJob(jobToCreate),
+            () -> batchAsyncClient.createJob(jobToCreate));
 
         try {
             // Prepare tasks to add
             int taskCount = 10; // Adjust the number of tasks as needed
-            List<BatchTaskCreateContent> tasksToAdd = new ArrayList<>();
+            List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<>();
             for (int i = 0; i < taskCount; i++) {
                 String taskId = "task" + i;
                 String commandLine = String.format("cmd /c echo Task %d", i);
-                tasksToAdd.add(new BatchTaskCreateContent(taskId, commandLine));
+                tasksToAdd.add(new BatchTaskCreateParameters(taskId, commandLine));
             }
 
             // Call createTasks method
-            batchClient.createTasks(jobId, tasksToAdd);
+            SyncAsyncExtension.execute(() -> batchClient.createTasks(jobId, tasksToAdd),
+                () -> batchAsyncClient.createTasks(jobId, tasksToAdd));
+
+            // Wait to ensure all tasks are visible in listTasks()
+            sleepIfRunningAgainstService(15000);
 
             // Verify tasks are created
-            PagedIterable<BatchTask> tasks = batchClient.listTasks(jobId);
+            Iterable<BatchTask> tasks = SyncAsyncExtension.execute(() -> batchClient.listTasks(jobId),
+                () -> Mono.fromCallable(() -> batchAsyncClient.listTasks(jobId).toIterable()));
             int createdTaskCount = 0;
             for (BatchTask task : tasks) {
                 createdTaskCount++;
@@ -631,7 +741,7 @@ public class TaskTests extends BatchClientTestBase {
 
         } finally {
             // Clean up
-            batchClient.deleteJob(jobId);
+            SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
         }
     }
 
@@ -656,10 +766,10 @@ public class TaskTests extends BatchClientTestBase {
             Assertions.assertEquals(Duration.parse("PT1H"), stats.getUserCpuTime());
             Assertions.assertEquals(Duration.parse("PT2H"), stats.getKernelCpuTime());
             Assertions.assertEquals(Duration.parse("PT3H"), stats.getWallClockTime());
-            Assertions.assertEquals(1000, stats.getReadIOps());
-            Assertions.assertEquals(500, stats.getWriteIOps());
-            Assertions.assertEquals(0.5, stats.getReadIOGiB());
-            Assertions.assertEquals(0.25, stats.getWriteIOGiB());
+            Assertions.assertEquals(1000, stats.getReadIops());
+            Assertions.assertEquals(500, stats.getWriteIops());
+            Assertions.assertEquals(0.5, stats.getReadIoGiB());
+            Assertions.assertEquals(0.25, stats.getWriteIoGiB());
             Assertions.assertEquals(Duration.parse("PT30M"), stats.getWaitTime());
         } catch (IOException e) {
             throw new RuntimeException(e);

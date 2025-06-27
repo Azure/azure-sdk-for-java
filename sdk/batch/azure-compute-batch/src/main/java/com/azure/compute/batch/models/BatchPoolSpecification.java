@@ -171,7 +171,7 @@ public final class BatchPoolSpecification implements JsonSerializable<BatchPoolS
      * metadata; it is solely for the use of user code.
      */
     @Generated
-    private List<MetadataItem> metadata;
+    private List<BatchMetadataItem> metadata;
 
     /*
      * A list of file systems to mount on each node in the pool. This supports Azure Files, NFS, CIFS/SMB, and Blobfuse.
@@ -676,7 +676,7 @@ public final class BatchPoolSpecification implements JsonSerializable<BatchPoolS
      * @return the metadata value.
      */
     @Generated
-    public List<MetadataItem> getMetadata() {
+    public List<BatchMetadataItem> getMetadata() {
         return this.metadata;
     }
 
@@ -688,7 +688,7 @@ public final class BatchPoolSpecification implements JsonSerializable<BatchPoolS
      * @return the BatchPoolSpecification object itself.
      */
     @Generated
-    public BatchPoolSpecification setMetadata(List<MetadataItem> metadata) {
+    public BatchPoolSpecification setMetadata(List<BatchMetadataItem> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -833,7 +833,7 @@ public final class BatchPoolSpecification implements JsonSerializable<BatchPoolS
             List<BatchCertificateReference> certificateReferences = null;
             List<BatchApplicationPackageReference> applicationPackageReferences = null;
             List<UserAccount> userAccounts = null;
-            List<MetadataItem> metadata = null;
+            List<BatchMetadataItem> metadata = null;
             List<MountConfiguration> mountConfiguration = null;
             BatchNodeCommunicationMode targetNodeCommunicationMode = null;
             UpgradePolicy upgradePolicy = null;
@@ -879,7 +879,7 @@ public final class BatchPoolSpecification implements JsonSerializable<BatchPoolS
                 } else if ("userAccounts".equals(fieldName)) {
                     userAccounts = reader.readArray(reader1 -> UserAccount.fromJson(reader1));
                 } else if ("metadata".equals(fieldName)) {
-                    metadata = reader.readArray(reader1 -> MetadataItem.fromJson(reader1));
+                    metadata = reader.readArray(reader1 -> BatchMetadataItem.fromJson(reader1));
                 } else if ("mountConfiguration".equals(fieldName)) {
                     mountConfiguration = reader.readArray(reader1 -> MountConfiguration.fromJson(reader1));
                 } else if ("targetNodeCommunicationMode".equals(fieldName)) {
