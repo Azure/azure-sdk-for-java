@@ -1,14 +1,10 @@
 # Release History
 
-## 2.52.0-beta.1 (Unreleased)
+## 2.52.0 (2025-06-27)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported `automaticFailoverEnabled()`, `enableAutomaticFailover` and `disableAutomaticFailover` in `CosmosDBAccount`.
 
 ## 2.51.0 (2025-05-26)
 

@@ -110,6 +110,24 @@ public final class PhoneNumbersReservation implements JsonSerializable<PhoneNumb
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        if (this.id != null) {
+            jsonWriter.writeStringField("id", this.id.toString());
+        }
+        if (this.expiresAt != null) {
+            jsonWriter.writeStringField("expiresAt", this.expiresAt.toString());
+        }
+        if (this.phoneNumbers != null) {
+            jsonWriter.writeMapField("phoneNumbers", this.phoneNumbers, (writer, value) -> {
+                if (value != null) {
+                    value.toJson(writer);
+                } else {
+                    writer.writeNull();
+                }
+            });
+        }
+        if (this.status != null) {
+            jsonWriter.writeStringField("status", this.status.toString());
+        }
         return jsonWriter.writeEndObject();
     }
 

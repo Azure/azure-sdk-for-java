@@ -32,12 +32,13 @@ import static com.azure.ai.agents.persistent.SampleUtils.waitForRunCompletion;
 public class AgentOpenApiSample {
 
     public static void main(String[] args) throws IOException, URISyntaxException {
-        PersistentAgentsAdministrationClientBuilder clientBuilder = new PersistentAgentsAdministrationClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+        PersistentAgentsClientBuilder clientBuilder = new PersistentAgentsClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build());
-        PersistentAgentsAdministrationClient agentsClient = clientBuilder.buildClient();
-        ThreadsClient threadsClient = clientBuilder.buildThreadsClient();
-        MessagesClient messagesClient = clientBuilder.buildMessagesClient();
-        RunsClient runsClient = clientBuilder.buildRunsClient();
+        PersistentAgentsClient agentsClient = clientBuilder.buildClient();
+        PersistentAgentsAdministrationClient administrationClient = agentsClient.getPersistentAgentsAdministrationClient();
+        ThreadsClient threadsClient = agentsClient.getThreadsClient();
+        MessagesClient messagesClient = agentsClient.getMessagesClient();
+        RunsClient runsClient = agentsClient.getRunsClient();
 
         Path filePath = getFile("weather_openapi.json");
         JsonReader reader = JsonProviders.createReader(Files.readAllBytes(filePath));
@@ -54,7 +55,7 @@ public class AgentOpenApiSample {
             .setName(agentName)
             .setInstructions("You are a helpful agent")
             .setTools(Arrays.asList(openApiTool));
-        PersistentAgent agent = agentsClient.createAgent(createAgentOptions);
+        PersistentAgent agent = administrationClient.createAgent(createAgentOptions);
 
         PersistentAgentThread thread = threadsClient.createThread();
         ThreadMessage createdMessage = messagesClient.createMessage(
@@ -75,7 +76,7 @@ public class AgentOpenApiSample {
         } finally {
             //cleanup
             threadsClient.deleteThread(thread.getId());
-            agentsClient.deleteAgent(agent.getId());
+            administrationClient.deleteAgent(agent.getId());
         }
     }
 

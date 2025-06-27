@@ -47,6 +47,7 @@ import com.azure.security.keyvault.certificates.models.CertificateOperation;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.CertificatePolicyAction;
 import com.azure.security.keyvault.certificates.models.CertificateProperties;
+import com.azure.security.keyvault.certificates.models.CreateCertificateOptions;
 import com.azure.security.keyvault.certificates.models.DeletedCertificate;
 import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
 import com.azure.security.keyvault.certificates.models.IssuerProperties;
@@ -126,12 +127,15 @@ import static com.azure.security.keyvault.certificates.implementation.KeyVaultCe
  *
  * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy -->
  * <pre>
- * CertificatePolicy certPolicy = new CertificatePolicy&#40;&quot;Self&quot;,
- *     &quot;CN=SelfSignedJavaPkcs12&quot;&#41;;
- * SyncPoller&lt;CertificateOperation, KeyVaultCertificateWithPolicy&gt; certPoller = certificateClient
- *     .beginCreateCertificate&#40;&quot;certificateName&quot;, certPolicy&#41;;
+ * CertificatePolicy certPolicy = new CertificatePolicy&#40;&quot;Self&quot;, &quot;CN=SelfSignedJavaPkcs12&quot;&#41;;
+ *
+ * SyncPoller&lt;CertificateOperation, KeyVaultCertificateWithPolicy&gt; certPoller =
+ *     certificateClient.beginCreateCertificate&#40;&quot;certificateName&quot;, certPolicy&#41;;
+ *
  * certPoller.waitUntil&#40;LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41;;
+ *
  * KeyVaultCertificate cert = certPoller.getFinalResult&#40;&#41;;
+ *
  * System.out.printf&#40;&quot;Certificate created with name %s%n&quot;, cert.getName&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy -->
@@ -218,98 +222,144 @@ public final class CertificateClient {
      * Creates a new certificate. If this is the first version, the certificate resource is created. This operation
      * requires the certificates/create permission.
      *
-     * <p>Create certificate is a long running operation. It indefinitely waits for the create certificate operation to
-     * complete on service side.</p>
-     *
      * <p><strong>Code Samples</strong></p>
-     * <p>Create certificate is a long running operation. The createCertificate indefinitely waits for the operation to
+     * <p>Create certificate is a long-running operation. The following code waits indefinitely for the operation to
      * complete and returns its last status. The details of the last certificate operation status are printed when a
      * response is received</p>
      *
-     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map -->
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy -->
      * <pre>
-     * CertificatePolicy policy = new CertificatePolicy&#40;&quot;Self&quot;,
-     *     &quot;CN=SelfSignedJavaPkcs12&quot;&#41;;
-     * Map&lt;String, String&gt; tags = new HashMap&lt;&gt;&#40;&#41;;
-     * SyncPoller&lt;CertificateOperation, KeyVaultCertificateWithPolicy&gt; certificateSyncPoller = certificateClient
-     *     .beginCreateCertificate&#40;&quot;certificateName&quot;, policy, true, tags&#41;;
-     * certificateSyncPoller.waitUntil&#40;LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41;;
-     * KeyVaultCertificate createdCertificate = certificateSyncPoller.getFinalResult&#40;&#41;;
-     * System.out.printf&#40;&quot;Certificate created with name %s%n&quot;, createdCertificate.getName&#40;&#41;&#41;;
+     * CertificatePolicy certPolicy = new CertificatePolicy&#40;&quot;Self&quot;, &quot;CN=SelfSignedJavaPkcs12&quot;&#41;;
+     *
+     * SyncPoller&lt;CertificateOperation, KeyVaultCertificateWithPolicy&gt; certPoller =
+     *     certificateClient.beginCreateCertificate&#40;&quot;certificateName&quot;, certPolicy&#41;;
+     *
+     * certPoller.waitUntil&#40;LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41;;
+     *
+     * KeyVaultCertificate cert = certPoller.getFinalResult&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Certificate created with name %s%n&quot;, cert.getName&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map -->
+     * <!-- end com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy -->
      *
      * @param certificateName The name of the certificate to be created.
-     * @param policy The policy of the certificate to be created.
-     * @param isEnabled The enabled status of the certificate.
-     * @param tags The application specific metadata to set.
-     * @throws NullPointerException if {@code policy} is {@code null}.
-     * @throws ResourceModifiedException when an invalid certificate policy configuration is provided.
+     * @param certificatePolicy The policy of the certificate to be created.
+     * @throws NullPointerException if {@code certificatePolicy} is null.
+     * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
      * @return A {@link SyncPoller} to poll on the create certificate operation status.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(
-        String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
+    public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy>
+        beginCreateCertificate(String certificateName, CertificatePolicy certificatePolicy) {
 
-        return beginCreateCertificate(certificateName, policy, isEnabled, tags, false);
+        return beginCreateCertificate(certificateName, certificatePolicy, true, null);
     }
 
     /**
      * Creates a new certificate. If this is the first version, the certificate resource is created. This operation
      * requires the certificates/create permission.
      *
-     * <p>Create certificate is a long running operation. It indefinitely waits for the create certificate operation to
-     * complete on service side.</p>
-     *
      * <p><strong>Code Samples</strong></p>
-     * <p>Create certificate is a long running operation. The createCertificate indefinitely waits for the operation to
+     * <p>Create certificate is a long-running operation. The following code waits indefinitely for the operation to
      * complete and returns its last status. The details of the last certificate operation status are printed when a
      * response is received</p>
      *
-     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map-Boolean -->
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map -->
      * <pre>
-     * CertificatePolicy certificatePolicy = new CertificatePolicy&#40;&quot;Self&quot;, &quot;CN=SelfSignedJavaPkcs12&quot;&#41;;
-     * Map&lt;String, String&gt; certTags = new HashMap&lt;&gt;&#40;&#41;;
-     * SyncPoller&lt;CertificateOperation, KeyVaultCertificateWithPolicy&gt; poller
-     *     = certificateClient.beginCreateCertificate&#40;&quot;certificateName&quot;, certificatePolicy, true, certTags,
-     *     true&#41;;
-     * poller.waitUntil&#40;LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41;;
-     * KeyVaultCertificate certificate = poller.getFinalResult&#40;&#41;;
-     * System.out.printf&#40;&quot;Certificate created with name %s%n&quot;, certificate.getName&#40;&#41;&#41;;
+     * CertificatePolicy policy = new CertificatePolicy&#40;&quot;Self&quot;, &quot;CN=SelfSignedJavaPkcs12&quot;&#41;;
+     * Map&lt;String, String&gt; tags = new HashMap&lt;&gt;&#40;&#41;;
+     *
+     * tags.put&#40;&quot;foo&quot;, &quot;bar&quot;&#41;;
+     *
+     * SyncPoller&lt;CertificateOperation, KeyVaultCertificateWithPolicy&gt; certificateSyncPoller =
+     *     certificateClient.beginCreateCertificate&#40;&quot;certificateName&quot;, policy, true, tags&#41;;
+     *
+     * certificateSyncPoller.waitUntil&#40;LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41;;
+     *
+     * KeyVaultCertificate createdCertificate = certificateSyncPoller.getFinalResult&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Certificate created with name %s%n&quot;, createdCertificate.getName&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map-Boolean -->
+     * <!-- end com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map -->
      *
      * @param certificateName The name of the certificate to be created.
-     * @param policy The policy of the certificate to be created.
+     * @param certificatePolicy The policy of the certificate to be created.
      * @param isEnabled The enabled status of the certificate.
-     * @param tags The application specific metadata to set.
-     * @param preserveCertificateOrder Whether to preserve the order of the certificate chain in the vault. The
-     * default value is {@code false}, which sets the leaf certificate at index 0.
-     * @throws NullPointerException if {@code policy} is null.
+     * @param tags The tags to be associated with the certificate.
+     * @throws NullPointerException if {@code certificatePolicy} is {@code null}.
      * @throws ResourceModifiedException when an invalid certificate policy configuration is provided.
      * @return A {@link SyncPoller} to poll on the create certificate operation status.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(
-        String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags,
-        Boolean preserveCertificateOrder) {
+        String certificateName, CertificatePolicy certificatePolicy, Boolean isEnabled, Map<String, String> tags) {
 
-        if (policy == null) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
+        return beginCreateCertificate(
+            new CreateCertificateOptions(certificateName, certificatePolicy).setEnabled(isEnabled)
+                .setTags(tags)
+                .setCertificateOrderPreserved(false));
+    }
+
+    /**
+     * Creates a new certificate. If this is the first version, the certificate resource is created. This operation
+     * requires the certificates/create permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Create certificate is a long-running operation. The following code waits indefinitely for the operation to
+     * complete and returns its last status. The details of the last certificate operation status are printed when a
+     * response is received</p>
+     *
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#CreateCertificateOptions -->
+     * <pre>
+     * Map&lt;String, String&gt; certTags = new HashMap&lt;&gt;&#40;&#41;;
+     *
+     * tags.put&#40;&quot;foo&quot;, &quot;bar&quot;&#41;;
+     *
+     * CreateCertificateOptions createCertificateOptions =
+     *     new CreateCertificateOptions&#40;&quot;certificateName&quot;, new CertificatePolicy&#40;&quot;Self&quot;, &quot;CN=SelfSignedJavaPkcs12&quot;&#41;&#41;
+     *         .setEnabled&#40;true&#41;
+     *         .setTags&#40;certTags&#41;
+     *         .setCertificateOrderPreserved&#40;true&#41;;
+     *
+     * SyncPoller&lt;CertificateOperation, KeyVaultCertificateWithPolicy&gt; poller =
+     *     certificateClient.beginCreateCertificate&#40;createCertificateOptions&#41;;
+     *
+     * poller.waitUntil&#40;LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41;;
+     *
+     * KeyVaultCertificate certificate = poller.getFinalResult&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Certificate created with name %s%n&quot;, certificate.getName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#CreateCertificateOptions -->
+     *
+     * @param createCertificateOptions The configuration options to create a certificate with.
+     * @throws NullPointerException if {@code createCertificateOptions} is null.
+     * @throws ResourceModifiedException when an invalid certificate policy configuration is provided.
+     * @return A {@link SyncPoller} to poll on the create certificate operation status.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy>
+        beginCreateCertificate(CreateCertificateOptions createCertificateOptions) {
+
+        if (createCertificateOptions == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'createCertificateOptions' cannot be null."));
         }
 
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            ignored -> createCertificateActivation(certificateName, policy, isEnabled, tags, preserveCertificateOrder),
-            ignored -> certificatePollOperation(certificateName),
-            (ignored1, ignored2) -> certificateCancellationOperation(certificateName),
-            ignored -> fetchCertificateOperation(certificateName));
+            ignored -> createCertificateActivation(createCertificateOptions.getName(),
+                createCertificateOptions.getPolicy(), createCertificateOptions.isEnabled(),
+                createCertificateOptions.getTags(), createCertificateOptions.isCertificateOrderPreserved()),
+            ignored -> certificatePollOperation(createCertificateOptions.getName()),
+            (ignored1, ignored2) -> certificateCancellationOperation(createCertificateOptions.getName()),
+            ignored -> fetchCertificateOperation(createCertificateOptions.getName()));
     }
 
     private PollResponse<CertificateOperation> createCertificateActivation(String certificateName,
-        CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags, Boolean preserveCertificateOrder) {
+        CertificatePolicy certificatePolicy, Boolean isEnabled, Map<String, String> tags,
+        Boolean preserveCertificateOrder) {
 
         CertificateCreateParameters certificateCreateParameters
-            = new CertificateCreateParameters().setCertificatePolicy(getImplCertificatePolicy(policy))
+            = new CertificateCreateParameters().setCertificatePolicy(getImplCertificatePolicy(certificatePolicy))
                 .setCertificateAttributes(new CertificateAttributes().setEnabled(isEnabled))
                 .setTags(tags)
                 .setPreserveCertOrder(preserveCertificateOrder);
@@ -351,43 +401,6 @@ public final class CertificateClient {
             callWithMappedException(() -> implClient.getCertificateWithResponse(certificateName, null, EMPTY_OPTIONS)
                 .getValue()
                 .toObject(CertificateBundle.class), CertificateAsyncClient::mapGetCertificateException));
-    }
-
-    /**
-     * Creates a new certificate. If this is the first version, the certificate resource is created. This operation
-     * requires the certificates/create permission.
-     *
-     * <p>Create certificate is a long running operation. It indefinitely waits for the create certificate operation to
-     * complete on service side.</p>
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Create certificate is a long running operation. The createCertificate indefinitely waits for the operation to
-     * complete and returns its last status. The details of the last certificate operation status are printed when a
-     * response is received</p>
-     *
-     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy -->
-     * <pre>
-     * CertificatePolicy certPolicy = new CertificatePolicy&#40;&quot;Self&quot;,
-     *     &quot;CN=SelfSignedJavaPkcs12&quot;&#41;;
-     * SyncPoller&lt;CertificateOperation, KeyVaultCertificateWithPolicy&gt; certPoller = certificateClient
-     *     .beginCreateCertificate&#40;&quot;certificateName&quot;, certPolicy&#41;;
-     * certPoller.waitUntil&#40;LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41;;
-     * KeyVaultCertificate cert = certPoller.getFinalResult&#40;&#41;;
-     * System.out.printf&#40;&quot;Certificate created with name %s%n&quot;, cert.getName&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy -->
-     *
-     * @param certificateName The name of the certificate to be created.
-     * @param policy The policy of the certificate to be created.
-     * @throws NullPointerException if {@code policy} is null.
-     * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
-     * @return A {@link SyncPoller} to poll on the create certificate operation status.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy>
-        beginCreateCertificate(String certificateName, CertificatePolicy policy) {
-
-        return beginCreateCertificate(certificateName, policy, true, null);
     }
 
     /**
@@ -1306,15 +1319,15 @@ public final class CertificateClient {
      * <!-- end com.azure.security.keyvault.certificates.CertificateClient.updateCertificatePolicy#string -->
      *
      * @param certificateName The name of the certificate whose policy is to be updated.
-     * @param policy The certificate policy to be updated.
-     * @throws NullPointerException if {@code policy} is null.
+     * @param certificatePolicy The certificate policy to be updated.
+     * @throws NullPointerException if {@code certificatePolicy} is null.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@code certificateName} is empty string or if {@code policy} is invalid.
+     * @throws HttpRequestException if {@code certificateName} is empty string or if {@code certificatePolicy} is invalid.
      * @return The updated {@link CertificatePolicy certificate policy}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificatePolicy updateCertificatePolicy(String certificateName, CertificatePolicy policy) {
-        return updateCertificatePolicyWithResponse(certificateName, policy, Context.NONE).getValue();
+    public CertificatePolicy updateCertificatePolicy(String certificateName, CertificatePolicy certificatePolicy) {
+        return updateCertificatePolicyWithResponse(certificateName, certificatePolicy, Context.NONE).getValue();
     }
 
     /**
@@ -1340,24 +1353,25 @@ public final class CertificateClient {
      * <!-- end com.azure.security.keyvault.certificates.CertificateClient.updateCertificatePolicyWithResponse#string -->
      *
      * @param certificateName The certificateName of the certificate whose policy is to be updated.
-     * @param policy The certificate policy to be updated.
+     * @param certificatePolicy The certificate policy to be updated.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws NullPointerException if {@code policy} is null.
+     * @throws NullPointerException if {@code certificatePolicy} is null.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@code certificateName} is empty string or if {@code policy} is invalid.
+     * @throws HttpRequestException if {@code certificateName} is empty string or if {@code certificatePolicy} is invalid.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the updated
      * {@link CertificatePolicy certificate policy}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificatePolicy> updateCertificatePolicyWithResponse(String certificateName,
-        CertificatePolicy policy, Context context) {
+        CertificatePolicy certificatePolicy, Context context) {
 
-        if (policy == null) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
+        if (certificatePolicy == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'certificatePolicy' cannot be null."));
         }
 
         Response<BinaryData> response = implClient.updateCertificatePolicyWithResponse(certificateName,
-            BinaryData.fromObject(getImplCertificatePolicy(policy)), new RequestOptions().setContext(context));
+            BinaryData.fromObject(getImplCertificatePolicy(certificatePolicy)),
+            new RequestOptions().setContext(context));
 
         return new SimpleResponse<>(response, createCertificatePolicy(response.getValue()
             .toObject(com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy.class)));

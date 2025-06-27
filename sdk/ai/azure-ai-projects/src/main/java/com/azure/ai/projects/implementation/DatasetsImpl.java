@@ -77,7 +77,7 @@ public final class DatasetsImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AIProjectClientDatas")
+    @ServiceInterface(name = "AIProjectClientDatasets")
     public interface DatasetsService {
         @Get("/datasets/{name}/versions")
         @ExpectedResponses({ 200 })
@@ -172,7 +172,7 @@ public final class DatasetsImpl {
         Mono<Response<BinaryData>> createOrUpdateDatasetVersion(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("Content-Type") String contentType, @PathParam("version") String version,
-            @HeaderParam("Accept") String accept, @BodyParam("application/merge-patch+json") BinaryData body,
+            @HeaderParam("Accept") String accept, @BodyParam("application/merge-patch+json") BinaryData datasetVersion,
             RequestOptions requestOptions, Context context);
 
         @Patch("/datasets/{name}/versions/{version}")
@@ -184,7 +184,7 @@ public final class DatasetsImpl {
         Response<BinaryData> createOrUpdateDatasetVersionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("Content-Type") String contentType, @PathParam("version") String version,
-            @HeaderParam("Accept") String accept, @BodyParam("application/merge-patch+json") BinaryData body,
+            @HeaderParam("Accept") String accept, @BodyParam("application/merge-patch+json") BinaryData datasetVersion,
             RequestOptions requestOptions, Context context);
 
         @Post("/datasets/{name}/versions/{version}/startPendingUpload")
@@ -196,7 +196,7 @@ public final class DatasetsImpl {
         Mono<Response<BinaryData>> pendingUpload(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @PathParam("version") String version, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData pendingUploadRequest,
             RequestOptions requestOptions, Context context);
 
         @Post("/datasets/{name}/versions/{version}/startPendingUpload")
@@ -208,7 +208,7 @@ public final class DatasetsImpl {
         Response<BinaryData> pendingUploadSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @PathParam("version") String version, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData pendingUploadRequest,
             RequestOptions requestOptions, Context context);
 
         @Post("/datasets/{name}/versions/{version}/credentials")
@@ -748,8 +748,8 @@ public final class DatasetsImpl {
      * </pre>
      * 
      * @param name The name of the resource.
-     * @param version The specific version id of the DatasetVersion to create or replace.
-     * @param body The definition of the DatasetVersion to create or update.
+     * @param version The specific version id of the DatasetVersion to create or update.
+     * @param datasetVersion The DatasetVersion to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -759,12 +759,12 @@ public final class DatasetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateDatasetVersionWithResponseAsync(String name, String version,
-        BinaryData body, RequestOptions requestOptions) {
+        BinaryData datasetVersion, RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createOrUpdateDatasetVersion(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, contentType, version, accept, body, requestOptions,
-            context));
+            this.client.getServiceVersion().getVersion(), name, contentType, version, accept, datasetVersion,
+            requestOptions, context));
     }
 
     /**
@@ -810,8 +810,8 @@ public final class DatasetsImpl {
      * </pre>
      * 
      * @param name The name of the resource.
-     * @param version The specific version id of the DatasetVersion to create or replace.
-     * @param body The definition of the DatasetVersion to create or update.
+     * @param version The specific version id of the DatasetVersion to create or update.
+     * @param datasetVersion The DatasetVersion to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -820,13 +820,13 @@ public final class DatasetsImpl {
      * @return datasetVersion Definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateDatasetVersionWithResponse(String name, String version, BinaryData body,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateDatasetVersionWithResponse(String name, String version,
+        BinaryData datasetVersion, RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
         return service.createOrUpdateDatasetVersionSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, contentType, version, accept, body, requestOptions,
-            Context.NONE);
+            this.client.getServiceVersion().getVersion(), name, contentType, version, accept, datasetVersion,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -865,7 +865,7 @@ public final class DatasetsImpl {
      * 
      * @param name The name of the resource.
      * @param version The specific version id of the DatasetVersion to operate on.
-     * @param body Parameters for the action.
+     * @param pendingUploadRequest The pending upload request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -875,13 +875,13 @@ public final class DatasetsImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> pendingUploadWithResponseAsync(String name, String version, BinaryData body,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> pendingUploadWithResponseAsync(String name, String version,
+        BinaryData pendingUploadRequest, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.pendingUpload(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-                name, version, contentType, accept, body, requestOptions, context));
+                name, version, contentType, accept, pendingUploadRequest, requestOptions, context));
     }
 
     /**
@@ -920,7 +920,7 @@ public final class DatasetsImpl {
      * 
      * @param name The name of the resource.
      * @param version The specific version id of the DatasetVersion to operate on.
-     * @param body Parameters for the action.
+     * @param pendingUploadRequest The pending upload request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -929,12 +929,12 @@ public final class DatasetsImpl {
      * @return represents the response for a pending upload request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> pendingUploadWithResponse(String name, String version, BinaryData body,
+    public Response<BinaryData> pendingUploadWithResponse(String name, String version, BinaryData pendingUploadRequest,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.pendingUploadSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), name,
-            version, contentType, accept, body, requestOptions, Context.NONE);
+            version, contentType, accept, pendingUploadRequest, requestOptions, Context.NONE);
     }
 
     /**

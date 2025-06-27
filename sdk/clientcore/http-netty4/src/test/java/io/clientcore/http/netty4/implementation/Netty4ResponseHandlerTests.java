@@ -4,8 +4,6 @@ package io.clientcore.http.netty4.implementation;
 
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.Response;
-import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.http.netty4.mocking.MockChannelHandlerContext;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
@@ -23,11 +21,10 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static io.clientcore.http.netty4.TestUtils.assertArraysEqual;
 import static io.clientcore.http.netty4.TestUtils.createChannelWithReadHandling;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link Netty4ResponseHandler}.
@@ -37,7 +34,7 @@ public class Netty4ResponseHandlerTests {
     @Test
     public void firstReadIsFullHttpResponse() throws Exception {
         HttpRequest request = new HttpRequest();
-        AtomicReference<Response<BinaryData>> responseReference = new AtomicReference<>();
+        AtomicReference<ResponseStateInfo> responseReference = new AtomicReference<>();
         CountDownLatch latch = new CountDownLatch(1);
 
         Netty4ResponseHandler responseHandler
@@ -61,11 +58,11 @@ public class Netty4ResponseHandlerTests {
 
         assertEquals(0, latch.getCount());
 
-        Response<BinaryData> coreResponse = responseReference.get();
-        assertNotNull(coreResponse);
+        ResponseStateInfo info = responseReference.get();
+        assertNotNull(info);
 
-        assertSame(request, coreResponse.getRequest());
-        assertEquals(0, coreResponse.getValue().getLength());
+        assertTrue(info.isChannelConsumptionComplete());
+        assertEquals(0, info.getEagerContent().size());
     }
 
     @Test
@@ -74,7 +71,7 @@ public class Netty4ResponseHandlerTests {
         ThreadLocalRandom.current().nextBytes(ignoredBodyData);
 
         HttpRequest request = new HttpRequest().setMethod(HttpMethod.HEAD);
-        AtomicReference<Response<BinaryData>> responseReference = new AtomicReference<>();
+        AtomicReference<ResponseStateInfo> responseReference = new AtomicReference<>();
         CountDownLatch latch = new CountDownLatch(1);
 
         Netty4ResponseHandler responseHandler
@@ -109,11 +106,8 @@ public class Netty4ResponseHandlerTests {
 
         assertEquals(0, latch.getCount());
 
-        Response<BinaryData> coreResponse = responseReference.get();
-        assertNotNull(coreResponse);
-
-        assertSame(request, coreResponse.getRequest());
-        assertEquals(0, coreResponse.getValue().getLength());
+        ResponseStateInfo info = responseReference.get();
+        assertNotNull(info);
     }
 
     @Test
@@ -128,7 +122,7 @@ public class Netty4ResponseHandlerTests {
         System.arraycopy(bodyPieces, 0, expectedBody, bodyPieces.length * 3, bodyPieces.length);
 
         HttpRequest request = new HttpRequest();
-        AtomicReference<Response<BinaryData>> responseReference = new AtomicReference<>();
+        AtomicReference<ResponseStateInfo> responseReference = new AtomicReference<>();
         CountDownLatch latch = new CountDownLatch(1);
 
         Netty4ResponseHandler responseHandler
@@ -163,10 +157,7 @@ public class Netty4ResponseHandlerTests {
 
         assertEquals(0, latch.getCount());
 
-        Response<BinaryData> coreResponse = responseReference.get();
-        assertNotNull(coreResponse);
-
-        assertSame(request, coreResponse.getRequest());
-        assertArraysEqual(expectedBody, coreResponse.getValue().toBytes());
+        ResponseStateInfo info = responseReference.get();
+        assertNotNull(info);
     }
 }

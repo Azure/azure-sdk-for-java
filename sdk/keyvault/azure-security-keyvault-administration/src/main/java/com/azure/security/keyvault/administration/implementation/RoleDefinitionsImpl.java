@@ -77,7 +77,7 @@ public final class RoleDefinitionsImpl {
      * service to perform REST calls.
      */
     @Host("{vaultBaseUrl}")
-    @ServiceInterface(name = "KeyVaultAdministrati")
+    @ServiceInterface(name = "KeyVaultAdministrationClientRoleDefinitions")
     public interface RoleDefinitionsService {
 
         @Delete("/{scope}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionName}")

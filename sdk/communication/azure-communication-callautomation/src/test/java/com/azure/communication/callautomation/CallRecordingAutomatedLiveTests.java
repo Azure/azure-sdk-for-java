@@ -35,6 +35,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.azure.communication.callautomation.models.RecordingResult;
+
 public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
@@ -347,6 +349,110 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
             // Add delay after stopping recording
             Thread.sleep(5000); // 5 seconds delay
 
+            // hangup
+            if (!callConnectionId.isEmpty()) {
+                CallConnection callConnection = callerClient.getCallConnection(callConnectionId);
+                callConnection.hangUp(true);
+                CallDisconnected callDisconnected
+                    = waitForEvent(CallDisconnected.class, callConnectionId, Duration.ofSeconds(10));
+                assertNotNull(callDisconnected);
+            }
+        } catch (Exception ex) {
+            fail("Unexpected exception received", ex);
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createACSCallAndGetCallRecordingTest(HttpClient httpClient) {
+        /* Test case: ACS to ACS call
+         * 1. create a CallAutomationClient.
+         * 2. create a call from source to one ACS target.
+         * 3. get updated call properties and check for the connected state.
+         * 4. start recording the call without channel affinity
+         * 5. stop recording the call
+         * 6. get the recording
+         * 7. hang up the call.
+         * 8. once call is hung up, verify disconnected event
+         */
+        CommunicationIdentityClient communicationIdentityClient
+            = getCommunicationIdentityClientUsingConnectionString(httpClient).buildClient();
+
+        String callConnectionId = "";
+        try {
+            // Create caller and receiver
+            CommunicationUserIdentifier source = communicationIdentityClient.createUser();
+            CommunicationUserIdentifier target = communicationIdentityClient.createUser();
+
+            // Create call automation client and use source as the caller.
+            CallAutomationClient callerClient = getCallAutomationClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders("recordingOperations", next))
+                .sourceIdentity(source)
+                .buildClient();
+
+            // Create call automation client for receivers.
+            CallAutomationClient receiverClient = getCallAutomationClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders("recordingOperations", next))
+                .buildClient();
+
+            // setup service bus
+            String uniqueId = serviceBusWithNewCall(source, target);
+
+            // create call and assert response
+            CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(Arrays.asList(target),
+                String.format("%s?q=%s", DISPATCHER_CALLBACK, uniqueId));
+            CreateCallResult createCallResult
+                = callerClient.createGroupCallWithResponse(createCallOptions, null).getValue();
+            callConnectionId = createCallResult.getCallConnectionProperties().getCallConnectionId();
+            assertNotNull(callConnectionId);
+
+            // wait for incoming call context
+            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(10));
+            assertNotNull(incomingCallContext);
+
+            // answer the call
+            AnswerCallOptions answerCallOptions = new AnswerCallOptions(incomingCallContext, DISPATCHER_CALLBACK);
+            AnswerCallResult answerCallResult
+                = receiverClient.answerCallWithResponse(answerCallOptions, null).getValue();
+            assertNotNull(answerCallResult);
+
+            // wait for callConnected
+            CallConnected callConnected = waitForEvent(CallConnected.class, callConnectionId, Duration.ofSeconds(10));
+            assertNotNull(callConnected);
+
+            // get properties
+            CallConnectionProperties callConnectionProperties
+                = createCallResult.getCallConnection().getCallProperties();
+            assertEquals(CallConnectionState.CONNECTED, callConnectionProperties.getCallConnectionState());
+
+            StartRecordingOptions startRecordingOptions
+                = new StartRecordingOptions(new ServerCallLocator(callConnectionProperties.getServerCallId()))
+                    .setRecordingChannel(RecordingChannel.UNMIXED)
+                    .setRecordingContent(RecordingContent.AUDIO)
+                    .setRecordingFormat(RecordingFormat.WAV)
+                    .setRecordingStateCallbackUrl(DISPATCHER_CALLBACK);
+
+            // start recording
+            RecordingStateResult recordingStateResult = callerClient.getCallRecording().start(startRecordingOptions);
+
+            assertNotNull(recordingStateResult.getRecordingId());
+            String recordingId = recordingStateResult.getRecordingId();
+
+            // Play audio to ensure call is fully established
+            CallMedia callMedia = createCallResult.getCallConnection().getCallMedia();
+            FileSource playSource = new FileSource().setUrl(MEDIA_SOURCE);
+            callMedia.playToAll(playSource);
+
+            // Add delay to ensure audio is played and recording is active
+            Thread.sleep(5000);
+
+            // stop recording
+            callerClient.getCallRecording().stop(recordingId);
+            Thread.sleep(60000);
+
+            // get recording
+            RecordingResult recordingResult = callerClient.getCallRecording().getRecordingResult(recordingId);
+            assertNotNull(recordingResult);
             // hangup
             if (!callConnectionId.isEmpty()) {
                 CallConnection callConnection = callerClient.getCallConnection(callConnectionId);

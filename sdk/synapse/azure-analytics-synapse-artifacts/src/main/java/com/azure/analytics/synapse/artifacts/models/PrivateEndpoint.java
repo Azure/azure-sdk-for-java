@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,11 +20,13 @@ public final class PrivateEndpoint implements JsonSerializable<PrivateEndpoint> 
     /*
      * Resource id of the private endpoint.
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of PrivateEndpoint class.
      */
+    @Generated
     public PrivateEndpoint() {
     }
 
@@ -32,6 +35,7 @@ public final class PrivateEndpoint implements JsonSerializable<PrivateEndpoint> 
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -39,6 +43,7 @@ public final class PrivateEndpoint implements JsonSerializable<PrivateEndpoint> 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -53,6 +58,7 @@ public final class PrivateEndpoint implements JsonSerializable<PrivateEndpoint> 
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the PrivateEndpoint.
      */
+    @Generated
     public static PrivateEndpoint fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PrivateEndpoint deserializedPrivateEndpoint = new PrivateEndpoint();

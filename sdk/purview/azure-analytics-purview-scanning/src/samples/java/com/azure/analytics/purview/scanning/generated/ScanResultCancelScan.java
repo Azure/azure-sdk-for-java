@@ -17,10 +17,10 @@ public class ScanResultCancelScan {
             = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{Endpoint}")
                 .buildScanResultClient();
-        // BEGIN:com.azure.analytics.purview.scanning.generated.scanresultcancelscan.scanresultcancelscan
+        // BEGIN:com.azure.analytics.purview.scanning.generated.scan-result-cancel-scan.scan-result-cancel-scan
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = scanResultClient.cancelScanWithResponse("myDataSource", "myScanName",
             "138301e4-f4f9-4ab5-b734-bac446b236e7", requestOptions);
-        // END:com.azure.analytics.purview.scanning.generated.scanresultcancelscan.scanresultcancelscan
+        // END:com.azure.analytics.purview.scanning.generated.scan-result-cancel-scan.scan-result-cancel-scan
     }
 }

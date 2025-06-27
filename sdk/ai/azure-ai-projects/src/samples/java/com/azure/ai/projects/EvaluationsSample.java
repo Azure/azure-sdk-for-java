@@ -7,6 +7,7 @@ import com.azure.ai.projects.models.Evaluation;
 import com.azure.ai.projects.models.EvaluatorConfiguration;
 import com.azure.ai.projects.models.EvaluatorId;
 import com.azure.ai.projects.models.InputDataset;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -24,7 +25,7 @@ public class EvaluationsSample {
 
     public static void main(String[] args) {
 
-        //createEvaluation();
+        createEvaluation();
 
         //getEvaluation();
         //listEvaluations();
@@ -94,8 +95,11 @@ public class EvaluationsSample {
         // BEGIN:com.azure.ai.projects.EvaluationsSample.createEvaluation
 
         // Create an evaluation definition
-        String datasetName = Configuration.getGlobalConfiguration().get("DATASET_NAME", "test");
-        String version = Configuration.getGlobalConfiguration().get("DATASET_VERSION", "1");
+        String datasetName = Configuration.getGlobalConfiguration().get("DATASET_NAME", "my-dataset");
+        String version = Configuration.getGlobalConfiguration().get("DATASET_VERSION", "1.0");
+        String modelEndpoint = Configuration.getGlobalConfiguration().get("MODEL_ENDPOINT", "https://your-model-endpoint.com");
+        String modelApiKey = Configuration.getGlobalConfiguration().get("MODEL_API_KEY", "your-model-api-key");
+        String modelName = Configuration.getGlobalConfiguration().get("MODEL_NAME", "gpt-4o-mini");
         DatasetVersion datasetVersion = datasetsClient.getDatasetVersion(datasetName, version);
 
         InputDataset dataset = new InputDataset(datasetVersion.getId());
@@ -103,12 +107,16 @@ public class EvaluationsSample {
             dataset,
             mapOf("relevance",
                 new EvaluatorConfiguration(EvaluatorId.RELEVANCE.getValue())
-                    .setInitParams(mapOf("deployment_name", BinaryData.fromObject("gpt-4o")))))
+                    .setInitParams(mapOf("deployment_name", BinaryData.fromObject(modelName)))))
             .setDisplayName("Sample Evaluation")
             .setDescription("This is a sample evaluation created using the SDK");
 
         // Create the evaluation
-        Evaluation createdEvaluation = evaluationsClient.createEvaluation(evaluation);
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.setHeader("model-endpoint", modelEndpoint);
+        requestOptions.setHeader("api-key", modelApiKey);
+        Evaluation createdEvaluation = evaluationsClient.createEvaluationWithResponse(BinaryData.fromObject(evaluation), requestOptions).getValue()
+            .toObject(Evaluation.class);
 
         System.out.println("Created evaluation:");
         System.out.println("Display Name: " + createdEvaluation.getDisplayName());

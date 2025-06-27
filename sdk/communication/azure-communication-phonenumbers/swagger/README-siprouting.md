@@ -18,20 +18,14 @@ npm install -g autorest
 ### Generation
 ```ps
 cd <swagger-folder>
-mvn install
-autorest README-siprouting.md --java --v4 --use=@autorest/java@4.1.3
+autorest README-siprouting.md --java
 ```
-
-## Update generated files for Sip Routing service
-To update generated files for Sip Routing service, run the following command
-
-> autorest README-siprouting.md --java --v4 --use=@autorest/java@4.0.40
 
 ### Code generation settings
 ```yaml
 title: Azure Communication Phone Numbers SIP Routing Service
 tag: package-2023-03
-use: '@autorest/java@4.1.50'
+use: '@autorest/java@4.1.52'
 require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/communication/data-plane/SipRouting/readme.md
 override-client-name: SipRoutingAdminClient
 custom-types-subpackage: models
@@ -47,7 +41,6 @@ add-context-parameter: true
 service-interface-as-public: true
 customization-class: src/main/java/SipRoutingCustomizations.java
 stream-style-serialization: true
-use-eclipse-language-server: false
 ```
 
 ### Use SipConfiguration instead of SipConfigurationUpdate

@@ -21,7 +21,7 @@ public final class WebAppUpdatedEventData implements JsonSerializable<WebAppUpda
      * Detail of action on the app.
      */
     @Generated
-    private final AppEventTypeDetail appEventTypeDetail;
+    private AppEventTypeDetail appEventTypeDetail;
 
     /*
      * name of the web site that had this event.
@@ -61,12 +61,9 @@ public final class WebAppUpdatedEventData implements JsonSerializable<WebAppUpda
 
     /**
      * Creates an instance of WebAppUpdatedEventData class.
-     *
-     * @param appEventTypeDetail the appEventTypeDetail value to set.
      */
     @Generated
-    private WebAppUpdatedEventData(AppEventTypeDetail appEventTypeDetail) {
-        this.appEventTypeDetail = appEventTypeDetail;
+    private WebAppUpdatedEventData() {
     }
 
     /**
@@ -165,47 +162,33 @@ public final class WebAppUpdatedEventData implements JsonSerializable<WebAppUpda
      * @param jsonReader The JsonReader being read.
      * @return An instance of WebAppUpdatedEventData if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WebAppUpdatedEventData.
      */
     @Generated
     public static WebAppUpdatedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AppEventTypeDetail appEventTypeDetail = null;
-            String name = null;
-            String clientRequestId = null;
-            String correlationRequestId = null;
-            String requestId = null;
-            String address = null;
-            String verb = null;
+            WebAppUpdatedEventData deserializedWebAppUpdatedEventData = new WebAppUpdatedEventData();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("appEventTypeDetail".equals(fieldName)) {
-                    appEventTypeDetail = AppEventTypeDetail.fromJson(reader);
+                    deserializedWebAppUpdatedEventData.appEventTypeDetail = AppEventTypeDetail.fromJson(reader);
                 } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
+                    deserializedWebAppUpdatedEventData.name = reader.getString();
                 } else if ("clientRequestId".equals(fieldName)) {
-                    clientRequestId = reader.getString();
+                    deserializedWebAppUpdatedEventData.clientRequestId = reader.getString();
                 } else if ("correlationRequestId".equals(fieldName)) {
-                    correlationRequestId = reader.getString();
+                    deserializedWebAppUpdatedEventData.correlationRequestId = reader.getString();
                 } else if ("requestId".equals(fieldName)) {
-                    requestId = reader.getString();
+                    deserializedWebAppUpdatedEventData.requestId = reader.getString();
                 } else if ("address".equals(fieldName)) {
-                    address = reader.getString();
+                    deserializedWebAppUpdatedEventData.address = reader.getString();
                 } else if ("verb".equals(fieldName)) {
-                    verb = reader.getString();
+                    deserializedWebAppUpdatedEventData.verb = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            WebAppUpdatedEventData deserializedWebAppUpdatedEventData = new WebAppUpdatedEventData(appEventTypeDetail);
-            deserializedWebAppUpdatedEventData.name = name;
-            deserializedWebAppUpdatedEventData.clientRequestId = clientRequestId;
-            deserializedWebAppUpdatedEventData.correlationRequestId = correlationRequestId;
-            deserializedWebAppUpdatedEventData.requestId = requestId;
-            deserializedWebAppUpdatedEventData.address = address;
-            deserializedWebAppUpdatedEventData.verb = verb;
             return deserializedWebAppUpdatedEventData;
         });
     }

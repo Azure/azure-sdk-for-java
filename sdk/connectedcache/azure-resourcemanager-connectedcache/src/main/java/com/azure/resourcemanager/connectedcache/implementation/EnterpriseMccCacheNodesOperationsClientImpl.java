@@ -74,7 +74,7 @@ public final class EnterpriseMccCacheNodesOperationsClientImpl implements Enterp
      * used by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ConnectedCacheManage")
+    @ServiceInterface(name = "ConnectedCacheManagementClientEnterpriseMccCacheNodesOperations")
     public interface EnterpriseMccCacheNodesOperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}")

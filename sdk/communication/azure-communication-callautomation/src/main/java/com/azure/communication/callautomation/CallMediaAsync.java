@@ -840,7 +840,7 @@ public final class CallMediaAsync {
             if (options != null) {
                 request.setLocale(options.getLocale());
                 request.setOperationContext(options.getOperationContext());
-                request.setSpeechRecognitionModelEndpointId(options.getSpeechRecognitionModelEndpointId());
+                request.setSpeechModelEndpointId(options.getSpeechRecognitionModelEndpointId());
             }
             return contentsInternal.startTranscriptionWithResponseAsync(callConnectionId, request, context);
         } catch (RuntimeException ex) {
@@ -936,7 +936,7 @@ public final class CallMediaAsync {
             context = context == null ? Context.NONE : context;
             UpdateTranscriptionRequestInternal request = new UpdateTranscriptionRequestInternal();
             request.setLocale(locale);
-            request.setSpeechRecognitionModelEndpointId(speechRecognitionModelEndpointId);
+            request.setSpeechModelEndpointId(speechRecognitionModelEndpointId);
             request.setOperationContext(operationContext);
             return contentsInternal.updateTranscriptionWithResponseAsync(callConnectionId, request, context);
         } catch (RuntimeException ex) {

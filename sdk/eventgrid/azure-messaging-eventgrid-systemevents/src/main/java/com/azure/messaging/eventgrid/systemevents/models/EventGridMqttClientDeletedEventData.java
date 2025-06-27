@@ -16,17 +16,32 @@ import java.io.IOException;
 @Immutable
 public final class EventGridMqttClientDeletedEventData extends EventGridMqttClientEventData {
 
+    /*
+     * Name of the client resource in the Event Grid namespace.
+     */
+    @Generated
+    private String clientName;
+
     /**
      * Creates an instance of EventGridMqttClientDeletedEventData class.
      *
      * @param clientAuthenticationName the clientAuthenticationName value to set.
-     * @param clientName the clientName value to set.
      * @param namespaceName the namespaceName value to set.
      */
     @Generated
-    private EventGridMqttClientDeletedEventData(String clientAuthenticationName, String clientName,
-        String namespaceName) {
-        super(clientAuthenticationName, clientName, namespaceName);
+    private EventGridMqttClientDeletedEventData(String clientAuthenticationName, String namespaceName) {
+        super(clientAuthenticationName, namespaceName);
+    }
+
+    /**
+     * Get the clientName property: Name of the client resource in the Event Grid namespace.
+     *
+     * @return the clientName value.
+     */
+    @Generated
+    @Override
+    public String getClientName() {
+        return this.clientName;
     }
 
     /**
@@ -37,8 +52,8 @@ public final class EventGridMqttClientDeletedEventData extends EventGridMqttClie
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("clientAuthenticationName", getClientAuthenticationName());
-        jsonWriter.writeStringField("clientName", getClientName());
         jsonWriter.writeStringField("namespaceName", getNamespaceName());
+        jsonWriter.writeStringField("clientName", getClientName());
         return jsonWriter.writeEndObject();
     }
 
@@ -55,22 +70,25 @@ public final class EventGridMqttClientDeletedEventData extends EventGridMqttClie
     public static EventGridMqttClientDeletedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String clientAuthenticationName = null;
-            String clientName = null;
             String namespaceName = null;
+            String clientName = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("clientAuthenticationName".equals(fieldName)) {
                     clientAuthenticationName = reader.getString();
-                } else if ("clientName".equals(fieldName)) {
-                    clientName = reader.getString();
                 } else if ("namespaceName".equals(fieldName)) {
                     namespaceName = reader.getString();
+                } else if ("clientName".equals(fieldName)) {
+                    clientName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new EventGridMqttClientDeletedEventData(clientAuthenticationName, clientName, namespaceName);
+            EventGridMqttClientDeletedEventData deserializedEventGridMqttClientDeletedEventData
+                = new EventGridMqttClientDeletedEventData(clientAuthenticationName, namespaceName);
+            deserializedEventGridMqttClientDeletedEventData.clientName = clientName;
+            return deserializedEventGridMqttClientDeletedEventData;
         });
     }
 }

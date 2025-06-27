@@ -31,12 +31,13 @@ import static com.azure.ai.agents.persistent.SampleUtils.waitForRunCompletion;
 public final class AgentImageInputUrlSample {
 
     public static void main(String[] args) throws IOException, URISyntaxException {
-        PersistentAgentsAdministrationClientBuilder clientBuilder = new PersistentAgentsAdministrationClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+        PersistentAgentsClientBuilder clientBuilder = new PersistentAgentsClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build());
-        PersistentAgentsAdministrationClient agentsClient = clientBuilder.buildClient();
-        ThreadsClient threadsClient = clientBuilder.buildThreadsClient();
-        MessagesClient messagesClient = clientBuilder.buildMessagesClient();
-        RunsClient runsClient = clientBuilder.buildRunsClient();
+        PersistentAgentsClient agentsClient = clientBuilder.buildClient();
+        PersistentAgentsAdministrationClient administrationClient = agentsClient.getPersistentAgentsAdministrationClient();
+        ThreadsClient threadsClient = agentsClient.getThreadsClient();
+        MessagesClient messagesClient = agentsClient.getMessagesClient();
+        RunsClient runsClient = agentsClient.getRunsClient();
 
         String imageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg";
 
@@ -47,7 +48,7 @@ public final class AgentImageInputUrlSample {
         CreateAgentOptions createAgentOptions = new CreateAgentOptions("gpt-4o-mini")
             .setName(agentName)
             .setInstructions("You are a helpful agent");
-        PersistentAgent agent = agentsClient.createAgent(createAgentOptions);
+        PersistentAgent agent = administrationClient.createAgent(createAgentOptions);
 
         PersistentAgentThread thread = threadsClient.createThread();
         ThreadMessage createdMessage = messagesClient.createMessage(
@@ -68,7 +69,7 @@ public final class AgentImageInputUrlSample {
         } finally {
             //cleanup
             threadsClient.deleteThread(thread.getId());
-            agentsClient.deleteAgent(agent.getId());
+            administrationClient.deleteAgent(agent.getId());
         }
     }
 

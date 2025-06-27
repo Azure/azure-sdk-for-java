@@ -75,6 +75,9 @@ kubernetesconfiguration/Microsoft.KubernetesConfiguration/extensions:
 kubernetesconfiguration/Microsoft.KubernetesConfiguration/fluxConfigurations:
   service: kubernetesconfiguration
   suffix: fluxconfigurations
+kubernetesconfiguration/Microsoft.KubernetesConfiguration/privateLinkScopes:
+  service: kubernetesconfiguration
+  suffix: privatelinkscopes
 liftrastronomer:
   service: astro
 liftrqumulo:

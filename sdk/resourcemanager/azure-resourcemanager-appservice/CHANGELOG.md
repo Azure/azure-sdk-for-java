@@ -1,14 +1,16 @@
 # Release History
 
-## 2.52.0-beta.1 (Unreleased)
-
-### Features Added
+## 2.52.0 (2025-06-27)
 
 ### Breaking Changes
 
-### Bugs Fixed
+- Removed unused classes from ContainerApp.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-11-01`.
 
 ## 2.51.0 (2025-05-26)
 

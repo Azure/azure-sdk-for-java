@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,12 +20,14 @@ public final class EntityLinkingResultDocumentsItem extends LinkedEntitiesDocume
     /**
      * Creates an instance of EntityLinkingResultDocumentsItem class.
      */
+    @Generated
     public EntityLinkingResultDocumentsItem() {
     }
 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public EntityLinkingResultDocumentsItem setEntities(List<LinkedEntity> entities) {
         super.setEntities(entities);
@@ -34,6 +37,7 @@ public final class EntityLinkingResultDocumentsItem extends LinkedEntitiesDocume
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public EntityLinkingResultDocumentsItem setId(String id) {
         super.setId(id);
@@ -43,6 +47,7 @@ public final class EntityLinkingResultDocumentsItem extends LinkedEntitiesDocume
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public EntityLinkingResultDocumentsItem setWarnings(List<DocumentWarning> warnings) {
         super.setWarnings(warnings);
@@ -52,6 +57,7 @@ public final class EntityLinkingResultDocumentsItem extends LinkedEntitiesDocume
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public EntityLinkingResultDocumentsItem setStatistics(DocumentStatistics statistics) {
         super.setStatistics(statistics);
@@ -61,6 +67,7 @@ public final class EntityLinkingResultDocumentsItem extends LinkedEntitiesDocume
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -80,6 +87,7 @@ public final class EntityLinkingResultDocumentsItem extends LinkedEntitiesDocume
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the EntityLinkingResultDocumentsItem.
      */
+    @Generated
     public static EntityLinkingResultDocumentsItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             EntityLinkingResultDocumentsItem deserializedEntityLinkingResultDocumentsItem
