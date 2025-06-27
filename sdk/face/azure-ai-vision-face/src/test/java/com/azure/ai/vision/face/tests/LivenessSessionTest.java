@@ -7,13 +7,14 @@ import com.azure.ai.vision.face.FaceServiceVersion;
 import com.azure.ai.vision.face.FaceSessionAsyncClient;
 import com.azure.ai.vision.face.FaceSessionClient;
 import com.azure.ai.vision.face.models.CreateLivenessSessionContent;
-import com.azure.ai.vision.face.models.CreateLivenessSessionResult;
 import com.azure.ai.vision.face.models.LivenessOperationMode;
 import com.azure.ai.vision.face.models.LivenessSession;
+import com.azure.ai.vision.face.models.OperationState;
 import com.azure.ai.vision.face.tests.commands.liveness.ILivenessSessionSyncCommands;
 import com.azure.ai.vision.face.tests.commands.liveness.LivenessSessionCommandsProvider;
 import com.azure.ai.vision.face.tests.utils.FaceDisplayNameGenerator;
 import com.azure.ai.vision.face.tests.utils.TestUtils;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +23,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+
 import reactor.util.function.Tuple3;
 
 import java.util.UUID;
@@ -50,6 +52,7 @@ public class LivenessSessionTest extends FaceClientTestBase {
         Supplier<ILivenessSessionSyncCommands> commandProvider) {
         CreateLivenessSessionContent content
             = new CreateLivenessSessionContent(LivenessOperationMode.PASSIVE).setDeviceCorrelationIdSetInClient(true);
+
         createSessionAndVerify(commandProvider.get(), content);
     }
 
@@ -65,10 +68,7 @@ public class LivenessSessionTest extends FaceClientTestBase {
             = new CreateLivenessSessionContent(LivenessOperationMode.PASSIVE).setDeviceCorrelationId(uuid)
                 .setAuthTokenTimeToLiveInSeconds(authTokenTimeToLiveInSeconds);
 
-        CreateLivenessSessionResult result = createSessionAndVerify(livenessCommands, content);
-        LivenessSession livenessSession = livenessCommands.getLivenessSessionResultSync(result.getSessionId());
-        Assertions.assertNotNull(livenessSession);
-        Assertions.assertEquals(livenessSession.getAuthTokenTimeToLiveInSeconds(), authTokenTimeToLiveInSeconds);
+        createSessionAndVerify(livenessCommands, content);
     }
 
     @BeforeEach
@@ -94,9 +94,9 @@ public class LivenessSessionTest extends FaceClientTestBase {
         return TestUtils.createCombinationWithClientArguments(clientArumentStream);
     }
 
-    private CreateLivenessSessionResult createSessionAndVerify(ILivenessSessionSyncCommands livenessCommands,
+    private LivenessSession createSessionAndVerify(ILivenessSessionSyncCommands livenessCommands,
         CreateLivenessSessionContent content) {
-        CreateLivenessSessionResult result = livenessCommands.createLivenessSessionSync(content);
+        LivenessSession result = livenessCommands.createLivenessSessionSync(content);
 
         mCurrentCommand = livenessCommands;
         mSessionId = result.getSessionId();
@@ -104,6 +104,12 @@ public class LivenessSessionTest extends FaceClientTestBase {
         Assertions.assertNotNull(result);
         Assertions.assertNotNull(result.getSessionId());
         Assertions.assertNotNull(result.getAuthToken());
+        Assertions.assertNotNull(result.getStatus());
+        Assertions.assertNotNull(result.getModelVersion());
+        Assertions.assertNotNull(result.getResults());
+
+        Assertions.assertEquals(OperationState.NOT_STARTED, result.getStatus());
+        Assertions.assertEquals(0, result.getResults().getAttempts().size());
 
         return result;
     }

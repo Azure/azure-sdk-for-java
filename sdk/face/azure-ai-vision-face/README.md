@@ -104,9 +104,9 @@ Once completed, set the values of the client ID, tenant ID, and client secret of
 //variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET
 String endpoint = "https://<my-custom-subdomain>.cognitiveservices.azure.com/";
 FaceClient client = new FaceClientBuilder()
-    .endpoint(endpoint)
-    .credential(new DefaultAzureCredentialBuilder().build())
-    .buildClient();
+        .endpoint(endpoint)
+        .credential(new DefaultAzureCredentialBuilder().build())
+        .buildClient();
 ```
 
 #### Create the client with AzureKeyCredential
@@ -117,9 +117,9 @@ To use an API key as the `credential` parameter, pass the key as a string into a
 String endpoint = "https://<my-custom-subdomain>.cognitiveservices.azure.com/";
 String accountKey = "<api_key>";
 FaceClient client = new FaceClientBuilder()
-    .endpoint(endpoint)
-    .credential(new KeyCredential(accountKey))
-    .buildClient();
+        .endpoint(endpoint)
+        .credential(new KeyCredential(accountKey))
+        .buildClient();
 ```
 
 ## Key concepts
@@ -158,19 +158,19 @@ Detect faces and analyze them from an binary data. The latest model is the most 
 
 ```java com.azure.ai.vision.face.readme.detectFace
 FaceClient client = new FaceClientBuilder()
-    .endpoint(endpoint)
-    .credential(new KeyCredential(accountKey))
-    .buildClient();
+        .endpoint(endpoint)
+        .credential(new KeyCredential(accountKey))
+        .buildClient();
 
 String imagePathString = Resources.TEST_IMAGE_PATH_DETECT_SAMPLE_IMAGE;
 Path path = Paths.get(imagePathString);
 BinaryData imageData = BinaryData.fromFile(path);
 List<FaceAttributeType> attributeTypes = Arrays.asList(
-    FaceAttributeType.ModelDetection03.HEAD_POSE, FaceAttributeType.ModelDetection03.MASK, FaceAttributeType.ModelRecognition04.QUALITY_FOR_RECOGNITION);
+        FaceAttributeType.HEAD_POSE, FaceAttributeType.MASK, FaceAttributeType.QUALITY_FOR_RECOGNITION);
 
 List<FaceDetectionResult> results = client.detect(
-    imageData, FaceDetectionModel.DETECTION_03, FaceRecognitionModel.RECOGNITION_04, true,
-    attributeTypes, true, true, 120);
+        imageData, FaceDetectionModel.DETECTION_03, FaceRecognitionModel.RECOGNITION_04, true,
+        attributeTypes, true, true, 120);
 
 for (int i = 0, size = results.size(); i < size; i++) {
     System.out.println("----- Detection result: #" + i + " -----");
@@ -201,48 +201,63 @@ Here is an example to create and get the liveness detection result of a session.
 ```java com.azure.ai.vision.face.readme.createLivenessSessionAndGetResult
 System.out.println("Create a liveness session.");
 FaceSessionClient sessionClient = new FaceSessionClientBuilder()
-    .endpoint(endpoint)
-    .credential(new KeyCredential(accountKey))
-    .buildClient();
+        .endpoint(endpoint)
+        .credential(new KeyCredential(accountKey))
+        .buildClient();
 
 String deviceCorrelationId = UUID.randomUUID().toString();
 CreateLivenessSessionContent parameters = new CreateLivenessSessionContent(LivenessOperationMode.PASSIVE)
-    .setDeviceCorrelationId(deviceCorrelationId)
-    .setSendResultsToClient(false);
+        .setDeviceCorrelationId(deviceCorrelationId);
 
-CreateLivenessSessionResult createLivenessSessionResult = sessionClient.createLivenessSession(parameters);
+LivenessSession createLivenessSessionResult = sessionClient.createLivenessSession(parameters);
 String sessionId = createLivenessSessionResult.getSessionId();
 System.out.println("Result: " + sessionId);
 
 System.out.println("Get the liveness detection result.");
 LivenessSession session = sessionClient.getLivenessSessionResult(sessionId);
-System.out.println("Result: " + session.getResult().getResponse().getBody().getLivenessDecision());
+if (session.getResults() != null
+        && session.getResults().getAttempts() != null
+        && !session.getResults().getAttempts().isEmpty()) {
+
+    if (session.getResults().getAttempts().get(0).getResult() != null) {
+        FaceLivenessDecision decision = session.getResults().getAttempts().get(0).getResult().getLivenessDecision();
+        System.out.println("First Attempt Result: " + decision);
+    }
+}
 ```
 
 Here is another example for the liveness detection with face verification.
 ```java com.azure.ai.vision.face.readme.createLivenessWithVerifySessionAndGetResult
 System.out.println("Create a liveness session.");
 FaceSessionClient sessionClient = new FaceSessionClientBuilder()
-    .endpoint(endpoint)
-    .credential(new KeyCredential(accountKey))
-    .buildClient();
+        .endpoint(endpoint)
+        .credential(new KeyCredential(accountKey))
+        .buildClient();
 
 String deviceCorrelationId = UUID.randomUUID().toString();
-CreateLivenessWithVerifySessionContent parameters = new CreateLivenessWithVerifySessionContent(LivenessOperationMode.PASSIVE)
-    .setDeviceCorrelationId(deviceCorrelationId)
-    .setSendResultsToClient(false);
 Path path = Paths.get(imagePathString);
 BinaryData verifyImage = BinaryData.fromFile(path);
+VerifyImageFileDetails verifyImageFileDetails = new VerifyImageFileDetails(verifyImage);
+CreateLivenessWithVerifySessionContent parameters = new CreateLivenessWithVerifySessionContent(LivenessOperationMode.PASSIVE, verifyImageFileDetails)
+        .setDeviceCorrelationId(deviceCorrelationId);
+        // .setSendResultsToClient(false);
 
-CreateLivenessWithVerifySessionResult createLivenessSessionResult = sessionClient
-    .createLivenessWithVerifySession(parameters, verifyImage);
-String sessionId = createLivenessSessionResult.getSessionId();
+LivenessWithVerifySession livenessWithVerifySessionResults = sessionClient.createLivenessWithVerifySession(parameters);
+String sessionId = livenessWithVerifySessionResults.getSessionId();
 System.out.println("Result: " + sessionId);
 
 System.out.println("Get the liveness detection result.");
 LivenessWithVerifySession session = sessionClient.getLivenessWithVerifySessionResult(sessionId);
-LivenessResponseBody response = session.getResult().getResponse().getBody();
-System.out.println("Result: " + response.getLivenessDecision() + ", Verify result:" + response.getVerifyResult());
+if (session.getResults() != null && session.getResults().getAttempts() != null 
+    && !session.getResults().getAttempts().isEmpty()) {
+    LivenessWithVerifySessionAttempt attempt = session.getResults().getAttempts().get(0);
+    if (attempt.getResult() != null) {
+        FaceLivenessDecision livenessDecision = attempt.getResult().getLivenessDecision();
+        LivenessWithVerifyOutputs verifyOutputs = attempt.getResult().getVerifyResult();
+        System.out.println("Result: " + livenessDecision + ", Verify result:" 
+            + (verifyOutputs != null ? verifyOutputs.toString() : "null"));
+    }
+}
 ```
 
 ## Troubleshooting
