@@ -6,6 +6,22 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
  * Test constants which can be shared across different test classes
  */
 public final class TestConstants {
+    
+    /**
+     * Http Header Correlation Context
+     */
+    public static final String CORRELATION_CONTEXT = "Correlation-Context";
+    
+    /**
+     * App Configurations Key Vault Reference Content Type
+     */
+    public static final String KEY_VAULT_CONTENT_TYPE = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8";
+    
+    public static final String USERS = "users";
+    
+    public static final String GROUPS = "groups";
+    
+    public static final String DEFAULT_ROLLOUT_PERCENTAGE = "defaultRolloutPercentage";
 
     // Store specific configuration
     public static final String TEST_STORE_NAME = "store1";
@@ -78,6 +94,7 @@ public final class TestConstants {
 
     public static final String FEATURE_VALUE_TELEMETRY = "{\"id\":\"Delta\",\"description\":\"\",\"enabled\":true,"
         + "\"conditions\":{\"client_filters\":[{\"Name\":\"TestFilter\",\"Parameters\":{\"key\":\"value\"}}]},"
+        + "\"allocation\": { \"percentile\": [{\"variant\": \"Off\", \"from\": 0, \"to\": 50}, {\"variant\": \"On\", \"from\": 50, \"to\": 100}], \"default_when_enabled\": \"Off\", \"default_when_disabled\": \"Off\" }, "
         + "\"telemetry\":{\"enabled\":true,\"metadata\":{\"key\":\"value\"}}}";
 
     public static final String FEATURE_VALUE_ALL = "{ \"id\": \"AndTest\", \"description\": \"\",\"enabled\": true,\"conditions\": {\"requirement_type\": \"All\",\"client_filters\": [{\"Name\": \"percentageFilter\",\"Parameters\": {\"Value\": 50}},{\"Name\": \"percentageFilter\",\"Parameters\": {\"Value\": 50}}]}}";

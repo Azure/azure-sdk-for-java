@@ -20,7 +20,7 @@ public class Conditions {
     @JsonProperty("requirement_type")
     private String requirementType = DEFAULT_REQUIREMENT_TYPE;
 
-    public Conditions(List<FeatureFlagFilter> featureFilters, String requirementType) {
+    Conditions(List<FeatureFlagFilter> featureFilters, String requirementType) {
         clientFilters = new ArrayList<>();
         clientFilters.addAll(featureFilters);
         this.requirementType = requirementType;
