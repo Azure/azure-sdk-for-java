@@ -30,14 +30,19 @@ import static com.azure.identity.implementation.util.IdentityUtil.isVsCodeBroker
 import static com.azure.identity.implementation.util.IdentityUtil.loadVSCodeAuthRecord;
 
 /**
- * <p>Enables authentication to Microsoft Entra ID as the user signed in to Visual Studio Code via
- * the 'Azure Resources' extension.</p>
+ * Enables authentication to Microsoft Entra ID using the user account signed in through the
+ * <a href="https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureresourcegroups">
+ * Azure Resources</a> extension in Visual Studio Code.
  *
- * <p>Pre-requisites:
- *
- * 1. Ensure you have Azure Resources extension installed in VS Code and have complete Azure:Sign In in VS Code IDE.
- * 2. Ensure you have azure-identity-brokers dependency added in your application.
- * </p>
+ * <p><b>Prerequisites:</b></p>
+ * <ol>
+ *   <li>Install the
+ *     <a href="https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureresourcegroups">
+ *     Azure Resources</a> extension in Visual Studio Code and sign in using the <b>Azure: Sign In</b> command.</li>
+ *   <li>Add the
+ *     <a href="https://central.sonatype.com/artifact/com.azure/azure-identity-broker">
+ *     azure-identity-broker</a> dependency to your project's build configuration.</li>
+ * </ol>
  *
  * @see com.azure.identity
  * @see VisualStudioCodeCredentialBuilder
@@ -102,12 +107,12 @@ public class VisualStudioCodeCredential implements TokenCredential {
             } else {
                 builderClass.getMethod("tenantId", String.class).invoke(builder, tenant);
             }
-            return (TokenCredential) browserCredentialBuilder.build();
+            return browserCredentialBuilder.build();
         } catch (ClassNotFoundException e) {
             // Broker not on classpath
             return null;
         } catch (Exception e) {
-            throw new CredentialUnavailableException("Failed to create VisualStudioCodeCredential dynamically", e);
+            throw LOGGER.logExceptionAsError(new CredentialUnavailableException("Failed to create VisualStudioCodeCredential dynamically", e));
         }
     }
 }
