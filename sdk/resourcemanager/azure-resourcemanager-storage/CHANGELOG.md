@@ -10,6 +10,10 @@
 
 ### Other Changes
 
+#### Dependency Updates
+
+- Updated code from `api-version` `2024-01-01`.
+
 ## 2.51.0 (2025-05-26)
 
 ### Other Changes
