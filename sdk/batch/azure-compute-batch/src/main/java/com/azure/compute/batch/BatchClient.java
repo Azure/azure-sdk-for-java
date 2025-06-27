@@ -11176,6 +11176,34 @@ public final class BatchClient {
     }
 
     /**
+     * Deletes a Job from the specified Account.
+     *
+     * Deleting a Job also deletes all Tasks that are part of that Job, and all Job
+     * statistics. This also overrides the retention period for Task data; that is, if
+     * the Job contains Tasks which are still retained on Compute Nodes, the Batch
+     * service deletes those Tasks' working directories and all their contents. When
+     * a Delete Job request is received, the Batch service sets the Job to the
+     * deleting state. All update operations on a Job that is in deleting state will
+     * fail with status code 409 (Conflict), with additional information indicating
+     * that the Job is being deleted.
+     *
+     * @param jobId The ID of the Job to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the deletion of the Job. The poller provides
+     * {@link BatchJob} instances during polling and returns {@code null} upon successful deletion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchJob, Void> beginDeleteJob(String jobId) {
+        PollerFlux<BatchJob, Void> asyncPoller = asyncClient.beginDeleteJob(jobId);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
      * Gets information about the specified Job.
      *
      * @param jobId The ID of the Job.
@@ -12776,6 +12804,37 @@ public final class BatchClient {
             requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
         deleteJobWithResponse(jobId, requestOptions).getValue();
+    }
+
+    /**
+     * Deletes a Job from the specified Account using advanced options.
+     *
+     * Deleting a Job also deletes all Tasks that are part of that Job, and all Job
+     * statistics. This also overrides the retention period for Task data; that is, if
+     * the Job contains Tasks which are still retained on Compute Nodes, the Batch
+     * service deletes those Tasks' working directories and all their contents. When
+     * a Delete Job request is received, the Batch service sets the Job to the
+     * deleting state. All update operations on a Job that is in deleting state will
+     * fail with status code 409 (Conflict), with additional information indicating
+     * that the Job is being deleted.
+     *
+     * @param jobId The ID of the Job to delete.
+     * @param options Optional parameters for Delete Job operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the deletion of the Job. The poller provides
+     * {@link BatchJob} instances during polling and returns {@code null} upon successful deletion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchJob, Void> beginDeleteJob(String jobId, BatchJobDeleteOptions options,
+        RequestConditions requestConditions) {
+        PollerFlux<BatchJob, Void> asyncPoller = asyncClient.beginDeleteJob(jobId, options, requestConditions);
+        return asyncPoller.getSyncPoller();
     }
 
     /**

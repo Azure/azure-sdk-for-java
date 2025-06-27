@@ -4,6 +4,7 @@
 package com.azure.compute.batch;
 
 import com.azure.compute.batch.implementation.BatchClientImpl;
+import com.azure.compute.batch.implementation.lro.JobDeletePollerAsync;
 import com.azure.compute.batch.implementation.lro.JobScheduleDeletePollerAsync;
 import com.azure.compute.batch.implementation.lro.JobScheduleTerminatePollerAsync;
 import com.azure.compute.batch.implementation.task.AsyncTaskSubmitter;
@@ -11257,6 +11258,36 @@ public final class BatchAsyncClient {
     }
 
     /**
+     * Begins deleting a Job from the specified Account asynchronously.
+     *
+     * Deleting a Job also deletes all Tasks that are part of that Job, and all Job
+     * statistics. This also overrides the retention period for Task data; that is, if
+     * the Job contains Tasks which are still retained on Compute Nodes, the Batch
+     * service deletes those Tasks' working directories and all their contents. When
+     * a Delete Job request is received, the Batch service sets the Job to the
+     * deleting state. All update operations on a Job that is in deleting state will
+     * fail with status code 409 (Conflict), with additional information indicating
+     * that the Job is being deleted.
+     *
+     * @param jobId The ID of the Job to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link PollerFlux} that polls the deletion of the Job. The poller provides
+     * {@link BatchJob} instances during polling and returns {@code null} upon successful deletion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BatchJob, Void> beginDeleteJob(String jobId) {
+        RequestOptions requestOptions = new RequestOptions();
+        JobDeletePollerAsync poller = new JobDeletePollerAsync(this, jobId, requestOptions);
+        return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
+            poller.getCancelOperation(), poller.getFetchResultOperation());
+    }
+
+    /**
      * Gets information about the specified Job.
      *
      * @param jobId The ID of the Job.
@@ -13078,6 +13109,59 @@ public final class BatchAsyncClient {
             requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
         return deleteJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Begins deleting a Job from the specified Account asynchronously, with support for optional parameters.
+     *
+     * Deleting a Job also deletes all Tasks that are part of that Job, and all Job
+     * statistics. This also overrides the retention period for Task data; that is, if
+     * the Job contains Tasks which are still retained on Compute Nodes, the Batch
+     * service deletes those Tasks' working directories and all their contents. When
+     * a Delete Job request is received, the Batch service sets the Job to the
+     * deleting state. All update operations on a Job that is in deleting state will
+     * fail with status code 409 (Conflict), with additional information indicating
+     * that the Job is being deleted.
+     *
+     * @param jobId The ID of the Job to delete.
+     * @param options Optional parameters for Delete Job operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @return A {@link PollerFlux} that polls the deletion of the Job. The poller provides
+     * {@link BatchJob} instances during polling and returns {@code null} upon successful deletion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BatchJob, Void> beginDeleteJob(String jobId, BatchJobDeleteOptions options,
+        RequestConditions requestConditions) {
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Boolean force = options == null ? null : options.isForce();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        }
+        if (force != null) {
+            requestOptions.addQueryParam("force", String.valueOf(force), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        JobDeletePollerAsync poller = new JobDeletePollerAsync(this, jobId, requestOptions);
+        return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
+            poller.getCancelOperation(), poller.getFetchResultOperation());
     }
 
     /**
