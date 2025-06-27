@@ -64,7 +64,7 @@ public final class ResponsesConversationAsyncSample {
                     messages.forEach(msg -> inputItems.add(ResponseInputItem.ofResponseOutputMessage(msg)));
                     inputItems.add(ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
                             .role(EasyInputMessage.Role.USER)
-                            .content("But why?" + "?".repeat(iteration))
+                            .content("But why?" + new String(new char[iteration]).replace("\0", "?"))
                             .build()));
                 });
             });
