@@ -41,7 +41,7 @@ const excludeArtifacts = [
     "azure-resourcemanager-sql",
     "azure-resourcemanager-storage"
 ]
-const requestTimeoutInMilli = 5000;
+const requestTimeoutInMilli = 10000;
 
 async function autocent() {
     console.log("[INFO] Automation task to update the mapping of services and API version tags.");
