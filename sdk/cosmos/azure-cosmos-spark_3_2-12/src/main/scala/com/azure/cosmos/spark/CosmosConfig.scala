@@ -89,8 +89,13 @@ private[spark] object CosmosConfigNames {
   val ReadManyFilteringEnabled = "spark.cosmos.read.readManyFiltering.enabled"
   val ViewsRepositoryPath = "spark.cosmos.views.repositoryPath"
   val DiagnosticsMode = "spark.cosmos.diagnostics"
-  val ClientTelemetryEnabled = "spark.cosmos.clientTelemetry.enabled"
-  val ClientTelemetryEndpoint = "spark.cosmos.clientTelemetry.endpoint"
+  val DiagnosticsSamplingRateMaxCount = "spark.cosmos.diagnostics.samplings.maxCount"
+  val DiagnosticsSamplingRateIntervalInSeconds = "spark.cosmos.diagnostics.samplings.intervalInSeconds"
+  val DiagnosticsThresholdsRequestCharge = "spark.cosmos.diagnostics.thresholds.requestCharge"
+  val DiagnosticsThresholdsPointOperationLatencyInMs = "spark.cosmos.diagnostics.thresholds.latency.pointOperationInMs"
+  val DiagnosticsThresholdsNonPointOperationLatencyInMs = "spark.cosmos.diagnostics.thresholds.latency.nonPointOperationInMs"
+  val ClientTelemetryEnabled = "spark.cosmos.clientTelemetry.enabled" // keep this to avoid breaking changes
+  val ClientTelemetryEndpoint = "spark.cosmos.clientTelemetry.endpoint" // keep this to avoid breaking changes
   val WriteBulkEnabled = "spark.cosmos.write.bulk.enabled"
   val WriteBulkMaxPendingOperations = "spark.cosmos.write.bulk.maxPendingOperations"
   val WriteBulkMaxBatchSize = "spark.cosmos.write.bulk.maxBatchSize"
@@ -197,6 +202,11 @@ private[spark] object CosmosConfigNames {
     ReadManyFilteringEnabled,
     ViewsRepositoryPath,
     DiagnosticsMode,
+    DiagnosticsSamplingRateIntervalInSeconds,
+    DiagnosticsSamplingRateMaxCount,
+    DiagnosticsThresholdsPointOperationLatencyInMs,
+    DiagnosticsThresholdsNonPointOperationLatencyInMs,
+    DiagnosticsThresholdsRequestCharge,
     ClientTelemetryEnabled,
     ClientTelemetryEndpoint,
     WriteBulkEnabled,
@@ -1157,19 +1167,28 @@ private[cosmos] case class CosmosContainerConfig(database: String, container: St
 private[spark] case class DiagnosticsConfig
 (
   mode: Option[String],
-  isClientTelemetryEnabled: Boolean,
-  clientTelemetryEndpoint: Option[String]
+  samplingRateMaxCount: Option[Int],
+  samplingRateIntervalInSeconds: Option[Int],
+  thresholdsPointOperationLatencyInMs: Option[Int],
+  thresholdsNonPointOperationLatencyInMs: Option[Int],
+  thresholdsRequestCharge: Option[Int]
 )
 
 private[spark] object DiagnosticsConfig {
+  def apply(): DiagnosticsConfig = {
+    DiagnosticsConfig(Option.empty, None, None, None, None, None)
+  }
+
   private val diagnosticsMode = CosmosConfigEntry[String](key = CosmosConfigNames.DiagnosticsMode,
     mandatory = false,
     parseFromStringFunction = diagnostics => {
-      if (diagnostics == "simple") {
+      if ("sampled".equalsIgnoreCase(diagnostics)) {
+        "Sampled"
+      } else if ("simple".equalsIgnoreCase(diagnostics)) {
         classOf[SimpleDiagnosticsProvider].getName
-      } else if (diagnostics == "feed") {
+      } else if ("feed".equalsIgnoreCase(diagnostics)) {
         classOf[FeedDiagnosticsProvider].getName
-      } else if (diagnostics == "feed_details") {
+      } else if ("feed_details".equalsIgnoreCase(diagnostics)) {
         classOf[DetailedFeedDiagnosticsProvider].getName
       } else {
         // this is experimental and to be used by cosmos db dev engineers.
@@ -1177,31 +1196,60 @@ private[spark] object DiagnosticsConfig {
         diagnostics
       }
     },
-    helpMessage = "Cosmos DB Spark Diagnostics, supported values 'simple' and 'feed'")
+    helpMessage = "Cosmos DB Spark Diagnostics, supported values 'sampled' (this is strongly recommended), 'simple' and 'feed'")
 
-  private val isClientTelemetryEnabled = CosmosConfigEntry[Boolean](key = CosmosConfigNames.ClientTelemetryEnabled,
+  private val diagnosticsSamplingMaxCount = CosmosConfigEntry[Int](key = CosmosConfigNames.DiagnosticsSamplingRateMaxCount,
     mandatory = false,
-    defaultValue = Some(false),
-    parseFromStringFunction = value => value.toBoolean,
-    helpMessage = "Enables Client Telemetry - NOTE: This is a preview feature - and only " +
-      "works with public endpoints right now")
+    defaultValue = Some(10),
+    parseFromStringFunction = text => text.toInt,
+    helpMessage = "Max. number of diagnostics logged per interval. This can be used to reduce the noise level.")
 
-  private val clientTelemetryEndpoint = CosmosConfigEntry[String](key = CosmosConfigNames.ClientTelemetryEndpoint,
+  private val diagnosticsSamplingIntervalInSeconds = CosmosConfigEntry[Int](key = CosmosConfigNames.DiagnosticsSamplingRateIntervalInSeconds,
     mandatory = false,
-    defaultValue = None,
-    parseFromStringFunction = value => value,
-    helpMessage = "Enables Client Telemetry to be sent to the service endpoint provided - " +
-      "NOTE: This is a preview feature - and only " +
-      "works with public endpoints right now")
+    defaultValue = Some(60),
+    parseFromStringFunction = text => text.toInt,
+    helpMessage = "The interval (in seconds) for which the sample rate is applied.")
+
+  private val diagnosticsThresholdsPointOperationLatencyInMs = CosmosConfigEntry[Int](key = CosmosConfigNames.DiagnosticsThresholdsPointOperationLatencyInMs,
+    mandatory = false,
+    defaultValue = Some(1000),
+    parseFromStringFunction = text => text.toInt,
+    helpMessage = "The diagnostics latency threshold for point operations. Diagnostic logs will only be emitted when the operation fails or exceeds this latency threshold.")
+
+  private val diagnosticsThresholdsNonPointOperationLatencyInMs = CosmosConfigEntry[Int](key = CosmosConfigNames.DiagnosticsThresholdsNonPointOperationLatencyInMs,
+    mandatory = false,
+    defaultValue = Some(5000),
+    parseFromStringFunction = maxCount => maxCount.toInt,
+    helpMessage = "The diagnostics latency threshold for query, change feed and bulk operations. Diagnostic logs will only be emitted when the operation fails or exceeds this latency threshold.")
+
+  private val diagnosticsThresholdsRequestCharge = CosmosConfigEntry[Int](key = CosmosConfigNames.DiagnosticsThresholdsRequestCharge,
+    mandatory = false,
+    defaultValue = Some(Int.MaxValue),
+    parseFromStringFunction = text => text.toInt,
+    helpMessage = "The diagnostics latency threshold for query, change feed and bulk operations. Diagnostic logs will only be emitted when the operation fails or exceeds this latency threshold.")
 
   def parseDiagnosticsConfig(cfg: Map[String, String]): DiagnosticsConfig = {
     val diagnosticsModeOpt = CosmosConfigEntry.parse(cfg, diagnosticsMode)
-    val isClientTelemetryEnabledOpt = CosmosConfigEntry.parse(cfg, isClientTelemetryEnabled)
-    val clientTelemetryEndpointOpt = CosmosConfigEntry.parse(cfg, clientTelemetryEndpoint)
-    DiagnosticsConfig(
-      diagnosticsModeOpt,
-      isClientTelemetryEnabledOpt.getOrElse(false),
-      clientTelemetryEndpointOpt)
+
+    if (diagnosticsModeOpt.isDefined && "Sampled".equalsIgnoreCase(diagnosticsModeOpt.get)) {
+      DiagnosticsConfig(
+        diagnosticsModeOpt,
+        CosmosConfigEntry.parse(cfg, diagnosticsSamplingMaxCount),
+        CosmosConfigEntry.parse(cfg, diagnosticsSamplingIntervalInSeconds),
+        CosmosConfigEntry.parse(cfg, diagnosticsThresholdsPointOperationLatencyInMs),
+        CosmosConfigEntry.parse(cfg, diagnosticsThresholdsNonPointOperationLatencyInMs),
+        CosmosConfigEntry.parse(cfg, diagnosticsThresholdsRequestCharge))
+    } else {
+      DiagnosticsConfig(
+        diagnosticsModeOpt,
+        None,
+        None,
+        None,
+        None,
+        None)
+    }
+
+
   }
 }
 

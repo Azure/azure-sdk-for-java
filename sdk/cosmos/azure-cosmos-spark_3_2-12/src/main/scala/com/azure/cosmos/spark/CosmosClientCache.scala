@@ -10,7 +10,7 @@ import com.azure.cosmos.models.{CosmosClientTelemetryConfig, CosmosMetricCategor
 import com.azure.cosmos.spark.CosmosPredicates.isOnSparkDriver
 import com.azure.cosmos.spark.catalog.{CosmosCatalogClient, CosmosCatalogCosmosSDKClient, CosmosCatalogManagementSDKClient}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, CosmosContainerProactiveInitConfigBuilder, DirectConnectionConfig, GatewayConnectionConfig, ReadConsistencyStrategy, ThrottlingRetryOptions}
+import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, CosmosContainerProactiveInitConfigBuilder, CosmosDiagnosticsThresholds, DirectConnectionConfig, GatewayConnectionConfig, ReadConsistencyStrategy, ThrottlingRetryOptions}
 import com.azure.identity.{ClientCertificateCredentialBuilder, ClientSecretCredentialBuilder, ManagedIdentityCredentialBuilder}
 import com.azure.resourcemanager.cosmos.CosmosManager
 import org.apache.spark.scheduler.{SparkListener, SparkListenerApplicationEnd}
@@ -24,6 +24,7 @@ import java.time.{Duration, Instant}
 import java.util.{Base64, ConcurrentModificationException}
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.{Executors, ScheduledExecutorService, TimeUnit}
+import java.util.function.BiPredicate
 import scala.collection.concurrent.TrieMap
 
 // scalastyle:off underscore.import
@@ -108,7 +109,6 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         .mkString(", ")
     }
   }
-
 
   def purge(cosmosClientConfiguration: CosmosClientConfiguration): Unit = {
     purgeImpl(ClientConfigurationWrapper(cosmosClientConfiguration), forceClosure = false)
@@ -255,7 +255,8 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           case _ => throw new IllegalArgumentException(s"Authorization type ${authConfig.getClass} is not supported")
       }
 
-      if (CosmosClientMetrics.meterRegistry.isDefined) {
+      val isSampledDiagnosticsLoggerEnabled = cosmosClientConfiguration.samplingRateMaxCount.isDefined
+      if (isSampledDiagnosticsLoggerEnabled || CosmosClientMetrics.meterRegistry.isDefined) {
           val customApplicationNameSuffix = cosmosClientConfiguration.customApplicationNameSuffix
               .getOrElse("")
 
@@ -271,32 +272,87 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
               case None => customApplicationNameSuffix
           }
 
-          val metricsOptions = new CosmosMicrometerMetricsOptions()
-            .meterRegistry(CosmosClientMetrics.meterRegistry.get)
-            .configureDefaultTagNames(
-              CosmosMetricTagName.CONTAINER,
-              CosmosMetricTagName.CLIENT_CORRELATION_ID,
-              CosmosMetricTagName.OPERATION,
-              CosmosMetricTagName.OPERATION_STATUS_CODE,
-              CosmosMetricTagName.PARTITION_KEY_RANGE_ID,
-              CosmosMetricTagName.SERVICE_ADDRESS,
-              CosmosMetricTagName.ADDRESS_RESOLUTION_COLLECTION_MAP_REFRESH,
-              CosmosMetricTagName.ADDRESS_RESOLUTION_FORCED_REFRESH,
-              CosmosMetricTagName.REQUEST_STATUS_CODE,
-              CosmosMetricTagName.REQUEST_OPERATION_TYPE
-            )
-            .setMetricCategories(
-              CosmosMetricCategory.SYSTEM,
-              CosmosMetricCategory.OPERATION_SUMMARY,
-              CosmosMetricCategory.REQUEST_SUMMARY,
-              CosmosMetricCategory.DIRECT_ADDRESS_RESOLUTIONS,
-              CosmosMetricCategory.DIRECT_REQUESTS,
-              CosmosMetricCategory.DIRECT_CHANNELS
+          var telemetryConfig = new CosmosClientTelemetryConfig()
+            .clientCorrelationId(clientCorrelationId)
+
+          if (CosmosClientMetrics.meterRegistry.isDefined) {
+            val metricsOptions = new CosmosMicrometerMetricsOptions()
+              .meterRegistry(CosmosClientMetrics.meterRegistry.get)
+              .configureDefaultTagNames(
+                CosmosMetricTagName.CONTAINER,
+                CosmosMetricTagName.CLIENT_CORRELATION_ID,
+                CosmosMetricTagName.OPERATION,
+                CosmosMetricTagName.OPERATION_STATUS_CODE,
+                CosmosMetricTagName.PARTITION_KEY_RANGE_ID,
+                CosmosMetricTagName.SERVICE_ADDRESS,
+                CosmosMetricTagName.ADDRESS_RESOLUTION_COLLECTION_MAP_REFRESH,
+                CosmosMetricTagName.ADDRESS_RESOLUTION_FORCED_REFRESH,
+                CosmosMetricTagName.REQUEST_STATUS_CODE,
+                CosmosMetricTagName.REQUEST_OPERATION_TYPE
+              )
+              .setMetricCategories(
+                CosmosMetricCategory.SYSTEM,
+                CosmosMetricCategory.OPERATION_SUMMARY,
+                CosmosMetricCategory.REQUEST_SUMMARY,
+                CosmosMetricCategory.DIRECT_ADDRESS_RESOLUTIONS,
+                CosmosMetricCategory.DIRECT_REQUESTS,
+                CosmosMetricCategory.DIRECT_CHANNELS
+              )
+              .applyDiagnosticThresholdsForTransportLevelMeters(isSampledDiagnosticsLoggerEnabled)
+
+            telemetryConfig = telemetryConfig.metricsOptions(metricsOptions)
+          }
+
+          if (isSampledDiagnosticsLoggerEnabled) {
+            val diagnosticsLogger = new CosmosSamplingDiagnosticsLogger(
+              cosmosClientConfiguration.samplingRateMaxCount.get,
+              cosmosClientConfiguration.samplingRateIntervalInSeconds.getOrElse(60)
             )
 
-          val telemetryConfig = new CosmosClientTelemetryConfig()
-              .metricsOptions(metricsOptions)
-              .clientCorrelationId(clientCorrelationId)
+            if (cosmosClientConfiguration.thresholdsRequestCharge.isDefined
+              || cosmosClientConfiguration.thresholdsPointOperationLatencyInMs.isDefined
+              || cosmosClientConfiguration.thresholdsNonPointOperationLatencyInMs.isDefined) {
+
+              var thresholds = new CosmosDiagnosticsThresholds()
+
+              if (cosmosClientConfiguration.thresholdsRequestCharge.isDefined) {
+                thresholds = thresholds
+                  .setRequestChargeThreshold(cosmosClientConfiguration.thresholdsRequestCharge.get.toFloat)
+              }
+
+              if (cosmosClientConfiguration.thresholdsPointOperationLatencyInMs.isDefined) {
+                thresholds = thresholds
+                  .setPointOperationLatencyThreshold(
+                    Duration.ofSeconds(cosmosClientConfiguration.thresholdsPointOperationLatencyInMs.get)
+                  )
+              }
+
+              if (cosmosClientConfiguration.thresholdsNonPointOperationLatencyInMs.isDefined) {
+                thresholds = thresholds
+                  .setNonPointOperationLatencyThreshold(
+                    Duration.ofSeconds(cosmosClientConfiguration.thresholdsNonPointOperationLatencyInMs.get)
+                  )
+              }
+
+              val failureHandler: BiPredicate[Integer, Integer] = (statusCode, subStatusCode) => {
+                if (statusCode < 400) {
+                  false
+                } else if (
+                  (statusCode == 404 && subStatusCode == 0)
+                  || statusCode == 409
+                  || statusCode == 412
+                ) {
+                  false
+                } else {
+                  statusCode != 429 || subStatusCode != 3200
+                }
+              }
+
+              thresholds.setFailureHandler(failureHandler)
+
+              telemetryConfig.diagnosticsThresholds(thresholds)
+            }
+          }
 
           builder.clientTelemetryConfig(telemetryConfig)
       }
@@ -355,19 +411,6 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
       if (cosmosClientConfiguration.preferredRegionsList.isDefined) {
           builder.preferredRegions(cosmosClientConfiguration.preferredRegionsList.get.toList.asJava)
-      }
-
-      if (cosmosClientConfiguration.enableClientTelemetry) {
-          System.setProperty(
-              "COSMOS.CLIENT_TELEMETRY_ENDPOINT",
-              cosmosClientConfiguration.clientTelemetryEndpoint.getOrElse(
-                  "https://tools.cosmos.azure.com/api/clienttelemetry/trace"
-              ))
-          System.setProperty(
-              "COSMOS.CLIENT_TELEMETRY_ENABLED",
-              "true")
-
-          builder.clientTelemetryEnabled(true)
       }
 
       // We saw incidents where even when Spark restarted Executors we haven't been able

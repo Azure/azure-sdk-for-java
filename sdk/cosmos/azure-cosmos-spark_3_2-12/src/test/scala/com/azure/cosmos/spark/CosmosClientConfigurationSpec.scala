@@ -65,66 +65,6 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|$sparkEnvironmentInfo|${ManagementFactory.getRuntimeMXBean.getName}"
   }
 
-  "CosmosClientConfiguration" should "use different cache key for client telemetry enabled/disabled" in {
-    val userConfig = Map(
-      "spark.cosmos.accountEndpoint" -> "https://localhost:8081",
-      "spark.cosmos.accountKey" -> "xyz",
-      "spark.cosmos.clientTelemetry.enabled" -> "true"
-    )
-
-    val readConsistencyStrategy = ReadConsistencyStrategy.DEFAULT
-    val configuration = CosmosClientConfiguration(userConfig, readConsistencyStrategy, sparkEnvironmentInfo = "")
-
-    configuration.endpoint shouldEqual userConfig("spark.cosmos.accountEndpoint")
-    configuration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig("spark.cosmos.accountKey")
-    configuration.useGatewayMode shouldBe false
-    configuration.readConsistencyStrategy shouldEqual readConsistencyStrategy
-    configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|${ManagementFactory.getRuntimeMXBean.getName}"
-    configuration.enableClientTelemetry shouldEqual true
-    configuration.disableTcpConnectionEndpointRediscovery shouldEqual false
-    configuration.clientTelemetryEndpoint shouldEqual None
-
-    val userConfig2 = Map(
-      "spark.cosmos.accountEndpoint" -> "https://localhost:8081",
-      "spark.cosmos.accountKey" -> "xyz",
-      "spark.cosmos.clientTelemetry.enabled" -> "false",
-      "spark.cosmos.clientTelemetry.endpoint" -> "SomeEndpoint01"
-    )
-
-    val configuration2 = CosmosClientConfiguration(userConfig2, readConsistencyStrategy, sparkEnvironmentInfo = "")
-
-    configuration2.endpoint shouldEqual userConfig2("spark.cosmos.accountEndpoint")
-    configuration2.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig2("spark.cosmos.accountKey")
-    configuration2.useGatewayMode shouldBe false
-    configuration.readConsistencyStrategy shouldEqual readConsistencyStrategy
-    configuration.disableTcpConnectionEndpointRediscovery shouldEqual false
-    configuration2.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|${ManagementFactory.getRuntimeMXBean.getName}"
-    configuration2.enableClientTelemetry shouldEqual false
-    configuration2.clientTelemetryEndpoint shouldEqual Some("SomeEndpoint01")
-
-    val userConfig3 = Map(
-      "spark.cosmos.accountEndpoint" -> "https://localhost:8081",
-      "spark.cosmos.accountKey" -> "xyz",
-      "spark.cosmos.clientTelemetry.enabled" -> "true",
-      "spark.cosmos.clientTelemetry.endpoint" -> "SomeEndpoint03"
-    )
-
-    val configuration3 = CosmosClientConfiguration(userConfig3, readConsistencyStrategy, sparkEnvironmentInfo = "")
-
-    configuration3.endpoint shouldEqual userConfig3("spark.cosmos.accountEndpoint")
-    configuration3.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig3("spark.cosmos.accountKey")
-    configuration3.useGatewayMode shouldBe false
-    configuration.readConsistencyStrategy shouldEqual readConsistencyStrategy
-    configuration.disableTcpConnectionEndpointRediscovery shouldEqual false
-    configuration3.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|${ManagementFactory.getRuntimeMXBean.getName}"
-    configuration3.enableClientTelemetry shouldEqual true
-    configuration3.clientTelemetryEndpoint shouldEqual Some("SomeEndpoint03")
-
-    configuration.equals(configuration2).shouldEqual(false)
-    configuration.equals(configuration3).shouldEqual(false)
-    configuration2.equals(configuration3).shouldEqual(false)
-  }
-
   it should "apply applicationName if specified" in {
     val myApp = "myApp"
     val userConfig = Map(
@@ -182,4 +122,63 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration.readConsistencyStrategy shouldEqual readConsistencyStrategy
     configuration.disableTcpConnectionEndpointRediscovery shouldEqual true
   }
+
+  it should "apply sampled diagnostics settings" in {
+    val myApp = "myApp"
+    val userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> "https://localhost:8081",
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.applicationName" -> myApp,
+      "spark.cosmos.diagnostics" -> "saMpled",
+      "spark.cosmos.diagnostics.samplings.maxCount" -> "9",
+      "spark.cosmos.diagnostics.samplings.intervalInSeconds" -> "4",
+      "spark.cosmos.diagnostics.thresholds.requestCharge" -> "978",
+      "spark.cosmos.diagnostics.thresholds.latency.pointOperationInMs" -> "300",
+      "spark.cosmos.diagnostics.thresholds.latency.nonPointOperationInMs" -> "400",
+    )
+
+    val readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL
+    val sparkEnvironmentInfo = s"sparkenv-${UUID.randomUUID()}"
+    val configuration = CosmosClientConfiguration(userConfig, readConsistencyStrategy, sparkEnvironmentInfo)
+
+    configuration.endpoint shouldEqual userConfig("spark.cosmos.accountEndpoint")
+    configuration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig("spark.cosmos.accountKey")
+    configuration.readConsistencyStrategy shouldEqual readConsistencyStrategy
+    configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|$sparkEnvironmentInfo|${ManagementFactory.getRuntimeMXBean.getName}|$myApp"
+    configuration.samplingRateMaxCount shouldEqual Some(9)
+    configuration.samplingRateIntervalInSeconds shouldEqual Some(4)
+    configuration.thresholdsRequestCharge shouldEqual Some(978)
+    configuration.thresholdsPointOperationLatencyInMs shouldEqual Some(300)
+    configuration.thresholdsNonPointOperationLatencyInMs shouldEqual Some(400)
+  }
+
+  it should "ignore sampling and diagnostics thresholds unless diagnostics mode is sampled" in {
+    val myApp = "myApp"
+    val userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> "https://localhost:8081",
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.applicationName" -> myApp,
+      "spark.cosmos.diagnostics" -> "simple",
+      "spark.cosmos.diagnostics.samplings.maxCount" -> "9",
+      "spark.cosmos.diagnostics.samplings.intervalInSeconds" -> "4",
+      "spark.cosmos.diagnostics.thresholds.requestCharge" -> "978",
+      "spark.cosmos.diagnostics.thresholds.latency.pointOperationInMs" -> "300",
+      "spark.cosmos.diagnostics.thresholds.latency.nonPointOperationInMs" -> "400",
+    )
+
+    val readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL
+    val sparkEnvironmentInfo = s"sparkenv-${UUID.randomUUID()}"
+    val configuration = CosmosClientConfiguration(userConfig, readConsistencyStrategy, sparkEnvironmentInfo)
+
+    configuration.endpoint shouldEqual userConfig("spark.cosmos.accountEndpoint")
+    configuration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig("spark.cosmos.accountKey")
+    configuration.readConsistencyStrategy shouldEqual readConsistencyStrategy
+    configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|$sparkEnvironmentInfo|${ManagementFactory.getRuntimeMXBean.getName}|$myApp"
+    configuration.samplingRateMaxCount shouldEqual None
+    configuration.samplingRateIntervalInSeconds shouldEqual None
+    configuration.thresholdsRequestCharge shouldEqual None
+    configuration.thresholdsPointOperationLatencyInMs shouldEqual None
+    configuration.thresholdsNonPointOperationLatencyInMs shouldEqual None
+  }
+
 }

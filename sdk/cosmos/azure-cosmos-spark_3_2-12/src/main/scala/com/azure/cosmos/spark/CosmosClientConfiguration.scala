@@ -20,9 +20,7 @@ private[spark] case class CosmosClientConfiguration (
                                                       proactiveConnectionInitializationDurationInSeconds: Int,
                                                       httpConnectionPoolSize: Int,
                                                       readConsistencyStrategy: ReadConsistencyStrategy,
-                                                      enableClientTelemetry: Boolean,
                                                       disableTcpConnectionEndpointRediscovery: Boolean,
-                                                      clientTelemetryEndpoint: Option[String],
                                                       preferredRegionsList: Option[Array[String]],
                                                       subscriptionId: Option[String],
                                                       tenantId: Option[String],
@@ -30,7 +28,12 @@ private[spark] case class CosmosClientConfiguration (
                                                       azureEnvironmentEndpoints: java.util.Map[String, String],
                                                       sparkEnvironmentInfo: String,
                                                       clientBuilderInterceptors: Option[List[CosmosClientBuilder => CosmosClientBuilder]],
-                                                      clientInterceptors: Option[List[CosmosAsyncClient => CosmosAsyncClient]])
+                                                      clientInterceptors: Option[List[CosmosAsyncClient => CosmosAsyncClient]],
+                                                      samplingRateMaxCount: Option[Int],
+                                                      samplingRateIntervalInSeconds: Option[Int],
+                                                      thresholdsPointOperationLatencyInMs: Option[Int],
+                                                      thresholdsNonPointOperationLatencyInMs: Option[Int],
+                                                      thresholdsRequestCharge: Option[Int])
 
 private[spark] object CosmosClientConfiguration {
   def apply(
@@ -78,9 +81,7 @@ private[spark] object CosmosClientConfiguration {
       cosmosAccountConfig.proactiveConnectionInitializationDurationInSeconds,
       cosmosAccountConfig.httpConnectionPoolSize,
       readConsistencyStrategy,
-      enableClientTelemetry = diagnosticsConfig.isClientTelemetryEnabled,
       cosmosAccountConfig.disableTcpConnectionEndpointRediscovery,
-      diagnosticsConfig.clientTelemetryEndpoint,
       cosmosAccountConfig.preferredRegionsList,
       cosmosAccountConfig.subscriptionId,
       cosmosAccountConfig.tenantId,
@@ -88,7 +89,12 @@ private[spark] object CosmosClientConfiguration {
       cosmosAccountConfig.azureEnvironmentEndpoints,
       sparkEnvironmentInfo,
       cosmosAccountConfig.clientBuilderInterceptors,
-      cosmosAccountConfig.clientInterceptors)
+      cosmosAccountConfig.clientInterceptors,
+      diagnosticsConfig.samplingRateMaxCount,
+      diagnosticsConfig.samplingRateIntervalInSeconds,
+      diagnosticsConfig.thresholdsPointOperationLatencyInMs,
+      diagnosticsConfig.thresholdsNonPointOperationLatencyInMs,
+      diagnosticsConfig.thresholdsRequestCharge)
   }
 
   private[spark] def getSparkEnvironmentInfo(sessionOption: Option[SparkSession]): String = {
