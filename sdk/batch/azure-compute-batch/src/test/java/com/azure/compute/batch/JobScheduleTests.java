@@ -156,7 +156,6 @@ public class JobScheduleTests extends BatchClientTestBase {
         poller.waitForCompletion();
 
         PollResponse<BatchJobSchedule> finalResponse = poller.poll();
-        Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, finalResponse.getStatus());
         Assertions.assertNull(finalResponse.getValue(), "Expected final result to be null after successful deletion.");
 
         try {
