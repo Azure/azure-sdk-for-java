@@ -25,6 +25,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagemover.fluent.JobRunsClient;
 import com.azure.resourcemanager.storagemover.fluent.models.JobRunInner;
 import com.azure.resourcemanager.storagemover.models.JobRunList;
@@ -59,13 +60,24 @@ public final class JobRunsClientImpl implements JobRunsClient {
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "StorageMoverManageme")
+    @ServiceInterface(name = "StorageMoverManagementClientJobRuns")
     public interface JobRunsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}/jobDefinitions/{jobDefinitionName}/jobRuns")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobRunList>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("storageMoverName") String storageMoverName, @PathParam("projectName") String projectName,
+            @PathParam("jobDefinitionName") String jobDefinitionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}/jobDefinitions/{jobDefinitionName}/jobRuns")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<JobRunList> listSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("storageMoverName") String storageMoverName, @PathParam("projectName") String projectName,
@@ -84,10 +96,28 @@ public final class JobRunsClientImpl implements JobRunsClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}/jobDefinitions/{jobDefinitionName}/jobRuns/{jobRunName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<JobRunInner> getSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("storageMoverName") String storageMoverName, @PathParam("projectName") String projectName,
+            @PathParam("jobDefinitionName") String jobDefinitionName, @PathParam("jobRunName") String jobRunName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobRunList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<JobRunList> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
@@ -146,54 +176,6 @@ public final class JobRunsClientImpl implements JobRunsClient {
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
      * @param jobDefinitionName The name of the Job Definition resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Job Runs along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JobRunInner>> listSinglePageAsync(String resourceGroupName, String storageMoverName,
-        String projectName, String jobDefinitionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storageMoverName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storageMoverName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        if (jobDefinitionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter jobDefinitionName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, storageMoverName,
-                projectName, jobDefinitionName, this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Lists all Job Runs in a Job Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @param jobDefinitionName The name of the Job Definition resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -214,18 +196,96 @@ public final class JobRunsClientImpl implements JobRunsClient {
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
      * @param jobDefinitionName The name of the Job Definition resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Job Runs along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<JobRunInner> listSinglePage(String resourceGroupName, String storageMoverName,
+        String projectName, String jobDefinitionName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (storageMoverName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter storageMoverName is required and cannot be null."));
+        }
+        if (projectName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
+        }
+        if (jobDefinitionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter jobDefinitionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<JobRunList> res
+            = service.listSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                storageMoverName, projectName, jobDefinitionName, this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Lists all Job Runs in a Job Definition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageMoverName The name of the Storage Mover resource.
+     * @param projectName The name of the Project resource.
+     * @param jobDefinitionName The name of the Job Definition resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Job Runs as paginated response with {@link PagedFlux}.
+     * @return list of Job Runs along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<JobRunInner> listAsync(String resourceGroupName, String storageMoverName, String projectName,
-        String jobDefinitionName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, storageMoverName, projectName, jobDefinitionName, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<JobRunInner> listSinglePage(String resourceGroupName, String storageMoverName,
+        String projectName, String jobDefinitionName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (storageMoverName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter storageMoverName is required and cannot be null."));
+        }
+        if (projectName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
+        }
+        if (jobDefinitionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter jobDefinitionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<JobRunList> res
+            = service.listSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                storageMoverName, projectName, jobDefinitionName, this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -243,7 +303,9 @@ public final class JobRunsClientImpl implements JobRunsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobRunInner> list(String resourceGroupName, String storageMoverName, String projectName,
         String jobDefinitionName) {
-        return new PagedIterable<>(listAsync(resourceGroupName, storageMoverName, projectName, jobDefinitionName));
+        return new PagedIterable<>(
+            () -> listSinglePage(resourceGroupName, storageMoverName, projectName, jobDefinitionName),
+            nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -263,7 +325,8 @@ public final class JobRunsClientImpl implements JobRunsClient {
     public PagedIterable<JobRunInner> list(String resourceGroupName, String storageMoverName, String projectName,
         String jobDefinitionName, Context context) {
         return new PagedIterable<>(
-            listAsync(resourceGroupName, storageMoverName, projectName, jobDefinitionName, context));
+            () -> listSinglePage(resourceGroupName, storageMoverName, projectName, jobDefinitionName, context),
+            nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
@@ -324,55 +387,6 @@ public final class JobRunsClientImpl implements JobRunsClient {
      * @param projectName The name of the Project resource.
      * @param jobDefinitionName The name of the Job Definition resource.
      * @param jobRunName The name of the Job Run resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Job Run resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobRunInner>> getWithResponseAsync(String resourceGroupName, String storageMoverName,
-        String projectName, String jobDefinitionName, String jobRunName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storageMoverName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storageMoverName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        if (jobDefinitionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter jobDefinitionName is required and cannot be null."));
-        }
-        if (jobRunName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobRunName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            storageMoverName, projectName, jobDefinitionName, jobRunName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets a Job Run resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @param jobDefinitionName The name of the Job Definition resource.
-     * @param jobRunName The name of the Job Run resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -402,8 +416,39 @@ public final class JobRunsClientImpl implements JobRunsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobRunInner> getWithResponse(String resourceGroupName, String storageMoverName, String projectName,
         String jobDefinitionName, String jobRunName, Context context) {
-        return getWithResponseAsync(resourceGroupName, storageMoverName, projectName, jobDefinitionName, jobRunName,
-            context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (storageMoverName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter storageMoverName is required and cannot be null."));
+        }
+        if (projectName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
+        }
+        if (jobDefinitionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter jobDefinitionName is required and cannot be null."));
+        }
+        if (jobRunName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter jobRunName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            storageMoverName, projectName, jobDefinitionName, jobRunName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -455,25 +500,54 @@ public final class JobRunsClientImpl implements JobRunsClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Job Runs along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<JobRunInner> listNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<JobRunList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Job Runs along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of Job Runs along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JobRunInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<JobRunInner> listNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<JobRunList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(JobRunsClientImpl.class);
 }
