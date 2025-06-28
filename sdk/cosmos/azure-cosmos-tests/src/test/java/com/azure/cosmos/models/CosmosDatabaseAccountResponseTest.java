@@ -43,14 +43,32 @@ public class CosmosDatabaseAccountResponseTest extends TestSuiteBase {
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void readCosmosDatabaseAccountWithClient() {
-        CosmosDatabaseAccountResponse response = client.readDatabaseAccount(false);
-        validateDatabaseAccountResponse(response);
+        CosmosDatabaseAccountResponse latestDatabaseAccountResponse = client.readDatabaseAccount(false);
+
+        assertThat(latestDatabaseAccountResponse).isNotNull();
+        validateDatabaseAccountResponse(latestDatabaseAccountResponse);
+
+        CosmosDatabaseAccountResponse cachedResponse = client.readDatabaseAccount(true);
+
+        assertThat(cachedResponse).isNotNull();
+        validateDatabaseAccountResponse(cachedResponse);
+
+        validateEquality(latestDatabaseAccountResponse, cachedResponse);
     }
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void readCosmosDatabaseAccountWithAsyncClient() {
-        CosmosDatabaseAccountResponse response = asyncClient.readDatabaseAccount(false).block();
-        validateDatabaseAccountResponse(response);
+        CosmosDatabaseAccountResponse latestDatabaseAccountResponse = asyncClient.readDatabaseAccount(false).block();
+
+        assertThat(latestDatabaseAccountResponse).isNotNull();
+        validateDatabaseAccountResponse(latestDatabaseAccountResponse);
+
+        CosmosDatabaseAccountResponse cachedResponse = asyncClient.readDatabaseAccount(true).block();
+
+        assertThat(cachedResponse).isNotNull();
+        validateDatabaseAccountResponse(cachedResponse);
+
+        validateEquality(latestDatabaseAccountResponse, cachedResponse);
     }
 
     private void validateDatabaseAccountResponse(CosmosDatabaseAccountResponse response) {
@@ -61,5 +79,13 @@ public class CosmosDatabaseAccountResponseTest extends TestSuiteBase {
         assertThat(response.getWriteRegions()).isNotEmpty();
         assertThat(response.isMultiWriteAccount()).isNotNull();
         assertThat(response.getAccountLevelConsistency()).isNotNull();
+    }
+
+    private void validateEquality(CosmosDatabaseAccountResponse response1, CosmosDatabaseAccountResponse response2) {
+        assertThat(response1.getId()).isEqualTo(response2.getId());
+        assertThat(response1.getReadRegions()).isEqualTo(response2.getReadRegions());
+        assertThat(response1.getWriteRegions()).isEqualTo(response2.getWriteRegions());
+        assertThat(response1.isMultiWriteAccount()).isEqualTo(response2.isMultiWriteAccount());
+        assertThat(response1.getAccountLevelConsistency()).isEqualTo(response2.getAccountLevelConsistency());
     }
 }
