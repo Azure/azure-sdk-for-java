@@ -56,6 +56,7 @@ public class CosmosDatabaseAccountResponseTest extends TestSuiteBase {
     private void validateDatabaseAccountResponse(CosmosDatabaseAccountResponse response) {
         assertThat(response).isNotNull();
         assertThat(response.getId()).isNotNull();
+        assertThat(response.getId()).isNotEmpty();
         assertThat(response.getReadRegions()).isNotEmpty();
         assertThat(response.getWriteRegions()).isNotEmpty();
         assertThat(response.isMultiWriteAccount()).isNotNull();
