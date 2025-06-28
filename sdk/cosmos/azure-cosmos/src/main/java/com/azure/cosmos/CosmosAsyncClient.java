@@ -33,6 +33,7 @@ import com.azure.cosmos.implementation.throughputControl.config.ThroughputContro
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerIdentity;
+import com.azure.cosmos.models.CosmosDatabaseAccountResponse;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
@@ -727,6 +728,16 @@ public final class CosmosAsyncClient implements Closeable {
                 OperationType.Create,
                 ResourceType.Database,
                 requestOptions);
+    }
+
+    /**
+     * Reads the Cosmos database account.
+     *
+     * @param shouldUseCache whether to use the CosmosClient-internal cache for reading the database account.
+     * @return the {@link CosmosDatabaseAccountResponse} with the read database account.
+     */
+    public Mono<CosmosDatabaseAccountResponse> readDatabaseAccount(boolean shouldUseCache) {
+        return this.asyncDocumentClient.readDatabaseAccount(shouldUseCache);
     }
 
     ConsistencyLevel getEffectiveConsistencyLevel(
