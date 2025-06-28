@@ -818,12 +818,10 @@ public class Utils {
     }
 
     public static <T> List<T> iterableToList(Iterable<T> iterable) {
-
-        Iterator<T> iterator = iterable.iterator();
         List<T> list = new ArrayList<>();
 
-        while (iterator.hasNext()) {
-            list.add(iterator.next());
+        for (T item : iterable) {
+            list.add(item);
         }
 
         return list;
