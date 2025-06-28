@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
@@ -9,11 +12,9 @@ import java.util.List;
  * Represents the configuration of a Cosmos DB database account, including its read and write regions,
  * multi-write capabilities, and consistency level.
  */
-public class CosmosDatabaseAccount {
+public class CosmosDatabaseAccountResponse {
 
     private final String id;
-
-    private final String eTag;
 
     private final List<String> readRegions;
 
@@ -23,9 +24,8 @@ public class CosmosDatabaseAccount {
 
     private final ConsistencyLevel accountLevelConsistency;
 
-    CosmosDatabaseAccount(String id, String eTag, List<String> readRegions, List<String> writeRegions, boolean isMultiWriteAccount, ConsistencyLevel accountLevelConsistency) {
+    CosmosDatabaseAccountResponse(String id, List<String> readRegions, List<String> writeRegions, boolean isMultiWriteAccount, ConsistencyLevel accountLevelConsistency) {
         this.id = id;
-        this.eTag = eTag;
         this.readRegions = readRegions;
         this.writeRegions = writeRegions;
         this.isMultiWriteAccount = isMultiWriteAccount;
@@ -39,15 +39,6 @@ public class CosmosDatabaseAccount {
      * */
     public String getId() {
         return this.id;
-    }
-
-    /**
-     * Returns the entity tag associated with the resource from the Azure Cosmos DB service.
-     *
-     * @return The eTag associated with the database account resource.
-     * */
-    public String getETag() {
-        return this.eTag;
     }
 
     /**
@@ -73,7 +64,7 @@ public class CosmosDatabaseAccount {
      *
      * @return true if the account supports multi-write, false otherwise.
      */
-    public boolean isMultiWriteAccount() {
+    public Boolean isMultiWriteAccount() {
         return this.isMultiWriteAccount;
     }
 
@@ -87,7 +78,7 @@ public class CosmosDatabaseAccount {
     }
 
     static void initialize() {
-        ImplementationBridgeHelpers.CosmosDatabaseAccountHelper.setCosmosDatabaseAccountAccessor(CosmosDatabaseAccount::new);
+        ImplementationBridgeHelpers.CosmosDatabaseAccountResponseHelper.setCosmosDatabaseAccountResponseAccessor(CosmosDatabaseAccountResponse::new);
     }
 
     static { initialize(); }

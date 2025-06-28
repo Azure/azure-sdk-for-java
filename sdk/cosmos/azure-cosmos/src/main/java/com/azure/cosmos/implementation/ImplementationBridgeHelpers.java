@@ -57,7 +57,7 @@ import com.azure.cosmos.models.CosmosClientEncryptionKeyResponse;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.CosmosDatabaseAccount;
+import com.azure.cosmos.models.CosmosDatabaseAccountResponse;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -1903,39 +1903,38 @@ public class ImplementationBridgeHelpers {
         }
     }
 
-    public static final class CosmosDatabaseAccountHelper {
-        private static final AtomicReference<CosmosDatabaseAccountHelper.CosmosDatabaseAccountAccessor> accessor = new AtomicReference<>();
-        private static final AtomicBoolean cosmosDatabaseAccountClassLoaded = new AtomicBoolean(false);
+    public static final class CosmosDatabaseAccountResponseHelper {
+        private static final AtomicReference<CosmosDatabaseAccountResponseAccessor> accessor = new AtomicReference<>();
+        private static final AtomicBoolean cosmosDatabaseAccountResponseClassLoaded = new AtomicBoolean(false);
 
-        private CosmosDatabaseAccountHelper() {}
+        private CosmosDatabaseAccountResponseHelper() {}
 
-        public static void setCosmosDatabaseAccountAccessor(final CosmosDatabaseAccountHelper.CosmosDatabaseAccountAccessor newAccessor) {
+        public static void setCosmosDatabaseAccountResponseAccessor(final CosmosDatabaseAccountResponseAccessor newAccessor) {
             if (!accessor.compareAndSet(null, newAccessor)) {
-                logger.debug("CosmosDatabaseAccountAccessor already initialized!");
+                logger.debug("CosmosDatabaseAccountResponseAccessor already initialized!");
             } else {
-                logger.debug("Setting CosmosDatabaseAccountAccessor...");
-                cosmosDatabaseAccountClassLoaded.set(true);
+                logger.debug("Setting CosmosDatabaseAccountResponseAccessor...");
+                cosmosDatabaseAccountResponseClassLoaded.set(true);
             }
         }
 
-        public static CosmosDatabaseAccountHelper.CosmosDatabaseAccountAccessor getCosmosDatabaseAccountAccessor() {
-            if (!cosmosDatabaseAccountClassLoaded.get()) {
-                logger.debug("Initializing CosmosDatabaseAccountAccessor...");
+        public static CosmosDatabaseAccountResponseAccessor getCosmosDatabaseAccountResponseAccessor() {
+            if (!cosmosDatabaseAccountResponseClassLoaded.get()) {
+                logger.debug("Initializing CosmosDatabaseAccountResponseAccessor...");
                 initializeAllAccessors();
             }
 
-            CosmosDatabaseAccountHelper.CosmosDatabaseAccountAccessor snapshot = accessor.get();
+            CosmosDatabaseAccountResponseAccessor snapshot = accessor.get();
             if (snapshot == null) {
-                logger.error("CosmosDatabaseAccountAccessor is not initialized yet!");
+                logger.error("CosmosDatabaseAccountResponseAccessor is not initialized yet!");
             }
 
             return snapshot;
         }
 
-        public interface CosmosDatabaseAccountAccessor {
-            CosmosDatabaseAccount build(
+        public interface CosmosDatabaseAccountResponseAccessor {
+            CosmosDatabaseAccountResponse build(
                 String id,
-                String eTag,
                 List<String> readableRegions,
                 List<String> writeableRegions,
                 boolean isMultiWriteAccount,

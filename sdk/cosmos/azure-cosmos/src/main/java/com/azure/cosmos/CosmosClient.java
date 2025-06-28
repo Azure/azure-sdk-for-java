@@ -6,7 +6,7 @@ package com.azure.cosmos;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CosmosContainerIdentity;
-import com.azure.cosmos.models.CosmosDatabaseAccount;
+import com.azure.cosmos.models.CosmosDatabaseAccountResponse;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
@@ -226,7 +226,7 @@ public final class CosmosClient implements Closeable {
         }
     }
 
-    CosmosDatabaseAccount blockReadDatabaseAccount(Mono<CosmosDatabaseAccount> databaseAccountMono) {
+    CosmosDatabaseAccountResponse blockReadDatabaseAccount(Mono<CosmosDatabaseAccountResponse> databaseAccountMono) {
         try {
             return databaseAccountMono.block();
         } catch (Exception ex) {
@@ -329,9 +329,9 @@ public final class CosmosClient implements Closeable {
      * Reads the Cosmos database account.
      *
      * @param shouldUseCache whether to use the CosmosClient-internal cache for reading the database account.
-     * @return the {@link CosmosDatabaseAccount} with the read database account.
+     * @return the {@link CosmosDatabaseAccountResponse} with the read database account.
      */
-    public CosmosDatabaseAccount readDatabaseAccount(boolean shouldUseCache) {
+    public CosmosDatabaseAccountResponse readDatabaseAccount(boolean shouldUseCache) {
         return blockReadDatabaseAccount(this.asyncClientWrapper.readDatabaseAccount(shouldUseCache));
     }
 

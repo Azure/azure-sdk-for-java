@@ -75,7 +75,7 @@ import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerIdentity;
-import com.azure.cosmos.models.CosmosDatabaseAccount;
+import com.azure.cosmos.models.CosmosDatabaseAccountResponse;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -186,8 +186,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private static final ImplementationBridgeHelpers.ReadConsistencyStrategyHelper.ReadConsistencyStrategyAccessor readConsistencyStrategyAccessor =
         ImplementationBridgeHelpers.ReadConsistencyStrategyHelper.getReadConsistencyStrategyAccessor();
 
-    private static final ImplementationBridgeHelpers.CosmosDatabaseAccountHelper.CosmosDatabaseAccountAccessor databaseAccountAccessor =
-        ImplementationBridgeHelpers.CosmosDatabaseAccountHelper.getCosmosDatabaseAccountAccessor();
+    private static final ImplementationBridgeHelpers.CosmosDatabaseAccountResponseHelper.CosmosDatabaseAccountResponseAccessor databaseAccountAccessor =
+        ImplementationBridgeHelpers.CosmosDatabaseAccountResponseHelper.getCosmosDatabaseAccountResponseAccessor();
 
     private static final String tempMachineId = "uuid:" + UUIDs.nonBlockingRandomUUID();
     private static final AtomicInteger activeClientsCnt = new AtomicInteger(0);
@@ -6278,7 +6278,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Mono<CosmosDatabaseAccount> readDatabaseAccount(boolean shouldUseCache) {
+    public Mono<CosmosDatabaseAccountResponse> readDatabaseAccount(boolean shouldUseCache) {
 
         if (shouldUseCache) {
             return Mono.just(this.globalEndpointManager.getLatestDatabaseAccount())
@@ -6298,7 +6298,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                     return Mono.just(databaseAccountAccessor.build(
                         databaseAccount.getId(),
-                        databaseAccount.getETag(),
                         readableRegions,
                         writeableRegions,
                         databaseAccount.getEnableMultipleWriteLocations(),
@@ -6323,7 +6322,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                     return Mono.just(databaseAccountAccessor.build(
                         databaseAccount.getId(),
-                        databaseAccount.getETag(),
                         readableRegions,
                         writeableRegions,
                         databaseAccount.getEnableMultipleWriteLocations(),

@@ -27,7 +27,7 @@ import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerIdentity;
-import com.azure.cosmos.models.CosmosDatabaseAccount;
+import com.azure.cosmos.models.CosmosDatabaseAccountResponse;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -1647,7 +1647,7 @@ public interface AsyncDocumentClient {
 
     ConsistencyLevel getDefaultConsistencyLevelOfAccount();
 
-    Mono<CosmosDatabaseAccount> readDatabaseAccount(boolean shouldUseCache);
+    Mono<CosmosDatabaseAccountResponse> readDatabaseAccount(boolean shouldUseCache);
 
     /***
      * Configure fault injector provider.
