@@ -350,7 +350,10 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
               thresholds.setFailureHandler(failureHandler)
 
-              telemetryConfig.diagnosticsThresholds(thresholds)
+              telemetryConfig = telemetryConfig
+                .diagnosticsThresholds(thresholds)
+                .diagnosticsHandler(diagnosticsLogger)
+                .enableTransportLevelTracing()
             }
           }
 
