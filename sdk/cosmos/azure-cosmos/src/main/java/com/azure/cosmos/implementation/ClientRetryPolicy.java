@@ -477,7 +477,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         }
 
         if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request, false)) {
-            return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
+            return Mono.just(ShouldRetryResult.NO_RETRY);
         }
 
         return Mono.just(ShouldRetryResult.NO_RETRY);
