@@ -69,6 +69,11 @@ public final class Netty4HandlerNames {
      */
     public static final String READ_ONE = "clientcore.readone";
 
+    /**
+     * Name for the {@link Netty4PipelineCleanupHandler}
+     */
+    public static final String PIPELINE_CLEANUP = "clientcore.pipelinecleanup";
+
     private Netty4HandlerNames() {
     }
 }

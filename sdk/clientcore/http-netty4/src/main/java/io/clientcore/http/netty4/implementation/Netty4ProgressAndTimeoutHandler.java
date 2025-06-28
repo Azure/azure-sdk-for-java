@@ -158,9 +158,10 @@ public final class Netty4ProgressAndTimeoutHandler extends ChannelDuplexHandler 
         // No progress has been made since the last timeout event, channel has timed out.
         if (!closed) {
             disposeWriteTimeoutWatcher();
+            // Fire the exception up the pipeline. The PipelineCleanupHandler will catch this
+            // and release the channel. We do not close the channel here.
             ctx.fireExceptionCaught(new TimeoutException(
                 "Channel write operation timed out after " + writeTimeoutMillis + " milliseconds."));
-            ctx.close();
             closed = true;
         }
     }
@@ -204,7 +205,6 @@ public final class Netty4ProgressAndTimeoutHandler extends ChannelDuplexHandler 
             disposeResponseTimeoutWatcher();
             ctx.fireExceptionCaught(
                 new TimeoutException("Channel response timed out after " + responseTimeoutMillis + " milliseconds."));
-            ctx.close();
             closed = true;
         }
     }
@@ -277,7 +277,6 @@ public final class Netty4ProgressAndTimeoutHandler extends ChannelDuplexHandler 
             disposeReadTimeoutWatcher();
             ctx.fireExceptionCaught(
                 new TimeoutException("Channel read timed out after " + readTimeoutMillis + " milliseconds."));
-            ctx.close();
             closed = true;
         }
     }

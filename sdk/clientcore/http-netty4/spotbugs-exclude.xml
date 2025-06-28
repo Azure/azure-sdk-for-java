@@ -9,6 +9,7 @@
       <Class name="io.clientcore.http.netty4.implementation.Netty4ChannelBinaryData" />
       <Class name="io.clientcore.http.netty4.implementation.Netty4HttpProxyHandler" />
       <Class name="io.clientcore.http.netty4.implementation.Netty4StreamingHttp2Adapter" />
+      <Class name="io.clientcore.http.netty4.implementation.Netty4ConnectionPool" />
     </Or>
   </Match>
   <Match>

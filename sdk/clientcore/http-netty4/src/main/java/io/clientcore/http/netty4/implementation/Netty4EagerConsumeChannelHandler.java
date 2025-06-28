@@ -44,45 +44,40 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        ByteBuf buf = null;
-        if (msg instanceof ByteBufHolder) {
-            buf = ((ByteBufHolder) msg).content();
-        } else if (msg instanceof ByteBuf) {
-            buf = (ByteBuf) msg;
-        }
+        try {
+            ByteBuf buf = (msg instanceof ByteBufHolder) ? ((ByteBufHolder) msg).content() : (ByteBuf) msg;
 
-        if (buf != null && buf.isReadable()) {
-            try {
+            if (buf != null && buf.isReadable()) {
                 byteBufConsumer.accept(buf);
-            } catch (IOException | RuntimeException ex) {
-                ReferenceCountUtil.release(buf);
-                ctx.close();
-                return;
             }
-        }
 
-        if (isHttp2) {
-            lastRead = msg instanceof Http2DataFrame && ((Http2DataFrame) msg).isEndStream();
-        } else {
-            lastRead = msg instanceof LastHttpContent;
+            if (isHttp2) {
+                lastRead = msg instanceof Http2DataFrame && ((Http2DataFrame) msg).isEndStream();
+            } else {
+                lastRead = msg instanceof LastHttpContent;
+            }
+            ctx.fireChannelRead(msg);
+
+        } catch (IOException | RuntimeException ex) {
+            ReferenceCountUtil.release(msg);
+            ctx.fireExceptionCaught(ex);
+            cleanup(ctx);
         }
-        ctx.fireChannelRead(msg);
     }
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
         ctx.fireChannelReadComplete();
         if (lastRead) {
-            latch.countDown();
-            ctx.close();
+            cleanup(ctx);
         }
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         this.exception = cause;
-        latch.countDown();
-        ctx.close();
+        ctx.fireExceptionCaught(cause);
+        cleanup(ctx);
     }
 
     Throwable channelException() {
@@ -92,13 +87,21 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
     // TODO (alzimmer): Are the latch countdowns needed for unregistering and inactivity?
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) {
-        latch.countDown();
+        cleanup(ctx);
         ctx.fireChannelUnregistered();
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
-        latch.countDown();
+        cleanup(ctx);
         ctx.fireChannelInactive();
+    }
+
+    private void cleanup(ChannelHandlerContext ctx) {
+        if (ctx.pipeline().get(Netty4EagerConsumeChannelHandler.class) != null) {
+            ctx.pipeline().remove(this);
+        }
+
+        latch.countDown();
     }
 }

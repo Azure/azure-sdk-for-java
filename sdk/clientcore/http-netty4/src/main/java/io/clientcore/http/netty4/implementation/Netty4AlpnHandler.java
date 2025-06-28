@@ -131,4 +131,11 @@ public final class Netty4AlpnHandler extends ApplicationProtocolNegotiationHandl
             throw new IllegalStateException("unknown protocol: " + protocol);
         }
     }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        setOrSuppressError(errorReference, cause);
+        ctx.fireExceptionCaught(cause);
+        latch.countDown();
+    }
 }
