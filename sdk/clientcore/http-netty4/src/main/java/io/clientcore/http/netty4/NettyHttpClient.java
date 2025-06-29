@@ -19,7 +19,6 @@ import io.clientcore.http.netty4.implementation.Netty4AlpnHandler;
 import io.clientcore.http.netty4.implementation.Netty4ChannelBinaryData;
 import io.clientcore.http.netty4.implementation.Netty4ConnectionPool;
 import io.clientcore.http.netty4.implementation.Netty4EagerConsumeChannelHandler;
-import io.clientcore.http.netty4.implementation.Netty4HandlerNames;
 import io.clientcore.http.netty4.implementation.Netty4PipelineCleanupHandler;
 import io.clientcore.http.netty4.implementation.Netty4ProgressAndTimeoutHandler;
 import io.clientcore.http.netty4.implementation.Netty4ResponseHandler;
@@ -43,10 +42,12 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static io.clientcore.core.utils.ServerSentEventUtils.attemptRetry;
 import static io.clientcore.core.utils.ServerSentEventUtils.processTextEventStream;
+import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.ALPN;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.HTTP_CODEC;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.HTTP_RESPONSE;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.PIPELINE_CLEANUP;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.PROGRESS_AND_TIMEOUT;
+import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.SSL;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.awaitLatch;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.createCodec;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.sendHttp11Request;
@@ -265,7 +266,7 @@ class NettyHttpClient implements HttpClient {
         // reacts to the result of the ALPN negotiation that happened during the SSL handshake.
         if (isHttps) {
             // For HTTPS, we delegate the addition of the response handler and codec to the ALPN handler.
-            pipeline.addAfter(Netty4HandlerNames.SSL_INITIALIZER, Netty4HandlerNames.ALPN,
+            pipeline.addAfter(SSL, ALPN,
                 new Netty4AlpnHandler(request, responseReference, errorReference, latch));
         } else {
             // If there isn't an SslHandler, we can send the request immediately.
