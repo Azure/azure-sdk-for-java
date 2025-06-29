@@ -13,14 +13,14 @@ public final class BackendReconnectPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackendReconnectProperties model
-            = BinaryData.fromString("{\"after\":\"PT208H13M46S\"}").toObject(BackendReconnectProperties.class);
-        Assertions.assertEquals(Duration.parse("PT208H13M46S"), model.after());
+            = BinaryData.fromString("{\"after\":\"PT78H35M38S\"}").toObject(BackendReconnectProperties.class);
+        Assertions.assertEquals(Duration.parse("PT78H35M38S"), model.after());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackendReconnectProperties model = new BackendReconnectProperties().withAfter(Duration.parse("PT208H13M46S"));
+        BackendReconnectProperties model = new BackendReconnectProperties().withAfter(Duration.parse("PT78H35M38S"));
         model = BinaryData.fromObject(model).toObject(BackendReconnectProperties.class);
-        Assertions.assertEquals(Duration.parse("PT208H13M46S"), model.after());
+        Assertions.assertEquals(Duration.parse("PT78H35M38S"), model.after());
     }
 }

@@ -14,6 +14,8 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.util.Arrays;
 
+import static com.azure.tools.checkstyle.checks.DenyListedWordsCheck.ERROR_MESSAGE_TEMPLATE;
+
 public class DenyListedWordsCheckTest extends AbstractModuleTestSupport {
     private Checker checker;
 
@@ -36,8 +38,8 @@ public class DenyListedWordsCheckTest extends AbstractModuleTestSupport {
     @Test
     public void denyListedWordsTestData() throws Exception {
         String[] expected = {
-            expectedErrorMessage(3, 5, String.format(DenyListedWordsCheck.ERROR_MESSAGE, "errorHTTPMethod", "URL, HTTP, XML")),
-            expectedErrorMessage(9, 5, String.format(DenyListedWordsCheck.ERROR_MESSAGE, "invalidXMLMethod", "URL, HTTP, XML"))
+            expectedErrorMessage(3, 5, "errorHTTPMethod" + ERROR_MESSAGE_TEMPLATE + "URL, HTTP, XML"),
+            expectedErrorMessage(9, 5, "invalidXMLMethod" + ERROR_MESSAGE_TEMPLATE + "URL, HTTP, XML")
         };
         verify(checker, getPath("DenyListedWordsTestData.java"), expected);
     }

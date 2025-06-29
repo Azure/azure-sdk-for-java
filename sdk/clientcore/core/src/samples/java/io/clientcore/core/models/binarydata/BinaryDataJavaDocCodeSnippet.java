@@ -4,6 +4,7 @@
 package io.clientcore.core.models.binarydata;
 
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.Person;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.json.JsonSerializer;
@@ -103,8 +104,11 @@ public class BinaryDataJavaDocCodeSnippet {
      */
     public void fromFile() {
         // BEGIN: io.clientcore.core.util.BinaryData.fromFile
-        BinaryData binaryData = BinaryData.fromFile(new File("path/to/file").toPath());
-        System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
+        try (BinaryData binaryData = BinaryData.fromFile(new File("path/to/file").toPath())) {
+            System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
+        } catch (CoreException ex) {
+            System.out.println("Error reading file: " + ex);
+        }
         // END: io.clientcore.core.util.BinaryData.fromFile
     }
 
@@ -113,8 +117,11 @@ public class BinaryDataJavaDocCodeSnippet {
      */
     public void fromFileWithChunkSize() {
         // BEGIN: io.clientcore.core.util.BinaryData.fromFile#Path-int
-        BinaryData binaryData = BinaryData.fromFile(new File("path/to/file").toPath(), 8092);
-        System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
+        try (BinaryData binaryData = BinaryData.fromFile(new File("path/to/file").toPath(), 8092)) {
+            System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
+        } catch (CoreException ex) {
+            System.out.println("Error reading file: " + ex);
+        }
         // END: io.clientcore.core.util.BinaryData.fromFile#Path-int
     }
 
@@ -125,9 +132,13 @@ public class BinaryDataJavaDocCodeSnippet {
         // BEGIN: io.clientcore.core.util.BinaryData.fromFile#Path-Long-Long
         long position = 1024;
         long length = 100 * 1048;
-        BinaryData binaryData = BinaryData.fromFile(
-            new File("path/to/file").toPath(), position, length);
-        System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
+
+        try (BinaryData binaryData = BinaryData.fromFile(new File("path/to/file").toPath(), position, length)) {
+            System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
+        } catch (CoreException ex) {
+            System.out.println("Error reading file: " + ex);
+        }
+
         // END: io.clientcore.core.util.BinaryData.fromFile#Path-Long-Long
     }
 
@@ -139,9 +150,13 @@ public class BinaryDataJavaDocCodeSnippet {
         long position = 1024;
         long length = 100 * 1048;
         int chunkSize = 8092;
-        BinaryData binaryData = BinaryData.fromFile(
-            new File("path/to/file").toPath(), position, length, chunkSize);
-        System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
+        try (BinaryData binaryData = BinaryData.fromFile(
+            new File("path/to/file").toPath(), position, length, chunkSize)) {
+            System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
+        } catch (CoreException ex) {
+            System.out.println("Error reading file: " + ex);
+        }
+
         // END: io.clientcore.core.util.BinaryData.fromFile#Path-Long-Long-int
     }
 
@@ -181,24 +196,27 @@ public class BinaryDataJavaDocCodeSnippet {
     /**
      * Codesnippets for {@link BinaryData#toObject(Type)}.
      */
-    public void toObjectTypeDefaultJsonSerializer() throws IOException {
+    public void toObjectTypeDefaultJsonSerializer() {
         // BEGIN: io.clientcore.core.util.BinaryData.toObject#Type
         final Person data = new Person().setName("John");
 
         // Ensure your classpath have the Serializer to serialize the object which implement implement
         // io.clientcore.core.serializer.util.JsonSerializer interface.
         // Or use the provided libraries for this.
-        BinaryData binaryData = BinaryData.fromObject(data);
 
-        Person person = binaryData.toObject(Person.class);
-        System.out.println(person.getName());
+        try (BinaryData binaryData = BinaryData.fromObject(data)) {
+            Person person = binaryData.toObject(Person.class);
+            System.out.println(person.getName());
+        } catch (CoreException e) {
+            System.out.println("Error reading content or deserializing object: " + e);
+        }
         // END: io.clientcore.core.util.BinaryData.toObject#Type
     }
 
     /**
      * Codesnippets for {@link BinaryData#toObject(Type)}.
      */
-    public void toObjectTypeDefaultJsonSerializerWithGenerics() throws IOException {
+    public void toObjectTypeDefaultJsonSerializerWithGenerics() {
         // BEGIN: io.clientcore.core.util.BinaryData.toObject#Type-generic
         final Person person1 = new Person().setName("John");
         final Person person2 = new Person().setName("Jack");
@@ -210,34 +228,37 @@ public class BinaryDataJavaDocCodeSnippet {
         // Ensure your classpath have the Serializer to serialize the object which implement implement
         // io.clientcore.core.serializer.util.JsonSerializer interface.
         // Or use the provided libraries for this.
-        BinaryData binaryData = BinaryData.fromObject(personList);
+        try (BinaryData binaryData = BinaryData.fromObject(personList)) {
 
-        // Creation of the ParameterizedType could be replaced with a utility method that returns a Type based on the
-        // type arguments and raw type passed.
-        List<Person> persons = binaryData.toObject(new ParameterizedType() {
-            @Override
-            public Type[] getActualTypeArguments() {
-                return new Type[] { Person.class };
-            }
+            // Creation of the ParameterizedType could be replaced with a utility method that returns a Type based on the
+            // type arguments and raw type passed.
+            List<Person> persons = binaryData.toObject(new ParameterizedType() {
+                @Override
+                public Type[] getActualTypeArguments() {
+                    return new Type[]{Person.class};
+                }
 
-            @Override
-            public Type getRawType() {
-                return List.class;
-            }
+                @Override
+                public Type getRawType() {
+                    return List.class;
+                }
 
-            @Override
-            public Type getOwnerType() {
-                return null;
-            }
-        });
-        persons.forEach(person -> System.out.println(person.getName()));
+                @Override
+                public Type getOwnerType() {
+                    return null;
+                }
+            });
+            persons.forEach(person -> System.out.println(person.getName()));
+        } catch (CoreException e) {
+            System.out.println("Error reading content or deserializing object: " + e);
+        }
         // END: io.clientcore.core.util.BinaryData.toObject#Type-generic
     }
 
     /**
      * Codesnippets for {@link BinaryData#toObject(Type, ObjectSerializer)}.
      */
-    public void toObjectTypeObjectSerializer() throws IOException {
+    public void toObjectTypeObjectSerializer() {
         // BEGIN: io.clientcore.core.util.BinaryData.toObject#Type-ObjectSerializer
         final Person data = new Person().setName("John");
 
@@ -253,7 +274,7 @@ public class BinaryDataJavaDocCodeSnippet {
     /**
      * Codesnippets for {@link BinaryData#toObject(Type, ObjectSerializer)} that uses generics.
      */
-    public void toObjectTypeObjectSerializerWithGenerics() throws IOException {
+    public void toObjectTypeObjectSerializerWithGenerics() {
         // BEGIN: io.clientcore.core.util.BinaryData.toObject#Type-ObjectSerializer-generic
         final Person person1 = new Person().setName("John");
         final Person person2 = new Person().setName("Jack");
@@ -291,14 +312,19 @@ public class BinaryDataJavaDocCodeSnippet {
      * Codesnippets for {@link BinaryData#toStream()}.
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public void toStream() throws IOException {
+    public void toStream() {
         // BEGIN: io.clientcore.core.util.BinaryData.toStream
         final byte[] data = "Some Data".getBytes(StandardCharsets.UTF_8);
-        BinaryData binaryData = BinaryData.fromStream(new ByteArrayInputStream(data), (long) data.length);
-        final byte[] bytes = new byte[data.length];
-        try (InputStream inputStream = binaryData.toStream()) {
-            inputStream.read(bytes, 0, data.length);
-            System.out.println(new String(bytes));
+        try (BinaryData binaryData = BinaryData.fromStream(new ByteArrayInputStream(data), (long) data.length)) {
+            final byte[] bytes = new byte[data.length];
+            try (InputStream inputStream = binaryData.toStream()) {
+                inputStream.read(bytes, 0, data.length);
+                System.out.println(new String(bytes));
+            }
+        } catch (CoreException ex) {
+            System.out.println("Error reading BinaryData content");
+        } catch (IOException e) {
+            System.out.println("Error reading from content stream");
         }
         // END: io.clientcore.core.util.BinaryData.toStream
     }
@@ -309,10 +335,15 @@ public class BinaryDataJavaDocCodeSnippet {
     public void toReadOnlyByteBuffer() {
         // BEGIN: io.clientcore.coreutil.BinaryData.toByteBuffer
         final byte[] data = "Some Data".getBytes(StandardCharsets.UTF_8);
-        BinaryData binaryData = BinaryData.fromBytes(data);
-        final byte[] bytes = new byte[data.length];
-        binaryData.toByteBuffer().get(bytes, 0, data.length);
-        System.out.println(new String(bytes));
+        final ByteArrayInputStream inputStream = new ByteArrayInputStream(data);
+
+        try (BinaryData binaryData = BinaryData.fromStream(inputStream)) {
+            final byte[] bytes = new byte[data.length];
+            binaryData.toByteBuffer().get(bytes, 0, data.length);
+            System.out.println(new String(bytes));
+        } catch (CoreException ex) {
+            System.out.println("Error reading BinaryData content");
+        }
         // END: io.clientcore.coreutil.BinaryData.toByteBuffer
     }
 
@@ -323,13 +354,19 @@ public class BinaryDataJavaDocCodeSnippet {
     public void replayablity() {
         // BEGIN: io.clientcore.coreutil.BinaryData.replayability
         BinaryData binaryData = binaryDataProducer();
+        try {
 
-        if (!binaryData.isReplayable()) {
-            binaryData = binaryData.toReplayableBinaryData();
+            if (!binaryData.isReplayable()) {
+                binaryData = binaryData.toReplayableBinaryData();
+            }
+
+            streamConsumer(binaryData.toStream());
+            streamConsumer(binaryData.toStream());
+        } catch (CoreException ex) {
+            System.out.println("Error reading BinaryData content");
+        } finally {
+            binaryData.close();
         }
-
-        streamConsumer(binaryData.toStream());
-        streamConsumer(binaryData.toStream());
         // END: io.clientcore.coreutil.BinaryData.replayability
     }
 

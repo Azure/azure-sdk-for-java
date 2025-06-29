@@ -1,14 +1,16 @@
 # Release History
 
-## 1.56.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.55.5 (2025-06-26)
 
 ### Other Changes
+
+- Upgraded Jackson Core from `2.18.3` to `2.18.4.1` to resolve multi-release JAR issues with Android projects.
+
+## 1.55.4 (2025-06-05)
+
+### Other Changes
+
+- Updated Jackson dependencies from `2.17.2` to `2.18.3`.
 
 ## 1.55.3 (2025-03-10)
 

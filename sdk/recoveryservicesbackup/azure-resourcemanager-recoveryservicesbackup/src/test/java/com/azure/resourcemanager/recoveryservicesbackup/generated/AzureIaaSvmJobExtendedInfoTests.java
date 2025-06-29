@@ -18,62 +18,53 @@ public final class AzureIaaSvmJobExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureIaaSvmJobExtendedInfo model = BinaryData.fromString(
-            "{\"tasksList\":[{\"taskId\":\"qdunvmnnrwrbior\",\"startTime\":\"2021-10-04T07:28:45Z\",\"endTime\":\"2021-08-10T02:45:15Z\",\"instanceId\":\"jhhgdnhxmsi\",\"duration\":\"PT132H45M45S\",\"status\":\"iloxggdufiq\",\"progressPercentage\":88.44245570295712,\"taskExecutionDetails\":\"zaofjchvcyy\"},{\"taskId\":\"fgdo\",\"startTime\":\"2021-02-19T09:04:20Z\",\"endTime\":\"2021-03-25T23:54:59Z\",\"instanceId\":\"p\",\"duration\":\"PT52H49M10S\",\"status\":\"oqonma\",\"progressPercentage\":21.281080006106546,\"taskExecutionDetails\":\"izsh\"}],\"propertyBag\":{\"mblrrilbywd\":\"impevf\",\"n\":\"smiccwrwfscj\"},\"internalPropertyBag\":{\"wb\":\"zqujizdvoqytiby\",\"vutpthjoxo\":\"lgy\",\"pi\":\"smsks\"},\"progressPercentage\":19.47377395997789,\"estimatedRemainingDuration\":\"jxkcgxxlxsff\",\"dynamicErrorMessage\":\"vizqzdwl\"}")
+            "{\"tasksList\":[{\"taskId\":\"epn\",\"startTime\":\"2021-05-29T06:21:05Z\",\"endTime\":\"2021-05-09T12:03:02Z\",\"instanceId\":\"gibbdaxc\",\"duration\":\"PT190H25M17S\",\"status\":\"zauorsuk\",\"progressPercentage\":26.03201613518045,\"taskExecutionDetails\":\"plhlvnuuepzlrp\"}],\"propertyBag\":{\"nnrwrbiork\":\"soldweyuqdunv\",\"xmsivfomiloxggdu\":\"alywjhhgdn\"},\"internalPropertyBag\":{\"hvcyyysfg\":\"ndieuzaofj\"},\"progressPercentage\":99.77033821162951,\"estimatedRemainingDuration\":\"biipuip\",\"dynamicErrorMessage\":\"qonmacj\"}")
             .toObject(AzureIaaSvmJobExtendedInfo.class);
-        Assertions.assertEquals("qdunvmnnrwrbior", model.tasksList().get(0).taskId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-04T07:28:45Z"), model.tasksList().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-10T02:45:15Z"), model.tasksList().get(0).endTime());
-        Assertions.assertEquals("jhhgdnhxmsi", model.tasksList().get(0).instanceId());
-        Assertions.assertEquals(Duration.parse("PT132H45M45S"), model.tasksList().get(0).duration());
-        Assertions.assertEquals("iloxggdufiq", model.tasksList().get(0).status());
-        Assertions.assertEquals(88.44245570295712D, model.tasksList().get(0).progressPercentage());
-        Assertions.assertEquals("zaofjchvcyy", model.tasksList().get(0).taskExecutionDetails());
-        Assertions.assertEquals("impevf", model.propertyBag().get("mblrrilbywd"));
-        Assertions.assertEquals("zqujizdvoqytiby", model.internalPropertyBag().get("wb"));
-        Assertions.assertEquals(19.47377395997789D, model.progressPercentage());
-        Assertions.assertEquals("jxkcgxxlxsff", model.estimatedRemainingDuration());
-        Assertions.assertEquals("vizqzdwl", model.dynamicErrorMessage());
+        Assertions.assertEquals("epn", model.tasksList().get(0).taskId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-29T06:21:05Z"), model.tasksList().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-09T12:03:02Z"), model.tasksList().get(0).endTime());
+        Assertions.assertEquals("gibbdaxc", model.tasksList().get(0).instanceId());
+        Assertions.assertEquals(Duration.parse("PT190H25M17S"), model.tasksList().get(0).duration());
+        Assertions.assertEquals("zauorsuk", model.tasksList().get(0).status());
+        Assertions.assertEquals(26.03201613518045D, model.tasksList().get(0).progressPercentage());
+        Assertions.assertEquals("plhlvnuuepzlrp", model.tasksList().get(0).taskExecutionDetails());
+        Assertions.assertEquals("soldweyuqdunv", model.propertyBag().get("nnrwrbiork"));
+        Assertions.assertEquals("ndieuzaofj", model.internalPropertyBag().get("hvcyyysfg"));
+        Assertions.assertEquals(99.77033821162951D, model.progressPercentage());
+        Assertions.assertEquals("biipuip", model.estimatedRemainingDuration());
+        Assertions.assertEquals("qonmacj", model.dynamicErrorMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureIaaSvmJobExtendedInfo model = new AzureIaaSvmJobExtendedInfo()
-            .withTasksList(Arrays.asList(
-                new AzureIaaSvmJobTaskDetails().withTaskId("qdunvmnnrwrbior")
-                    .withStartTime(OffsetDateTime.parse("2021-10-04T07:28:45Z"))
-                    .withEndTime(OffsetDateTime.parse("2021-08-10T02:45:15Z"))
-                    .withInstanceId("jhhgdnhxmsi")
-                    .withDuration(Duration.parse("PT132H45M45S"))
-                    .withStatus("iloxggdufiq")
-                    .withProgressPercentage(88.44245570295712D)
-                    .withTaskExecutionDetails("zaofjchvcyy"),
-                new AzureIaaSvmJobTaskDetails().withTaskId("fgdo")
-                    .withStartTime(OffsetDateTime.parse("2021-02-19T09:04:20Z"))
-                    .withEndTime(OffsetDateTime.parse("2021-03-25T23:54:59Z"))
-                    .withInstanceId("p")
-                    .withDuration(Duration.parse("PT52H49M10S"))
-                    .withStatus("oqonma")
-                    .withProgressPercentage(21.281080006106546D)
-                    .withTaskExecutionDetails("izsh")))
-            .withPropertyBag(mapOf("mblrrilbywd", "impevf", "n", "smiccwrwfscj"))
-            .withInternalPropertyBag(mapOf("wb", "zqujizdvoqytiby", "vutpthjoxo", "lgy", "pi", "smsks"))
-            .withProgressPercentage(19.47377395997789D)
-            .withEstimatedRemainingDuration("jxkcgxxlxsff")
-            .withDynamicErrorMessage("vizqzdwl");
+            .withTasksList(Arrays.asList(new AzureIaaSvmJobTaskDetails().withTaskId("epn")
+                .withStartTime(OffsetDateTime.parse("2021-05-29T06:21:05Z"))
+                .withEndTime(OffsetDateTime.parse("2021-05-09T12:03:02Z"))
+                .withInstanceId("gibbdaxc")
+                .withDuration(Duration.parse("PT190H25M17S"))
+                .withStatus("zauorsuk")
+                .withProgressPercentage(26.03201613518045D)
+                .withTaskExecutionDetails("plhlvnuuepzlrp")))
+            .withPropertyBag(mapOf("nnrwrbiork", "soldweyuqdunv", "xmsivfomiloxggdu", "alywjhhgdn"))
+            .withInternalPropertyBag(mapOf("hvcyyysfg", "ndieuzaofj"))
+            .withProgressPercentage(99.77033821162951D)
+            .withEstimatedRemainingDuration("biipuip")
+            .withDynamicErrorMessage("qonmacj");
         model = BinaryData.fromObject(model).toObject(AzureIaaSvmJobExtendedInfo.class);
-        Assertions.assertEquals("qdunvmnnrwrbior", model.tasksList().get(0).taskId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-04T07:28:45Z"), model.tasksList().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-10T02:45:15Z"), model.tasksList().get(0).endTime());
-        Assertions.assertEquals("jhhgdnhxmsi", model.tasksList().get(0).instanceId());
-        Assertions.assertEquals(Duration.parse("PT132H45M45S"), model.tasksList().get(0).duration());
-        Assertions.assertEquals("iloxggdufiq", model.tasksList().get(0).status());
-        Assertions.assertEquals(88.44245570295712D, model.tasksList().get(0).progressPercentage());
-        Assertions.assertEquals("zaofjchvcyy", model.tasksList().get(0).taskExecutionDetails());
-        Assertions.assertEquals("impevf", model.propertyBag().get("mblrrilbywd"));
-        Assertions.assertEquals("zqujizdvoqytiby", model.internalPropertyBag().get("wb"));
-        Assertions.assertEquals(19.47377395997789D, model.progressPercentage());
-        Assertions.assertEquals("jxkcgxxlxsff", model.estimatedRemainingDuration());
-        Assertions.assertEquals("vizqzdwl", model.dynamicErrorMessage());
+        Assertions.assertEquals("epn", model.tasksList().get(0).taskId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-29T06:21:05Z"), model.tasksList().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-09T12:03:02Z"), model.tasksList().get(0).endTime());
+        Assertions.assertEquals("gibbdaxc", model.tasksList().get(0).instanceId());
+        Assertions.assertEquals(Duration.parse("PT190H25M17S"), model.tasksList().get(0).duration());
+        Assertions.assertEquals("zauorsuk", model.tasksList().get(0).status());
+        Assertions.assertEquals(26.03201613518045D, model.tasksList().get(0).progressPercentage());
+        Assertions.assertEquals("plhlvnuuepzlrp", model.tasksList().get(0).taskExecutionDetails());
+        Assertions.assertEquals("soldweyuqdunv", model.propertyBag().get("nnrwrbiork"));
+        Assertions.assertEquals("ndieuzaofj", model.internalPropertyBag().get("hvcyyysfg"));
+        Assertions.assertEquals(99.77033821162951D, model.progressPercentage());
+        Assertions.assertEquals("biipuip", model.estimatedRemainingDuration());
+        Assertions.assertEquals("qonmacj", model.dynamicErrorMessage());
     }
 
     // Use "Map.of" if available

@@ -4,6 +4,7 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class DocumentBuildMode extends ExpandableStringEnum<DocumentBuildM
     /**
      * Target documents with similar visual templates.
      */
+    @Generated
     public static final DocumentBuildMode TEMPLATE = fromString("template");
 
     /**
      * Support documents with diverse visual templates.
      */
+    @Generated
     public static final DocumentBuildMode NEURAL = fromString("neural");
 
     /**
@@ -26,6 +29,7 @@ public final class DocumentBuildMode extends ExpandableStringEnum<DocumentBuildM
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DocumentBuildMode() {
     }
@@ -36,6 +40,7 @@ public final class DocumentBuildMode extends ExpandableStringEnum<DocumentBuildM
      * @param name a name to look for.
      * @return the corresponding DocumentBuildMode.
      */
+    @Generated
     public static DocumentBuildMode fromString(String name) {
         return fromString(name, DocumentBuildMode.class);
     }
@@ -45,6 +50,7 @@ public final class DocumentBuildMode extends ExpandableStringEnum<DocumentBuildM
      * 
      * @return known DocumentBuildMode values.
      */
+    @Generated
     public static Collection<DocumentBuildMode> values() {
         return values(DocumentBuildMode.class);
     }

@@ -64,7 +64,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "StorageManagementCli")
+    @ServiceInterface(name = "StorageManagementClientQueues")
     public interface QueuesService {
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/queueServices/default/queues/{queueName}")

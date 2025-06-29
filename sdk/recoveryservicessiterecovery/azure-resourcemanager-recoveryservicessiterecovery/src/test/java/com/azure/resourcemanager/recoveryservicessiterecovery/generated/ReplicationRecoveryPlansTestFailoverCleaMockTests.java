@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryPlan;
@@ -24,44 +24,45 @@ public final class ReplicationRecoveryPlansTestFailoverCleaMockTests {
     @Test
     public void testTestFailoverCleanup() throws Exception {
         String responseStr
-            = "{\"properties\":{\"friendlyName\":\"lbiqq\",\"primaryFabricId\":\"arxknfvbsym\",\"primaryFabricFriendlyName\":\"bahdbtjm\",\"recoveryFabricId\":\"zonrklbizrxh\",\"recoveryFabricFriendlyName\":\"fvpanloqovvcxgq\",\"failoverDeploymentModel\":\"uirgopgzatucu\",\"replicationProviders\":[\"uzvyjxuxchquoqhq\",\"csksxqf\",\"lrvuvdagv\"],\"allowedOperations\":[\"d\"],\"lastPlannedFailoverTime\":\"2021-04-28T08:18:31Z\",\"lastUnplannedFailoverTime\":\"2021-02-19T21:32:29Z\",\"lastTestFailoverTime\":\"2020-12-25T04:39:30Z\",\"currentScenario\":{\"scenarioName\":\"odiijcsapqhip\",\"jobId\":\"snivnmevljbcu\",\"startTime\":\"2021-08-10T00:42:25Z\"},\"currentScenarioStatus\":\"pjf\",\"currentScenarioStatusDescription\":\"wkseodvlmd\",\"groups\":[{\"groupType\":\"Failover\",\"replicationProtectedItems\":[{},{},{}],\"startGroupActions\":[{\"actionName\":\"u\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}],\"endGroupActions\":[{\"actionName\":\"yg\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"bmum\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"jvvcrsmwojm\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"wcvumnrut\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}]},{\"groupType\":\"Boot\",\"replicationProtectedItems\":[{}],\"startGroupActions\":[{\"actionName\":\"f\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"vltjo\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}],\"endGroupActions\":[{\"actionName\":\"vpkbz\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"tnowpajfhxsmu\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}]}],\"providerSpecificDetails\":[{\"instanceType\":\"RecoveryPlanProviderSpecificDetails\"},{\"instanceType\":\"RecoveryPlanProviderSpecificDetails\"},{\"instanceType\":\"RecoveryPlanProviderSpecificDetails\"}]},\"location\":\"dzglmuuzpsuhsyp\",\"id\":\"muldhfr\",\"name\":\"rkqpyfjxkby\",\"type\":\"sbuqfm\"}";
+            = "{\"properties\":{\"friendlyName\":\"fyftk\",\"primaryFabricId\":\"bdljykiu\",\"primaryFabricFriendlyName\":\"gfyinmajjzpl\",\"recoveryFabricId\":\"wfkflcvbzkb\",\"recoveryFabricFriendlyName\":\"uafbddm\",\"failoverDeploymentModel\":\"qynmldhg\",\"replicationProviders\":[\"htagpyu\",\"dqhqg\"],\"allowedOperations\":[\"ypoosfxzob\"],\"lastPlannedFailoverTime\":\"2021-09-08T13:04:19Z\",\"lastUnplannedFailoverTime\":\"2021-03-23T08:38:17Z\",\"lastTestFailoverTime\":\"2021-12-02T00:00:01Z\",\"currentScenario\":{\"scenarioName\":\"xgllmdeoubvfxi\",\"jobId\":\"emncjhmvvzeai\",\"startTime\":\"2021-05-26T12:22:46Z\"},\"currentScenarioStatus\":\"sjtfqwlbeqczzs\",\"currentScenarioStatusDescription\":\"ropuqgiscgkoci\",\"groups\":[{\"groupType\":\"Failover\",\"replicationProtectedItems\":[{},{}],\"startGroupActions\":[{\"actionName\":\"rmewgglq\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}],\"endGroupActions\":[{\"actionName\":\"kckyhxu\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"nbcpiadjslvxs\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"lcd\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}]},{\"groupType\":\"Failover\",\"replicationProtectedItems\":[{},{},{}],\"startGroupActions\":[{\"actionName\":\"iacghygmtbiv\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"zjnrwffzzmxqyj\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"sr\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}],\"endGroupActions\":[{\"actionName\":\"okew\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}]},{\"groupType\":\"Shutdown\",\"replicationProtectedItems\":[{},{}],\"startGroupActions\":[{\"actionName\":\"ye\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"xif\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"uvh\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}],\"endGroupActions\":[{\"actionName\":\"fotwvkuhtdxdco\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}]},{\"groupType\":\"Shutdown\",\"replicationProtectedItems\":[{},{},{},{}],\"startGroupActions\":[{\"actionName\":\"nmcvmxiundif\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"ahtkkccrusrz\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"foqody\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}],\"endGroupActions\":[{\"actionName\":\"yx\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"lvtiploaws\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}]}],\"providerSpecificDetails\":[{\"instanceType\":\"RecoveryPlanProviderSpecificDetails\"},{\"instanceType\":\"RecoveryPlanProviderSpecificDetails\"}]},\"location\":\"lbxnnynjt\",\"id\":\"dfhpelzavohv\",\"name\":\"bncdrchuew\",\"type\":\"liqcbonqjoek\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SiteRecoveryManager manager = SiteRecoveryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RecoveryPlan response = manager.replicationRecoveryPlans()
-            .testFailoverCleanup("p", "addpxqrxipe", "rplf",
+            .testFailoverCleanup("hct", "u", "mzozb",
                 new RecoveryPlanTestFailoverCleanupInput()
-                    .withProperties(new RecoveryPlanTestFailoverCleanupInputProperties().withComments("vmjjfz")),
+                    .withProperties(new RecoveryPlanTestFailoverCleanupInputProperties().withComments("tvughutiqlmv")),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lbiqq", response.properties().friendlyName());
-        Assertions.assertEquals("arxknfvbsym", response.properties().primaryFabricId());
-        Assertions.assertEquals("bahdbtjm", response.properties().primaryFabricFriendlyName());
-        Assertions.assertEquals("zonrklbizrxh", response.properties().recoveryFabricId());
-        Assertions.assertEquals("fvpanloqovvcxgq", response.properties().recoveryFabricFriendlyName());
-        Assertions.assertEquals("uirgopgzatucu", response.properties().failoverDeploymentModel());
-        Assertions.assertEquals("uzvyjxuxchquoqhq", response.properties().replicationProviders().get(0));
-        Assertions.assertEquals("d", response.properties().allowedOperations().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-28T08:18:31Z"),
+        Assertions.assertEquals("fyftk", response.properties().friendlyName());
+        Assertions.assertEquals("bdljykiu", response.properties().primaryFabricId());
+        Assertions.assertEquals("gfyinmajjzpl", response.properties().primaryFabricFriendlyName());
+        Assertions.assertEquals("wfkflcvbzkb", response.properties().recoveryFabricId());
+        Assertions.assertEquals("uafbddm", response.properties().recoveryFabricFriendlyName());
+        Assertions.assertEquals("qynmldhg", response.properties().failoverDeploymentModel());
+        Assertions.assertEquals("htagpyu", response.properties().replicationProviders().get(0));
+        Assertions.assertEquals("ypoosfxzob", response.properties().allowedOperations().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-08T13:04:19Z"),
             response.properties().lastPlannedFailoverTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-19T21:32:29Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-23T08:38:17Z"),
             response.properties().lastUnplannedFailoverTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-25T04:39:30Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-02T00:00:01Z"),
             response.properties().lastTestFailoverTime());
-        Assertions.assertEquals("odiijcsapqhip", response.properties().currentScenario().scenarioName());
-        Assertions.assertEquals("snivnmevljbcu", response.properties().currentScenario().jobId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-10T00:42:25Z"),
+        Assertions.assertEquals("xgllmdeoubvfxi", response.properties().currentScenario().scenarioName());
+        Assertions.assertEquals("emncjhmvvzeai", response.properties().currentScenario().jobId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-26T12:22:46Z"),
             response.properties().currentScenario().startTime());
-        Assertions.assertEquals("pjf", response.properties().currentScenarioStatus());
-        Assertions.assertEquals("wkseodvlmd", response.properties().currentScenarioStatusDescription());
+        Assertions.assertEquals("sjtfqwlbeqczzs", response.properties().currentScenarioStatus());
+        Assertions.assertEquals("ropuqgiscgkoci", response.properties().currentScenarioStatusDescription());
         Assertions.assertEquals(RecoveryPlanGroupType.FAILOVER, response.properties().groups().get(0).groupType());
-        Assertions.assertEquals("u", response.properties().groups().get(0).startGroupActions().get(0).actionName());
-        Assertions.assertEquals("yg", response.properties().groups().get(0).endGroupActions().get(0).actionName());
-        Assertions.assertEquals("dzglmuuzpsuhsyp", response.location());
+        Assertions.assertEquals("rmewgglq",
+            response.properties().groups().get(0).startGroupActions().get(0).actionName());
+        Assertions.assertEquals("kckyhxu", response.properties().groups().get(0).endGroupActions().get(0).actionName());
+        Assertions.assertEquals("lbxnnynjt", response.location());
     }
 }

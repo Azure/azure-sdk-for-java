@@ -103,11 +103,11 @@ public class DefaultServiceBusNamespaceConsumerFactoryTests {
 
         DefaultServiceBusNamespaceConsumerFactory factory = (DefaultServiceBusNamespaceConsumerFactory) this.consumerFactory;
 
-        factory.addCustomizer(builder -> shareClientCalledTimes.getAndIncrement());
-        factory.addSessionReceiverCustomizer(builder -> sessionClientCalledTimes.getAndIncrement());
+        factory.addServiceBusClientBuilderCustomizer(builder -> shareClientCalledTimes.getAndIncrement());
+        factory.addBuilderCustomizer(builder -> sessionClientCalledTimes.getAndIncrement());
 
-        factory.addDedicatedSessionReceiverCustomizer("queue-1", builder -> dedicatedSessionClientCalledTimes.getAndIncrement());
-        factory.addDedicatedSessionReceiverCustomizer("topic-1", builder -> dedicatedSessionClientCalledTimes.getAndIncrement());
+        factory.addBuilderCustomizer("queue-1", builder -> dedicatedSessionClientCalledTimes.getAndIncrement());
+        factory.addBuilderCustomizer("topic-1", builder -> dedicatedSessionClientCalledTimes.getAndIncrement());
 
         factory.createReceiver("queue-1", ServiceBusEntityType.QUEUE);
         factory.createReceiver("queue-2", ServiceBusEntityType.QUEUE);

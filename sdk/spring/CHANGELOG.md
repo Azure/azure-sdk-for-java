@@ -1,8 +1,22 @@
 # Release History
-# (Unreleased)
-Upgrade Spring Boot dependencies version to 3.4.4 and Spring Cloud dependencies version to 2024.0.1
 
-## 5.22.0-beta.1 (Unreleased)
+## 5.23.0-beta.1 (Unreleased)
+
+### Spring Messaging Azure Service Bus
+This section includes changes in the `spring-messaging-azure-servicebus` module.
+
+#### Bugs Fixed
+- Lower the priority of the `EntityType` used by `ServiceBusTemplate`.
+- Fix NPE when using JCA Starter with system Managed Identity.
+
+## 5.22.0 (2025-04-08)
+- This release is compatible with Spring Boot 3.4.0-3.4.4, 3.3.0-3.3.10, 3.2.0-3.2.12, 3.1.0-3.1.12, 3.0.0-3.0.13. (Note: 3.4.x (x>4), 3.3.y (y>10) and 3.2.z (z>12) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2024.0.1, 2023.0.0-2023.0.5, 2022.0.0-2022.0.5. (Note: 2024.0.x(x>1) and 2023.0.y (y>5) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+- Upgrade `azure-sdk-bom` to 1.2.33.
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
@@ -15,6 +29,10 @@ This section includes changes in the `spring-messaging-azure-servicebus` module.
 
 #### Features Added
 - `ServiceBusTemplate` supports request-reply pattern.
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#5220-2025-04-08) for more details.
 
 ## 5.21.0 (2025-03-20)
 - This release is compatible with Spring Boot 3.4.0-3.4.2, 3.3.0-3.3.6, 3.2.0-3.2.12, 3.1.0-3.1.12, 3.0.0-3.0.13. (Note: 3.4.x (x>2), 3.3.y (y>6) and 3.2.z (z>12) should be supported, but they aren't tested with this release.)

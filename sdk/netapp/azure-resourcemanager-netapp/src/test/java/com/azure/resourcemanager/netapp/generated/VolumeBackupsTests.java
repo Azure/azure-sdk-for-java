@@ -12,24 +12,24 @@ public final class VolumeBackupsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeBackups model = BinaryData.fromString(
-            "{\"volumeName\":\"rjreafxts\",\"volumeResourceId\":\"mhjglikkxwslolb\",\"backupsCount\":1224144822,\"policyEnabled\":true}")
+            "{\"volumeName\":\"fpwpjylwbt\",\"volumeResourceId\":\"flsjc\",\"backupsCount\":1421362478,\"policyEnabled\":true}")
             .toObject(VolumeBackups.class);
-        Assertions.assertEquals("rjreafxts", model.volumeName());
-        Assertions.assertEquals("mhjglikkxwslolb", model.volumeResourceId());
-        Assertions.assertEquals(1224144822, model.backupsCount());
-        Assertions.assertEquals(true, model.policyEnabled());
+        Assertions.assertEquals("fpwpjylwbt", model.volumeName());
+        Assertions.assertEquals("flsjc", model.volumeResourceId());
+        Assertions.assertEquals(1421362478, model.backupsCount());
+        Assertions.assertTrue(model.policyEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeBackups model = new VolumeBackups().withVolumeName("rjreafxts")
-            .withVolumeResourceId("mhjglikkxwslolb")
-            .withBackupsCount(1224144822)
+        VolumeBackups model = new VolumeBackups().withVolumeName("fpwpjylwbt")
+            .withVolumeResourceId("flsjc")
+            .withBackupsCount(1421362478)
             .withPolicyEnabled(true);
         model = BinaryData.fromObject(model).toObject(VolumeBackups.class);
-        Assertions.assertEquals("rjreafxts", model.volumeName());
-        Assertions.assertEquals("mhjglikkxwslolb", model.volumeResourceId());
-        Assertions.assertEquals(1224144822, model.backupsCount());
-        Assertions.assertEquals(true, model.policyEnabled());
+        Assertions.assertEquals("fpwpjylwbt", model.volumeName());
+        Assertions.assertEquals("flsjc", model.volumeResourceId());
+        Assertions.assertEquals(1421362478, model.backupsCount());
+        Assertions.assertTrue(model.policyEnabled());
     }
 }

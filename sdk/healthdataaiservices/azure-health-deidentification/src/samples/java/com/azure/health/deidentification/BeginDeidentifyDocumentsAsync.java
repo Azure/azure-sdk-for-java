@@ -29,7 +29,7 @@ public class BeginDeidentifyDocumentsAsync {
                 .setOverwrite(true)
         );
 
-        job.setOperation(DeidentificationOperationType.REDACT);
+        job.setOperationType(DeidentificationOperationType.REDACT);
 
         String jobName = Configuration.getGlobalConfiguration().get("DEID_JOB_NAME", "MyJob-" + Instant.now().toEpochMilli());
         Mono<DeidentificationJob> jobMono = deidentificationClient.beginDeidentifyDocuments(jobName, job)
@@ -45,7 +45,7 @@ public class BeginDeidentifyDocumentsAsync {
             });
 
         jobMono.subscribe(
-            jobResult -> System.out.println(jobResult.getName() + " - " + jobResult.getStatus()),
+            jobResult -> System.out.println(jobResult.getJobName() + " - " + jobResult.getStatus()),
             error -> System.err.println("Error: " + error)
         );
         // END:com.azure.health.deidentification.samples.begin_deidentify_documents_async

@@ -55,6 +55,7 @@ import com.azure.security.keyvault.certificates.models.CertificateOperation;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.CertificatePolicyAction;
 import com.azure.security.keyvault.certificates.models.CertificateProperties;
+import com.azure.security.keyvault.certificates.models.CreateCertificateOptions;
 import com.azure.security.keyvault.certificates.models.DeletedCertificate;
 import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
 import com.azure.security.keyvault.certificates.models.IssuerProperties;
@@ -138,6 +139,7 @@ import static com.azure.security.keyvault.certificates.implementation.KeyVaultCe
  * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy -->
  * <pre>
  * CertificatePolicy certPolicy = new CertificatePolicy&#40;&quot;Self&quot;, &quot;CN=SelfSignedJavaPkcs12&quot;&#41;;
+ *
  * certificateAsyncClient.beginCreateCertificate&#40;&quot;certificateName&quot;, certPolicy&#41;
  *     .subscribe&#40;pollResponse -&gt; &#123;
  *         System.out.println&#40;&quot;---------------------------------------------------------------------------------&quot;&#41;;
@@ -244,7 +246,43 @@ public final class CertificateAsyncClient {
      * requires the certificates/create permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Create certificate is a long running operation. The {@link PollerFlux poller} allows users to automatically
+     * <p>Create certificate is a long-running operation. The {@link PollerFlux poller} allows users to automatically
+     * poll on the create certificate operation status. It is possible to monitor each intermediate poll response during
+     * the poll operation.</p>
+     *
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy -->
+     * <pre>
+     * CertificatePolicy certPolicy = new CertificatePolicy&#40;&quot;Self&quot;, &quot;CN=SelfSignedJavaPkcs12&quot;&#41;;
+     *
+     * certificateAsyncClient.beginCreateCertificate&#40;&quot;certificateName&quot;, certPolicy&#41;
+     *     .subscribe&#40;pollResponse -&gt; &#123;
+     *         System.out.println&#40;&quot;---------------------------------------------------------------------------------&quot;&#41;;
+     *         System.out.println&#40;pollResponse.getStatus&#40;&#41;&#41;;
+     *         System.out.println&#40;pollResponse.getValue&#40;&#41;.getStatus&#40;&#41;&#41;;
+     *         System.out.println&#40;pollResponse.getValue&#40;&#41;.getStatusDetails&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy -->
+     *
+     * @param certificateName The name of the certificate to be created.
+     * @param certificatePolicy The policy of the certificate to be created.
+     * @throws NullPointerException if {@code certificatePolicy} is null.
+     * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
+     * @return A {@link PollerFlux} polling on the create certificate operation status.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy>
+        beginCreateCertificate(String certificateName, CertificatePolicy certificatePolicy) {
+
+        return beginCreateCertificate(certificateName, certificatePolicy, true, null);
+    }
+
+    /**
+     * Creates a new certificate. If this is the first version, the certificate resource is created. This operation
+     * requires the certificates/create permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Create certificate is a long-running operation. The {@link PollerFlux poller} allows users to automatically
      * poll on the create certificate operation status. It is possible to monitor each intermediate poll response during
      * the poll operation.</p>
      *
@@ -252,7 +290,9 @@ public final class CertificateAsyncClient {
      * <pre>
      * CertificatePolicy policy = new CertificatePolicy&#40;&quot;Self&quot;, &quot;CN=SelfSignedJavaPkcs12&quot;&#41;;
      * Map&lt;String, String&gt; tags = new HashMap&lt;&gt;&#40;&#41;;
+     *
      * tags.put&#40;&quot;foo&quot;, &quot;bar&quot;&#41;;
+     *
      * certificateAsyncClient.beginCreateCertificate&#40;&quot;certificateName&quot;, policy, true, tags&#41;
      *     .subscribe&#40;pollResponse -&gt; &#123;
      *         System.out.println&#40;&quot;---------------------------------------------------------------------------------&quot;&#41;;
@@ -264,40 +304,91 @@ public final class CertificateAsyncClient {
      * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map -->
      *
      * @param certificateName The name of the certificate to be created.
-     * @param policy The policy of the certificate to be created.
+     * @param certificatePolicy The policy of the certificate to be created.
      * @param isEnabled The enabled status for the certificate.
-     * @param tags The application specific metadata to set.
-     * @throws NullPointerException if {@code policy} is null.
+     * @param tags The tags to be associated with the certificate.
+     * @throws NullPointerException if {@code certificatePolicy} is null.
      * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
      * @return A {@link PollerFlux} polling on the create certificate operation status.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(
-        String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
+        String certificateName, CertificatePolicy certificatePolicy, Boolean isEnabled, Map<String, String> tags) {
+
+        return beginCreateCertificate(
+            new CreateCertificateOptions(certificateName, certificatePolicy).setEnabled(isEnabled)
+                .setTags(tags)
+                .setCertificateOrderPreserved(false));
+    }
+
+    /**
+     * Creates a new certificate. If this is the first version, the certificate resource is created. This operation
+     * requires the certificates/create permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Create certificate is a long-running operation. The {@link PollerFlux poller} allows users to automatically
+     * poll on the create certificate operation status. It is possible to monitor each intermediate poll response during
+     * the poll operation.</p>
+     *
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#CreateCertificateOptions -->
+     * <pre>
+     * CertificatePolicy certificatePolicy = new CertificatePolicy&#40;&quot;Self&quot;, &quot;CN=SelfSignedJavaPkcs12&quot;&#41;;
+     * Map&lt;String, String&gt; certTags = new HashMap&lt;&gt;&#40;&#41;;
+     *
+     * tags.put&#40;&quot;foo&quot;, &quot;bar&quot;&#41;;
+     *
+     * CreateCertificateOptions createCertificateOptions =
+     *     new CreateCertificateOptions&#40;&quot;certificateName&quot;, new CertificatePolicy&#40;&quot;Self&quot;, &quot;CN=SelfSignedJavaPkcs12&quot;&#41;&#41;
+     *         .setEnabled&#40;true&#41;
+     *         .setTags&#40;certTags&#41;
+     *         .setCertificateOrderPreserved&#40;true&#41;;
+     *
+     * certificateAsyncClient.beginCreateCertificate&#40;createCertificateOptions&#41;
+     *     .subscribe&#40;pollResponse -&gt; &#123;
+     *         System.out.println&#40;&quot;---------------------------------------------------------------------------------&quot;&#41;;
+     *         System.out.println&#40;pollResponse.getStatus&#40;&#41;&#41;;
+     *         System.out.println&#40;pollResponse.getValue&#40;&#41;.getStatus&#40;&#41;&#41;;
+     *         System.out.println&#40;pollResponse.getValue&#40;&#41;.getStatusDetails&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#CreateCertificateOptions -->
+     *
+     * @param createCertificateOptions The configuration options to create a certificate with.
+     * @throws NullPointerException if {@code createCertificateOptions} is {@code null}.
+     * @throws ResourceModifiedException when an invalid certificate policy configuration is provided.
+     * @return A {@link PollerFlux} polling on the create certificate operation status.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy>
+        beginCreateCertificate(CreateCertificateOptions createCertificateOptions) {
 
         try {
-            if (policy == null) {
-                return PollerFlux
-                    .error(LOGGER.logExceptionAsError(new NullPointerException("'policy' cannot be null.")));
+            if (createCertificateOptions == null) {
+                return PollerFlux.error(
+                    LOGGER.logExceptionAsError(new NullPointerException("'createCertificateOptions' cannot be null.")));
             }
 
             return new PollerFlux<>(Duration.ofSeconds(1),
-                ignored -> createCertificateActivation(certificateName, policy, isEnabled, tags),
-                ignored -> certificatePollOperation(certificateName),
-                (ignored1, ignored2) -> certificateCancellationOperation(certificateName),
-                ignored -> fetchCertificateOperation(certificateName));
+                ignored -> createCertificateActivation(createCertificateOptions.getName(),
+                    createCertificateOptions.getPolicy(), createCertificateOptions.isEnabled(),
+                    createCertificateOptions.getTags(), createCertificateOptions.isCertificateOrderPreserved()),
+                ignored -> certificatePollOperation(createCertificateOptions.getName()),
+                (ignored1, ignored2) -> certificateCancellationOperation(createCertificateOptions.getName()),
+                ignored -> fetchCertificateOperation(createCertificateOptions.getName()));
         } catch (RuntimeException e) {
             return PollerFlux.error(e);
         }
     }
 
-    private Mono<CertificateOperation> createCertificateActivation(String certificateName, CertificatePolicy policy,
-        Boolean isEnabled, Map<String, String> tags) {
+    private Mono<CertificateOperation> createCertificateActivation(String certificateName,
+        CertificatePolicy certificatePolicy, Boolean isEnabled, Map<String, String> tags,
+        Boolean isCertificateOrderPreserved) {
 
         CertificateCreateParameters certificateCreateParameters = new CertificateCreateParameters()
-            .setCertificatePolicy(CertificatePolicyHelper.getImplCertificatePolicy(policy))
+            .setCertificatePolicy(CertificatePolicyHelper.getImplCertificatePolicy(certificatePolicy))
             .setCertificateAttributes(new CertificateAttributes().setEnabled(isEnabled))
-            .setTags(tags);
+            .setTags(tags)
+            .setPreserveCertOrder(isCertificateOrderPreserved);
 
         try {
             return implClient
@@ -398,41 +489,6 @@ public final class CertificateAsyncClient {
         return e.getResponse().getStatusCode() == 403
             ? new ResourceModifiedException(e.getMessage(), e.getResponse(), e.getValue())
             : e;
-    }
-
-    /**
-     * Creates a new certificate. If this is the first version, the certificate resource is created. This operation
-     * requires the certificates/create permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Create certificate is a long running operation. The {@link PollerFlux poller} allows users to automatically
-     * poll on the create certificate operation status. It is possible to monitor each intermediate poll response during
-     * the poll operation.</p>
-     *
-     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy -->
-     * <pre>
-     * CertificatePolicy certPolicy = new CertificatePolicy&#40;&quot;Self&quot;, &quot;CN=SelfSignedJavaPkcs12&quot;&#41;;
-     * certificateAsyncClient.beginCreateCertificate&#40;&quot;certificateName&quot;, certPolicy&#41;
-     *     .subscribe&#40;pollResponse -&gt; &#123;
-     *         System.out.println&#40;&quot;---------------------------------------------------------------------------------&quot;&#41;;
-     *         System.out.println&#40;pollResponse.getStatus&#40;&#41;&#41;;
-     *         System.out.println&#40;pollResponse.getValue&#40;&#41;.getStatus&#40;&#41;&#41;;
-     *         System.out.println&#40;pollResponse.getValue&#40;&#41;.getStatusDetails&#40;&#41;&#41;;
-     *     &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy -->
-     *
-     * @param certificateName The name of the certificate to be created.
-     * @param policy The policy of the certificate to be created.
-     * @throws NullPointerException if {@code policy} is null.
-     * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
-     * @return A {@link PollerFlux} polling on the create certificate operation status.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy>
-        beginCreateCertificate(String certificateName, CertificatePolicy policy) {
-
-        return beginCreateCertificate(certificateName, policy, true, null);
     }
 
     /**
@@ -1498,15 +1554,17 @@ public final class CertificateAsyncClient {
      * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.updateCertificatePolicy#string -->
      *
      * @param certificateName The name of the certificate whose policy is to be updated.
-     * @param policy The certificate policy to be updated.
-     * @throws NullPointerException if {@code policy} is null.
+     * @param certificatePolicy The certificate policy to be updated.
+     * @throws NullPointerException if {@code certificatePolicy} is null.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
-     * @throws HttpResponseException if {@code certificateName} is empty string or if {@code policy} is invalid.
+     * @throws HttpResponseException if {@code certificateName} is empty string or if {@code certificatePolicy} is invalid.
      * @return A {@link Mono} containing the updated {@link CertificatePolicy certificate policy}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CertificatePolicy> updateCertificatePolicy(String certificateName, CertificatePolicy policy) {
-        return updateCertificatePolicyWithResponse(certificateName, policy).flatMap(FluxUtil::toMono);
+    public Mono<CertificatePolicy> updateCertificatePolicy(String certificateName,
+        CertificatePolicy certificatePolicy) {
+
+        return updateCertificatePolicyWithResponse(certificateName, certificatePolicy).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1536,28 +1594,25 @@ public final class CertificateAsyncClient {
      * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.updateCertificatePolicyWithResponse#string -->
      *
      * @param certificateName The name of the certificate whose policy is to be updated.
-     * @param policy The certificate policy is to be updated.
-     * @throws NullPointerException if {@code policy} is null.
+     * @param certificatePolicy The certificate policy is to be updated.
+     * @throws NullPointerException if {@code certificatePolicy} is null.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
-     * @throws HttpResponseException if {@code name} is empty string or if {@code policy} is invalid.
+     * @throws HttpResponseException if {@code name} is empty string or if {@code certificatePolicy} is invalid.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the updated
      * {@link CertificatePolicy certificate policy}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificatePolicy>> updateCertificatePolicyWithResponse(String certificateName,
-        CertificatePolicy policy) {
+        CertificatePolicy certificatePolicy) {
 
-        if (policy == null) {
-            return monoError(LOGGER, new NullPointerException("'policy' cannot be null."));
+        if (certificatePolicy == null) {
+            return monoError(LOGGER, new NullPointerException("'certificatePolicy' cannot be null."));
         }
 
         try {
-            CertificateUpdateParameters certificateUpdateParameters
-                = new CertificateUpdateParameters().setCertificatePolicy(getImplCertificatePolicy(policy));
-
             return implClient
                 .updateCertificatePolicyWithResponseAsync(certificateName,
-                    BinaryData.fromObject(certificateUpdateParameters), EMPTY_OPTIONS)
+                    BinaryData.fromObject(getImplCertificatePolicy(certificatePolicy)), EMPTY_OPTIONS)
                 .map(response -> new SimpleResponse<>(response,
                     createCertificatePolicy(response.getValue()
                         .toObject(
@@ -2213,7 +2268,8 @@ public final class CertificateAsyncClient {
                     .setPassword(importCertificateOptions.getPassword())
                     .setTags(importCertificateOptions.getTags())
                     .setCertificateAttributes(
-                        new CertificateAttributes().setEnabled(importCertificateOptions.isEnabled()));
+                        new CertificateAttributes().setEnabled(importCertificateOptions.isEnabled()))
+                    .setPreserveCertOrder(importCertificateOptions.isCertificateOrderPreserved());
 
             return implClient
                 .importCertificateWithResponseAsync(importCertificateOptions.getName(),

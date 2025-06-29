@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class SparkAuthenticationType extends ExpandableStringEnum<SparkAut
     /**
      * Static value Anonymous for SparkAuthenticationType.
      */
+    @Generated
     public static final SparkAuthenticationType ANONYMOUS = fromString("Anonymous");
 
     /**
      * Static value Username for SparkAuthenticationType.
      */
+    @Generated
     public static final SparkAuthenticationType USERNAME = fromString("Username");
 
     /**
      * Static value UsernameAndPassword for SparkAuthenticationType.
      */
+    @Generated
     public static final SparkAuthenticationType USERNAME_AND_PASSWORD = fromString("UsernameAndPassword");
 
     /**
      * Static value WindowsAzureHDInsightService for SparkAuthenticationType.
      */
+    @Generated
     public static final SparkAuthenticationType WINDOWS_AZURE_HDINSIGHT_SERVICE
         = fromString("WindowsAzureHDInsightService");
 
@@ -37,6 +42,7 @@ public final class SparkAuthenticationType extends ExpandableStringEnum<SparkAut
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SparkAuthenticationType() {
     }
@@ -47,6 +53,7 @@ public final class SparkAuthenticationType extends ExpandableStringEnum<SparkAut
      * @param name a name to look for.
      * @return the corresponding SparkAuthenticationType.
      */
+    @Generated
     public static SparkAuthenticationType fromString(String name) {
         return fromString(name, SparkAuthenticationType.class);
     }
@@ -56,6 +63,7 @@ public final class SparkAuthenticationType extends ExpandableStringEnum<SparkAut
      * 
      * @return known SparkAuthenticationType values.
      */
+    @Generated
     public static Collection<SparkAuthenticationType> values() {
         return values(SparkAuthenticationType.class);
     }

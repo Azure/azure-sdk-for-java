@@ -14,7 +14,7 @@ import java.util.Arrays;
 public final class BareMetalMachinesRunDataExtractsSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2024-07-01/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
      * BareMetalMachines_RunDataExtracts.json
      */
     /**

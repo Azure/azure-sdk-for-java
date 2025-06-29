@@ -113,6 +113,10 @@ public interface BmcKeySetsClient {
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
      * @param bmcKeySetParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -121,7 +125,8 @@ public interface BmcKeySetsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BmcKeySetInner>, BmcKeySetInner> beginCreateOrUpdate(String resourceGroupName,
-        String clusterName, String bmcKeySetName, BmcKeySetInner bmcKeySetParameters, Context context);
+        String clusterName, String bmcKeySetName, BmcKeySetInner bmcKeySetParameters, String ifMatch,
+        String ifNoneMatch, Context context);
 
     /**
      * Create or update the baseboard management controller key set of the cluster.
@@ -150,6 +155,10 @@ public interface BmcKeySetsClient {
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
      * @param bmcKeySetParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -158,7 +167,7 @@ public interface BmcKeySetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     BmcKeySetInner createOrUpdate(String resourceGroupName, String clusterName, String bmcKeySetName,
-        BmcKeySetInner bmcKeySetParameters, Context context);
+        BmcKeySetInner bmcKeySetParameters, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete the baseboard management controller key set of the cluster.
@@ -185,6 +194,10 @@ public interface BmcKeySetsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -193,7 +206,7 @@ public interface BmcKeySetsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
-        String clusterName, String bmcKeySetName, Context context);
+        String clusterName, String bmcKeySetName, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete the baseboard management controller key set of the cluster.
@@ -219,6 +232,10 @@ public interface BmcKeySetsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -227,7 +244,7 @@ public interface BmcKeySetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OperationStatusResultInner delete(String resourceGroupName, String clusterName, String bmcKeySetName,
-        Context context);
+        String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Patch baseboard management controller key set of the cluster.
@@ -256,6 +273,10 @@ public interface BmcKeySetsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param bmcKeySetUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -265,7 +286,8 @@ public interface BmcKeySetsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BmcKeySetInner>, BmcKeySetInner> beginUpdate(String resourceGroupName, String clusterName,
-        String bmcKeySetName, BmcKeySetPatchParameters bmcKeySetUpdateParameters, Context context);
+        String bmcKeySetName, String ifMatch, String ifNoneMatch, BmcKeySetPatchParameters bmcKeySetUpdateParameters,
+        Context context);
 
     /**
      * Patch baseboard management controller key set of the cluster.
@@ -293,6 +315,10 @@ public interface BmcKeySetsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param bmcKeySetUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -301,6 +327,6 @@ public interface BmcKeySetsClient {
      * @return bmcKeySet represents the baseboard management controller key set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BmcKeySetInner update(String resourceGroupName, String clusterName, String bmcKeySetName,
-        BmcKeySetPatchParameters bmcKeySetUpdateParameters, Context context);
+    BmcKeySetInner update(String resourceGroupName, String clusterName, String bmcKeySetName, String ifMatch,
+        String ifNoneMatch, BmcKeySetPatchParameters bmcKeySetUpdateParameters, Context context);
 }

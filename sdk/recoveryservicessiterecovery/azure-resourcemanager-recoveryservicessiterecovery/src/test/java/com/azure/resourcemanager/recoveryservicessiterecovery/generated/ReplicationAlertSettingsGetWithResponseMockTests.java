@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.Alert;
@@ -21,22 +21,22 @@ public final class ReplicationAlertSettingsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"sendToOwners\":\"xsgcemegd\",\"customEmailAddresses\":[\"y\",\"jubvfjyzuf\",\"difnivlutgg\",\"aacxauhvc\"],\"locale\":\"xhklsqxt\"},\"location\":\"yygktsrjyxxoxwf\",\"id\":\"bkvecnxfxphsowbe\",\"name\":\"snbwutlvuwm\",\"type\":\"u\"}";
+            = "{\"properties\":{\"sendToOwners\":\"qtzckjbcbkgnrf\",\"customEmailAddresses\":[\"chj\",\"nc\",\"zahgtv\"],\"locale\":\"do\"},\"location\":\"morzolxosg\",\"id\":\"htrxueqbmxqfgv\",\"name\":\"njqswshesgcsqos\",\"type\":\"cxlngoufpi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SiteRecoveryManager manager = SiteRecoveryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Alert response = manager.replicationAlertSettings()
-            .getWithResponse("mqmbwpp", "irxbkitzmnhit", "xjucl", com.azure.core.util.Context.NONE)
+            .getWithResponse("ecpekhxdbyhqtzcv", "mmwckozvlf", "mtrtsv", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("xsgcemegd", response.properties().sendToOwners());
-        Assertions.assertEquals("y", response.properties().customEmailAddresses().get(0));
-        Assertions.assertEquals("xhklsqxt", response.properties().locale());
-        Assertions.assertEquals("yygktsrjyxxoxwf", response.location());
+        Assertions.assertEquals("qtzckjbcbkgnrf", response.properties().sendToOwners());
+        Assertions.assertEquals("chj", response.properties().customEmailAddresses().get(0));
+        Assertions.assertEquals("do", response.properties().locale());
+        Assertions.assertEquals("morzolxosg", response.location());
     }
 }

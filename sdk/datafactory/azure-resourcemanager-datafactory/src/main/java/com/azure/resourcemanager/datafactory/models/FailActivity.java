@@ -54,7 +54,7 @@ public final class FailActivity extends ControlActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private FailActivityTypeProperties innerTypeProperties() {
+    FailActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

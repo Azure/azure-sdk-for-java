@@ -24,7 +24,7 @@ public final class UtilBridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> CosmosPagedFlux<T> createCosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction) {
-        return new CosmosPagedFlux<>(pagedFluxOptionsFluxFunction);
+        return new CosmosPagedFluxDefaultImpl<>(pagedFluxOptionsFluxFunction);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -34,6 +34,6 @@ public final class UtilBridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void  initializeAllAccessors() {
-        CosmosPagedFlux.initialize();
+        CosmosPagedFluxDefaultImpl.initialize();
     }
 }

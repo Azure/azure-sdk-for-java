@@ -7,7 +7,10 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 
+import java.net.URI;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 final class CompositeChallengeHandler implements ChallengeHandler {
     private static final ClientLogger LOGGER = new ClientLogger(CompositeChallengeHandler.class);
@@ -47,7 +50,32 @@ final class CompositeChallengeHandler implements ChallengeHandler {
         }
 
         // Log an error if no handler could handle the challenge
-        LOGGER.logThrowableAsError(
-            new UnsupportedOperationException("None of the challenge handlers could handle the challenge."));
+        LOGGER.atError().log("None of the challenge handlers could handle the challenge.");
+    }
+
+    @Override
+    public Map.Entry<String, AuthenticateChallenge> handleChallenge(String method, URI uri,
+        List<AuthenticateChallenge> challenges) {
+        Objects.requireNonNull(challenges, "Cannot use a null 'challenges' to handle challenges.");
+        for (ChallengeHandler handler : challengeHandlers) {
+            Map.Entry<String, AuthenticateChallenge> result = handler.handleChallenge(method, uri, challenges);
+            if (result != null) {
+                return result;
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public boolean canHandle(List<AuthenticateChallenge> challenges) {
+        Objects.requireNonNull(challenges, "Cannot use a null 'challenges' to determine if it can be handled.");
+        for (ChallengeHandler handler : challengeHandlers) {
+            if (handler.canHandle(challenges)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

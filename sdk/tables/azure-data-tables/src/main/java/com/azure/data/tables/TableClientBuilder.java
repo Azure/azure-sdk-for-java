@@ -31,6 +31,7 @@ import com.azure.data.tables.implementation.StorageConnectionString;
 import com.azure.data.tables.implementation.StorageEndpoint;
 import com.azure.data.tables.implementation.TablesJacksonSerializer;
 import com.azure.data.tables.implementation.TablesMultipartSerializer;
+import com.azure.data.tables.models.TableAudience;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -194,6 +195,7 @@ public final class TableClientBuilder
     private RetryPolicy retryPolicy;
     private RetryOptions retryOptions;
     private boolean enableTenantDiscovery;
+    private TableAudience audience;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link TableClient} and
@@ -273,7 +275,7 @@ public final class TableClientBuilder
             : BuilderHelper.buildPipeline(namedKeyCredential != null ? namedKeyCredential : azureNamedKeyCredential,
                 azureSasCredential, tokenCredential, sasToken, endpoint, retryPolicy, retryOptions, httpLogOptions,
                 clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger,
-                enableTenantDiscovery);
+                enableTenantDiscovery, audience);
 
         return new TableClient(tableName, pipeline, endpoint, serviceVersion, TABLES_SERIALIZER,
             TRANSACTIONAL_BATCH_SERIALIZER);
@@ -350,7 +352,7 @@ public final class TableClientBuilder
             : BuilderHelper.buildPipeline(namedKeyCredential != null ? namedKeyCredential : azureNamedKeyCredential,
                 azureSasCredential, tokenCredential, sasToken, endpoint, retryPolicy, retryOptions, httpLogOptions,
                 clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger,
-                enableTenantDiscovery);
+                enableTenantDiscovery, audience);
 
         return new TableAsyncClient(tableName, pipeline, endpoint, serviceVersion, TABLES_SERIALIZER,
             TRANSACTIONAL_BATCH_SERIALIZER);
@@ -741,6 +743,19 @@ public final class TableClientBuilder
      */
     public TableClientBuilder enableTenantDiscovery() {
         this.enableTenantDiscovery = true;
+
+        return this;
+    }
+
+    /**
+     * Sets the {@link TableAudience} to use when authenticating with the Azure Tables service.
+     *
+     * @param audience The {@link TableAudience} to use when authenticating with the Table Service.
+     *
+     * @return The updated {@link TableClientBuilder}.
+     */
+    public TableClientBuilder audience(TableAudience audience) {
+        this.audience = audience;
 
         return this;
     }

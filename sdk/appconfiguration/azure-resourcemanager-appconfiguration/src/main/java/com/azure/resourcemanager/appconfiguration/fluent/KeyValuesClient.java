@@ -79,13 +79,15 @@ public interface KeyValuesClient {
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
      * optional.
+     * @param keyValueParameters The parameters for creating a key-value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the key-value resource along with all resource properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    KeyValueInner createOrUpdate(String resourceGroupName, String configStoreName, String keyValueName);
+    KeyValueInner createOrUpdate(String resourceGroupName, String configStoreName, String keyValueName,
+        KeyValueInner keyValueParameters);
 
     /**
      * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other

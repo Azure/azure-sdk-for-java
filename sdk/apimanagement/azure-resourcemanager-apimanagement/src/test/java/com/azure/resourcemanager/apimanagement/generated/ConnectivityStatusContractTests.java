@@ -14,33 +14,33 @@ public final class ConnectivityStatusContractTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectivityStatusContract model = BinaryData.fromString(
-            "{\"name\":\"c\",\"status\":\"initializing\",\"error\":\"yw\",\"lastUpdated\":\"2021-08-22T10:33:01Z\",\"lastStatusChange\":\"2021-10-25T23:23:53Z\",\"resourceType\":\"zkvemy\",\"isOptional\":true}")
+            "{\"name\":\"nhjrfdmfd\",\"status\":\"failure\",\"error\":\"aexxjfwtgdfkka\",\"lastUpdated\":\"2021-04-09T03:02:54Z\",\"lastStatusChange\":\"2021-09-28T18:01:42Z\",\"resourceType\":\"vmuafmc\",\"isOptional\":false}")
             .toObject(ConnectivityStatusContract.class);
-        Assertions.assertEquals("c", model.name());
-        Assertions.assertEquals(ConnectivityStatusType.INITIALIZING, model.status());
-        Assertions.assertEquals("yw", model.error());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-22T10:33:01Z"), model.lastUpdated());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-25T23:23:53Z"), model.lastStatusChange());
-        Assertions.assertEquals("zkvemy", model.resourceType());
-        Assertions.assertEquals(true, model.isOptional());
+        Assertions.assertEquals("nhjrfdmfd", model.name());
+        Assertions.assertEquals(ConnectivityStatusType.FAILURE, model.status());
+        Assertions.assertEquals("aexxjfwtgdfkka", model.error());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-09T03:02:54Z"), model.lastUpdated());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-28T18:01:42Z"), model.lastStatusChange());
+        Assertions.assertEquals("vmuafmc", model.resourceType());
+        Assertions.assertFalse(model.isOptional());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConnectivityStatusContract model = new ConnectivityStatusContract().withName("c")
-            .withStatus(ConnectivityStatusType.INITIALIZING)
-            .withError("yw")
-            .withLastUpdated(OffsetDateTime.parse("2021-08-22T10:33:01Z"))
-            .withLastStatusChange(OffsetDateTime.parse("2021-10-25T23:23:53Z"))
-            .withResourceType("zkvemy")
-            .withIsOptional(true);
+        ConnectivityStatusContract model = new ConnectivityStatusContract().withName("nhjrfdmfd")
+            .withStatus(ConnectivityStatusType.FAILURE)
+            .withError("aexxjfwtgdfkka")
+            .withLastUpdated(OffsetDateTime.parse("2021-04-09T03:02:54Z"))
+            .withLastStatusChange(OffsetDateTime.parse("2021-09-28T18:01:42Z"))
+            .withResourceType("vmuafmc")
+            .withIsOptional(false);
         model = BinaryData.fromObject(model).toObject(ConnectivityStatusContract.class);
-        Assertions.assertEquals("c", model.name());
-        Assertions.assertEquals(ConnectivityStatusType.INITIALIZING, model.status());
-        Assertions.assertEquals("yw", model.error());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-22T10:33:01Z"), model.lastUpdated());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-25T23:23:53Z"), model.lastStatusChange());
-        Assertions.assertEquals("zkvemy", model.resourceType());
-        Assertions.assertEquals(true, model.isOptional());
+        Assertions.assertEquals("nhjrfdmfd", model.name());
+        Assertions.assertEquals(ConnectivityStatusType.FAILURE, model.status());
+        Assertions.assertEquals("aexxjfwtgdfkka", model.error());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-09T03:02:54Z"), model.lastUpdated());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-28T18:01:42Z"), model.lastStatusChange());
+        Assertions.assertEquals("vmuafmc", model.resourceType());
+        Assertions.assertFalse(model.isOptional());
     }
 }

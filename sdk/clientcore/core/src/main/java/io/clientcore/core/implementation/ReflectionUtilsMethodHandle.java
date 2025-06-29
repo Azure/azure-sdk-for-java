@@ -79,8 +79,8 @@ final class ReflectionUtilsMethodHandle implements ReflectionUtilsApi {
 
                 jdkInternalPrivateLookupInConstructor = lookup.unreflectConstructor(privateLookupInConstructor);
             } catch (ReflectiveOperationException ex) {
-                throw LOGGER.logThrowableAsError(
-                    new RuntimeException("Unable to use package-private MethodHandles.Lookup constructor.", ex));
+                throw LOGGER.throwableAtError()
+                    .log("Unable to use package-private MethodHandles.Lookup constructor.", ex, RuntimeException::new);
             }
         }
 

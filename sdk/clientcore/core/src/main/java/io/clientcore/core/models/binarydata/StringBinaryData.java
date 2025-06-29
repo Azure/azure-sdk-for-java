@@ -5,6 +5,8 @@ package io.clientcore.core.models.binarydata;
 
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.serialization.ObjectSerializer;
 
@@ -22,6 +24,7 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  */
 @Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class StringBinaryData extends BinaryData {
+    private static final ClientLogger LOGGER = new ClientLogger(StringBinaryData.class);
     private final String content;
 
     private volatile byte[] bytes;
@@ -54,8 +57,12 @@ public final class StringBinaryData extends BinaryData {
     }
 
     @Override
-    public <T> T toObject(Type type, ObjectSerializer serializer) throws IOException {
-        return serializer.deserializeFromBytes(toBytes(), type);
+    public <T> T toObject(Type type, ObjectSerializer serializer) {
+        try {
+            return serializer.deserializeFromBytes(toBytes(), type);
+        } catch (IOException e) {
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
+        }
     }
 
     @Override
@@ -69,10 +76,14 @@ public final class StringBinaryData extends BinaryData {
     }
 
     @Override
-    public void writeTo(JsonWriter jsonWriter) throws IOException {
+    public void writeTo(JsonWriter jsonWriter) {
         Objects.requireNonNull(jsonWriter, "'jsonWriter' cannot be null");
 
-        jsonWriter.writeString(toString());
+        try {
+            jsonWriter.writeString(toString());
+        } catch (IOException e) {
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
+        }
     }
 
     @Override
@@ -90,7 +101,7 @@ public final class StringBinaryData extends BinaryData {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         // no-op
     }
 }

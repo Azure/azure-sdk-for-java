@@ -21,7 +21,7 @@ public final class SchedulersGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Provisioning\",\"endpoint\":\"fqawrlyxw\",\"ipAllowlist\":[\"cpr\",\"nwbxgjvtbvpyssz\"],\"sku\":{\"name\":\"nruj\",\"capacity\":1719389036,\"redundancyState\":\"None\"}},\"location\":\"ouqfprwz\",\"tags\":{\"itnwuizgazxufi\":\"g\",\"hr\":\"uckyf\",\"zwdzuh\":\"idf\",\"wxmnteiwao\":\"ymwisdkft\"},\"id\":\"vkmijcmmxdcuf\",\"name\":\"fsrpymzidnse\",\"type\":\"cxtbzsg\"}";
+            = "{\"properties\":{\"provisioningState\":\"Updating\",\"endpoint\":\"zsgfyccsnewmd\",\"ipAllowlist\":[\"jeiachboosfl\"],\"sku\":{\"name\":\"ro\",\"capacity\":1593237527,\"redundancyState\":\"None\"}},\"location\":\"ehzzvypyqrim\",\"tags\":{\"dqxhcrmnohjtckwh\":\"pvswjdkirso\",\"gr\":\"soifiyipjxsqw\",\"qabnmoc\":\"bznorcjxvsnby\"},\"id\":\"cyshurzafbljjgp\",\"name\":\"toqcjmklja\",\"type\":\"bqidtqaj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,13 @@ public final class SchedulersGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Scheduler response = manager.schedulers()
-            .getByResourceGroupWithResponse("o", "fhrtxilnerkujysv", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("pvkmijcmmxdcuf", "fsrpymzidnse", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ouqfprwz", response.location());
-        Assertions.assertEquals("g", response.tags().get("itnwuizgazxufi"));
-        Assertions.assertEquals("cpr", response.properties().ipAllowlist().get(0));
-        Assertions.assertEquals("nruj", response.properties().sku().name());
-        Assertions.assertEquals(1719389036, response.properties().sku().capacity());
+        Assertions.assertEquals("ehzzvypyqrim", response.location());
+        Assertions.assertEquals("pvswjdkirso", response.tags().get("dqxhcrmnohjtckwh"));
+        Assertions.assertEquals("jeiachboosfl", response.properties().ipAllowlist().get(0));
+        Assertions.assertEquals("ro", response.properties().sku().name());
+        Assertions.assertEquals(1593237527, response.properties().sku().capacity());
     }
 }

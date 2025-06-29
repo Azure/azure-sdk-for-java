@@ -30,7 +30,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 
 @SuppressWarnings("UnstableApiUsage")
 @JsonFilter("RntbdToken")
-class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
+public class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
 
     // region Fields
 
@@ -214,6 +214,20 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         final ImmutableMap.Builder<String, String> builder = ImmutableMap.builderWithExpectedSize(
             this.computeCount(false) + 2);
         builder.put(new Entry(HttpHeaders.SERVER_VERSION, serverVersion));
+        builder.put(new Entry(HttpHeaders.ACTIVITY_ID, activityId.toString()));
+
+        this.collectEntries((token, toEntry) -> {
+            if (token.isPresent()) {
+                builder.put(toEntry.apply(token));
+            }
+        });
+
+        return builder.build();
+    }
+
+    public Map<String, String> asMap(final UUID activityId) {
+
+        final ImmutableMap.Builder<String, String> builder = ImmutableMap.builderWithExpectedSize(this.computeCount(false) + 1);
         builder.put(new Entry(HttpHeaders.ACTIVITY_ID, activityId.toString()));
 
         this.collectEntries((token, toEntry) -> {

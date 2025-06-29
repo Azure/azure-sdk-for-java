@@ -55,7 +55,7 @@
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.9</version> <!-- {x-version-update;unreleased_io.clientcore:core;dependency} -->
+      <version>1.0.0-beta.11</version> <!-- {x-version-update;unreleased_io.clientcore:core;dependency} -->
     </dependency>
     <dependency>
       <groupId>io.clientcore</groupId>
@@ -67,48 +67,49 @@
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.9</version> <!-- {x-version-update;unreleased_io.clientcore:core;dependency} -->
+      <version>1.0.0-beta.11</version> <!-- {x-version-update;unreleased_io.clientcore:core;dependency} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-server</artifactId>
-      <version>9.4.56.v20240826</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
+      <version>9.4.57.v20241219</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-servlet</artifactId>
-      <version>9.4.56.v20240826</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
+      <version>9.4.57.v20241219</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.11.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.13.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.11.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.13.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.11.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <version>5.13.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.conscrypt</groupId>
+      <artifactId>conscrypt-openjdk-uber</artifactId>
+      <version>2.5.2</version> <!-- {x-version-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
 
   <build>
-    <resources>
-      <resource>
-        <directory>${project.build.directory}/generated-sources</directory>
-      </resource>
-    </resources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -131,7 +132,7 @@
                 <annotationProcessorPath>
                   <groupId>io.clientcore</groupId>
                   <artifactId>annotation-processor</artifactId>
-                  <version>1.0.0-beta.3</version> <!-- {x-version-update;unreleased_io.clientcore:annotation-processor;dependency} -->
+                  <version>1.0.0-beta.4</version> <!-- {x-version-update;unreleased_io.clientcore:annotation-processor;dependency} -->
                 </annotationProcessorPath>
               </annotationProcessorPaths>
               <annotationProcessors>
@@ -152,27 +153,64 @@
           <dependency>
             <groupId>io.clientcore</groupId>
             <artifactId>annotation-processor</artifactId>
-            <version>1.0.0-beta.3</version> <!-- {x-version-update;unreleased_io.clientcore:annotation-processor;dependency} -->
+            <version>1.0.0-beta.4</version> <!-- {x-version-update;unreleased_io.clientcore:annotation-processor;dependency} -->
           </dependency>
         </dependencies>
       </plugin>
 
+      <!-- This plugin removes previously generated *ServiceImpl files before annotation processing runs, preventing FileExists errors during code generation. -->
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.6.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>3.4.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-clean-plugin;external_dependency} -->
         <executions>
           <execution>
-            <id>add-generated-sources</id>
-            <phase>generate-sources</phase>
+            <id>custom-clean</id>
+            <phase>initialize</phase>
             <goals>
-              <goal>add-source</goal>
+              <goal>clean</goal>
             </goals>
             <configuration>
-              <sources>
-                <source>${basedir}/target/generated-sources</source>
-              </sources>
+              <filesets>
+                <fileset>
+                  <directory>src/main/java/io/clientcore/annotation/processor/test/</directory>
+                  <includes>
+                    <include>**/*ServiceImpl.java</include>
+                  </includes>
+                </fileset>
+              </filesets>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Copy the generated impl file to src/main -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>copy-and-clean-generated-impl</id>
+            <phase>generate-sources</phase>
+            <configuration>
+              <target>
+                <available file="target/generated-sources/io/clientcore/annotation/processor/test/" type="dir" property="generated.dir.exists"/>
+                <copy todir="src/main/java/io/clientcore/annotation/processor/test/"
+                      overwrite="true"
+                      failonerror="false"
+                      verbose="true">
+                  <fileset dir="target/generated-sources/io/clientcore/annotation/processor/test/" erroronmissingdir="false">
+                    <include name="**/*.java"/>
+                  </fileset>
+                </copy>
+                <!-- Delete the generated-sources directory after copying -->
+                <delete dir="target/generated-sources/io/clientcore/annotation/processor/test/" failonerror="false"/>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>

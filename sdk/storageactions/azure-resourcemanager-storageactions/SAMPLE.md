@@ -26,26 +26,73 @@
 
 ```java
 /**
- * Samples for Operations List.
+ * Samples for StorageTasksReport List.
  */
-public final class OperationsListSamples {
+public final class StorageTasksReportListSamples {
     /*
      * x-ms-original-file:
-     * specification/storageactions/resource-manager/Microsoft.StorageActions/stable/2023-01-01/examples/misc/
-     * OperationsList.json
+     * specification/storageactions/resource-manager/Microsoft.StorageActions/stable/2023-01-01/examples/
+     * storageTasksList/ListStorageTasksRunReportSummary.json
      */
     /**
-     * Sample code: OperationsList.
+     * Sample code: ListStorageTasksByResourceGroup.
      * 
      * @param manager Entry point to StorageActionsManager.
      */
-    public static void operationsList(com.azure.resourcemanager.storageactions.StorageActionsManager manager) {
-        manager.operations().list(com.azure.core.util.Context.NONE);
+    public static void
+        listStorageTasksByResourceGroup(com.azure.resourcemanager.storageactions.StorageActionsManager manager) {
+        manager.storageTasksReports().list("rgroup1", "mytask1", null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
 
 ### StorageTaskAssignment_List
+
+```java
+/**
+ * Samples for StorageTasks Delete.
+ */
+public final class StorageTasksDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/storageactions/resource-manager/Microsoft.StorageActions/stable/2023-01-01/examples/
+     * storageTasksCrud/DeleteStorageTask.json
+     */
+    /**
+     * Sample code: DeleteStorageTask.
+     * 
+     * @param manager Entry point to StorageActionsManager.
+     */
+    public static void deleteStorageTask(com.azure.resourcemanager.storageactions.StorageActionsManager manager) {
+        manager.storageTasks().delete("res4228", "mytask1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### StorageTasks_Create
+
+```java
+/**
+ * Samples for StorageTasks GetByResourceGroup.
+ */
+public final class StorageTasksGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file:
+     * specification/storageactions/resource-manager/Microsoft.StorageActions/stable/2023-01-01/examples/
+     * storageTasksCrud/GetStorageTask.json
+     */
+    /**
+     * Sample code: GetStorageTask.
+     * 
+     * @param manager Entry point to StorageActionsManager.
+     */
+    public static void getStorageTask(com.azure.resourcemanager.storageactions.StorageActionsManager manager) {
+        manager.storageTasks().getByResourceGroupWithResponse("res4228", "mytask1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### StorageTasks_Delete
 
 ```java
 /**
@@ -69,145 +116,30 @@ public final class StorageTaskAssignmentListSamples {
 }
 ```
 
-### StorageTasks_Create
-
-```java
-import com.azure.resourcemanager.storageactions.models.ElseCondition;
-import com.azure.resourcemanager.storageactions.models.IfCondition;
-import com.azure.resourcemanager.storageactions.models.ManagedServiceIdentity;
-import com.azure.resourcemanager.storageactions.models.ManagedServiceIdentityType;
-import com.azure.resourcemanager.storageactions.models.OnFailure;
-import com.azure.resourcemanager.storageactions.models.OnSuccess;
-import com.azure.resourcemanager.storageactions.models.StorageTaskAction;
-import com.azure.resourcemanager.storageactions.models.StorageTaskOperation;
-import com.azure.resourcemanager.storageactions.models.StorageTaskOperationName;
-import com.azure.resourcemanager.storageactions.models.StorageTaskProperties;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * Samples for StorageTasks Create.
- */
-public final class StorageTasksCreateSamples {
-    /*
-     * x-ms-original-file:
-     * specification/storageactions/resource-manager/Microsoft.StorageActions/stable/2023-01-01/examples/
-     * storageTasksCrud/PutStorageTask.json
-     */
-    /**
-     * Sample code: PutStorageTask.
-     * 
-     * @param manager Entry point to StorageActionsManager.
-     */
-    public static void putStorageTask(com.azure.resourcemanager.storageactions.StorageActionsManager manager) {
-        manager.storageTasks()
-            .define("mytask1")
-            .withRegion("westus")
-            .withExistingResourceGroup("res4228")
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
-            .withProperties(
-                new StorageTaskProperties().withEnabled(true)
-                    .withDescription("My Storage task")
-                    .withAction(new StorageTaskAction()
-                        .withIfProperty(new IfCondition().withCondition("[[equals(AccessTier, 'Cool')]]")
-                            .withOperations(Arrays
-                                .asList(new StorageTaskOperation().withName(StorageTaskOperationName.SET_BLOB_TIER)
-                                    .withParameters(mapOf("tier", "Hot"))
-                                    .withOnSuccess(OnSuccess.CONTINUE)
-                                    .withOnFailure(OnFailure.BREAK))))
-                        .withElseProperty(new ElseCondition().withOperations(
-                            Arrays.asList(new StorageTaskOperation().withName(StorageTaskOperationName.DELETE_BLOB)
-                                .withOnSuccess(OnSuccess.CONTINUE)
-                                .withOnFailure(OnFailure.BREAK))))))
-            .create();
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
-    }
-}
-```
-
-### StorageTasks_Delete
-
-```java
-/**
- * Samples for StorageTasks Delete.
- */
-public final class StorageTasksDeleteSamples {
-    /*
-     * x-ms-original-file:
-     * specification/storageactions/resource-manager/Microsoft.StorageActions/stable/2023-01-01/examples/
-     * storageTasksCrud/DeleteStorageTask.json
-     */
-    /**
-     * Sample code: DeleteStorageTask.
-     * 
-     * @param manager Entry point to StorageActionsManager.
-     */
-    public static void deleteStorageTask(com.azure.resourcemanager.storageactions.StorageActionsManager manager) {
-        manager.storageTasks().delete("res4228", "mytask1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
 ### StorageTasks_GetByResourceGroup
 
 ```java
 /**
- * Samples for StorageTasks GetByResourceGroup.
+ * Samples for Operations List.
  */
-public final class StorageTasksGetByResourceGroupSamples {
+public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/storageactions/resource-manager/Microsoft.StorageActions/stable/2023-01-01/examples/
-     * storageTasksCrud/GetStorageTask.json
+     * specification/storageactions/resource-manager/Microsoft.StorageActions/stable/2023-01-01/examples/misc/
+     * OperationsList.json
      */
     /**
-     * Sample code: GetStorageTask.
+     * Sample code: OperationsList.
      * 
      * @param manager Entry point to StorageActionsManager.
      */
-    public static void getStorageTask(com.azure.resourcemanager.storageactions.StorageActionsManager manager) {
-        manager.storageTasks().getByResourceGroupWithResponse("res4228", "mytask1", com.azure.core.util.Context.NONE);
+    public static void operationsList(com.azure.resourcemanager.storageactions.StorageActionsManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
 
 ### StorageTasks_List
-
-```java
-/**
- * Samples for StorageTasks List.
- */
-public final class StorageTasksListSamples {
-    /*
-     * x-ms-original-file:
-     * specification/storageactions/resource-manager/Microsoft.StorageActions/stable/2023-01-01/examples/
-     * storageTasksList/ListStorageTasksBySubscription.json
-     */
-    /**
-     * Sample code: ListStorageTasksBySubscription.
-     * 
-     * @param manager Entry point to StorageActionsManager.
-     */
-    public static void
-        listStorageTasksBySubscription(com.azure.resourcemanager.storageactions.StorageActionsManager manager) {
-        manager.storageTasks().list(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### StorageTasks_ListByResourceGroup
 
 ```java
 /**
@@ -231,7 +163,7 @@ public final class StorageTasksListByResourceGroupSamples {
 }
 ```
 
-### StorageTasks_PreviewActions
+### StorageTasks_ListByResourceGroup
 
 ```java
 import com.azure.resourcemanager.storageactions.fluent.models.StorageTaskPreviewActionInner;
@@ -340,6 +272,74 @@ public final class StorageTasksPreviewActionsSamples {
 }
 ```
 
+### StorageTasks_PreviewActions
+
+```java
+import com.azure.resourcemanager.storageactions.models.ElseCondition;
+import com.azure.resourcemanager.storageactions.models.IfCondition;
+import com.azure.resourcemanager.storageactions.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.storageactions.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.storageactions.models.OnFailure;
+import com.azure.resourcemanager.storageactions.models.OnSuccess;
+import com.azure.resourcemanager.storageactions.models.StorageTaskAction;
+import com.azure.resourcemanager.storageactions.models.StorageTaskOperation;
+import com.azure.resourcemanager.storageactions.models.StorageTaskOperationName;
+import com.azure.resourcemanager.storageactions.models.StorageTaskProperties;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for StorageTasks Create.
+ */
+public final class StorageTasksCreateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/storageactions/resource-manager/Microsoft.StorageActions/stable/2023-01-01/examples/
+     * storageTasksCrud/PutStorageTask.json
+     */
+    /**
+     * Sample code: PutStorageTask.
+     * 
+     * @param manager Entry point to StorageActionsManager.
+     */
+    public static void putStorageTask(com.azure.resourcemanager.storageactions.StorageActionsManager manager) {
+        manager.storageTasks()
+            .define("mytask1")
+            .withRegion("westus")
+            .withExistingResourceGroup("res4228")
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
+            .withProperties(
+                new StorageTaskProperties().withEnabled(true)
+                    .withDescription("My Storage task")
+                    .withAction(new StorageTaskAction()
+                        .withIfProperty(new IfCondition().withCondition("[[equals(AccessTier, 'Cool')]]")
+                            .withOperations(Arrays
+                                .asList(new StorageTaskOperation().withName(StorageTaskOperationName.SET_BLOB_TIER)
+                                    .withParameters(mapOf("tier", "Hot"))
+                                    .withOnSuccess(OnSuccess.CONTINUE)
+                                    .withOnFailure(OnFailure.BREAK))))
+                        .withElseProperty(new ElseCondition().withOperations(
+                            Arrays.asList(new StorageTaskOperation().withName(StorageTaskOperationName.DELETE_BLOB)
+                                .withOnSuccess(OnSuccess.CONTINUE)
+                                .withOnFailure(OnFailure.BREAK))))))
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
 ### StorageTasks_Update
 
 ```java
@@ -417,22 +417,22 @@ public final class StorageTasksUpdateSamples {
 
 ```java
 /**
- * Samples for StorageTasksReport List.
+ * Samples for StorageTasks List.
  */
-public final class StorageTasksReportListSamples {
+public final class StorageTasksListSamples {
     /*
      * x-ms-original-file:
      * specification/storageactions/resource-manager/Microsoft.StorageActions/stable/2023-01-01/examples/
-     * storageTasksList/ListStorageTasksRunReportSummary.json
+     * storageTasksList/ListStorageTasksBySubscription.json
      */
     /**
-     * Sample code: ListStorageTasksByResourceGroup.
+     * Sample code: ListStorageTasksBySubscription.
      * 
      * @param manager Entry point to StorageActionsManager.
      */
     public static void
-        listStorageTasksByResourceGroup(com.azure.resourcemanager.storageactions.StorageActionsManager manager) {
-        manager.storageTasksReports().list("rgroup1", "mytask1", null, null, com.azure.core.util.Context.NONE);
+        listStorageTasksBySubscription(com.azure.resourcemanager.storageactions.StorageActionsManager manager) {
+        manager.storageTasks().list(com.azure.core.util.Context.NONE);
     }
 }
 ```

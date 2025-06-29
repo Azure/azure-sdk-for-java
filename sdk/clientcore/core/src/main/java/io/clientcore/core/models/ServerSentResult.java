@@ -6,7 +6,6 @@ package io.clientcore.core.models;
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
@@ -17,7 +16,7 @@ import java.util.List;
 public final class ServerSentResult {
     private final String lastEventId;
     private final Duration retryAfter;
-    private final IOException ioException;
+    private final CoreException exception;
     private final List<String> data;
 
     /**
@@ -28,8 +27,8 @@ public final class ServerSentResult {
      * @param retryAfter The retry time duration.
      * @param data The accumulated event data from the text event stream.
      */
-    public ServerSentResult(IOException exception, String lastEventId, Duration retryAfter, List<String> data) {
-        this.ioException = exception;
+    public ServerSentResult(Throwable exception, String lastEventId, Duration retryAfter, List<String> data) {
+        this.exception = CoreException.from(exception);
         this.lastEventId = lastEventId;
         this.retryAfter = retryAfter;
         this.data = data;
@@ -49,8 +48,8 @@ public final class ServerSentResult {
      *
      * @return The exception that occurred during the request.
      */
-    public IOException getException() {
-        return ioException;
+    public CoreException getException() {
+        return exception;
     }
 
     /**

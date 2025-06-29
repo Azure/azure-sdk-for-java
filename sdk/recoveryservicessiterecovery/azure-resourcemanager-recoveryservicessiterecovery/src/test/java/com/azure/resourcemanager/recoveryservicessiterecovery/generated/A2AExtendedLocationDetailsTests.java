@@ -14,24 +14,24 @@ public final class A2AExtendedLocationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         A2AExtendedLocationDetails model = BinaryData.fromString(
-            "{\"primaryExtendedLocation\":{\"name\":\"it\",\"type\":\"EdgeZone\"},\"recoveryExtendedLocation\":{\"name\":\"zvbrzcdbanfzndsc\",\"type\":\"EdgeZone\"}}")
+            "{\"primaryExtendedLocation\":{\"name\":\"f\",\"type\":\"EdgeZone\"},\"recoveryExtendedLocation\":{\"name\":\"xuizhyhnepkpet\",\"type\":\"EdgeZone\"}}")
             .toObject(A2AExtendedLocationDetails.class);
-        Assertions.assertEquals("it", model.primaryExtendedLocation().name());
+        Assertions.assertEquals("f", model.primaryExtendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.primaryExtendedLocation().type());
-        Assertions.assertEquals("zvbrzcdbanfzndsc", model.recoveryExtendedLocation().name());
+        Assertions.assertEquals("xuizhyhnepkpet", model.recoveryExtendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.recoveryExtendedLocation().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         A2AExtendedLocationDetails model = new A2AExtendedLocationDetails()
-            .withPrimaryExtendedLocation(new ExtendedLocation().withName("it").withType(ExtendedLocationType.EDGE_ZONE))
+            .withPrimaryExtendedLocation(new ExtendedLocation().withName("f").withType(ExtendedLocationType.EDGE_ZONE))
             .withRecoveryExtendedLocation(
-                new ExtendedLocation().withName("zvbrzcdbanfzndsc").withType(ExtendedLocationType.EDGE_ZONE));
+                new ExtendedLocation().withName("xuizhyhnepkpet").withType(ExtendedLocationType.EDGE_ZONE));
         model = BinaryData.fromObject(model).toObject(A2AExtendedLocationDetails.class);
-        Assertions.assertEquals("it", model.primaryExtendedLocation().name());
+        Assertions.assertEquals("f", model.primaryExtendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.primaryExtendedLocation().type());
-        Assertions.assertEquals("zvbrzcdbanfzndsc", model.recoveryExtendedLocation().name());
+        Assertions.assertEquals("xuizhyhnepkpet", model.recoveryExtendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.recoveryExtendedLocation().type());
     }
 }

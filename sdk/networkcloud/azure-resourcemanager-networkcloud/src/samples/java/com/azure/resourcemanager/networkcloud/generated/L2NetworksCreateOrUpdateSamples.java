@@ -15,7 +15,7 @@ import java.util.Map;
 public final class L2NetworksCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2024-07-01/examples/L2Networks_Create.
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/L2Networks_Create.
      * json
      */
     /**

@@ -11,6 +11,7 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.ServerSentResult;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.models.binarydata.FileBinaryData;
@@ -52,11 +53,16 @@ class OkHttpHttpClient implements HttpClient {
     }
 
     @Override
-    public Response<BinaryData> send(HttpRequest request) throws IOException {
+    public Response<BinaryData> send(HttpRequest request) {
         Request okHttpRequest = toOkHttpRequest(request);
-        okhttp3.Response okHttpResponse = httpClient.newCall(okHttpRequest).execute();
 
-        return toResponse(request, okHttpResponse);
+        try {
+            okhttp3.Response okHttpResponse = httpClient.newCall(okHttpRequest).execute();
+
+            return toResponse(request, okHttpResponse);
+        } catch (IOException ex) {
+            throw LOGGER.throwableAtError().log(ex, CoreException::from);
+        }
     }
 
     /**
@@ -157,7 +163,7 @@ class OkHttpHttpClient implements HttpClient {
                     return this.send(request);
                 }
             } else {
-                throw LOGGER.logThrowableAsError(new RuntimeException(NO_LISTENER_ERROR_MESSAGE));
+                throw LOGGER.throwableAtError().log(NO_LISTENER_ERROR_MESSAGE, IllegalStateException::new);
             }
         }
 

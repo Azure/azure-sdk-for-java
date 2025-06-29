@@ -11,26 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class InputEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InputEndpoint model = BinaryData
-            .fromString(
-                "{\"endpointName\":\"gna\",\"privatePort\":58413214,\"publicPort\":45173211,\"protocol\":\"bktyjmfc\"}")
+        InputEndpoint model = BinaryData.fromString(
+            "{\"endpointName\":\"eqir\",\"privatePort\":1699333224,\"publicPort\":366563449,\"protocol\":\"kcgxvrpjlvc\"}")
             .toObject(InputEndpoint.class);
-        Assertions.assertEquals("gna", model.endpointName());
-        Assertions.assertEquals(58413214, model.privatePort());
-        Assertions.assertEquals(45173211, model.publicPort());
-        Assertions.assertEquals("bktyjmfc", model.protocol());
+        Assertions.assertEquals("eqir", model.endpointName());
+        Assertions.assertEquals(1699333224, model.privatePort());
+        Assertions.assertEquals(366563449, model.publicPort());
+        Assertions.assertEquals("kcgxvrpjlvc", model.protocol());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InputEndpoint model = new InputEndpoint().withEndpointName("gna")
-            .withPrivatePort(58413214)
-            .withPublicPort(45173211)
-            .withProtocol("bktyjmfc");
+        InputEndpoint model = new InputEndpoint().withEndpointName("eqir")
+            .withPrivatePort(1699333224)
+            .withPublicPort(366563449)
+            .withProtocol("kcgxvrpjlvc");
         model = BinaryData.fromObject(model).toObject(InputEndpoint.class);
-        Assertions.assertEquals("gna", model.endpointName());
-        Assertions.assertEquals(58413214, model.privatePort());
-        Assertions.assertEquals(45173211, model.publicPort());
-        Assertions.assertEquals("bktyjmfc", model.protocol());
+        Assertions.assertEquals("eqir", model.endpointName());
+        Assertions.assertEquals(1699333224, model.privatePort());
+        Assertions.assertEquals(366563449, model.publicPort());
+        Assertions.assertEquals("kcgxvrpjlvc", model.protocol());
     }
 }

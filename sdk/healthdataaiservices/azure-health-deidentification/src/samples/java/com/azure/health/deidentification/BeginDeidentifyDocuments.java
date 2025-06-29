@@ -28,7 +28,7 @@ public class BeginDeidentifyDocuments {
                 .setOverwrite(true)
         );
 
-        job.setOperation(DeidentificationOperationType.REDACT);
+        job.setOperationType(DeidentificationOperationType.REDACT);
 
         String jobName = Configuration.getGlobalConfiguration().get("DEID_JOB_NAME", "MyJob-" + Instant.now().toEpochMilli());
         DeidentificationJob result = deidentificationClient.beginDeidentifyDocuments(jobName, job)

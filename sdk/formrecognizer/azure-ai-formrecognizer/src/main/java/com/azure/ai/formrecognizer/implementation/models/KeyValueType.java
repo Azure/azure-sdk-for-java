@@ -4,6 +4,7 @@
 
 package com.azure.ai.formrecognizer.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class KeyValueType extends ExpandableStringEnum<KeyValueType> {
     /**
      * Static value string for KeyValueType.
      */
+    @Generated
     public static final KeyValueType STRING = fromString("string");
 
     /**
      * Static value selectionMark for KeyValueType.
      */
+    @Generated
     public static final KeyValueType SELECTION_MARK = fromString("selectionMark");
 
     /**
@@ -26,6 +29,7 @@ public final class KeyValueType extends ExpandableStringEnum<KeyValueType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public KeyValueType() {
     }
@@ -36,6 +40,7 @@ public final class KeyValueType extends ExpandableStringEnum<KeyValueType> {
      * @param name a name to look for.
      * @return the corresponding KeyValueType.
      */
+    @Generated
     public static KeyValueType fromString(String name) {
         return fromString(name, KeyValueType.class);
     }
@@ -45,6 +50,7 @@ public final class KeyValueType extends ExpandableStringEnum<KeyValueType> {
      * 
      * @return known KeyValueType values.
      */
+    @Generated
     public static Collection<KeyValueType> values() {
         return values(KeyValueType.class);
     }

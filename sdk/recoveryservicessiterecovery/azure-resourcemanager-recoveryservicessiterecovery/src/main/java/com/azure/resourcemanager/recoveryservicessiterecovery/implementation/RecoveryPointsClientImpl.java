@@ -67,9 +67,9 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RecoveryPointCollection>> listByReplicationProtectedItems(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName,
             @PathParam("protectionContainerName") String protectionContainerName,
             @PathParam("replicatedProtectedItemName") String replicatedProtectedItemName,
             @HeaderParam("Accept") String accept, Context context);
@@ -79,9 +79,9 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RecoveryPointInner>> get(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName,
             @PathParam("protectionContainerName") String protectionContainerName,
             @PathParam("replicatedProtectedItemName") String replicatedProtectedItemName,
             @PathParam("recoveryPointName") String recoveryPointName, @HeaderParam("Accept") String accept,
@@ -101,8 +101,8 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * 
      * Lists the available recovery points for a replication protected item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName The fabric name.
      * @param protectionContainerName The protection container name.
      * @param replicatedProtectedItemName The replication protected item name.
@@ -113,19 +113,19 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RecoveryPointInner>> listByReplicationProtectedItemsSinglePageAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName,
+    private Mono<PagedResponse<RecoveryPointInner>> listByReplicationProtectedItemsSinglePageAsync(
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -145,7 +145,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByReplicationProtectedItems(this.client.getEndpoint(),
-                this.client.getApiVersion(), resourceName, resourceGroupName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), resourceGroupName, resourceName, this.client.getSubscriptionId(),
                 fabricName, protectionContainerName, replicatedProtectedItemName, accept, context))
             .<PagedResponse<RecoveryPointInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -157,8 +157,8 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * 
      * Lists the available recovery points for a replication protected item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName The fabric name.
      * @param protectionContainerName The protection container name.
      * @param replicatedProtectedItemName The replication protected item name.
@@ -170,19 +170,19 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RecoveryPointInner>> listByReplicationProtectedItemsSinglePageAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String replicatedProtectedItemName,
-        Context context) {
+    private Mono<PagedResponse<RecoveryPointInner>> listByReplicationProtectedItemsSinglePageAsync(
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -202,8 +202,8 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByReplicationProtectedItems(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
+            .listByReplicationProtectedItems(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+                resourceName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
                 replicatedProtectedItemName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
@@ -214,8 +214,8 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * 
      * Lists the available recovery points for a replication protected item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName The fabric name.
      * @param protectionContainerName The protection container name.
      * @param replicatedProtectedItemName The replication protected item name.
@@ -225,11 +225,10 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @return collection of recovery point details as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RecoveryPointInner> listByReplicationProtectedItemsAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName,
-        String replicatedProtectedItemName) {
+    private PagedFlux<RecoveryPointInner> listByReplicationProtectedItemsAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String replicatedProtectedItemName) {
         return new PagedFlux<>(
-            () -> listByReplicationProtectedItemsSinglePageAsync(resourceName, resourceGroupName, fabricName,
+            () -> listByReplicationProtectedItemsSinglePageAsync(resourceGroupName, resourceName, fabricName,
                 protectionContainerName, replicatedProtectedItemName),
             nextLink -> listByReplicationProtectedItemsNextSinglePageAsync(nextLink));
     }
@@ -239,8 +238,8 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * 
      * Lists the available recovery points for a replication protected item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName The fabric name.
      * @param protectionContainerName The protection container name.
      * @param replicatedProtectedItemName The replication protected item name.
@@ -251,11 +250,11 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @return collection of recovery point details as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RecoveryPointInner> listByReplicationProtectedItemsAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String replicatedProtectedItemName,
+    private PagedFlux<RecoveryPointInner> listByReplicationProtectedItemsAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         Context context) {
         return new PagedFlux<>(
-            () -> listByReplicationProtectedItemsSinglePageAsync(resourceName, resourceGroupName, fabricName,
+            () -> listByReplicationProtectedItemsSinglePageAsync(resourceGroupName, resourceName, fabricName,
                 protectionContainerName, replicatedProtectedItemName, context),
             nextLink -> listByReplicationProtectedItemsNextSinglePageAsync(nextLink, context));
     }
@@ -265,8 +264,8 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * 
      * Lists the available recovery points for a replication protected item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName The fabric name.
      * @param protectionContainerName The protection container name.
      * @param replicatedProtectedItemName The replication protected item name.
@@ -276,10 +275,9 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @return collection of recovery point details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecoveryPointInner> listByReplicationProtectedItems(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName,
-        String replicatedProtectedItemName) {
-        return new PagedIterable<>(listByReplicationProtectedItemsAsync(resourceName, resourceGroupName, fabricName,
+    public PagedIterable<RecoveryPointInner> listByReplicationProtectedItems(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String replicatedProtectedItemName) {
+        return new PagedIterable<>(listByReplicationProtectedItemsAsync(resourceGroupName, resourceName, fabricName,
             protectionContainerName, replicatedProtectedItemName));
     }
 
@@ -288,8 +286,8 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * 
      * Lists the available recovery points for a replication protected item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName The fabric name.
      * @param protectionContainerName The protection container name.
      * @param replicatedProtectedItemName The replication protected item name.
@@ -300,10 +298,10 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @return collection of recovery point details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecoveryPointInner> listByReplicationProtectedItems(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String replicatedProtectedItemName,
+    public PagedIterable<RecoveryPointInner> listByReplicationProtectedItems(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         Context context) {
-        return new PagedIterable<>(listByReplicationProtectedItemsAsync(resourceName, resourceGroupName, fabricName,
+        return new PagedIterable<>(listByReplicationProtectedItemsAsync(resourceGroupName, resourceName, fabricName,
             protectionContainerName, replicatedProtectedItemName, context));
     }
 
@@ -312,8 +310,8 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * 
      * Get the details of specified recovery point.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName The fabric name.
      * @param protectionContainerName The protection container name.
      * @param replicatedProtectedItemName The replication protected item name.
@@ -325,19 +323,19 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RecoveryPointInner>> getWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<RecoveryPointInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         String recoveryPointName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -360,8 +358,8 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
                 replicatedProtectedItemName, recoveryPointName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -371,8 +369,8 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * 
      * Get the details of specified recovery point.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName The fabric name.
      * @param protectionContainerName The protection container name.
      * @param replicatedProtectedItemName The replication protected item name.
@@ -385,19 +383,19 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RecoveryPointInner>> getWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<RecoveryPointInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName, String recoveryPointName,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -420,7 +418,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
             this.client.getSubscriptionId(), fabricName, protectionContainerName, replicatedProtectedItemName,
             recoveryPointName, accept, context);
     }
@@ -430,8 +428,8 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * 
      * Get the details of specified recovery point.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName The fabric name.
      * @param protectionContainerName The protection container name.
      * @param replicatedProtectedItemName The replication protected item name.
@@ -442,9 +440,9 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @return the details of specified recovery point on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RecoveryPointInner> getAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<RecoveryPointInner> getAsync(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, String recoveryPointName) {
-        return getWithResponseAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return getWithResponseAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
             replicatedProtectedItemName, recoveryPointName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -453,8 +451,8 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * 
      * Get the details of specified recovery point.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName The fabric name.
      * @param protectionContainerName The protection container name.
      * @param replicatedProtectedItemName The replication protected item name.
@@ -466,10 +464,10 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @return the details of specified recovery point along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecoveryPointInner> getWithResponse(String resourceName, String resourceGroupName,
+    public Response<RecoveryPointInner> getWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName, String recoveryPointName,
         Context context) {
-        return getWithResponseAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return getWithResponseAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
             replicatedProtectedItemName, recoveryPointName, context).block();
     }
 
@@ -478,8 +476,8 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * 
      * Get the details of specified recovery point.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName The fabric name.
      * @param protectionContainerName The protection container name.
      * @param replicatedProtectedItemName The replication protected item name.
@@ -490,9 +488,9 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @return the details of specified recovery point.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecoveryPointInner get(String resourceName, String resourceGroupName, String fabricName,
+    public RecoveryPointInner get(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, String recoveryPointName) {
-        return getWithResponse(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return getWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
             replicatedProtectedItemName, recoveryPointName, Context.NONE).getValue();
     }
 

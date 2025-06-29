@@ -13,24 +13,24 @@ public final class InMageAzureV2DiskInputDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageAzureV2DiskInputDetails model = BinaryData.fromString(
-            "{\"diskId\":\"ibhlenntrv\",\"logStorageAccountId\":\"psabdu\",\"diskType\":\"Premium_LRS\",\"diskEncryptionSetId\":\"lghnysvlp\"}")
+            "{\"diskId\":\"mmtmqrxrzqvvycz\",\"logStorageAccountId\":\"yubtgmbxiqah\",\"diskType\":\"UltraSSD_LRS\",\"diskEncryptionSetId\":\"xmibplnu\"}")
             .toObject(InMageAzureV2DiskInputDetails.class);
-        Assertions.assertEquals("ibhlenntrv", model.diskId());
-        Assertions.assertEquals("psabdu", model.logStorageAccountId());
-        Assertions.assertEquals(DiskAccountType.PREMIUM_LRS, model.diskType());
-        Assertions.assertEquals("lghnysvlp", model.diskEncryptionSetId());
+        Assertions.assertEquals("mmtmqrxrzqvvycz", model.diskId());
+        Assertions.assertEquals("yubtgmbxiqah", model.logStorageAccountId());
+        Assertions.assertEquals(DiskAccountType.ULTRA_SSD_LRS, model.diskType());
+        Assertions.assertEquals("xmibplnu", model.diskEncryptionSetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageAzureV2DiskInputDetails model = new InMageAzureV2DiskInputDetails().withDiskId("ibhlenntrv")
-            .withLogStorageAccountId("psabdu")
-            .withDiskType(DiskAccountType.PREMIUM_LRS)
-            .withDiskEncryptionSetId("lghnysvlp");
+        InMageAzureV2DiskInputDetails model = new InMageAzureV2DiskInputDetails().withDiskId("mmtmqrxrzqvvycz")
+            .withLogStorageAccountId("yubtgmbxiqah")
+            .withDiskType(DiskAccountType.ULTRA_SSD_LRS)
+            .withDiskEncryptionSetId("xmibplnu");
         model = BinaryData.fromObject(model).toObject(InMageAzureV2DiskInputDetails.class);
-        Assertions.assertEquals("ibhlenntrv", model.diskId());
-        Assertions.assertEquals("psabdu", model.logStorageAccountId());
-        Assertions.assertEquals(DiskAccountType.PREMIUM_LRS, model.diskType());
-        Assertions.assertEquals("lghnysvlp", model.diskEncryptionSetId());
+        Assertions.assertEquals("mmtmqrxrzqvvycz", model.diskId());
+        Assertions.assertEquals("yubtgmbxiqah", model.logStorageAccountId());
+        Assertions.assertEquals(DiskAccountType.ULTRA_SSD_LRS, model.diskType());
+        Assertions.assertEquals("xmibplnu", model.diskEncryptionSetId());
     }
 }

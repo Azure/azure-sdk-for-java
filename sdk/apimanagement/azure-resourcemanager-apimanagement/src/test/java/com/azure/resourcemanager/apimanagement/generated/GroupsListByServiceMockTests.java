@@ -7,8 +7,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.GroupContract;
@@ -23,21 +23,22 @@ public final class GroupsListByServiceMockTests {
     @Test
     public void testListByService() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"wsr\",\"description\":\"b\",\"builtIn\":false,\"type\":\"external\",\"externalId\":\"zfbvexrvnh\"},\"id\":\"mfsnqpvjtshl\",\"name\":\"vrsksdzmhwt\",\"type\":\"yppwfbwoet\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"zpa\",\"description\":\"b\",\"builtIn\":true,\"type\":\"system\",\"externalId\":\"zdwpave\"},\"id\":\"xgmigsoebd\",\"name\":\"tniuiim\",\"type\":\"rffhgvcymddo\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<GroupContract> response = manager.groups()
-            .listByService("tdzzvhbujkah", "p", "qwojdz", 756033048, 77774144, com.azure.core.util.Context.NONE);
+            .listByService("acgihnalpc", "edybkbgdwbmi", "zikatywedb", 90371039, 953573365,
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wsr", response.iterator().next().displayName());
+        Assertions.assertEquals("zpa", response.iterator().next().displayName());
         Assertions.assertEquals("b", response.iterator().next().description());
-        Assertions.assertEquals(GroupType.EXTERNAL, response.iterator().next().typePropertiesType());
-        Assertions.assertEquals("zfbvexrvnh", response.iterator().next().externalId());
+        Assertions.assertEquals(GroupType.SYSTEM, response.iterator().next().typePropertiesType());
+        Assertions.assertEquals("zdwpave", response.iterator().next().externalId());
     }
 }

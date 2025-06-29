@@ -10,8 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class DaprComponentsListSecretsSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/DaprComponents_ListSecrets.
-     * json
+     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/DaprComponents_ListSecrets.json
      */
     /**
      * Sample code: List Container Apps Secrets.

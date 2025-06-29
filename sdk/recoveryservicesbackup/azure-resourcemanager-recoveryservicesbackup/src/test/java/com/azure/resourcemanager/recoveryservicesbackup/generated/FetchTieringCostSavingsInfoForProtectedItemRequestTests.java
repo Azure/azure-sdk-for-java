@@ -13,26 +13,26 @@ public final class FetchTieringCostSavingsInfoForProtectedItemRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FetchTieringCostSavingsInfoForProtectedItemRequest model = BinaryData.fromString(
-            "{\"objectType\":\"FetchTieringCostSavingsInfoForProtectedItemRequest\",\"containerName\":\"zakuejk\",\"protectedItemName\":\"vbiztjofqcv\",\"sourceTierType\":\"HardenedRP\",\"targetTierType\":\"Invalid\"}")
+            "{\"objectType\":\"FetchTieringCostSavingsInfoForProtectedItemRequest\",\"containerName\":\"mtbdrvcqgu\",\"protectedItemName\":\"fzhompheq\",\"sourceTierType\":\"ArchivedRP\",\"targetTierType\":\"HardenedRP\"}")
             .toObject(FetchTieringCostSavingsInfoForProtectedItemRequest.class);
-        Assertions.assertEquals(RecoveryPointTierType.HARDENED_RP, model.sourceTierType());
-        Assertions.assertEquals(RecoveryPointTierType.INVALID, model.targetTierType());
-        Assertions.assertEquals("zakuejk", model.containerName());
-        Assertions.assertEquals("vbiztjofqcv", model.protectedItemName());
+        Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.sourceTierType());
+        Assertions.assertEquals(RecoveryPointTierType.HARDENED_RP, model.targetTierType());
+        Assertions.assertEquals("mtbdrvcqgu", model.containerName());
+        Assertions.assertEquals("fzhompheq", model.protectedItemName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FetchTieringCostSavingsInfoForProtectedItemRequest model
             = new FetchTieringCostSavingsInfoForProtectedItemRequest()
-                .withSourceTierType(RecoveryPointTierType.HARDENED_RP)
-                .withTargetTierType(RecoveryPointTierType.INVALID)
-                .withContainerName("zakuejk")
-                .withProtectedItemName("vbiztjofqcv");
+                .withSourceTierType(RecoveryPointTierType.ARCHIVED_RP)
+                .withTargetTierType(RecoveryPointTierType.HARDENED_RP)
+                .withContainerName("mtbdrvcqgu")
+                .withProtectedItemName("fzhompheq");
         model = BinaryData.fromObject(model).toObject(FetchTieringCostSavingsInfoForProtectedItemRequest.class);
-        Assertions.assertEquals(RecoveryPointTierType.HARDENED_RP, model.sourceTierType());
-        Assertions.assertEquals(RecoveryPointTierType.INVALID, model.targetTierType());
-        Assertions.assertEquals("zakuejk", model.containerName());
-        Assertions.assertEquals("vbiztjofqcv", model.protectedItemName());
+        Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.sourceTierType());
+        Assertions.assertEquals(RecoveryPointTierType.HARDENED_RP, model.targetTierType());
+        Assertions.assertEquals("mtbdrvcqgu", model.containerName());
+        Assertions.assertEquals("fzhompheq", model.protectedItemName());
     }
 }

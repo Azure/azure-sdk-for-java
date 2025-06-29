@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Microsoft Fabric LakeHouse Files read settings.
+ * Microsoft Fabric Lakehouse Files read settings.
  */
 @Fluent
 public final class LakeHouseReadSettings extends StoreReadSettings {
@@ -29,12 +29,12 @@ public final class LakeHouseReadSettings extends StoreReadSettings {
     private Object recursive;
 
     /*
-     * Microsoft Fabric LakeHouse Files wildcardFolderPath. Type: string (or Expression with resultType string).
+     * Microsoft Fabric Lakehouse Files wildcardFolderPath. Type: string (or Expression with resultType string).
      */
     private Object wildcardFolderPath;
 
     /*
-     * Microsoft Fabric LakeHouse Files wildcardFileName. Type: string (or Expression with resultType string).
+     * Microsoft Fabric Lakehouse Files wildcardFileName. Type: string (or Expression with resultType string).
      */
     private Object wildcardFileName;
 
@@ -109,7 +109,7 @@ public final class LakeHouseReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Get the wildcardFolderPath property: Microsoft Fabric LakeHouse Files wildcardFolderPath. Type: string (or
+     * Get the wildcardFolderPath property: Microsoft Fabric Lakehouse Files wildcardFolderPath. Type: string (or
      * Expression with resultType string).
      * 
      * @return the wildcardFolderPath value.
@@ -119,7 +119,7 @@ public final class LakeHouseReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Set the wildcardFolderPath property: Microsoft Fabric LakeHouse Files wildcardFolderPath. Type: string (or
+     * Set the wildcardFolderPath property: Microsoft Fabric Lakehouse Files wildcardFolderPath. Type: string (or
      * Expression with resultType string).
      * 
      * @param wildcardFolderPath the wildcardFolderPath value to set.
@@ -131,7 +131,7 @@ public final class LakeHouseReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Get the wildcardFileName property: Microsoft Fabric LakeHouse Files wildcardFileName. Type: string (or Expression
+     * Get the wildcardFileName property: Microsoft Fabric Lakehouse Files wildcardFileName. Type: string (or Expression
      * with resultType string).
      * 
      * @return the wildcardFileName value.
@@ -141,7 +141,7 @@ public final class LakeHouseReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Set the wildcardFileName property: Microsoft Fabric LakeHouse Files wildcardFileName. Type: string (or Expression
+     * Set the wildcardFileName property: Microsoft Fabric Lakehouse Files wildcardFileName. Type: string (or Expression
      * with resultType string).
      * 
      * @param wildcardFileName the wildcardFileName value to set.
@@ -317,18 +317,40 @@ public final class LakeHouseReadSettings extends StoreReadSettings {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
-        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        if (maxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        }
+        if (disableMetricsCollection() != null) {
+            jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("recursive", this.recursive);
-        jsonWriter.writeUntypedField("wildcardFolderPath", this.wildcardFolderPath);
-        jsonWriter.writeUntypedField("wildcardFileName", this.wildcardFileName);
-        jsonWriter.writeUntypedField("fileListPath", this.fileListPath);
-        jsonWriter.writeUntypedField("enablePartitionDiscovery", this.enablePartitionDiscovery);
-        jsonWriter.writeUntypedField("partitionRootPath", this.partitionRootPath);
-        jsonWriter.writeUntypedField("deleteFilesAfterCompletion", this.deleteFilesAfterCompletion);
-        jsonWriter.writeUntypedField("modifiedDatetimeStart", this.modifiedDatetimeStart);
-        jsonWriter.writeUntypedField("modifiedDatetimeEnd", this.modifiedDatetimeEnd);
+        if (this.recursive != null) {
+            jsonWriter.writeUntypedField("recursive", this.recursive);
+        }
+        if (this.wildcardFolderPath != null) {
+            jsonWriter.writeUntypedField("wildcardFolderPath", this.wildcardFolderPath);
+        }
+        if (this.wildcardFileName != null) {
+            jsonWriter.writeUntypedField("wildcardFileName", this.wildcardFileName);
+        }
+        if (this.fileListPath != null) {
+            jsonWriter.writeUntypedField("fileListPath", this.fileListPath);
+        }
+        if (this.enablePartitionDiscovery != null) {
+            jsonWriter.writeUntypedField("enablePartitionDiscovery", this.enablePartitionDiscovery);
+        }
+        if (this.partitionRootPath != null) {
+            jsonWriter.writeUntypedField("partitionRootPath", this.partitionRootPath);
+        }
+        if (this.deleteFilesAfterCompletion != null) {
+            jsonWriter.writeUntypedField("deleteFilesAfterCompletion", this.deleteFilesAfterCompletion);
+        }
+        if (this.modifiedDatetimeStart != null) {
+            jsonWriter.writeUntypedField("modifiedDatetimeStart", this.modifiedDatetimeStart);
+        }
+        if (this.modifiedDatetimeEnd != null) {
+            jsonWriter.writeUntypedField("modifiedDatetimeEnd", this.modifiedDatetimeEnd);
+        }
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

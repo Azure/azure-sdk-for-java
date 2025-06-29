@@ -14,8 +14,6 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LoggingEvent;
 import io.clientcore.core.models.binarydata.BinaryData;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.util.Collections;
@@ -179,11 +177,7 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
         redirectResponse.getRequest().getHeaders().remove(HttpHeaderName.AUTHORIZATION);
         redirectResponse.getRequest().setUri(redirectResponse.getHeaders().getValue(this.locationHeader));
 
-        try {
-            redirectResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        redirectResponse.close();
     }
 
     private void logRedirect(ClientLogger logger, boolean lastAttempt, String redirectUri, int tryCount,

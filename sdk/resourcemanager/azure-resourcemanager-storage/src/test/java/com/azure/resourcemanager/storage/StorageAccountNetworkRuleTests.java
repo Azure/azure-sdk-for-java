@@ -38,6 +38,7 @@ public class StorageAccountNetworkRuleTests extends StorageManagementTest {
             .define(saName1)
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
+            .disableSharedKeyAccess()
             .create();
 
         Assertions.assertNotNull(storageAccount1.networkSubnetsWithAccess());
@@ -61,6 +62,7 @@ public class StorageAccountNetworkRuleTests extends StorageManagementTest {
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(resourceGroup)
             .withAccessFromIpAddress("23.20.0.0")
+            .disableSharedKeyAccess()
             .create();
 
         Assertions.assertNotNull(storageAccount2.innerModel().networkRuleSet());
@@ -88,6 +90,7 @@ public class StorageAccountNetworkRuleTests extends StorageManagementTest {
             .withNewResourceGroup(rgName)
             .withAccessFromAllNetworks()
             .withAccessFromIpAddress("23.20.0.0")
+            .disableSharedKeyAccess()
             .create();
 
         Assertions.assertNotNull(storageAccount3.innerModel().networkRuleSet());
@@ -115,6 +118,7 @@ public class StorageAccountNetworkRuleTests extends StorageManagementTest {
             .withExistingResourceGroup(resourceGroup)
             .withReadAccessToLogEntriesFromAnyNetwork()
             .withReadAccessToMetricsFromAnyNetwork()
+            .disableSharedKeyAccess()
             .create();
 
         Assertions.assertNotNull(storageAccount4.innerModel().networkRuleSet());
@@ -145,6 +149,7 @@ public class StorageAccountNetworkRuleTests extends StorageManagementTest {
             .define(saName1)
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
+            .disableSharedKeyAccess()
             .create();
 
         Assertions.assertNotNull(storageAccount1.networkSubnetsWithAccess());

@@ -38,6 +38,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -132,6 +133,37 @@ public class TestInterfaceGenerationTests {
     }
 
     @Test
+    public void nullHeaderValueIsNotIncluded() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            assertNull(request.getHeaders().get(HttpHeaderName.CONTENT_TYPE));
+            return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
+        }).build();
+
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        try (Response<Void> response
+            = testInterface.testMethod("https://somecloud.com", BinaryData.empty(), null, null)) {
+            assertEquals(200, response.getStatusCode());
+        }
+    }
+
+    @Test
+    public void nonNullHeaderValueIsIncluded() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            assertEquals(ContentType.APPLICATION_JSON, request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
+            return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
+        }).build();
+
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        try (Response<Void> response = testInterface.testMethod("https://somecloud.com", BinaryData.empty(), ContentType.APPLICATION_JSON, null)) {
+            assertEquals(200, response.getStatusCode());
+        }
+    }
+
+    @Test
     public void voidReturningApiClosesResponse() {
         String uri = "https://somecloud.com";
         LocalHttpClient client = new LocalHttpClient();
@@ -181,7 +213,7 @@ public class TestInterfaceGenerationTests {
 
             return new Response<BinaryData>(request, success ? 200 : 400, new HttpHeaders(), BinaryData.empty()) {
                 @Override
-                public void close() throws IOException {
+                public void close() {
                     closeCalledOnResponse = true;
 
                     super.close();

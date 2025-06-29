@@ -6,8 +6,8 @@ package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
 import com.azure.resourcemanager.elasticsan.models.AutoScalePolicyEnforcement;
@@ -25,32 +25,32 @@ public final class ElasticSansGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"sku\":{\"name\":\"Premium_LRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"htozfikdow\",\"quuvxzxcl\",\"ithhqzon\",\"sg\"],\"provisioningState\":\"Creating\",\"baseSizeTiB\":940273513332449344,\"extendedCapacitySizeTiB\":8512849963231264455,\"totalVolumeSizeGiB\":6411320489884269010,\"volumeGroupCount\":865048723597164706,\"totalIops\":4626193574706169830,\"totalMBps\":1682623003142529215,\"totalSizeTiB\":2580623992572457013,\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"zzewkfvhqcrai\"]},\"id\":\"pnppfuf\",\"name\":\"rwdmhdlxyjrxsa\",\"type\":\"afcnih\"},{\"properties\":{\"provisioningState\":\"Creating\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"edgfbcvkcvq\",\"pkeqdcvdrhvoo\"]},\"id\":\"otbobzdopcj\",\"name\":\"vnhdldwmgxcxr\",\"type\":\"lpmutwuoegrpkhj\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"luicpdggkzzlvmbm\",\"axmodfvuef\",\"wsbpfvm\"]},\"id\":\"hrfou\",\"name\":\"ft\",\"type\":\"akcp\"}],\"publicNetworkAccess\":\"Enabled\",\"autoScaleProperties\":{\"scaleUpProperties\":{\"unusedSizeTiB\":7792876094043425222,\"increaseCapacityUnitByTiB\":3762813159170357700,\"capacityUnitScaleUpLimitTiB\":2842241649665717222,\"autoScalePolicyEnforcement\":\"None\"}}},\"location\":\"smond\",\"tags\":{\"jvp\":\"uxvypomgkopkwh\",\"ysmocmbqfqvmkcxo\":\"jqg\",\"tddckcb\":\"apvhelxprgly\"},\"id\":\"uejrjxgc\",\"name\":\"qibrhosxsdqrhzoy\",\"type\":\"i\"}";
+            = "{\"properties\":{\"sku\":{\"name\":\"Premium_LRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"erpqlpqwcciuqg\",\"dbutauvfbtkuwhh\",\"hykojoxafnndlpic\"],\"provisioningState\":\"Succeeded\",\"baseSizeTiB\":8179154062560286249,\"extendedCapacitySizeTiB\":8335274886610479577,\"totalVolumeSizeGiB\":8200965629156318432,\"volumeGroupCount\":5680938183379319718,\"totalIops\":3535746995814018434,\"totalMBps\":3103507589533354334,\"totalSizeTiB\":4122830623851114030,\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Creating\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"jxywsuws\",\"rsndsytgadgvra\"]},\"id\":\"en\",\"name\":\"qnzarrwl\",\"type\":\"uu\"}],\"publicNetworkAccess\":\"Enabled\",\"autoScaleProperties\":{\"scaleUpProperties\":{\"unusedSizeTiB\":1710903714386145180,\"increaseCapacityUnitByTiB\":9086145037828754941,\"capacityUnitScaleUpLimitTiB\":1965197725763741075,\"autoScalePolicyEnforcement\":\"None\"}}},\"location\":\"ibwwiftohqkv\",\"tags\":{\"nynfsynljphuo\":\"ksgplsa\",\"eosjswsr\":\"xodlqiyntorzih\",\"qioxi\":\"slyzrpzbchckqq\",\"wyhqmibzyhwits\":\"suiizynkedyat\"},\"id\":\"ypyynpcdpumnzg\",\"name\":\"wznm\",\"type\":\"biknsorgjhxbld\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ElasticSanManager manager = ElasticSanManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ElasticSan response = manager.elasticSans()
-            .getByResourceGroupWithResponse("bhjpglkfgohdne", "el", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("ulpiuj", "aasipqi", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("smond", response.location());
-        Assertions.assertEquals("uxvypomgkopkwh", response.tags().get("jvp"));
+        Assertions.assertEquals("ibwwiftohqkv", response.location());
+        Assertions.assertEquals("ksgplsa", response.tags().get("nynfsynljphuo"));
         Assertions.assertEquals(SkuName.PREMIUM_LRS, response.sku().name());
         Assertions.assertEquals(SkuTier.PREMIUM, response.sku().tier());
-        Assertions.assertEquals("htozfikdow", response.availabilityZones().get(0));
-        Assertions.assertEquals(940273513332449344L, response.baseSizeTiB());
-        Assertions.assertEquals(8512849963231264455L, response.extendedCapacitySizeTiB());
+        Assertions.assertEquals("erpqlpqwcciuqg", response.availabilityZones().get(0));
+        Assertions.assertEquals(8179154062560286249L, response.baseSizeTiB());
+        Assertions.assertEquals(8335274886610479577L, response.extendedCapacitySizeTiB());
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.publicNetworkAccess());
-        Assertions.assertEquals(7792876094043425222L,
+        Assertions.assertEquals(1710903714386145180L,
             response.autoScaleProperties().scaleUpProperties().unusedSizeTiB());
-        Assertions.assertEquals(3762813159170357700L,
+        Assertions.assertEquals(9086145037828754941L,
             response.autoScaleProperties().scaleUpProperties().increaseCapacityUnitByTiB());
-        Assertions.assertEquals(2842241649665717222L,
+        Assertions.assertEquals(1965197725763741075L,
             response.autoScaleProperties().scaleUpProperties().capacityUnitScaleUpLimitTiB());
         Assertions.assertEquals(AutoScalePolicyEnforcement.NONE,
             response.autoScaleProperties().scaleUpProperties().autoScalePolicyEnforcement());

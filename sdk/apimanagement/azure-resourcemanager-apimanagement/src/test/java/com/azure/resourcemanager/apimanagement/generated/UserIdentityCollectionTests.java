@@ -14,27 +14,27 @@ public final class UserIdentityCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserIdentityCollection model = BinaryData.fromString(
-            "{\"value\":[{\"provider\":\"newuhwfw\",\"id\":\"oxuo\"},{\"provider\":\"fnres\",\"id\":\"epgckn\"},{\"provider\":\"mgvsnvbtqdxfmj\",\"id\":\"jnhj\"},{\"provider\":\"qllbsupubdxc\",\"id\":\"lhzwh\"}],\"count\":4830047349745388329,\"nextLink\":\"osj\"}")
+            "{\"value\":[{\"provider\":\"mrnotocjnzdaiovr\",\"id\":\"rpqphkvyyzad\"},{\"provider\":\"xylaypdtyzvelffo\",\"id\":\"riwhjdfrwp\"},{\"provider\":\"h\",\"id\":\"nkcclpctuog\"}],\"count\":1046375942793669965,\"nextLink\":\"fsgmospo\"}")
             .toObject(UserIdentityCollection.class);
-        Assertions.assertEquals("newuhwfw", model.value().get(0).provider());
-        Assertions.assertEquals("oxuo", model.value().get(0).id());
-        Assertions.assertEquals(4830047349745388329L, model.count());
-        Assertions.assertEquals("osj", model.nextLink());
+        Assertions.assertEquals("mrnotocjnzdaiovr", model.value().get(0).provider());
+        Assertions.assertEquals("rpqphkvyyzad", model.value().get(0).id());
+        Assertions.assertEquals(1046375942793669965L, model.count());
+        Assertions.assertEquals("fsgmospo", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UserIdentityCollection model = new UserIdentityCollection()
-            .withValue(Arrays.asList(new UserIdentityContractInner().withProvider("newuhwfw").withId("oxuo"),
-                new UserIdentityContractInner().withProvider("fnres").withId("epgckn"),
-                new UserIdentityContractInner().withProvider("mgvsnvbtqdxfmj").withId("jnhj"),
-                new UserIdentityContractInner().withProvider("qllbsupubdxc").withId("lhzwh")))
-            .withCount(4830047349745388329L)
-            .withNextLink("osj");
+            .withValue(
+                Arrays.asList(new UserIdentityContractInner().withProvider("mrnotocjnzdaiovr").withId("rpqphkvyyzad"),
+                    new UserIdentityContractInner().withProvider("xylaypdtyzvelffo").withId("riwhjdfrwp"),
+                    new UserIdentityContractInner().withProvider("h").withId("nkcclpctuog")))
+            .withCount(1046375942793669965L)
+            .withNextLink("fsgmospo");
         model = BinaryData.fromObject(model).toObject(UserIdentityCollection.class);
-        Assertions.assertEquals("newuhwfw", model.value().get(0).provider());
-        Assertions.assertEquals("oxuo", model.value().get(0).id());
-        Assertions.assertEquals(4830047349745388329L, model.count());
-        Assertions.assertEquals("osj", model.nextLink());
+        Assertions.assertEquals("mrnotocjnzdaiovr", model.value().get(0).provider());
+        Assertions.assertEquals("rpqphkvyyzad", model.value().get(0).id());
+        Assertions.assertEquals(1046375942793669965L, model.count());
+        Assertions.assertEquals("fsgmospo", model.nextLink());
     }
 }

@@ -13,18 +13,18 @@ public final class CookieExpirationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CookieExpiration model
-            = BinaryData.fromString("{\"convention\":\"FixedTime\",\"timeToExpiration\":\"wxrjfeallnwsub\"}")
+            = BinaryData.fromString("{\"convention\":\"FixedTime\",\"timeToExpiration\":\"zidnsezcxtbzsgfy\"}")
                 .toObject(CookieExpiration.class);
         Assertions.assertEquals(CookieExpirationConvention.FIXED_TIME, model.convention());
-        Assertions.assertEquals("wxrjfeallnwsub", model.timeToExpiration());
+        Assertions.assertEquals("zidnsezcxtbzsgfy", model.timeToExpiration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CookieExpiration model = new CookieExpiration().withConvention(CookieExpirationConvention.FIXED_TIME)
-            .withTimeToExpiration("wxrjfeallnwsub");
+            .withTimeToExpiration("zidnsezcxtbzsgfy");
         model = BinaryData.fromObject(model).toObject(CookieExpiration.class);
         Assertions.assertEquals(CookieExpirationConvention.FIXED_TIME, model.convention());
-        Assertions.assertEquals("wxrjfeallnwsub", model.timeToExpiration());
+        Assertions.assertEquals("zidnsezcxtbzsgfy", model.timeToExpiration());
     }
 }

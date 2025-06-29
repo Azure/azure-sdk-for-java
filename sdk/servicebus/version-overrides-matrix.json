@@ -1,7 +1,7 @@
 {
   "matrix": {
     "Agent": {
-      "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+      "ubuntu-24.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
     },
     "JavaTestVersion": "1.21",
     "TestGoals": "surefire:test",
@@ -9,7 +9,8 @@
       "reactor_2020",
       "reactor_2022",
       "reactor_2023",
-      "reactor_2024"
+      "reactor_2024",
+      "reactor_2025"
     ],
     "TestVersionSupport": true
   }

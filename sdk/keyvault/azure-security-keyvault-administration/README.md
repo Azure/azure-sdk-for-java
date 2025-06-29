@@ -43,7 +43,7 @@ If you want to take dependency on a particular version of the library that is no
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-administration</artifactId>
-    <version>4.7.0-beta.1</version>
+    <version>4.7.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -360,7 +360,7 @@ Check if an entire collection of keys can be backed up by using `beginPreBackup(
 String blobStorageUrl = "https://myaccount.blob.core.windows.net/myContainer";
 String sasToken = "<sas-token>";
 
-SyncPoller<KeyVaultBackupOperation, String> preBackupPoller =
+SyncPoller<KeyVaultBackupOperation, Void> preBackupPoller =
     keyVaultBackupClient.beginPreBackup(blobStorageUrl, sasToken);
 PollResponse<KeyVaultBackupOperation> pollResponse = preBackupPoller.poll();
 
@@ -369,8 +369,6 @@ System.out.printf("The current status of the operation is: %s.%n", pollResponse.
 PollResponse<KeyVaultBackupOperation> finalPollResponse = preBackupPoller.waitForCompletion();
 
 if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
-    String folderUrl = preBackupPoller.getFinalResult();
-
     System.out.printf("Pre-backup check completed successfully.%n");
 } else {
     KeyVaultBackupOperation operation = preBackupPoller.poll().getValue();
@@ -412,7 +410,7 @@ Check if an entire collection of keys can be restored from a backup by using `be
 String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
 String sasToken = "<sas-token>";
 
-SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> preRestorePoller =
+SyncPoller<KeyVaultRestoreOperation, Void> preRestorePoller =
     keyVaultBackupClient.beginPreRestore(folderUrl, sasToken);
 PollResponse<KeyVaultRestoreOperation> pollResponse = preRestorePoller.poll();
 
@@ -420,13 +418,7 @@ System.out.printf("The current status of the operation is: %s.%n", pollResponse.
 
 PollResponse<KeyVaultRestoreOperation> finalPollResponse = preRestorePoller.waitForCompletion();
 
-if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
-    System.out.printf("Pre-restore check completed successfully.%n");
-} else {
-    KeyVaultRestoreOperation operation = preRestorePoller.poll().getValue();
-
-    System.out.printf("Pre-restore check failed with error: %s.%n", operation.getError().getMessage());
-}
+System.out.printf("Pre-restore check completed with status: %s.%n", finalPollResponse.getStatus());
 ```
 
 ##### Restore a collection of keys

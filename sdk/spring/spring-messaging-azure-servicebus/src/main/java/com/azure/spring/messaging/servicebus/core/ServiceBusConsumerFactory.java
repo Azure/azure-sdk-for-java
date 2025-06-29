@@ -53,26 +53,26 @@ public interface ServiceBusConsumerFactory {
     }
 
     /**
-     * Called whenever a receiver is added or removed.
+     * Called whenever a consumer (session receiver client) is added or removed.
      */
     @FunctionalInterface
     interface Listener {
 
         /**
-         * The callback method that the session receiver has been added.
+         * The callback method that the consumer (session receiver) has been added.
          *
          * @param name the name for the receiver.
          * @param client the client for the session receiver.
          */
-        void receiverAdded(String name, ServiceBusSessionReceiverClient client);
+        void consumerAdded(String name, ServiceBusSessionReceiverClient client);
 
         /**
-         * The default callback method that the session receiver has been removed.
+         * The default callback method that the consumer (session receiver) has been removed.
          *
-         * @param name the name for the receiver.
+         * @param name the name for the receiver client.
          * @param client the client for the session receiver.
          */
-        default void receiverRemoved(String name, ServiceBusSessionReceiverClient client) {
+        default void consumerRemoved(String name, ServiceBusSessionReceiverClient client) {
         }
     }
 

@@ -149,13 +149,23 @@ public final class SftpWriteSettings extends StoreWriteSettings {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
-        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
-        jsonWriter.writeUntypedField("copyBehavior", copyBehavior());
+        if (maxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        }
+        if (disableMetricsCollection() != null) {
+            jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        }
+        if (copyBehavior() != null) {
+            jsonWriter.writeUntypedField("copyBehavior", copyBehavior());
+        }
         jsonWriter.writeArrayField("metadata", metadata(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("operationTimeout", this.operationTimeout);
-        jsonWriter.writeUntypedField("useTempFileRename", this.useTempFileRename);
+        if (this.operationTimeout != null) {
+            jsonWriter.writeUntypedField("operationTimeout", this.operationTimeout);
+        }
+        if (this.useTempFileRename != null) {
+            jsonWriter.writeUntypedField("useTempFileRename", this.useTempFileRename);
+        }
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

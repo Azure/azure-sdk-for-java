@@ -47,7 +47,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 public class SuppressionTests {
     private static final long SECOND_NANOS = 1_000_000_000;
@@ -374,11 +373,7 @@ public class SuppressionTests {
                     .setUri("https://localhost")
                     .setContext(
                         context.toBuilder().setInstrumentationContext(span.getInstrumentationContext()).build()));
-                try {
-                    response.close();
-                } catch (IOException e) {
-                    fail(e);
-                }
+                response.close();
             } finally {
                 span.end();
             }

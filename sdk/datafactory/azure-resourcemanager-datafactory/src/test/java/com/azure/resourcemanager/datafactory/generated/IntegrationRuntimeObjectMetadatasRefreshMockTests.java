@@ -6,8 +6,8 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.SsisObjectMetadataStatusResponse;
@@ -21,21 +21,21 @@ public final class IntegrationRuntimeObjectMetadatasRefreshMockTests {
     @Test
     public void testRefresh() throws Exception {
         String responseStr
-            = "{\"status\":\"mderauohtnjtahd\",\"name\":\"ceuhjxvcj\",\"properties\":\"l\",\"error\":\"yptvrbgcp\"}";
+            = "{\"status\":\"clvpnoayckzshvc\",\"name\":\"zlkugkgnuhxa\",\"properties\":\"po\",\"error\":\"n\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        SsisObjectMetadataStatusResponse response
-            = manager.integrationRuntimeObjectMetadatas().refresh("ce", "qnh", "gbm", com.azure.core.util.Context.NONE);
+        SsisObjectMetadataStatusResponse response = manager.integrationRuntimeObjectMetadatas()
+            .refresh("kvrkp", "ltjcfy", "yr", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mderauohtnjtahd", response.status());
-        Assertions.assertEquals("ceuhjxvcj", response.name());
-        Assertions.assertEquals("l", response.properties());
-        Assertions.assertEquals("yptvrbgcp", response.error());
+        Assertions.assertEquals("clvpnoayckzshvc", response.status());
+        Assertions.assertEquals("zlkugkgnuhxa", response.name());
+        Assertions.assertEquals("po", response.properties());
+        Assertions.assertEquals("n", response.error());
     }
 }

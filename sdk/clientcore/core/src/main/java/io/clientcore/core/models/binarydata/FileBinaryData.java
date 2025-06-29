@@ -6,6 +6,7 @@ package io.clientcore.core.models.binarydata;
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.implementation.utils.SliceInputStream;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.ObjectSerializer;
@@ -16,16 +17,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UncheckedIOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
-import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
@@ -55,7 +53,7 @@ public class FileBinaryData extends BinaryData {
      * @throws IllegalArgumentException if {@code chunkSize} is less than or equal to zero.
      * @throws IllegalArgumentException if {@code position} is less than zero.
      * @throws IllegalArgumentException if {@code length} is less than zero.
-     * @throws UncheckedIOException if file doesn't exist.
+     * @throws CoreException if file doesn't exist.
      */
     public FileBinaryData(Path file, int chunkSize, Long position, Long length) {
         this(validateFile(file), validateChunkSize(chunkSize), validatePosition(position),
@@ -73,8 +71,9 @@ public class FileBinaryData extends BinaryData {
         Objects.requireNonNull(file, "'file' cannot be null.");
 
         if (!file.toFile().exists()) {
-            throw LOGGER.logThrowableAsError(
-                new UncheckedIOException(new FileNotFoundException("File does not exist " + file)));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("file", file.toString())
+                .log("File does not exist.", CoreException::from);
         }
 
         return file;
@@ -82,8 +81,8 @@ public class FileBinaryData extends BinaryData {
 
     private static int validateChunkSize(int chunkSize) {
         if (chunkSize <= 0) {
-            throw LOGGER
-                .logThrowableAsError(new IllegalArgumentException("'chunkSize' cannot be less than or equal to 0."));
+            throw LOGGER.throwableAtError()
+                .log("'chunkSize' cannot be less than or equal to 0.", IllegalArgumentException::new);
         }
 
         return chunkSize;
@@ -91,7 +90,7 @@ public class FileBinaryData extends BinaryData {
 
     private static long validatePosition(Long position) {
         if (position != null && position < 0) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'position' cannot be negative."));
+            throw LOGGER.throwableAtError().log("'position' cannot be negative.", IllegalArgumentException::new);
         }
 
         return (position != null) ? position : 0;
@@ -99,7 +98,7 @@ public class FileBinaryData extends BinaryData {
 
     private static long validateLength(Long length, long fileLength, long position) {
         if (length != null && length < 0) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'length' cannot be negative."));
+            throw LOGGER.throwableAtError().log("'length' cannot be negative.", IllegalArgumentException::new);
         }
 
         long maxAvailableLength = fileLength - position;
@@ -130,15 +129,19 @@ public class FileBinaryData extends BinaryData {
     @Override
     public byte[] toBytes() {
         if (length > MAX_ARRAY_SIZE) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));
+            throw LOGGER.throwableAtError().log(TOO_LARGE_FOR_BYTE_ARRAY + length, IllegalStateException::new);
         }
 
         return BYTES_UPDATER.updateAndGet(this, bytes -> bytes == null ? getBytes() : bytes);
     }
 
     @Override
-    public <T> T toObject(Type type, ObjectSerializer serializer) throws IOException {
-        return serializer.deserializeFromStream(toStream(), type);
+    public <T> T toObject(Type type, ObjectSerializer serializer) {
+        try {
+            return serializer.deserializeFromStream(toStream(), type);
+        } catch (IOException e) {
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
+        }
     }
 
     @Override
@@ -146,7 +149,9 @@ public class FileBinaryData extends BinaryData {
         try {
             return new SliceInputStream(new BufferedInputStream(getFileInputStream(), chunkSize), position, length);
         } catch (FileNotFoundException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException("File not found " + file, e));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("file", file.toString())
+                .log("File not found", e, CoreException::from);
         }
     }
 
@@ -157,29 +162,35 @@ public class FileBinaryData extends BinaryData {
     @Override
     public ByteBuffer toByteBuffer() {
         if (length > MAX_ARRAY_SIZE) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));
+            throw LOGGER.throwableAtError().log(TOO_LARGE_FOR_BYTE_ARRAY + length, IllegalStateException::new);
         }
 
         return toByteBufferInternal();
     }
 
     @Override
-    public void writeTo(OutputStream outputStream) throws IOException {
+    public void writeTo(OutputStream outputStream) {
         writeTo(Channels.newChannel(outputStream));
     }
 
     @Override
-    public void writeTo(WritableByteChannel channel) throws IOException {
+    public void writeTo(WritableByteChannel channel) {
         try (FileChannel fileChannel = FileChannel.open(file)) {
             fileChannel.transferTo(position, length, channel);
+        } catch (IOException exception) {
+            throw LOGGER.throwableAtError().log(exception, CoreException::from);
         }
     }
 
     @Override
-    public void writeTo(JsonWriter jsonWriter) throws IOException {
+    public void writeTo(JsonWriter jsonWriter) {
         Objects.requireNonNull(jsonWriter, "'jsonWriter' cannot be null");
 
-        jsonWriter.writeBinary(toBytes());
+        try {
+            jsonWriter.writeBinary(toBytes());
+        } catch (IOException e) {
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
+        }
     }
 
     ByteBuffer toByteBufferInternal() {
@@ -190,12 +201,8 @@ public class FileBinaryData extends BinaryData {
         try (FileChannel fileChannel = FileChannel.open(file)) {
             return fileChannel.map(FileChannel.MapMode.READ_ONLY, position, length);
         } catch (IOException exception) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(exception));
+            throw LOGGER.throwableAtError().log(exception, CoreException::from);
         }
-    }
-
-    AsynchronousFileChannel openAsynchronousFileChannel() throws IOException {
-        return AsynchronousFileChannel.open(file, StandardOpenOption.READ);
     }
 
     /**
@@ -219,7 +226,7 @@ public class FileBinaryData extends BinaryData {
 
     private byte[] getBytes() {
         if (length > MAX_ARRAY_SIZE) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));
+            throw LOGGER.throwableAtError().log(TOO_LARGE_FOR_BYTE_ARRAY + length, IllegalStateException::new);
         }
 
         try (InputStream is = this.toStream()) {
@@ -233,18 +240,18 @@ public class FileBinaryData extends BinaryData {
                     pendingBytes -= read;
                     offset += read;
                 } else {
-                    throw LOGGER.logThrowableAsError(
-                        new IllegalStateException("Premature EOF. File was modified concurrently."));
+                    throw LOGGER.throwableAtError()
+                        .log("Premature EOF. File was modified concurrently.", IllegalStateException::new);
                 }
             } while (pendingBytes > 0);
             return bytes;
         } catch (IOException exception) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(exception));
+            throw LOGGER.throwableAtError().log(exception, CoreException::from);
         }
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         // Since this uses a Path, there is nothing to close, therefore no-op.
     }
 }

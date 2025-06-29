@@ -32,6 +32,16 @@ public final class ApiType extends ExpandableStringEnum<ApiType> {
     public static final ApiType GRAPHQL = fromString("graphql");
 
     /**
+     * Static value odata for ApiType.
+     */
+    public static final ApiType ODATA = fromString("odata");
+
+    /**
+     * Static value grpc for ApiType.
+     */
+    public static final ApiType GRPC = fromString("grpc");
+
+    /**
      * Creates a new instance of ApiType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

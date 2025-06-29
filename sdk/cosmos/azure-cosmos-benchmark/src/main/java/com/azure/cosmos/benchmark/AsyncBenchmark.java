@@ -10,7 +10,6 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosContainerProactiveInitConfigBuilder;
 import com.azure.cosmos.CosmosException;
@@ -51,6 +50,7 @@ import reactor.util.retry.Retry;
 import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CancellationException;
@@ -85,6 +85,16 @@ abstract class AsyncBenchmark<T> {
     final Semaphore concurrencyControlSemaphore;
     Timer latency;
 
+    private static final List<String> CONFIGURED_HIGH_AVAILABILITY_SYSTEM_PROPERTIES = Arrays.asList(
+        "COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED",
+        "COSMOS.IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED",
+        "COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF",
+        "COSMOS.E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF",
+        "COSMOS.STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS",
+        "COSMOS.ALLOWED_PARTITION_UNAVAILABILITY_DURATION_IN_SECONDS",
+        "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG" // Implicitly set when COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED is set to true
+    );
+
     private static final TokenCredential CREDENTIAL = new DefaultAzureCredentialBuilder()
             .managedIdentityClientId(Configuration.getAadManagedIdentityId())
             .authorityHost(Configuration.getAadLoginUri())
@@ -106,6 +116,17 @@ abstract class AsyncBenchmark<T> {
                     + "\"consecutiveExceptionCountToleratedForReads\": 10,"
                     + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
                     + "}");
+
+            System.setProperty("COSMOS.STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS", "60");
+            System.setProperty("COSMOS.ALLOWED_PARTITION_UNAVAILABILITY_DURATION_IN_SECONDS", "30");
+        }
+
+        if (configuration.isPerPartitionAutomaticFailoverRequired()) {
+            System.setProperty(
+                "COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED", "true");
+            System.setProperty("COSMOS.IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED", "true");
+            System.setProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF", "5");
+            System.setProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF", "120");
         }
 
         boolean isManagedIdentityRequired = cfg.isManagedIdentityRequired();
@@ -138,7 +159,12 @@ abstract class AsyncBenchmark<T> {
             );
 
         if (configuration.isDefaultLog4jLoggerEnabled()) {
-            telemetryConfig.diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER);
+            logger.info("Diagnostics thresholds Point: {}, Non-Point: {}",
+                cfg.getPointOperationThreshold(),
+                cfg.getNonPointOperationThreshold());
+            telemetryConfig.diagnosticsHandler(
+                new CosmosSamplingDiagnosticsLogger(10, 10_000)
+            );
         }
 
         MeterRegistry registry = configuration.getAzureMonitorMeterRegistry();
@@ -443,6 +469,11 @@ abstract class AsyncBenchmark<T> {
     }
 
     void shutdown() {
+
+        for (String key : CONFIGURED_HIGH_AVAILABILITY_SYSTEM_PROPERTIES) {
+            System.clearProperty(key);
+        }
+
         if (this.databaseCreated) {
             cosmosAsyncDatabase.delete().block();
             logger.info("Deleted temporary database {} created for this test", this.configuration.getDatabaseId());

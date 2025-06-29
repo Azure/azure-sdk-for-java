@@ -41,6 +41,14 @@ public final class BackupImpl implements Backup, Backup.Definition, Backup.Updat
         return this.innerModel().creationDate();
     }
 
+    public OffsetDateTime snapshotCreationDate() {
+        return this.innerModel().snapshotCreationDate();
+    }
+
+    public OffsetDateTime completionDate() {
+        return this.innerModel().completionDate();
+    }
+
     public String provisioningState() {
         return this.innerModel().provisioningState();
     }
@@ -75,6 +83,10 @@ public final class BackupImpl implements Backup, Backup.Definition, Backup.Updat
 
     public String backupPolicyResourceId() {
         return this.innerModel().backupPolicyResourceId();
+    }
+
+    public Boolean isLargeVolume() {
+        return this.innerModel().isLargeVolume();
     }
 
     public String resourceGroupName() {

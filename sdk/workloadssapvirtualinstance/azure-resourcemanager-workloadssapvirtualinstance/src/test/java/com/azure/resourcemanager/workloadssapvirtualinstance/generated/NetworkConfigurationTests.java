@@ -13,13 +13,13 @@ public final class NetworkConfigurationTests {
     public void testDeserialize() throws Exception {
         NetworkConfiguration model
             = BinaryData.fromString("{\"isSecondaryIpEnabled\":false}").toObject(NetworkConfiguration.class);
-        Assertions.assertEquals(false, model.isSecondaryIpEnabled());
+        Assertions.assertFalse(model.isSecondaryIpEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkConfiguration model = new NetworkConfiguration().withIsSecondaryIpEnabled(false);
         model = BinaryData.fromObject(model).toObject(NetworkConfiguration.class);
-        Assertions.assertEquals(false, model.isSecondaryIpEnabled());
+        Assertions.assertFalse(model.isSecondaryIpEnabled());
     }
 }

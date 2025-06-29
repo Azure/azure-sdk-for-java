@@ -3,7 +3,8 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.circuitBreaker.LocationSpecificHealthContext;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PerPartitionFailoverInfoHolder;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PerPartitionCircuitBreakerInfoHolder;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
@@ -35,9 +36,6 @@ import java.util.TreeSet;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
-
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 @JsonSerialize(using = ClientSideRequestStatistics.ClientSideRequestStatisticsSerializer.class)
 public class ClientSideRequestStatistics {
@@ -174,7 +172,8 @@ public class ClientSideRequestStatistics {
 
             this.approximateInsertionCountInBloomFilter = request.requestContext.getApproximateBloomFilterInsertionCount();
             storeResponseStatistics.sessionTokenEvaluationResults = request.requestContext.getSessionTokenEvaluationResults();
-            storeResponseStatistics.locationToLocationSpecificHealthContext = request.requestContext.getLocationToLocationSpecificHealthContext();
+            storeResponseStatistics.perPartitionCircuitBreakerInfoHolder = request.requestContext.getPerPartitionCircuitBreakerInfoHolder();
+            storeResponseStatistics.perPartitionFailoverInfoHolder = request.requestContext.getPerPartitionFailoverContextHolder();
 
             if (request.requestContext.getEndToEndOperationLatencyPolicyConfig() != null) {
                 storeResponseStatistics.e2ePolicyCfg =
@@ -197,7 +196,7 @@ public class ClientSideRequestStatistics {
 
             if (regionalRoutingContext != null) {
                 storeResponseStatistics.regionName =
-                    globalEndpointManager.getRegionName(regionalRoutingContext.getGatewayRegionalEndpoint(), request.getOperationType());
+                    globalEndpointManager.getRegionName(regionalRoutingContext.getGatewayRegionalEndpoint(), request.getOperationType(), request.isPerPartitionAutomaticFailoverEnabledAndWriteRequest);
                 this.regionsContacted.add(storeResponseStatistics.regionName);
                 this.locationEndpointsContacted.add(locationEndPoint);
                 this.regionsContactedWithContext.add(new RegionWithContext(storeResponseStatistics.regionName, regionalRoutingContext));
@@ -241,7 +240,7 @@ public class ClientSideRequestStatistics {
             if (regionalRoutingContext != null) {
 
                 URI locationEndpoint = regionalRoutingContext.getGatewayRegionalEndpoint();
-                String regionName = globalEndpointManager.getRegionName(locationEndpoint, rxDocumentServiceRequest.getOperationType());
+                String regionName = globalEndpointManager.getRegionName(locationEndpoint, rxDocumentServiceRequest.getOperationType(), rxDocumentServiceRequest.isPerPartitionAutomaticFailoverEnabledAndWriteRequest);
 
                 this.regionsContacted.add(regionName);
                 this.locationEndpointsContacted.add(locationEndpoint);
@@ -257,7 +256,8 @@ public class ClientSideRequestStatistics {
 
                 if (rxDocumentServiceRequest.requestContext != null) {
                     gatewayStatistics.sessionTokenEvaluationResults = rxDocumentServiceRequest.requestContext.getSessionTokenEvaluationResults();
-                    gatewayStatistics.locationToLocationSpecificHealthContext = rxDocumentServiceRequest.requestContext.getLocationToLocationSpecificHealthContext();
+                    gatewayStatistics.perPartitionCircuitBreakerInfoHolder = rxDocumentServiceRequest.requestContext.getPerPartitionCircuitBreakerInfoHolder();
+                    gatewayStatistics.perPartitionFailoverInfoHolder = rxDocumentServiceRequest.requestContext.getPerPartitionFailoverContextHolder();
                 }
             }
             gatewayStatistics.statusCode = storeResponseDiagnostics.getStatusCode();
@@ -307,9 +307,7 @@ public class ClientSideRequestStatistics {
         URI targetEndpoint,
         boolean forceRefresh,
         boolean forceCollectionRoutingMapRefresh) {
-        String identifier = UUID
-            .randomUUID()
-            .toString();
+        String identifier = UUIDs.nonBlockingRandomUUID().toString();
 
         AddressResolutionStatistics resolutionStatistics = new AddressResolutionStatistics();
         resolutionStatistics.startTimeUTC = Instant.now();
@@ -698,8 +696,11 @@ public class ClientSideRequestStatistics {
         @JsonSerialize
         private Set<String> sessionTokenEvaluationResults;
 
-        @JsonSerialize
-        private Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> locationToLocationSpecificHealthContext;
+        @JsonSerialize(using = PerPartitionCircuitBreakerInfoHolder.PerPartitionCircuitBreakerInfoHolderSerializer.class)
+        private PerPartitionCircuitBreakerInfoHolder perPartitionCircuitBreakerInfoHolder;
+
+        @JsonSerialize(using = PerPartitionFailoverInfoHolder.PerPartitionFailoverInfoHolderSerializer.class)
+        private PerPartitionFailoverInfoHolder perPartitionFailoverInfoHolder;
 
         public String getExcludedRegions() {
             return this.excludedRegions;
@@ -737,8 +738,12 @@ public class ClientSideRequestStatistics {
             return sessionTokenEvaluationResults;
         }
 
-        public Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> getLocationToLocationSpecificHealthContext() {
-            return locationToLocationSpecificHealthContext;
+        public PerPartitionCircuitBreakerInfoHolder getPerPartitionCircuitBreakerInfoHolder() {
+            return perPartitionCircuitBreakerInfoHolder;
+        }
+
+        public PerPartitionFailoverInfoHolder getPerPartitionFailoverInfoHolder() {
+            return perPartitionFailoverInfoHolder;
         }
 
         @JsonIgnore
@@ -903,7 +908,8 @@ public class ClientSideRequestStatistics {
         private String faultInjectionRuleId;
         private List<String> faultInjectionEvaluationResults;
         private Set<String> sessionTokenEvaluationResults;
-        private Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> locationToLocationSpecificHealthContext;
+        private PerPartitionCircuitBreakerInfoHolder perPartitionCircuitBreakerInfoHolder;
+        private PerPartitionFailoverInfoHolder perPartitionFailoverInfoHolder;
 
         public String getSessionToken() {
             return sessionToken;
@@ -961,8 +967,12 @@ public class ClientSideRequestStatistics {
             return sessionTokenEvaluationResults;
         }
 
-        public Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> getLocationToLocationSpecificHealthContext() {
-            return locationToLocationSpecificHealthContext;
+        public PerPartitionCircuitBreakerInfoHolder getPerPartitionCircuitBreakerInfoHolder() {
+            return perPartitionCircuitBreakerInfoHolder;
+        }
+
+        public PerPartitionFailoverInfoHolder getPerPartitionFailoverInfoHolder() {
+            return perPartitionFailoverInfoHolder;
         }
 
         public static class GatewayStatisticsSerializer extends StdSerializer<GatewayStatistics> {
@@ -998,7 +1008,9 @@ public class ClientSideRequestStatistics {
                 }
 
                 this.writeNonEmptyStringSetField(jsonGenerator, "sessionTokenEvaluationResults", gatewayStatistics.getSessionTokenEvaluationResults());
-                this.writeNonNullObjectField(jsonGenerator, "locationToLocationSpecificHealthContext", gatewayStatistics.getLocationToLocationSpecificHealthContext());
+                this.writeNonNullObjectField(jsonGenerator, "perPartitionCircuitBreakerInfoHolder", gatewayStatistics.getPerPartitionCircuitBreakerInfoHolder());
+                this.writeNonNullObjectField(jsonGenerator, "perPartitionFailoverInfoHolder", gatewayStatistics.getPerPartitionFailoverInfoHolder());
+
                 jsonGenerator.writeEndObject();
             }
 

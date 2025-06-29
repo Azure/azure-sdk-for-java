@@ -13,35 +13,35 @@ public final class FabricReplicationGroupTaskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FabricReplicationGroupTaskDetails model = BinaryData.fromString(
-            "{\"instanceType\":\"FabricReplicationGroupTaskDetails\",\"skippedReason\":\"nmfbc\",\"skippedReasonString\":\"qktkrumzuedkyzbf\",\"jobTask\":{\"jobId\":\"vqkxiuxqggvq\",\"jobFriendlyName\":\"hyhlwcjsqg\",\"targetObjectId\":\"hffbxrq\",\"targetObjectName\":\"ijpeuql\",\"targetInstanceType\":\"x\",\"jobScenarioName\":\"ztv\"}}")
+            "{\"instanceType\":\"FabricReplicationGroupTaskDetails\",\"skippedReason\":\"ransyby\",\"skippedReasonString\":\"ol\",\"jobTask\":{\"jobId\":\"ghsrleinkfscjfn\",\"jobFriendlyName\":\"wvuagfqwtl\",\"targetObjectId\":\"gvmreuptrklzmi\",\"targetObjectName\":\"jwolxfsvaghmpynw\",\"targetInstanceType\":\"lr\",\"jobScenarioName\":\"gtzjcv\"}}")
             .toObject(FabricReplicationGroupTaskDetails.class);
-        Assertions.assertEquals("vqkxiuxqggvq", model.jobTask().jobId());
-        Assertions.assertEquals("hyhlwcjsqg", model.jobTask().jobFriendlyName());
-        Assertions.assertEquals("hffbxrq", model.jobTask().targetObjectId());
-        Assertions.assertEquals("ijpeuql", model.jobTask().targetObjectName());
-        Assertions.assertEquals("x", model.jobTask().targetInstanceType());
-        Assertions.assertEquals("ztv", model.jobTask().jobScenarioName());
-        Assertions.assertEquals("nmfbc", model.skippedReason());
-        Assertions.assertEquals("qktkrumzuedkyzbf", model.skippedReasonString());
+        Assertions.assertEquals("ghsrleinkfscjfn", model.jobTask().jobId());
+        Assertions.assertEquals("wvuagfqwtl", model.jobTask().jobFriendlyName());
+        Assertions.assertEquals("gvmreuptrklzmi", model.jobTask().targetObjectId());
+        Assertions.assertEquals("jwolxfsvaghmpynw", model.jobTask().targetObjectName());
+        Assertions.assertEquals("lr", model.jobTask().targetInstanceType());
+        Assertions.assertEquals("gtzjcv", model.jobTask().jobScenarioName());
+        Assertions.assertEquals("ransyby", model.skippedReason());
+        Assertions.assertEquals("ol", model.skippedReasonString());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FabricReplicationGroupTaskDetails model
-            = new FabricReplicationGroupTaskDetails().withJobTask(new JobEntity().withJobId("vqkxiuxqggvq")
-                .withJobFriendlyName("hyhlwcjsqg")
-                .withTargetObjectId("hffbxrq")
-                .withTargetObjectName("ijpeuql")
-                .withTargetInstanceType("x")
-                .withJobScenarioName("ztv")).withSkippedReason("nmfbc").withSkippedReasonString("qktkrumzuedkyzbf");
+            = new FabricReplicationGroupTaskDetails().withJobTask(new JobEntity().withJobId("ghsrleinkfscjfn")
+                .withJobFriendlyName("wvuagfqwtl")
+                .withTargetObjectId("gvmreuptrklzmi")
+                .withTargetObjectName("jwolxfsvaghmpynw")
+                .withTargetInstanceType("lr")
+                .withJobScenarioName("gtzjcv")).withSkippedReason("ransyby").withSkippedReasonString("ol");
         model = BinaryData.fromObject(model).toObject(FabricReplicationGroupTaskDetails.class);
-        Assertions.assertEquals("vqkxiuxqggvq", model.jobTask().jobId());
-        Assertions.assertEquals("hyhlwcjsqg", model.jobTask().jobFriendlyName());
-        Assertions.assertEquals("hffbxrq", model.jobTask().targetObjectId());
-        Assertions.assertEquals("ijpeuql", model.jobTask().targetObjectName());
-        Assertions.assertEquals("x", model.jobTask().targetInstanceType());
-        Assertions.assertEquals("ztv", model.jobTask().jobScenarioName());
-        Assertions.assertEquals("nmfbc", model.skippedReason());
-        Assertions.assertEquals("qktkrumzuedkyzbf", model.skippedReasonString());
+        Assertions.assertEquals("ghsrleinkfscjfn", model.jobTask().jobId());
+        Assertions.assertEquals("wvuagfqwtl", model.jobTask().jobFriendlyName());
+        Assertions.assertEquals("gvmreuptrklzmi", model.jobTask().targetObjectId());
+        Assertions.assertEquals("jwolxfsvaghmpynw", model.jobTask().targetObjectName());
+        Assertions.assertEquals("lr", model.jobTask().targetInstanceType());
+        Assertions.assertEquals("gtzjcv", model.jobTask().jobScenarioName());
+        Assertions.assertEquals("ransyby", model.skippedReason());
+        Assertions.assertEquals("ol", model.skippedReasonString());
     }
 }

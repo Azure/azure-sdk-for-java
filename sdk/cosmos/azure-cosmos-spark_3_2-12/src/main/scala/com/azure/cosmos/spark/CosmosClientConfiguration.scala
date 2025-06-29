@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder}
+import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, ReadConsistencyStrategy}
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 
@@ -19,7 +19,7 @@ private[spark] case class CosmosClientConfiguration (
                                                       proactiveConnectionInitialization: Option[String],
                                                       proactiveConnectionInitializationDurationInSeconds: Int,
                                                       httpConnectionPoolSize: Int,
-                                                      useEventualConsistency: Boolean,
+                                                      readConsistencyStrategy: ReadConsistencyStrategy,
                                                       enableClientTelemetry: Boolean,
                                                       disableTcpConnectionEndpointRediscovery: Boolean,
                                                       clientTelemetryEndpoint: Option[String],
@@ -35,19 +35,19 @@ private[spark] case class CosmosClientConfiguration (
 private[spark] object CosmosClientConfiguration {
   def apply(
              config: Map[String, String],
-             useEventualConsistency: Boolean,
+             readConsistencyStrategy: ReadConsistencyStrategy,
              sparkEnvironmentInfo: String): CosmosClientConfiguration = {
 
     val cosmosAccountConfig = CosmosAccountConfig.parseCosmosAccountConfig(config)
     val diagnosticsConfig = DiagnosticsConfig.parseDiagnosticsConfig(config)
 
-    apply(cosmosAccountConfig, diagnosticsConfig, useEventualConsistency, sparkEnvironmentInfo)
+    apply(cosmosAccountConfig, diagnosticsConfig, readConsistencyStrategy, sparkEnvironmentInfo)
   }
 
   def apply(
             cosmosAccountConfig: CosmosAccountConfig,
             diagnosticsConfig: DiagnosticsConfig,
-            useEventualConsistency: Boolean,
+            readConsistencyStrategy: ReadConsistencyStrategy,
             sparkEnvironmentInfo: String): CosmosClientConfiguration = {
 
     var applicationName = CosmosConstants.userAgentSuffix
@@ -77,7 +77,7 @@ private[spark] object CosmosClientConfiguration {
       cosmosAccountConfig.proactiveConnectionInitialization,
       cosmosAccountConfig.proactiveConnectionInitializationDurationInSeconds,
       cosmosAccountConfig.httpConnectionPoolSize,
-      useEventualConsistency,
+      readConsistencyStrategy,
       enableClientTelemetry = diagnosticsConfig.isClientTelemetryEnabled,
       cosmosAccountConfig.disableTcpConnectionEndpointRediscovery,
       diagnosticsConfig.clientTelemetryEndpoint,

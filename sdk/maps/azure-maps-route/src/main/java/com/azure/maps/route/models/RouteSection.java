@@ -5,6 +5,7 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,51 +21,65 @@ public final class RouteSection implements JsonSerializable<RouteSection> {
     /*
      * Index of the first point (offset 0) in the route this section applies to.
      */
+    @Generated
     private Integer startPointIndex;
 
     /*
      * Index of the last point (offset 0) in the route this section applies to.
      */
+    @Generated
     private Integer endPointIndex;
 
     /*
      * Section types of the reported route response
      */
+    @Generated
     private RouteSectionType sectionType;
 
     /*
-     * Travel mode for the calculated route. The value will be set to `other` if the requested mode of transport is not possible in this section
+     * Travel mode for the calculated route. The value will be set to `other` if the requested mode of transport is not
+     * possible in this section
      */
+    @Generated
     private RouteTravelMode travelMode;
 
     /*
-     * Type of the incident. Can currently be JAM, ROAD_WORK, ROAD_CLOSURE, or OTHER. See "tec" for detailed information.
+     * Type of the incident. Can currently be JAM, ROAD_WORK, ROAD_CLOSURE, or OTHER. See "tec" for detailed
+     * information.
      */
+    @Generated
     private RouteDelayReason simpleCategory;
 
     /*
      * Effective speed of the incident in km/h, averaged over its entire length.
      */
+    @Generated
     private Integer effectiveSpeedInKmh;
 
     /*
      * Delay in seconds caused by the incident.
      */
+    @Generated
     private Integer delayInSeconds;
 
     /*
-     * The magnitude of delay caused by the incident. These values correspond to the values of the response field ty of the [Get Traffic Incident Detail API](https://docs.microsoft.com/rest/api/maps/traffic/gettrafficincidentdetail). 
+     * The magnitude of delay caused by the incident. These values correspond to the values of the response field ty of
+     * the [Get Traffic Incident Detail API](https://docs.microsoft.com/rest/api/maps/traffic/gettrafficincidentdetail).
      */
+    @Generated
     private DelayMagnitude delayMagnitude;
 
     /*
-     * Details of the traffic event, using definitions in the [TPEG2-TEC](https://www.iso.org/standard/63116.html) standard. Can contain effectCode and causes elements.
+     * Details of the traffic event, using definitions in the [TPEG2-TEC](https://www.iso.org/standard/63116.html)
+     * standard. Can contain effectCode and causes elements.
      */
+    @Generated
     private RouteSectionTec tec;
 
     /**
      * Creates an instance of RouteSection class.
      */
+    @Generated
     public RouteSection() {
     }
 
@@ -73,6 +88,7 @@ public final class RouteSection implements JsonSerializable<RouteSection> {
      * 
      * @return the startPointIndex value.
      */
+    @Generated
     public Integer getStartPointIndex() {
         return this.startPointIndex;
     }
@@ -82,6 +98,7 @@ public final class RouteSection implements JsonSerializable<RouteSection> {
      * 
      * @return the endPointIndex value.
      */
+    @Generated
     public Integer getEndPointIndex() {
         return this.endPointIndex;
     }
@@ -91,6 +108,7 @@ public final class RouteSection implements JsonSerializable<RouteSection> {
      * 
      * @return the sectionType value.
      */
+    @Generated
     public RouteSectionType getSectionType() {
         return this.sectionType;
     }
@@ -101,6 +119,7 @@ public final class RouteSection implements JsonSerializable<RouteSection> {
      * 
      * @return the travelMode value.
      */
+    @Generated
     public RouteTravelMode getTravelMode() {
         return this.travelMode;
     }
@@ -111,6 +130,7 @@ public final class RouteSection implements JsonSerializable<RouteSection> {
      * 
      * @return the simpleCategory value.
      */
+    @Generated
     public RouteDelayReason getSimpleCategory() {
         return this.simpleCategory;
     }
@@ -120,6 +140,7 @@ public final class RouteSection implements JsonSerializable<RouteSection> {
      * 
      * @return the effectiveSpeedInKmh value.
      */
+    @Generated
     public Integer getEffectiveSpeedInKmh() {
         return this.effectiveSpeedInKmh;
     }
@@ -129,6 +150,7 @@ public final class RouteSection implements JsonSerializable<RouteSection> {
      * 
      * @return the delayInSeconds value.
      */
+    @Generated
     public Integer getDelayInSeconds() {
         return this.delayInSeconds;
     }
@@ -140,6 +162,7 @@ public final class RouteSection implements JsonSerializable<RouteSection> {
      * 
      * @return the delayMagnitude value.
      */
+    @Generated
     public DelayMagnitude getDelayMagnitude() {
         return this.delayMagnitude;
     }
@@ -150,6 +173,7 @@ public final class RouteSection implements JsonSerializable<RouteSection> {
      * 
      * @return the tec value.
      */
+    @Generated
     public RouteSectionTec getTec() {
         return this.tec;
     }
@@ -161,6 +185,7 @@ public final class RouteSection implements JsonSerializable<RouteSection> {
      * @param tec the tec value to set.
      * @return the RouteSection object itself.
      */
+    @Generated
     public RouteSection setTec(RouteSectionTec tec) {
         this.tec = tec;
         return this;
@@ -169,6 +194,7 @@ public final class RouteSection implements JsonSerializable<RouteSection> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -184,6 +210,7 @@ public final class RouteSection implements JsonSerializable<RouteSection> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the RouteSection.
      */
+    @Generated
     public static RouteSection fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RouteSection deserializedRouteSection = new RouteSection();

@@ -12,24 +12,24 @@ public final class CacheContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CacheContractInner model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"twloesqr\",\"connectionString\":\"gvrbny\",\"useFromLocation\":\"ukoila\",\"resourceId\":\"duwjleipjlhwy\"},\"id\":\"p\",\"name\":\"ruzythqkkwhbg\",\"type\":\"vellvulnxdmnitm\"}")
+            "{\"properties\":{\"description\":\"mtmjzw\",\"connectionString\":\"uqgovsxpwwztjfm\",\"useFromLocation\":\"khtgfredmlscgrll\",\"resourceId\":\"na\"},\"id\":\"vjowazhpabac\",\"name\":\"mlyotg\",\"type\":\"wsxnsrqor\"}")
             .toObject(CacheContractInner.class);
-        Assertions.assertEquals("twloesqr", model.description());
-        Assertions.assertEquals("gvrbny", model.connectionString());
-        Assertions.assertEquals("ukoila", model.useFromLocation());
-        Assertions.assertEquals("duwjleipjlhwy", model.resourceId());
+        Assertions.assertEquals("mtmjzw", model.description());
+        Assertions.assertEquals("uqgovsxpwwztjfm", model.connectionString());
+        Assertions.assertEquals("khtgfredmlscgrll", model.useFromLocation());
+        Assertions.assertEquals("na", model.resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CacheContractInner model = new CacheContractInner().withDescription("twloesqr")
-            .withConnectionString("gvrbny")
-            .withUseFromLocation("ukoila")
-            .withResourceId("duwjleipjlhwy");
+        CacheContractInner model = new CacheContractInner().withDescription("mtmjzw")
+            .withConnectionString("uqgovsxpwwztjfm")
+            .withUseFromLocation("khtgfredmlscgrll")
+            .withResourceId("na");
         model = BinaryData.fromObject(model).toObject(CacheContractInner.class);
-        Assertions.assertEquals("twloesqr", model.description());
-        Assertions.assertEquals("gvrbny", model.connectionString());
-        Assertions.assertEquals("ukoila", model.useFromLocation());
-        Assertions.assertEquals("duwjleipjlhwy", model.resourceId());
+        Assertions.assertEquals("mtmjzw", model.description());
+        Assertions.assertEquals("uqgovsxpwwztjfm", model.connectionString());
+        Assertions.assertEquals("khtgfredmlscgrll", model.useFromLocation());
+        Assertions.assertEquals("na", model.resourceId());
     }
 }

@@ -16,35 +16,30 @@ public final class AzureWorkloadSqlRecoveryPointExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureWorkloadSqlRecoveryPointExtendedInfo model = BinaryData.fromString(
-            "{\"dataDirectoryTimeInUTC\":\"2021-03-05T03:32:16Z\",\"dataDirectoryPaths\":[{\"type\":\"Invalid\",\"path\":\"dbevwqqxeysko\",\"logicalName\":\"zinkfkbgbzbowxeq\"},{\"type\":\"Invalid\",\"path\":\"mygvkzqkj\",\"logicalName\":\"okbzef\"},{\"type\":\"Log\",\"path\":\"cczurtlei\",\"logicalName\":\"xbkwv\"},{\"type\":\"Invalid\",\"path\":\"v\",\"logicalName\":\"bzdixzmq\"}]}")
+            "{\"dataDirectoryTimeInUTC\":\"2021-11-01T10:21:35Z\",\"dataDirectoryPaths\":[{\"type\":\"Data\",\"path\":\"vigorqjbttzhragl\",\"logicalName\":\"fhonqjujeickpzvc\"},{\"type\":\"Log\",\"path\":\"xelnwc\",\"logicalName\":\"yjede\"},{\"type\":\"Log\",\"path\":\"f\",\"logicalName\":\"qscazuawxtz\"}]}")
             .toObject(AzureWorkloadSqlRecoveryPointExtendedInfo.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-05T03:32:16Z"), model.dataDirectoryTimeInUtc());
-        Assertions.assertEquals(SqlDataDirectoryType.INVALID, model.dataDirectoryPaths().get(0).type());
-        Assertions.assertEquals("dbevwqqxeysko", model.dataDirectoryPaths().get(0).path());
-        Assertions.assertEquals("zinkfkbgbzbowxeq", model.dataDirectoryPaths().get(0).logicalName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-01T10:21:35Z"), model.dataDirectoryTimeInUtc());
+        Assertions.assertEquals(SqlDataDirectoryType.DATA, model.dataDirectoryPaths().get(0).type());
+        Assertions.assertEquals("vigorqjbttzhragl", model.dataDirectoryPaths().get(0).path());
+        Assertions.assertEquals("fhonqjujeickpzvc", model.dataDirectoryPaths().get(0).logicalName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureWorkloadSqlRecoveryPointExtendedInfo model = new AzureWorkloadSqlRecoveryPointExtendedInfo()
-            .withDataDirectoryTimeInUtc(OffsetDateTime.parse("2021-03-05T03:32:16Z"))
+            .withDataDirectoryTimeInUtc(OffsetDateTime.parse("2021-11-01T10:21:35Z"))
             .withDataDirectoryPaths(Arrays.asList(
-                new SqlDataDirectory().withType(SqlDataDirectoryType.INVALID)
-                    .withPath("dbevwqqxeysko")
-                    .withLogicalName("zinkfkbgbzbowxeq"),
-                new SqlDataDirectory().withType(SqlDataDirectoryType.INVALID)
-                    .withPath("mygvkzqkj")
-                    .withLogicalName("okbzef"),
+                new SqlDataDirectory().withType(SqlDataDirectoryType.DATA)
+                    .withPath("vigorqjbttzhragl")
+                    .withLogicalName("fhonqjujeickpzvc"),
+                new SqlDataDirectory().withType(SqlDataDirectoryType.LOG).withPath("xelnwc").withLogicalName("yjede"),
                 new SqlDataDirectory().withType(SqlDataDirectoryType.LOG)
-                    .withPath("cczurtlei")
-                    .withLogicalName("xbkwv"),
-                new SqlDataDirectory().withType(SqlDataDirectoryType.INVALID)
-                    .withPath("v")
-                    .withLogicalName("bzdixzmq")));
+                    .withPath("f")
+                    .withLogicalName("qscazuawxtz")));
         model = BinaryData.fromObject(model).toObject(AzureWorkloadSqlRecoveryPointExtendedInfo.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-05T03:32:16Z"), model.dataDirectoryTimeInUtc());
-        Assertions.assertEquals(SqlDataDirectoryType.INVALID, model.dataDirectoryPaths().get(0).type());
-        Assertions.assertEquals("dbevwqqxeysko", model.dataDirectoryPaths().get(0).path());
-        Assertions.assertEquals("zinkfkbgbzbowxeq", model.dataDirectoryPaths().get(0).logicalName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-01T10:21:35Z"), model.dataDirectoryTimeInUtc());
+        Assertions.assertEquals(SqlDataDirectoryType.DATA, model.dataDirectoryPaths().get(0).type());
+        Assertions.assertEquals("vigorqjbttzhragl", model.dataDirectoryPaths().get(0).path());
+        Assertions.assertEquals("fhonqjujeickpzvc", model.dataDirectoryPaths().get(0).logicalName());
     }
 }

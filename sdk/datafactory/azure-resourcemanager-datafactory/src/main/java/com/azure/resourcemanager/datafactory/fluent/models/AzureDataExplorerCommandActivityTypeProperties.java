@@ -102,7 +102,9 @@ public final class AzureDataExplorerCommandActivityTypeProperties
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("command", this.command);
-        jsonWriter.writeUntypedField("commandTimeout", this.commandTimeout);
+        if (this.commandTimeout != null) {
+            jsonWriter.writeUntypedField("commandTimeout", this.commandTimeout);
+        }
         return jsonWriter.writeEndObject();
     }
 

@@ -11,7 +11,7 @@ public final class AgentDiskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AgentDiskDetails model = BinaryData.fromString(
-            "{\"diskId\":\"nxakckyw\",\"diskName\":\"x\",\"isOSDisk\":\"abjkdtfohfao\",\"capacityInBytes\":5659515679437313606,\"lunId\":1355433605}")
+            "{\"diskId\":\"tdlpbn\",\"diskName\":\"jgazl\",\"isOSDisk\":\"bzfcpuoeedwj\",\"capacityInBytes\":6619886921651018072,\"lunId\":680373899}")
             .toObject(AgentDiskDetails.class);
     }
 

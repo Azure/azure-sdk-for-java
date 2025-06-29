@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class GitHubClientSecret implements JsonSerializable<GitHubClientSe
     /*
      * Bring your own app client secret AKV URL
      */
+    @Generated
     private String byoaSecretAkvUrl;
 
     /*
      * Bring your own app client secret name in AKV
      */
+    @Generated
     private String byoaSecretName;
 
     /**
      * Creates an instance of GitHubClientSecret class.
      */
+    @Generated
     public GitHubClientSecret() {
     }
 
@@ -37,6 +41,7 @@ public final class GitHubClientSecret implements JsonSerializable<GitHubClientSe
      * 
      * @return the byoaSecretAkvUrl value.
      */
+    @Generated
     public String getByoaSecretAkvUrl() {
         return this.byoaSecretAkvUrl;
     }
@@ -47,6 +52,7 @@ public final class GitHubClientSecret implements JsonSerializable<GitHubClientSe
      * @param byoaSecretAkvUrl the byoaSecretAkvUrl value to set.
      * @return the GitHubClientSecret object itself.
      */
+    @Generated
     public GitHubClientSecret setByoaSecretAkvUrl(String byoaSecretAkvUrl) {
         this.byoaSecretAkvUrl = byoaSecretAkvUrl;
         return this;
@@ -57,6 +63,7 @@ public final class GitHubClientSecret implements JsonSerializable<GitHubClientSe
      * 
      * @return the byoaSecretName value.
      */
+    @Generated
     public String getByoaSecretName() {
         return this.byoaSecretName;
     }
@@ -67,6 +74,7 @@ public final class GitHubClientSecret implements JsonSerializable<GitHubClientSe
      * @param byoaSecretName the byoaSecretName value to set.
      * @return the GitHubClientSecret object itself.
      */
+    @Generated
     public GitHubClientSecret setByoaSecretName(String byoaSecretName) {
         this.byoaSecretName = byoaSecretName;
         return this;
@@ -75,6 +83,7 @@ public final class GitHubClientSecret implements JsonSerializable<GitHubClientSe
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -91,6 +100,7 @@ public final class GitHubClientSecret implements JsonSerializable<GitHubClientSe
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the GitHubClientSecret.
      */
+    @Generated
     public static GitHubClientSecret fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GitHubClientSecret deserializedGitHubClientSecret = new GitHubClientSecret();

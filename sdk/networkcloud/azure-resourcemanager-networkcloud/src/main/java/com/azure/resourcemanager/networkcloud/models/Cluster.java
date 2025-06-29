@@ -51,6 +51,13 @@ public interface Cluster {
     Map<String, String> tags();
 
     /**
+     * Gets the etag property: Resource ETag.
+     * 
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
      * Gets the extendedLocation property: The extended location of the cluster manager associated with the cluster.
      * 
      * @return the extendedLocation value.
@@ -80,8 +87,16 @@ public interface Cluster {
     RackDefinition aggregatorOrSingleRackDefinition();
 
     /**
-     * Gets the analyticsWorkspaceId property: The resource ID of the Log Analytics Workspace that will be used for
-     * storing relevant logs.
+     * Gets the analyticsOutputSettings property: The settings for the log analytics workspace used for output of logs
+     * from this cluster.
+     * 
+     * @return the analyticsOutputSettings value.
+     */
+    AnalyticsOutputSettings analyticsOutputSettings();
+
+    /**
+     * Gets the analyticsWorkspaceId property: Field Deprecated. The resource ID of the Log Analytics Workspace that
+     * will be used for storing relevant logs.
      * 
      * @return the analyticsWorkspaceId value.
      */
@@ -257,6 +272,14 @@ public interface Cluster {
     ClusterSecretArchive secretArchive();
 
     /**
+     * Gets the secretArchiveSettings property: The settings for the secret archive used to hold credentials for the
+     * cluster.
+     * 
+     * @return the secretArchiveSettings value.
+     */
+    SecretArchiveSettings secretArchiveSettings();
+
+    /**
      * Gets the supportExpiryDate property: The support end date of the runtime version of the cluster.
      * 
      * @return the supportExpiryDate value.
@@ -269,6 +292,14 @@ public interface Cluster {
      * @return the updateStrategy value.
      */
     ClusterUpdateStrategy updateStrategy();
+
+    /**
+     * Gets the vulnerabilityScanningSettings property: The settings for how security vulnerability scanning is applied
+     * to the cluster.
+     * 
+     * @return the vulnerabilityScanningSettings value.
+     */
+    VulnerabilityScanningSettings vulnerabilityScanningSettings();
 
     /**
      * Gets the workloadResourceIds property: The list of workload resource IDs that are hosted within this cluster.
@@ -432,11 +463,14 @@ public interface Cluster {
          * created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
-            DefinitionStages.WithAnalyticsWorkspaceId, DefinitionStages.WithClusterLocation,
-            DefinitionStages.WithClusterServicePrincipal, DefinitionStages.WithCommandOutputSettings,
-            DefinitionStages.WithComputeDeploymentThreshold, DefinitionStages.WithComputeRackDefinitions,
-            DefinitionStages.WithManagedResourceGroupConfiguration, DefinitionStages.WithRuntimeProtectionConfiguration,
-            DefinitionStages.WithSecretArchive, DefinitionStages.WithUpdateStrategy {
+            DefinitionStages.WithAnalyticsOutputSettings, DefinitionStages.WithAnalyticsWorkspaceId,
+            DefinitionStages.WithClusterLocation, DefinitionStages.WithClusterServicePrincipal,
+            DefinitionStages.WithCommandOutputSettings, DefinitionStages.WithComputeDeploymentThreshold,
+            DefinitionStages.WithComputeRackDefinitions, DefinitionStages.WithManagedResourceGroupConfiguration,
+            DefinitionStages.WithRuntimeProtectionConfiguration, DefinitionStages.WithSecretArchive,
+            DefinitionStages.WithSecretArchiveSettings, DefinitionStages.WithUpdateStrategy,
+            DefinitionStages.WithVulnerabilityScanningSettings, DefinitionStages.WithIfMatch,
+            DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
              * 
@@ -480,15 +514,30 @@ public interface Cluster {
         }
 
         /**
+         * The stage of the Cluster definition allowing to specify analyticsOutputSettings.
+         */
+        interface WithAnalyticsOutputSettings {
+            /**
+             * Specifies the analyticsOutputSettings property: The settings for the log analytics workspace used for
+             * output of logs from this cluster..
+             * 
+             * @param analyticsOutputSettings The settings for the log analytics workspace used for output of logs from
+             * this cluster.
+             * @return the next definition stage.
+             */
+            WithCreate withAnalyticsOutputSettings(AnalyticsOutputSettings analyticsOutputSettings);
+        }
+
+        /**
          * The stage of the Cluster definition allowing to specify analyticsWorkspaceId.
          */
         interface WithAnalyticsWorkspaceId {
             /**
-             * Specifies the analyticsWorkspaceId property: The resource ID of the Log Analytics Workspace that will be
-             * used for storing relevant logs..
+             * Specifies the analyticsWorkspaceId property: Field Deprecated. The resource ID of the Log Analytics
+             * Workspace that will be used for storing relevant logs..
              * 
-             * @param analyticsWorkspaceId The resource ID of the Log Analytics Workspace that will be used for storing
-             * relevant logs.
+             * @param analyticsWorkspaceId Field Deprecated. The resource ID of the Log Analytics Workspace that will be
+             * used for storing relevant logs.
              * @return the next definition stage.
              */
             WithCreate withAnalyticsWorkspaceId(String analyticsWorkspaceId);
@@ -615,6 +664,21 @@ public interface Cluster {
         }
 
         /**
+         * The stage of the Cluster definition allowing to specify secretArchiveSettings.
+         */
+        interface WithSecretArchiveSettings {
+            /**
+             * Specifies the secretArchiveSettings property: The settings for the secret archive used to hold
+             * credentials for the cluster..
+             * 
+             * @param secretArchiveSettings The settings for the secret archive used to hold credentials for the
+             * cluster.
+             * @return the next definition stage.
+             */
+            WithCreate withSecretArchiveSettings(SecretArchiveSettings secretArchiveSettings);
+        }
+
+        /**
          * The stage of the Cluster definition allowing to specify updateStrategy.
          */
         interface WithUpdateStrategy {
@@ -625,6 +689,52 @@ public interface Cluster {
              * @return the next definition stage.
              */
             WithCreate withUpdateStrategy(ClusterUpdateStrategy updateStrategy);
+        }
+
+        /**
+         * The stage of the Cluster definition allowing to specify vulnerabilityScanningSettings.
+         */
+        interface WithVulnerabilityScanningSettings {
+            /**
+             * Specifies the vulnerabilityScanningSettings property: The settings for how security vulnerability
+             * scanning is applied to the cluster..
+             * 
+             * @param vulnerabilityScanningSettings The settings for how security vulnerability scanning is applied to
+             * the cluster.
+             * @return the next definition stage.
+             */
+            WithCreate withVulnerabilityScanningSettings(VulnerabilityScanningSettings vulnerabilityScanningSettings);
+        }
+
+        /**
+         * The stage of the Cluster definition allowing to specify ifMatch.
+         */
+        interface WithIfMatch {
+            /**
+             * Specifies the ifMatch property: The ETag of the transformation. Omit this value to always overwrite the
+             * current resource. Specify the last-seen ETag value to prevent accidentally overwriting concurrent
+             * changes..
+             * 
+             * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource.
+             * Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+             * @return the next definition stage.
+             */
+            WithCreate withIfMatch(String ifMatch);
+        }
+
+        /**
+         * The stage of the Cluster definition allowing to specify ifNoneMatch.
+         */
+        interface WithIfNoneMatch {
+            /**
+             * Specifies the ifNoneMatch property: Set to '*' to allow a new record set to be created, but to prevent
+             * updating an existing resource. Other values will result in error from server as they are not supported..
+             * 
+             * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an
+             * existing resource. Other values will result in error from server as they are not supported.
+             * @return the next definition stage.
+             */
+            WithCreate withIfNoneMatch(String ifNoneMatch);
         }
     }
 
@@ -638,12 +748,13 @@ public interface Cluster {
     /**
      * The template for Cluster update.
      */
-    interface Update
-        extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithAggregatorOrSingleRackDefinition,
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity,
+        UpdateStages.WithAggregatorOrSingleRackDefinition, UpdateStages.WithAnalyticsOutputSettings,
         UpdateStages.WithClusterLocation, UpdateStages.WithClusterServicePrincipal,
         UpdateStages.WithCommandOutputSettings, UpdateStages.WithComputeDeploymentThreshold,
         UpdateStages.WithComputeRackDefinitions, UpdateStages.WithRuntimeProtectionConfiguration,
-        UpdateStages.WithSecretArchive, UpdateStages.WithUpdateStrategy {
+        UpdateStages.WithSecretArchive, UpdateStages.WithSecretArchiveSettings, UpdateStages.WithUpdateStrategy,
+        UpdateStages.WithVulnerabilityScanningSettings, UpdateStages.WithIfMatch, UpdateStages.WithIfNoneMatch {
         /**
          * Executes the update request.
          * 
@@ -703,6 +814,21 @@ public interface Cluster {
              * @return the next definition stage.
              */
             Update withAggregatorOrSingleRackDefinition(RackDefinition aggregatorOrSingleRackDefinition);
+        }
+
+        /**
+         * The stage of the Cluster update allowing to specify analyticsOutputSettings.
+         */
+        interface WithAnalyticsOutputSettings {
+            /**
+             * Specifies the analyticsOutputSettings property: The settings for the log analytics workspace used for
+             * output of logs from this cluster..
+             * 
+             * @param analyticsOutputSettings The settings for the log analytics workspace used for output of logs from
+             * this cluster.
+             * @return the next definition stage.
+             */
+            Update withAnalyticsOutputSettings(AnalyticsOutputSettings analyticsOutputSettings);
         }
 
         /**
@@ -809,6 +935,21 @@ public interface Cluster {
         }
 
         /**
+         * The stage of the Cluster update allowing to specify secretArchiveSettings.
+         */
+        interface WithSecretArchiveSettings {
+            /**
+             * Specifies the secretArchiveSettings property: The settings for the secret archive used to hold
+             * credentials for the cluster..
+             * 
+             * @param secretArchiveSettings The settings for the secret archive used to hold credentials for the
+             * cluster.
+             * @return the next definition stage.
+             */
+            Update withSecretArchiveSettings(SecretArchiveSettings secretArchiveSettings);
+        }
+
+        /**
          * The stage of the Cluster update allowing to specify updateStrategy.
          */
         interface WithUpdateStrategy {
@@ -819,6 +960,52 @@ public interface Cluster {
              * @return the next definition stage.
              */
             Update withUpdateStrategy(ClusterUpdateStrategy updateStrategy);
+        }
+
+        /**
+         * The stage of the Cluster update allowing to specify vulnerabilityScanningSettings.
+         */
+        interface WithVulnerabilityScanningSettings {
+            /**
+             * Specifies the vulnerabilityScanningSettings property: The settings for how security vulnerability
+             * scanning is applied to the cluster..
+             * 
+             * @param vulnerabilityScanningSettings The settings for how security vulnerability scanning is applied to
+             * the cluster.
+             * @return the next definition stage.
+             */
+            Update withVulnerabilityScanningSettings(VulnerabilityScanningSettingsPatch vulnerabilityScanningSettings);
+        }
+
+        /**
+         * The stage of the Cluster update allowing to specify ifMatch.
+         */
+        interface WithIfMatch {
+            /**
+             * Specifies the ifMatch property: The ETag of the transformation. Omit this value to always overwrite the
+             * current resource. Specify the last-seen ETag value to prevent accidentally overwriting concurrent
+             * changes..
+             * 
+             * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource.
+             * Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+             * @return the next definition stage.
+             */
+            Update withIfMatch(String ifMatch);
+        }
+
+        /**
+         * The stage of the Cluster update allowing to specify ifNoneMatch.
+         */
+        interface WithIfNoneMatch {
+            /**
+             * Specifies the ifNoneMatch property: Set to '*' to allow a new record set to be created, but to prevent
+             * updating an existing resource. Other values will result in error from server as they are not supported..
+             * 
+             * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an
+             * existing resource. Other values will result in error from server as they are not supported.
+             * @return the next definition stage.
+             */
+            Update withIfNoneMatch(String ifNoneMatch);
         }
     }
 

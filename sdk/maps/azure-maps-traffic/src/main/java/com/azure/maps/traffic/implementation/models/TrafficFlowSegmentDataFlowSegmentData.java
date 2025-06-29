@@ -5,6 +5,7 @@
 package com.azure.maps.traffic.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,59 +21,79 @@ public final class TrafficFlowSegmentDataFlowSegmentData
     implements JsonSerializable<TrafficFlowSegmentDataFlowSegmentData> {
     /*
      * Functional Road Class. This indicates the road type:
-     *   0: Motorway, freeway or other major road.
-     *   1: Major road, less important than a motorway.
-     *   2: Other major road.
-     *   3: Secondary road.
-     *   4: Local connecting road.
-     *   5: Local road of high importance.
-     *   6: Local road.
+     * 0: Motorway, freeway or other major road.
+     * 1: Major road, less important than a motorway.
+     * 2: Other major road.
+     * 3: Secondary road.
+     * 4: Local connecting road.
+     * 5: Local road of high importance.
+     * 6: Local road.
      */
+    @Generated
     private String functionalRoadClass;
 
     /*
-     * The current average speed at the selected point, in the units requested. This is calculated from the currentTravelTime and the length of the selected segment.
+     * The current average speed at the selected point, in the units requested. This is calculated from the
+     * currentTravelTime and the length of the selected segment.
      */
+    @Generated
     private Integer currentSpeed;
 
     /*
-     * The free flow speed expected under ideal conditions, expressed in the units requested. This is related to the freeFlowTravelTime.
+     * The free flow speed expected under ideal conditions, expressed in the units requested. This is related to the
+     * freeFlowTravelTime.
      */
+    @Generated
     private Integer freeFlowSpeed;
 
     /*
-     * Current travel time in seconds, across this traffic segment, based on fused real-time measurements between the defined locations in the specified direction.
+     * Current travel time in seconds, across this traffic segment, based on fused real-time measurements between the
+     * defined locations in the specified direction.
      */
+    @Generated
     private Integer currentTravelTime;
 
     /*
-     * The travel time in seconds, across this traffic segment, which would be expected under ideal free flow conditions.
+     * The travel time in seconds, across this traffic segment, which would be expected under ideal free flow
+     * conditions.
      */
+    @Generated
     private Integer freeFlowTravelTime;
 
     /*
-     * The confidence is a measure of the quality of the provided travel time and speed. A value of 1 means full confidence, that the response contains the highest quality data. Lower values indicate the degree that the response may vary from the actual conditions on the road. Any value greater than 0.6 means the information was based on real-time probe input. A value of 0.5 means the reported speed is based on historical info. A value between 0.5 and 0.6 has a calculated weighted average between historical and live speeds.
+     * The confidence is a measure of the quality of the provided travel time and speed. A value of 1 means full
+     * confidence, that the response contains the highest quality data. Lower values indicate the degree that the
+     * response may vary from the actual conditions on the road. Any value greater than 0.6 means the information was
+     * based on real-time probe input. A value of 0.5 means the reported speed is based on historical info. A value
+     * between 0.5 and 0.6 has a calculated weighted average between historical and live speeds.
      */
+    @Generated
     private Float confidence;
-
-    /*
-     * Includes the coordinates describing the shape of the segment. Coordinates are shifted from the road depending on the zoom level to support high quality visualization in every scale.
-     */
-    private TrafficFlowSegmentDataPropertiesCoordinates coordinates;
 
     /*
      * This indicates the software version that generated the response.
      */
+    @Generated
     private String version;
 
     /*
-     * OpenLR code for segment. See [OpenLR](https://en.wikipedia.org/wiki/OpenLR) for more information on the use of Open LR codes.
+     * OpenLR code for segment. See [OpenLR](https://en.wikipedia.org/wiki/OpenLR) for more information on the use of
+     * Open LR codes.
      */
+    @Generated
     private String openLrCode;
+
+    /*
+     * Includes the coordinates describing the shape of the segment. Coordinates are shifted from the road depending on
+     * the zoom level to support high quality visualization in every scale.
+     */
+    @Generated
+    private TrafficFlowSegmentDataPropertiesCoordinates coordinates;
 
     /**
      * Creates an instance of TrafficFlowSegmentDataFlowSegmentData class.
      */
+    @Generated
     public TrafficFlowSegmentDataFlowSegmentData() {
     }
 
@@ -88,6 +109,7 @@ public final class TrafficFlowSegmentDataFlowSegmentData
      * 
      * @return the functionalRoadClass value.
      */
+    @Generated
     public String getFunctionalRoadClass() {
         return this.functionalRoadClass;
     }
@@ -98,6 +120,7 @@ public final class TrafficFlowSegmentDataFlowSegmentData
      * 
      * @return the currentSpeed value.
      */
+    @Generated
     public Integer getCurrentSpeed() {
         return this.currentSpeed;
     }
@@ -108,6 +131,7 @@ public final class TrafficFlowSegmentDataFlowSegmentData
      * 
      * @return the freeFlowSpeed value.
      */
+    @Generated
     public Integer getFreeFlowSpeed() {
         return this.freeFlowSpeed;
     }
@@ -118,6 +142,7 @@ public final class TrafficFlowSegmentDataFlowSegmentData
      * 
      * @return the currentTravelTime value.
      */
+    @Generated
     public Integer getCurrentTravelTime() {
         return this.currentTravelTime;
     }
@@ -128,6 +153,7 @@ public final class TrafficFlowSegmentDataFlowSegmentData
      * 
      * @return the freeFlowTravelTime value.
      */
+    @Generated
     public Integer getFreeFlowTravelTime() {
         return this.freeFlowTravelTime;
     }
@@ -141,8 +167,30 @@ public final class TrafficFlowSegmentDataFlowSegmentData
      * 
      * @return the confidence value.
      */
+    @Generated
     public Float getConfidence() {
         return this.confidence;
+    }
+
+    /**
+     * Get the version property: This indicates the software version that generated the response.
+     * 
+     * @return the version value.
+     */
+    @Generated
+    public String getVersion() {
+        return this.version;
+    }
+
+    /**
+     * Get the openLrCode property: OpenLR code for segment. See [OpenLR](https://en.wikipedia.org/wiki/OpenLR) for more
+     * information on the use of Open LR codes.
+     * 
+     * @return the openLrCode value.
+     */
+    @Generated
+    public String getOpenLrCode() {
+        return this.openLrCode;
     }
 
     /**
@@ -151,6 +199,7 @@ public final class TrafficFlowSegmentDataFlowSegmentData
      * 
      * @return the coordinates value.
      */
+    @Generated
     public TrafficFlowSegmentDataPropertiesCoordinates getCoordinates() {
         return this.coordinates;
     }
@@ -162,6 +211,7 @@ public final class TrafficFlowSegmentDataFlowSegmentData
      * @param coordinates the coordinates value to set.
      * @return the TrafficFlowSegmentDataFlowSegmentData object itself.
      */
+    @Generated
     public TrafficFlowSegmentDataFlowSegmentData
         setCoordinates(TrafficFlowSegmentDataPropertiesCoordinates coordinates) {
         this.coordinates = coordinates;
@@ -169,27 +219,9 @@ public final class TrafficFlowSegmentDataFlowSegmentData
     }
 
     /**
-     * Get the version property: This indicates the software version that generated the response.
-     * 
-     * @return the version value.
-     */
-    public String getVersion() {
-        return this.version;
-    }
-
-    /**
-     * Get the openLrCode property: OpenLR code for segment. See [OpenLR](https://en.wikipedia.org/wiki/OpenLR) for more
-     * information on the use of Open LR codes.
-     * 
-     * @return the openLrCode value.
-     */
-    public String getOpenLrCode() {
-        return this.openLrCode;
-    }
-
-    /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -205,6 +237,7 @@ public final class TrafficFlowSegmentDataFlowSegmentData
      * or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the TrafficFlowSegmentDataFlowSegmentData.
      */
+    @Generated
     public static TrafficFlowSegmentDataFlowSegmentData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TrafficFlowSegmentDataFlowSegmentData deserializedTrafficFlowSegmentDataFlowSegmentData
@@ -230,13 +263,13 @@ public final class TrafficFlowSegmentDataFlowSegmentData
                 } else if ("confidence".equals(fieldName)) {
                     deserializedTrafficFlowSegmentDataFlowSegmentData.confidence
                         = reader.getNullable(JsonReader::getFloat);
-                } else if ("coordinates".equals(fieldName)) {
-                    deserializedTrafficFlowSegmentDataFlowSegmentData.coordinates
-                        = TrafficFlowSegmentDataPropertiesCoordinates.fromJson(reader);
                 } else if ("@version".equals(fieldName)) {
                     deserializedTrafficFlowSegmentDataFlowSegmentData.version = reader.getString();
                 } else if ("openlr".equals(fieldName)) {
                     deserializedTrafficFlowSegmentDataFlowSegmentData.openLrCode = reader.getString();
+                } else if ("coordinates".equals(fieldName)) {
+                    deserializedTrafficFlowSegmentDataFlowSegmentData.coordinates
+                        = TrafficFlowSegmentDataPropertiesCoordinates.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

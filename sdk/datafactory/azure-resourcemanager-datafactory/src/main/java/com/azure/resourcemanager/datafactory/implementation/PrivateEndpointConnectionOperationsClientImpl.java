@@ -24,6 +24,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.PrivateEndpointConnectionOperationsClient;
 import com.azure.resourcemanager.datafactory.fluent.models.PrivateEndpointConnectionResourceInner;
 import com.azure.resourcemanager.datafactory.models.PrivateLinkConnectionApprovalRequestResource;
@@ -74,6 +75,18 @@ public final class PrivateEndpointConnectionOperationsClientImpl implements Priv
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<PrivateEndpointConnectionResourceInner> createOrUpdateSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("If-Match") String ifMatch,
+            @BodyParam("application/json") PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -85,10 +98,31 @@ public final class PrivateEndpointConnectionOperationsClientImpl implements Priv
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<PrivateEndpointConnectionResourceInner> getSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> deleteSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
@@ -154,58 +188,6 @@ public final class PrivateEndpointConnectionOperationsClientImpl implements Priv
      * @param factoryName The factory name.
      * @param privateEndpointConnectionName The private endpoint connection name.
      * @param privateEndpointWrapper The privateEndpointWrapper parameter.
-     * @param ifMatch ETag of the private endpoint connection entity. Should only be specified for update, for which it
-     * should match existing entity or can be * for unconditional update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private Endpoint Connection ARM resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateEndpointConnectionResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String factoryName, String privateEndpointConnectionName,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper, String ifMatch, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
-        }
-        if (privateEndpointConnectionName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter privateEndpointConnectionName is required and cannot be null."));
-        }
-        if (privateEndpointWrapper == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter privateEndpointWrapper is required and cannot be null."));
-        } else {
-            privateEndpointWrapper.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            factoryName, privateEndpointConnectionName, this.client.getApiVersion(), ifMatch, privateEndpointWrapper,
-            accept, context);
-    }
-
-    /**
-     * Approves or rejects a private endpoint connection.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param privateEndpointConnectionName The private endpoint connection name.
-     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -239,8 +221,39 @@ public final class PrivateEndpointConnectionOperationsClientImpl implements Priv
     public Response<PrivateEndpointConnectionResourceInner> createOrUpdateWithResponse(String resourceGroupName,
         String factoryName, String privateEndpointConnectionName,
         PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper, String ifMatch, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, privateEndpointConnectionName,
-            privateEndpointWrapper, ifMatch, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        if (privateEndpointWrapper == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter privateEndpointWrapper is required and cannot be null."));
+        } else {
+            privateEndpointWrapper.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, privateEndpointConnectionName, this.client.getApiVersion(), ifMatch, privateEndpointWrapper,
+            accept, context);
     }
 
     /**
@@ -312,48 +325,6 @@ public final class PrivateEndpointConnectionOperationsClientImpl implements Priv
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param privateEndpointConnectionName The private endpoint connection name.
-     * @param ifNoneMatch ETag of the private endpoint connection entity. Should only be specified for get. If the ETag
-     * matches the existing entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateEndpointConnectionResourceInner>> getWithResponseAsync(String resourceGroupName,
-        String factoryName, String privateEndpointConnectionName, String ifNoneMatch, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
-        }
-        if (privateEndpointConnectionName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter privateEndpointConnectionName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, factoryName,
-            privateEndpointConnectionName, this.client.getApiVersion(), ifNoneMatch, accept, context);
-    }
-
-    /**
-     * Gets a private endpoint connection.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param privateEndpointConnectionName The private endpoint connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -384,8 +355,32 @@ public final class PrivateEndpointConnectionOperationsClientImpl implements Priv
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionResourceInner> getWithResponse(String resourceGroupName,
         String factoryName, String privateEndpointConnectionName, String ifNoneMatch, Context context) {
-        return getWithResponseAsync(resourceGroupName, factoryName, privateEndpointConnectionName, ifNoneMatch, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, privateEndpointConnectionName, this.client.getApiVersion(), ifNoneMatch, accept, context);
     }
 
     /**
@@ -454,46 +449,6 @@ public final class PrivateEndpointConnectionOperationsClientImpl implements Priv
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param privateEndpointConnectionName The private endpoint connection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String factoryName,
-        String privateEndpointConnectionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
-        }
-        if (privateEndpointConnectionName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter privateEndpointConnectionName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            factoryName, privateEndpointConnectionName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Deletes a private endpoint connection.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param privateEndpointConnectionName The private endpoint connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -520,7 +475,32 @@ public final class PrivateEndpointConnectionOperationsClientImpl implements Priv
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String factoryName,
         String privateEndpointConnectionName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, factoryName, privateEndpointConnectionName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, privateEndpointConnectionName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -537,4 +517,6 @@ public final class PrivateEndpointConnectionOperationsClientImpl implements Priv
     public void delete(String resourceGroupName, String factoryName, String privateEndpointConnectionName) {
         deleteWithResponse(resourceGroupName, factoryName, privateEndpointConnectionName, Context.NONE);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateEndpointConnectionOperationsClientImpl.class);
 }

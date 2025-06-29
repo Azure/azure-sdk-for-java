@@ -7,8 +7,8 @@ package com.azure.resourcemanager.storageactions.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.storageactions.StorageActionsManager;
 import com.azure.resourcemanager.storageactions.models.ManagedServiceIdentityType;
@@ -24,21 +24,21 @@ public final class StorageTasksListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"identity\":{\"principalId\":\"b4be81b0-30ea-4abb-9b1b-a95ba863f87b\",\"tenantId\":\"5653e8b4-0aa4-4c8a-83a2-ab0c7e790879\",\"type\":\"None\",\"userAssignedIdentities\":{\"ok\":{\"principalId\":\"41ce4222-6da7-4ee6-be14-0c5d99bdf6a1\",\"clientId\":\"61d7474c-2f29-4bae-9f91-f0d3eb85b9f8\"},\"jyoxgvclt\":{\"principalId\":\"4b1ca8cd-7eb8-49e0-a9a5-07fa4c82d123\",\"clientId\":\"19c94147-a13f-4402-9723-b5b6f87ef8f4\"},\"ncghkje\":{\"principalId\":\"fb8e79f2-de64-48ee-96f7-7b653e345bc3\",\"clientId\":\"510cd219-f0d4-46f3-af9f-52114f562f61\"},\"hbijhtxfvgxb\":{\"principalId\":\"789e2a49-3f91-4a84-8f72-72a9d81c1b21\",\"clientId\":\"8ca4febc-ddaa-451e-bc2d-5debbddd980d\"}}},\"properties\":{\"taskVersion\":7678271281177155084,\"enabled\":true,\"description\":\"eh\",\"action\":{\"if\":{\"condition\":\"pvecxgodeb\",\"operations\":[{\"name\":\"SetBlobTier\"},{\"name\":\"SetBlobLegalHold\"}]},\"else\":{\"operations\":[{\"name\":\"SetBlobTier\"},{\"name\":\"SetBlobExpiry\"},{\"name\":\"UndeleteBlob\"}]}},\"provisioningState\":\"Failed\",\"creationTimeInUtc\":\"2021-10-09T22:24:23Z\"},\"location\":\"flz\",\"tags\":{\"qzahmgkbrp\":\"xzpuzycisp\",\"hibnuqqkpika\":\"y\",\"buynhijggm\":\"rgvtqag\"},\"id\":\"bfs\",\"name\":\"arbu\",\"type\":\"rcvpnazzmhjrunmp\"}]}";
+            = "{\"value\":[{\"identity\":{\"principalId\":\"86428182-8c91-44b6-8efa-d39e7f75367f\",\"tenantId\":\"61fefe32-6acc-437c-b38d-9b808fcbd63d\",\"type\":\"None\",\"userAssignedIdentities\":{\"ok\":{\"principalId\":\"53b4df2f-342a-42a7-bbee-7d6efa18c9f9\",\"clientId\":\"f8930408-eab6-4732-9665-a663651805db\"},\"jyoxgvclt\":{\"principalId\":\"a0e81129-d10b-4182-a51e-3fef4fe158a7\",\"clientId\":\"269a2beb-5f59-4c90-84d5-c210c2ef73a1\"},\"ncghkje\":{\"principalId\":\"c6e8aaea-7223-46d4-af27-a55e99b2a0c8\",\"clientId\":\"6cbde63d-fa7b-4d6d-9c07-93ca62642a97\"},\"hbijhtxfvgxb\":{\"principalId\":\"aa35ebb1-57db-41c1-8b35-76dc989fef05\",\"clientId\":\"1687c360-55dc-4cff-914e-0b8d823645a1\"}}},\"properties\":{\"taskVersion\":7678271281177155084,\"enabled\":true,\"description\":\"eh\",\"action\":{\"if\":{\"condition\":\"pvecxgodeb\",\"operations\":[{\"name\":\"SetBlobTier\"},{\"name\":\"SetBlobLegalHold\"}]},\"else\":{\"operations\":[{\"name\":\"SetBlobTier\"},{\"name\":\"SetBlobExpiry\"},{\"name\":\"UndeleteBlob\"}]}},\"provisioningState\":\"ValidateSubscriptionQuotaBegin\",\"creationTimeInUtc\":\"2021-10-09T22:24:23Z\"},\"location\":\"flz\",\"tags\":{\"qzahmgkbrp\":\"xzpuzycisp\",\"hibnuqqkpika\":\"y\",\"buynhijggm\":\"rgvtqag\"},\"id\":\"bfs\",\"name\":\"arbu\",\"type\":\"rcvpnazzmhjrunmp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         StorageActionsManager manager = StorageActionsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<StorageTask> response = manager.storageTasks().list(com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("flz", response.iterator().next().location());
         Assertions.assertEquals("xzpuzycisp", response.iterator().next().tags().get("qzahmgkbrp"));
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
-        Assertions.assertEquals(true, response.iterator().next().properties().enabled());
+        Assertions.assertTrue(response.iterator().next().properties().enabled());
         Assertions.assertEquals("eh", response.iterator().next().properties().description());
         Assertions.assertEquals("pvecxgodeb",
             response.iterator().next().properties().action().ifProperty().condition());

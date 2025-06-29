@@ -10,7 +10,7 @@ package com.azure.resourcemanager.networkcloud.generated;
 public final class RacksDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2024-07-01/examples/Racks_Delete.json
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/Racks_Delete.json
      */
     /**
      * Sample code: Delete rack.
@@ -18,6 +18,6 @@ public final class RacksDeleteSamples {
      * @param manager Entry point to NetworkCloudManager.
      */
     public static void deleteRack(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        manager.racks().delete("resourceGroupName", "rackName", com.azure.core.util.Context.NONE);
+        manager.racks().delete("resourceGroupName", "rackName", null, null, com.azure.core.util.Context.NONE);
     }
 }

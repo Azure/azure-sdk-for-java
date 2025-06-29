@@ -12,22 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupRestoreFilesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupRestoreFiles model = BinaryData.fromString(
-            "{\"fileList\":[\"eewchpxlktw\",\"uziycsl\",\"vu\"],\"restoreFilePath\":\"ztcktyh\",\"destinationVolumeId\":\"tqedcgzulwm\"}")
+        BackupRestoreFiles model = BinaryData
+            .fromString(
+                "{\"fileList\":[\"zfvazi\"],\"restoreFilePath\":\"l\",\"destinationVolumeId\":\"rqttbajlkatnw\"}")
             .toObject(BackupRestoreFiles.class);
-        Assertions.assertEquals("eewchpxlktw", model.fileList().get(0));
-        Assertions.assertEquals("ztcktyh", model.restoreFilePath());
-        Assertions.assertEquals("tqedcgzulwm", model.destinationVolumeId());
+        Assertions.assertEquals("zfvazi", model.fileList().get(0));
+        Assertions.assertEquals("l", model.restoreFilePath());
+        Assertions.assertEquals("rqttbajlkatnw", model.destinationVolumeId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupRestoreFiles model = new BackupRestoreFiles().withFileList(Arrays.asList("eewchpxlktw", "uziycsl", "vu"))
-            .withRestoreFilePath("ztcktyh")
-            .withDestinationVolumeId("tqedcgzulwm");
+        BackupRestoreFiles model = new BackupRestoreFiles().withFileList(Arrays.asList("zfvazi"))
+            .withRestoreFilePath("l")
+            .withDestinationVolumeId("rqttbajlkatnw");
         model = BinaryData.fromObject(model).toObject(BackupRestoreFiles.class);
-        Assertions.assertEquals("eewchpxlktw", model.fileList().get(0));
-        Assertions.assertEquals("ztcktyh", model.restoreFilePath());
-        Assertions.assertEquals("tqedcgzulwm", model.destinationVolumeId());
+        Assertions.assertEquals("zfvazi", model.fileList().get(0));
+        Assertions.assertEquals("l", model.restoreFilePath());
+        Assertions.assertEquals("rqttbajlkatnw", model.destinationVolumeId());
     }
 }

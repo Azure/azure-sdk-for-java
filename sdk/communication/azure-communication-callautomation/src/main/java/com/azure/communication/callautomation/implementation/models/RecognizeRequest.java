@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,42 +21,50 @@ public final class RecognizeRequest implements JsonSerializable<RecognizeRequest
     /*
      * Determines the type of the recognition.
      */
+    @Generated
     private RecognizeInputTypeInternal recognizeInputType;
 
     /*
      * The source of the audio to be played for recognition.
      */
+    @Generated
     private PlaySourceInternal playPrompt;
 
     /*
      * The source of the audio to be played for recognition.
      */
+    @Generated
     private List<PlaySourceInternal> playPrompts;
 
     /*
      * If set recognize can barge into other existing queued-up/currently-processing requests.
      */
+    @Generated
     private Boolean interruptCallMediaOperation;
 
     /*
      * Defines options for recognition.
      */
+    @Generated
     private RecognizeOptionsInternal recognizeOptions;
 
     /*
      * The value to identify context of the operation.
      */
+    @Generated
     private String operationContext;
 
     /*
      * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
      * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      */
+    @Generated
     private String operationCallbackUri;
 
     /**
      * Creates an instance of RecognizeRequest class.
      */
+    @Generated
     public RecognizeRequest() {
     }
 
@@ -64,6 +73,7 @@ public final class RecognizeRequest implements JsonSerializable<RecognizeRequest
      * 
      * @return the recognizeInputType value.
      */
+    @Generated
     public RecognizeInputTypeInternal getRecognizeInputType() {
         return this.recognizeInputType;
     }
@@ -74,6 +84,7 @@ public final class RecognizeRequest implements JsonSerializable<RecognizeRequest
      * @param recognizeInputType the recognizeInputType value to set.
      * @return the RecognizeRequest object itself.
      */
+    @Generated
     public RecognizeRequest setRecognizeInputType(RecognizeInputTypeInternal recognizeInputType) {
         this.recognizeInputType = recognizeInputType;
         return this;
@@ -84,6 +95,7 @@ public final class RecognizeRequest implements JsonSerializable<RecognizeRequest
      * 
      * @return the playPrompt value.
      */
+    @Generated
     public PlaySourceInternal getPlayPrompt() {
         return this.playPrompt;
     }
@@ -94,6 +106,7 @@ public final class RecognizeRequest implements JsonSerializable<RecognizeRequest
      * @param playPrompt the playPrompt value to set.
      * @return the RecognizeRequest object itself.
      */
+    @Generated
     public RecognizeRequest setPlayPrompt(PlaySourceInternal playPrompt) {
         this.playPrompt = playPrompt;
         return this;
@@ -104,6 +117,7 @@ public final class RecognizeRequest implements JsonSerializable<RecognizeRequest
      * 
      * @return the playPrompts value.
      */
+    @Generated
     public List<PlaySourceInternal> getPlayPrompts() {
         return this.playPrompts;
     }
@@ -114,6 +128,7 @@ public final class RecognizeRequest implements JsonSerializable<RecognizeRequest
      * @param playPrompts the playPrompts value to set.
      * @return the RecognizeRequest object itself.
      */
+    @Generated
     public RecognizeRequest setPlayPrompts(List<PlaySourceInternal> playPrompts) {
         this.playPrompts = playPrompts;
         return this;
@@ -125,6 +140,7 @@ public final class RecognizeRequest implements JsonSerializable<RecognizeRequest
      * 
      * @return the interruptCallMediaOperation value.
      */
+    @Generated
     public Boolean isInterruptCallMediaOperation() {
         return this.interruptCallMediaOperation;
     }
@@ -136,6 +152,7 @@ public final class RecognizeRequest implements JsonSerializable<RecognizeRequest
      * @param interruptCallMediaOperation the interruptCallMediaOperation value to set.
      * @return the RecognizeRequest object itself.
      */
+    @Generated
     public RecognizeRequest setInterruptCallMediaOperation(Boolean interruptCallMediaOperation) {
         this.interruptCallMediaOperation = interruptCallMediaOperation;
         return this;
@@ -146,6 +163,7 @@ public final class RecognizeRequest implements JsonSerializable<RecognizeRequest
      * 
      * @return the recognizeOptions value.
      */
+    @Generated
     public RecognizeOptionsInternal getRecognizeOptions() {
         return this.recognizeOptions;
     }
@@ -156,6 +174,7 @@ public final class RecognizeRequest implements JsonSerializable<RecognizeRequest
      * @param recognizeOptions the recognizeOptions value to set.
      * @return the RecognizeRequest object itself.
      */
+    @Generated
     public RecognizeRequest setRecognizeOptions(RecognizeOptionsInternal recognizeOptions) {
         this.recognizeOptions = recognizeOptions;
         return this;
@@ -166,6 +185,7 @@ public final class RecognizeRequest implements JsonSerializable<RecognizeRequest
      * 
      * @return the operationContext value.
      */
+    @Generated
     public String getOperationContext() {
         return this.operationContext;
     }
@@ -176,6 +196,7 @@ public final class RecognizeRequest implements JsonSerializable<RecognizeRequest
      * @param operationContext the operationContext value to set.
      * @return the RecognizeRequest object itself.
      */
+    @Generated
     public RecognizeRequest setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
@@ -188,6 +209,7 @@ public final class RecognizeRequest implements JsonSerializable<RecognizeRequest
      * 
      * @return the operationCallbackUri value.
      */
+    @Generated
     public String getOperationCallbackUri() {
         return this.operationCallbackUri;
     }
@@ -200,6 +222,7 @@ public final class RecognizeRequest implements JsonSerializable<RecognizeRequest
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the RecognizeRequest object itself.
      */
+    @Generated
     public RecognizeRequest setOperationCallbackUri(String operationCallbackUri) {
         this.operationCallbackUri = operationCallbackUri;
         return this;
@@ -208,6 +231,7 @@ public final class RecognizeRequest implements JsonSerializable<RecognizeRequest
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -231,6 +255,7 @@ public final class RecognizeRequest implements JsonSerializable<RecognizeRequest
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RecognizeRequest.
      */
+    @Generated
     public static RecognizeRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RecognizeRequest deserializedRecognizeRequest = new RecognizeRequest();

@@ -193,6 +193,8 @@ public class WorkloadProtectableItem implements JsonSerializable<WorkloadProtect
                     return AzureIaaSComputeVMProtectableItem.fromJson(readerToUse.reset());
                 } else if ("AzureVmWorkloadProtectableItem".equals(discriminatorValue)) {
                     return AzureVmWorkloadProtectableItem.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("SAPAseDatabase".equals(discriminatorValue)) {
+                    return AzureVmWorkloadSapAseDatabaseProtectableItem.fromJson(readerToUse.reset());
                 } else if ("SAPAseSystem".equals(discriminatorValue)) {
                     return AzureVmWorkloadSapAseSystemProtectableItem.fromJson(readerToUse.reset());
                 } else if ("SAPHanaDatabase".equals(discriminatorValue)) {

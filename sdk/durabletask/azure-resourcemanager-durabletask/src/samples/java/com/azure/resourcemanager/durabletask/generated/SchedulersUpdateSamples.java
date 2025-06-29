@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class SchedulersUpdateSamples {
     /*
-     * x-ms-original-file: 2024-10-01-preview/Schedulers_Update.json
+     * x-ms-original-file: 2025-04-01-preview/Schedulers_Update.json
      */
     /**
      * Sample code: Schedulers_Update.
@@ -28,9 +28,9 @@ public final class SchedulersUpdateSamples {
             .getByResourceGroupWithResponse("rgopenapi", "testscheduler", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withTags(mapOf("key8653", "fakeTokenPlaceholder"))
+            .withTags(mapOf("hello", "world"))
             .withProperties(new SchedulerPropertiesUpdate().withIpAllowlist(Arrays.asList("10.0.0.0/8"))
-                .withSku(new SchedulerSkuUpdate().withName("Dedicated").withCapacity(10)))
+                .withSku(new SchedulerSkuUpdate().withName("Dedicated").withCapacity(3)))
             .apply();
     }
 

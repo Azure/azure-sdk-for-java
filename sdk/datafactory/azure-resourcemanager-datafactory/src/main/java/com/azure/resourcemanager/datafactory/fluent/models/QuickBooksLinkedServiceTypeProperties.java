@@ -280,14 +280,24 @@ public final class QuickBooksLinkedServiceTypeProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("connectionProperties", this.connectionProperties);
-        jsonWriter.writeUntypedField("endpoint", this.endpoint);
-        jsonWriter.writeUntypedField("companyId", this.companyId);
-        jsonWriter.writeUntypedField("consumerKey", this.consumerKey);
+        if (this.connectionProperties != null) {
+            jsonWriter.writeUntypedField("connectionProperties", this.connectionProperties);
+        }
+        if (this.endpoint != null) {
+            jsonWriter.writeUntypedField("endpoint", this.endpoint);
+        }
+        if (this.companyId != null) {
+            jsonWriter.writeUntypedField("companyId", this.companyId);
+        }
+        if (this.consumerKey != null) {
+            jsonWriter.writeUntypedField("consumerKey", this.consumerKey);
+        }
         jsonWriter.writeJsonField("consumerSecret", this.consumerSecret);
         jsonWriter.writeJsonField("accessToken", this.accessToken);
         jsonWriter.writeJsonField("accessTokenSecret", this.accessTokenSecret);
-        jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
+        if (this.useEncryptedEndpoints != null) {
+            jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }

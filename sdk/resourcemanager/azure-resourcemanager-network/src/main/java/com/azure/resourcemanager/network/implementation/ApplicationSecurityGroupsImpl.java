@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.ApplicationSecurityGroupsClient;
 import com.azure.resourcemanager.network.fluent.models.ApplicationSecurityGroupInner;
@@ -35,5 +37,12 @@ public class ApplicationSecurityGroupsImpl extends
             return null;
         }
         return new ApplicationSecurityGroupImpl(inner.name(), inner, this.manager());
+    }
+
+    @Override
+    public ApplicationSecurityGroup getByResourceGroup(String resourceGroupName, String name, Context context) {
+        return getByResourceGroupAsync(resourceGroupName, name)
+            .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
+            .block();
     }
 }

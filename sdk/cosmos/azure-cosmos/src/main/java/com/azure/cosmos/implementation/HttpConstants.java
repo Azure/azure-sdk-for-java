@@ -101,6 +101,7 @@ public class HttpConstants {
         public static final String INDEXING_DIRECTIVE = "x-ms-indexing-directive";
         public static final String SESSION_TOKEN = "x-ms-session-token";
         public static final String CONSISTENCY_LEVEL = "x-ms-consistency-level";
+        public static final String READ_CONSISTENCY_STRATEGY = "x-ms-cosmos-read-consistency-strategy";
         public static final String X_DATE = "x-ms-date";
         public static final String COLLECTION_PARTITION_INFO = "x-ms-collection-partition-info";
         public static final String COLLECTION_SERVICE_INFO = "x-ms-collection-service-info";
@@ -286,8 +287,10 @@ public class HttpConstants {
         // Thinclient headers
         public static final String THINCLIENT_PROXY_OPERATION_TYPE = "x-ms-thinclient-proxy-operation-type";
         public static final String THINCLIENT_PROXY_RESOURCE_TYPE = "x-ms-thinclient-proxy-resource-type";
-
+        public static final String THINCLIENT_OPT_IN = "x-ms-cosmos-use-thinclient";
         public static final String GLOBAL_DATABASE_ACCOUNT_NAME = "GlobalDatabaseAccountName";
+        public static final String THINCLIENT_START_EPK = "x-ms-thinclient-range-min";
+        public static final String THINCLIENT_END_EPK = "x-ms-thinclient-range-max";
     }
 
     public static class A_IMHeaderValues {

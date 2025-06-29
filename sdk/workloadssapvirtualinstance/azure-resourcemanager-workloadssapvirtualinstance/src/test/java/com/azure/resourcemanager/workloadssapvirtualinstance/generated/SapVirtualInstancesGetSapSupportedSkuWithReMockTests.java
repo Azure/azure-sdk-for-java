@@ -48,7 +48,7 @@ public final class SapVirtualInstancesGetSapSupportedSkuWithReMockTests {
             .getValue();
 
         Assertions.assertEquals("dgoihxumwctondzj", response.supportedSkus().get(0).vmSku());
-        Assertions.assertEquals(false, response.supportedSkus().get(0).isAppServerCertified());
-        Assertions.assertEquals(false, response.supportedSkus().get(0).isDatabaseCertified());
+        Assertions.assertFalse(response.supportedSkus().get(0).isAppServerCertified());
+        Assertions.assertFalse(response.supportedSkus().get(0).isDatabaseCertified());
     }
 }

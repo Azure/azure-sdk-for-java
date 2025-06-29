@@ -4,6 +4,7 @@
 
 package com.azure.containers.containerregistry.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,66 +15,79 @@ public final class ArtifactArchitecture extends ExpandableStringEnum<ArtifactArc
     /**
      * i386.
      */
+    @Generated
     public static final ArtifactArchitecture I386 = fromString("386");
 
     /**
      * AMD64.
      */
+    @Generated
     public static final ArtifactArchitecture AMD64 = fromString("amd64");
 
     /**
      * ARM.
      */
+    @Generated
     public static final ArtifactArchitecture ARM = fromString("arm");
 
     /**
      * ARM64.
      */
+    @Generated
     public static final ArtifactArchitecture ARM64 = fromString("arm64");
 
     /**
      * MIPS.
      */
+    @Generated
     public static final ArtifactArchitecture MIPS = fromString("mips");
 
     /**
      * MIPSLE.
      */
+    @Generated
     public static final ArtifactArchitecture MIPS_LE = fromString("mipsle");
 
     /**
      * MIPS64.
      */
+    @Generated
     public static final ArtifactArchitecture MIPS64 = fromString("mips64");
 
     /**
      * MIPS64LE.
      */
+    @Generated
     public static final ArtifactArchitecture MIPS64LE = fromString("mips64le");
 
     /**
      * PPC64.
      */
+    @Generated
     public static final ArtifactArchitecture PPC64 = fromString("ppc64");
 
     /**
      * PPC64LE.
      */
+    @Generated
     public static final ArtifactArchitecture PPC64LE = fromString("ppc64le");
 
     /**
      * RISCv64.
      */
+    @Generated
     public static final ArtifactArchitecture RISC_V64 = fromString("riscv64");
 
     /**
      * s390x.
      */
+    @Generated
     public static final ArtifactArchitecture S390X = fromString("s390x");
 
     /**
      * Wasm.
      */
+    @Generated
     public static final ArtifactArchitecture WASM = fromString("wasm");
 
     /**
@@ -81,6 +95,7 @@ public final class ArtifactArchitecture extends ExpandableStringEnum<ArtifactArc
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ArtifactArchitecture() {
     }
@@ -91,6 +106,7 @@ public final class ArtifactArchitecture extends ExpandableStringEnum<ArtifactArc
      * @param name a name to look for.
      * @return the corresponding ArtifactArchitecture.
      */
+    @Generated
     public static ArtifactArchitecture fromString(String name) {
         return fromString(name, ArtifactArchitecture.class);
     }
@@ -100,6 +116,7 @@ public final class ArtifactArchitecture extends ExpandableStringEnum<ArtifactArc
      * 
      * @return known ArtifactArchitecture values.
      */
+    @Generated
     public static Collection<ArtifactArchitecture> values() {
         return values(ArtifactArchitecture.class);
     }

@@ -19,7 +19,7 @@ public class ListDeidentificationJobsAsync {
         // BEGIN:com.azure.health.deidentification.samples.list_deidentification_jobs_async
         PagedFlux<DeidentificationJob> resultPagedFlux = deidentificationClient.listJobs();
         resultPagedFlux.subscribe(
-            job -> System.out.println(job.getName() + " - " + job.getStatus()),
+            job -> System.out.println(job.getJobName() + " - " + job.getStatus()),
             error -> System.err.println("Error: " + error)
         );
         // END:com.azure.health.deidentification.samples.list_deidentification_jobs_async

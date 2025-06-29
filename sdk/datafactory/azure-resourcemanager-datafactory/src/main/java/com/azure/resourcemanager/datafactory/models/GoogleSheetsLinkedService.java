@@ -51,7 +51,7 @@ public final class GoogleSheetsLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private GoogleSheetsLinkedServiceTypeProperties innerTypeProperties() {
+    GoogleSheetsLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

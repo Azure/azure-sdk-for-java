@@ -15,7 +15,7 @@
   <groupId>io.clientcore</groupId>
   <artifactId>core</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.9</version> <!-- {x-version-update;io.clientcore:core;current} -->
+  <version>1.0.0-beta.11</version> <!-- {x-version-update;io.clientcore:core;current} -->
 
   <name>Core Library for building Java client libraries for accessing web services.</name>
   <description>This library contains core types for building Java client libraries for accessing web services.</description>
@@ -46,6 +46,7 @@
       --add-opens io.clientcore.core/io.clientcore.core.http=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.http.annotations=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.http.client=ALL-UNNAMED
+      --add-opens io.clientcore.core/io.clientcore.core.implementation.http.rest=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.http.models=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.http.pipeline=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.implementation=ALL-UNNAMED
@@ -87,25 +88,37 @@
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-server</artifactId>
-      <version>9.4.56.v20240826</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
+      <version>9.4.57.v20241219</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-servlet</artifactId>
-      <version>9.4.56.v20240826</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
+      <version>9.4.57.v20241219</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty.http2</groupId>
+      <artifactId>http2-server</artifactId>
+      <version>9.4.57.v20241219</version> <!-- {x-version-update;org.eclipse.jetty.http2:http2-server;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-alpn-conscrypt-server</artifactId>
+      <version>9.4.57.v20241219</version> <!-- {x-version-update;org.eclipse.jetty:jetty-alpn-conscrypt-server;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.11.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.13.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.11.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <version>5.13.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -177,7 +190,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.12</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <version>0.8.13</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
           <excludes>
             <exclude>META-INF/**</exclude>

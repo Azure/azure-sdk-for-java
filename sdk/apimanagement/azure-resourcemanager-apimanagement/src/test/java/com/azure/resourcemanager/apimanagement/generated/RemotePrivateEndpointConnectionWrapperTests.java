@@ -15,34 +15,34 @@ public final class RemotePrivateEndpointConnectionWrapperTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RemotePrivateEndpointConnectionWrapper model = BinaryData.fromString(
-            "{\"id\":\"auyqnj\",\"name\":\"hmocgjshg\",\"type\":\"a\",\"properties\":{\"privateEndpoint\":{\"id\":\"ixq\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"jkyb\",\"actionsRequired\":\"rcl\"},\"provisioningState\":\"tzqnrbctbhpjh\",\"groupIds\":[\"vrdnyeitaneq\",\"dynzjahwr\",\"uomzczfki\",\"eevsa\"]}}")
+            "{\"id\":\"aj\",\"name\":\"yizyddcvxodk\",\"type\":\"fsxxby\",\"properties\":{\"privateEndpoint\":{\"id\":\"lvgecpwgoljtz\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"sdobygoogxq\",\"actionsRequired\":\"j\"},\"provisioningState\":\"azyj\",\"groupIds\":[\"saodj\"]}}")
             .toObject(RemotePrivateEndpointConnectionWrapper.class);
-        Assertions.assertEquals("auyqnj", model.id());
-        Assertions.assertEquals("hmocgjshg", model.name());
-        Assertions.assertEquals("a", model.type());
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+        Assertions.assertEquals("aj", model.id());
+        Assertions.assertEquals("yizyddcvxodk", model.name());
+        Assertions.assertEquals("fsxxby", model.type());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
             model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("jkyb", model.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("rcl", model.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("sdobygoogxq", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("j", model.privateLinkServiceConnectionState().actionsRequired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RemotePrivateEndpointConnectionWrapper model = new RemotePrivateEndpointConnectionWrapper().withId("auyqnj")
-            .withName("hmocgjshg")
-            .withType("a")
+        RemotePrivateEndpointConnectionWrapper model = new RemotePrivateEndpointConnectionWrapper().withId("aj")
+            .withName("yizyddcvxodk")
+            .withType("fsxxby")
             .withPrivateEndpoint(new ArmIdWrapper())
             .withPrivateLinkServiceConnectionState(
-                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
-                    .withDescription("jkyb")
-                    .withActionsRequired("rcl"));
+                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
+                    .withDescription("sdobygoogxq")
+                    .withActionsRequired("j"));
         model = BinaryData.fromObject(model).toObject(RemotePrivateEndpointConnectionWrapper.class);
-        Assertions.assertEquals("auyqnj", model.id());
-        Assertions.assertEquals("hmocgjshg", model.name());
-        Assertions.assertEquals("a", model.type());
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+        Assertions.assertEquals("aj", model.id());
+        Assertions.assertEquals("yizyddcvxodk", model.name());
+        Assertions.assertEquals("fsxxby", model.type());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
             model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("jkyb", model.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("rcl", model.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("sdobygoogxq", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("j", model.privateLinkServiceConnectionState().actionsRequired());
     }
 }

@@ -7,8 +7,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.Applicability;
@@ -23,24 +23,24 @@ public final class AvailableWorkloadProfilesGetMockTests {
     @Test
     public void testGet() throws Exception {
         String responseStr
-            = "{\"value\":[{\"location\":\"lbvgwzsf\",\"properties\":{\"category\":\"dousnk\",\"applicability\":\"Custom\",\"cores\":1190539545,\"memoryGiB\":1496708072,\"gpus\":2093151817,\"displayName\":\"gfkbebauzlqbtxx\"},\"id\":\"f\",\"name\":\"njzudr\",\"type\":\"pzkg\"}]}";
+            = "{\"value\":[{\"location\":\"ydsx\",\"properties\":{\"category\":\"ohec\",\"applicability\":\"Custom\",\"cores\":685509922,\"memoryGiB\":402118107,\"gpus\":952248828,\"displayName\":\"eallklmtkhlo\"},\"id\":\"x\",\"name\":\"pvbrdfjmzsyz\",\"type\":\"hotlhikcyychunsj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AvailableWorkloadProfile> response
-            = manager.availableWorkloadProfiles().get("btahdeanii", com.azure.core.util.Context.NONE);
+            = manager.availableWorkloadProfiles().get("w", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lbvgwzsf", response.iterator().next().location());
-        Assertions.assertEquals("dousnk", response.iterator().next().properties().category());
+        Assertions.assertEquals("ydsx", response.iterator().next().location());
+        Assertions.assertEquals("ohec", response.iterator().next().properties().category());
         Assertions.assertEquals(Applicability.CUSTOM, response.iterator().next().properties().applicability());
-        Assertions.assertEquals(1190539545, response.iterator().next().properties().cores());
-        Assertions.assertEquals(1496708072, response.iterator().next().properties().memoryGiB());
-        Assertions.assertEquals(2093151817, response.iterator().next().properties().gpus());
-        Assertions.assertEquals("gfkbebauzlqbtxx", response.iterator().next().properties().displayName());
+        Assertions.assertEquals(685509922, response.iterator().next().properties().cores());
+        Assertions.assertEquals(402118107, response.iterator().next().properties().memoryGiB());
+        Assertions.assertEquals(952248828, response.iterator().next().properties().gpus());
+        Assertions.assertEquals("eallklmtkhlo", response.iterator().next().properties().displayName());
     }
 }

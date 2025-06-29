@@ -52,6 +52,21 @@ public class BackendBaseParameters implements JsonSerializable<BackendBaseParame
      */
     private BackendTlsProperties tls;
 
+    /*
+     * Backend Circuit Breaker Configuration
+     */
+    private BackendCircuitBreaker circuitBreaker;
+
+    /*
+     * The pool property.
+     */
+    private BackendBaseParametersPool pool;
+
+    /*
+     * Type of the backend. A backend can be either Single or Pool.
+     */
+    private BackendType type;
+
     /**
      * Creates an instance of BackendBaseParameters class.
      */
@@ -201,6 +216,66 @@ public class BackendBaseParameters implements JsonSerializable<BackendBaseParame
     }
 
     /**
+     * Get the circuitBreaker property: Backend Circuit Breaker Configuration.
+     * 
+     * @return the circuitBreaker value.
+     */
+    public BackendCircuitBreaker circuitBreaker() {
+        return this.circuitBreaker;
+    }
+
+    /**
+     * Set the circuitBreaker property: Backend Circuit Breaker Configuration.
+     * 
+     * @param circuitBreaker the circuitBreaker value to set.
+     * @return the BackendBaseParameters object itself.
+     */
+    public BackendBaseParameters withCircuitBreaker(BackendCircuitBreaker circuitBreaker) {
+        this.circuitBreaker = circuitBreaker;
+        return this;
+    }
+
+    /**
+     * Get the pool property: The pool property.
+     * 
+     * @return the pool value.
+     */
+    public BackendBaseParametersPool pool() {
+        return this.pool;
+    }
+
+    /**
+     * Set the pool property: The pool property.
+     * 
+     * @param pool the pool value to set.
+     * @return the BackendBaseParameters object itself.
+     */
+    public BackendBaseParameters withPool(BackendBaseParametersPool pool) {
+        this.pool = pool;
+        return this;
+    }
+
+    /**
+     * Get the type property: Type of the backend. A backend can be either Single or Pool.
+     * 
+     * @return the type value.
+     */
+    public BackendType type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type property: Type of the backend. A backend can be either Single or Pool.
+     * 
+     * @param type the type value to set.
+     * @return the BackendBaseParameters object itself.
+     */
+    public BackendBaseParameters withType(BackendType type) {
+        this.type = type;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -218,6 +293,12 @@ public class BackendBaseParameters implements JsonSerializable<BackendBaseParame
         if (tls() != null) {
             tls().validate();
         }
+        if (circuitBreaker() != null) {
+            circuitBreaker().validate();
+        }
+        if (pool() != null) {
+            pool().validate();
+        }
     }
 
     /**
@@ -233,6 +314,9 @@ public class BackendBaseParameters implements JsonSerializable<BackendBaseParame
         jsonWriter.writeJsonField("credentials", this.credentials);
         jsonWriter.writeJsonField("proxy", this.proxy);
         jsonWriter.writeJsonField("tls", this.tls);
+        jsonWriter.writeJsonField("circuitBreaker", this.circuitBreaker);
+        jsonWriter.writeJsonField("pool", this.pool);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -265,6 +349,12 @@ public class BackendBaseParameters implements JsonSerializable<BackendBaseParame
                     deserializedBackendBaseParameters.proxy = BackendProxyContract.fromJson(reader);
                 } else if ("tls".equals(fieldName)) {
                     deserializedBackendBaseParameters.tls = BackendTlsProperties.fromJson(reader);
+                } else if ("circuitBreaker".equals(fieldName)) {
+                    deserializedBackendBaseParameters.circuitBreaker = BackendCircuitBreaker.fromJson(reader);
+                } else if ("pool".equals(fieldName)) {
+                    deserializedBackendBaseParameters.pool = BackendBaseParametersPool.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedBackendBaseParameters.type = BackendType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

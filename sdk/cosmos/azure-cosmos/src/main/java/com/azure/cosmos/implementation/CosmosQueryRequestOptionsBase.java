@@ -7,11 +7,13 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.CosmosRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
+import com.azure.cosmos.util.Beta;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -31,6 +33,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
         ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.getCosmosAsyncClientAccessor();
 
     private ConsistencyLevel consistencyLevel;
+    private ReadConsistencyStrategy readConsistencyStrategy;
     private String sessionToken;
     private int responseContinuationTokenLimitInKb;
     private boolean queryMetricsEnabled;
@@ -64,6 +67,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
      */
     protected CosmosQueryRequestOptionsBase(CosmosQueryRequestOptionsBase<?> options) {
         this.consistencyLevel = options.consistencyLevel;
+        this.readConsistencyStrategy = options.readConsistencyStrategy;
         this.sessionToken = options.sessionToken;
         this.responseContinuationTokenLimitInKb = options.responseContinuationTokenLimitInKb;
         this.queryMetricsEnabled = options.queryMetricsEnabled;
@@ -99,6 +103,16 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
     }
 
     /**
+     * Gets the read consistency strategy for the request.
+     *
+     * @return the read consistency strategy.
+     */
+    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ReadConsistencyStrategy getReadConsistencyStrategy() {
+        return readConsistencyStrategy;
+    }
+
+    /**
      * Sets the consistency level required for the request. The effective consistency level
      * can only be reduced for read/query requests. So when the Account's default consistency level
      * is for example Session you can specify on a request-by-request level for individual requests
@@ -106,11 +120,32 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
      * request but will not guarantee session consistency (read-your-own-write) anymore
      *
      * @param consistencyLevel the consistency level.
-     * @return the CosmosItemRequestOptions.
+     * @return the request options.
      */
     @SuppressWarnings("unchecked")
     public T setConsistencyLevel(ConsistencyLevel consistencyLevel) {
         this.consistencyLevel = consistencyLevel;
+        return (T)this;
+    }
+
+    /**
+     * Sets the read consistency strategy required for the request. This allows specifying the effective consistency
+     * strategy for read/query operations and even request stronger consistency (`LOCAL_COMMITTED` for example) for
+     * accounts with lower default consistency level
+     * NOTE: If the read consistency strategy set on a request level here is `SESSION` and the default consistency
+     * level specified when constructing the CosmosClient instance via CosmosClientBuilder.consistencyLevel
+     * is not SESSION then session token capturing also needs to be enabled by calling
+     * CosmosClientBuilder:sessionCapturingOverrideEnabled(true) explicitly.
+     * NOTE: The `setConsistencyLevel` value specified is ignored when `setReadConsistencyStrategy` is used unless
+     * `DEFAULT` is specified.
+     *
+     * @param readConsistencyStrategy the consistency level.
+     * @return the request options.
+     */
+    @SuppressWarnings("unchecked")
+    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public T setReadConsistencyStrategy(ReadConsistencyStrategy readConsistencyStrategy) {
+        this.readConsistencyStrategy = readConsistencyStrategy;
         return (T)this;
     }
 
@@ -478,6 +513,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
     @Override
     public void override(CosmosRequestOptions cosmosRequestOptions) {
         this.consistencyLevel = overrideOption(cosmosRequestOptions.getConsistencyLevel(), this.consistencyLevel);
+        this.readConsistencyStrategy = overrideOption(cosmosRequestOptions.getReadConsistencyStrategy(), this.readConsistencyStrategy);
         this.throughputControlGroupName = overrideOption(cosmosRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
         this.dedicatedGatewayRequestOptions = overrideOption(cosmosRequestOptions.getDedicatedGatewayRequestOptions(), this.dedicatedGatewayRequestOptions);
         this.cosmosEndToEndOperationLatencyPolicyConfig = overrideOption(cosmosRequestOptions.getCosmosEndToEndLatencyPolicyConfig(), this.cosmosEndToEndOperationLatencyPolicyConfig);
@@ -491,6 +527,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
 
     public RequestOptions applyToRequestOptions(RequestOptions requestOptions) {
         requestOptions.setConsistencyLevel(this.getConsistencyLevel());
+        requestOptions.setReadConsistencyStrategy(this.readConsistencyStrategy);
         requestOptions.setSessionToken(this.getSessionToken());
         requestOptions.setThroughputControlGroupName(this.getThroughputControlGroupName());
         requestOptions.setOperationContextAndListenerTuple(this.getOperationContextAndListenerTuple());

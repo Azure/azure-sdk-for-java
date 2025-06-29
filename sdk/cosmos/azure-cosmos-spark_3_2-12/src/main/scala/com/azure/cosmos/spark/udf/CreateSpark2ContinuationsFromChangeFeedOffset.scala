@@ -25,7 +25,7 @@ class CreateSpark2ContinuationsFromChangeFeedOffset extends UDF2[Map[String, Str
     val readConfig = CosmosReadConfig.parseCosmosReadConfig(effectiveUserConfig)
     val cosmosClientConfig = CosmosClientConfiguration(
       effectiveUserConfig,
-      useEventualConsistency = readConfig.forceEventualConsistency,
+      readConsistencyStrategy = readConfig.readConsistencyStrategy,
       CosmosClientConfiguration.getSparkEnvironmentInfo(SparkSession.getActiveSession))
 
     val cosmosContainerConfig: CosmosContainerConfig =

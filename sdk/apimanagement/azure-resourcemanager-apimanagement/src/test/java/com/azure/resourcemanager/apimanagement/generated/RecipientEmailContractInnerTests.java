@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class RecipientEmailContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecipientEmailContractInner model = BinaryData
-            .fromString(
-                "{\"properties\":{\"email\":\"olxvhhyqqe\"},\"id\":\"at\",\"name\":\"grznmginmtsd\",\"type\":\"xch\"}")
+        RecipientEmailContractInner model = BinaryData.fromString(
+            "{\"properties\":{\"email\":\"rak\"},\"id\":\"rrynjcwmhly\",\"name\":\"gnukxrkemjpe\",\"type\":\"ulrlzaudgjtfbcl\"}")
             .toObject(RecipientEmailContractInner.class);
-        Assertions.assertEquals("olxvhhyqqe", model.email());
+        Assertions.assertEquals("rak", model.email());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecipientEmailContractInner model = new RecipientEmailContractInner().withEmail("olxvhhyqqe");
+        RecipientEmailContractInner model = new RecipientEmailContractInner().withEmail("rak");
         model = BinaryData.fromObject(model).toObject(RecipientEmailContractInner.class);
-        Assertions.assertEquals("olxvhhyqqe", model.email());
+        Assertions.assertEquals("rak", model.email());
     }
 }

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class ManagedEnvironmentsDiagnosticsGetRootSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/ManagedEnvironments_Get.json
+     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ManagedEnvironments_Get.json
      */
     /**
      * Sample code: Get environments by name.

@@ -318,7 +318,7 @@ public final class RntbdResponse implements ReferenceCounted {
         return this;
     }
 
-    static RntbdResponse decode(final ByteBuf in) {
+    public static RntbdResponse decode(final ByteBuf in) {
 
         final int start = in.markReaderIndex().readerIndex();
 

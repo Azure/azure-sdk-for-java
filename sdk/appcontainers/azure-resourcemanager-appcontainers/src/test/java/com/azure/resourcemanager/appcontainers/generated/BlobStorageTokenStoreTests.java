@@ -12,14 +12,14 @@ public final class BlobStorageTokenStoreTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BlobStorageTokenStore model
-            = BinaryData.fromString("{\"sasUrlSettingName\":\"gtzxdpn\"}").toObject(BlobStorageTokenStore.class);
-        Assertions.assertEquals("gtzxdpn", model.sasUrlSettingName());
+            = BinaryData.fromString("{\"sasUrlSettingName\":\"mijcmmxdcufufs\"}").toObject(BlobStorageTokenStore.class);
+        Assertions.assertEquals("mijcmmxdcufufs", model.sasUrlSettingName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BlobStorageTokenStore model = new BlobStorageTokenStore().withSasUrlSettingName("gtzxdpn");
+        BlobStorageTokenStore model = new BlobStorageTokenStore().withSasUrlSettingName("mijcmmxdcufufs");
         model = BinaryData.fromObject(model).toObject(BlobStorageTokenStore.class);
-        Assertions.assertEquals("gtzxdpn", model.sasUrlSettingName());
+        Assertions.assertEquals("mijcmmxdcufufs", model.sasUrlSettingName());
     }
 }

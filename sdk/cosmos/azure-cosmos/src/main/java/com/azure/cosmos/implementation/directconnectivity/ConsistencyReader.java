@@ -4,8 +4,8 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
@@ -200,11 +200,11 @@ public class ConsistencyReader {
 
         entity.requestContext.forceRefreshAddressCache = forceRefresh;
 
-        ValueHolder<ConsistencyLevel> targetConsistencyLevel = ValueHolder.initialize(null);
+        ValueHolder<ReadConsistencyStrategy> readConsistencyStrategy = ValueHolder.initialize(null);
         ValueHolder<Boolean> useSessionToken = ValueHolder.initialize(null);
         ReadMode desiredReadMode;
         try {
-            desiredReadMode = this.deduceReadMode(entity, targetConsistencyLevel, useSessionToken);
+            desiredReadMode = this.deduceReadMode(entity, readConsistencyStrategy, useSessionToken);
         } catch (CosmosException e) {
             return Mono.error(e);
         }
@@ -232,7 +232,7 @@ public class ConsistencyReader {
                 return this.quorumReader.readStrongAsync(this.diagnosticsClientContext, entity, readQuorumValue, desiredReadMode);
 
             case Any:
-                if (targetConsistencyLevel.v == ConsistencyLevel.SESSION) {
+                if (readConsistencyStrategy.v == ReadConsistencyStrategy.SESSION) {
                     return BackoffRetryUtility.executeRetry(
                         () -> this.readSessionAsync(entity, desiredReadMode),
                         new SessionTokenMismatchRetryPolicy(
@@ -339,10 +339,10 @@ public class ConsistencyReader {
     }
 
     ReadMode deduceReadMode(RxDocumentServiceRequest request,
-                            ValueHolder<ConsistencyLevel> targetConsistencyLevel,
+                            ValueHolder<ReadConsistencyStrategy> readConsistencyStrategy,
                             ValueHolder<Boolean> useSessionToken) {
-        targetConsistencyLevel.v = RequestHelper.getConsistencyLevelToUse(this.serviceConfigReader, request);
-        useSessionToken.v = (targetConsistencyLevel.v == ConsistencyLevel.SESSION);
+        readConsistencyStrategy.v = RequestHelper.getReadConsistencyStrategyToUse(this.serviceConfigReader, request);
+        useSessionToken.v = (readConsistencyStrategy.v == ReadConsistencyStrategy.SESSION);
 
         if (request.getDefaultReplicaIndex() != null) {
             // Don't use session token - this is used by internal scenarios which technically don't intend session read when they target
@@ -351,20 +351,19 @@ public class ConsistencyReader {
             return ReadMode.Primary;  //Let the addressResolver decides which replica to connect to.
         }
 
-        switch (targetConsistencyLevel.v) {
+        switch (readConsistencyStrategy.v) {
             case EVENTUAL:
-            case CONSISTENT_PREFIX:
             case SESSION:
                 return ReadMode.Any;
 
-            case BOUNDED_STALENESS:
+            case LATEST_COMMITTED:
                 return ReadMode.BoundedStaleness;
 
-            case STRONG:
+            case GLOBAL_STRONG:
                 return ReadMode.Strong;
 
             default:
-                throw new IllegalStateException("INVALID Consistency Level " + targetConsistencyLevel.v);
+                throw new IllegalStateException("INVALID Read Consistency Strategy " + readConsistencyStrategy.v);
         }
     }
 

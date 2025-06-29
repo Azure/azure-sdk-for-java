@@ -20,8 +20,8 @@ public interface ReplicationNetworksClient {
      * 
      * Lists the networks available for a fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -29,7 +29,7 @@ public interface ReplicationNetworksClient {
      * @return list of networks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkInner> listByReplicationFabrics(String resourceName, String resourceGroupName,
+    PagedIterable<NetworkInner> listByReplicationFabrics(String resourceGroupName, String resourceName,
         String fabricName);
 
     /**
@@ -37,8 +37,8 @@ public interface ReplicationNetworksClient {
      * 
      * Lists the networks available for a fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -47,7 +47,7 @@ public interface ReplicationNetworksClient {
      * @return list of networks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkInner> listByReplicationFabrics(String resourceName, String resourceGroupName,
+    PagedIterable<NetworkInner> listByReplicationFabrics(String resourceGroupName, String resourceName,
         String fabricName, Context context);
 
     /**
@@ -55,8 +55,8 @@ public interface ReplicationNetworksClient {
      * 
      * Gets the details of a network.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Server Id.
      * @param networkName Primary network name.
      * @param context The context to associate with this operation.
@@ -66,7 +66,7 @@ public interface ReplicationNetworksClient {
      * @return the details of a network along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkInner> getWithResponse(String resourceName, String resourceGroupName, String fabricName,
+    Response<NetworkInner> getWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String networkName, Context context);
 
     /**
@@ -74,8 +74,8 @@ public interface ReplicationNetworksClient {
      * 
      * Gets the details of a network.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Server Id.
      * @param networkName Primary network name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -84,30 +84,30 @@ public interface ReplicationNetworksClient {
      * @return the details of a network.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkInner get(String resourceName, String resourceGroupName, String fabricName, String networkName);
+    NetworkInner get(String resourceGroupName, String resourceName, String fabricName, String networkName);
 
     /**
      * Gets the list of networks. View-only API.
      * 
      * Lists the networks available in a vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of networks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkInner> list(String resourceName, String resourceGroupName);
+    PagedIterable<NetworkInner> list(String resourceGroupName, String resourceName);
 
     /**
      * Gets the list of networks. View-only API.
      * 
      * Lists the networks available in a vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -115,5 +115,5 @@ public interface ReplicationNetworksClient {
      * @return list of networks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkInner> list(String resourceName, String resourceGroupName, Context context);
+    PagedIterable<NetworkInner> list(String resourceGroupName, String resourceName, Context context);
 }

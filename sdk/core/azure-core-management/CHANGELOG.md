@@ -1,14 +1,29 @@
 # Release History
 
-## 1.18.0-beta.1 (Unreleased)
+## 1.18.1 (2025-06-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.4` to `1.55.5`.
+
+## 1.18.0 (2025-06-05)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Added new Azure regions:
+  - `Region.MEXICO_CENTRAL`
+  - `Region.SPAIN_CENTRAL`
+  - `Region.POLAND_CENTRAL`
+  - `Region.INDONESIA_CENTRAL`
+  - `Region.NEW_ZEALAND_NORTH`
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.3` to `1.55.4`.
 
 ## 1.17.0 (2025-03-10)
 

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.GroupContract;
@@ -22,28 +22,28 @@ public final class GroupsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"crunbkilxs\",\"description\":\"kbirhyvsyu\",\"builtIn\":true,\"type\":\"system\",\"externalId\":\"rszffiukltrvgi\"},\"id\":\"guoxc\",\"name\":\"dqoxhdenmj\",\"type\":\"gxgrggy\"}";
+            = "{\"properties\":{\"displayName\":\"idotmpu\",\"description\":\"uhoo\",\"builtIn\":true,\"type\":\"system\",\"externalId\":\"varu\"},\"id\":\"vuwjyul\",\"name\":\"fpqqllavzlhjgm\",\"type\":\"odbl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GroupContract response = manager.groups()
-            .define("uobclobnaqeizpli")
-            .withExistingService("idvssvgyoggkztzt", "jnknpbqgz")
-            .withDisplayName("yu")
-            .withDescription("nnhzjmkff")
-            .withType(GroupType.EXTERNAL)
-            .withExternalId("nvmujyiqyw")
-            .withIfMatch("pxmliytd")
+            .define("ogsfovkmam")
+            .withExistingService("ai", "bic")
+            .withDisplayName("fg")
+            .withDescription("rukcyyaalbk")
+            .withType(GroupType.CUSTOM)
+            .withExternalId("azdlrk")
+            .withIfMatch("itzkifqbxm")
             .create();
 
-        Assertions.assertEquals("crunbkilxs", response.displayName());
-        Assertions.assertEquals("kbirhyvsyu", response.description());
+        Assertions.assertEquals("idotmpu", response.displayName());
+        Assertions.assertEquals("uhoo", response.description());
         Assertions.assertEquals(GroupType.SYSTEM, response.typePropertiesType());
-        Assertions.assertEquals("rszffiukltrvgi", response.externalId());
+        Assertions.assertEquals("varu", response.externalId());
     }
 }

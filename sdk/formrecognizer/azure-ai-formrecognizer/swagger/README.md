@@ -41,7 +41,7 @@ autorest --tag=formrecognizer-documentanalysis
 ### To run, use `autorest --tag:formrecognizer-v2.1 README.md`
 
 ``` yaml $(tag) == 'formrecognizer-v2.1'
-use: '@autorest/java@4.1.42'
+use: '@autorest/java@4.1.52'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/FormRecognizer/stable/v2.1/FormRecognizer.json
 java: true
 output-folder: ..\
@@ -87,7 +87,7 @@ directive:
 ## Form Recognizer Service 2023-07-31
 ### To run, use `autorest --tag:formrecognizer-documentanalysis README.md`
 ``` yaml $(tag) == 'formrecognizer-documentanalysis'
-use: '@autorest/java@4.1.42'
+use: '@autorest/java@4.1.52'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/FormRecognizer/stable/2023-07-31/FormRecognizer.json
 java: true
 output-folder: ..\

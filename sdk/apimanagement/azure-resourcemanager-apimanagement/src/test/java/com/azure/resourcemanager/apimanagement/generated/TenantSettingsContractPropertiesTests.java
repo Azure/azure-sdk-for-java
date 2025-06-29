@@ -13,19 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class TenantSettingsContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TenantSettingsContractProperties model = BinaryData
-            .fromString(
-                "{\"settings\":{\"qjto\":\"muffiwjbctvbpzu\",\"wuusiecktybh\":\"dxposcsl\",\"d\":\"uxidhhxomilddxj\"}}")
+        TenantSettingsContractProperties model = BinaryData.fromString(
+            "{\"settings\":{\"vgp\":\"iciqppo\",\"uhwfwj\":\"e\",\"tfnressfepgck\":\"oxuo\",\"ym\":\"cjmgvsnvbtqdxfm\"}}")
             .toObject(TenantSettingsContractProperties.class);
-        Assertions.assertEquals("muffiwjbctvbpzu", model.settings().get("qjto"));
+        Assertions.assertEquals("iciqppo", model.settings().get("vgp"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TenantSettingsContractProperties model = new TenantSettingsContractProperties()
-            .withSettings(mapOf("qjto", "muffiwjbctvbpzu", "wuusiecktybh", "dxposcsl", "d", "uxidhhxomilddxj"));
+            .withSettings(mapOf("vgp", "iciqppo", "uhwfwj", "e", "tfnressfepgck", "oxuo", "ym", "cjmgvsnvbtqdxfm"));
         model = BinaryData.fromObject(model).toObject(TenantSettingsContractProperties.class);
-        Assertions.assertEquals("muffiwjbctvbpzu", model.settings().get("qjto"));
+        Assertions.assertEquals("iciqppo", model.settings().get("vgp"));
     }
 
     // Use "Map.of" if available

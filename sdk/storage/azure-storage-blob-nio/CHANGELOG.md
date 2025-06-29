@@ -1,6 +1,6 @@
 # Release History
 
-## 12.0.0-beta.31 (Unreleased)
+## 12.0.0-beta.32 (Unreleased)
 
 ### Features Added
 
@@ -10,6 +10,11 @@
 - Fixed an issue where the copy file operation would fail when using SAS token credentials.
 
 ### Other Changes
+
+## 12.0.0-beta.31 (2025-05-06)
+
+### Features Added
+- Added support for service version 2025-07-05.
 
 ## 12.0.0-beta.30 (2025-03-11)
 

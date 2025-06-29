@@ -4,6 +4,7 @@
 package com.azure.identity;
 
 import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.test.utils.TestConfigurationSource;
@@ -15,14 +16,23 @@ import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedConstruction;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.lang.reflect.Field;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.when;
@@ -291,11 +301,6 @@ public class DefaultAzureCredentialTest {
                 when(identityClient.authenticateWithManagedIdentityMsalClient(request)).thenReturn(
                     Mono.error(new CredentialUnavailableException("Cannot get token from managed identity")));
             });
-            MockedConstruction<SharedTokenCacheCredential> sharedTokenCacheCredentialMock
-                = mockConstruction(SharedTokenCacheCredential.class, (sharedTokenCacheCredential, context) -> {
-                    when(sharedTokenCacheCredential.getToken(request)).thenReturn(
-                        Mono.error(new CredentialUnavailableException("Cannot get token from shared token cache")));
-                });
             MockedConstruction<AzureDeveloperCliCredential> azureDeveloperCliCredentialMock
                 = mockConstruction(AzureDeveloperCliCredential.class, (AzureDeveloperCliCredential, context) -> {
                     when(AzureDeveloperCliCredential.getToken(request)).thenReturn(Mono.error(
@@ -325,7 +330,6 @@ public class DefaultAzureCredentialTest {
                     && t.getMessage().startsWith("EnvironmentCredential authentication unavailable. "))
                 .verify();
             Assertions.assertNotNull(identityClientMock);
-            Assertions.assertNotNull(sharedTokenCacheCredentialMock);
             Assertions.assertNotNull(azureCliCredentialMock);
             Assertions.assertNotNull(azureDeveloperCliCredentialMock);
             Assertions.assertNotNull(azurePowerShellCredentialMock);
@@ -617,6 +621,103 @@ public class DefaultAzureCredentialTest {
             Assertions.assertNotNull(powerShellCredentialMock);
             Assertions.assertNotNull(azureCliCredentialMock);
             Assertions.assertNotNull(azureDeveloperCliCredentialMock);
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "prod", "PROD", "Prod", "pRoD" })
+    public void testProductionOnlyCredentialsChain(String prodValue) {
+        // Setup config with production-only setting using various case variants
+        TestConfigurationSource configSource = new TestConfigurationSource().put("AZURE_TOKEN_CREDENTIALS", prodValue);
+        Configuration configuration = TestUtils.createTestConfiguration(configSource);
+
+        // Build the credential with the test configuration
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().configuration(configuration).build();
+
+        List<TokenCredential> credentials = extractCredentials(credential);
+
+        // Only production credentials should be present (3)
+        assertEquals(3, credentials.size());
+
+        // Verify production credentials
+        assertInstanceOf(EnvironmentCredential.class, credentials.get(0));
+        assertInstanceOf(WorkloadIdentityCredential.class, credentials.get(1));
+        assertInstanceOf(ManagedIdentityCredential.class, credentials.get(2));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "dev", "DEV", "Dev", "dEv" })
+    public void testDeveloperOnlyCredentialsChain(String devValue) {
+        // Setup config with developer-only setting using various case variants
+        TestConfigurationSource configSource = new TestConfigurationSource().put("AZURE_TOKEN_CREDENTIALS", devValue);
+        Configuration configuration = TestUtils.createTestConfiguration(configSource);
+
+        // Build the credential with the test configuration
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().configuration(configuration).build();
+
+        List<TokenCredential> credentials = extractCredentials(credential);
+
+        // Only developer credentials should be present (4)
+        assertEquals(4, credentials.size());
+
+        // Verify developer credentials in order
+        assertInstanceOf(IntelliJCredential.class, credentials.get(0));
+        assertInstanceOf(AzureCliCredential.class, credentials.get(1));
+        assertInstanceOf(AzurePowerShellCredential.class, credentials.get(2));
+        assertInstanceOf(AzureDeveloperCliCredential.class, credentials.get(3));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "invalid", "PRODUCTION", "DEVELOPER", "both", "p r o d", "d e v" })
+    public void testInvalidCredentialsConfiguration(String configValue) {
+        // Setup config with invalid setting
+        TestConfigurationSource configSource
+            = new TestConfigurationSource().put("AZURE_TOKEN_CREDENTIALS", configValue);
+        Configuration configuration = TestUtils.createTestConfiguration(configSource);
+
+        // Build the credential with invalid configuration - should throw
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+            () -> new DefaultAzureCredentialBuilder().configuration(configuration).build());
+
+        // Verify error message
+        assertTrue(exception.getMessage().contains("Invalid value for AZURE_TOKEN_CREDENTIALS"));
+    }
+
+    @Test
+    public void testDefaultCredentialChainWithoutFilter() {
+        // Create a test configuration with no AZURE_TOKEN_CREDENTIALS setting
+        TestConfigurationSource configSource = new TestConfigurationSource();
+        Configuration configuration = TestUtils.createTestConfiguration(configSource);
+
+        // Build the credential with the test configuration
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().configuration(configuration).build();
+
+        // Extract credentials to check their types and order
+        List<TokenCredential> credentials = extractCredentials(credential);
+
+        // Verify the complete chain with all 7 credentials
+        assertEquals(7, credentials.size());
+        assertInstanceOf(EnvironmentCredential.class, credentials.get(0));
+        assertInstanceOf(WorkloadIdentityCredential.class, credentials.get(1));
+        assertInstanceOf(ManagedIdentityCredential.class, credentials.get(2));
+        assertInstanceOf(IntelliJCredential.class, credentials.get(3));
+        assertInstanceOf(AzureCliCredential.class, credentials.get(4));
+        assertInstanceOf(AzurePowerShellCredential.class, credentials.get(5));
+        assertInstanceOf(AzureDeveloperCliCredential.class, credentials.get(6));
+    }
+
+    /**
+     * Helper method to extract the credentials list from a DefaultAzureCredential instance
+     */
+    @SuppressWarnings("unchecked")
+    private List<TokenCredential> extractCredentials(DefaultAzureCredential credential) {
+        try {
+            // Use reflection to access the private credentials field
+            Field credentialsField = ChainedTokenCredential.class.getDeclaredField("credentials");
+            credentialsField.setAccessible(true);
+            return new ArrayList<>((List<TokenCredential>) credentialsField.get(credential));
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException("Failed to extract credentials", e);
         }
     }
 }

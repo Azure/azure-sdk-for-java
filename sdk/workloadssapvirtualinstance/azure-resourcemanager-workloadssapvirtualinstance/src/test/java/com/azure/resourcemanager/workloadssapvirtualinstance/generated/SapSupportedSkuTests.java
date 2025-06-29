@@ -15,7 +15,7 @@ public final class SapSupportedSkuTests {
             .fromString("{\"vmSku\":\"fdtwssotft\",\"isAppServerCertified\":true,\"isDatabaseCertified\":true}")
             .toObject(SapSupportedSku.class);
         Assertions.assertEquals("fdtwssotft", model.vmSku());
-        Assertions.assertEquals(true, model.isAppServerCertified());
-        Assertions.assertEquals(true, model.isDatabaseCertified());
+        Assertions.assertTrue(model.isAppServerCertified());
+        Assertions.assertTrue(model.isDatabaseCertified());
     }
 }

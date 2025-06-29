@@ -16,12 +16,12 @@ public final class ListReplicationsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListReplications model = BinaryData.fromString(
-            "{\"value\":[{\"replicationId\":\"mwzn\",\"endpointType\":\"dst\",\"replicationSchedule\":\"_10minutely\",\"remoteVolumeResourceId\":\"nsorgjhxbldt\",\"remoteVolumeRegion\":\"wrlkdmtn\"},{\"replicationId\":\"ok\",\"endpointType\":\"src\",\"replicationSchedule\":\"hourly\",\"remoteVolumeResourceId\":\"d\",\"remoteVolumeRegion\":\"gsyocogj\"},{\"replicationId\":\"dtbnnha\",\"endpointType\":\"dst\",\"replicationSchedule\":\"daily\",\"remoteVolumeResourceId\":\"kvci\",\"remoteVolumeRegion\":\"nvpamq\"},{\"replicationId\":\"qqu\",\"endpointType\":\"src\",\"replicationSchedule\":\"daily\",\"remoteVolumeResourceId\":\"wggxkallat\",\"remoteVolumeRegion\":\"lwuip\"}]}")
+            "{\"value\":[{\"replicationId\":\"lpiujwaa\",\"endpointType\":\"dst\",\"replicationSchedule\":\"_10minutely\",\"remoteVolumeResourceId\":\"iobyu\",\"remoteVolumeRegion\":\"rpqlp\"},{\"replicationId\":\"cciuqgbdbutau\",\"endpointType\":\"src\",\"replicationSchedule\":\"hourly\",\"remoteVolumeResourceId\":\"uwhhmhykojoxafn\",\"remoteVolumeRegion\":\"lpichk\"},{\"replicationId\":\"mkcdyhbpkkpwdre\",\"endpointType\":\"dst\",\"replicationSchedule\":\"_10minutely\",\"remoteVolumeResourceId\":\"qfovljxywsuws\",\"remoteVolumeRegion\":\"s\"}]}")
             .toObject(ListReplications.class);
         Assertions.assertEquals(EndpointType.DST, model.value().get(0).endpointType());
         Assertions.assertEquals(ReplicationSchedule.ONE_ZEROMINUTELY, model.value().get(0).replicationSchedule());
-        Assertions.assertEquals("nsorgjhxbldt", model.value().get(0).remoteVolumeResourceId());
-        Assertions.assertEquals("wrlkdmtn", model.value().get(0).remoteVolumeRegion());
+        Assertions.assertEquals("iobyu", model.value().get(0).remoteVolumeResourceId());
+        Assertions.assertEquals("rpqlp", model.value().get(0).remoteVolumeRegion());
     }
 
     @org.junit.jupiter.api.Test
@@ -29,24 +29,20 @@ public final class ListReplicationsTests {
         ListReplications model = new ListReplications().withValue(Arrays.asList(
             new ReplicationInner().withEndpointType(EndpointType.DST)
                 .withReplicationSchedule(ReplicationSchedule.ONE_ZEROMINUTELY)
-                .withRemoteVolumeResourceId("nsorgjhxbldt")
-                .withRemoteVolumeRegion("wrlkdmtn"),
+                .withRemoteVolumeResourceId("iobyu")
+                .withRemoteVolumeRegion("rpqlp"),
             new ReplicationInner().withEndpointType(EndpointType.SRC)
                 .withReplicationSchedule(ReplicationSchedule.HOURLY)
-                .withRemoteVolumeResourceId("d")
-                .withRemoteVolumeRegion("gsyocogj"),
+                .withRemoteVolumeResourceId("uwhhmhykojoxafn")
+                .withRemoteVolumeRegion("lpichk"),
             new ReplicationInner().withEndpointType(EndpointType.DST)
-                .withReplicationSchedule(ReplicationSchedule.DAILY)
-                .withRemoteVolumeResourceId("kvci")
-                .withRemoteVolumeRegion("nvpamq"),
-            new ReplicationInner().withEndpointType(EndpointType.SRC)
-                .withReplicationSchedule(ReplicationSchedule.DAILY)
-                .withRemoteVolumeResourceId("wggxkallat")
-                .withRemoteVolumeRegion("lwuip")));
+                .withReplicationSchedule(ReplicationSchedule.ONE_ZEROMINUTELY)
+                .withRemoteVolumeResourceId("qfovljxywsuws")
+                .withRemoteVolumeRegion("s")));
         model = BinaryData.fromObject(model).toObject(ListReplications.class);
         Assertions.assertEquals(EndpointType.DST, model.value().get(0).endpointType());
         Assertions.assertEquals(ReplicationSchedule.ONE_ZEROMINUTELY, model.value().get(0).replicationSchedule());
-        Assertions.assertEquals("nsorgjhxbldt", model.value().get(0).remoteVolumeResourceId());
-        Assertions.assertEquals("wrlkdmtn", model.value().get(0).remoteVolumeRegion());
+        Assertions.assertEquals("iobyu", model.value().get(0).remoteVolumeResourceId());
+        Assertions.assertEquals("rpqlp", model.value().get(0).remoteVolumeRegion());
     }
 }

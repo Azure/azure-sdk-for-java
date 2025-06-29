@@ -59,7 +59,7 @@ public final class ServicesImpl {
      * to perform REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureDataLakeStorage")
+    @ServiceInterface(name = "AzureDataLakeStorageRestAPIServices")
     public interface ServicesService {
 
         @Get("/")
@@ -462,7 +462,7 @@ public final class ServicesImpl {
     public PagedIterable<FileSystem> listFileSystems(String prefix, String continuation, Integer maxResults,
         String requestId, Integer timeout) {
         return new PagedIterable<>(
-            () -> listFileSystemsSinglePage(prefix, continuation, maxResults, requestId, timeout, Context.NONE));
+            () -> listFileSystemsSinglePage(prefix, continuation, maxResults, requestId, timeout));
     }
 
     /**
@@ -595,8 +595,8 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FileSystem> listFileSystemsNoCustomHeaders(String prefix, String continuation,
         Integer maxResults, String requestId, Integer timeout) {
-        return new PagedIterable<>(() -> listFileSystemsNoCustomHeadersSinglePage(prefix, continuation, maxResults,
-            requestId, timeout, Context.NONE));
+        return new PagedIterable<>(
+            () -> listFileSystemsNoCustomHeadersSinglePage(prefix, continuation, maxResults, requestId, timeout));
     }
 
     /**

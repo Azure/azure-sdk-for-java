@@ -8,48 +8,52 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.AcquireStorageAccountLock;
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureStorageContainer;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementType;
+import com.azure.resourcemanager.recoveryservicesbackup.models.OperationType;
 import org.junit.jupiter.api.Assertions;
 
 public final class AzureStorageContainerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureStorageContainer model = BinaryData.fromString(
-            "{\"containerType\":\"StorageContainer\",\"sourceResourceId\":\"bqgvgovpbbtte\",\"storageAccountVersion\":\"oknssqyzqedikdf\",\"resourceGroup\":\"biqmrjgei\",\"protectedItemCount\":7728759697884020161,\"acquireStorageAccountLock\":\"NotAcquire\",\"friendlyName\":\"fiwzcxmjpbyep\",\"backupManagementType\":\"MAB\",\"registrationStatus\":\"vljvrc\",\"healthStatus\":\"fqip\",\"protectableObjectType\":\"hnp\"}")
+            "{\"containerType\":\"StorageContainer\",\"sourceResourceId\":\"rueqthwm\",\"storageAccountVersion\":\"mbscbbx\",\"resourceGroup\":\"dhxiidlopedbwd\",\"protectedItemCount\":7104137474906929796,\"acquireStorageAccountLock\":\"Acquire\",\"operationType\":\"Rehydrate\",\"friendlyName\":\"md\",\"backupManagementType\":\"DPM\",\"registrationStatus\":\"bqwremjela\",\"healthStatus\":\"cigeleohdbvqvw\",\"protectableObjectType\":\"jopwbeonrlkwz\"}")
             .toObject(AzureStorageContainer.class);
-        Assertions.assertEquals("fiwzcxmjpbyep", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
-        Assertions.assertEquals("vljvrc", model.registrationStatus());
-        Assertions.assertEquals("fqip", model.healthStatus());
-        Assertions.assertEquals("hnp", model.protectableObjectType());
-        Assertions.assertEquals("bqgvgovpbbtte", model.sourceResourceId());
-        Assertions.assertEquals("oknssqyzqedikdf", model.storageAccountVersion());
-        Assertions.assertEquals("biqmrjgei", model.resourceGroup());
-        Assertions.assertEquals(7728759697884020161L, model.protectedItemCount());
-        Assertions.assertEquals(AcquireStorageAccountLock.NOT_ACQUIRE, model.acquireStorageAccountLock());
+        Assertions.assertEquals("md", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.DPM, model.backupManagementType());
+        Assertions.assertEquals("bqwremjela", model.registrationStatus());
+        Assertions.assertEquals("cigeleohdbvqvw", model.healthStatus());
+        Assertions.assertEquals("jopwbeonrlkwz", model.protectableObjectType());
+        Assertions.assertEquals("rueqthwm", model.sourceResourceId());
+        Assertions.assertEquals("mbscbbx", model.storageAccountVersion());
+        Assertions.assertEquals("dhxiidlopedbwd", model.resourceGroup());
+        Assertions.assertEquals(7104137474906929796L, model.protectedItemCount());
+        Assertions.assertEquals(AcquireStorageAccountLock.ACQUIRE, model.acquireStorageAccountLock());
+        Assertions.assertEquals(OperationType.REHYDRATE, model.operationType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureStorageContainer model = new AzureStorageContainer().withFriendlyName("fiwzcxmjpbyep")
-            .withBackupManagementType(BackupManagementType.MAB)
-            .withRegistrationStatus("vljvrc")
-            .withHealthStatus("fqip")
-            .withProtectableObjectType("hnp")
-            .withSourceResourceId("bqgvgovpbbtte")
-            .withStorageAccountVersion("oknssqyzqedikdf")
-            .withResourceGroup("biqmrjgei")
-            .withProtectedItemCount(7728759697884020161L)
-            .withAcquireStorageAccountLock(AcquireStorageAccountLock.NOT_ACQUIRE);
+        AzureStorageContainer model = new AzureStorageContainer().withFriendlyName("md")
+            .withBackupManagementType(BackupManagementType.DPM)
+            .withRegistrationStatus("bqwremjela")
+            .withHealthStatus("cigeleohdbvqvw")
+            .withProtectableObjectType("jopwbeonrlkwz")
+            .withSourceResourceId("rueqthwm")
+            .withStorageAccountVersion("mbscbbx")
+            .withResourceGroup("dhxiidlopedbwd")
+            .withProtectedItemCount(7104137474906929796L)
+            .withAcquireStorageAccountLock(AcquireStorageAccountLock.ACQUIRE)
+            .withOperationType(OperationType.REHYDRATE);
         model = BinaryData.fromObject(model).toObject(AzureStorageContainer.class);
-        Assertions.assertEquals("fiwzcxmjpbyep", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
-        Assertions.assertEquals("vljvrc", model.registrationStatus());
-        Assertions.assertEquals("fqip", model.healthStatus());
-        Assertions.assertEquals("hnp", model.protectableObjectType());
-        Assertions.assertEquals("bqgvgovpbbtte", model.sourceResourceId());
-        Assertions.assertEquals("oknssqyzqedikdf", model.storageAccountVersion());
-        Assertions.assertEquals("biqmrjgei", model.resourceGroup());
-        Assertions.assertEquals(7728759697884020161L, model.protectedItemCount());
-        Assertions.assertEquals(AcquireStorageAccountLock.NOT_ACQUIRE, model.acquireStorageAccountLock());
+        Assertions.assertEquals("md", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.DPM, model.backupManagementType());
+        Assertions.assertEquals("bqwremjela", model.registrationStatus());
+        Assertions.assertEquals("cigeleohdbvqvw", model.healthStatus());
+        Assertions.assertEquals("jopwbeonrlkwz", model.protectableObjectType());
+        Assertions.assertEquals("rueqthwm", model.sourceResourceId());
+        Assertions.assertEquals("mbscbbx", model.storageAccountVersion());
+        Assertions.assertEquals("dhxiidlopedbwd", model.resourceGroup());
+        Assertions.assertEquals(7104137474906929796L, model.protectedItemCount());
+        Assertions.assertEquals(AcquireStorageAccountLock.ACQUIRE, model.acquireStorageAccountLock());
+        Assertions.assertEquals(OperationType.REHYDRATE, model.operationType());
     }
 }

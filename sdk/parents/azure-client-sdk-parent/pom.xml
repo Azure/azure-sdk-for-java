@@ -272,7 +272,7 @@
       <groupId>org.jacoco</groupId>
       <artifactId>org.jacoco.agent</artifactId>
       <classifier>runtime</classifier>
-      <version>0.8.12</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
+      <version>0.8.13</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -461,7 +461,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.12</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <version>0.8.13</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
           <dataFileIncludes>
             <dataFileInclude>${project.build.directory}/jacoco.exec</dataFileInclude>
@@ -592,7 +592,7 @@
       <plugin>
         <groupId>org.revapi</groupId>
         <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.15.0</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <version>0.15.1</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <goals>
@@ -764,7 +764,7 @@
             <dependency>
               <groupId>org.ow2.asm</groupId>
               <artifactId>asm</artifactId>
-              <version>9.7.1</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+              <version>9.8</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
             </dependency>
           </dependencies>
           <configuration>
@@ -779,9 +779,6 @@
             <failOnError>${spotbugs.failOnError}</failOnError>
             <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
             <includeTests>${spotbugs.includeTests}</includeTests>
-            <jvmArgs>
-              ${java.security.manager.configuration}
-            </jvmArgs>
 
             <!-- Enable this plugin when issues documented are fixed -->
             <!--          <plugins>-->
@@ -943,14 +940,14 @@
             <dependency>
               <groupId>org.ow2.asm</groupId>
               <artifactId>asm</artifactId>
-              <version>9.7.1</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+              <version>9.8</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
             </dependency>
             <dependency>
               <!-- must be on the classpath -->
               <groupId>org.jacoco</groupId>
               <artifactId>org.jacoco.agent</artifactId>
               <classifier>runtime</classifier>
-              <version>0.8.12</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
+              <version>0.8.13</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
             </dependency>
           </dependencies>
         </plugin>
@@ -993,14 +990,14 @@
             <dependency>
               <groupId>org.ow2.asm</groupId>
               <artifactId>asm</artifactId>
-              <version>9.7.1</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+              <version>9.8</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
             </dependency>
             <dependency>
               <!-- must be on the classpath -->
               <groupId>org.jacoco</groupId>
               <artifactId>org.jacoco.agent</artifactId>
               <classifier>runtime</classifier>
-              <version>0.8.12</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
+              <version>0.8.13</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
             </dependency>
           </dependencies>
         </plugin>
@@ -1009,7 +1006,7 @@
         <plugin>
           <groupId>org.revapi</groupId>
           <artifactId>revapi-maven-plugin</artifactId>
-          <version>0.15.0</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+          <version>0.15.1</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
           <configuration>
             <skip>${revapi.skip}</skip>
             <convertAnalysisConfigurationFiles>true</convertAnalysisConfigurationFiles>
@@ -1048,17 +1045,17 @@
             <dependency>
               <groupId>org.revapi</groupId>
               <artifactId>revapi-java</artifactId>
-              <version>0.28.1</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
+              <version>0.28.3</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
             </dependency>
             <dependency>
               <groupId>org.revapi</groupId>
               <artifactId>revapi-reporter-json</artifactId>
-              <version>0.5.0</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
+              <version>0.5.1</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
             </dependency>
             <dependency>
               <groupId>com.fasterxml.jackson.core</groupId>
               <artifactId>jackson-databind</artifactId>
-              <version>2.17.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+              <version>2.18.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
             </dependency>
           </dependencies>
         </plugin>
@@ -1162,7 +1159,7 @@
       <plugin>
         <groupId>org.revapi</groupId>
         <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.15.0</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <version>0.15.1</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
         <configuration>
           <checkDependencies>false</checkDependencies>
         </configuration>
@@ -1758,9 +1755,9 @@
     </profile>
 
     <profile>
-      <id>java-18-plus-allow-securitymanager</id>
+      <id>java-18-to-23-plus-allow-securitymanager</id>
       <activation>
-        <jdk>[18,)</jdk>
+        <jdk>[18,24)</jdk>
       </activation>
 
       <properties>

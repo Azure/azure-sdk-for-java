@@ -7,8 +7,8 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupEngineBaseResource;
@@ -23,46 +23,46 @@ public final class BackupEnginesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"backupEngineType\":\"BackupEngineBase\",\"friendlyName\":\"bwxgoooxzpra\",\"backupManagementType\":\"DefaultBackup\",\"registrationStatus\":\"xknpdgz\",\"backupEngineState\":\"jsugswhgs\",\"healthStatus\":\"dkwwn\",\"canReRegister\":false,\"backupEngineId\":\"ctohzhaquvwsxbgn\",\"dpmVersion\":\"ervqchoadhrsxqvz\",\"azureBackupAgentVersion\":\"pabdsrg\",\"isAzureBackupAgentUpgradeAvailable\":true,\"isDpmUpgradeAvailable\":false,\"extendedInfo\":{\"databaseName\":\"subklr\",\"protectedItemsCount\":1397650583,\"protectedServersCount\":601653470,\"diskCount\":1816417082,\"usedDiskSpace\":84.32223243327167,\"availableDiskSpace\":14.897106796206582,\"refreshedAt\":\"2021-11-13T22:31:32Z\",\"azureProtectedInstances\":653737620}},\"eTag\":\"qkwaruwd\",\"location\":\"vqzxoebwg\",\"tags\":{\"upwtz\":\"ibanb\",\"ozkxbzrpejplss\":\"pak\"},\"id\":\"nbtttkgsuxu\",\"name\":\"rswgkpjhboyikeb\",\"type\":\"uhkslg\"}]}";
+            = "{\"value\":[{\"properties\":{\"backupEngineType\":\"BackupEngineBase\",\"friendlyName\":\"wxwjyofgwhnkb\",\"backupManagementType\":\"DefaultBackup\",\"registrationStatus\":\"jssmctsnldkpwo\",\"backupEngineState\":\"isubxbteog\",\"healthStatus\":\"fiijrykwlefksxqc\",\"canReRegister\":true,\"backupEngineId\":\"pxgnmqvzvluyqq\",\"dpmVersion\":\"ossscyva\",\"azureBackupAgentVersion\":\"ppuacvfyeowp\",\"isAzureBackupAgentUpgradeAvailable\":false,\"isDpmUpgradeAvailable\":false,\"extendedInfo\":{\"databaseName\":\"soy\",\"protectedItemsCount\":1900787139,\"protectedServersCount\":1322271071,\"diskCount\":1267233525,\"usedDiskSpace\":35.69199529736735,\"availableDiskSpace\":29.881511721660658,\"refreshedAt\":\"2021-10-30T08:29:43Z\",\"azureProtectedInstances\":1172847496}},\"eTag\":\"stkfvvdshxcdeds\",\"location\":\"enygnxcgjtfrnquk\",\"tags\":{\"mtbgwjdxwna\":\"nslnlrxsmyltrwnt\",\"etw\":\"kurrdreyzjwh\",\"kykcyqhyqqzz\":\"jwzzqseuzu\"},\"id\":\"c\",\"name\":\"keys\",\"type\":\"ewfopazdazg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<BackupEngineBaseResource> response = manager.backupEngines()
-            .list("zduewihapfjii", "njdiqfliejhpcl", "iedfsbwcei", "bv", com.azure.core.util.Context.NONE);
+            .list("hilzzdzzq", "mueza", "ovribq", "otokhtvwtaznk", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vqzxoebwg", response.iterator().next().location());
-        Assertions.assertEquals("ibanb", response.iterator().next().tags().get("upwtz"));
-        Assertions.assertEquals("bwxgoooxzpra", response.iterator().next().properties().friendlyName());
+        Assertions.assertEquals("enygnxcgjtfrnquk", response.iterator().next().location());
+        Assertions.assertEquals("nslnlrxsmyltrwnt", response.iterator().next().tags().get("mtbgwjdxwna"));
+        Assertions.assertEquals("wxwjyofgwhnkb", response.iterator().next().properties().friendlyName());
         Assertions.assertEquals(BackupManagementType.DEFAULT_BACKUP,
             response.iterator().next().properties().backupManagementType());
-        Assertions.assertEquals("xknpdgz", response.iterator().next().properties().registrationStatus());
-        Assertions.assertEquals("jsugswhgs", response.iterator().next().properties().backupEngineState());
-        Assertions.assertEquals("dkwwn", response.iterator().next().properties().healthStatus());
-        Assertions.assertEquals(false, response.iterator().next().properties().canReRegister());
-        Assertions.assertEquals("ctohzhaquvwsxbgn", response.iterator().next().properties().backupEngineId());
-        Assertions.assertEquals("ervqchoadhrsxqvz", response.iterator().next().properties().dpmVersion());
-        Assertions.assertEquals("pabdsrg", response.iterator().next().properties().azureBackupAgentVersion());
-        Assertions.assertEquals(true, response.iterator().next().properties().isAzureBackupAgentUpgradeAvailable());
+        Assertions.assertEquals("jssmctsnldkpwo", response.iterator().next().properties().registrationStatus());
+        Assertions.assertEquals("isubxbteog", response.iterator().next().properties().backupEngineState());
+        Assertions.assertEquals("fiijrykwlefksxqc", response.iterator().next().properties().healthStatus());
+        Assertions.assertEquals(true, response.iterator().next().properties().canReRegister());
+        Assertions.assertEquals("pxgnmqvzvluyqq", response.iterator().next().properties().backupEngineId());
+        Assertions.assertEquals("ossscyva", response.iterator().next().properties().dpmVersion());
+        Assertions.assertEquals("ppuacvfyeowp", response.iterator().next().properties().azureBackupAgentVersion());
+        Assertions.assertEquals(false, response.iterator().next().properties().isAzureBackupAgentUpgradeAvailable());
         Assertions.assertEquals(false, response.iterator().next().properties().isDpmUpgradeAvailable());
-        Assertions.assertEquals("subklr", response.iterator().next().properties().extendedInfo().databaseName());
-        Assertions.assertEquals(1397650583,
+        Assertions.assertEquals("soy", response.iterator().next().properties().extendedInfo().databaseName());
+        Assertions.assertEquals(1900787139,
             response.iterator().next().properties().extendedInfo().protectedItemsCount());
-        Assertions.assertEquals(601653470,
+        Assertions.assertEquals(1322271071,
             response.iterator().next().properties().extendedInfo().protectedServersCount());
-        Assertions.assertEquals(1816417082, response.iterator().next().properties().extendedInfo().diskCount());
-        Assertions.assertEquals(84.32223243327167D,
+        Assertions.assertEquals(1267233525, response.iterator().next().properties().extendedInfo().diskCount());
+        Assertions.assertEquals(35.69199529736735D,
             response.iterator().next().properties().extendedInfo().usedDiskSpace());
-        Assertions.assertEquals(14.897106796206582D,
+        Assertions.assertEquals(29.881511721660658D,
             response.iterator().next().properties().extendedInfo().availableDiskSpace());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-13T22:31:32Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-30T08:29:43Z"),
             response.iterator().next().properties().extendedInfo().refreshedAt());
-        Assertions.assertEquals(653737620,
+        Assertions.assertEquals(1172847496,
             response.iterator().next().properties().extendedInfo().azureProtectedInstances());
-        Assertions.assertEquals("qkwaruwd", response.iterator().next().etag());
+        Assertions.assertEquals("stkfvvdshxcdeds", response.iterator().next().etag());
     }
 }

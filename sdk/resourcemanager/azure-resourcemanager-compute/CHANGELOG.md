@@ -1,14 +1,31 @@
 # Release History
 
-## 2.50.0-beta.1 (Unreleased)
+## 2.52.0 (2025-06-27)
 
 ### Features Added
 
-### Breaking Changes
+- Supported `beginCreate(Context)` in `VirtualMachine`.
+- Supported `beginDeleteByResourceGroup(Context)` and `beginDeleteById(Context)` in `VirtualMachines`.
+- Supported `beginCreate` in `Snapshot`.
+- Supported `beginDeleteByResourceGroup` and `beginDeleteById` in `Snapshots`.
+- Supported `beginCreate(Context)` in `Disk`.
+- Supported `beginDeleteByResourceGroup(Context)` and `beginDeleteById(Context)` in `Disks`.
+- Supported `getPrimaryNetworkInterface(Context)` in `VirtualMachine`.
 
-### Bugs Fixed
+## 2.51.0 (2025-05-26)
+
+### Features Added
+
+- Supported setting disk IOPS and throughput for `Disk`.
+- Supported setting maximum shares for `Disk`.
+
+## 2.50.0 (2025-04-24)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.49.0 (2025-03-28)
 

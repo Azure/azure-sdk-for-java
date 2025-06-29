@@ -22,7 +22,7 @@ public final class NetAppResourceRegionInfosGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"storageToNetworkProximity\":\"AcrossT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"gpmuneqsxvmhfbuz\",\"isAvailable\":false}]},\"id\":\"sasbhu\",\"name\":\"ypoh\",\"type\":\"uemsly\"}";
+            = "{\"properties\":{\"storageToNetworkProximity\":\"T1\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"dfzpbgtgkylkdg\",\"isAvailable\":false},{\"availabilityZone\":\"uutlwxezwzhok\",\"isAvailable\":true},{\"availabilityZone\":\"hh\",\"isAvailable\":false}]},\"id\":\"ehgpp\",\"name\":\"pifhpfeoajvgcxtx\",\"type\":\"csheafidltugsr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class NetAppResourceRegionInfosGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RegionInfoResource response = manager.netAppResourceRegionInfos()
-            .getWithResponse("hhzjhfj", com.azure.core.util.Context.NONE)
+            .getWithResponse("fedxihchrphkm", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(RegionStorageToNetworkProximity.ACROSS_T2, response.storageToNetworkProximity());
-        Assertions.assertEquals("gpmuneqsxvmhfbuz", response.availabilityZoneMappings().get(0).availabilityZone());
-        Assertions.assertEquals(false, response.availabilityZoneMappings().get(0).isAvailable());
+        Assertions.assertEquals(RegionStorageToNetworkProximity.T1, response.storageToNetworkProximity());
+        Assertions.assertEquals("dfzpbgtgkylkdg", response.availabilityZoneMappings().get(0).availabilityZone());
+        Assertions.assertFalse(response.availabilityZoneMappings().get(0).isAvailable());
     }
 }

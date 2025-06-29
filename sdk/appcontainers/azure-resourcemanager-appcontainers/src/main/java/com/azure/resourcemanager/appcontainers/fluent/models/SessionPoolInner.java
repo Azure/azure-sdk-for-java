@@ -13,6 +13,8 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.models.ContainerType;
 import com.azure.resourcemanager.appcontainers.models.CustomContainerTemplate;
 import com.azure.resourcemanager.appcontainers.models.DynamicPoolConfiguration;
+import com.azure.resourcemanager.appcontainers.models.ManagedIdentitySetting;
+import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.appcontainers.models.PoolManagementType;
 import com.azure.resourcemanager.appcontainers.models.ScaleConfiguration;
 import com.azure.resourcemanager.appcontainers.models.SessionNetworkConfiguration;
@@ -27,6 +29,12 @@ import java.util.Map;
  */
 @Fluent
 public final class SessionPoolInner extends Resource {
+    /*
+     * Managed identities needed by a session pool to interact with other Azure services to not maintain any secrets or
+     * credentials in code.
+     */
+    private ManagedServiceIdentity identity;
+
     /*
      * Container App session pool resource specific properties
      */
@@ -56,6 +64,28 @@ public final class SessionPoolInner extends Resource {
      * Creates an instance of SessionPoolInner class.
      */
     public SessionPoolInner() {
+    }
+
+    /**
+     * Get the identity property: Managed identities needed by a session pool to interact with other Azure services to
+     * not maintain any secrets or credentials in code.
+     * 
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed identities needed by a session pool to interact with other Azure services to
+     * not maintain any secrets or credentials in code.
+     * 
+     * @param identity the identity value to set.
+     * @return the SessionPoolInner object itself.
+     */
+    public SessionPoolInner withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -338,11 +368,39 @@ public final class SessionPoolInner extends Resource {
     }
 
     /**
+     * Get the managedIdentitySettings property: Optional settings for a Managed Identity that is assigned to the
+     * Session pool.
+     * 
+     * @return the managedIdentitySettings value.
+     */
+    public List<ManagedIdentitySetting> managedIdentitySettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().managedIdentitySettings();
+    }
+
+    /**
+     * Set the managedIdentitySettings property: Optional settings for a Managed Identity that is assigned to the
+     * Session pool.
+     * 
+     * @param managedIdentitySettings the managedIdentitySettings value to set.
+     * @return the SessionPoolInner object itself.
+     */
+    public SessionPoolInner withManagedIdentitySettings(List<ManagedIdentitySetting> managedIdentitySettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SessionPoolProperties();
+        }
+        this.innerProperties().withManagedIdentitySettings(managedIdentitySettings);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (innerProperties() != null) {
             innerProperties().validate();
         }
@@ -356,6 +414,7 @@ public final class SessionPoolInner extends Resource {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -387,6 +446,8 @@ public final class SessionPoolInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedSessionPoolInner.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedSessionPoolInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedSessionPoolInner.innerProperties = SessionPoolProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {

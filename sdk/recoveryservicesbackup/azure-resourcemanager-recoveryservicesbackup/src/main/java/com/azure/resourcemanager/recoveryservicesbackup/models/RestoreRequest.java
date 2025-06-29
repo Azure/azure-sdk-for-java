@@ -125,6 +125,10 @@ public class RestoreRequest implements JsonSerializable<RestoreRequest> {
                     return AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest.fromJson(readerToUse.reset());
                 } else if ("AzureWorkloadSAPHanaRestoreWithRehydrateRequest".equals(discriminatorValue)) {
                     return AzureWorkloadSapHanaRestoreWithRehydrateRequest.fromJson(readerToUse.reset());
+                } else if ("AzureWorkloadSAPAseRestoreRequest".equals(discriminatorValue)) {
+                    return AzureWorkloadSapAseRestoreRequest.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("AzureWorkloadSAPAsePointInTimeRestoreRequest".equals(discriminatorValue)) {
+                    return AzureWorkloadSapAsePointInTimeRestoreRequest.fromJson(readerToUse.reset());
                 } else if ("AzureWorkloadSQLRestoreRequest".equals(discriminatorValue)) {
                     return AzureWorkloadSqlRestoreRequest.fromJsonKnownDiscriminator(readerToUse.reset());
                 } else if ("AzureWorkloadSQLPointInTimeRestoreRequest".equals(discriminatorValue)) {

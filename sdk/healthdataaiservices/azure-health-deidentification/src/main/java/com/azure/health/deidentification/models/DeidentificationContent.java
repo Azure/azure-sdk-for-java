@@ -24,12 +24,6 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
     private final String inputText;
 
     /*
-     * Operation to perform on the input documents.
-     */
-    @Generated
-    private DeidentificationOperationType operation;
-
-    /*
      * Customization parameters to override default service behaviors.
      */
     @Generated
@@ -53,28 +47,6 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
     @Generated
     public String getInputText() {
         return this.inputText;
-    }
-
-    /**
-     * Get the operation property: Operation to perform on the input documents.
-     *
-     * @return the operation value.
-     */
-    @Generated
-    public DeidentificationOperationType getOperation() {
-        return this.operation;
-    }
-
-    /**
-     * Set the operation property: Operation to perform on the input documents.
-     *
-     * @param operation the operation value to set.
-     * @return the DeidentificationContent object itself.
-     */
-    @Generated
-    public DeidentificationContent setOperation(DeidentificationOperationType operation) {
-        this.operation = operation;
-        return this;
     }
 
     /**
@@ -107,7 +79,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("inputText", this.inputText);
-        jsonWriter.writeStringField("operation", this.operation == null ? null : this.operation.toString());
+        jsonWriter.writeStringField("operation", this.operationType == null ? null : this.operationType.toString());
         jsonWriter.writeJsonField("customizations", this.customizations);
         return jsonWriter.writeEndObject();
     }
@@ -125,7 +97,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
     public static DeidentificationContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String inputText = null;
-            DeidentificationOperationType operation = null;
+            DeidentificationOperationType operationType = null;
             DeidentificationCustomizationOptions customizations = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -133,7 +105,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
                 if ("inputText".equals(fieldName)) {
                     inputText = reader.getString();
                 } else if ("operation".equals(fieldName)) {
-                    operation = DeidentificationOperationType.fromString(reader.getString());
+                    operationType = DeidentificationOperationType.fromString(reader.getString());
                 } else if ("customizations".equals(fieldName)) {
                     customizations = DeidentificationCustomizationOptions.fromJson(reader);
                 } else {
@@ -141,9 +113,37 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
                 }
             }
             DeidentificationContent deserializedDeidentificationContent = new DeidentificationContent(inputText);
-            deserializedDeidentificationContent.operation = operation;
+            deserializedDeidentificationContent.operationType = operationType;
             deserializedDeidentificationContent.customizations = customizations;
             return deserializedDeidentificationContent;
         });
+    }
+
+    /*
+     * Operation to perform on the input documents.
+     */
+    @Generated
+    private DeidentificationOperationType operationType;
+
+    /**
+     * Get the operationType property: Operation to perform on the input documents.
+     *
+     * @return the operationType value.
+     */
+    @Generated
+    public DeidentificationOperationType getOperationType() {
+        return this.operationType;
+    }
+
+    /**
+     * Set the operationType property: Operation to perform on the input documents.
+     *
+     * @param operationType the operationType value to set.
+     * @return the DeidentificationContent object itself.
+     */
+    @Generated
+    public DeidentificationContent setOperationType(DeidentificationOperationType operationType) {
+        this.operationType = operationType;
+        return this;
     }
 }

@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 public final class VolumesPeerExternalClusterMockTests {
     @Test
     public void testPeerExternalCluster() throws Exception {
-        String responseStr = "{\"peerAcceptCommand\":\"kbzefezrxcczurt\"}";
+        String responseStr = "{\"peerAcceptCommand\":\"mspofapvuhryl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +33,10 @@ public final class VolumesPeerExternalClusterMockTests {
 
         ClusterPeerCommandResponse response = manager.volumes()
             .peerExternalCluster(
-                "sufco", "dxbzlmcmuap", "vhdbevwqqxey", "ko", new PeerClusterForVolumeMigrationRequest()
-                    .withPeerIpAddresses(Arrays.asList("zinkfkbgbzbowxeq", "clj", "ygvkzqkjj")),
+                "kbwvqvxkdiv", "ihebwtsw", "zuwfmdur", "gegizvcjfel", new PeerClusterForVolumeMigrationRequest()
+                    .withPeerIpAddresses(Arrays.asList("djub", "gbqi", "kxkbsazgakgacyr", "m")),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kbzefezrxcczurt", response.peerAcceptCommand());
+        Assertions.assertEquals("mspofapvuhryl", response.peerAcceptCommand());
     }
 }

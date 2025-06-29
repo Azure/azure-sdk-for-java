@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,14 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0 (2025-04-11)
+
+### Bugs Fixed
+- Fixed a bug causing logs to be instrumented. Verbose logs would lead to recursive logging. ([#44828](https://github.com/Azure/azure-sdk-for-java/pull/44828))
+
+### Other Changes
+- Update OpenTelemetry SDK to 1.49.0 ([#44950](https://github.com/Azure/azure-sdk-for-java/pull/44950))
 
 ## 1.1.0 (2025-03-20)
 

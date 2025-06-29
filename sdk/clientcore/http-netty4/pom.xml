@@ -38,17 +38,13 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
-    <jacoco.min.linecoverage>0.60</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.55</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.75</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.70</jacoco.min.branchcoverage>
     <javaModulesSurefireArgLine>
-      --add-exports io.clientcore.core/io.clientcore.core.implementation.http=ALL-UNNAMED
-      --add-exports io.clientcore.core/io.clientcore.core.implementation.http.serializer=ALL-UNNAMED
-      --add-exports io.clientcore.core/io.clientcore.core.implementation.util=ALL-UNNAMED
+      --add-opens io.clientcore.http.netty4/io.clientcore.http.netty4=ALL-UNNAMED
+      --add-opens io.clientcore.http.netty4/io.clientcore.http.netty4.implementation=ALL-UNNAMED
 
-      --add-opens io.clientcore.http.netty/io.clientcore.http.netty=ALL-UNNAMED
-      --add-opens io.clientcore.http.netty/io.clientcore.http.netty4.implementation=ALL-UNNAMED
-
-      --add-reads io.clientcore.http.netty=java.logging
+      --add-reads io.clientcore.http.netty4=java.logging
     </javaModulesSurefireArgLine>
 
     <!-- Enables fail on deprecated API usage. -->
@@ -67,7 +63,7 @@
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.9</version> <!-- {x-version-update;io.clientcore:core;current} -->
+      <version>1.0.0-beta.11</version> <!-- {x-version-update;io.clientcore:core;current} -->
     </dependency>
 
     <dependency>
@@ -125,39 +121,82 @@
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.9</version> <!-- {x-version-update;io.clientcore:core;current} -->
+      <version>1.0.0-beta.11</version> <!-- {x-version-update;io.clientcore:core;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-transport-native-unix-common</artifactId>
+      <version>4.1.118.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-unix-common;external_dependency} -->
+      <classifier>linux-x86_64</classifier>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-transport-native-epoll</artifactId>
+      <version>4.1.118.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-epoll;external_dependency} -->
+      <classifier>linux-x86_64</classifier>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-transport-native-unix-common</artifactId>
+      <version>4.1.118.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-unix-common;external_dependency} -->
+      <classifier>osx-x86_64</classifier>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-transport-native-kqueue</artifactId>
+      <version>4.1.118.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-kqueue;external_dependency} -->
+      <classifier>osx-x86_64</classifier>
+      <scope>test</scope>
+    </dependency>
+
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-server</artifactId>
-      <version>9.4.56.v20240826</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
+      <version>9.4.57.v20241219</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-servlet</artifactId>
-      <version>9.4.56.v20240826</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
+      <version>9.4.57.v20241219</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty.http2</groupId>
+      <artifactId>http2-server</artifactId>
+      <version>9.4.57.v20241219</version> <!-- {x-version-update;org.eclipse.jetty.http2:http2-server;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-alpn-conscrypt-server</artifactId>
+      <version>9.4.57.v20241219</version> <!-- {x-version-update;org.eclipse.jetty:jetty-alpn-conscrypt-server;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.11.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.13.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.11.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.13.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.11.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <version>5.13.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

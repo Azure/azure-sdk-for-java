@@ -11,7 +11,7 @@ public final class InMageRcmFailbackEventDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageRcmFailbackEventDetails model = BinaryData.fromString(
-            "{\"instanceType\":\"InMageRcmFailback\",\"protectedItemName\":\"hsxrznmgsdaluyc\",\"vmName\":\"efrbhseuerbg\",\"applianceName\":\"ebjludc\",\"serverType\":\"tujraxdtpryjm\",\"componentDisplayName\":\"nsewouxl\"}")
+            "{\"instanceType\":\"InMageRcmFailback\",\"protectedItemName\":\"lu\",\"vmName\":\"xhfwlfxzfwuge\",\"applianceName\":\"cknecexkgr\",\"serverType\":\"psjdmng\",\"componentDisplayName\":\"tqpdzfyxcnwawoxc\"}")
             .toObject(InMageRcmFailbackEventDetails.class);
     }
 

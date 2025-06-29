@@ -44,7 +44,7 @@ stages:
         - name: perf-test-core
           groupId: com.azure
       TestMode: 'LIVE'
-      TimeoutInMinutes: 90
+      TimeoutInMinutes: 120
       Location: canadacentral
       CloudConfig:
         Preview:
@@ -53,9 +53,6 @@ stages:
       Clouds: Preview
       SupportedClouds: Preview
       MatrixReplace:
-        # Use dedicated storage pool in canadacentral with higher memory capacity
-        - Pool=.*LINUXPOOL.*/azsdk-pool-mms-ubuntu-2004-storage
-        - Pool=.*WINDOWSPOOL.*/azsdk-pool-mms-win-2022-general
         - ${{ each additionalReplace in parameters.AdditionalMatrixReplace }}:
             - ${{ additionalReplace }}
       MatrixConfigs:

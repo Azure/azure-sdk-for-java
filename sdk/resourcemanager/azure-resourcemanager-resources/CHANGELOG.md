@@ -1,14 +1,34 @@
 # Release History
 
-## 2.50.0-beta.1 (Unreleased)
+## 2.52.0 (2025-06-27)
 
 ### Features Added
 
+- Supported `beginDeleteByResourceGroup` and `beginDeleteById` in `Deployments`.
+- Supported `beginDeleteByName` in `ResourceGroups`.
+
 ### Breaking Changes
 
-### Bugs Fixed
+- `DeploymentsClient` and `DeploymentOperationsClient` is now accessed via `ResourceManager::deploymentClient()`.
 
 ### Other Changes
+
+- Updated `api-version` of resources to `2025-04-01`.
+- `deploymentStackClient()` in `ResourceManager` class is now deprecated. The functionality is moved to "azure-resourcemanager-resources-deploymentstacks" package.
+
+## 2.51.0 (2025-05-26)
+
+### Other Changes
+
+- Updated `api-version` of resources to `2025-03-01`.
+
+## 2.50.0 (2025-04-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.49.0 (2025-03-28)
 

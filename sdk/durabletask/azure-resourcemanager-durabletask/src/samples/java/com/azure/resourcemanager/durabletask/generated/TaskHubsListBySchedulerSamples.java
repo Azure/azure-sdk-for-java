@@ -9,7 +9,7 @@ package com.azure.resourcemanager.durabletask.generated;
  */
 public final class TaskHubsListBySchedulerSamples {
     /*
-     * x-ms-original-file: 2024-10-01-preview/TaskHubs_ListByScheduler.json
+     * x-ms-original-file: 2025-04-01-preview/TaskHubs_ListByScheduler.json
      */
     /**
      * Sample code: TaskHubs_ListByScheduler.
@@ -17,6 +17,6 @@ public final class TaskHubsListBySchedulerSamples {
      * @param manager Entry point to DurableTaskManager.
      */
     public static void taskHubsListByScheduler(com.azure.resourcemanager.durabletask.DurableTaskManager manager) {
-        manager.taskHubs().listByScheduler("rgopenapi", "testtaskhub", com.azure.core.util.Context.NONE);
+        manager.taskHubs().listByScheduler("rgopenapi", "testscheduler", com.azure.core.util.Context.NONE);
     }
 }

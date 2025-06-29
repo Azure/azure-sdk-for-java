@@ -13,24 +13,24 @@ public final class TargetRestoreInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TargetRestoreInfo model = BinaryData.fromString(
-            "{\"overwriteOption\":\"Overwrite\",\"containerId\":\"kzyb\",\"databaseName\":\"jid\",\"targetDirectoryForFileRestore\":\"syxkyxvxevblb\"}")
+            "{\"overwriteOption\":\"FailOnConflict\",\"containerId\":\"e\",\"databaseName\":\"guxak\",\"targetDirectoryForFileRestore\":\"qzhzbezkgimsi\"}")
             .toObject(TargetRestoreInfo.class);
-        Assertions.assertEquals(OverwriteOptions.OVERWRITE, model.overwriteOption());
-        Assertions.assertEquals("kzyb", model.containerId());
-        Assertions.assertEquals("jid", model.databaseName());
-        Assertions.assertEquals("syxkyxvxevblb", model.targetDirectoryForFileRestore());
+        Assertions.assertEquals(OverwriteOptions.FAIL_ON_CONFLICT, model.overwriteOption());
+        Assertions.assertEquals("e", model.containerId());
+        Assertions.assertEquals("guxak", model.databaseName());
+        Assertions.assertEquals("qzhzbezkgimsi", model.targetDirectoryForFileRestore());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TargetRestoreInfo model = new TargetRestoreInfo().withOverwriteOption(OverwriteOptions.OVERWRITE)
-            .withContainerId("kzyb")
-            .withDatabaseName("jid")
-            .withTargetDirectoryForFileRestore("syxkyxvxevblb");
+        TargetRestoreInfo model = new TargetRestoreInfo().withOverwriteOption(OverwriteOptions.FAIL_ON_CONFLICT)
+            .withContainerId("e")
+            .withDatabaseName("guxak")
+            .withTargetDirectoryForFileRestore("qzhzbezkgimsi");
         model = BinaryData.fromObject(model).toObject(TargetRestoreInfo.class);
-        Assertions.assertEquals(OverwriteOptions.OVERWRITE, model.overwriteOption());
-        Assertions.assertEquals("kzyb", model.containerId());
-        Assertions.assertEquals("jid", model.databaseName());
-        Assertions.assertEquals("syxkyxvxevblb", model.targetDirectoryForFileRestore());
+        Assertions.assertEquals(OverwriteOptions.FAIL_ON_CONFLICT, model.overwriteOption());
+        Assertions.assertEquals("e", model.containerId());
+        Assertions.assertEquals("guxak", model.databaseName());
+        Assertions.assertEquals("qzhzbezkgimsi", model.targetDirectoryForFileRestore());
     }
 }

@@ -52,6 +52,21 @@ public final class ProvisioningStates extends ExpandableStringEnum<ProvisioningS
     public static final ProvisioningStates DELETING = fromString("Deleting");
 
     /**
+     * Static value Deleted for ProvisioningStates.
+     */
+    public static final ProvisioningStates DELETED = fromString("Deleted");
+
+    /**
+     * Static value Restoring for ProvisioningStates.
+     */
+    public static final ProvisioningStates RESTORING = fromString("Restoring");
+
+    /**
+     * Static value SoftDeleting for ProvisioningStates.
+     */
+    public static final ProvisioningStates SOFT_DELETING = fromString("SoftDeleting");
+
+    /**
      * Creates a new instance of ProvisioningStates value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

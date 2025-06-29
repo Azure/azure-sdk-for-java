@@ -10,7 +10,7 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 public final class ReplicationvCentersGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationvCenters_Get.json
      */
     /**
@@ -21,6 +21,6 @@ public final class ReplicationvCentersGetSamples {
     public static void
         getsTheDetailsOfAVCenter(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager.replicationvCenters()
-            .getWithResponse("MadhaviVault", "MadhaviVRG", "MadhaviFabric", "esx-78", com.azure.core.util.Context.NONE);
+            .getWithResponse("MadhaviVRG", "MadhaviVault", "MadhaviFabric", "esx-78", com.azure.core.util.Context.NONE);
     }
 }

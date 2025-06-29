@@ -28,7 +28,7 @@ import java.util.Map;
 public final class AgentPoolsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2024-07-01/examples/AgentPools_Create.
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/AgentPools_Create.
      * json
      */
     /**

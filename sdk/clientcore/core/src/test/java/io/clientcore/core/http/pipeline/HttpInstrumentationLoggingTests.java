@@ -14,6 +14,7 @@ import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -411,7 +412,7 @@ public class HttpInstrumentationLoggingTests {
 
         Map<String, Object> responseLog = logMessages.get(1);
         assertResponseLog(responseLog, response);
-        assertEquals("Response body", responseLog.get("http.request.body.content"));
+        assertEquals("Response body", responseLog.get("http.response.body.content"));
     }
 
     @Test
@@ -447,7 +448,7 @@ public class HttpInstrumentationLoggingTests {
 
         Map<String, Object> responseLog = logMessages.get(1);
         assertResponseLog(responseLog, response);
-        assertEquals("Response body", responseLog.get("http.request.body.content"));
+        assertEquals("Response body", responseLog.get("http.response.body.content"));
 
         assertEquals(requestBody.getLength(), requestStream.getPosition());
         assertEquals(responseBody.getLength(), responseStream.getPosition());
@@ -535,7 +536,7 @@ public class HttpInstrumentationLoggingTests {
                     request.getHeaders().get(TRACEPARENT).getValue());
                 if (count.getAndIncrement() == 0) {
                     firstTryContext.set(request.getContext().getInstrumentationContext());
-                    throw expectedException;
+                    throw CoreException.from(expectedException);
                 } else {
                     return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
                 }

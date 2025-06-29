@@ -259,7 +259,7 @@ public final class PersonalizerClientV1Preview3Impl {
      * perform REST calls.
      */
     @Host("{Endpoint}/personalizer/{ApiVersion}")
-    @ServiceInterface(name = "PersonalizerClientV1")
+    @ServiceInterface(name = "PersonalizerClientV1Preview3")
     public interface PersonalizerClientV1Preview3Service {
         @Post("/rank")
         @ExpectedResponses({ 201 })

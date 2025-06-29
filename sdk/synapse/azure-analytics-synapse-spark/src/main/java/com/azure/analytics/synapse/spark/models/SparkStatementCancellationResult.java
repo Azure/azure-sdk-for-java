@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.spark.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class SparkStatementCancellationResult implements JsonSerializable<
     /*
      * The msg property from the Livy API. The value is always "canceled".
      */
+    @Generated
     private String message;
 
     /**
      * Creates an instance of SparkStatementCancellationResult class.
      */
+    @Generated
     public SparkStatementCancellationResult() {
     }
 
@@ -32,6 +35,7 @@ public final class SparkStatementCancellationResult implements JsonSerializable<
      * 
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -42,6 +46,7 @@ public final class SparkStatementCancellationResult implements JsonSerializable<
      * @param message the message value to set.
      * @return the SparkStatementCancellationResult object itself.
      */
+    @Generated
     public SparkStatementCancellationResult setMessage(String message) {
         this.message = message;
         return this;
@@ -50,6 +55,7 @@ public final class SparkStatementCancellationResult implements JsonSerializable<
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +71,7 @@ public final class SparkStatementCancellationResult implements JsonSerializable<
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SparkStatementCancellationResult.
      */
+    @Generated
     public static SparkStatementCancellationResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SparkStatementCancellationResult deserializedSparkStatementCancellationResult

@@ -28,8 +28,7 @@ public final class IncomingCall extends CallAutomationEventBase {
     }
 
     private IncomingCall(CommunicationIdentifier to, CommunicationIdentifier from, String callerDisplayName,
-        CustomCallingContext customContext, String incomingCallContext, CommunicationIdentifier onBehalfOfCallee,
-        String correlationId, String serverCallId) {
+        CustomCallingContext customContext, String incomingCallContext, CommunicationIdentifier onBehalfOfCallee) {
         this.to = to;
         this.from = from;
         this.callerDisplayName = callerDisplayName;

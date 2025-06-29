@@ -11,6 +11,7 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.ServerSentResult;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.ServerSentEventUtils;
 
@@ -74,7 +75,7 @@ public final class JdkHttpClient implements HttpClient {
     }
 
     @Override
-    public Response<BinaryData> send(HttpRequest request) throws IOException {
+    public Response<BinaryData> send(HttpRequest request) {
         java.net.http.HttpRequest jdkRequest = toJdkHttpRequest(request);
         try {
             // JDK HttpClient works differently than OkHttp and HttpUrlConnection where the response body handling has
@@ -88,8 +89,10 @@ public final class JdkHttpClient implements HttpClient {
 
             java.net.http.HttpResponse<InputStream> jdKResponse = jdkHttpClient.send(jdkRequest, bodyHandler);
             return toResponse(request, jdKResponse);
+        } catch (IOException e) {
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         } catch (InterruptedException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+            throw LOGGER.throwableAtError().log(e, RuntimeException::new);
         }
     }
 
@@ -122,8 +125,7 @@ public final class JdkHttpClient implements HttpClient {
         return hasReadTimeout ? responseInfo -> timeoutSubscriber.apply(readTimeout.toMillis()) : jdkBodyHandler.get();
     }
 
-    private Response<BinaryData> toResponse(HttpRequest request, java.net.http.HttpResponse<InputStream> response)
-        throws IOException {
+    private Response<BinaryData> toResponse(HttpRequest request, java.net.http.HttpResponse<InputStream> response) {
         HttpHeaders coreHeaders = fromJdkHttpHeaders(response.headers());
         ServerSentResult serverSentResult = null;
 
@@ -131,7 +133,11 @@ public final class JdkHttpClient implements HttpClient {
         if (ServerSentEventUtils.isTextEventStreamContentType(contentType)) {
             ServerSentEventListener listener = request.getServerSentEventListener();
             if (listener != null) {
-                serverSentResult = processTextEventStream(response.body(), listener);
+                try {
+                    serverSentResult = processTextEventStream(response.body(), listener);
+                } catch (IOException e) {
+                    throw LOGGER.throwableAtError().log(e, CoreException::from);
+                }
 
                 if (serverSentResult.getException() != null) {
                     // If an exception occurred while processing the text event stream, emit listener onError.
@@ -143,7 +149,7 @@ public final class JdkHttpClient implements HttpClient {
                     return this.send(request);
                 }
             } else {
-                throw LOGGER.logThrowableAsError(new RuntimeException(NO_LISTENER_ERROR_MESSAGE));
+                throw LOGGER.throwableAtError().log(NO_LISTENER_ERROR_MESSAGE, IllegalStateException::new);
             }
         }
 
@@ -151,14 +157,18 @@ public final class JdkHttpClient implements HttpClient {
     }
 
     private Response<BinaryData> processResponse(HttpRequest request, java.net.http.HttpResponse<InputStream> response,
-        ServerSentResult serverSentResult, HttpHeaders coreHeaders, String contentType) throws IOException {
+        ServerSentResult serverSentResult, HttpHeaders coreHeaders, String contentType) {
 
         BinaryData body = null;
         BodyHandling bodyHandling = getBodyHandling(request, coreHeaders);
 
         switch (bodyHandling) {
             case IGNORE:
-                response.body().close();
+                try {
+                    response.body().close();
+                } catch (IOException e) {
+                    throw LOGGER.throwableAtError().log(e, CoreException::from);
+                }
                 break;
 
             case STREAM:
@@ -213,9 +223,11 @@ public final class JdkHttpClient implements HttpClient {
         return BinaryData.fromString(bodyContent);
     }
 
-    private BinaryData createBodyFromResponse(HttpResponse<InputStream> response) throws IOException {
+    private BinaryData createBodyFromResponse(HttpResponse<InputStream> response) {
         try (InputStream responseBody = response.body()) { // Use try-with-resources to close the stream.
             return BinaryData.fromBytes(responseBody.readAllBytes());
+        } catch (IOException e) {
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 }
