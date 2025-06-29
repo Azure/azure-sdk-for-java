@@ -68,11 +68,11 @@ com.azure:azure-security-keyvault-jca # Tests owner: rujche
 com.azure:azure-security-keyvault-keys # Tests owner: vcolin7
 com.azure:azure-security-keyvault-secrets # Tests owner: vcolin7
 com.azure:azure-search-documents # Tests owner: jairmyree
-com.azure:azure-storage-blob # Tests owner: ibrandes, kyleknap, gunjansingh-msft
-com.azure:azure-storage-blob-batch # Tests owner: ibrandes, kyleknap, gunjansingh-msft
-com.azure:azure-storage-blob-cryptography # Tests owner: ibrandes, kyleknap, gunjansingh-msft
-com.azure:azure-storage-common # Tests owner: ibrandes, kyleknap, gunjansingh-msft
-com.azure:azure-storage-file-datalake # Tests owner: ibrandes, kyleknap, gunjansingh-msft
-com.azure:azure-storage-file-share # Tests owner: ibrandes, kyleknap, gunjansingh-msft
-com.azure:azure-storage-internal-avro # Tests owner: ibrandes, kyleknap, gunjansingh-msft
-com.azure:azure-storage-queue # Tests owner: ibrandes, kyleknap, gunjansingh-msft
+com.azure:azure-storage-blob # Tests owner: ibrandes, kyleknap, gunjansingh-msft, browndav-msft
+com.azure:azure-storage-blob-batch # Tests owner: ibrandes, kyleknap, gunjansingh-msft, browndav-msft
+com.azure:azure-storage-blob-cryptography # Tests owner: ibrandes, kyleknap, gunjansingh-msft, browndav-msft
+com.azure:azure-storage-common # Tests owner: ibrandes, kyleknap, gunjansingh-msft, browndav-msft
+com.azure:azure-storage-file-datalake # Tests owner: ibrandes, kyleknap, gunjansingh-msft, browndav-msft
+com.azure:azure-storage-file-share # Tests owner: ibrandes, kyleknap, gunjansingh-msft, browndav-msft
+com.azure:azure-storage-internal-avro # Tests owner: ibrandes, kyleknap, gunjansingh-msft, browndav-msft
+com.azure:azure-storage-queue # Tests owner: ibrandes, kyleknap, gunjansingh-msft, browndav-msft
