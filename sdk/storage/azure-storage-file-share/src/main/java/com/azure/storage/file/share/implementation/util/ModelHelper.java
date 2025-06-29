@@ -714,6 +714,9 @@ public class ModelHelper {
      * @return The public exception.
      */
     public static ShareStorageException mapToShareStorageException(ShareStorageExceptionInternal internal) {
-        return new ShareStorageException(internal.getMessage(), internal.getResponse(), internal.getValue());
+        String code = internal.getValue() == null ? null : internal.getValue().getCode();
+        String headerName = internal.getValue() == null ? null : internal.getValue().getHeaderName();
+        return new ShareStorageException(StorageImplUtils.convertStorageExceptionMessage(internal.getMessage(),
+            internal.getResponse(), code, headerName), internal.getResponse(), internal.getValue());
     }
 }
