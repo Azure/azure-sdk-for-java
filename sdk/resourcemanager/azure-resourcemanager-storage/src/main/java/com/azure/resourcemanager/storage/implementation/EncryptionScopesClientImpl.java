@@ -64,7 +64,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "StorageManagementCli")
+    @ServiceInterface(name = "StorageManagementClientEncryptionScopes")
     public interface EncryptionScopesService {
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/encryptionScopes/{encryptionScopeName}")

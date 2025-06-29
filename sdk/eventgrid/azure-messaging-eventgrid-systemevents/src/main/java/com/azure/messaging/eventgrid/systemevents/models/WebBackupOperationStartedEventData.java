@@ -21,7 +21,7 @@ public final class WebBackupOperationStartedEventData implements JsonSerializabl
      * Detail of action on the app.
      */
     @Generated
-    private final AppEventTypeDetail appEventTypeDetail;
+    private AppEventTypeDetail appEventTypeDetail;
 
     /*
      * name of the web site that had this event.
@@ -61,12 +61,9 @@ public final class WebBackupOperationStartedEventData implements JsonSerializabl
 
     /**
      * Creates an instance of WebBackupOperationStartedEventData class.
-     *
-     * @param appEventTypeDetail the appEventTypeDetail value to set.
      */
     @Generated
-    private WebBackupOperationStartedEventData(AppEventTypeDetail appEventTypeDetail) {
-        this.appEventTypeDetail = appEventTypeDetail;
+    private WebBackupOperationStartedEventData() {
     }
 
     /**
@@ -165,48 +162,35 @@ public final class WebBackupOperationStartedEventData implements JsonSerializabl
      * @param jsonReader The JsonReader being read.
      * @return An instance of WebBackupOperationStartedEventData if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WebBackupOperationStartedEventData.
      */
     @Generated
     public static WebBackupOperationStartedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AppEventTypeDetail appEventTypeDetail = null;
-            String name = null;
-            String clientRequestId = null;
-            String correlationRequestId = null;
-            String requestId = null;
-            String address = null;
-            String verb = null;
+            WebBackupOperationStartedEventData deserializedWebBackupOperationStartedEventData
+                = new WebBackupOperationStartedEventData();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("appEventTypeDetail".equals(fieldName)) {
-                    appEventTypeDetail = AppEventTypeDetail.fromJson(reader);
+                    deserializedWebBackupOperationStartedEventData.appEventTypeDetail
+                        = AppEventTypeDetail.fromJson(reader);
                 } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
+                    deserializedWebBackupOperationStartedEventData.name = reader.getString();
                 } else if ("clientRequestId".equals(fieldName)) {
-                    clientRequestId = reader.getString();
+                    deserializedWebBackupOperationStartedEventData.clientRequestId = reader.getString();
                 } else if ("correlationRequestId".equals(fieldName)) {
-                    correlationRequestId = reader.getString();
+                    deserializedWebBackupOperationStartedEventData.correlationRequestId = reader.getString();
                 } else if ("requestId".equals(fieldName)) {
-                    requestId = reader.getString();
+                    deserializedWebBackupOperationStartedEventData.requestId = reader.getString();
                 } else if ("address".equals(fieldName)) {
-                    address = reader.getString();
+                    deserializedWebBackupOperationStartedEventData.address = reader.getString();
                 } else if ("verb".equals(fieldName)) {
-                    verb = reader.getString();
+                    deserializedWebBackupOperationStartedEventData.verb = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            WebBackupOperationStartedEventData deserializedWebBackupOperationStartedEventData
-                = new WebBackupOperationStartedEventData(appEventTypeDetail);
-            deserializedWebBackupOperationStartedEventData.name = name;
-            deserializedWebBackupOperationStartedEventData.clientRequestId = clientRequestId;
-            deserializedWebBackupOperationStartedEventData.correlationRequestId = correlationRequestId;
-            deserializedWebBackupOperationStartedEventData.requestId = requestId;
-            deserializedWebBackupOperationStartedEventData.address = address;
-            deserializedWebBackupOperationStartedEventData.verb = verb;
             return deserializedWebBackupOperationStartedEventData;
         });
     }
