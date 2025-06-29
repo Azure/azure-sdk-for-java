@@ -965,8 +965,8 @@ public class QueueApiTests extends QueueTestBase {
 
     @Test
     public void invalidServiceVersion() {
-        QueueServiceClient serviceClient = instrument(
-            new QueueServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getQueueEndpoint())
+        QueueServiceClient serviceClient
+            = instrument(new QueueServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getQueueEndpoint())
                 .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
                 .httpClient(HttpClient.createDefault())
                 .pipeline(new HttpPipelineBuilder().policies(new InvalidServiceVersionPipelinePolicy())
@@ -975,8 +975,7 @@ public class QueueApiTests extends QueueTestBase {
 
         QueueClient queueClient = serviceClient.getQueueClient(getRandomName(60));
 
-        QueueStorageException exception
-            = assertThrows(QueueStorageException.class, queueClient::createIfNotExists);
+        QueueStorageException exception = assertThrows(QueueStorageException.class, queueClient::createIfNotExists);
 
         assertEquals(400, exception.getStatusCode());
         assertTrue(exception.getMessage().contains(INVALID_VERSION_HEADER_MESSAGE));

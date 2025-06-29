@@ -3,10 +3,8 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.exception.UnexpectedLengthException;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.utils.TestUtils;
@@ -4409,8 +4407,8 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     public void invalidServiceVersion() {
         DataLakeServiceAsyncClient serviceClient
             = instrument(new DataLakeServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
-            .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
-            .addPolicy(new InvalidServiceVersionPipelinePolicy())).buildAsyncClient();
+                .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+                .addPolicy(new InvalidServiceVersionPipelinePolicy())).buildAsyncClient();
 
         DataLakeFileSystemAsyncClient fileSystemClient
             = serviceClient.getFileSystemAsyncClient(generateFileSystemName());

@@ -941,18 +941,16 @@ public class QueueAsyncApiTests extends QueueTestBase {
 
     @Test
     public void invalidServiceVersion() {
-        QueueServiceAsyncClient serviceClient = queueServiceBuilderHelper()
-            .addPolicy(new InvalidServiceVersionPipelinePolicy())
-            .buildAsyncClient();
+        QueueServiceAsyncClient serviceClient
+            = queueServiceBuilderHelper().addPolicy(new InvalidServiceVersionPipelinePolicy()).buildAsyncClient();
 
         QueueAsyncClient queueClient = serviceClient.getQueueAsyncClient(getRandomName(60));
 
-        StepVerifier.create(queueClient.createIfNotExists())
-            .verifyErrorSatisfies(ex -> {
-                com.azure.storage.queue.models.QueueStorageException exception =
-                    assertInstanceOf(com.azure.storage.queue.models.QueueStorageException.class, ex);
-                assertEquals(400, exception.getStatusCode());
-                assertTrue(exception.getMessage().contains(INVALID_VERSION_HEADER_MESSAGE));
-            });
+        StepVerifier.create(queueClient.createIfNotExists()).verifyErrorSatisfies(ex -> {
+            com.azure.storage.queue.models.QueueStorageException exception
+                = assertInstanceOf(com.azure.storage.queue.models.QueueStorageException.class, ex);
+            assertEquals(400, exception.getStatusCode());
+            assertTrue(exception.getMessage().contains(INVALID_VERSION_HEADER_MESSAGE));
+        });
     }
 }
