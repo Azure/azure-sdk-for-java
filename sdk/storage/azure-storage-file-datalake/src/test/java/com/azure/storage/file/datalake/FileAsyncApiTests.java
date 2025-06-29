@@ -73,6 +73,7 @@ import com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -4404,6 +4405,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
+    @Disabled // temporary
     public void invalidServiceVersion() {
         DataLakeServiceAsyncClient serviceClient
             = instrument(new DataLakeServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())

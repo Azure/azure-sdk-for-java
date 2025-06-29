@@ -968,10 +968,7 @@ public class QueueApiTests extends QueueTestBase {
         QueueServiceClient serviceClient
             = instrument(new QueueServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getQueueEndpoint())
                 .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
-                .httpClient(HttpClient.createDefault())
-                .pipeline(new HttpPipelineBuilder().policies(new InvalidServiceVersionPipelinePolicy())
-                    .httpClient(HttpClient.createDefault())
-                    .build())).buildClient();
+                .addPolicy(new InvalidServiceVersionPipelinePolicy())).buildClient();
 
         QueueClient queueClient = serviceClient.getQueueClient(getRandomName(60));
 

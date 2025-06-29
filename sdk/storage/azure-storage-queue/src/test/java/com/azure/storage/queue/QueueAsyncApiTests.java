@@ -16,6 +16,7 @@ import com.azure.storage.queue.models.QueueErrorCode;
 import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
+import com.azure.storage.queue.models.QueueStorageException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -942,13 +943,14 @@ public class QueueAsyncApiTests extends QueueTestBase {
     @Test
     public void invalidServiceVersion() {
         QueueServiceAsyncClient serviceClient
-            = queueServiceBuilderHelper().addPolicy(new InvalidServiceVersionPipelinePolicy()).buildAsyncClient();
+            = instrument(new QueueServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getQueueEndpoint())
+                .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+                .addPolicy(new InvalidServiceVersionPipelinePolicy())).buildAsyncClient();
 
         QueueAsyncClient queueClient = serviceClient.getQueueAsyncClient(getRandomName(60));
 
         StepVerifier.create(queueClient.createIfNotExists()).verifyErrorSatisfies(ex -> {
-            com.azure.storage.queue.models.QueueStorageException exception
-                = assertInstanceOf(com.azure.storage.queue.models.QueueStorageException.class, ex);
+            QueueStorageException exception = assertInstanceOf(QueueStorageException.class, ex);
             assertEquals(400, exception.getStatusCode());
             assertTrue(exception.getMessage().contains(INVALID_VERSION_HEADER_MESSAGE));
         });
