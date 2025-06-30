@@ -10,8 +10,6 @@ import io.clientcore.core.utils.AuthenticateChallenge;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
@@ -272,6 +270,17 @@ public final class Netty4ConnectionPool implements Closeable {
         }
 
         synchronized void release(Channel channel) {
+            if (!isHealthy(channel)) {
+                activeConnections.decrementAndGet();
+                channel.close();
+
+                // Since a connection slot has been freed, we should try to create a new,
+                // healthy connection for any request that might be waiting.
+                satisfyWaiterWithNewConnection();
+                return;
+            }
+
+            // The channel is healthy. Now, check if anyone is waiting for a connection.
             Promise<Channel> waiter;
             while ((waiter = pendingAcquirers.poll()) != null) {
                 // A waiter exists, hand over this channel directly.
@@ -279,15 +288,6 @@ public final class Netty4ConnectionPool implements Closeable {
                 if (waiter.trySuccess(channel)) {
                     return;
                 }
-            }
-
-            // No waiters to hand off to. Check channel health before returning to pool
-            if (!isHealthy(channel)) {
-                activeConnections.decrementAndGet();
-                channel.close();
-                // A slot has freed up. Proactively try to satisfy a pending waiter.
-                satisfyWaiterWithNewConnection();
-                return;
             }
 
             // Channel is healthy and no waiters, return it to the idle queue.
@@ -342,56 +342,44 @@ public final class Netty4ConnectionPool implements Closeable {
                                 inetSocketAddress.getPort()));
                         channel.pipeline().addLast(SSL_INITIALIZER, new Netty4SslInitializationHandler());
                     }
-
-                    //TODO: is this actually needed?
-                    //WARNING: An exceptionCaught() event was fired, and it reached at the tail of the pipeline.
-                    // It usually means the last handler in the pipeline did not handle the exception.
-                    //io.netty.handler.proxy.HttpProxyHandler$HttpProxyConnectException: http, none,
-                    // localhost/127.0.0.1:53330 => localhost/127.0.0.1:53329, Proxy Authentication Required; {"status":407}
-                    // This handler acts as the final backstop for the connection setup pipeline.
-                    // It catches any exceptions that occur during setup (like ProxyConnectException)
-                    // and prevents them from logging the "unhandled" warning.
-                    pipeline.addLast("connectionSetupExceptionHandler", new ChannelInboundHandlerAdapter() {
-                        @Override
-                        public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-                            ctx.close();
-                        }
-                    });
                 }
             });
 
             Promise<Channel> promise = newConnectionBootstrap.config().group().next().newPromise();
             newConnectionBootstrap.connect(route).addListener(future -> {
-                if (future.isSuccess()) {
-                    Channel newChannel = ((ChannelFuture) future).channel();
-                    ProxyHandler proxyHandler = newChannel.pipeline().get(ProxyHandler.class);
-
-                    if (proxyHandler != null) {
-                        // Wait for the proxy handshake to complete if proxy is being used.
-                        proxyHandler.connectFuture().addListener(proxyFuture -> {
-                            if (proxyFuture.isSuccess()) {
-                                newChannel.attr(NEW_CHANNEL_KEY).set(new AtomicBoolean(true));
-                                newChannel.attr(CHANNEL_CREATION_TIME).set(OffsetDateTime.now(ZoneOffset.UTC));
-                                promise.setSuccess(newChannel);
-                            } else {
-                                promise.setFailure(proxyFuture.cause());
-                                newChannel.close();
-                            }
-                        });
-                    } else {
-                        newChannel.attr(NEW_CHANNEL_KEY).set(new AtomicBoolean(true));
-                        newChannel.attr(CHANNEL_CREATION_TIME).set(OffsetDateTime.now(ZoneOffset.UTC));
-                        promise.setSuccess(newChannel);
-                    }
-                } else {
-                    // Connection failed, decrement the counter and satisfy a waiter if possible.
-                    // This listener can be called on a different thread, so we must synchronize
-                    // to safely interact with the pool state.
+                if (!future.isSuccess()) {
                     synchronized (this) {
                         activeConnections.decrementAndGet();
                         satisfyWaiterWithNewConnection();
                     }
                     promise.setFailure(future.cause());
+                    return;
+                }
+
+                Channel newChannel = ((ChannelFuture) future).channel();
+                ProxyHandler proxyHandler = (ProxyHandler) newChannel.pipeline().get(PROXY);
+
+                if (proxyHandler != null) {
+                    // Wait for the proxy handshake to complete if proxy is being used.
+                    proxyHandler.connectFuture().addListener(proxyFuture -> {
+                        if (proxyFuture.isSuccess()) {
+                            newChannel.attr(NEW_CHANNEL_KEY).set(new AtomicBoolean(true));
+                            newChannel.attr(CHANNEL_CREATION_TIME).set(OffsetDateTime.now(ZoneOffset.UTC));
+                            promise.setSuccess(newChannel);
+                        } else {
+                            promise.setFailure(proxyFuture.cause());
+                            newChannel.close();
+
+                            synchronized (this) {
+                                activeConnections.decrementAndGet();
+                                satisfyWaiterWithNewConnection();
+                            }
+                        }
+                    });
+                } else {
+                    newChannel.attr(NEW_CHANNEL_KEY).set(new AtomicBoolean(true));
+                    newChannel.attr(CHANNEL_CREATION_TIME).set(OffsetDateTime.now(ZoneOffset.UTC));
+                    promise.setSuccess(newChannel);
                 }
             });
             return promise;

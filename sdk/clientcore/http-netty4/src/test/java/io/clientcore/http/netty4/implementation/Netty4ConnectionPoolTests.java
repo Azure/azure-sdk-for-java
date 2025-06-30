@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests for {@link Netty4ConnectionPool}.
  */
-@Timeout(value = 3, unit = TimeUnit.MINUTES)
+@Timeout(value = 1, unit = TimeUnit.MINUTES)
 public class Netty4ConnectionPoolTests {
 
     private static LocalTestServer server;

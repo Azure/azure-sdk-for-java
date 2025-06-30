@@ -118,6 +118,10 @@ public final class Netty4ChannelBinaryData extends BinaryData {
                     eagerContent.reset();
                 }
 
+                if (!channel.isActive()) {
+                    return;
+                }
+
                 CountDownLatch latch = new CountDownLatch(1);
                 Netty4EagerConsumeChannelHandler handler = new Netty4EagerConsumeChannelHandler(latch,
                     buf -> buf.readBytes(outputStream, buf.readableBytes()), isHttp2);
@@ -185,6 +189,10 @@ public final class Netty4ChannelBinaryData extends BinaryData {
     private void drainStream() {
         if (streamDrained.compareAndSet(false, true)) {
             if (channel.pipeline().get(Netty4EagerConsumeChannelHandler.class) != null) {
+                return;
+            }
+
+            if (!channel.isActive()) {
                 return;
             }
 

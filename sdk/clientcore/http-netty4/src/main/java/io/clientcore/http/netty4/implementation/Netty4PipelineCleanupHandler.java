@@ -51,9 +51,8 @@ public class Netty4PipelineCleanupHandler extends ChannelDuplexHandler {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        // Inspect the message to see if it's the end of the response stream.
-        // We do this BEFORE propagating the message to avoid race conditions with
-        // downstream handlers that will release the message.
+        ctx.fireChannelRead(msg);
+
         boolean lastRead = false;
         if (msg instanceof LastHttpContent) {
             lastRead = true;
@@ -62,10 +61,8 @@ public class Netty4PipelineCleanupHandler extends ChannelDuplexHandler {
         }
 
         if (lastRead) {
-            ctx.channel().eventLoop().execute(() -> cleanup(ctx));
+            cleanup(ctx);
         }
-
-        super.channelRead(ctx, msg);
     }
 
     @Override
