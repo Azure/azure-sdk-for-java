@@ -30,9 +30,9 @@ autorest README.md --java --v4
 
 ``` yaml
 tag: package-2024-09-01-preview
-use: '@autorest/java@4.1.50'
+use: '@autorest/java@4.1.52'
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/d1bedfa9c084a2e3f9cbeb075c532d691c3c0095/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/1a08384511e96c42aaf18edd646baf01e5e5fc84/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -47,7 +47,6 @@ add-context-parameter: true
 context-client-method-parameter: true
 customization-class: src/main/java/CallautomationCustomizations.java
 stream-style-serialization: true
-use-eclipse-language-server: false
 title: Azure Communication Call Automation Service
 directive:
 - rename-model:
@@ -221,6 +220,12 @@ directive:
 - rename-model:
     from: RecordingStorageKind
     to: RecordingStorageType
+- rename-model:
+    from: CallSessionEndReason
+    to: CallSessionEndReasonInternal
+- rename-model:
+    from: RecordingStorageInfo
+    to: RecordingStorageInfoInternal
 
 # Remove models
 - remove-model: AddParticipantFailed
@@ -279,6 +284,7 @@ directive:
 - remove-model: PlayPaused
 - remove-model: PlayResumed
 - remove-model: IncomingCall
+- remove-model: CallSessionEndReason
 
 ```
 

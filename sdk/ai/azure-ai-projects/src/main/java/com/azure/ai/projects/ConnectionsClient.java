@@ -80,96 +80,43 @@ public final class ConnectionsClient {
     }
 
     /**
-     * List all connections in the project, without populating connection credentials.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>connectionType</td><td>String</td><td>No</td><td>List connections of this specific type. Allowed values:
-     * "AzureOpenAI", "AzureBlob", "AzureStorageAccount", "CognitiveSearch", "CosmosDB", "ApiKey", "AppConfig",
-     * "AppInsights", "CustomKeys".</td></tr>
-     * <tr><td>defaultConnection</td><td>Boolean</td><td>No</td><td>List connections that are default
-     * connections</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys) (Required)
-     *     target: String (Required)
-     *     isDefault: boolean (Required)
-     *     credentials (Required): {
-     *         type: String(ApiKey/AAD/SAS/CustomKeys/None) (Required)
-     *     }
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
+     * Get a connection by name, without populating connection credentials.
      *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of Connection items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listConnections(RequestOptions requestOptions) {
-        return this.serviceClient.listConnections(requestOptions);
-    }
-
-    /**
-     * List all connections in the project, without populating connection credentials.
-     *
-     * @param connectionType List connections of this specific type.
-     * @param defaultConnection List connections that are default connections.
+     * @param name The friendly name of the connection, provided by the user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Connection items as paginated response with {@link PagedIterable}.
+     * @return a connection by name, without populating connection credentials.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Connection> listConnections(ConnectionType connectionType, Boolean defaultConnection) {
-        // Generated convenience method for listConnections
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Connection getConnection(String name) {
         RequestOptions requestOptions = new RequestOptions();
-        if (connectionType != null) {
-            requestOptions.addQueryParam("connectionType", connectionType.toString(), false);
-        }
-        if (defaultConnection != null) {
-            requestOptions.addQueryParam("defaultConnection", String.valueOf(defaultConnection), false);
-        }
-        return serviceClient.listConnections(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(Connection.class));
+        return getConnectionWithResponse(name, requestOptions).getValue().toObject(Connection.class);
     }
 
     /**
-     * List all connections in the project, without populating connection credentials.
+     * Get a connection by name, without populating connection credentials.
      *
+     * @param name The friendly name of the connection, provided by the user.
+     * @param includeCredentials Whether to include connection credentials in the response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Connection items as paginated response with {@link PagedIterable}.
+     * @return a connection by name, without populating connection credentials.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Connection> listConnections() {
-        // Generated convenience method for listConnections
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listConnections(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(Connection.class));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Connection getConnection(String name, boolean includeCredentials) {
+        if (includeCredentials) {
+            return getConnectionWithCredentials(name);
+        } else {
+            return getConnection(name);
+        }
     }
 
     /**
@@ -245,6 +192,52 @@ public final class ConnectionsClient {
     }
 
     /**
+     * List all connections in the project, without populating connection credentials.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>connectionType</td><td>String</td><td>No</td><td>List connections of this specific type. Allowed values:
+     * "AzureOpenAI", "AzureBlob", "AzureStorageAccount", "CognitiveSearch", "CosmosDB", "ApiKey", "AppConfig",
+     * "AppInsights", "CustomKeys".</td></tr>
+     * <tr><td>defaultConnection</td><td>Boolean</td><td>No</td><td>List connections that are default
+     * connections</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     id: String (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys) (Required)
+     *     target: String (Required)
+     *     isDefault: boolean (Required)
+     *     credentials (Required): {
+     *         type: String(ApiKey/AAD/SAS/CustomKeys/None) (Required)
+     *     }
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of Connection items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listConnections(RequestOptions requestOptions) {
+        return this.serviceClient.listConnections(requestOptions);
+    }
+
+    /**
      * Get a connection by name, with its connection credentials.
      *
      * @param name The friendly name of the connection, provided by the user.
@@ -265,44 +258,49 @@ public final class ConnectionsClient {
     }
 
     /**
-     * Get a connection by name, without populating connection credentials.
+     * List all connections in the project, without populating connection credentials.
      *
-     * @param name The friendly name of the connection, provided by the user.
+     * @param connectionType List connections of this specific type.
+     * @param defaultConnection List connections that are default connections.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connection by name, without populating connection credentials.
+     * @return paged collection of Connection items as paginated response with {@link PagedIterable}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Connection getConnection(String name) {
-        // Generated convenience method for getConnectionWithResponse
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<Connection> listConnections(ConnectionType connectionType, Boolean defaultConnection) {
+        // Generated convenience method for listConnections
         RequestOptions requestOptions = new RequestOptions();
-        return getConnectionWithResponse(name, requestOptions).getValue().toObject(Connection.class);
+        if (connectionType != null) {
+            requestOptions.addQueryParam("connectionType", connectionType.toString(), false);
+        }
+        if (defaultConnection != null) {
+            requestOptions.addQueryParam("defaultConnection", String.valueOf(defaultConnection), false);
+        }
+        return serviceClient.listConnections(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(Connection.class));
     }
 
     /**
-     * Get a connection by name, without populating connection credentials.
+     * List all connections in the project, without populating connection credentials.
      *
-     * @param name The friendly name of the connection, provided by the user.
-     * @param includeCredentials Whether to include connection credentials in the response.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connection by name, without populating connection credentials.
+     * @return paged collection of Connection items as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Connection getConnection(String name, boolean includeCredentials) {
-        if (includeCredentials) {
-            return getConnectionWithCredentials(name);
-        } else {
-            return getConnection(name);
-        }
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<Connection> listConnections() {
+        // Generated convenience method for listConnections
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listConnections(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(Connection.class));
     }
 }

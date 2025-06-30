@@ -1,16 +1,24 @@
 # Release History
 
-## 2.52.0-beta.1 (Unreleased)
+## 2.53.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Supported `beginDeleteByResourceGroup` and `beginDeleteById` in `NetworkInterfaces`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.52.0 (2025-06-27)
+
+### Features Added
+
+- Supported `listByResourceGroup(String, Context)`, `getPrimaryNetworkInterface(Context)`, `beginDeleteByResourceGroup` and `beginDeleteById` in `NetworkInterfaces`.
+- Supported `getByResourceGroup(String, String, Context)` in `ApplicationSecurityGroups`.
+- Supported `getByResourceGroup(String, String, Context)` in `NetworkSecurityGroups`.
+- Supported `getByResourceGroup(String, String, Context)` in `Networks`.
+- Supported `listAssociatedApplicationSecurityGroups(Context)` in `NicIpConfigurationBase`.
 
 ## 2.51.0 (2025-05-26)
 

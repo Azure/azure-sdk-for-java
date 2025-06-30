@@ -9,7 +9,7 @@ package com.azure.resourcemanager.purestorageblock.generated;
  */
 public final class ReservationsGetBillingStatusSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/Reservations_GetBillingStatus_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-01/Reservations_GetBillingStatus_MaximumSet_Gen.json
      */
     /**
      * Sample code: Reservations_GetBillingStatus_MaximumSet.

@@ -61,10 +61,10 @@ public final class CallRecordingsImpl {
      * the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AzureCommunicationCa")
+    @ServiceInterface(name = "AzureCommunicationCallAutomationServiceCallRecordings")
     public interface CallRecordingsService {
         @Post("/calling/recordings")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<RecordingStateResponseInternal>> startRecording(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,

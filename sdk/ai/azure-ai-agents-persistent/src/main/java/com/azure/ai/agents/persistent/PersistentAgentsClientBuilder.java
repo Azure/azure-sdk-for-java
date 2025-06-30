@@ -44,17 +44,19 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(
     serviceClients = {
+        PersistentAgentsClient.class,
+        PersistentAgentsAsyncClient.class,
         PersistentAgentsAdministrationClient.class,
-        FilesClient.class,
-        MessagesClient.class,
-        RunsClient.class,
-        ThreadsClient.class,
-        VectorStoresClient.class,
         PersistentAgentsAdministrationAsyncClient.class,
+        FilesClient.class,
         FilesAsyncClient.class,
+        MessagesClient.class,
         MessagesAsyncClient.class,
+        RunsClient.class,
         RunsAsyncClient.class,
+        ThreadsClient.class,
         ThreadsAsyncClient.class,
+        VectorStoresClient.class,
         VectorStoresAsyncClient.class })
 public final class PersistentAgentsClientBuilder
     implements HttpTrait<PersistentAgentsClientBuilder>, ConfigurationTrait<PersistentAgentsClientBuilder>,
@@ -311,126 +313,6 @@ public final class PersistentAgentsClientBuilder
         return httpPipeline;
     }
 
-    /**
-     * Builds an instance of PersistentAgentsAdministrationAsyncClient class.
-     *
-     * @return an instance of PersistentAgentsAdministrationAsyncClient.
-     */
-    @Generated
-    public PersistentAgentsAdministrationAsyncClient buildPersistentAgentsAdministrationAsyncClient() {
-        return new PersistentAgentsAdministrationAsyncClient(buildInnerClient().getPersistentAgentsAdministrations());
-    }
-
-    /**
-     * Builds an instance of FilesAsyncClient class.
-     *
-     * @return an instance of FilesAsyncClient.
-     */
-    @Generated
-    public FilesAsyncClient buildFilesAsyncClient() {
-        return new FilesAsyncClient(buildInnerClient().getFiles());
-    }
-
-    /**
-     * Builds an instance of MessagesAsyncClient class.
-     *
-     * @return an instance of MessagesAsyncClient.
-     */
-    @Generated
-    public MessagesAsyncClient buildMessagesAsyncClient() {
-        return new MessagesAsyncClient(buildInnerClient().getMessages());
-    }
-
-    /**
-     * Builds an instance of RunsAsyncClient class.
-     *
-     * @return an instance of RunsAsyncClient.
-     */
-    @Generated
-    public RunsAsyncClient buildRunsAsyncClient() {
-        return new RunsAsyncClient(buildInnerClient().getRuns());
-    }
-
-    /**
-     * Builds an instance of ThreadsAsyncClient class.
-     *
-     * @return an instance of ThreadsAsyncClient.
-     */
-    @Generated
-    public ThreadsAsyncClient buildThreadsAsyncClient() {
-        return new ThreadsAsyncClient(buildInnerClient().getThreads());
-    }
-
-    /**
-     * Builds an instance of VectorStoresAsyncClient class.
-     *
-     * @return an instance of VectorStoresAsyncClient.
-     */
-    @Generated
-    public VectorStoresAsyncClient buildVectorStoresAsyncClient() {
-        return new VectorStoresAsyncClient(buildInnerClient().getVectorStores());
-    }
-
-    /**
-     * Builds an instance of PersistentAgentsAdministrationClient class.
-     *
-     * @return an instance of PersistentAgentsAdministrationClient.
-     */
-    @Generated
-    public PersistentAgentsAdministrationClient buildPersistentAgentsAdministrationClient() {
-        return new PersistentAgentsAdministrationClient(buildInnerClient().getPersistentAgentsAdministrations());
-    }
-
-    /**
-     * Builds an instance of FilesClient class.
-     *
-     * @return an instance of FilesClient.
-     */
-    @Generated
-    public FilesClient buildFilesClient() {
-        return new FilesClient(buildInnerClient().getFiles());
-    }
-
-    /**
-     * Builds an instance of MessagesClient class.
-     *
-     * @return an instance of MessagesClient.
-     */
-    @Generated
-    public MessagesClient buildMessagesClient() {
-        return new MessagesClient(buildInnerClient().getMessages());
-    }
-
-    /**
-     * Builds an instance of RunsClient class.
-     *
-     * @return an instance of RunsClient.
-     */
-    @Generated
-    public RunsClient buildRunsClient() {
-        return new RunsClient(buildInnerClient().getRuns());
-    }
-
-    /**
-     * Builds an instance of ThreadsClient class.
-     *
-     * @return an instance of ThreadsClient.
-     */
-    @Generated
-    public ThreadsClient buildThreadsClient() {
-        return new ThreadsClient(buildInnerClient().getThreads());
-    }
-
-    /**
-     * Builds an instance of VectorStoresClient class.
-     *
-     * @return an instance of VectorStoresClient.
-     */
-    @Generated
-    public VectorStoresClient buildVectorStoresClient() {
-        return new VectorStoresClient(buildInnerClient().getVectorStores());
-    }
-
     private static final ClientLogger LOGGER = new ClientLogger(PersistentAgentsClientBuilder.class);
 
     /**
@@ -443,5 +325,25 @@ public final class PersistentAgentsClientBuilder
     public PersistentAgentsClientBuilder serviceVersion(PersistentAgentsServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
+    }
+
+    /**
+     * Builds an instance of PersistentAgentsAsyncClient class.
+     *
+     * @return an instance of PersistentAgentsAsyncClient.
+     */
+    @Generated
+    public PersistentAgentsAsyncClient buildAsyncClient() {
+        return new PersistentAgentsAsyncClient(buildInnerClient());
+    }
+
+    /**
+     * Builds an instance of PersistentAgentsClient class.
+     *
+     * @return an instance of PersistentAgentsClient.
+     */
+    @Generated
+    public PersistentAgentsClient buildClient() {
+        return new PersistentAgentsClient(buildInnerClient());
     }
 }

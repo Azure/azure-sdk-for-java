@@ -68,7 +68,7 @@ public final class IndexesImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "SearchServiceClientI")
+    @ServiceInterface(name = "SearchServiceClientIndexes")
     public interface IndexesService {
         @Post("/indexes")
         @ExpectedResponses({ 201 })

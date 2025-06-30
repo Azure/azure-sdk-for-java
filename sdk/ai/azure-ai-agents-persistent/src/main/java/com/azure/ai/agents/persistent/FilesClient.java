@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Initializes a new instance of the synchronous PersistentAgentsClient type.
+ * Initializes a new instance of the synchronous Files type.
  */
 @ServiceClient(builder = PersistentAgentsClientBuilder.class)
 public final class FilesClient {

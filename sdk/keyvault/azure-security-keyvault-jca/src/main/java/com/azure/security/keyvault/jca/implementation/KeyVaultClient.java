@@ -174,6 +174,10 @@ public class KeyVaultClient {
         }
 
         accessToken = getAccessTokenByHttpRequest();
+        if (accessToken == null) {
+            LOGGER.log(WARNING, "Access token not returned.");
+            return null;
+        }
 
         return accessToken.getAccessToken();
     }

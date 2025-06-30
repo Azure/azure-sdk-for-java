@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class SqlConnectionType extends ExpandableStringEnum<SqlConnectionT
     /**
      * Static value SqlOnDemand for SqlConnectionType.
      */
+    @Generated
     public static final SqlConnectionType SQL_ON_DEMAND = fromString("SqlOnDemand");
 
     /**
      * Static value SqlPool for SqlConnectionType.
      */
+    @Generated
     public static final SqlConnectionType SQL_POOL = fromString("SqlPool");
 
     /**
@@ -26,6 +29,7 @@ public final class SqlConnectionType extends ExpandableStringEnum<SqlConnectionT
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SqlConnectionType() {
     }
@@ -36,6 +40,7 @@ public final class SqlConnectionType extends ExpandableStringEnum<SqlConnectionT
      * @param name a name to look for.
      * @return the corresponding SqlConnectionType.
      */
+    @Generated
     public static SqlConnectionType fromString(String name) {
         return fromString(name, SqlConnectionType.class);
     }
@@ -45,6 +50,7 @@ public final class SqlConnectionType extends ExpandableStringEnum<SqlConnectionT
      * 
      * @return known SqlConnectionType values.
      */
+    @Generated
     public static Collection<SqlConnectionType> values() {
         return values(SqlConnectionType.class);
     }

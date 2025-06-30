@@ -41,8 +41,9 @@ public class VectorStoresClientTest extends ClientTestBase {
 
     private void setup(HttpClient httpClient) {
         clientBuilder = getClientBuilder(httpClient);
-        vectorStoresClient = clientBuilder.buildVectorStoresClient();
-        filesClient = clientBuilder.buildFilesClient();
+        PersistentAgentsClient agentsClient = clientBuilder.buildClient();
+        vectorStoresClient = agentsClient.getVectorStoresClient();
+        filesClient = agentsClient.getFilesClient();
         vectorStore = createVectorStore("vectorStoresClientTest");
     }
 

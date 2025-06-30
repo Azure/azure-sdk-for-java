@@ -34,7 +34,8 @@ public class Http2ConnectionConfigTests {
         assertThat(cfg.getMaxConnectionPoolSize()).isNull();
         assertThat(cfg.getEffectiveMaxConnectionPoolSize()).isEqualTo(1000);
         assertThat(cfg.getMinConnectionPoolSize()).isNull();
-        assertThat(cfg.getEffectiveMinConnectionPoolSize()).isEqualTo(1);
+        assertThat(cfg.getEffectiveMinConnectionPoolSize())
+            .isEqualTo(Math.max(8, Runtime.getRuntime().availableProcessors()));
         assertThat(cfg.getMaxConcurrentStreams()).isNull();
         assertThat(cfg.getEffectiveMaxConcurrentStreams()).isEqualTo(30);
     }

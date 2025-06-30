@@ -31,6 +31,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.util.ArrayList;
@@ -93,6 +94,9 @@ public final class AzureDigitalTwinsAPIImplBuilder implements HttpTrait<AzureDig
     @Generated
     @Override
     public AzureDigitalTwinsAPIImplBuilder pipeline(HttpPipeline pipeline) {
+        if (this.pipeline != null && pipeline == null) {
+            LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
+        }
         this.pipeline = pipeline;
         return this;
     }
@@ -361,4 +365,6 @@ public final class AzureDigitalTwinsAPIImplBuilder implements HttpTrait<AzureDig
             .build();
         return httpPipeline;
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureDigitalTwinsAPIImplBuilder.class);
 }
