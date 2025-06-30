@@ -5,6 +5,7 @@
 package com.azure.monitor.query.implementation.metrics.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,41 +22,49 @@ public final class Metric implements JsonSerializable<Metric> {
     /*
      * The metric Id.
      */
+    @Generated
     private final String id;
 
     /*
      * The resource type of the metric resource.
      */
+    @Generated
     private final String type;
 
     /*
      * The name and the display name of the metric, i.e. it is localizable string.
      */
+    @Generated
     private final LocalizableString name;
 
     /*
      * Detailed description of this metric.
      */
+    @Generated
     private String displayDescription;
 
     /*
      * 'Success' or the error details on query failures for this metric.
      */
+    @Generated
     private String errorCode;
 
     /*
      * Error message encountered querying this specific metric.
      */
+    @Generated
     private String errorMessage;
 
     /*
      * The unit of the metric.
      */
+    @Generated
     private final MetricUnit unit;
 
     /*
      * The time series returned when a data query is performed.
      */
+    @Generated
     private final List<TimeSeriesElement> timeseries;
 
     /**
@@ -67,6 +76,7 @@ public final class Metric implements JsonSerializable<Metric> {
      * @param unit the unit value to set.
      * @param timeseries the timeseries value to set.
      */
+    @Generated
     public Metric(String id, String type, LocalizableString name, MetricUnit unit, List<TimeSeriesElement> timeseries) {
         this.id = id;
         this.type = type;
@@ -80,6 +90,7 @@ public final class Metric implements JsonSerializable<Metric> {
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -89,6 +100,7 @@ public final class Metric implements JsonSerializable<Metric> {
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -98,6 +110,7 @@ public final class Metric implements JsonSerializable<Metric> {
      * 
      * @return the name value.
      */
+    @Generated
     public LocalizableString getName() {
         return this.name;
     }
@@ -107,6 +120,7 @@ public final class Metric implements JsonSerializable<Metric> {
      * 
      * @return the displayDescription value.
      */
+    @Generated
     public String getDisplayDescription() {
         return this.displayDescription;
     }
@@ -117,6 +131,7 @@ public final class Metric implements JsonSerializable<Metric> {
      * @param displayDescription the displayDescription value to set.
      * @return the Metric object itself.
      */
+    @Generated
     public Metric setDisplayDescription(String displayDescription) {
         this.displayDescription = displayDescription;
         return this;
@@ -127,6 +142,7 @@ public final class Metric implements JsonSerializable<Metric> {
      * 
      * @return the errorCode value.
      */
+    @Generated
     public String getErrorCode() {
         return this.errorCode;
     }
@@ -137,6 +153,7 @@ public final class Metric implements JsonSerializable<Metric> {
      * @param errorCode the errorCode value to set.
      * @return the Metric object itself.
      */
+    @Generated
     public Metric setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
@@ -147,6 +164,7 @@ public final class Metric implements JsonSerializable<Metric> {
      * 
      * @return the errorMessage value.
      */
+    @Generated
     public String getErrorMessage() {
         return this.errorMessage;
     }
@@ -157,6 +175,7 @@ public final class Metric implements JsonSerializable<Metric> {
      * @param errorMessage the errorMessage value to set.
      * @return the Metric object itself.
      */
+    @Generated
     public Metric setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
         return this;
@@ -167,6 +186,7 @@ public final class Metric implements JsonSerializable<Metric> {
      * 
      * @return the unit value.
      */
+    @Generated
     public MetricUnit getUnit() {
         return this.unit;
     }
@@ -176,6 +196,7 @@ public final class Metric implements JsonSerializable<Metric> {
      * 
      * @return the timeseries value.
      */
+    @Generated
     public List<TimeSeriesElement> getTimeseries() {
         return this.timeseries;
     }
@@ -183,6 +204,7 @@ public final class Metric implements JsonSerializable<Metric> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -206,6 +228,7 @@ public final class Metric implements JsonSerializable<Metric> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Metric.
      */
+    @Generated
     public static Metric fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean idFound = false;

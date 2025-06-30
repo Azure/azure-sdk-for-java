@@ -1,6 +1,6 @@
 # Release History
 
-## 4.30.0-beta.1 (Unreleased)
+## 4.32.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,25 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.31.0 (2025-06-26)
+
+### Breaking Changes
+- Deprecated system events from `azure-messaging-eventgrid` package. Users should migrate to the new `azure-messaging-eventgrid-systemevents` package for system events.
+
+## 4.30.1 (2025-06-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+
+## 4.30.0 (2025-05-16)
+
+### Features Added
+- Added new values to `SystemEventNames` related to Azure Communication Services and Azure Edge.
 
 ## 4.29.1 (2025-03-24)
 

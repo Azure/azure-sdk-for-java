@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,21 +24,25 @@ public final class LibraryRequirements implements JsonSerializable<LibraryRequir
     /*
      * The last update time of the library requirements file.
      */
+    @Generated
     private OffsetDateTime time;
 
     /*
      * The library requirements.
      */
+    @Generated
     private String content;
 
     /*
      * The filename of the library requirements file.
      */
+    @Generated
     private String filename;
 
     /**
      * Creates an instance of LibraryRequirements class.
      */
+    @Generated
     public LibraryRequirements() {
     }
 
@@ -46,6 +51,7 @@ public final class LibraryRequirements implements JsonSerializable<LibraryRequir
      * 
      * @return the time value.
      */
+    @Generated
     public OffsetDateTime getTime() {
         return this.time;
     }
@@ -55,6 +61,7 @@ public final class LibraryRequirements implements JsonSerializable<LibraryRequir
      * 
      * @return the content value.
      */
+    @Generated
     public String getContent() {
         return this.content;
     }
@@ -65,6 +72,7 @@ public final class LibraryRequirements implements JsonSerializable<LibraryRequir
      * @param content the content value to set.
      * @return the LibraryRequirements object itself.
      */
+    @Generated
     public LibraryRequirements setContent(String content) {
         this.content = content;
         return this;
@@ -75,6 +83,7 @@ public final class LibraryRequirements implements JsonSerializable<LibraryRequir
      * 
      * @return the filename value.
      */
+    @Generated
     public String getFilename() {
         return this.filename;
     }
@@ -85,6 +94,7 @@ public final class LibraryRequirements implements JsonSerializable<LibraryRequir
      * @param filename the filename value to set.
      * @return the LibraryRequirements object itself.
      */
+    @Generated
     public LibraryRequirements setFilename(String filename) {
         this.filename = filename;
         return this;
@@ -93,6 +103,7 @@ public final class LibraryRequirements implements JsonSerializable<LibraryRequir
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -109,6 +120,7 @@ public final class LibraryRequirements implements JsonSerializable<LibraryRequir
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the LibraryRequirements.
      */
+    @Generated
     public static LibraryRequirements fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LibraryRequirements deserializedLibraryRequirements = new LibraryRequirements();

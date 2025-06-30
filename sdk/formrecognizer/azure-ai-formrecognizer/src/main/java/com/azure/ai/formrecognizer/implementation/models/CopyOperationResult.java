@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,26 +23,31 @@ public final class CopyOperationResult implements JsonSerializable<CopyOperation
     /*
      * Operation status.
      */
+    @Generated
     private OperationStatus status;
 
     /*
      * Date and time (UTC) when the copy operation was submitted.
      */
+    @Generated
     private OffsetDateTime createdDateTime;
 
     /*
      * Date and time (UTC) when the status was last updated.
      */
+    @Generated
     private OffsetDateTime lastUpdatedDateTime;
 
     /*
      * Results of the copy operation.
      */
+    @Generated
     private CopyResult copyResult;
 
     /**
      * Creates an instance of CopyOperationResult class.
      */
+    @Generated
     public CopyOperationResult() {
     }
 
@@ -50,6 +56,7 @@ public final class CopyOperationResult implements JsonSerializable<CopyOperation
      * 
      * @return the status value.
      */
+    @Generated
     public OperationStatus getStatus() {
         return this.status;
     }
@@ -60,6 +67,7 @@ public final class CopyOperationResult implements JsonSerializable<CopyOperation
      * @param status the status value to set.
      * @return the CopyOperationResult object itself.
      */
+    @Generated
     public CopyOperationResult setStatus(OperationStatus status) {
         this.status = status;
         return this;
@@ -70,6 +78,7 @@ public final class CopyOperationResult implements JsonSerializable<CopyOperation
      * 
      * @return the createdDateTime value.
      */
+    @Generated
     public OffsetDateTime getCreatedDateTime() {
         return this.createdDateTime;
     }
@@ -80,6 +89,7 @@ public final class CopyOperationResult implements JsonSerializable<CopyOperation
      * @param createdDateTime the createdDateTime value to set.
      * @return the CopyOperationResult object itself.
      */
+    @Generated
     public CopyOperationResult setCreatedDateTime(OffsetDateTime createdDateTime) {
         this.createdDateTime = createdDateTime;
         return this;
@@ -90,6 +100,7 @@ public final class CopyOperationResult implements JsonSerializable<CopyOperation
      * 
      * @return the lastUpdatedDateTime value.
      */
+    @Generated
     public OffsetDateTime getLastUpdatedDateTime() {
         return this.lastUpdatedDateTime;
     }
@@ -100,6 +111,7 @@ public final class CopyOperationResult implements JsonSerializable<CopyOperation
      * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
      * @return the CopyOperationResult object itself.
      */
+    @Generated
     public CopyOperationResult setLastUpdatedDateTime(OffsetDateTime lastUpdatedDateTime) {
         this.lastUpdatedDateTime = lastUpdatedDateTime;
         return this;
@@ -110,6 +122,7 @@ public final class CopyOperationResult implements JsonSerializable<CopyOperation
      * 
      * @return the copyResult value.
      */
+    @Generated
     public CopyResult getCopyResult() {
         return this.copyResult;
     }
@@ -120,6 +133,7 @@ public final class CopyOperationResult implements JsonSerializable<CopyOperation
      * @param copyResult the copyResult value to set.
      * @return the CopyOperationResult object itself.
      */
+    @Generated
     public CopyOperationResult setCopyResult(CopyResult copyResult) {
         this.copyResult = copyResult;
         return this;
@@ -128,6 +142,7 @@ public final class CopyOperationResult implements JsonSerializable<CopyOperation
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -151,6 +166,7 @@ public final class CopyOperationResult implements JsonSerializable<CopyOperation
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CopyOperationResult.
      */
+    @Generated
     public static CopyOperationResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CopyOperationResult deserializedCopyOperationResult = new CopyOperationResult();

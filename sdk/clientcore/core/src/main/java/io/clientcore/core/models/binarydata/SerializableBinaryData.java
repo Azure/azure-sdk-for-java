@@ -66,7 +66,7 @@ public final class SerializableBinaryData extends BinaryData {
         try {
             return serializer.deserializeFromBytes(toBytes(), type);
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -91,7 +91,7 @@ public final class SerializableBinaryData extends BinaryData {
                 jsonWriter.writeRawValue(toString());
             }
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -109,7 +109,7 @@ public final class SerializableBinaryData extends BinaryData {
         try {
             return serializer.serializeToBytes(content);
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 

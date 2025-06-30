@@ -26,6 +26,7 @@ import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
 import io.clientcore.core.implementation.http.serializer.HttpResponseDecodeData;
 import io.clientcore.core.implementation.utils.UriEscapers;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.utils.Base64Uri;
 import io.clientcore.core.utils.DateTimeRfc1123;
 import io.clientcore.core.utils.ExpandableEnum;
@@ -633,7 +634,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
                 return outputStream.toString(StandardCharsets.UTF_8);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw CoreException.from(e);
             }
         }
     }

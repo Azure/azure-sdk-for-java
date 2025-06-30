@@ -75,12 +75,12 @@ public final class RemoteRenderingsImpl {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "MixedRealityRemoteRe")
+    @ServiceInterface(name = "MixedRealityRemoteRenderingRemoteRenderings")
     public interface RemoteRenderingsService {
         @Put("/accounts/{account_id}/conversions/{conversion_id}")
         @ExpectedResponses({ 200, 201 })
-        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 429 })
         @UnexpectedResponseExceptionType(value = ErrorResponseException.class, code = { 400, 409, 500 })
+        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 429 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<ResponseBase<RemoteRenderingsCreateConversionHeaders, Conversion>> createConversion(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
@@ -90,8 +90,8 @@ public final class RemoteRenderingsImpl {
 
         @Put("/accounts/{account_id}/conversions/{conversion_id}")
         @ExpectedResponses({ 200, 201 })
-        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 429 })
         @UnexpectedResponseExceptionType(value = ErrorResponseException.class, code = { 400, 409, 500 })
+        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 429 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Conversion>> createConversionNoCustomHeaders(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("account_id") UUID accountId,
@@ -101,8 +101,8 @@ public final class RemoteRenderingsImpl {
 
         @Get("/accounts/{account_id}/conversions/{conversion_id}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 404, 429 })
         @UnexpectedResponseExceptionType(value = ErrorResponseException.class, code = { 500 })
+        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 404, 429 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<ResponseBase<RemoteRenderingsGetConversionHeaders, Conversion>> getConversion(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
@@ -111,8 +111,8 @@ public final class RemoteRenderingsImpl {
 
         @Get("/accounts/{account_id}/conversions/{conversion_id}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 404, 429 })
         @UnexpectedResponseExceptionType(value = ErrorResponseException.class, code = { 500 })
+        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 404, 429 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Conversion>> getConversionNoCustomHeaders(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("account_id") UUID accountId,
@@ -120,8 +120,8 @@ public final class RemoteRenderingsImpl {
 
         @Get("/accounts/{account_id}/conversions")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 429 })
         @UnexpectedResponseExceptionType(value = ErrorResponseException.class, code = { 500 })
+        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 429 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<ResponseBase<RemoteRenderingsListConversionsHeaders, ConversionList>> listConversions(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
@@ -129,8 +129,8 @@ public final class RemoteRenderingsImpl {
 
         @Get("/accounts/{account_id}/conversions")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 429 })
         @UnexpectedResponseExceptionType(value = ErrorResponseException.class, code = { 500 })
+        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 429 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<ConversionList>> listConversionsNoCustomHeaders(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("account_id") UUID accountId,
@@ -138,8 +138,8 @@ public final class RemoteRenderingsImpl {
 
         @Put("/accounts/{account_id}/sessions/{session_id}")
         @ExpectedResponses({ 200, 201 })
-        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 429 })
         @UnexpectedResponseExceptionType(value = ErrorResponseException.class, code = { 400, 409, 500 })
+        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 429 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<ResponseBase<RemoteRenderingsCreateSessionHeaders, SessionProperties>> createSession(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
@@ -149,8 +149,8 @@ public final class RemoteRenderingsImpl {
 
         @Put("/accounts/{account_id}/sessions/{session_id}")
         @ExpectedResponses({ 200, 201 })
-        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 429 })
         @UnexpectedResponseExceptionType(value = ErrorResponseException.class, code = { 400, 409, 500 })
+        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 429 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<SessionProperties>> createSessionNoCustomHeaders(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("account_id") UUID accountId,
@@ -159,8 +159,8 @@ public final class RemoteRenderingsImpl {
 
         @Get("/accounts/{account_id}/sessions/{session_id}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 404, 429 })
         @UnexpectedResponseExceptionType(value = ErrorResponseException.class, code = { 500 })
+        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 404, 429 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<SessionProperties>> getSession(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("account_id") UUID accountId,
@@ -168,8 +168,8 @@ public final class RemoteRenderingsImpl {
 
         @Patch("/accounts/{account_id}/sessions/{session_id}")
         @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ErrorResponseException.class, code = { 422, 500 })
         @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 404, 429 })
-        @UnexpectedResponseExceptionType(value = ErrorResponseException.class, code = { 500, 422 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<SessionProperties>> updateSession(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("account_id") UUID accountId,
@@ -178,8 +178,8 @@ public final class RemoteRenderingsImpl {
 
         @Post("/accounts/{account_id}/sessions/{session_id}/:stop")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 404, 429 })
         @UnexpectedResponseExceptionType(value = ErrorResponseException.class, code = { 500 })
+        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 404, 429 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<ResponseBase<RemoteRenderingsStopSessionHeaders, Void>> stopSession(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("account_id") UUID accountId,
@@ -187,8 +187,8 @@ public final class RemoteRenderingsImpl {
 
         @Post("/accounts/{account_id}/sessions/{session_id}/:stop")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 404, 429 })
         @UnexpectedResponseExceptionType(value = ErrorResponseException.class, code = { 500 })
+        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 404, 429 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> stopSessionNoCustomHeaders(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("account_id") UUID accountId,
@@ -196,8 +196,8 @@ public final class RemoteRenderingsImpl {
 
         @Get("/accounts/{account_id}/sessions")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 429 })
         @UnexpectedResponseExceptionType(value = ErrorResponseException.class, code = { 500 })
+        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 429 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<SessionsList>> listSessions(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("account_id") UUID accountId,
@@ -205,8 +205,8 @@ public final class RemoteRenderingsImpl {
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 429 })
         @UnexpectedResponseExceptionType(value = ErrorResponseException.class, code = { 500 })
+        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 429 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<ResponseBase<RemoteRenderingsListConversionsNextHeaders, ConversionList>> listConversionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
@@ -214,8 +214,8 @@ public final class RemoteRenderingsImpl {
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 429 })
         @UnexpectedResponseExceptionType(value = ErrorResponseException.class, code = { 500 })
+        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 429 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<ConversionList>> listConversionsNextNoCustomHeaders(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
@@ -223,8 +223,8 @@ public final class RemoteRenderingsImpl {
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 429 })
         @UnexpectedResponseExceptionType(value = ErrorResponseException.class, code = { 500 })
+        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 429 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<SessionsList>> listSessionsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
@@ -240,8 +240,8 @@ public final class RemoteRenderingsImpl {
      * @param body Request body configuring the settings for an asset conversion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 409, 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the conversion along with {@link ResponseBase} on successful completion of
      * {@link Mono}.
@@ -264,8 +264,8 @@ public final class RemoteRenderingsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 409, 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the conversion along with {@link ResponseBase} on successful completion of
      * {@link Mono}.
@@ -288,8 +288,8 @@ public final class RemoteRenderingsImpl {
      * @param body Request body configuring the settings for an asset conversion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 409, 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the conversion on successful completion of {@link Mono}.
      */
@@ -310,8 +310,8 @@ public final class RemoteRenderingsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 409, 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the conversion on successful completion of {@link Mono}.
      */
@@ -332,8 +332,8 @@ public final class RemoteRenderingsImpl {
      * @param body Request body configuring the settings for an asset conversion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 409, 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the conversion along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -355,8 +355,8 @@ public final class RemoteRenderingsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 409, 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the conversion along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -377,8 +377,8 @@ public final class RemoteRenderingsImpl {
      * than 256 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of a particular conversion along with {@link ResponseBase} on successful completion of
      * {@link Mono}.
@@ -399,8 +399,8 @@ public final class RemoteRenderingsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of a particular conversion along with {@link ResponseBase} on successful completion of
      * {@link Mono}.
@@ -422,8 +422,8 @@ public final class RemoteRenderingsImpl {
      * than 256 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of a particular conversion on successful completion of {@link Mono}.
      */
@@ -442,8 +442,8 @@ public final class RemoteRenderingsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of a particular conversion on successful completion of {@link Mono}.
      */
@@ -462,8 +462,8 @@ public final class RemoteRenderingsImpl {
      * than 256 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of a particular conversion along with {@link Response} on successful completion of
      * {@link Mono}.
@@ -485,8 +485,8 @@ public final class RemoteRenderingsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of a particular conversion along with {@link Response} on successful completion of
      * {@link Mono}.
@@ -506,8 +506,8 @@ public final class RemoteRenderingsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all conversions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -527,8 +527,8 @@ public final class RemoteRenderingsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all conversions as paginated response with {@link PagedFlux}.
      */
@@ -545,8 +545,8 @@ public final class RemoteRenderingsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all conversions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -568,8 +568,8 @@ public final class RemoteRenderingsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all conversions as paginated response with {@link PagedFlux}.
      */
@@ -589,8 +589,8 @@ public final class RemoteRenderingsImpl {
      * @param body Settings of the session to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 409, 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a rendering session along with {@link ResponseBase} on successful completion of
      * {@link Mono}.
@@ -612,8 +612,8 @@ public final class RemoteRenderingsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 409, 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a rendering session along with {@link ResponseBase} on successful completion of
      * {@link Mono}.
@@ -636,8 +636,8 @@ public final class RemoteRenderingsImpl {
      * @param body Settings of the session to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 409, 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a rendering session on successful completion of {@link Mono}.
      */
@@ -658,8 +658,8 @@ public final class RemoteRenderingsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 409, 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a rendering session on successful completion of {@link Mono}.
      */
@@ -680,8 +680,8 @@ public final class RemoteRenderingsImpl {
      * @param body Settings of the session to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 409, 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a rendering session along with {@link Response} on successful completion of
      * {@link Mono}.
@@ -704,8 +704,8 @@ public final class RemoteRenderingsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 409, 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a rendering session along with {@link Response} on successful completion of
      * {@link Mono}.
@@ -727,8 +727,8 @@ public final class RemoteRenderingsImpl {
      * contain more than 256 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a particular rendering session along with {@link Response} on successful completion of
      * {@link Mono}.
@@ -748,8 +748,8 @@ public final class RemoteRenderingsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a particular rendering session along with {@link Response} on successful completion of
      * {@link Mono}.
@@ -771,8 +771,8 @@ public final class RemoteRenderingsImpl {
      * contain more than 256 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a particular rendering session on successful completion of {@link Mono}.
      */
@@ -791,8 +791,8 @@ public final class RemoteRenderingsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a particular rendering session on successful completion of {@link Mono}.
      */
@@ -812,8 +812,8 @@ public final class RemoteRenderingsImpl {
      * @param body Settings used to update the session.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 422, 500.
      * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 500, 422.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a rendering session along with {@link Response} on successful completion of
      * {@link Mono}.
@@ -835,8 +835,8 @@ public final class RemoteRenderingsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 422, 500.
      * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 500, 422.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a rendering session along with {@link Response} on successful completion of
      * {@link Mono}.
@@ -859,8 +859,8 @@ public final class RemoteRenderingsImpl {
      * @param body Settings used to update the session.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 422, 500.
      * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 500, 422.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a rendering session on successful completion of {@link Mono}.
      */
@@ -881,8 +881,8 @@ public final class RemoteRenderingsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 422, 500.
      * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 500, 422.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a rendering session on successful completion of {@link Mono}.
      */
@@ -902,8 +902,8 @@ public final class RemoteRenderingsImpl {
      * contain more than 256 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -923,8 +923,8 @@ public final class RemoteRenderingsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -945,8 +945,8 @@ public final class RemoteRenderingsImpl {
      * contain more than 256 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -965,8 +965,8 @@ public final class RemoteRenderingsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -984,8 +984,8 @@ public final class RemoteRenderingsImpl {
      * contain more than 256 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -1005,8 +1005,8 @@ public final class RemoteRenderingsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -1025,8 +1025,8 @@ public final class RemoteRenderingsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all rendering sessions along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
@@ -1046,8 +1046,8 @@ public final class RemoteRenderingsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all rendering sessions as paginated response with {@link PagedFlux}.
      */
@@ -1064,8 +1064,8 @@ public final class RemoteRenderingsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of conversions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -1084,8 +1084,8 @@ public final class RemoteRenderingsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of conversions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -1105,8 +1105,8 @@ public final class RemoteRenderingsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a list sessions request along with {@link PagedResponse} on successful completion of
      * {@link Mono}.

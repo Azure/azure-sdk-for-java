@@ -4,6 +4,7 @@
 
 package com.azure.maps.traffic.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class IncidentDetailStyle extends ExpandableStringEnum<IncidentDeta
     /**
      * Creates traffic lines with colored chevrons indicating severity.
      */
+    @Generated
     public static final IncidentDetailStyle S1 = fromString("s1");
 
     /**
      * Creates plain lines with certain degree of glow.
      */
+    @Generated
     public static final IncidentDetailStyle S2 = fromString("s2");
 
     /**
      * Creates plain lines with certain degree of glow, different than the s2 style.
      */
+    @Generated
     public static final IncidentDetailStyle S3 = fromString("s3");
 
     /**
      * Night style.
      */
+    @Generated
     public static final IncidentDetailStyle NIGHT = fromString("night");
 
     /**
@@ -36,6 +41,7 @@ public final class IncidentDetailStyle extends ExpandableStringEnum<IncidentDeta
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public IncidentDetailStyle() {
     }
@@ -46,6 +52,7 @@ public final class IncidentDetailStyle extends ExpandableStringEnum<IncidentDeta
      * @param name a name to look for.
      * @return the corresponding IncidentDetailStyle.
      */
+    @Generated
     public static IncidentDetailStyle fromString(String name) {
         return fromString(name, IncidentDetailStyle.class);
     }
@@ -55,6 +62,7 @@ public final class IncidentDetailStyle extends ExpandableStringEnum<IncidentDeta
      * 
      * @return known IncidentDetailStyle values.
      */
+    @Generated
     public static Collection<IncidentDetailStyle> values() {
         return values(IncidentDetailStyle.class);
     }

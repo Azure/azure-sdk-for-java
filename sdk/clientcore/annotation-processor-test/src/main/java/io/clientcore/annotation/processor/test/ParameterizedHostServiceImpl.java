@@ -13,7 +13,7 @@ import io.clientcore.annotation.processor.test.implementation.ParameterizedHostS
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
-import io.clientcore.core.http.models.HttpResponseException;
+import io.clientcore.core.utils.GeneratedCodeUtils;
 
 /**
  * Initializes a new instance of the ParameterizedHostServiceImpl type.
@@ -46,16 +46,15 @@ public class ParameterizedHostServiceImpl implements ParameterizedHostService {
     @SuppressWarnings("cast")
     @Override
     public byte[] getByteArray(String scheme, String host, int numberOfBytes) {
-        String uri = scheme + "://" + host + "/bytes/" + numberOfBytes;
-        // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(scheme + "://" + host + "/bytes/" + numberOfBytes);
         // Send the request through the httpPipeline
         try (Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest)) {
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                String errorMessage = networkResponse.getValue().toString();
-                throw new HttpResponseException(errorMessage, networkResponse, null);
+                // Handle unexpected response
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
             }
             BinaryData responseBody = networkResponse.getValue();
             return responseBody != null ? responseBody.toBytes() : null;

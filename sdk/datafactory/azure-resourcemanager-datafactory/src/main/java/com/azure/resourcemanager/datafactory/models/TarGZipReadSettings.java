@@ -81,7 +81,10 @@ public final class TarGZipReadSettings extends CompressionReadSettings {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("preserveCompressionFileNameAsFolder", this.preserveCompressionFileNameAsFolder);
+        if (this.preserveCompressionFileNameAsFolder != null) {
+            jsonWriter.writeUntypedField("preserveCompressionFileNameAsFolder",
+                this.preserveCompressionFileNameAsFolder);
+        }
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

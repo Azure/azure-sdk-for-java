@@ -48,6 +48,7 @@ public class StorageManagementPoliciesTests extends StorageManagementTest {
             .withNewResourceGroup(rgName)
             .withBlobStorageAccountKind()
             .withAccessTier(AccessTier.COOL)
+            .disableSharedKeyAccess()
             .create();
 
         ManagementPolicies managementPolicies = this.storageManager.managementPolicies();
@@ -127,6 +128,7 @@ public class StorageManagementPoliciesTests extends StorageManagementTest {
             .withNewResourceGroup(rgName)
             .withBlobStorageAccountKind()
             .withAccessTier(AccessTier.COOL)
+            .disableSharedKeyAccess()
             .create();
 
         ManagementPolicies managementPolicies = this.storageManager.managementPolicies();
@@ -180,6 +182,7 @@ public class StorageManagementPoliciesTests extends StorageManagementTest {
             .withNewResourceGroup(rgName)
             .withBlobStorageAccountKind()
             .withAccessTier(AccessTier.COOL)
+            .disableSharedKeyAccess()
             .create();
 
         ManagementPolicies managementPolicies = this.storageManager.managementPolicies();
@@ -236,6 +239,7 @@ public class StorageManagementPoliciesTests extends StorageManagementTest {
             .withNewResourceGroup(rgName)
             .withSku(StorageAccountSkuType.PREMIUM_LRS)
             .withBlockBlobStorageAccountKind()
+            .disableSharedKeyAccess()
             .create();
 
         Assertions.assertEquals(StorageAccountSkuType.PREMIUM_LRS.name(), storageAccount.skuType().name());

@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.cosmos.implementation.UUIDs;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
@@ -74,7 +75,7 @@ public final class RntbdContextNegotiator extends CombinedChannelDuplexHandler<R
         logger.debug("{} START CONTEXT REQUEST", context.channel());
 
         final Channel channel = context.channel();
-        final RntbdContextRequest request = new RntbdContextRequest(UUID.randomUUID(), this.userAgent);
+        final RntbdContextRequest request = new RntbdContextRequest(UUIDs.nonBlockingRandomUUID(), this.userAgent);
         final CompletableFuture<RntbdContextRequest> contextRequestFuture = this.manager.rntbdContextRequestFuture();
 
         this.manager.getTimestamps().channelWriteAttempted();

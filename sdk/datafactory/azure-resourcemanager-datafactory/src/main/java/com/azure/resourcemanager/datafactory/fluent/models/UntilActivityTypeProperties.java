@@ -141,7 +141,9 @@ public final class UntilActivityTypeProperties implements JsonSerializable<Until
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("expression", this.expression);
         jsonWriter.writeArrayField("activities", this.activities, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeUntypedField("timeout", this.timeout);
+        if (this.timeout != null) {
+            jsonWriter.writeUntypedField("timeout", this.timeout);
+        }
         return jsonWriter.writeEndObject();
     }
 

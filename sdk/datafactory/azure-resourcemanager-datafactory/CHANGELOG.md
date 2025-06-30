@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,69 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0 (2025-05-27)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.ImpalaThriftTransportProtocol` was added
+
+* `models.AmazonRdsForOracleAuthenticationType` was added
+
+#### `models.AmazonRdsForOracleLinkedService` was modified
+
+* `withServer(java.lang.Object)` was added
+* `initialLobFetchSize()` was added
+* `fetchTswtzAsTimestamp()` was added
+* `encryptionTypesClient()` was added
+* `encryptionClient()` was added
+* `withInitialLobFetchSize(java.lang.Object)` was added
+* `server()` was added
+* `withStatementCacheSize(java.lang.Object)` was added
+* `withCryptoChecksumTypesClient(java.lang.Object)` was added
+* `withSupportV1DataTypes(java.lang.Object)` was added
+* `cryptoChecksumClient()` was added
+* `withEncryptionClient(java.lang.Object)` was added
+* `supportV1DataTypes()` was added
+* `withInitializationString(java.lang.Object)` was added
+* `username()` was added
+* `withEnableBulkLoad(java.lang.Object)` was added
+* `withEncryptionTypesClient(java.lang.Object)` was added
+* `withFetchTswtzAsTimestamp(java.lang.Object)` was added
+* `withCryptoChecksumClient(java.lang.Object)` was added
+* `authenticationType()` was added
+* `enableBulkLoad()` was added
+* `statementCacheSize()` was added
+* `withFetchSize(java.lang.Object)` was added
+* `withAuthenticationType(models.AmazonRdsForOracleAuthenticationType)` was added
+* `fetchSize()` was added
+* `withUsername(java.lang.Object)` was added
+* `initializationString()` was added
+* `cryptoChecksumTypesClient()` was added
+
+#### `models.SparkLinkedService` was modified
+
+* `enableServerCertificateValidation()` was added
+* `withEnableServerCertificateValidation(java.lang.Object)` was added
+
+#### `models.HiveLinkedService` was modified
+
+* `enableServerCertificateValidation()` was added
+* `withEnableServerCertificateValidation(java.lang.Object)` was added
+
+#### `models.AzureDatabricksLinkedService` was modified
+
+* `withDataSecurityMode(java.lang.Object)` was added
+* `dataSecurityMode()` was added
+
+#### `models.ImpalaLinkedService` was modified
+
+* `enableServerCertificateValidation()` was added
+* `withThriftTransportProtocol(models.ImpalaThriftTransportProtocol)` was added
+* `thriftTransportProtocol()` was added
+* `withEnableServerCertificateValidation(java.lang.Object)` was added
 
 ## 1.1.0 (2025-04-10)
 

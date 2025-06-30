@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,60 +23,71 @@ public final class ForecastInterval implements JsonSerializable<ForecastInterval
     /*
      * The date and time for the start of the interval in ISO 8601 format, for example, 2019-10-27T19:39:57-08:00.
      */
+    @Generated
     private OffsetDateTime startTime;
 
     /*
      * The first minute for the interval.
      */
+    @Generated
     private Integer minute;
 
     /*
      * A unit that represents forecasted precipitation intensity.
      */
+    @Generated
     private Double decibelRelativeToZ;
 
     /*
      * A short phrase describing precipitation condition for the interval.
      */
+    @Generated
     private String shortDescription;
 
     /*
      * Key that specifies the threshold value. Along with precipitationType, can be used to determine the
      * simplifiedColor. If dbz is zero, not present in the response.
      */
+    @Generated
     private String threshold;
 
     /*
      * The full spectrum color that maps to the dBZ (decibel relative to Z). If dbz is zero, color is not present in the
      * response.
      */
+    @Generated
     private ColorValue color;
 
     /*
      * The band color that maps to the precipitation type and threshold. If dbz is zero, not present in the response.
      */
+    @Generated
     private ColorValue simplifiedColor;
 
     /*
      * Specifies the type of precipitation ("Rain" "Snow" "Ice" or "Mix"). If dbz is zero, precipitationType is not
      * present in the response.
      */
+    @Generated
     private PrecipitationType precipitationType;
 
     /*
      * Numeric value representing an image that displays the `iconPhrase`. Please refer to [Weather services in Azure
      * Maps](/azure/azure-maps/weather-services-concepts#weather-icons) for details.
      */
+    @Generated
     private IconCode iconCode;
 
     /*
      * Percent representing cloud cover.
      */
+    @Generated
     private Integer cloudCover;
 
     /**
      * Set default ForecastInterval constructor to private
      */
+    @Generated
     private ForecastInterval() {
     }
 
@@ -85,6 +97,7 @@ public final class ForecastInterval implements JsonSerializable<ForecastInterval
      *
      * @return the startTime value.
      */
+    @Generated
     public OffsetDateTime getStartTime() {
         return this.startTime;
     }
@@ -96,6 +109,7 @@ public final class ForecastInterval implements JsonSerializable<ForecastInterval
      * @param startTime the startTime value to set.
      * @return the ForecastInterval object itself.
      */
+    @Generated
     public ForecastInterval setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
@@ -106,6 +120,7 @@ public final class ForecastInterval implements JsonSerializable<ForecastInterval
      *
      * @return the minute value.
      */
+    @Generated
     public Integer getMinute() {
         return this.minute;
     }
@@ -115,6 +130,7 @@ public final class ForecastInterval implements JsonSerializable<ForecastInterval
      *
      * @return the decibelRelativeToZ value.
      */
+    @Generated
     public Double getDecibelRelativeToZ() {
         return this.decibelRelativeToZ;
     }
@@ -124,6 +140,7 @@ public final class ForecastInterval implements JsonSerializable<ForecastInterval
      *
      * @return the shortDescription value.
      */
+    @Generated
     public String getShortDescription() {
         return this.shortDescription;
     }
@@ -134,6 +151,7 @@ public final class ForecastInterval implements JsonSerializable<ForecastInterval
      *
      * @return the threshold value.
      */
+    @Generated
     public String getThreshold() {
         return this.threshold;
     }
@@ -144,6 +162,7 @@ public final class ForecastInterval implements JsonSerializable<ForecastInterval
      *
      * @return the color value.
      */
+    @Generated
     public ColorValue getColor() {
         return this.color;
     }
@@ -154,6 +173,7 @@ public final class ForecastInterval implements JsonSerializable<ForecastInterval
      *
      * @return the simplifiedColor value.
      */
+    @Generated
     public ColorValue getSimplifiedColor() {
         return this.simplifiedColor;
     }
@@ -164,6 +184,7 @@ public final class ForecastInterval implements JsonSerializable<ForecastInterval
      *
      * @return the precipitationType value.
      */
+    @Generated
     public PrecipitationType getPrecipitationType() {
         return this.precipitationType;
     }
@@ -174,6 +195,7 @@ public final class ForecastInterval implements JsonSerializable<ForecastInterval
      *
      * @return the iconCode value.
      */
+    @Generated
     public IconCode getIconCode() {
         return this.iconCode;
     }
@@ -183,6 +205,7 @@ public final class ForecastInterval implements JsonSerializable<ForecastInterval
      *
      * @return the cloudCover value.
      */
+    @Generated
     public Integer getCloudCover() {
         return this.cloudCover;
     }
@@ -190,6 +213,7 @@ public final class ForecastInterval implements JsonSerializable<ForecastInterval
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -216,6 +240,7 @@ public final class ForecastInterval implements JsonSerializable<ForecastInterval
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ForecastInterval.
      */
+    @Generated
     public static ForecastInterval fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ForecastInterval deserializedForecastInterval = new ForecastInterval();

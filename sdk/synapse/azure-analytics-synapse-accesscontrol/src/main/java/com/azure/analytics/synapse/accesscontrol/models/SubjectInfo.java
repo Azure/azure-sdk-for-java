@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.accesscontrol.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,16 +23,19 @@ public final class SubjectInfo implements JsonSerializable<SubjectInfo> {
     /*
      * Principal Id
      */
+    @Generated
     private UUID principalId;
 
     /*
      * List of group Ids that the principalId is part of.
      */
+    @Generated
     private List<UUID> groupIds;
 
     /**
      * Creates an instance of SubjectInfo class.
      */
+    @Generated
     public SubjectInfo() {
     }
 
@@ -40,6 +44,7 @@ public final class SubjectInfo implements JsonSerializable<SubjectInfo> {
      * 
      * @return the principalId value.
      */
+    @Generated
     public UUID getPrincipalId() {
         return this.principalId;
     }
@@ -50,6 +55,7 @@ public final class SubjectInfo implements JsonSerializable<SubjectInfo> {
      * @param principalId the principalId value to set.
      * @return the SubjectInfo object itself.
      */
+    @Generated
     public SubjectInfo setPrincipalId(UUID principalId) {
         this.principalId = principalId;
         return this;
@@ -60,6 +66,7 @@ public final class SubjectInfo implements JsonSerializable<SubjectInfo> {
      * 
      * @return the groupIds value.
      */
+    @Generated
     public List<UUID> getGroupIds() {
         return this.groupIds;
     }
@@ -70,6 +77,7 @@ public final class SubjectInfo implements JsonSerializable<SubjectInfo> {
      * @param groupIds the groupIds value to set.
      * @return the SubjectInfo object itself.
      */
+    @Generated
     public SubjectInfo setGroupIds(List<UUID> groupIds) {
         this.groupIds = groupIds;
         return this;
@@ -78,6 +86,7 @@ public final class SubjectInfo implements JsonSerializable<SubjectInfo> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -96,6 +105,7 @@ public final class SubjectInfo implements JsonSerializable<SubjectInfo> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SubjectInfo.
      */
+    @Generated
     public static SubjectInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SubjectInfo deserializedSubjectInfo = new SubjectInfo();

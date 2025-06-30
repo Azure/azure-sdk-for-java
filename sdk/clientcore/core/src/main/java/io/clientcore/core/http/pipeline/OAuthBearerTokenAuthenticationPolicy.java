@@ -8,12 +8,18 @@ import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.credentials.oauth.OAuthTokenCredential;
 import io.clientcore.core.credentials.oauth.OAuthTokenRequestContext;
-import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.AuthMetadata;
+import io.clientcore.core.http.models.AuthScheme;
 import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.utils.CoreUtils;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -46,7 +52,6 @@ public class OAuthBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
      * @param context the default OAuth metadata to use for the token request.
      */
     public OAuthBearerTokenAuthenticationPolicy(OAuthTokenCredential credential, OAuthTokenRequestContext context) {
-        Objects.requireNonNull(credential);
         Objects.requireNonNull(context);
         this.credential = credential;
         this.context = context;
@@ -71,15 +76,26 @@ public class OAuthBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
     @Override
     public Response<BinaryData> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         if (!"https".equals(httpRequest.getUri().getScheme())) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalStateException("Token credentials require a URL using the HTTPS protocol scheme"));
+            throw LOGGER.throwableAtError()
+                .log("Token credentials require a URL using the HTTPS protocol scheme", IllegalStateException::new);
         }
 
         HttpPipelineNextPolicy nextPolicy = next.copy();
 
-        // For now we don't support per-operation scopes. In the future when we do, we will need to retrieve the
-        // scope from the incoming httpRequest and merge it with the default context.
-        authorizeRequest(httpRequest, context);
+        AuthMetadata authMetadata = (AuthMetadata) httpRequest.getContext().getMetadata(IO_CLIENTCORE_AUTH_METADATA);
+
+        OAuthTokenRequestContext tokenRequestContext = context;
+        if (authMetadata != null) {
+            List<AuthScheme> authSchemes = authMetadata.getAuthSchemes();
+            if (CoreUtils.isNullOrEmpty(authSchemes) || authSchemes.contains(AuthScheme.NO_AUTH)) {
+                return next.process();
+            } else {
+                tokenRequestContext = mergeTokenRequestContext(authMetadata.getOAuthTokenRequestContext());
+            }
+        }
+
+        authorizeRequest(httpRequest, mergeTokenRequestContext(tokenRequestContext));
+
         Response<BinaryData> httpResponse = next.process();
         String authHeader = httpResponse.getHeaders().getValue(HttpHeaderName.WWW_AUTHENTICATE);
         if (httpResponse.getStatusCode() == 401 && authHeader != null) {
@@ -109,5 +125,32 @@ public class OAuthBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
      */
     public boolean authorizeRequestOnChallenge(HttpRequest httpRequest, Response<BinaryData> response) {
         return false;
+    }
+
+    /**
+     * Helper method to have per operation TRC override service level TRC.
+     *
+     * @param oAuthTokenRequestContext the incoming TRC
+     * @return the merged TRC to use.
+     */
+    private OAuthTokenRequestContext mergeTokenRequestContext(OAuthTokenRequestContext oAuthTokenRequestContext) {
+        if (oAuthTokenRequestContext != null) {
+            // Merge scopes: Use incoming scopes if non-empty, else fallback to context's
+            List<String> mergedScopes = CoreUtils.isNullOrEmpty(oAuthTokenRequestContext.getScopes())
+                ? context.getScopes()
+                : oAuthTokenRequestContext.getScopes();
+
+            // Merge params: incoming overrides context's
+            Map<String, Object> mergedParams = new HashMap<>();
+            if (!CoreUtils.isNullOrEmpty(context.getParams())) {
+                mergedParams.putAll(context.getParams());
+            }
+            if (!CoreUtils.isNullOrEmpty(oAuthTokenRequestContext.getParams())) {
+                mergedParams.putAll(oAuthTokenRequestContext.getParams()); // incoming overrides existing
+            }
+
+            return new OAuthTokenRequestContext().setScopes(mergedScopes).setParams(mergedParams);
+        }
+        return context;
     }
 }

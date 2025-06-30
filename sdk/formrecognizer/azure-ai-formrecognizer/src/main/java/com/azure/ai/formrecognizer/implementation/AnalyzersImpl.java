@@ -73,7 +73,7 @@ public final class AnalyzersImpl {
      * perform REST calls.
      */
     @Host("{endpoint}/formrecognizer/{ApiVersion}")
-    @ServiceInterface(name = "FormRecognizerClient")
+    @ServiceInterface(name = "FormRecognizerClientAnalyzers")
     public interface AnalyzersService {
         @Post("/prebuilt/businessCard/analyze")
         @ExpectedResponses({ 202 })

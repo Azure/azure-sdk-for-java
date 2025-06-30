@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class SparkJobDefinitionsListResponse implements JsonSerializable<S
     /*
      * List of spark job definitions.
      */
+    @Generated
     private List<SparkJobDefinitionResource> value;
 
     /*
      * The link to the next page of results, if any remaining results exist.
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of SparkJobDefinitionsListResponse class.
      */
+    @Generated
     public SparkJobDefinitionsListResponse() {
     }
 
@@ -38,6 +42,7 @@ public final class SparkJobDefinitionsListResponse implements JsonSerializable<S
      * 
      * @return the value value.
      */
+    @Generated
     public List<SparkJobDefinitionResource> getValue() {
         return this.value;
     }
@@ -48,6 +53,7 @@ public final class SparkJobDefinitionsListResponse implements JsonSerializable<S
      * @param value the value value to set.
      * @return the SparkJobDefinitionsListResponse object itself.
      */
+    @Generated
     public SparkJobDefinitionsListResponse setValue(List<SparkJobDefinitionResource> value) {
         this.value = value;
         return this;
@@ -58,6 +64,7 @@ public final class SparkJobDefinitionsListResponse implements JsonSerializable<S
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -68,6 +75,7 @@ public final class SparkJobDefinitionsListResponse implements JsonSerializable<S
      * @param nextLink the nextLink value to set.
      * @return the SparkJobDefinitionsListResponse object itself.
      */
+    @Generated
     public SparkJobDefinitionsListResponse setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
@@ -76,6 +84,7 @@ public final class SparkJobDefinitionsListResponse implements JsonSerializable<S
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -93,6 +102,7 @@ public final class SparkJobDefinitionsListResponse implements JsonSerializable<S
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SparkJobDefinitionsListResponse.
      */
+    @Generated
     public static SparkJobDefinitionsListResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SparkJobDefinitionsListResponse deserializedSparkJobDefinitionsListResponse

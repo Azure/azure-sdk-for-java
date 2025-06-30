@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,21 +19,25 @@ public final class DataFlowResource extends SubResource {
     /*
      * Data flow properties.
      */
+    @Generated
     private DataFlow properties;
 
     /*
      * Resource Etag.
      */
+    @Generated
     private String etag;
 
     /*
      * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
      */
+    @Generated
     private String type;
 
     /*
      * The name of the resource
      */
+    @Generated
     private String name;
 
     /*
@@ -40,11 +45,13 @@ public final class DataFlowResource extends SubResource {
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
      * resourceType}/{resourceName}
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of DataFlowResource class.
      */
+    @Generated
     public DataFlowResource() {
     }
 
@@ -53,6 +60,7 @@ public final class DataFlowResource extends SubResource {
      * 
      * @return the properties value.
      */
+    @Generated
     public DataFlow getProperties() {
         return this.properties;
     }
@@ -63,6 +71,7 @@ public final class DataFlowResource extends SubResource {
      * @param properties the properties value to set.
      * @return the DataFlowResource object itself.
      */
+    @Generated
     public DataFlowResource setProperties(DataFlow properties) {
         this.properties = properties;
         return this;
@@ -73,6 +82,7 @@ public final class DataFlowResource extends SubResource {
      * 
      * @return the etag value.
      */
+    @Generated
     @Override
     public String getEtag() {
         return this.etag;
@@ -84,6 +94,7 @@ public final class DataFlowResource extends SubResource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -94,6 +105,7 @@ public final class DataFlowResource extends SubResource {
      * 
      * @return the name value.
      */
+    @Generated
     @Override
     public String getName() {
         return this.name;
@@ -105,6 +117,7 @@ public final class DataFlowResource extends SubResource {
      * 
      * @return the id value.
      */
+    @Generated
     @Override
     public String getId() {
         return this.id;
@@ -113,6 +126,7 @@ public final class DataFlowResource extends SubResource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -129,6 +143,7 @@ public final class DataFlowResource extends SubResource {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DataFlowResource.
      */
+    @Generated
     public static DataFlowResource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataFlowResource deserializedDataFlowResource = new DataFlowResource();

@@ -115,7 +115,9 @@ public final class ExpressionTraces implements JsonSerializable<ExpressionTraces
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("value", this.value);
+        if (this.value != null) {
+            jsonWriter.writeUntypedField("value", this.value);
+        }
         jsonWriter.writeArrayField("inputs", this.inputs, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("nextLink", this.nextLink);
         return jsonWriter.writeEndObject();

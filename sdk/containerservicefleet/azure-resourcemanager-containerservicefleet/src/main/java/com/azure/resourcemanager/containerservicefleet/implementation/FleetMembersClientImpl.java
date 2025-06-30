@@ -28,8 +28,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerservicefleet.fluent.FleetMembersClient;
@@ -70,7 +72,7 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ContainerServiceFlee")
+    @ServiceInterface(name = "ContainerServiceFleetManagementClientFleetMembers")
     public interface FleetMembersService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/members/{fleetMemberName}")
@@ -82,10 +84,31 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
             @PathParam("fleetMemberName") String fleetMemberName, @HeaderParam("Accept") String accept,
             Context context);
 
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/members/{fleetMemberName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<FleetMemberInner> getSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("fleetName") String fleetName,
+            @PathParam("fleetMemberName") String fleetMemberName, @HeaderParam("Accept") String accept,
+            Context context);
+
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/members/{fleetMemberName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @PathParam("fleetName") String fleetName,
+            @PathParam("fleetMemberName") String fleetMemberName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") FleetMemberInner resource,
+            Context context);
+
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/members/{fleetMemberName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("If-Match") String ifMatch,
             @HeaderParam("If-None-Match") String ifNoneMatch, @PathParam("fleetName") String fleetName,
@@ -103,11 +126,31 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") FleetMemberUpdate properties, Context context);
 
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/members/{fleetMemberName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> updateAsyncSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("If-Match") String ifMatch,
+            @PathParam("fleetName") String fleetName, @PathParam("fleetMemberName") String fleetMemberName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") FleetMemberUpdate properties, Context context);
+
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/members/{fleetMemberName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("If-Match") String ifMatch,
+            @PathParam("fleetName") String fleetName, @PathParam("fleetMemberName") String fleetMemberName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/members/{fleetMemberName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("If-Match") String ifMatch,
             @PathParam("fleetName") String fleetName, @PathParam("fleetMemberName") String fleetMemberName,
@@ -123,10 +166,27 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/members")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<FleetMemberListResult> listByFleetSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("fleetName") String fleetName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FleetMemberListResult>> listByFleetNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<FleetMemberListResult> listByFleetNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -177,46 +237,6 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param fleetMemberName The name of the Fleet member resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a FleetMember along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FleetMemberInner>> getWithResponseAsync(String resourceGroupName, String fleetName,
-        String fleetMemberName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (fleetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter fleetName is required and cannot be null."));
-        }
-        if (fleetMemberName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter fleetMemberName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, fleetName, fleetMemberName, accept, context);
-    }
-
-    /**
-     * Get a FleetMember.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param fleetMemberName The name of the Fleet member resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -243,7 +263,31 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FleetMemberInner> getWithResponse(String resourceGroupName, String fleetName,
         String fleetMemberName, Context context) {
-        return getWithResponseAsync(resourceGroupName, fleetName, fleetMemberName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (fleetName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter fleetName is required and cannot be null."));
+        }
+        if (fleetMemberName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter fleetMemberName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, fleetName, fleetMemberName, accept, context);
     }
 
     /**
@@ -321,45 +365,100 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
      * @param resource Resource create parameters.
      * @param ifMatch The request should only proceed if an entity matches this string.
      * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a member of the Fleet along with {@link Response} on successful completion of {@link Mono}.
+     * @return a member of the Fleet along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String fleetName,
-        String fleetMemberName, FleetMemberInner resource, String ifMatch, String ifNoneMatch, Context context) {
+    private Response<BinaryData> createWithResponse(String resourceGroupName, String fleetName, String fleetMemberName,
+        FleetMemberInner resource, String ifMatch, String ifNoneMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (fleetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter fleetName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter fleetName is required and cannot be null."));
         }
         if (fleetMemberName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter fleetMemberName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter fleetMemberName is required and cannot be null."));
         }
         if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
         } else {
             resource.validate();
         }
         final String contentType = "application/json";
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, ifMatch, ifNoneMatch, fleetName, fleetMemberName, contentType, accept, resource,
-            context);
+        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, ifMatch, ifNoneMatch, fleetName, fleetMemberName,
+            contentType, accept, resource, Context.NONE);
+    }
+
+    /**
+     * Create a FleetMember.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param fleetName The name of the Fleet resource.
+     * @param fleetMemberName The name of the Fleet member resource.
+     * @param resource Resource create parameters.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ifNoneMatch The request should only proceed if no entity matches this string.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a member of the Fleet along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createWithResponse(String resourceGroupName, String fleetName, String fleetMemberName,
+        FleetMemberInner resource, String ifMatch, String ifNoneMatch, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (fleetName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter fleetName is required and cannot be null."));
+        }
+        if (fleetMemberName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter fleetMemberName is required and cannot be null."));
+        }
+        if (resource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+        } else {
+            resource.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, ifMatch, ifNoneMatch, fleetName, fleetMemberName,
+            contentType, accept, resource, context);
     }
 
     /**
@@ -417,21 +516,18 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
      * @param resource Resource create parameters.
      * @param ifMatch The request should only proceed if an entity matches this string.
      * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a member of the Fleet.
+     * @return the {@link SyncPoller} for polling of a member of the Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<FleetMemberInner>, FleetMemberInner> beginCreateAsync(String resourceGroupName,
-        String fleetName, String fleetMemberName, FleetMemberInner resource, String ifMatch, String ifNoneMatch,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, fleetName, fleetMemberName,
-            resource, ifMatch, ifNoneMatch, context);
-        return this.client.<FleetMemberInner, FleetMemberInner>getLroResult(mono, this.client.getHttpPipeline(),
-            FleetMemberInner.class, FleetMemberInner.class, context);
+    public SyncPoller<PollResult<FleetMemberInner>, FleetMemberInner> beginCreate(String resourceGroupName,
+        String fleetName, String fleetMemberName, FleetMemberInner resource, String ifMatch, String ifNoneMatch) {
+        Response<BinaryData> response
+            = createWithResponse(resourceGroupName, fleetName, fleetMemberName, resource, ifMatch, ifNoneMatch);
+        return this.client.<FleetMemberInner, FleetMemberInner>getLroResult(response, FleetMemberInner.class,
+            FleetMemberInner.class, Context.NONE);
     }
 
     /**
@@ -451,8 +547,10 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
         String fleetName, String fleetMemberName, FleetMemberInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return this.beginCreateAsync(resourceGroupName, fleetName, fleetMemberName, resource, ifMatch, ifNoneMatch)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createWithResponse(resourceGroupName, fleetName, fleetMemberName, resource, ifMatch, ifNoneMatch);
+        return this.client.<FleetMemberInner, FleetMemberInner>getLroResult(response, FleetMemberInner.class,
+            FleetMemberInner.class, Context.NONE);
     }
 
     /**
@@ -474,9 +572,10 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
     public SyncPoller<PollResult<FleetMemberInner>, FleetMemberInner> beginCreate(String resourceGroupName,
         String fleetName, String fleetMemberName, FleetMemberInner resource, String ifMatch, String ifNoneMatch,
         Context context) {
-        return this
-            .beginCreateAsync(resourceGroupName, fleetName, fleetMemberName, resource, ifMatch, ifNoneMatch, context)
-            .getSyncPoller();
+        Response<BinaryData> response = createWithResponse(resourceGroupName, fleetName, fleetMemberName, resource,
+            ifMatch, ifNoneMatch, context);
+        return this.client.<FleetMemberInner, FleetMemberInner>getLroResult(response, FleetMemberInner.class,
+            FleetMemberInner.class, context);
     }
 
     /**
@@ -528,29 +627,6 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
      * @param fleetName The name of the Fleet resource.
      * @param fleetMemberName The name of the Fleet member resource.
      * @param resource Resource create parameters.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a member of the Fleet on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FleetMemberInner> createAsync(String resourceGroupName, String fleetName, String fleetMemberName,
-        FleetMemberInner resource, String ifMatch, String ifNoneMatch, Context context) {
-        return beginCreateAsync(resourceGroupName, fleetName, fleetMemberName, resource, ifMatch, ifNoneMatch, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create a FleetMember.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param fleetMemberName The name of the Fleet member resource.
-     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -561,7 +637,8 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
         FleetMemberInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return createAsync(resourceGroupName, fleetName, fleetMemberName, resource, ifMatch, ifNoneMatch).block();
+        return beginCreate(resourceGroupName, fleetName, fleetMemberName, resource, ifMatch, ifNoneMatch)
+            .getFinalResult();
     }
 
     /**
@@ -582,8 +659,8 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FleetMemberInner create(String resourceGroupName, String fleetName, String fleetMemberName,
         FleetMemberInner resource, String ifMatch, String ifNoneMatch, Context context) {
-        return createAsync(resourceGroupName, fleetName, fleetMemberName, resource, ifMatch, ifNoneMatch, context)
-            .block();
+        return beginCreate(resourceGroupName, fleetName, fleetMemberName, resource, ifMatch, ifNoneMatch, context)
+            .getFinalResult();
     }
 
     /**
@@ -643,43 +720,97 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
      * @param fleetMemberName The name of the Fleet member resource.
      * @param properties The resource properties to be updated.
      * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a member of the Fleet along with {@link Response} on successful completion of {@link Mono}.
+     * @return a member of the Fleet along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateAsyncWithResponseAsync(String resourceGroupName, String fleetName,
-        String fleetMemberName, FleetMemberUpdate properties, String ifMatch, Context context) {
+    private Response<BinaryData> updateAsyncWithResponse(String resourceGroupName, String fleetName,
+        String fleetMemberName, FleetMemberUpdate properties, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (fleetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter fleetName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter fleetName is required and cannot be null."));
         }
         if (fleetMemberName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter fleetMemberName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter fleetMemberName is required and cannot be null."));
         }
         if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
         } else {
             properties.validate();
         }
         final String contentType = "application/json";
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.updateAsync(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.updateAsyncSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, fleetMemberName, contentType,
+            accept, properties, Context.NONE);
+    }
+
+    /**
+     * Update a FleetMember.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param fleetName The name of the Fleet resource.
+     * @param fleetMemberName The name of the Fleet member resource.
+     * @param properties The resource properties to be updated.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a member of the Fleet along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> updateAsyncWithResponse(String resourceGroupName, String fleetName,
+        String fleetMemberName, FleetMemberUpdate properties, String ifMatch, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (fleetName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter fleetName is required and cannot be null."));
+        }
+        if (fleetMemberName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter fleetMemberName is required and cannot be null."));
+        }
+        if (properties == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.updateAsyncSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, fleetMemberName, contentType,
             accept, properties, context);
     }
@@ -736,20 +867,18 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
      * @param fleetMemberName The name of the Fleet member resource.
      * @param properties The resource properties to be updated.
      * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a member of the Fleet.
+     * @return the {@link SyncPoller} for polling of a member of the Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<FleetMemberInner>, FleetMemberInner> beginUpdateAsyncAsync(String resourceGroupName,
-        String fleetName, String fleetMemberName, FleetMemberUpdate properties, String ifMatch, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateAsyncWithResponseAsync(resourceGroupName, fleetName, fleetMemberName, properties, ifMatch, context);
-        return this.client.<FleetMemberInner, FleetMemberInner>getLroResult(mono, this.client.getHttpPipeline(),
-            FleetMemberInner.class, FleetMemberInner.class, context);
+    public SyncPoller<PollResult<FleetMemberInner>, FleetMemberInner> beginUpdateAsync(String resourceGroupName,
+        String fleetName, String fleetMemberName, FleetMemberUpdate properties, String ifMatch) {
+        Response<BinaryData> response
+            = updateAsyncWithResponse(resourceGroupName, fleetName, fleetMemberName, properties, ifMatch);
+        return this.client.<FleetMemberInner, FleetMemberInner>getLroResult(response, FleetMemberInner.class,
+            FleetMemberInner.class, Context.NONE);
     }
 
     /**
@@ -768,8 +897,10 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
     public SyncPoller<PollResult<FleetMemberInner>, FleetMemberInner> beginUpdateAsync(String resourceGroupName,
         String fleetName, String fleetMemberName, FleetMemberUpdate properties) {
         final String ifMatch = null;
-        return this.beginUpdateAsyncAsync(resourceGroupName, fleetName, fleetMemberName, properties, ifMatch)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = updateAsyncWithResponse(resourceGroupName, fleetName, fleetMemberName, properties, ifMatch);
+        return this.client.<FleetMemberInner, FleetMemberInner>getLroResult(response, FleetMemberInner.class,
+            FleetMemberInner.class, Context.NONE);
     }
 
     /**
@@ -789,8 +920,10 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FleetMemberInner>, FleetMemberInner> beginUpdateAsync(String resourceGroupName,
         String fleetName, String fleetMemberName, FleetMemberUpdate properties, String ifMatch, Context context) {
-        return this.beginUpdateAsyncAsync(resourceGroupName, fleetName, fleetMemberName, properties, ifMatch, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = updateAsyncWithResponse(resourceGroupName, fleetName, fleetMemberName, properties, ifMatch, context);
+        return this.client.<FleetMemberInner, FleetMemberInner>getLroResult(response, FleetMemberInner.class,
+            FleetMemberInner.class, context);
     }
 
     /**
@@ -840,27 +973,6 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
      * @param fleetName The name of the Fleet resource.
      * @param fleetMemberName The name of the Fleet member resource.
      * @param properties The resource properties to be updated.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a member of the Fleet on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FleetMemberInner> updateAsyncAsync(String resourceGroupName, String fleetName, String fleetMemberName,
-        FleetMemberUpdate properties, String ifMatch, Context context) {
-        return beginUpdateAsyncAsync(resourceGroupName, fleetName, fleetMemberName, properties, ifMatch, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update a FleetMember.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param fleetMemberName The name of the Fleet member resource.
-     * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -870,7 +982,7 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
     public FleetMemberInner updateAsync(String resourceGroupName, String fleetName, String fleetMemberName,
         FleetMemberUpdate properties) {
         final String ifMatch = null;
-        return updateAsyncAsync(resourceGroupName, fleetName, fleetMemberName, properties, ifMatch).block();
+        return beginUpdateAsync(resourceGroupName, fleetName, fleetMemberName, properties, ifMatch).getFinalResult();
     }
 
     /**
@@ -890,7 +1002,8 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FleetMemberInner updateAsync(String resourceGroupName, String fleetName, String fleetMemberName,
         FleetMemberUpdate properties, String ifMatch, Context context) {
-        return updateAsyncAsync(resourceGroupName, fleetName, fleetMemberName, properties, ifMatch, context).block();
+        return beginUpdateAsync(resourceGroupName, fleetName, fleetMemberName, properties, ifMatch, context)
+            .getFinalResult();
     }
 
     /**
@@ -940,38 +1053,83 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
      * @param fleetName The name of the Fleet resource.
      * @param fleetMemberName The name of the Fleet member resource.
      * @param ifMatch The request should only proceed if an entity matches this string.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String fleetName, String fleetMemberName,
+        String ifMatch) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (fleetName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter fleetName is required and cannot be null."));
+        }
+        if (fleetMemberName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter fleetMemberName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, fleetMemberName, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Delete a FleetMember.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param fleetName The name of the Fleet resource.
+     * @param fleetMemberName The name of the Fleet member resource.
+     * @param ifMatch The request should only proceed if an entity matches this string.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String fleetName,
-        String fleetMemberName, String ifMatch, Context context) {
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String fleetName, String fleetMemberName,
+        String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (fleetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter fleetName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter fleetName is required and cannot be null."));
         }
         if (fleetMemberName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter fleetMemberName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter fleetMemberName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, ifMatch, fleetName, fleetMemberName, accept, context);
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, fleetMemberName, accept, context);
     }
 
     /**
@@ -1023,20 +1181,16 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
      * @param fleetName The name of the Fleet resource.
      * @param fleetMemberName The name of the Fleet member resource.
      * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String fleetName,
-        String fleetMemberName, String ifMatch, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, fleetName, fleetMemberName, ifMatch, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
+        String fleetMemberName, String ifMatch) {
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, fleetName, fleetMemberName, ifMatch);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1054,7 +1208,8 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
         String fleetMemberName) {
         final String ifMatch = null;
-        return this.beginDeleteAsync(resourceGroupName, fleetName, fleetMemberName, ifMatch).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, fleetName, fleetMemberName, ifMatch);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1073,7 +1228,9 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
         String fleetMemberName, String ifMatch, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, fleetName, fleetMemberName, ifMatch, context).getSyncPoller();
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, fleetName, fleetMemberName, ifMatch, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -1118,26 +1275,6 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param fleetMemberName The name of the Fleet member resource.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String fleetName, String fleetMemberName, String ifMatch,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, fleetName, fleetMemberName, ifMatch, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Delete a FleetMember.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param fleetMemberName The name of the Fleet member resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1145,7 +1282,7 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String fleetName, String fleetMemberName) {
         final String ifMatch = null;
-        deleteAsync(resourceGroupName, fleetName, fleetMemberName, ifMatch).block();
+        beginDelete(resourceGroupName, fleetName, fleetMemberName, ifMatch).getFinalResult();
     }
 
     /**
@@ -1163,7 +1300,7 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String fleetName, String fleetMemberName, String ifMatch,
         Context context) {
-        deleteAsync(resourceGroupName, fleetName, fleetMemberName, ifMatch, context).block();
+        beginDelete(resourceGroupName, fleetName, fleetMemberName, ifMatch, context).getFinalResult();
     }
 
     /**
@@ -1209,45 +1346,6 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FleetMember list operation along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FleetMemberInner>> listByFleetSinglePageAsync(String resourceGroupName, String fleetName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (fleetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter fleetName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByFleet(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, fleetName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List FleetMember resources by Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1264,16 +1362,77 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a FleetMember list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<FleetMemberInner> listByFleetSinglePage(String resourceGroupName, String fleetName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (fleetName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter fleetName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<FleetMemberListResult> res
+            = service.listByFleetSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, fleetName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List FleetMember resources by Fleet.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param fleetName The name of the Fleet resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FleetMember list operation as paginated response with {@link PagedFlux}.
+     * @return the response of a FleetMember list operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<FleetMemberInner> listByFleetAsync(String resourceGroupName, String fleetName, Context context) {
-        return new PagedFlux<>(() -> listByFleetSinglePageAsync(resourceGroupName, fleetName, context),
-            nextLink -> listByFleetNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<FleetMemberInner> listByFleetSinglePage(String resourceGroupName, String fleetName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (fleetName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter fleetName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<FleetMemberListResult> res
+            = service.listByFleetSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, fleetName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1288,7 +1447,8 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FleetMemberInner> listByFleet(String resourceGroupName, String fleetName) {
-        return new PagedIterable<>(listByFleetAsync(resourceGroupName, fleetName));
+        return new PagedIterable<>(() -> listByFleetSinglePage(resourceGroupName, fleetName),
+            nextLink -> listByFleetNextSinglePage(nextLink));
     }
 
     /**
@@ -1304,7 +1464,8 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FleetMemberInner> listByFleet(String resourceGroupName, String fleetName, Context context) {
-        return new PagedIterable<>(listByFleetAsync(resourceGroupName, fleetName, context));
+        return new PagedIterable<>(() -> listByFleetSinglePage(resourceGroupName, fleetName, context),
+            nextLink -> listByFleetNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1338,26 +1499,56 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a FleetMember list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<FleetMemberInner> listByFleetNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<FleetMemberListResult> res
+            = service.listByFleetNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FleetMember list operation along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the response of a FleetMember list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FleetMemberInner>> listByFleetNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<FleetMemberInner> listByFleetNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByFleetNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<FleetMemberListResult> res
+            = service.listByFleetNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FleetMembersClientImpl.class);
 }

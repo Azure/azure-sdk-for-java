@@ -612,7 +612,7 @@ public class SearchTests extends SearchTestBase {
         SearchOptions parameters = new SearchOptions().setTop(3).setSkip(0).setOrderBy("HotelId");
 
         StepVerifier
-            .create(getSearchResultsAsync(asyncClient.search("*", parameters, Context.NONE))
+            .create(getSearchResultsAsync(asyncClient.search("*", parameters, null, Context.NONE))
                 .map(docs -> docs.stream().map(sd -> sd.get("HotelId").toString()).collect(Collectors.toList())))
             .assertNext(actualKeys -> assertEquals(Arrays.asList("1", "10", "2"), actualKeys))
             .verifyComplete();
@@ -620,7 +620,7 @@ public class SearchTests extends SearchTestBase {
         parameters.setSkip(3);
 
         StepVerifier
-            .create(getSearchResultsAsync(asyncClient.search("*", parameters, Context.NONE))
+            .create(getSearchResultsAsync(asyncClient.search("*", parameters, null, Context.NONE))
                 .map(docs -> docs.stream().map(sd -> sd.get("HotelId").toString()).collect(Collectors.toList())))
             .assertNext(actualKeys -> assertEquals(Arrays.asList("3", "4", "5"), actualKeys))
             .verifyComplete();

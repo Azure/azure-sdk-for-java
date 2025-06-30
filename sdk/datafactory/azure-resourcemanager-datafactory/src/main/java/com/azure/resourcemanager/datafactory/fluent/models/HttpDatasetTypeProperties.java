@@ -207,10 +207,18 @@ public final class HttpDatasetTypeProperties implements JsonSerializable<HttpDat
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("relativeUrl", this.relativeUrl);
-        jsonWriter.writeUntypedField("requestMethod", this.requestMethod);
-        jsonWriter.writeUntypedField("requestBody", this.requestBody);
-        jsonWriter.writeUntypedField("additionalHeaders", this.additionalHeaders);
+        if (this.relativeUrl != null) {
+            jsonWriter.writeUntypedField("relativeUrl", this.relativeUrl);
+        }
+        if (this.requestMethod != null) {
+            jsonWriter.writeUntypedField("requestMethod", this.requestMethod);
+        }
+        if (this.requestBody != null) {
+            jsonWriter.writeUntypedField("requestBody", this.requestBody);
+        }
+        if (this.additionalHeaders != null) {
+            jsonWriter.writeUntypedField("additionalHeaders", this.additionalHeaders);
+        }
         jsonWriter.writeJsonField("format", this.format);
         jsonWriter.writeJsonField("compression", this.compression);
         return jsonWriter.writeEndObject();

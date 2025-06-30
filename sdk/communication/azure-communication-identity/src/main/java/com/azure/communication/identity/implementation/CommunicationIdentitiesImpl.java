@@ -59,7 +59,7 @@ public final class CommunicationIdentitiesImpl {
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "CommunicationIdentit")
+    @ServiceInterface(name = "CommunicationIdentityClientCommunicationIdentities")
     public interface CommunicationIdentitiesService {
         @Post("/identities")
         @ExpectedResponses({ 201 })
@@ -148,9 +148,7 @@ public final class CommunicationIdentitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunicationIdentityAccessTokenResult>>
         createWithResponseAsync(CommunicationIdentityCreateRequest body) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context));
+        return FluxUtil.withContext(context -> createWithResponseAsync(body, context));
     }
 
     /**
@@ -248,9 +246,7 @@ public final class CommunicationIdentitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String id) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.delete(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> deleteWithResponseAsync(id, context));
     }
 
     /**
@@ -338,9 +334,7 @@ public final class CommunicationIdentitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> revokeAccessTokensWithResponseAsync(String id) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.revokeAccessTokens(this.client.getEndpoint(), id,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> revokeAccessTokensWithResponseAsync(id, context));
     }
 
     /**
@@ -431,9 +425,7 @@ public final class CommunicationIdentitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunicationIdentityAccessToken>>
         exchangeTeamsUserAccessTokenWithResponseAsync(GetTokenForTeamsUserOptions body) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.exchangeTeamsUserAccessToken(this.client.getEndpoint(),
-            this.client.getApiVersion(), body, accept, context));
+        return FluxUtil.withContext(context -> exchangeTeamsUserAccessTokenWithResponseAsync(body, context));
     }
 
     /**
@@ -535,9 +527,7 @@ public final class CommunicationIdentitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunicationIdentityAccessToken>> issueAccessTokenWithResponseAsync(String id,
         CommunicationIdentityAccessTokenRequest body) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.issueAccessToken(this.client.getEndpoint(), id,
-            this.client.getApiVersion(), body, accept, context));
+        return FluxUtil.withContext(context -> issueAccessTokenWithResponseAsync(id, body, context));
     }
 
     /**

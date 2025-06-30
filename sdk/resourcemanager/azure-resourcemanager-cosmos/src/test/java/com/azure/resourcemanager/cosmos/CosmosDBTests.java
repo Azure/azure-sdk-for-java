@@ -76,6 +76,7 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
             .withWriteReplication(Region.US_EAST2)
             .withReadReplication(Region.US_WEST2)
             .withMultipleWriteLocationsEnabled(true)
+            .disableLocalAuth()
             .withTag("tag1", "value1")
             .create();
 
@@ -116,6 +117,7 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
             .withNewResourceGroup(rgName)
             .withDataModelSql()
             .withStrongConsistency()
+            .disableLocalAuth()
             .withDisableKeyBaseMetadataWriteAccess(true)
             .create();
 
@@ -170,6 +172,7 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
             .withEventualConsistency()
             .withWriteReplication(Region.US_EAST2)
             .withReadReplication(Region.US_WEST2)
+            .disableLocalAuth()
             .withTag("tag1", "value1")
             .create();
 
@@ -192,6 +195,7 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
             .withEventualConsistency()
             .withWriteReplication(Region.US_EAST2)
             .withReadReplication(Region.US_WEST)
+            .disableLocalAuth()
             .withTag("tag1", "value1")
             .create();
 
@@ -216,6 +220,7 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
             .withDataModelCassandra()
             .withStrongConsistency()
             .withCassandraConnector(ConnectorOffer.SMALL)
+            .disableLocalAuth()
             .withTag("tag1", "value1")
             .create();
 
@@ -240,6 +245,7 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
             .withEventualConsistency()
             .withWriteReplication(Region.US_EAST2)
             .withReadReplication(Region.US_WEST)
+            .disableLocalAuth()
             .withTag("tag1", "value1")
             .create();
 
@@ -265,6 +271,7 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
             .withReadReplication(Region.US_WEST)
             .withTag("tag1", "value1")
             .disablePublicNetworkAccess()
+            .disableLocalAuth()
             .create();
 
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, cosmosDBAccount.publicNetworkAccess());
@@ -282,6 +289,7 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
             .withEventualConsistency()
             .withWriteReplication(Region.US_EAST2)
             .withReadReplication(Region.US_WEST)
+            .disableLocalAuth()
             .withTag("tag1", "value1")
             .create();
 
@@ -290,5 +298,29 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
 
         cosmosDBAccount.update().enablePublicNetworkAccess().apply();
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, cosmosDBAccount.publicNetworkAccess());
+    }
+
+    @Test
+    public void canEnableAutomaticFailover() {
+        final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
+
+        CosmosDBAccount cosmosDBAccount = cosmosManager.databaseAccounts()
+            .define(cosmosDbAccountName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withDataModelAzureTable()
+            .withEventualConsistency()
+            .withWriteReplication(Region.US_EAST2)
+            .withReadReplication(Region.US_WEST)
+            .disableLocalAuth()
+            .create();
+        // By default, it's enabled.
+        Assertions.assertTrue(cosmosDBAccount.automaticFailoverEnabled());
+
+        cosmosDBAccount.update().disableAutomaticFailover().apply();
+        Assertions.assertFalse(cosmosDBAccount.automaticFailoverEnabled());
+
+        cosmosDBAccount.update().enableAutomaticFailover().apply();
+        Assertions.assertTrue(cosmosDBAccount.automaticFailoverEnabled());
     }
 }

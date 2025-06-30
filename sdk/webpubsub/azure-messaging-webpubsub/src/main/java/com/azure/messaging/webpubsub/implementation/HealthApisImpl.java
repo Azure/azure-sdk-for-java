@@ -64,7 +64,7 @@ public final class HealthApisImpl {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AzureWebPubSubServic")
+    @ServiceInterface(name = "AzureWebPubSubServiceRestApiHealthApis")
     public interface HealthApisService {
         @Head("/api/health")
         @ExpectedResponses({ 200 })

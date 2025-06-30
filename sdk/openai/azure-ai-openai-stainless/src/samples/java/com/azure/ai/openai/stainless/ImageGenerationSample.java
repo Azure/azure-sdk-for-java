@@ -13,6 +13,7 @@ import com.openai.models.images.ImageGenerateParams;
 import com.openai.models.images.ImageModel;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ImageGenerationSample {
 
@@ -34,7 +35,7 @@ public class ImageGenerationSample {
         OpenAIClient client = clientBuilder.build();
 
         // Example usage of the client to generate images
-        String prompt = "A futuristic city skyline at sunset";
+        String prompt = "Golden Retriever dog smiling when running on flower field";
         int numberOfImages = 1;
 
         ImageGenerateParams params = ImageGenerateParams.builder()
@@ -45,7 +46,7 @@ public class ImageGenerationSample {
             .build();
 
         // Call the image generation API with the specified parameters
-        List<Image> images = client.images().generate(params).data();
-        images.forEach(image -> System.out.println("Generated Image URL: " + image.url()));
+        Optional<List<Image>> images = client.images().generate(params).data();
+        images.ifPresent(list -> list.forEach(image -> System.out.println("Generated Image URL: " + image.url())));
     }
 }

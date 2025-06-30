@@ -53,7 +53,7 @@ public final class MultiSlotsImpl {
      * service to perform REST calls.
      */
     @Host("{Endpoint}/personalizer/{ApiVersion}")
-    @ServiceInterface(name = "PersonalizerClientV1")
+    @ServiceInterface(name = "PersonalizerClientV1Preview3MultiSlots")
     public interface MultiSlotsService {
         @Post("/multislot/rank")
         @ExpectedResponses({ 201 })

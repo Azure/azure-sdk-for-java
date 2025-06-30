@@ -105,7 +105,7 @@ stages:
           - deployment: PublishESRPPackage
             displayName: "Publish to Maven Central via ESRP"
             condition: and(succeeded(), ne(variables['Skip.PublishPackage'], 'true'))
-            environment: maven
+            environment: package-publish
             dependsOn: TagRepository
 
             templateContext:
@@ -117,8 +117,8 @@ stages:
                 targetPath: '$(Pipeline.Workspace)/packages-esrp-flattened'
 
             pool:
-              name: azsdk-pool-mms-win-2022-general
-              image: azsdk-pool-mms-win-2022-1espt
+              name: azsdk-pool
+              image: windows-2022
               os: windows
             strategy:
               runOnce:
@@ -157,10 +157,6 @@ stages:
                 parameters:
                   ArtifactID: ${{artifact.name}}
                   GroupID: ${{artifact.groupId}}
-                  ArtifactDirectory: $(Pipeline.Workspace)/packages-signed
-                  RepositoryUrl: https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1
-                  Target: JavaDevFeed
-                  JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
               - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
                 parameters:
                   ArtifactName: packages-${{artifact.name}}-javadevfeed-$(System.JobAttempt)

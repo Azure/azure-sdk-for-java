@@ -5,14 +5,12 @@ package com.azure.security.keyvault.keys.implementation.models;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.security.keyvault.keys.implementation.DeletedKeyHelper;
-import com.azure.security.keyvault.keys.implementation.KeyAttestationHelper;
 import com.azure.security.keyvault.keys.implementation.KeyPropertiesHelper;
 import com.azure.security.keyvault.keys.implementation.KeyRotationPolicyHelper;
 import com.azure.security.keyvault.keys.implementation.KeyVaultKeyHelper;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
-import com.azure.security.keyvault.keys.models.KeyAttestation;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyReleasePolicy;
@@ -208,7 +206,7 @@ public final class KeyVaultKeysModelsUtils {
             KeyPropertiesHelper.setRecoveryLevel(properties, Objects.toString(attributes.getRecoveryLevel(), null));
             KeyPropertiesHelper.setRecoverableDays(properties, attributes.getRecoverableDays());
             KeyPropertiesHelper.setHsmPlatform(properties, attributes.getHsmPlatform());
-            KeyPropertiesHelper.setKeyAttestation(properties, mapKeyAttestationImpl(attributes.getAttestation()));
+            KeyPropertiesHelper.setKeyAttestation(properties, attributes.getAttestation());
         }
     }
 
@@ -250,12 +248,6 @@ public final class KeyVaultKeysModelsUtils {
         }
 
         return KeyRotationPolicyHelper.getImpl(policy);
-    }
-
-    private static KeyAttestation
-        mapKeyAttestationImpl(com.azure.security.keyvault.keys.implementation.models.KeyAttestation impl) {
-
-        return (impl == null) ? null : KeyAttestationHelper.createKeyAttestation(impl);
     }
 
     private static void unpackId(String keyId, Consumer<String> nameConsumer, Consumer<String> versionConsumer) {

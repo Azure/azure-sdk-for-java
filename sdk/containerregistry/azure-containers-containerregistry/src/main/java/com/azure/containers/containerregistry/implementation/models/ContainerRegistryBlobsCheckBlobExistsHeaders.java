@@ -5,6 +5,7 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -16,16 +17,19 @@ public final class ContainerRegistryBlobsCheckBlobExistsHeaders {
     /*
      * The Content-Length property.
      */
+    @Generated
     private Long contentLength;
 
     /*
      * The Docker-Content-Digest property.
      */
+    @Generated
     private String dockerContentDigest;
 
     /*
      * The Location property.
      */
+    @Generated
     private String location;
 
     private static final HttpHeaderName DOCKER_CONTENT_DIGEST = HttpHeaderName.fromString("Docker-Content-Digest");
@@ -40,6 +44,8 @@ public final class ContainerRegistryBlobsCheckBlobExistsHeaders {
         String contentLength = rawHeaders.getValue(HttpHeaderName.CONTENT_LENGTH);
         if (contentLength != null) {
             this.contentLength = Long.parseLong(contentLength);
+        } else {
+            this.contentLength = null;
         }
         this.dockerContentDigest = rawHeaders.getValue(DOCKER_CONTENT_DIGEST);
         this.location = rawHeaders.getValue(HttpHeaderName.LOCATION);
@@ -50,6 +56,7 @@ public final class ContainerRegistryBlobsCheckBlobExistsHeaders {
      * 
      * @return the contentLength value.
      */
+    @Generated
     public Long getContentLength() {
         return this.contentLength;
     }
@@ -60,6 +67,7 @@ public final class ContainerRegistryBlobsCheckBlobExistsHeaders {
      * @param contentLength the contentLength value to set.
      * @return the ContainerRegistryBlobsCheckBlobExistsHeaders object itself.
      */
+    @Generated
     public ContainerRegistryBlobsCheckBlobExistsHeaders setContentLength(Long contentLength) {
         this.contentLength = contentLength;
         return this;
@@ -70,6 +78,7 @@ public final class ContainerRegistryBlobsCheckBlobExistsHeaders {
      * 
      * @return the dockerContentDigest value.
      */
+    @Generated
     public String getDockerContentDigest() {
         return this.dockerContentDigest;
     }
@@ -80,6 +89,7 @@ public final class ContainerRegistryBlobsCheckBlobExistsHeaders {
      * @param dockerContentDigest the dockerContentDigest value to set.
      * @return the ContainerRegistryBlobsCheckBlobExistsHeaders object itself.
      */
+    @Generated
     public ContainerRegistryBlobsCheckBlobExistsHeaders setDockerContentDigest(String dockerContentDigest) {
         this.dockerContentDigest = dockerContentDigest;
         return this;
@@ -90,6 +100,7 @@ public final class ContainerRegistryBlobsCheckBlobExistsHeaders {
      * 
      * @return the location value.
      */
+    @Generated
     public String getLocation() {
         return this.location;
     }
@@ -100,6 +111,7 @@ public final class ContainerRegistryBlobsCheckBlobExistsHeaders {
      * @param location the location value to set.
      * @return the ContainerRegistryBlobsCheckBlobExistsHeaders object itself.
      */
+    @Generated
     public ContainerRegistryBlobsCheckBlobExistsHeaders setLocation(String location) {
         this.location = location;
         return this;

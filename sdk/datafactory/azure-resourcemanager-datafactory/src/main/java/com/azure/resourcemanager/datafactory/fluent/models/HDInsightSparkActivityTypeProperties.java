@@ -274,7 +274,9 @@ public final class HDInsightSparkActivityTypeProperties
         jsonWriter.writeStringField("getDebugInfo", this.getDebugInfo == null ? null : this.getDebugInfo.toString());
         jsonWriter.writeJsonField("sparkJobLinkedService", this.sparkJobLinkedService);
         jsonWriter.writeStringField("className", this.className);
-        jsonWriter.writeUntypedField("proxyUser", this.proxyUser);
+        if (this.proxyUser != null) {
+            jsonWriter.writeUntypedField("proxyUser", this.proxyUser);
+        }
         jsonWriter.writeMapField("sparkConfig", this.sparkConfig, (writer, element) -> writer.writeUntyped(element));
         return jsonWriter.writeEndObject();
     }

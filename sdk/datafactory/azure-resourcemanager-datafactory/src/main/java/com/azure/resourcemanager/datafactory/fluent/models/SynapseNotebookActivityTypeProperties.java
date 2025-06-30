@@ -337,10 +337,18 @@ public final class SynapseNotebookActivityTypeProperties
         jsonWriter.writeJsonField("notebook", this.notebook);
         jsonWriter.writeJsonField("sparkPool", this.sparkPool);
         jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeUntypedField("executorSize", this.executorSize);
-        jsonWriter.writeUntypedField("conf", this.conf);
-        jsonWriter.writeUntypedField("driverSize", this.driverSize);
-        jsonWriter.writeUntypedField("numExecutors", this.numExecutors);
+        if (this.executorSize != null) {
+            jsonWriter.writeUntypedField("executorSize", this.executorSize);
+        }
+        if (this.conf != null) {
+            jsonWriter.writeUntypedField("conf", this.conf);
+        }
+        if (this.driverSize != null) {
+            jsonWriter.writeUntypedField("driverSize", this.driverSize);
+        }
+        if (this.numExecutors != null) {
+            jsonWriter.writeUntypedField("numExecutors", this.numExecutors);
+        }
         jsonWriter.writeStringField("configurationType",
             this.configurationType == null ? null : this.configurationType.toString());
         jsonWriter.writeJsonField("targetSparkConfiguration", this.targetSparkConfiguration);

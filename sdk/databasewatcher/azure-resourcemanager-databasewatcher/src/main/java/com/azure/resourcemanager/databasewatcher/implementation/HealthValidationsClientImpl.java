@@ -25,8 +25,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.databasewatcher.fluent.HealthValidationsClient;
@@ -66,13 +68,23 @@ public final class HealthValidationsClientImpl implements HealthValidationsClien
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DatabaseWatcherManag")
+    @ServiceInterface(name = "DatabaseWatcherManagementClientHealthValidations")
     public interface HealthValidationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/healthValidations/{healthValidationName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<HealthValidationInner>> get(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("watcherName") String watcherName,
+            @PathParam("healthValidationName") String healthValidationName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/healthValidations/{healthValidationName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<HealthValidationInner> getSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("watcherName") String watcherName,
             @PathParam("healthValidationName") String healthValidationName, @HeaderParam("Accept") String accept,
@@ -88,6 +100,15 @@ public final class HealthValidationsClientImpl implements HealthValidationsClien
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/healthValidations")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<HealthValidationListResult> listByParentSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("watcherName") String watcherName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/healthValidations/{healthValidationName}/startValidation")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -98,10 +119,28 @@ public final class HealthValidationsClientImpl implements HealthValidationsClien
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/healthValidations/{healthValidationName}/startValidation")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> startValidationSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("watcherName") String watcherName,
+            @PathParam("healthValidationName") String healthValidationName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<HealthValidationListResult>> listByParentNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<HealthValidationListResult> listByParentNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -152,46 +191,6 @@ public final class HealthValidationsClientImpl implements HealthValidationsClien
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param watcherName The database watcher name.
      * @param healthValidationName The health validation resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a HealthValidation along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<HealthValidationInner>> getWithResponseAsync(String resourceGroupName, String watcherName,
-        String healthValidationName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (watcherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
-        }
-        if (healthValidationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter healthValidationName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, watcherName, healthValidationName, accept, context);
-    }
-
-    /**
-     * Get a HealthValidation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param healthValidationName The health validation resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -219,7 +218,31 @@ public final class HealthValidationsClientImpl implements HealthValidationsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HealthValidationInner> getWithResponse(String resourceGroupName, String watcherName,
         String healthValidationName, Context context) {
-        return getWithResponseAsync(resourceGroupName, watcherName, healthValidationName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (watcherName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
+        }
+        if (healthValidationName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter healthValidationName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, watcherName, healthValidationName, accept, context);
     }
 
     /**
@@ -281,45 +304,6 @@ public final class HealthValidationsClientImpl implements HealthValidationsClien
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param watcherName The database watcher name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a HealthValidation list operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<HealthValidationInner>> listByParentSinglePageAsync(String resourceGroupName,
-        String watcherName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (watcherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByParent(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, watcherName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List HealthValidation resources by Watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -336,17 +320,77 @@ public final class HealthValidationsClientImpl implements HealthValidationsClien
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param watcherName The database watcher name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a HealthValidation list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<HealthValidationInner> listByParentSinglePage(String resourceGroupName, String watcherName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (watcherName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<HealthValidationListResult> res
+            = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, watcherName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List HealthValidation resources by Watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param watcherName The database watcher name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a HealthValidation list operation as paginated response with {@link PagedFlux}.
+     * @return the response of a HealthValidation list operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<HealthValidationInner> listByParentAsync(String resourceGroupName, String watcherName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<HealthValidationInner> listByParentSinglePage(String resourceGroupName, String watcherName,
         Context context) {
-        return new PagedFlux<>(() -> listByParentSinglePageAsync(resourceGroupName, watcherName, context),
-            nextLink -> listByParentNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (watcherName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<HealthValidationListResult> res
+            = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, watcherName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -361,7 +405,8 @@ public final class HealthValidationsClientImpl implements HealthValidationsClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HealthValidationInner> listByParent(String resourceGroupName, String watcherName) {
-        return new PagedIterable<>(listByParentAsync(resourceGroupName, watcherName));
+        return new PagedIterable<>(() -> listByParentSinglePage(resourceGroupName, watcherName),
+            nextLink -> listByParentNextSinglePage(nextLink));
     }
 
     /**
@@ -378,7 +423,8 @@ public final class HealthValidationsClientImpl implements HealthValidationsClien
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HealthValidationInner> listByParent(String resourceGroupName, String watcherName,
         Context context) {
-        return new PagedIterable<>(listByParentAsync(resourceGroupName, watcherName, context));
+        return new PagedIterable<>(() -> listByParentSinglePage(resourceGroupName, watcherName, context),
+            nextLink -> listByParentNextSinglePage(nextLink, context));
     }
 
     /**
@@ -427,37 +473,81 @@ public final class HealthValidationsClientImpl implements HealthValidationsClien
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param watcherName The database watcher name.
      * @param healthValidationName The health validation resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> startValidationWithResponse(String resourceGroupName, String watcherName,
+        String healthValidationName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (watcherName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
+        }
+        if (healthValidationName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter healthValidationName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.startValidationSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, watcherName, healthValidationName, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Starts health validation for a watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param watcherName The database watcher name.
+     * @param healthValidationName The health validation resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> startValidationWithResponseAsync(String resourceGroupName,
-        String watcherName, String healthValidationName, Context context) {
+    private Response<BinaryData> startValidationWithResponse(String resourceGroupName, String watcherName,
+        String healthValidationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (watcherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
         }
         if (healthValidationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter healthValidationName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter healthValidationName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.startValidation(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.startValidationSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, watcherName, healthValidationName, accept, context);
     }
 
@@ -488,28 +578,6 @@ public final class HealthValidationsClientImpl implements HealthValidationsClien
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param watcherName The database watcher name.
      * @param healthValidationName The health validation resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<HealthValidationInner>, HealthValidationInner> beginStartValidationAsync(
-        String resourceGroupName, String watcherName, String healthValidationName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = startValidationWithResponseAsync(resourceGroupName, watcherName, healthValidationName, context);
-        return this.client.<HealthValidationInner, HealthValidationInner>getLroResult(mono,
-            this.client.getHttpPipeline(), HealthValidationInner.class, HealthValidationInner.class, context);
-    }
-
-    /**
-     * Starts health validation for a watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param healthValidationName The health validation resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -518,7 +586,10 @@ public final class HealthValidationsClientImpl implements HealthValidationsClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HealthValidationInner>, HealthValidationInner>
         beginStartValidation(String resourceGroupName, String watcherName, String healthValidationName) {
-        return this.beginStartValidationAsync(resourceGroupName, watcherName, healthValidationName).getSyncPoller();
+        Response<BinaryData> response
+            = startValidationWithResponse(resourceGroupName, watcherName, healthValidationName);
+        return this.client.<HealthValidationInner, HealthValidationInner>getLroResult(response,
+            HealthValidationInner.class, HealthValidationInner.class, Context.NONE);
     }
 
     /**
@@ -536,8 +607,10 @@ public final class HealthValidationsClientImpl implements HealthValidationsClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HealthValidationInner>, HealthValidationInner> beginStartValidation(
         String resourceGroupName, String watcherName, String healthValidationName, Context context) {
-        return this.beginStartValidationAsync(resourceGroupName, watcherName, healthValidationName, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = startValidationWithResponse(resourceGroupName, watcherName, healthValidationName, context);
+        return this.client.<HealthValidationInner, HealthValidationInner>getLroResult(response,
+            HealthValidationInner.class, HealthValidationInner.class, context);
     }
 
     /**
@@ -564,25 +637,6 @@ public final class HealthValidationsClientImpl implements HealthValidationsClien
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param watcherName The database watcher name.
      * @param healthValidationName The health validation resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<HealthValidationInner> startValidationAsync(String resourceGroupName, String watcherName,
-        String healthValidationName, Context context) {
-        return beginStartValidationAsync(resourceGroupName, watcherName, healthValidationName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Starts health validation for a watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param healthValidationName The health validation resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -591,7 +645,7 @@ public final class HealthValidationsClientImpl implements HealthValidationsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HealthValidationInner startValidation(String resourceGroupName, String watcherName,
         String healthValidationName) {
-        return startValidationAsync(resourceGroupName, watcherName, healthValidationName).block();
+        return beginStartValidation(resourceGroupName, watcherName, healthValidationName).getFinalResult();
     }
 
     /**
@@ -609,7 +663,7 @@ public final class HealthValidationsClientImpl implements HealthValidationsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HealthValidationInner startValidation(String resourceGroupName, String watcherName,
         String healthValidationName, Context context) {
-        return startValidationAsync(resourceGroupName, watcherName, healthValidationName, context).block();
+        return beginStartValidation(resourceGroupName, watcherName, healthValidationName, context).getFinalResult();
     }
 
     /**
@@ -643,27 +697,56 @@ public final class HealthValidationsClientImpl implements HealthValidationsClien
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a HealthValidation list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<HealthValidationInner> listByParentNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<HealthValidationListResult> res
+            = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a HealthValidation list operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return the response of a HealthValidation list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<HealthValidationInner>> listByParentNextSinglePageAsync(String nextLink,
-        Context context) {
+    private PagedResponse<HealthValidationInner> listByParentNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByParentNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<HealthValidationListResult> res
+            = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HealthValidationsClientImpl.class);
 }

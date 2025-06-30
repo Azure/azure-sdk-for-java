@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class QuotaConfigurationInfo implements JsonSerializable<QuotaConfi
     /*
      * Initial quota
      */
+    @Generated
     private Float initialQuota;
 
     /*
      * Max quota
      */
+    @Generated
     private float maxQuota;
 
     /*
      * Quota accrual rate per second
      */
+    @Generated
     private float quotaAccrualRatePerSec;
 
     /**
      * Creates an instance of QuotaConfigurationInfo class.
      */
+    @Generated
     public QuotaConfigurationInfo() {
     }
 
@@ -42,6 +47,7 @@ public final class QuotaConfigurationInfo implements JsonSerializable<QuotaConfi
      * 
      * @return the initialQuota value.
      */
+    @Generated
     public Float getInitialQuota() {
         return this.initialQuota;
     }
@@ -52,6 +58,7 @@ public final class QuotaConfigurationInfo implements JsonSerializable<QuotaConfi
      * @param initialQuota the initialQuota value to set.
      * @return the QuotaConfigurationInfo object itself.
      */
+    @Generated
     public QuotaConfigurationInfo setInitialQuota(Float initialQuota) {
         this.initialQuota = initialQuota;
         return this;
@@ -62,6 +69,7 @@ public final class QuotaConfigurationInfo implements JsonSerializable<QuotaConfi
      * 
      * @return the maxQuota value.
      */
+    @Generated
     public float getMaxQuota() {
         return this.maxQuota;
     }
@@ -72,6 +80,7 @@ public final class QuotaConfigurationInfo implements JsonSerializable<QuotaConfi
      * @param maxQuota the maxQuota value to set.
      * @return the QuotaConfigurationInfo object itself.
      */
+    @Generated
     public QuotaConfigurationInfo setMaxQuota(float maxQuota) {
         this.maxQuota = maxQuota;
         return this;
@@ -82,6 +91,7 @@ public final class QuotaConfigurationInfo implements JsonSerializable<QuotaConfi
      * 
      * @return the quotaAccrualRatePerSec value.
      */
+    @Generated
     public float getQuotaAccrualRatePerSec() {
         return this.quotaAccrualRatePerSec;
     }
@@ -92,6 +102,7 @@ public final class QuotaConfigurationInfo implements JsonSerializable<QuotaConfi
      * @param quotaAccrualRatePerSec the quotaAccrualRatePerSec value to set.
      * @return the QuotaConfigurationInfo object itself.
      */
+    @Generated
     public QuotaConfigurationInfo setQuotaAccrualRatePerSec(float quotaAccrualRatePerSec) {
         this.quotaAccrualRatePerSec = quotaAccrualRatePerSec;
         return this;
@@ -100,6 +111,7 @@ public final class QuotaConfigurationInfo implements JsonSerializable<QuotaConfi
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -118,6 +130,7 @@ public final class QuotaConfigurationInfo implements JsonSerializable<QuotaConfi
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the QuotaConfigurationInfo.
      */
+    @Generated
     public static QuotaConfigurationInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             QuotaConfigurationInfo deserializedQuotaConfigurationInfo = new QuotaConfigurationInfo();

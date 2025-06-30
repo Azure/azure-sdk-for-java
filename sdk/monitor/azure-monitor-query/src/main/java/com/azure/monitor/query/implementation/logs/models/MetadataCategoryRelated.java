@@ -5,6 +5,7 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,31 +21,37 @@ public final class MetadataCategoryRelated implements JsonSerializable<MetadataC
     /*
      * The tables related to the category
      */
+    @Generated
     private List<String> tables;
 
     /*
      * The functions related to the category
      */
+    @Generated
     private List<String> functions;
 
     /*
      * The resource types related to the category
      */
+    @Generated
     private List<String> resourceTypes;
 
     /*
      * The saved queries related to the category
      */
+    @Generated
     private List<String> queries;
 
     /*
      * The Log Analytics solutions related to the category
      */
+    @Generated
     private List<String> solutions;
 
     /**
      * Creates an instance of MetadataCategoryRelated class.
      */
+    @Generated
     public MetadataCategoryRelated() {
     }
 
@@ -53,6 +60,7 @@ public final class MetadataCategoryRelated implements JsonSerializable<MetadataC
      * 
      * @return the tables value.
      */
+    @Generated
     public List<String> getTables() {
         return this.tables;
     }
@@ -63,6 +71,7 @@ public final class MetadataCategoryRelated implements JsonSerializable<MetadataC
      * @param tables the tables value to set.
      * @return the MetadataCategoryRelated object itself.
      */
+    @Generated
     public MetadataCategoryRelated setTables(List<String> tables) {
         this.tables = tables;
         return this;
@@ -73,6 +82,7 @@ public final class MetadataCategoryRelated implements JsonSerializable<MetadataC
      * 
      * @return the functions value.
      */
+    @Generated
     public List<String> getFunctions() {
         return this.functions;
     }
@@ -83,6 +93,7 @@ public final class MetadataCategoryRelated implements JsonSerializable<MetadataC
      * @param functions the functions value to set.
      * @return the MetadataCategoryRelated object itself.
      */
+    @Generated
     public MetadataCategoryRelated setFunctions(List<String> functions) {
         this.functions = functions;
         return this;
@@ -93,6 +104,7 @@ public final class MetadataCategoryRelated implements JsonSerializable<MetadataC
      * 
      * @return the resourceTypes value.
      */
+    @Generated
     public List<String> getResourceTypes() {
         return this.resourceTypes;
     }
@@ -103,6 +115,7 @@ public final class MetadataCategoryRelated implements JsonSerializable<MetadataC
      * @param resourceTypes the resourceTypes value to set.
      * @return the MetadataCategoryRelated object itself.
      */
+    @Generated
     public MetadataCategoryRelated setResourceTypes(List<String> resourceTypes) {
         this.resourceTypes = resourceTypes;
         return this;
@@ -113,6 +126,7 @@ public final class MetadataCategoryRelated implements JsonSerializable<MetadataC
      * 
      * @return the queries value.
      */
+    @Generated
     public List<String> getQueries() {
         return this.queries;
     }
@@ -123,6 +137,7 @@ public final class MetadataCategoryRelated implements JsonSerializable<MetadataC
      * @param queries the queries value to set.
      * @return the MetadataCategoryRelated object itself.
      */
+    @Generated
     public MetadataCategoryRelated setQueries(List<String> queries) {
         this.queries = queries;
         return this;
@@ -133,6 +148,7 @@ public final class MetadataCategoryRelated implements JsonSerializable<MetadataC
      * 
      * @return the solutions value.
      */
+    @Generated
     public List<String> getSolutions() {
         return this.solutions;
     }
@@ -143,6 +159,7 @@ public final class MetadataCategoryRelated implements JsonSerializable<MetadataC
      * @param solutions the solutions value to set.
      * @return the MetadataCategoryRelated object itself.
      */
+    @Generated
     public MetadataCategoryRelated setSolutions(List<String> solutions) {
         this.solutions = solutions;
         return this;
@@ -151,6 +168,7 @@ public final class MetadataCategoryRelated implements JsonSerializable<MetadataC
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -171,6 +189,7 @@ public final class MetadataCategoryRelated implements JsonSerializable<MetadataC
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the MetadataCategoryRelated.
      */
+    @Generated
     public static MetadataCategoryRelated fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MetadataCategoryRelated deserializedMetadataCategoryRelated = new MetadataCategoryRelated();
