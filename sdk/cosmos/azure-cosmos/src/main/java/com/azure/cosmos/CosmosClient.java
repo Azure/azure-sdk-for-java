@@ -328,7 +328,7 @@ public final class CosmosClient implements Closeable {
     /**
      * Reads the Cosmos database account.
      *
-     * @param shouldUseCache whether to use the CosmosClient-internal cache for reading the database account.
+     * @param shouldUseCache a boolean flag to determine whether to use the CosmosClient's-internal cache for reading the database account (setting shouldUseFlag to true can return stale data).
      * @return the {@link CosmosDatabaseAccountResponse} with the read database account.
      */
     public CosmosDatabaseAccountResponse readDatabaseAccount(boolean shouldUseCache) {

@@ -8,10 +8,9 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 
 import java.util.List;
 
-/***
- * Represents the configuration of a Cosmos DB database account, including its read and write regions,
- * multi-write capabilities, and consistency level.
- */
+/**
+ * Represents the Cosmos DB account. A Cosmos DB account is a container for databases.
+ * */
 public class CosmosDatabaseAccountResponse {
 
     private final String id;
@@ -62,7 +61,7 @@ public class CosmosDatabaseAccountResponse {
     /**
      * Indicates whether the Cosmos DB account is configured with multiple write regions.
      *
-     * @return true if the account supports multi-write, false otherwise.
+     * @return true if the account supports multiple write regions, false otherwise.
      */
     public Boolean isMultiWriteAccount() {
         return this.isMultiWriteAccount;
