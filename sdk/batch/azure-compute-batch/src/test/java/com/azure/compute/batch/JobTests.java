@@ -185,10 +185,24 @@ public class JobTests extends BatchClientTestBase {
             Assertions.assertEquals(BatchAllTasksCompleteMode.TERMINATE_JOB, job.getAllTasksCompleteMode());
 
             // ENABLE
-            SyncAsyncExtension.execute(() -> batchClient.enableJob(jobId), () -> batchAsyncClient.enableJob(jobId));
+            SyncPoller<BatchJob, BatchJob> enablePoller
+                = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginEnableJob(jobId),
+                    () -> Mono.fromCallable(() -> batchAsyncClient.beginEnableJob(jobId).getSyncPoller())));
 
-            job = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
-            Assertions.assertEquals(BatchJobState.ACTIVE, job.getState());
+            // Inspect first poll
+            PollResponse<BatchJob> enableFirst = enablePoller.poll();
+            if (enableFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+                BatchJob enableDuringPoll = enableFirst.getValue();
+                Assertions.assertNotNull(enableDuringPoll);
+                Assertions.assertEquals(jobId, enableDuringPoll.getId());
+                Assertions.assertEquals(BatchJobState.ENABLING, enableDuringPoll.getState());
+            }
+
+            enablePoller.waitForCompletion();
+
+            BatchJob enabledJob = enablePoller.getFinalResult();
+            Assertions.assertNotNull(enabledJob);
+            Assertions.assertEquals(BatchJobState.ACTIVE, enabledJob.getState());
 
             // TERMINATE
             BatchJobTerminateParameters terminateParams
