@@ -6278,9 +6278,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Mono<CosmosDatabaseAccountResponse> readDatabaseAccount(boolean shouldUseCache) {
+    public Mono<CosmosDatabaseAccountResponse> readDatabaseAccount(boolean shouldUseCachedAccountSnapshot) {
 
-        if (shouldUseCache) {
+        if (shouldUseCachedAccountSnapshot) {
             return Mono.just(this.globalEndpointManager.getLatestDatabaseAccount())
                 .flatMap(databaseAccount -> {
 
@@ -6305,7 +6305,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     ));
                 });
         } else {
-            return GlobalEndpointManager.getDatabaseAccountFromAnyLocationsAsync(this.serviceEndpoint, this.globalEndpointManager.getEffectivePreferredRegions(), uri -> this.globalEndpointManager.getDatabaseAccountAsync(uri, false))
+            return GlobalEndpointManager.getDatabaseAccountFromAnyLocationsAsync(this.serviceEndpoint, this.globalEndpointManager.getEffectivePreferredRegions(), this.globalEndpointManager::getDatabaseAccountAsync)
                 .flatMap(databaseAccount -> {
 
                     List<String> readableRegions

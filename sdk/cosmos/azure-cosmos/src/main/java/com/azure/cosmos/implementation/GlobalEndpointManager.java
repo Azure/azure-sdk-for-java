@@ -206,7 +206,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                 Mono<DatabaseAccount> databaseAccountObs = getDatabaseAccountFromAnyLocationsAsync(
                     this.defaultEndpoint,
                     new ArrayList<>(this.getEffectivePreferredRegions()),
-                    serviceEndpoint -> getDatabaseAccountAsync(serviceEndpoint, true));
+                    this::getDatabaseAccountAsync);
 
                 return databaseAccountObs.map(dbAccount -> {
                     this.databaseAccountWriteLock.lock();
@@ -273,7 +273,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                     Mono<DatabaseAccount> databaseAccountObs = getDatabaseAccountFromAnyLocationsAsync(
                             this.defaultEndpoint,
                             new ArrayList<>(this.getEffectivePreferredRegions()),
-                        serviceEndpoint -> getDatabaseAccountAsync(serviceEndpoint, true));
+                        this::getDatabaseAccountAsync);
 
                     return databaseAccountObs.map(dbAccount -> {
                         this.databaseAccountWriteLock.lock();
@@ -340,7 +340,7 @@ public class GlobalEndpointManager implements AutoCloseable {
 
                             logger.debug("startRefreshLocationTimerAsync() - Invoking refresh, I was registered on [{}]", now);
                             Mono<DatabaseAccount> databaseAccountObs = GlobalEndpointManager.getDatabaseAccountFromAnyLocationsAsync(this.defaultEndpoint, new ArrayList<>(this.getEffectivePreferredRegions()),
-                                serviceEndpoint -> getDatabaseAccountAsync(serviceEndpoint, true));
+                                this::getDatabaseAccountAsync);
 
                             return databaseAccountObs.flatMap(dbAccount -> {
                                 logger.info("db account retrieved {}", dbAccount);
@@ -360,14 +360,9 @@ public class GlobalEndpointManager implements AutoCloseable {
         return this.hasThinClientReadLocations.get();
     }
 
-    public Mono<DatabaseAccount> getDatabaseAccountAsync(URI serviceEndpoint, boolean resetCache) {
+    public Mono<DatabaseAccount> getDatabaseAccountAsync(URI serviceEndpoint) {
         return this.owner.getDatabaseAccountFromEndpoint(serviceEndpoint)
             .doOnNext(databaseAccount -> {
-
-                if (!resetCache) {
-                    return;
-                }
-
                 if(databaseAccount != null) {
 
                     this.databaseAccountWriteLock.lock();
