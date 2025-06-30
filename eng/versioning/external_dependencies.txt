@@ -86,7 +86,7 @@ org.codehaus.groovy:groovy-jsr223;3.0.19
 org.codehaus.janino:janino;3.1.10
 org.codehaus.woodstox:stax2-api;4.2.2
 org.conscrypt:conscrypt-openjdk-uber;2.5.2
-org.glassfish.tyrus:tyrus-client;1.16
+org.glassfish.tyrus:tyrus-container-grizzly-client;1.21
 org.openjfx:javafx-graphics;17.0.6
 org.graalvm.buildtools:junit-platform-native;0.9.19
 org.graalvm.buildtools:native-maven-plugin;0.10.5

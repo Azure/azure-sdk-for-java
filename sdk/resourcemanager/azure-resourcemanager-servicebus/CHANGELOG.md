@@ -1,17 +1,21 @@
 # Release History
 
-## 2.52.0-beta.1 (Unreleased)
+## 2.53.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Supported disabling SAS authentication for `ServiceBusNamespace`.
-- Supported chained declaration of `withListeningEnabled`, `withSendingEnabled` and `withManagingEnabled` during creation of `NamespaceAuthorizationRule`, `QueueAuthorizationRule` and `TopicAuthorizationRule`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.52.0 (2025-06-27)
+
+### Features Added
+
+- Supported disabling SAS authentication for `ServiceBusNamespace`.
+- Supported chained declaration of `withListeningEnabled`, `withSendingEnabled` and `withManagingEnabled` during creation of `NamespaceAuthorizationRule`, `QueueAuthorizationRule` and `TopicAuthorizationRule`.
 
 ## 2.51.0 (2025-05-26)
 
