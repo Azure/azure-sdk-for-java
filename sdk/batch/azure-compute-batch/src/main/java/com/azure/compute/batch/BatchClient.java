@@ -11288,6 +11288,33 @@ public final class BatchClient {
     }
 
     /**
+     * Begins terminating the specified Job, marking it as completed.
+     *
+     * When a Terminate Job request is received, the Batch service sets the Job to the
+     * terminating state. The Batch service then terminates any running Tasks
+     * associated with the Job and runs any required Job release Tasks. Then the Job
+     * moves into the completed state. If there are any Tasks in the Job in the active
+     * state, they will remain in the active state. Once a Job is terminated, new
+     * Tasks cannot be added and any remaining active Tasks will not be scheduled.
+     *
+     * @param jobId The ID of the Job to terminate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the termination of the Job.
+     * The poller provides {@link BatchJob} instances during polling and returns the last known
+     * {@link BatchJob} on completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchJob, BatchJob> beginTerminateJob(String jobId) {
+        PollerFlux<BatchJob, BatchJob> asyncPoller = asyncClient.beginTerminateJob(jobId, null, null);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
      * Lists all of the Jobs in the specified Account.
      *
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -13040,6 +13067,36 @@ public final class BatchClient {
             requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
         terminateJobWithResponse(jobId, requestOptions).getValue();
+    }
+
+    /**
+     * Begins terminating the specified Job, marking it as completed.
+     *
+     * When a Terminate Job request is received, the Batch service sets the Job to the
+     * terminating state. The Batch service then terminates any running Tasks
+     * associated with the Job and runs any required Job release Tasks. Then the Job
+     * moves into the completed state. If there are any Tasks in the Job in the active
+     * state, they will remain in the active state. Once a Job is terminated, new
+     * Tasks cannot be added and any remaining active Tasks will not be scheduled.
+     *
+     * @param jobId The ID of the Job to terminate.
+     * @param options Optional parameters for Terminate Job operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the termination of the Job.
+     * The poller provides {@link BatchJob} instances during polling and returns the last known
+     * {@link BatchJob} on completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchJob, BatchJob> beginTerminateJob(String jobId, BatchJobTerminateOptions options,
+        RequestConditions requestConditions) {
+        PollerFlux<BatchJob, BatchJob> asyncPoller = asyncClient.beginTerminateJob(jobId, options, requestConditions);
+        return asyncPoller.getSyncPoller();
     }
 
     /**
