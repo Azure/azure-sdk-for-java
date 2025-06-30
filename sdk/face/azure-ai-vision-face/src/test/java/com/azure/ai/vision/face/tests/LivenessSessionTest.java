@@ -12,13 +12,13 @@ import com.azure.ai.vision.face.models.LivenessSession;
 import com.azure.ai.vision.face.models.OperationState;
 import com.azure.ai.vision.face.tests.commands.liveness.ILivenessSessionSyncCommands;
 import com.azure.ai.vision.face.tests.commands.liveness.LivenessSessionCommandsProvider;
-import com.azure.ai.vision.face.tests.utils.FaceDisplayNameGenerator;
 import com.azure.ai.vision.face.tests.utils.TestUtils;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -30,7 +30,7 @@ import java.util.UUID;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-@DisplayNameGeneration(FaceDisplayNameGenerator.class)
+@DisplayNameGeneration(DisplayNameGenerator.Standard.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class LivenessSessionTest extends FaceClientTestBase {
     private ILivenessSessionSyncCommands mCurrentCommand;

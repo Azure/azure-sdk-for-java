@@ -14,7 +14,6 @@ import com.azure.ai.vision.face.samples.utils.Resources;
 import com.azure.ai.vision.face.samples.utils.Utils;
 import com.azure.ai.vision.face.tests.commands.liveness.ILivenessWithVerifySessionSyncCommands;
 import com.azure.ai.vision.face.tests.commands.liveness.LivenessSessionWithVerifyCommandsProvider;
-import com.azure.ai.vision.face.tests.utils.FaceDisplayNameGenerator;
 import com.azure.ai.vision.face.tests.utils.TestUtils;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.BinaryData;
@@ -23,6 +22,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -36,7 +36,9 @@ import java.util.stream.Stream;
 
 import com.azure.ai.vision.face.models.VerifyImageFileDetails;
 
-@DisplayNameGeneration(FaceDisplayNameGenerator.class)
+import com.azure.ai.vision.face.models.VerifyImageFileDetails;
+
+@DisplayNameGeneration(DisplayNameGenerator.Standard.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @RecordWithoutRequestBody
 public class LivenessSessionWithVerifyTest extends FaceClientTestBase {
@@ -91,9 +93,9 @@ public class LivenessSessionWithVerifyTest extends FaceClientTestBase {
 
         CreateLivenessWithVerifySessionContent content
             = new CreateLivenessWithVerifySessionContent(LivenessOperationMode.PASSIVE, verifyImageFileDetails)
-                .setDeviceCorrelationIdSetInClient(false) // When setting deviceCorrelationId, this should be false
-                .setDeviceCorrelationId(uuid) // Set the actual UUID
-                .setAuthTokenTimeToLiveInSeconds(authTokenTimeToLiveInSeconds); // Set valid TTL instead of null
+                .setDeviceCorrelationIdSetInClient(false)
+                .setDeviceCorrelationId(uuid)
+                .setAuthTokenTimeToLiveInSeconds(authTokenTimeToLiveInSeconds);
 
         createSessionAndVerify(livenessCommands, content);
     }
