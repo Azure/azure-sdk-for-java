@@ -6,25 +6,11 @@ package com.azure.identity;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.implementation.IdentityClient;
-import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
-import com.azure.identity.implementation.MsalToken;
-import com.azure.identity.implementation.VisualStudioCacheAccessor;
 import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.identity.implementation.util.IdentityUtil.isVsCodeBrokerAuthAvailable;
 import static com.azure.identity.implementation.util.IdentityUtil.loadVSCodeAuthRecord;
@@ -112,7 +98,8 @@ public class VisualStudioCodeCredential implements TokenCredential {
             // Broker not on classpath
             return null;
         } catch (Exception e) {
-            throw LOGGER.logExceptionAsError(new CredentialUnavailableException("Failed to create VisualStudioCodeCredential dynamically", e));
+            throw LOGGER.logExceptionAsError(
+                new CredentialUnavailableException("Failed to create VisualStudioCodeCredential dynamically", e));
         }
     }
 }

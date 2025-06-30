@@ -3,29 +3,9 @@
 
 package com.azure.identity;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.identity.implementation.IdentityClient;
-import com.azure.identity.implementation.IdentitySyncClient;
-import com.azure.identity.util.TestUtils;
-import com.microsoft.aad.msal4j.MsalServiceException;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedConstruction;
-import org.mockito.exceptions.misusing.InvalidUseOfMatchersException;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.util.UUID;
-import java.util.function.Consumer;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mockConstruction;
-import static org.mockito.Mockito.when;
 
 public class VisualStudioCodeCredentialTest {
     @Test

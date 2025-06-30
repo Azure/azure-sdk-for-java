@@ -170,11 +170,11 @@ To authenticate using Visual Studio Code, ensure you have signed in through the 
 
 - [Azure Resources Extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureresourcegroups) is installed in Visual Studio Code.
 - You are signed in using the `Azure: Sign In` command in VS Code.
-- Your project includes the [`azure-identity-borkers`](https://search.maven.org/artifact/com.azure/azure-identity-broker) package.
+- Your project includes the [`azure-identity-borker`](https://search.maven.org/artifact/com.azure/azure-identity-broker) package.
 
-## Example: Use `DefaultAzureCredential` with Key Vault
+#### Example: Use `DefaultAzureCredential` with Key Vault
 
-The following example demonstrates authenticating the `SecretClient` from the [`azure-security-keyvault-secrets`](https://learn.microsoft.com/java/api/overview/azure/keyvault-secrets-readme?view=azure-java-stable) client library using `DefaultAzureCredential`:
+The following example demonstrates authenticating the `SecretClient` from the [`azure-security-keyvault-secrets`](https://learn.microsoft.com/java/api/overview/azure/security-keyvault-secrets-readme?view=azure-java-stable) client library using `DefaultAzureCredential`:
 
 ```java
 /**
@@ -183,13 +183,13 @@ The following example demonstrates authenticating the `SecretClient` from the [`
  */
 public void createDefaultAzureCredentialForVSCode() {
     DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder()
-    .build();
+        .build();
 
     // Azure SDK client builders accept the credential as a parameter
     SecretClient client = new SecretClientBuilder()
-    .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
-    .credential(defaultCredential)
-    .buildClient();
+        .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+        .credential(defaultCredential)
+        .buildClient();
     }
 ```
 

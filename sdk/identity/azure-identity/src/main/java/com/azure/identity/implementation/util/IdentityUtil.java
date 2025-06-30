@@ -181,7 +181,7 @@ public final class IdentityUtil {
     public static boolean isVsCodeBrokerAuthAvailable() {
         try {
             // 1. Check if Broker dependency is available
-            Class.forName("com.azure.identity.broker.InteractiveBrowserBrokerBuilder");
+            Class.forName("com.azure.identity.broker.InteractiveBrowserBrokerCredentialBuilder");
 
             // 2. Check if VS Code broker auth record file exists
             File authRecordFile = VSCODE_AUTH_RECORD_PATH.toFile();
