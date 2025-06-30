@@ -29,7 +29,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
     private static final Logger logger = LoggerFactory.getLogger(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
     private final ConcurrentHashMap<PartitionKeyRangeWrapper, PartitionLevelFailoverInfo> partitionKeyRangeToFailoverInfo;
-    private final ConcurrentHashMap<PartitionKeyRangeWrapper, EndToEndTimeoutErrorTracker> partitionKeyRangeToEndToEndTimeoutErrorTracker;
+    private final ConcurrentHashMap<PartitionKeyRangeWrapper, RequestTimeoutErrorTracker> partitionKeyRangeToEndToEndTimeoutErrorTracker;
     private final GlobalEndpointManager globalEndpointManager;
     private final AtomicBoolean isPerPartitionAutomaticFailoverEnabled;
     private final AtomicInteger warnLevelLoggedCounts = new AtomicInteger(0);
@@ -180,7 +180,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         return false;
     }
 
-    public boolean tryMarkEndpointAsUnavailableForPartitionKeyRange(RxDocumentServiceRequest request, boolean isEndToEndTimeoutHit) {
+    public boolean tryMarkEndpointAsUnavailableForPartitionKeyRange(RxDocumentServiceRequest request, boolean isRequestTimeoutHit) {
 
         boolean isPerPartitionAutomaticFailoverEnabledSnapshot = this.isPerPartitionAutomaticFailoverEnabled.get();
 
@@ -209,23 +209,23 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
 
         PartitionKeyRangeWrapper partitionKeyRangeWrapper = new PartitionKeyRangeWrapper(partitionKeyRange, resolvedCollectionRid);
 
-        if (isEndToEndTimeoutHit) {
-            EndToEndTimeoutErrorTracker endToEndTimeoutErrorTrackerSnapshot = this.partitionKeyRangeToEndToEndTimeoutErrorTracker.get(partitionKeyRangeWrapper);
+        if (isRequestTimeoutHit) {
+            RequestTimeoutErrorTracker requestTimeoutErrorTrackerSnapshot = this.partitionKeyRangeToEndToEndTimeoutErrorTracker.get(partitionKeyRangeWrapper);
 
-            if (endToEndTimeoutErrorTrackerSnapshot != null) {
+            if (requestTimeoutErrorTrackerSnapshot != null) {
 
-                Instant failureWindowStart = endToEndTimeoutErrorTrackerSnapshot.getFailureWindowStart();
-                int errorCount = endToEndTimeoutErrorTrackerSnapshot.getErrorCount();
+                Instant failureWindowStart = requestTimeoutErrorTrackerSnapshot.getFailureWindowStart();
+                int errorCount = requestTimeoutErrorTrackerSnapshot.getErrorCount();
 
-                if (Duration.between(failureWindowStart, Instant.now()).getSeconds() >= Configs.getAllowedTimeWindowForE2ETimeoutHitCountTrackingInSecsForPPAF()) {
-                    this.partitionKeyRangeToEndToEndTimeoutErrorTracker.put(partitionKeyRangeWrapper, new EndToEndTimeoutErrorTracker(Instant.now(), 1));
+                if (Duration.between(failureWindowStart, Instant.now()).getSeconds() >= Configs.getAllowedRequestTimeoutHitTimeWindowInSecsForPPAF()) {
+                    this.partitionKeyRangeToEndToEndTimeoutErrorTracker.put(partitionKeyRangeWrapper, new RequestTimeoutErrorTracker(Instant.now(), 1));
                     return false;
-                } else if (errorCount < Configs.getAllowedE2ETimeoutHitCountForPPAF()) {
-                    this.partitionKeyRangeToEndToEndTimeoutErrorTracker.put(partitionKeyRangeWrapper, new EndToEndTimeoutErrorTracker(failureWindowStart, errorCount + 1));
+                } else if (errorCount < Configs.getAllowedRequestTimeoutHitThresholdForPPAF()) {
+                    this.partitionKeyRangeToEndToEndTimeoutErrorTracker.put(partitionKeyRangeWrapper, new RequestTimeoutErrorTracker(failureWindowStart, errorCount + 1));
                     return false;
                 }
             } else {
-                this.partitionKeyRangeToEndToEndTimeoutErrorTracker.put(partitionKeyRangeWrapper, new EndToEndTimeoutErrorTracker(Instant.now(), 1));
+                this.partitionKeyRangeToEndToEndTimeoutErrorTracker.put(partitionKeyRangeWrapper, new RequestTimeoutErrorTracker(Instant.now(), 1));
                 return false;
             }
         }

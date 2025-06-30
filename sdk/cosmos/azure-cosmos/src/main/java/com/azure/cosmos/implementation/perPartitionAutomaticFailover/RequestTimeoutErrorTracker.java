@@ -5,13 +5,13 @@ package com.azure.cosmos.implementation.perPartitionAutomaticFailover;
 
 import java.time.Instant;
 
-public class EndToEndTimeoutErrorTracker {
+public class RequestTimeoutErrorTracker {
 
     private final Instant failureWindowStart;
 
     private final int errorCount;
 
-    public EndToEndTimeoutErrorTracker(Instant failureWindowStart, int errorCount) {
+    public RequestTimeoutErrorTracker(Instant failureWindowStart, int errorCount) {
         this.failureWindowStart = failureWindowStart;
         this.errorCount = errorCount;
     }

@@ -958,7 +958,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             try {
 
                 if (shouldUseE2ETimeout) {
-                    System.setProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF", "2");
+                    System.setProperty("COSMOS.REQUEST_TIMEOUT_HIT_THRESHOLD_AND_PPAF", "2");
                 }
 
                 System.setProperty("COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED", "true");
@@ -1027,7 +1027,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
                 if (shouldUseE2ETimeout) {
 
-                    int iterationsToRun = Configs.getAllowedE2ETimeoutHitCountForPPAF();
+                    int iterationsToRun = Configs.getAllowedRequestTimeoutHitThresholdForPPAF();
 
                     for (int i = 1; i <= iterationsToRun + 1; i++) {
                         ResponseWrapper<?> responseBeforeFailover = dataPlaneOperation.apply(operationInvocationParamsWrapper);
@@ -1043,7 +1043,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             } catch (Exception e) {
                 Assertions.fail("The test ran into an exception {}", e);
             } finally {
-                System.clearProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF");
+                System.clearProperty("COSMOS.REQUEST_TIMEOUT_HIT_THRESHOLD_AND_PPAF");
                 System.clearProperty("COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED");
                 safeClose(cosmosAsyncClientValueHolder.v);
             }
@@ -1058,7 +1058,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             try {
 
                 if (shouldUseE2ETimeout) {
-                    System.setProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF", "2");
+                    System.setProperty("COSMOS.REQUEST_TIMEOUT_HIT_THRESHOLD_AND_PPAF", "2");
                 }
 
                 System.setProperty("COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED", "true");
@@ -1121,7 +1121,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
                 if (shouldUseE2ETimeout) {
 
-                    int iterationsToRun = Configs.getAllowedE2ETimeoutHitCountForPPAF();
+                    int iterationsToRun = Configs.getAllowedRequestTimeoutHitThresholdForPPAF();
 
                     for (int i = 1; i <= iterationsToRun + 1; i++) {
                         ResponseWrapper<?> responseBeforeFailover = dataPlaneOperation.apply(operationInvocationParamsWrapper);
@@ -1139,7 +1139,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             } catch (Exception e) {
                 Assertions.fail("The test ran into an exception {}", e);
             } finally {
-                System.clearProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF");
+                System.clearProperty("COSMOS.REQUEST_TIMEOUT_HIT_THRESHOLD_AND_PPAF");
                 System.clearProperty("COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED");
                 safeClose(cosmosAsyncClientValueHolder.v);
             }
