@@ -1,0 +1,28 @@
+{
+  "flavor": "azure", 
+  "CrossLanguageDefinitionId": {
+    "com.azure.resourcemanager.containerservicesafeguards.fluent.ContainerServiceSafeguardsManagementClient": "Microsoft.ContainerService",
+    "com.azure.resourcemanager.containerservicesafeguards.fluent.DeploymentSafeguardsClient": "Microsoft.ContainerService.DeploymentSafeguards",
+    "com.azure.resourcemanager.containerservicesafeguards.fluent.DeploymentSafeguardsClient.beginCreate": "Microsoft.ContainerService.DeploymentSafeguards.create",
+    "com.azure.resourcemanager.containerservicesafeguards.fluent.DeploymentSafeguardsClient.beginDelete": "Microsoft.ContainerService.DeploymentSafeguards.delete",
+    "com.azure.resourcemanager.containerservicesafeguards.fluent.DeploymentSafeguardsClient.create": "Microsoft.ContainerService.DeploymentSafeguards.create",
+    "com.azure.resourcemanager.containerservicesafeguards.fluent.DeploymentSafeguardsClient.delete": "Microsoft.ContainerService.DeploymentSafeguards.delete",
+    "com.azure.resourcemanager.containerservicesafeguards.fluent.DeploymentSafeguardsClient.get": "Microsoft.ContainerService.DeploymentSafeguards.get",
+    "com.azure.resourcemanager.containerservicesafeguards.fluent.DeploymentSafeguardsClient.getWithResponse": "Microsoft.ContainerService.DeploymentSafeguards.get",
+    "com.azure.resourcemanager.containerservicesafeguards.fluent.DeploymentSafeguardsClient.list": "Microsoft.ContainerService.DeploymentSafeguards.list",
+    "com.azure.resourcemanager.containerservicesafeguards.fluent.OperationsClient": "Microsoft.ContainerService.Operations",
+    "com.azure.resourcemanager.containerservicesafeguards.fluent.OperationsClient.list": "Azure.ResourceManager.Operations.list",
+    "com.azure.resourcemanager.containerservicesafeguards.fluent.models.DeploymentSafeguardInner": "Microsoft.ContainerService.DeploymentSafeguard",
+    "com.azure.resourcemanager.containerservicesafeguards.fluent.models.OperationInner": "Azure.ResourceManager.CommonTypes.Operation",
+    "com.azure.resourcemanager.containerservicesafeguards.implementation.ContainerServiceSafeguardsManagementClientBuilder": "Microsoft.ContainerService",
+    "com.azure.resourcemanager.containerservicesafeguards.implementation.models.DeploymentSafeguardListResult": "Azure.ResourceManager.ResourceListResult",
+    "com.azure.resourcemanager.containerservicesafeguards.implementation.models.OperationListResult": "Azure.ResourceManager.CommonTypes.OperationListResult",
+    "com.azure.resourcemanager.containerservicesafeguards.models.ActionType": "Azure.ResourceManager.CommonTypes.ActionType",
+    "com.azure.resourcemanager.containerservicesafeguards.models.DeploymentSafeguardsLevel": "Microsoft.ContainerService.DeploymentSafeguardsLevel",
+    "com.azure.resourcemanager.containerservicesafeguards.models.DeploymentSafeguardsProperties": "Microsoft.ContainerService.DeploymentSafeguardsProperties",
+    "com.azure.resourcemanager.containerservicesafeguards.models.OperationDisplay": "Azure.ResourceManager.CommonTypes.OperationDisplay",
+    "com.azure.resourcemanager.containerservicesafeguards.models.Origin": "Azure.ResourceManager.CommonTypes.Origin",
+    "com.azure.resourcemanager.containerservicesafeguards.models.PodSecurityStandardsLevel": "Microsoft.ContainerService.PodSecurityStandardsLevel",
+    "com.azure.resourcemanager.containerservicesafeguards.models.ProvisioningState": "Microsoft.ContainerService.ProvisioningState"
+  }
+}
