@@ -14,8 +14,12 @@ import java.util.Map;
 /**
  * Job output canceling event data. Schema of the data property of an EventGridEvent for a
  * Microsoft.Media.JobOutputCanceling event.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Fluent
+@Deprecated
 public final class MediaJobOutputCancelingEventData extends MediaJobOutputStateChangeEventData {
 
     /*

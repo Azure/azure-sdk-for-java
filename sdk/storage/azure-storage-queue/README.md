@@ -123,7 +123,7 @@ Go to your storage account -> Access Keys -> Keys 1/ Key 2 -> Connection string
 ### URL format
 Queues are addressable using the following URL format:
 The following URL addresses a queue in the diagram:
-https://myaccount.queue.core.windows.net/images-to-download
+`https://myaccount.queue.core.windows.net/images-to-download`
 
 #### Resource URI Syntax
 For the storage account, the base URI for queue operations includes the name of the account only:

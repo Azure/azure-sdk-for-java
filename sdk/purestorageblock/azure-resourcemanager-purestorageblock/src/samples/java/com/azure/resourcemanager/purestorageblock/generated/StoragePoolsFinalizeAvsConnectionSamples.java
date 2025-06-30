@@ -12,7 +12,7 @@ import com.azure.resourcemanager.purestorageblock.models.StoragePoolFinalizeAvsC
  */
 public final class StoragePoolsFinalizeAvsConnectionSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/StoragePools_FinalizeAvsConnection_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-01/StoragePools_FinalizeAvsConnection_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_FinalizeAvsConnection.

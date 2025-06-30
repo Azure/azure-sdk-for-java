@@ -29,7 +29,7 @@ public final class ContainerRegistryEventSource implements JsonSerializable<Cont
      * The running instance of an application. Changes after each restart.
      */
     @Generated
-    private String instanceID;
+    private String instanceId;
 
     /**
      * Creates an instance of ContainerRegistryEventSource class.
@@ -50,13 +50,13 @@ public final class ContainerRegistryEventSource implements JsonSerializable<Cont
     }
 
     /**
-     * Get the instanceID property: The running instance of an application. Changes after each restart.
+     * Get the instanceId property: The running instance of an application. Changes after each restart.
      * 
-     * @return the instanceID value.
+     * @return the instanceId value.
      */
     @Generated
-    public String getInstanceID() {
-        return this.instanceID;
+    public String getInstanceId() {
+        return this.instanceId;
     }
 
     /**
@@ -67,7 +67,7 @@ public final class ContainerRegistryEventSource implements JsonSerializable<Cont
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("addr", this.addr);
-        jsonWriter.writeStringField("instanceID", this.instanceID);
+        jsonWriter.writeStringField("instanceID", this.instanceId);
         return jsonWriter.writeEndObject();
     }
 
@@ -90,7 +90,7 @@ public final class ContainerRegistryEventSource implements JsonSerializable<Cont
                 if ("addr".equals(fieldName)) {
                     deserializedContainerRegistryEventSource.addr = reader.getString();
                 } else if ("instanceID".equals(fieldName)) {
-                    deserializedContainerRegistryEventSource.instanceID = reader.getString();
+                    deserializedContainerRegistryEventSource.instanceId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
