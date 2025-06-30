@@ -11260,12 +11260,12 @@ public final class BatchAsyncClient {
     }
 
     /**
-     * Begins deleting a Job from the specified Account asynchronously.
+     * Deletes a Job.
      *
      * Deleting a Job also deletes all Tasks that are part of that Job, and all Job
      * statistics. This also overrides the retention period for Task data; that is, if
      * the Job contains Tasks which are still retained on Compute Nodes, the Batch
-     * service deletes those Tasks' working directories and all their contents. When
+     * services deletes those Tasks' working directories and all their contents. When
      * a Delete Job request is received, the Batch service sets the Job to the
      * deleting state. All update operations on a Job that is in deleting state will
      * fail with status code 409 (Conflict), with additional information indicating
@@ -11273,10 +11273,7 @@ public final class BatchAsyncClient {
      *
      * @param jobId The ID of the Job to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link PollerFlux} that polls the deletion of the Job. The poller provides
      * {@link BatchJob} instances during polling and returns {@code null} upon successful deletion.
@@ -11404,13 +11401,19 @@ public final class BatchAsyncClient {
     }
 
     /**
-     * Begins terminating a Job from the specified Account asynchronously.
+     * Terminates the specified Job, marking it as completed.
      *
-     * When you terminate a Job, the Batch service sets the Job to the terminating state.
-     * Then it terminates any running tasks and runs job release tasks. Eventually, the Job
-     * moves to the completed state. New tasks cannot be added once a Job is terminating.
+     * When a Terminate Job request is received, the Batch service sets the Job to the
+     * terminating state. The Batch service then terminates any running Tasks
+     * associated with the Job and runs any required Job release Tasks. Then the Job
+     * moves into the completed state. If there are any Tasks in the Job in the active
+     * state, they will remain in the active state. Once a Job is terminated, new
+     * Tasks cannot be added and any remaining active Tasks will not be scheduled.
      *
      * @param jobId The ID of the Job to terminate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link PollerFlux} that polls the termination of the Job.
      * The poller provides {@link BatchJob} instances during polling and returns the final
      * {@link BatchJob} upon successful termination.
@@ -11746,7 +11749,7 @@ public final class BatchAsyncClient {
     }
 
     /**
-     * Begins deleting a Job Schedule from the specified Account asynchronously.
+     * Deletes a Job Schedule from the specified Account.
      *
      * When you delete a Job Schedule, this also deletes all Jobs and Tasks under that
      * schedule. When Tasks are deleted, all the files in their working directories on
@@ -11756,10 +11759,7 @@ public final class BatchAsyncClient {
      *
      * @param jobScheduleId The ID of the Job Schedule to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link PollerFlux} that polls the deletion of the Job Schedule. The poller provides
      * {@link BatchJobSchedule} instances during polling and returns {@code null} upon successful deletion.
@@ -11869,18 +11869,11 @@ public final class BatchAsyncClient {
     }
 
     /**
-     * Begins terminating a Job Schedule from the specified Account asynchronously.
+     * Terminates a Job Schedule.
      *
-     * When you terminate a Job Schedule, it stops future job creation from that schedule.
-     * The current job (if any) under the schedule will continue running, but no new jobs will be created.
-     * The Job Schedule's state transitions to COMPLETED once termination succeeds.
-     *
-     * @param jobScheduleId The ID of the Job Schedule to terminate.
+     * @param jobScheduleId The ID of the Job Schedule to terminates.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link PollerFlux} that polls the termination of the Job Schedule.
      * The poller provides {@link BatchJobSchedule} instances during polling and returns the final
@@ -13160,12 +13153,12 @@ public final class BatchAsyncClient {
     }
 
     /**
-     * Begins deleting a Job from the specified Account asynchronously, with support for optional parameters.
+     * Deletes a Job.
      *
      * Deleting a Job also deletes all Tasks that are part of that Job, and all Job
      * statistics. This also overrides the retention period for Task data; that is, if
      * the Job contains Tasks which are still retained on Compute Nodes, the Batch
-     * service deletes those Tasks' working directories and all their contents. When
+     * services deletes those Tasks' working directories and all their contents. When
      * a Delete Job request is received, the Batch service sets the Job to the
      * deleting state. All update operations on a Job that is in deleting state will
      * fail with status code 409 (Conflict), with additional information indicating
@@ -13174,6 +13167,9 @@ public final class BatchAsyncClient {
      * @param jobId The ID of the Job to delete.
      * @param options Optional parameters for Delete Job operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link PollerFlux} that polls the deletion of the Job. The poller provides
      * {@link BatchJob} instances during polling and returns {@code null} upon successful deletion.
      */
@@ -13474,7 +13470,7 @@ public final class BatchAsyncClient {
     }
 
     /**
-     * Begins terminating the specified Job asynchronously, marking it as completed.
+     * Terminates the specified Job, marking it as completed.
      *
      * When a Terminate Job request is received, the Batch service sets the Job to the
      * terminating state. The Batch service then terminates any running Tasks
@@ -13486,6 +13482,9 @@ public final class BatchAsyncClient {
      * @param jobId The ID of the Job to terminate.
      * @param options Optional parameters for Terminate Job operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link PollerFlux} that polls the termination of the Job.
      * The poller provides {@link BatchJob} instances during polling and returns the updated
      * {@link BatchJob} upon successful termination.
@@ -13961,7 +13960,7 @@ public final class BatchAsyncClient {
     }
 
     /**
-     * Begins deleting a Job Schedule from the specified Account asynchronously, with support for optional parameters.
+     * Deletes a Job Schedule from the specified Account.
      *
      * When you delete a Job Schedule, this also deletes all Jobs and Tasks under that
      * schedule. When Tasks are deleted, all the files in their working directories on
@@ -13972,6 +13971,9 @@ public final class BatchAsyncClient {
      * @param jobScheduleId The ID of the Job Schedule to delete.
      * @param options Optional parameters for Delete Job Schedule operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link PollerFlux} that polls the deletion of the Job Schedule. The poller provides
      * {@link BatchJobSchedule} instances during polling and returns {@code null} upon successful deletion.
      */
@@ -14252,16 +14254,14 @@ public final class BatchAsyncClient {
     }
 
     /**
-     * Begins terminating a Job Schedule from the specified Account asynchronously, with support for optional
-     * parameters.
+     * Terminates a Job Schedule.
      *
-     * When you terminate a Job Schedule, it stops future job creation from that schedule.
-     * The current job (if any) under the schedule will continue running, but no new jobs will be created.
-     * The Job Schedule's state transitions to COMPLETED once termination succeeds.
-     *
-     * @param jobScheduleId The ID of the Job Schedule to terminate.
+     * @param jobScheduleId The ID of the Job Schedule to terminates.
      * @param options Optional parameters for Terminate Job Schedule operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link PollerFlux} that polls the termination of the Job Schedule.
      * The poller provides {@link BatchJobSchedule} instances during polling and returns the updated
      * {@link BatchJobSchedule} upon successful termination.
