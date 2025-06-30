@@ -3,9 +3,6 @@
 package io.clientcore.http.netty4.implementation;
 
 import io.netty.handler.codec.http.HttpClientCodec;
-import io.netty.handler.codec.http2.Http2FrameCodec;
-import io.netty.handler.codec.http2.Http2MultiplexHandler;
-import io.netty.handler.flush.FlushConsolidationHandler;
 import io.netty.handler.proxy.ProxyHandler;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
@@ -38,29 +35,14 @@ public final class Netty4HandlerNames {
     public static final String SSL_INITIALIZER = "clientcore.sslinitializer";
 
     /**
-     * Name for the {@link Netty4H2OrHttp11Handler}.
+     * Name for the {@link Netty4AlpnHandler}.
      */
-    public static final String HTTP_VERSION_PICKER = "clientcore.httpversionpicker";
+    public static final String ALPN = "clientcore.alpn";
 
     /**
      * Name for the HTTP/1.1 {@link HttpClientCodec}
      */
-    public static final String HTTP_1_1_CODEC = "clientcore.http11codec";
-
-    /**
-     * Name for the HTTP/2 {@link FlushConsolidationHandler}.
-     */
-    public static final String HTTP_2_FLUSH = "clientcore.http2flush";
-
-    /**
-     * Name for the HTTP/2 {@link Http2FrameCodec}.
-     */
-    public static final String HTTP_2_CODEC = "clientcore.http2codec";
-
-    /**
-     * Name for the HTTP/2 {@link Http2MultiplexHandler}.
-     */
-    public static final String HTTP_2_MULTIPLEX = "clientcore.http2multiplex";
+    public static final String HTTP_CODEC = "clientcore.httpcodec";
 
     /**
      * Name for the {@link Netty4ProgressAndTimeoutHandler}.
@@ -75,7 +57,7 @@ public final class Netty4HandlerNames {
     /**
      * Name for the {@link Netty4ResponseHandler}.
      */
-    public static final String RESPONSE = "clientcore.response";
+    public static final String HTTP_RESPONSE = "clientcore.httpresponse";
 
     /**
      * Name for the {@link Netty4EagerConsumeChannelHandler}.

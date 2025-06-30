@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class StoragePoolsCreateSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/StoragePools_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-01/StoragePools_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_Create.

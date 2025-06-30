@@ -27,7 +27,7 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
      * Sets Endpoint id where the custom model was deployed.
      */
     @Generated
-    private String speechRecognitionModelEndpointId;
+    private String speechModelEndpointId;
 
     /*
      * The value to identify context of the operation.
@@ -72,25 +72,24 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
     }
 
     /**
-     * Get the speechRecognitionModelEndpointId property: Sets Endpoint id where the custom model was deployed.
+     * Get the speechModelEndpointId property: Sets Endpoint id where the custom model was deployed.
      * 
-     * @return the speechRecognitionModelEndpointId value.
+     * @return the speechModelEndpointId value.
      */
     @Generated
-    public String getSpeechRecognitionModelEndpointId() {
-        return this.speechRecognitionModelEndpointId;
+    public String getSpeechModelEndpointId() {
+        return this.speechModelEndpointId;
     }
 
     /**
-     * Set the speechRecognitionModelEndpointId property: Sets Endpoint id where the custom model was deployed.
+     * Set the speechModelEndpointId property: Sets Endpoint id where the custom model was deployed.
      * 
-     * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId value to set.
+     * @param speechModelEndpointId the speechModelEndpointId value to set.
      * @return the UpdateTranscriptionRequestInternal object itself.
      */
     @Generated
-    public UpdateTranscriptionRequestInternal
-        setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
-        this.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
+    public UpdateTranscriptionRequestInternal setSpeechModelEndpointId(String speechModelEndpointId) {
+        this.speechModelEndpointId = speechModelEndpointId;
         return this;
     }
 
@@ -150,7 +149,7 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("locale", this.locale);
-        jsonWriter.writeStringField("speechRecognitionModelEndpointId", this.speechRecognitionModelEndpointId);
+        jsonWriter.writeStringField("speechModelEndpointId", this.speechModelEndpointId);
         jsonWriter.writeStringField("operationContext", this.operationContext);
         jsonWriter.writeStringField("operationCallbackUri", this.operationCallbackUri);
         return jsonWriter.writeEndObject();
@@ -162,7 +161,6 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
      * @param jsonReader The JsonReader being read.
      * @return An instance of UpdateTranscriptionRequestInternal if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the UpdateTranscriptionRequestInternal.
      */
     @Generated
@@ -176,9 +174,8 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
 
                 if ("locale".equals(fieldName)) {
                     deserializedUpdateTranscriptionRequestInternal.locale = reader.getString();
-                } else if ("speechRecognitionModelEndpointId".equals(fieldName)) {
-                    deserializedUpdateTranscriptionRequestInternal.speechRecognitionModelEndpointId
-                        = reader.getString();
+                } else if ("speechModelEndpointId".equals(fieldName)) {
+                    deserializedUpdateTranscriptionRequestInternal.speechModelEndpointId = reader.getString();
                 } else if ("operationContext".equals(fieldName)) {
                     deserializedUpdateTranscriptionRequestInternal.operationContext = reader.getString();
                 } else if ("operationCallbackUri".equals(fieldName)) {

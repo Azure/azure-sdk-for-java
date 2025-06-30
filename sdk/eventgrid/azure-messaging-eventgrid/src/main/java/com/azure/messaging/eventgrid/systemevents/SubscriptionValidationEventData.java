@@ -13,8 +13,12 @@ import java.io.IOException;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.EventGrid.SubscriptionValidationEvent event.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Immutable
+@Deprecated
 public final class SubscriptionValidationEventData implements JsonSerializable<SubscriptionValidationEventData> {
 
     /*
