@@ -195,16 +195,24 @@ public class JobTests extends BatchClientTestBase {
                 = new BatchJobTerminateParameters().setTerminationReason("myreason");
             BatchJobTerminateOptions terminateOptions = new BatchJobTerminateOptions().setParameters(terminateParams);
 
-            SyncAsyncExtension.execute(() -> batchClient.terminateJob(jobId, terminateOptions, null),
-                () -> batchAsyncClient.terminateJob(jobId, terminateOptions, null));
+            SyncPoller<BatchJob, BatchJob> terminatePoller = setPlaybackSyncPollerPollInterval(SyncAsyncExtension
+                .execute(() -> batchClient.beginTerminateJob(jobId, terminateOptions, null), () -> Mono.fromCallable(
+                    () -> batchAsyncClient.beginTerminateJob(jobId, terminateOptions, null).getSyncPoller())));
 
-            job = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
-            Assertions.assertEquals(BatchJobState.TERMINATING, job.getState());
+            // Inspect the first poll
+            PollResponse<BatchJob> first = terminatePoller.poll();
+            if (first.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+                BatchJob pollingJob = first.getValue();
+                Assertions.assertNotNull(pollingJob);
+                Assertions.assertEquals(jobId, pollingJob.getId());
+                Assertions.assertEquals(BatchJobState.TERMINATING, pollingJob.getState());
+            }
 
-            sleepIfRunningAgainstService(2000);
+            terminatePoller.waitForCompletion();
 
-            job = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
-            Assertions.assertEquals(BatchJobState.COMPLETED, job.getState());
+            BatchJob finalJob = terminatePoller.getFinalResult();
+            Assertions.assertNotNull(finalJob);
+            Assertions.assertEquals(BatchJobState.COMPLETED, finalJob.getState());
 
         } finally {
             // DELETE
