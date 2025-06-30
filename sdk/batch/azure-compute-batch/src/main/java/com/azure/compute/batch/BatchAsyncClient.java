@@ -5,6 +5,7 @@ package com.azure.compute.batch;
 
 import com.azure.compute.batch.implementation.BatchClientImpl;
 import com.azure.compute.batch.implementation.lro.JobDeletePollerAsync;
+import com.azure.compute.batch.implementation.lro.JobEnablePollerAsync;
 import com.azure.compute.batch.implementation.lro.JobScheduleDeletePollerAsync;
 import com.azure.compute.batch.implementation.lro.JobScheduleTerminatePollerAsync;
 import com.azure.compute.batch.implementation.lro.JobTerminatePollerAsync;
@@ -11353,6 +11354,32 @@ public final class BatchAsyncClient {
     }
 
     /**
+     * Enables the specified Job, allowing new Tasks to run.
+     *
+     * When you call this API, the Batch service sets a disabled Job to the enabling
+     * state. After the this operation is completed, the Job moves to the active
+     * state, and scheduling of new Tasks under the Job resumes. The Batch service
+     * does not allow a Task to remain in the active state for more than 180 days.
+     * Therefore, if you enable a Job containing active Tasks which were added more
+     * than 180 days ago, those Tasks will not run.
+     *
+     * @param jobId The ID of the Job to enable.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link PollerFlux} that polls the enabling of the Job.
+     * The poller provides {@link BatchJob} instances during polling and returns the final
+     * {@link BatchJob} upon successful transition to the active state.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BatchJob, BatchJob> beginEnableJob(String jobId) {
+        RequestOptions requestOptions = new RequestOptions();
+        JobEnablePollerAsync poller = new JobEnablePollerAsync(this, jobId, requestOptions);
+        return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
+            poller.getCancelOperation(), poller.getFetchResultOperation());
+    }
+
+    /**
      * Terminates the specified Job, marking it as completed.
      *
      * When a Terminate Job request is received, the Batch service sets the Job to the
@@ -13336,6 +13363,57 @@ public final class BatchAsyncClient {
             requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
         return enableJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Enables the specified Job, allowing new Tasks to run.
+     *
+     * When you call this API, the Batch service sets a disabled Job to the enabling
+     * state. After this operation is completed, the Job moves to the active
+     * state, and scheduling of new Tasks under the Job resumes. The Batch service
+     * does not allow a Task to remain in the active state for more than 180 days.
+     * Therefore, if you enable a Job containing active Tasks which were added more
+     * than 180 days ago, those Tasks will not run.
+     *
+     * @param jobId The ID of the Job to enable.
+     * @param options Optional parameters for Enable Job operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link PollerFlux} that polls the enabling of the Job.
+     * The poller provides {@link BatchJob} instances during polling and returns the updated
+     * {@link BatchJob} upon successful transition to the active state.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BatchJob, BatchJob> beginEnableJob(String jobId, BatchJobEnableOptions options,
+        RequestConditions requestConditions) {
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        JobEnablePollerAsync poller = new JobEnablePollerAsync(this, jobId, requestOptions);
+        return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
+            poller.getCancelOperation(), poller.getFetchResultOperation());
     }
 
     /**
