@@ -14,8 +14,12 @@ import java.io.IOException;
 /**
  * Incoming streams out of sync event data. Schema of the data property of an EventGridEvent for a
  * Microsoft.Media.LiveEventIncomingStreamsOutOfSync event.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Immutable
+@Deprecated
 public final class MediaLiveEventIncomingStreamsOutOfSyncEventData
     implements JsonSerializable<MediaLiveEventIncomingStreamsOutOfSyncEventData> {
 

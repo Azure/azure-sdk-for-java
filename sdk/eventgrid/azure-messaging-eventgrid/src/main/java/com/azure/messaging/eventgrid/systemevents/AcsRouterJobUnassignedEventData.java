@@ -13,8 +13,12 @@ import java.util.Map;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobUnassigned event.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Fluent
+@Deprecated
 public final class AcsRouterJobUnassignedEventData extends AcsRouterJobEventData {
 
     /*
