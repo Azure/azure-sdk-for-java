@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class BigDataPoolParametrizationReference
     /*
      * Big data pool reference type.
      */
+    @Generated
     private BigDataPoolReferenceType type;
 
     /*
      * Reference big data pool name. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object referenceName;
 
     /**
      * Creates an instance of BigDataPoolParametrizationReference class.
      */
+    @Generated
     public BigDataPoolParametrizationReference() {
     }
 
@@ -38,6 +42,7 @@ public final class BigDataPoolParametrizationReference
      * 
      * @return the type value.
      */
+    @Generated
     public BigDataPoolReferenceType getType() {
         return this.type;
     }
@@ -48,6 +53,7 @@ public final class BigDataPoolParametrizationReference
      * @param type the type value to set.
      * @return the BigDataPoolParametrizationReference object itself.
      */
+    @Generated
     public BigDataPoolParametrizationReference setType(BigDataPoolReferenceType type) {
         this.type = type;
         return this;
@@ -59,6 +65,7 @@ public final class BigDataPoolParametrizationReference
      * 
      * @return the referenceName value.
      */
+    @Generated
     public Object getReferenceName() {
         return this.referenceName;
     }
@@ -70,6 +77,7 @@ public final class BigDataPoolParametrizationReference
      * @param referenceName the referenceName value to set.
      * @return the BigDataPoolParametrizationReference object itself.
      */
+    @Generated
     public BigDataPoolParametrizationReference setReferenceName(Object referenceName) {
         this.referenceName = referenceName;
         return this;
@@ -78,6 +86,7 @@ public final class BigDataPoolParametrizationReference
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -95,6 +104,7 @@ public final class BigDataPoolParametrizationReference
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BigDataPoolParametrizationReference.
      */
+    @Generated
     public static BigDataPoolParametrizationReference fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BigDataPoolParametrizationReference deserializedBigDataPoolParametrizationReference

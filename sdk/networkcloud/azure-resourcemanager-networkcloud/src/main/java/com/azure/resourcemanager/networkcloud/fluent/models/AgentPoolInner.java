@@ -30,6 +30,11 @@ import java.util.Map;
 @Fluent
 public final class AgentPoolInner extends Resource {
     /*
+     * Resource ETag.
+     */
+    private String etag;
+
+    /*
      * The extended location of the cluster associated with the resource.
      */
     private ExtendedLocation extendedLocation;
@@ -63,6 +68,15 @@ public final class AgentPoolInner extends Resource {
      * Creates an instance of AgentPoolInner class.
      */
     public AgentPoolInner() {
+    }
+
+    /**
+     * Get the etag property: Resource ETag.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -488,6 +502,8 @@ public final class AgentPoolInner extends Resource {
                     deserializedAgentPoolInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
                     deserializedAgentPoolInner.innerProperties = AgentPoolProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedAgentPoolInner.etag = reader.getString();
                 } else if ("extendedLocation".equals(fieldName)) {
                     deserializedAgentPoolInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {

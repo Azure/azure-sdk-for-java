@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.fluent.models.DiskInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
@@ -633,6 +634,16 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
              * @return the accepted create operation
              */
             Accepted<Disk> beginCreate();
+
+            /**
+             * Begins creating the disk resource.
+             *
+             * @param context the {@link Context} of the request
+             * @return the accepted create operation
+             */
+            default Accepted<Disk> beginCreate(Context context) {
+                throw new UnsupportedOperationException("[beginCreate(Context)] is not supported in " + getClass());
+            }
         }
     }
 

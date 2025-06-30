@@ -248,6 +248,12 @@
     <animal.sniffer.ignores></animal.sniffer.ignores>
     <maven.test.skip>false</maven.test.skip>
     <maven.javadoc.skip>false</maven.javadoc.skip>
+
+    <!-- This property configures whether doclinting includes warning and erroring for missing tags and descriptions. -->
+    <!-- By default, missing tags and descriptions are included as issues. -->
+    <!-- If needed, temporarily, override this property in a child POM with a value of '-' to exclude this validation. -->
+    <!-- Even with this validation excluded other linting tooling, such as Checkstyle, may still raise errors. -->
+    <doclintMissingInclusion></doclintMissingInclusion>
   </properties>
 
   <dependencies>
@@ -817,7 +823,7 @@
             </offlineLinks>
             <failOnError>true</failOnError>
             <failOnWarnings>true</failOnWarnings>
-            <doclint>all</doclint>
+            <doclint>all,${doclintMissingInclusion}missing</doclint>
             <quiet>true</quiet>
             <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
           </configuration>
@@ -976,7 +982,7 @@
             <dependency>
               <groupId>com.fasterxml.jackson.core</groupId>
               <artifactId>jackson-databind</artifactId>
-              <version>2.18.3</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+              <version>2.18.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
             </dependency>
           </dependencies>
         </plugin>

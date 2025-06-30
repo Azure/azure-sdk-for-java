@@ -61,7 +61,7 @@ public final class UsageMetricsClientImpl implements UsageMetricsClient {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "IoTFirmwareDefenseMg")
+    @ServiceInterface(name = "IoTFirmwareDefenseMgmtClientUsageMetrics")
     public interface UsageMetricsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTFirmwareDefense/workspaces/{workspaceName}/usageMetrics/{name}")

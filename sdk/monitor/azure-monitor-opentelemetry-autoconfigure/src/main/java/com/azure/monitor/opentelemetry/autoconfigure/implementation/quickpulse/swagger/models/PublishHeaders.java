@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -16,11 +17,13 @@ public final class PublishHeaders {
     /*
      * The x-ms-qps-subscribed property.
      */
+    @Generated
     private String xMsQpsSubscribed;
 
     /*
      * The x-ms-qps-configuration-etag property.
      */
+    @Generated
     private String xMsQpsConfigurationEtag;
 
     private static final HttpHeaderName X_MS_QPS_SUBSCRIBED = HttpHeaderName.fromString("x-ms-qps-subscribed");
@@ -44,6 +47,7 @@ public final class PublishHeaders {
      * 
      * @return the xMsQpsSubscribed value.
      */
+    @Generated
     public String getXMsQpsSubscribed() {
         return this.xMsQpsSubscribed;
     }
@@ -54,6 +58,7 @@ public final class PublishHeaders {
      * @param xMsQpsSubscribed the xMsQpsSubscribed value to set.
      * @return the PublishHeaders object itself.
      */
+    @Generated
     public PublishHeaders setXMsQpsSubscribed(String xMsQpsSubscribed) {
         this.xMsQpsSubscribed = xMsQpsSubscribed;
         return this;
@@ -64,6 +69,7 @@ public final class PublishHeaders {
      * 
      * @return the xMsQpsConfigurationEtag value.
      */
+    @Generated
     public String getXMsQpsConfigurationEtag() {
         return this.xMsQpsConfigurationEtag;
     }
@@ -74,6 +80,7 @@ public final class PublishHeaders {
      * @param xMsQpsConfigurationEtag the xMsQpsConfigurationEtag value to set.
      * @return the PublishHeaders object itself.
      */
+    @Generated
     public PublishHeaders setXMsQpsConfigurationEtag(String xMsQpsConfigurationEtag) {
         this.xMsQpsConfigurationEtag = xMsQpsConfigurationEtag;
         return this;

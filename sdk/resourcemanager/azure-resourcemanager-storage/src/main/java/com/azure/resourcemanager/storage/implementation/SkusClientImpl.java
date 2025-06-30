@@ -59,7 +59,7 @@ public final class SkusClientImpl implements SkusClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "StorageManagementCli")
+    @ServiceInterface(name = "StorageManagementClientSkus")
     public interface SkusService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Storage/skus")

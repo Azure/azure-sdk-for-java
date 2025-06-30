@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.UUIDs;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
+import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -58,7 +59,7 @@ public final class CosmosDiagnosticsContext {
     private final OperationType operationType;
     private final String operationTypeString;
     private final ConsistencyLevel consistencyLevel;
-    private final ReadConsistencyStrategy readConsistencyStrategy;
+    private ReadConsistencyStrategy readConsistencyStrategy;
     private final ConcurrentLinkedDeque<CosmosDiagnostics> diagnostics;
     private final Integer maxItemCount;
     private final CosmosDiagnosticsThresholds thresholds;
@@ -90,7 +91,7 @@ public final class CosmosDiagnosticsContext {
 
     private final Integer sequenceNumber;
 
-    private String queryStatement;
+    private final String queryStatement;
 
     private Long opCountPerEvaluation;
     private Long opRetriedCountPerEvaluation;
@@ -254,6 +255,7 @@ public final class CosmosDiagnosticsContext {
      * The effective read consistency strategy used for the operation
      * @return the effective read consistency strategy used for the operation
      */
+    @Beta(value = Beta.SinceVersion.V4_71_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ReadConsistencyStrategy getEffectiveReadConsistencyStrategy() {
         return this.readConsistencyStrategy;
     }
@@ -975,8 +977,12 @@ public final class CosmosDiagnosticsContext {
         return this.requestOptions;
     }
 
-    void setRequestOptions(OverridableRequestOptions requestOptions) {
+    void setRequestOptions(
+        OverridableRequestOptions requestOptions,
+        ReadConsistencyStrategy newEffectiveReadConsistencyStrategy) {
+
         this.requestOptions = requestOptions;
+        this.readConsistencyStrategy = newEffectiveReadConsistencyStrategy;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -1033,9 +1039,12 @@ public final class CosmosDiagnosticsContext {
                     }
 
                     @Override
-                    public void setRequestOptions(CosmosDiagnosticsContext ctx, OverridableRequestOptions requestOptions) {
+                    public void setRequestOptions(
+                        CosmosDiagnosticsContext ctx,
+                        OverridableRequestOptions requestOptions,
+                        ReadConsistencyStrategy newEffectiveReadConsistencyStrategy) {
                         checkNotNull(ctx, "Argument 'ctx' must not be null.");
-                        ctx.setRequestOptions(requestOptions);
+                        ctx.setRequestOptions(requestOptions, newEffectiveReadConsistencyStrategy);
                     }
 
                     @Override

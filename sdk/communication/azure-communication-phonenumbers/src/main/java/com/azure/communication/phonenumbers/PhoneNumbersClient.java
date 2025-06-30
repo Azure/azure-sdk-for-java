@@ -269,7 +269,7 @@ public final class PhoneNumbersClient {
 
     /**
      * Starts the search for available phone numbers to purchase.
-     *
+     * <p>
      * This function returns a Long Running Operation poller that allows you to wait
      * indefinitely until the
      * operation is complete.
@@ -323,7 +323,7 @@ public final class PhoneNumbersClient {
 
     /**
      * Starts the search for available phone numbers to purchase.
-     *
+     * <p>
      * This function returns a Long Running Operation poller that allows you to wait
      * indefinitely until the
      * operation is complete.
@@ -386,7 +386,7 @@ public final class PhoneNumbersClient {
     /**
      * Starts the purchase of the phone number(s) in the search result associated
      * with a given id.
-     *
+     * <p>
      * This function returns a Long Running Operation poller that allows you to wait
      * indefinitely until the
      * operation is complete.
@@ -446,7 +446,7 @@ public final class PhoneNumbersClient {
     /**
      * Starts the purchase of the phone number(s) in the search result associated
      * with a given id.
-     *
+     * <p>
      * This function returns a Long Running Operation poller that allows you to wait
      * indefinitely until the
      * operation is complete.
@@ -606,7 +606,7 @@ public final class PhoneNumbersClient {
 
     /**
      * Starts the update of capabilities for a purchased phone number.
-     *
+     * <p>
      * This function returns a Long Running Operation poller that allows you to wait
      * indefinitely until the
      * operation is complete.
@@ -636,7 +636,7 @@ public final class PhoneNumbersClient {
 
     /**
      * Starts the update of capabilities for a purchased phone number.
-     *
+     * <p>
      * This function returns a Long Running Operation poller that allows you to wait
      * indefinitely until the
      * operation is complete.
@@ -672,7 +672,7 @@ public final class PhoneNumbersClient {
 
     /**
      * Update capabilities of a purchased phone number.
-     *
+     * <p>
      * This function returns a Long Running Operation poller that allows you to wait
      * indefinitely until the
      * operation is complete.
@@ -720,7 +720,7 @@ public final class PhoneNumbersClient {
 
     /**
      * Update capabilities of a purchased phone number.
-     *
+     * <p>
      * This function returns a Long Running Operation poller that allows you to wait
      * indefinitely until the
      * operation is complete.

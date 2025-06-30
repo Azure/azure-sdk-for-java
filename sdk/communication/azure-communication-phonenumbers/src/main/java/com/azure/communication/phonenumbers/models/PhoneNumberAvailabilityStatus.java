@@ -4,6 +4,7 @@
 
 package com.azure.communication.phonenumbers.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,26 +16,31 @@ public final class PhoneNumberAvailabilityStatus extends ExpandableStringEnum<Ph
     /**
      * Static value available for PhoneNumberAvailabilityStatus.
      */
+    @Generated
     public static final PhoneNumberAvailabilityStatus AVAILABLE = fromString("available");
 
     /**
      * Static value reserved for PhoneNumberAvailabilityStatus.
      */
+    @Generated
     public static final PhoneNumberAvailabilityStatus RESERVED = fromString("reserved");
 
     /**
      * Static value expired for PhoneNumberAvailabilityStatus.
      */
+    @Generated
     public static final PhoneNumberAvailabilityStatus EXPIRED = fromString("expired");
 
     /**
      * Static value error for PhoneNumberAvailabilityStatus.
      */
+    @Generated
     public static final PhoneNumberAvailabilityStatus ERROR = fromString("error");
 
     /**
      * Static value purchased for PhoneNumberAvailabilityStatus.
      */
+    @Generated
     public static final PhoneNumberAvailabilityStatus PURCHASED = fromString("purchased");
 
     /**
@@ -42,6 +48,7 @@ public final class PhoneNumberAvailabilityStatus extends ExpandableStringEnum<Ph
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PhoneNumberAvailabilityStatus() {
     }
@@ -52,6 +59,7 @@ public final class PhoneNumberAvailabilityStatus extends ExpandableStringEnum<Ph
      * @param name a name to look for.
      * @return the corresponding PhoneNumberAvailabilityStatus.
      */
+    @Generated
     public static PhoneNumberAvailabilityStatus fromString(String name) {
         return fromString(name, PhoneNumberAvailabilityStatus.class);
     }
@@ -61,6 +69,7 @@ public final class PhoneNumberAvailabilityStatus extends ExpandableStringEnum<Ph
      * 
      * @return known PhoneNumberAvailabilityStatus values.
      */
+    @Generated
     public static Collection<PhoneNumberAvailabilityStatus> values() {
         return values(PhoneNumberAvailabilityStatus.class);
     }

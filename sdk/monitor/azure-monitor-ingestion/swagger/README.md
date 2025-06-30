@@ -28,7 +28,7 @@ autorest
 
 ```yaml
 java: true
-use: '@autorest/java@4.1.42'
+use: '@autorest/java@4.1.52'
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
 input-file: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/monitor/data-plane/ingestion/stable/2023-01-01/DataCollectionRules.json

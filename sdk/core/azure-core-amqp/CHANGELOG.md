@@ -1,16 +1,34 @@
 # Release History
 
-## 2.10.0-beta.1 (Unreleased)
+## 2.11.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Added an `AmqpRetryOptions` constant in `MessageFlux` to configure retries on terminal completion events but propagates terminal errors. ([45400](https://github.com/Azure/azure-sdk-for-java/pull/45400))
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.10.1 (2025-06-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.4` to `1.55.5`.
+
+## 2.10.0 (2025-06-05)
+
+### Features Added
+
+- Added an `AmqpRetryOptions` constant in `MessageFlux` to configure retries on terminal completion events but propagates terminal errors. ([45400](https://github.com/Azure/azure-sdk-for-java/pull/45400))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.3` to `1.55.4`.
 
 ## 2.9.16 (2025-03-10)
 

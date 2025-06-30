@@ -258,6 +258,19 @@ public final class CreateThreadAndRunRequest implements JsonSerializable<CreateT
     }
 
     /**
+     * Set the toolResources property: Override the tools the agent can use for this run. This is useful for modifying
+     * the behavior on a per-run basis.
+     *
+     * @param toolResources the toolResources value to set.
+     * @return the CreateThreadAndRunRequest object itself.
+     */
+    @Generated
+    public CreateThreadAndRunRequest setToolResources(ToolResources toolResources) {
+        this.toolResources = toolResources;
+        return this;
+    }
+
+    /**
      * Get the stream property: If `true`, returns a stream of events that happen during the Run as server-sent events,
      * terminating when the Run enters a terminal state with a `data: [DONE]` message.
      *
@@ -633,18 +646,5 @@ public final class CreateThreadAndRunRequest implements JsonSerializable<CreateT
             deserializedCreateThreadAndRunRequest.metadata = metadata;
             return deserializedCreateThreadAndRunRequest;
         });
-    }
-
-    /**
-     * Set the toolResources property: Override the tools the agent can use for this run. This is useful for modifying
-     * the behavior on a per-run basis.
-     *
-     * @param toolResources the toolResources value to set.
-     * @return the CreateThreadAndRunRequest object itself.
-     */
-    @Generated
-    public CreateThreadAndRunRequest setToolResources(ToolResources toolResources) {
-        this.toolResources = toolResources;
-        return this;
     }
 }

@@ -4,13 +4,20 @@
 
 ### Features Added
 
-- Updated the partition receiver to retry on terminal completion signal instead of sending it downstream. ([45400](https://github.com/Azure/azure-sdk-for-java/pull/45400))
-
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 5.20.4 (2025-06-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+- Upgraded `azure-core-amqp` from `2.9.16` to version `2.10.0`.
 
 ## 5.20.3 (2025-04-16)
 

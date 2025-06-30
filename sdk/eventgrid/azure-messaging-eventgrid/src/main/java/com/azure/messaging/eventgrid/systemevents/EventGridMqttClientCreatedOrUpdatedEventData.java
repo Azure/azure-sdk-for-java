@@ -16,8 +16,12 @@ import java.util.Map;
 
 /**
  * Event data for Microsoft.EventGrid.MQTTClientCreatedOrUpdated event.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Fluent
+@Deprecated
 public final class EventGridMqttClientCreatedOrUpdatedEventData extends EventGridMqttClientEventData {
 
     /*

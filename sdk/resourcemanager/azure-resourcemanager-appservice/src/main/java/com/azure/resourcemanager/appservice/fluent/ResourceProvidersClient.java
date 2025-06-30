@@ -14,6 +14,7 @@ import com.azure.resourcemanager.appservice.fluent.models.AseRegionInner;
 import com.azure.resourcemanager.appservice.fluent.models.BillingMeterInner;
 import com.azure.resourcemanager.appservice.fluent.models.CustomHostnameSitesInner;
 import com.azure.resourcemanager.appservice.fluent.models.DeploymentLocationsInner;
+import com.azure.resourcemanager.appservice.fluent.models.DnlResourceNameAvailabilityInner;
 import com.azure.resourcemanager.appservice.fluent.models.GeoRegionInner;
 import com.azure.resourcemanager.appservice.fluent.models.IdentifierInner;
 import com.azure.resourcemanager.appservice.fluent.models.NameIdentifierInner;
@@ -26,6 +27,7 @@ import com.azure.resourcemanager.appservice.fluent.models.ValidateRequestInner;
 import com.azure.resourcemanager.appservice.fluent.models.ValidateResponseInner;
 import com.azure.resourcemanager.appservice.fluent.models.VnetValidationFailureDetailsInner;
 import com.azure.resourcemanager.appservice.models.CsmMoveResourceEnvelope;
+import com.azure.resourcemanager.appservice.models.DnlResourceNameAvailabilityRequest;
 import com.azure.resourcemanager.appservice.models.ResourceNameAvailabilityRequest;
 import com.azure.resourcemanager.appservice.models.SkuName;
 import com.azure.resourcemanager.appservice.models.VnetParameters;
@@ -709,6 +711,70 @@ public interface ResourceProvidersClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostname(NameIdentifierInner nameIdentifier,
         Context context);
+
+    /**
+     * Check if a resource name is available for DNL sites.
+     * 
+     * @param location The location parameter.
+     * @param request Name availability request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information regarding availability of a resource name for DNL apps with regionalized default hostnames
+     * along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<DnlResourceNameAvailabilityInner>> regionalCheckNameAvailabilityWithResponseAsync(String location,
+        DnlResourceNameAvailabilityRequest request);
+
+    /**
+     * Check if a resource name is available for DNL sites.
+     * 
+     * @param location The location parameter.
+     * @param request Name availability request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information regarding availability of a resource name for DNL apps with regionalized default hostnames on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<DnlResourceNameAvailabilityInner> regionalCheckNameAvailabilityAsync(String location,
+        DnlResourceNameAvailabilityRequest request);
+
+    /**
+     * Check if a resource name is available for DNL sites.
+     * 
+     * @param location The location parameter.
+     * @param request Name availability request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information regarding availability of a resource name for DNL apps with regionalized default hostnames
+     * along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DnlResourceNameAvailabilityInner> regionalCheckNameAvailabilityWithResponse(String location,
+        DnlResourceNameAvailabilityRequest request, Context context);
+
+    /**
+     * Check if a resource name is available for DNL sites.
+     * 
+     * @param location The location parameter.
+     * @param request Name availability request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information regarding availability of a resource name for DNL apps with regionalized default hostnames.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DnlResourceNameAvailabilityInner regionalCheckNameAvailability(String location,
+        DnlResourceNameAvailabilityRequest request);
 
     /**
      * List all premier add-on offers.
