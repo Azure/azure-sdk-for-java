@@ -190,14 +190,14 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             .setExpectedRegionsContactedCount(1);
 
         ExpectedResponseCharacteristics expectedResponseCharacteristicsBeforeFailoverForRequestTimeout = new ExpectedResponseCharacteristics()
-            .setExpectedMinRetryCount(1)
-            .setShouldFinalResponseHaveSuccess(true)
-            .setExpectedRegionsContactedCount(2);
+            .setExpectedMinRetryCount(0)
+            .setShouldFinalResponseHaveSuccess(false)
+            .setExpectedRegionsContactedCount(1);
 
         ExpectedResponseCharacteristics expectedResponseCharacteristicsBeforeFailoverForGatewayEndpointReadTimeout = new ExpectedResponseCharacteristics()
-            .setExpectedMinRetryCount(1)
-            .setShouldFinalResponseHaveSuccess(true)
-            .setExpectedRegionsContactedCount(2);
+            .setExpectedMinRetryCount(0)
+            .setShouldFinalResponseHaveSuccess(false)
+            .setExpectedRegionsContactedCount(1);
 
         ExpectedResponseCharacteristics expectedResponseCharacteristicsBeforeFailoverForGatewayEndpointUnavailable = new ExpectedResponseCharacteristics()
             .setExpectedMinRetryCount(1)
@@ -321,7 +321,6 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 false,
                 false,
                 false,
-                false,
                 ALL_CONNECTION_MODES
             },
             {
@@ -332,7 +331,6 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover,
-                false,
                 false,
                 false,
                 false,
