@@ -3,6 +3,7 @@
 ### 4.73.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added an API `CosmosClient#readDatabaseAccount` to be able to fetch Cosmos DB account properties. - See [PR 45789](https://github.com/Azure/azure-sdk-for-java/pull/45789)
 
 #### Breaking Changes
 
