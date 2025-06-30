@@ -7,6 +7,7 @@ import com.azure.compute.batch.implementation.BatchClientImpl;
 import com.azure.compute.batch.implementation.lro.JobDeletePollerAsync;
 import com.azure.compute.batch.implementation.lro.JobScheduleDeletePollerAsync;
 import com.azure.compute.batch.implementation.lro.JobScheduleTerminatePollerAsync;
+import com.azure.compute.batch.implementation.lro.JobTerminatePollerAsync;
 import com.azure.compute.batch.implementation.task.AsyncTaskSubmitter;
 import com.azure.compute.batch.implementation.task.TaskManager;
 import com.azure.compute.batch.implementation.task.TaskSubmitter;
@@ -11376,6 +11377,26 @@ public final class BatchAsyncClient {
     }
 
     /**
+     * Begins terminating a Job from the specified Account asynchronously.
+     *
+     * When you terminate a Job, the Batch service sets the Job to the terminating state.
+     * Then it terminates any running tasks and runs job release tasks. Eventually, the Job
+     * moves to the completed state. New tasks cannot be added once a Job is terminating.
+     *
+     * @param jobId The ID of the Job to terminate.
+     * @return A {@link PollerFlux} that polls the termination of the Job.
+     * The poller provides {@link BatchJob} instances during polling and returns the final
+     * {@link BatchJob} upon successful termination.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BatchJob, BatchJob> beginTerminateJob(String jobId) {
+        RequestOptions requestOptions = new RequestOptions();
+        JobTerminatePollerAsync poller = new JobTerminatePollerAsync(this, jobId, requestOptions);
+        return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
+            poller.getCancelOperation(), poller.getFetchResultOperation());
+    }
+
+    /**
      * Lists all of the Jobs in the specified Account.
      *
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -13372,6 +13393,62 @@ public final class BatchAsyncClient {
             requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
         return terminateJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Begins terminating the specified Job asynchronously, marking it as completed.
+     *
+     * When a Terminate Job request is received, the Batch service sets the Job to the
+     * terminating state. The Batch service then terminates any running Tasks
+     * associated with the Job and runs any required Job release Tasks. Then the Job
+     * moves into the completed state. If there are any Tasks in the Job in the active
+     * state, they will remain in the active state. Once a Job is terminated, new
+     * Tasks cannot be added and any remaining active Tasks will not be scheduled.
+     *
+     * @param jobId The ID of the Job to terminate.
+     * @param options Optional parameters for Terminate Job operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @return A {@link PollerFlux} that polls the termination of the Job.
+     * The poller provides {@link BatchJob} instances during polling and returns the updated
+     * {@link BatchJob} upon successful termination.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BatchJob, BatchJob> beginTerminateJob(String jobId, BatchJobTerminateOptions options,
+        RequestConditions requestConditions) {
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        BatchJobTerminateParameters parameters = options == null ? null : options.getParameters();
+        Boolean force = options == null ? null : options.isForce();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        }
+        if (parameters != null) {
+            requestOptions.setBody(BinaryData.fromObject(parameters));
+        }
+        if (force != null) {
+            requestOptions.addQueryParam("force", String.valueOf(force), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        JobTerminatePollerAsync poller = new JobTerminatePollerAsync(this, jobId, requestOptions);
+        return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
+            poller.getCancelOperation(), poller.getFetchResultOperation());
     }
 
     /**
