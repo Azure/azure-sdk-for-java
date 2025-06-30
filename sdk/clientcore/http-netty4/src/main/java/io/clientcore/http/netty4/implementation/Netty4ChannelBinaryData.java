@@ -124,6 +124,8 @@ public final class Netty4ChannelBinaryData extends BinaryData {
                 channel.pipeline().addLast(Netty4HandlerNames.EAGER_CONSUME, handler);
                 channel.config().setAutoRead(true);
 
+                channel.eventLoop().execute(channel::read);
+
                 awaitLatch(latch);
                 streamDrained.set(true);
 
@@ -192,6 +194,7 @@ public final class Netty4ChannelBinaryData extends BinaryData {
             channel.pipeline().addLast(Netty4HandlerNames.EAGER_CONSUME, handler);
             channel.config().setAutoRead(true);
 
+            channel.eventLoop().execute(channel::read);
             awaitLatch(latch);
 
             Throwable exception = handler.channelException();
