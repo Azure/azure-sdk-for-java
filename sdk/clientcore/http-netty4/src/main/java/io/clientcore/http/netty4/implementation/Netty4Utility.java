@@ -293,19 +293,21 @@ public final class Netty4Utility {
 
     private static ChannelFuture sendChunkedHttp11(Channel channel, ChunkedInput<ByteBuf> chunkedInput,
         io.netty.handler.codec.http.HttpRequest initialLineAndHeaders, AtomicReference<Throwable> errorReference) {
-        if (channel.pipeline().get(Netty4HandlerNames.CHUNKED_WRITER) == null) {
-            // Add the ChunkedWriteHandler which will handle sending the chunkedInput.
-            channel.pipeline()
-                .addAfter(Netty4HandlerNames.HTTP_CODEC, Netty4HandlerNames.CHUNKED_WRITER, new ChunkedWriteHandler());
-        }
-
         Throwable error = errorReference.get();
         if (error != null) {
             return channel.newFailedFuture(error);
         }
 
+        if (channel.pipeline().get(Netty4HandlerNames.CHUNKED_WRITER) == null) {
+            channel.pipeline()
+                .addBefore(Netty4HandlerNames.HTTP_CODEC, Netty4HandlerNames.CHUNKED_WRITER, new ChunkedWriteHandler());
+        }
+
+        channel.config().setAutoRead(true);
+
         channel.write(initialLineAndHeaders);
-        return channel.writeAndFlush(new HttpChunkedInput(chunkedInput));
+
+        return channel.writeAndFlush(chunkedInput);
     }
 
     /**
