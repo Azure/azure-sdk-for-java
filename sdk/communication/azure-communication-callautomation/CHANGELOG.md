@@ -9,7 +9,17 @@
 - Recording with the call connection ID is now supported. OPS calls can be recorded using the call connection ID.
 - Added StartRecordingFailed event to indicate when the start recording API is unable to initiate the recording.
 
-## 1.4.0 (2025-06-04)
+## 1.4.1 (2025-06-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.3.11` to version `1.4.0`.
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+
+## 1.4.0 (2025-06-05)
 
 ### Features Added
 
@@ -40,6 +50,16 @@
 - Upgraded `azure-communication-common` from `1.3.8` to version `1.3.9`.
 - Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.10`.
 - Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
+
+## 1.3.1 (2024-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
+- Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
+- Upgraded `azure-communication-common` from `1.3.7` to version `1.3.8`.
 
 ## 1.4.0-beta.1 (2024-11-22)
 
