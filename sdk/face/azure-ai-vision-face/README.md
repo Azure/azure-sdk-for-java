@@ -39,7 +39,7 @@ Azure AI Face supports both [multi-service][azure_cognitive_service_account] and
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-vision-face</artifactId>
-    <version>1.0.0-beta.3</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
