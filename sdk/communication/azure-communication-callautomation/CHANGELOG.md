@@ -10,6 +10,16 @@
 
 ### Other Changes
 
+## 1.4.1 (2025-06-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.3.11` to version `1.4.0`.
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+
 ## 1.4.0 (2025-06-05)
 
 ### Features Added
@@ -63,6 +73,16 @@
 
 - Introduced audio streaming and transcription data parsing capabilities.
 
+## 1.3.1 (2024-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
+- Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
+- Upgraded `azure-communication-common` from `1.3.7` to version `1.3.8`.
+
 ## 1.3.0 (2024-11-22)
 
 ### Features Added
@@ -85,6 +105,20 @@
 ### Features Added
 
 - Added CreateCallFailed event to signify when create call API fails to establish a call
+
+## 1.3.0-beta.1 (2024-08-02)
+
+### Features Added
+
+- Support multiple play sources for Play and Recognize
+- Support for PlayStarted event in Play/Recognize
+- Support for the real time transcription
+- Monetization for real-time transcription and audio streaming
+- Hold and Unhold the participant
+- Support to manage the rooms/servercall/group call using connect API
+- Support for the audio streaming
+- Expose original PSTN number target from incoming call event in call connection properties
+- Support for VoIP to PSTN transfer scenario
 
 ## 1.2.6 (2024-10-25)
 
