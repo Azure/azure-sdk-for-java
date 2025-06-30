@@ -257,7 +257,9 @@ public class MessagesClientTracer extends ClientTracer {
         }
         this.setAttributeIfNotNullOrEmpty(GEN_AI_MESSAGE_ID_KEY, message.getId(), span);
         this.setAttributeIfNotNullOrEmpty(GEN_AI_THREAD_ID_KEY, message.getThreadId(), span);
-        this.setAttributeIfNotNull(GEN_AI_MESSAGE_STATUS_KEY, message.getStatus(), span);
+        if (message.getStatus() != null) {
+            this.setAttributeIfNotNullOrEmpty(GEN_AI_MESSAGE_STATUS_KEY, message.getStatus().getValue(), span);
+        }
         this.setAttributeIfNotNull(GEN_AI_MESSAGE_ROLE_KEY, message.getRole(), span);
         this.setAttributeIfNotNullOrEmpty(GEN_AI_RUN_ID_KEY, message.getRunId(), span);
 
@@ -285,7 +287,7 @@ public class MessagesClientTracer extends ClientTracer {
                     if (contentItem instanceof MessageTextContent) {
                         MessageTextContent textContent = (MessageTextContent) contentItem;
                         Map<String, Object> contentDetails = new HashMap<>();
-                        contentDetails.put("value", textContent.getText());
+                        contentDetails.put("value", textContent.getText().getValue());
 
                         if (textContent.getText() != null
                             && textContent.getText().getAnnotations() != null
@@ -336,7 +338,9 @@ public class MessagesClientTracer extends ClientTracer {
         putIfNotNullOrEmpty(attributes, GEN_AI_THREAD_ID_KEY, message.getThreadId());
         putIfNotNullOrEmpty(attributes, GEN_AI_MESSAGE_ID_KEY, message.getId());
         putIfNotNullOrEmpty(attributes, GEN_AI_RUN_ID_KEY, message.getRunId());
-        putIfNotNull(attributes, GEN_AI_MESSAGE_STATUS_KEY, message.getStatus());
+        if (message.getStatus() != null) {
+            putIfNotNull(attributes, GEN_AI_MESSAGE_STATUS_KEY, message.getStatus().getValue());
+        }
 
         attributes.put(GEN_AI_EVENT_CONTENT, serializedEventBody);
 

@@ -12,16 +12,14 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.metrics.DoubleHistogram;
 import com.azure.core.util.metrics.LongCounter;
 import com.azure.core.util.metrics.Meter;
-import com.azure.core.util.serializer.JsonSerializerProviders;
-import com.azure.core.util.serializer.TypeReference;
 import com.azure.core.util.tracing.SpanKind;
 import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonWriter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -483,9 +481,7 @@ public abstract class ClientTracer {
         try {
             return CoreUtils.isNullOrEmpty(jsonString)
                 ? Collections.emptyMap()
-                : JsonSerializerProviders.createInstance()
-                    .deserialize(new ByteArrayInputStream(jsonString.getBytes()),
-                        TypeReference.createInstance(HashMap.class));
+                : new ObjectMapper().readValue(jsonString.getBytes(), HashMap.class);
         } catch (Exception e) {
             LOGGER.warning("Failed to parse JSON arguments: {}", e.getMessage());
             return Collections.emptyMap();
