@@ -1,0 +1,222 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package io.clientcore.http.netty4.implementation;
+
+import io.clientcore.core.http.client.HttpProtocolVersion;
+import io.clientcore.core.models.CoreException;
+import io.clientcore.core.shared.LocalTestServer;
+import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.Channel;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.util.concurrent.Future;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
+
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+/**
+ * Tests for {@link Netty4ConnectionPool}.
+ */
+@Timeout(value = 3, unit = TimeUnit.MINUTES)
+public class Netty4ConnectionPoolTests {
+
+    private static LocalTestServer server;
+    private static EventLoopGroup eventLoopGroup;
+    private static Bootstrap bootstrap;
+    private static SocketAddress serverAddress;
+
+    @BeforeAll
+    public static void startTestServerAndEventLoopGroup() {
+        server = NettyHttpClientLocalTestServer.getServer();
+        server.start();
+        eventLoopGroup = new NioEventLoopGroup(2);
+        bootstrap = new Bootstrap().group(eventLoopGroup).channel(NioSocketChannel.class);
+        serverAddress = new InetSocketAddress("localhost", server.getPort());
+    }
+
+    @AfterAll
+    public static void stopTestServerAndEventLoopGroup() {
+        if (server != null) {
+            server.stop();
+        }
+        if (eventLoopGroup != null && !eventLoopGroup.isShuttingDown()) {
+            eventLoopGroup.shutdownGracefully().awaitUninterruptibly();
+        }
+    }
+
+    private Netty4ConnectionPool createPool(int maxConnections, Duration idleTimeout, Duration maxLifetime,
+        Duration pendingAcquireTimeout, int maxPendingAcquires) {
+        return new Netty4ConnectionPool(bootstrap, new ChannelInitializationProxyHandler(null), null, // No SSL context modifier needed
+            maxConnections, idleTimeout, maxLifetime, pendingAcquireTimeout, maxPendingAcquires,
+            HttpProtocolVersion.HTTP_1_1);
+    }
+
+    @Test
+    public void testAcquireAndRelease() throws IOException {
+        try (Netty4ConnectionPool pool = createPool(1, Duration.ofSeconds(10), null, Duration.ofSeconds(10), 1)) {
+            Future<Channel> future = pool.acquire(serverAddress, false);
+            Channel channel = future.awaitUninterruptibly().getNow();
+            assertNotNull(channel);
+            assertTrue(channel.isActive());
+            pool.release(channel);
+        }
+    }
+
+    @Test
+    public void testConnectionIsReusedForSameRemoteAddress() throws IOException {
+        try (Netty4ConnectionPool pool = createPool(1, Duration.ofSeconds(10), null, Duration.ofSeconds(10), 1)) {
+            Future<Channel> future1 = pool.acquire(serverAddress, false);
+            Channel channel1 = future1.awaitUninterruptibly().getNow();
+            pool.release(channel1);
+
+            Future<Channel> future2 = pool.acquire(serverAddress, false);
+            Channel channel2 = future2.awaitUninterruptibly().getNow();
+            assertSame(channel1, channel2);
+            pool.release(channel2);
+        }
+    }
+
+    @Test
+    public void testConnectionPoolSizeEnforced() throws IOException, InterruptedException {
+        final int maxConnections = 5;
+        try (Netty4ConnectionPool pool
+            = createPool(maxConnections, Duration.ofSeconds(10), null, Duration.ofSeconds(10), maxConnections)) {
+            List<Channel> channels = new ArrayList<>();
+            for (int i = 0; i < maxConnections; i++) {
+                channels.add(pool.acquire(serverAddress, false).awaitUninterruptibly().getNow());
+            }
+            assertEquals(maxConnections, channels.size());
+
+            Future<Channel> pendingFuture = pool.acquire(serverAddress, false);
+            Thread.sleep(100);
+            assertFalse(pendingFuture.isDone());
+
+            pool.release(channels.get(0));
+            Channel pendingChannel = pendingFuture.awaitUninterruptibly().getNow();
+            assertSame(channels.get(0), pendingChannel);
+
+            for (int i = 1; i < channels.size(); i++) {
+                pool.release(channels.get(i));
+            }
+        }
+    }
+
+    @Test
+    public void testPendingAcquireTimeout() throws IOException, InterruptedException {
+        try (Netty4ConnectionPool pool = createPool(1, Duration.ofSeconds(10), null, Duration.ofMillis(100), 1)) {
+            Channel channel = pool.acquire(serverAddress, false).awaitUninterruptibly().getNow();
+
+            Future<Channel> timeoutFuture = pool.acquire(serverAddress, false);
+
+            assertTrue(timeoutFuture.await(500, TimeUnit.MILLISECONDS));
+
+            assertFalse(timeoutFuture.isSuccess());
+            assertInstanceOf(CoreException.class, timeoutFuture.cause());
+            assertTrue(timeoutFuture.cause().getMessage().contains("Connection acquisition timed out"));
+
+            pool.release(channel);
+        }
+    }
+
+    @Test
+    public void testIdleConnectionIsCleanedUp() throws IOException, InterruptedException {
+        try (Netty4ConnectionPool pool = createPool(1, Duration.ofSeconds(10), null, Duration.ofSeconds(10), 1)) {
+            Channel channel1 = pool.acquire(serverAddress, false).awaitUninterruptibly().getNow();
+            pool.release(channel1);
+            Thread.sleep(31000); // Wait for cleanup task to run (interval is 30s)
+            assertFalse(channel1.isActive());
+
+            Channel channel2 = pool.acquire(serverAddress, false).awaitUninterruptibly().getNow();
+            assertNotSame(channel1, channel2);
+            pool.release(channel2);
+        }
+    }
+
+    @Test
+    public void testMaxConnectionLifetimeEnforced() throws IOException, InterruptedException {
+        try (Netty4ConnectionPool pool
+            = createPool(1, Duration.ofSeconds(10), Duration.ofMillis(500), Duration.ofSeconds(10), 1)) {
+            Channel channel1 = pool.acquire(serverAddress, false).awaitUninterruptibly().getNow();
+            Thread.sleep(600);
+            pool.release(channel1);
+            Thread.sleep(100); // Give a moment for close to propagate
+            assertFalse(channel1.isActive());
+
+            Channel channel2 = pool.acquire(serverAddress, false).awaitUninterruptibly().getNow();
+            assertNotSame(channel1, channel2);
+            pool.release(channel2);
+        }
+    }
+
+    @Test
+    public void testUnhealthyConnectionIsDiscarded() throws IOException {
+        try (Netty4ConnectionPool pool = createPool(1, Duration.ofSeconds(10), null, Duration.ofSeconds(10), 1)) {
+            Channel channel1 = pool.acquire(serverAddress, false).awaitUninterruptibly().getNow();
+            pool.release(channel1);
+            channel1.close().awaitUninterruptibly();
+
+            Channel channel2 = pool.acquire(serverAddress, false).awaitUninterruptibly().getNow();
+            assertNotNull(channel2);
+            assertTrue(channel2.isActive());
+            assertNotSame(channel1, channel2);
+            pool.release(channel2);
+        }
+    }
+
+    @Test
+    public void testAcquireOnClosedPoolFails() throws IOException {
+        Netty4ConnectionPool pool = createPool(1, Duration.ofSeconds(10), null, Duration.ofSeconds(10), 1);
+        pool.close();
+        assertThrows(IllegalStateException.class, () -> pool.acquire(serverAddress, false));
+    }
+
+    @Test
+    public void testSeparatePoolsForSeparateRemoteAddresses() throws IOException {
+        LocalTestServer route1Server = new LocalTestServer(HttpProtocolVersion.HTTP_1_1, false, null);
+        LocalTestServer route2Server = new LocalTestServer(HttpProtocolVersion.HTTP_1_1, false, null);
+
+        try {
+            route1Server.start();
+            route2Server.start();
+
+            SocketAddress address1 = new InetSocketAddress("localhost", route1Server.getPort());
+            SocketAddress address2 = new InetSocketAddress("localhost", route2Server.getPort());
+
+            try (Netty4ConnectionPool pool = createPool(1, Duration.ofSeconds(10), null, Duration.ofSeconds(10), 1)) {
+                Channel channel1 = pool.acquire(address1, false).awaitUninterruptibly().getNow();
+                assertNotNull(channel1);
+
+                Channel channel2 = pool.acquire(address2, false).awaitUninterruptibly().getNow();
+                assertNotNull(channel2);
+
+                assertNotSame(channel1, channel2);
+
+                pool.release(channel1);
+                pool.release(channel2);
+            }
+        } finally {
+            route1Server.stop();
+            route2Server.stop();
+        }
+    }
+}

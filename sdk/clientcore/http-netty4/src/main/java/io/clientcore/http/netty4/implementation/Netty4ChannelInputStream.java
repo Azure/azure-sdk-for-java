@@ -16,6 +16,7 @@ import java.util.concurrent.CountDownLatch;
 public final class Netty4ChannelInputStream extends InputStream {
     private final Channel channel;
     private final boolean isHttp2;
+    private final Runnable onClose;
 
     // Indicator for the Channel being fully read.
     // This will become true before 'streamDone' becomes true, but both may become true in the same operation.
@@ -46,10 +47,12 @@ public final class Netty4ChannelInputStream extends InputStream {
      * status line and response headers.
      * @param channel The {@link Channel} to read from.
      * @param isHttp2 Flag indicating whether the Channel is used for HTTP/2 or not.
+     * @param onClose A runnable to execute when the stream is closed.
      */
-    Netty4ChannelInputStream(ByteArrayOutputStream eagerContent, Channel channel, boolean isHttp2) {
+    Netty4ChannelInputStream(ByteArrayOutputStream eagerContent, Channel channel, boolean isHttp2, Runnable onClose) {
         if (eagerContent != null && eagerContent.size() > 0) {
             this.currentBuffer = eagerContent.toByteArray();
+            eagerContent.reset();
         } else {
             this.currentBuffer = new byte[0];
         }
@@ -60,6 +63,7 @@ public final class Netty4ChannelInputStream extends InputStream {
             channel.pipeline().remove(Netty4InitiateOneReadHandler.class);
         }
         this.isHttp2 = isHttp2;
+        this.onClose = onClose;
     }
 
     byte[] getCurrentBuffer() {
@@ -167,13 +171,20 @@ public final class Netty4ChannelInputStream extends InputStream {
         return n - toSkip;
     }
 
+    /**
+     * Closes this input stream and ensures the underlying connection can be returned to the pool.
+     * This method does not close the underlying channel. Instead, it triggers the onClose
+     * callback which is responsible for draining the rest of the stream content.
+     */
     @Override
-    public void close() {
-        currentBuffer = null;
-        additionalBuffers.clear();
-        if (channel.isOpen() || channel.isActive()) {
-            channel.disconnect();
-            channel.close();
+    public void close() throws IOException {
+        try {
+            if (onClose != null && !streamDone) {
+                onClose.run();
+            }
+        } finally {
+            super.close();
+            streamDone = true;
         }
     }
 

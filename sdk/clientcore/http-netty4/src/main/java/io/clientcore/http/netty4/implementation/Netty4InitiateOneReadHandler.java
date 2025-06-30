@@ -78,7 +78,7 @@ public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAda
                 byteBufConsumer.accept(buf);
             } catch (IOException | RuntimeException ex) {
                 ReferenceCountUtil.release(buf);
-                ctx.close();
+                exceptionCaught(ctx, ex);
                 return;
             }
         }
@@ -96,8 +96,8 @@ public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAda
         latch.countDown();
         if (lastRead) {
             ctx.pipeline().remove(this);
-            ctx.close();
         }
+        ctx.fireChannelReadComplete();
     }
 
     boolean isChannelConsumed() {
@@ -108,7 +108,10 @@ public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAda
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         this.exception = cause;
         latch.countDown();
-        ctx.close();
+        if (ctx.pipeline().get(Netty4InitiateOneReadHandler.class) != null) {
+            ctx.pipeline().remove(this);
+        }
+        ctx.fireExceptionCaught(cause);
     }
 
     Throwable channelException() {
@@ -119,14 +122,18 @@ public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAda
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) {
         latch.countDown();
+        if (ctx.pipeline().get(Netty4InitiateOneReadHandler.class) != null) {
+            ctx.pipeline().remove(this);
+        }
         ctx.fireChannelUnregistered();
-        ctx.pipeline().remove(this);
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
         latch.countDown();
+        if (ctx.pipeline().get(Netty4InitiateOneReadHandler.class) != null) {
+            ctx.pipeline().remove(this);
+        }
         ctx.fireChannelInactive();
-        ctx.pipeline().remove(this);
     }
 }

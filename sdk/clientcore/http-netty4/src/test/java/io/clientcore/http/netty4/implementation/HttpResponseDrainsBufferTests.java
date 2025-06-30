@@ -4,10 +4,12 @@
 package io.clientcore.http.netty4.implementation;
 
 import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.http.client.HttpProtocolVersion;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.shared.LocalTestServer;
 import io.clientcore.core.utils.IOExceptionCheckedConsumer;
 import io.clientcore.core.utils.SharedExecutorService;
 import io.clientcore.http.netty4.NettyHttpClientProvider;
@@ -24,6 +26,7 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
 
+import javax.servlet.ServletException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -56,7 +59,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Execution(ExecutionMode.SAME_THREAD)
 public class HttpResponseDrainsBufferTests {
     private static ResourceLeakDetector.Level originalLevel;
-    private static final String URL = NettyHttpClientLocalTestServer.getServer().getUri() + LONG_BODY_PATH;
+    private static String url;
+    private static LocalTestServer server;
 
     private ResourceLeakDetectorFactory originalLeakDetectorFactory;
     private final TestResourceLeakDetectorFactory testResourceLeakDetectorFactory
@@ -64,6 +68,25 @@ public class HttpResponseDrainsBufferTests {
 
     @BeforeAll
     public static void startTestServer() {
+        server = new LocalTestServer(HttpProtocolVersion.HTTP_1_1, false, (req, resp, requestBody) -> {
+            if ("GET".equalsIgnoreCase(req.getMethod()) && LONG_BODY_PATH.equals(req.getServletPath())) {
+                resp.setStatus(200);
+                resp.setContentType("application/octet-stream");
+                resp.setContentLength(LONG_BODY.length);
+                try {
+                    resp.getOutputStream().write(LONG_BODY);
+                    resp.flushBuffer();
+                } catch (IOException e) {
+                    throw new ServletException(e);
+                }
+            } else {
+                resp.sendError(404, "Endpoint not found.");
+            }
+        });
+
+        server.start();
+        url = server.getUri() + LONG_BODY_PATH;
+
         originalLevel = ResourceLeakDetector.getLevel();
         ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.PARANOID);
     }
@@ -81,7 +104,13 @@ public class HttpResponseDrainsBufferTests {
 
     @AfterAll
     public static void stopTestServer() {
-        ResourceLeakDetector.setLevel(originalLevel);
+        if (server != null) {
+            server.stop();
+        }
+
+        if (originalLevel != null) {
+            ResourceLeakDetector.setLevel(originalLevel);
+        }
     }
 
     @Test
@@ -163,7 +192,7 @@ public class HttpResponseDrainsBufferTests {
                     try {
                         limiter.acquire();
                         responseConsumer
-                            .accept(httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(URL)));
+                            .accept(httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(url)));
                     } finally {
                         limiter.release();
                     }
@@ -192,7 +221,7 @@ public class HttpResponseDrainsBufferTests {
     public void closingHttpResponseIsIdempotent() throws InterruptedException {
         HttpClient httpClient = new NettyHttpClientProvider().getSharedInstance();
 
-        Response<BinaryData> response = httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(URL));
+        Response<BinaryData> response = httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(url));
         response.close();
         Thread.sleep(1_000);
         response.close();
