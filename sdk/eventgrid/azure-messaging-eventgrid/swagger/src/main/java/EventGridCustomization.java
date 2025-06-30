@@ -10,6 +10,7 @@ import com.github.javaparser.ast.Modifier.Keyword;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.comments.LineComment;
 import com.github.javaparser.ast.expr.ClassExpr;
@@ -197,7 +198,7 @@ public class EventGridCustomization extends Customization {
         customization.getRawEditor()
             .addFile("src/main/java/com/azure/messaging/eventgrid/SystemEventNames.java", compilationUnit.toString());
 
-
+        addDeprecationWarnings(customization, classCustomizations);
         customizeMediaJobOutputAsset(systemEvents);
         customizeStorageDirectoryDeletedEventData(systemEvents);
         customizeAcsRecordingFileStatusUpdatedEventDataDuration(systemEvents);
@@ -210,6 +211,31 @@ public class EventGridCustomization extends Customization {
         customizeAcsMessageChannelEventError(systemEvents);
         customizeCommuicationSMSEvents(systemEvents);
         customizeAcsCallEndedEventDataDuration(systemEvents);
+    }
+
+    private void addDeprecationWarnings(LibraryCustomization customization, List<ClassCustomization> classCustomizations) {
+        PackageCustomization systemEvent = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+        String packagePath = "src/main/java/com/azure/messaging/eventgrid/systemevents/";
+        customization.getRawEditor().getContents().keySet().stream()
+            .filter(fileName -> fileName.startsWith(packagePath))
+            .map(fileName -> fileName.substring(packagePath.length(), fileName.length() - 5))
+            .filter(className -> !className.contains("/") && !"package-info".equals(className))
+            .map(systemEvent::getClass)
+            .forEach(classCustomization -> {
+            classCustomization.customizeAst(ast -> {
+                String className = classCustomization.getClassName();
+                
+                // Handle classes
+                ast.getClassByName(className).ifPresent(clazz -> {
+                    addDeprecationToTypeDeclaration(clazz);
+                });
+                
+                // Handle enums
+                ast.getEnumByName(className).ifPresent(enumDecl -> {
+                    addDeprecationToTypeDeclaration(enumDecl);
+                });
+            });
+        });
     }
 
     @SuppressWarnings("deprecation")
@@ -638,5 +664,42 @@ public class EventGridCustomization extends Customization {
     private static void addClientLoggerField(String name, ClassOrInterfaceDeclaration clazz) {
         clazz.addFieldWithInitializer("ClientLogger", "LOGGER", parseExpression("new ClientLogger(" + name +".class)"),
             Keyword.PRIVATE, Keyword.STATIC, Keyword.FINAL);
+    }
+
+    private void addDeprecationToTypeDeclaration(NodeWithJavadoc<?> typeDeclaration) {
+        // Add @Deprecated annotation
+        if (typeDeclaration instanceof ClassOrInterfaceDeclaration) {
+            ((ClassOrInterfaceDeclaration) typeDeclaration).addMarkerAnnotation("Deprecated");
+        } else if (typeDeclaration instanceof EnumDeclaration) {
+            ((EnumDeclaration) typeDeclaration).addMarkerAnnotation("Deprecated");
+        }
+        
+        // Get existing Javadoc or create new one
+        String existingJavadoc = typeDeclaration.getJavadocComment()
+            .map(comment -> comment.getContent())
+            .orElse("");
+        
+        // Append deprecation tag to existing Javadoc
+        String deprecationTag = "@deprecated This class is deprecated and may be removed in future releases. System events are now available in the azure-messaging-eventgrid-systemevents package.";
+        String newJavadocContent;
+        
+        if (existingJavadoc.isEmpty()) {
+            newJavadocContent = deprecationTag;
+        } else {
+            // Remove existing asterisks and whitespace, then append
+            String cleanedJavadoc = existingJavadoc.trim();
+            if (cleanedJavadoc.endsWith("*/")) {
+                cleanedJavadoc = cleanedJavadoc.substring(0, cleanedJavadoc.length() - 2).trim();
+            }
+            if (cleanedJavadoc.startsWith("/**")) {
+                cleanedJavadoc = cleanedJavadoc.substring(3).trim();
+            }
+            if (cleanedJavadoc.startsWith("*")) {
+                cleanedJavadoc = cleanedJavadoc.substring(1).trim();
+            }
+            newJavadocContent = cleanedJavadoc + "\n * " + deprecationTag;
+        }
+        
+        typeDeclaration.setJavadocComment(newJavadocContent);
     }
 }

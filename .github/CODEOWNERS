@@ -900,9 +900,6 @@
 /sdk/e2e/                                            @g2vinay @joshfree @Azure/azure-java-sdk
 
 # PRLabel: %common
-/common/smoke-tests/                                 @alzimmermsft @srnagar @joshfree @jonathangiles @g2vinay @conniey @Azure/azure-java-sdk
-
-# PRLabel: %common
 /common/perf-test-core/                              @alzimmermsft @srnagar @g2vinay @Azure/azure-java-sdk
 
 # PRLabel: %common
