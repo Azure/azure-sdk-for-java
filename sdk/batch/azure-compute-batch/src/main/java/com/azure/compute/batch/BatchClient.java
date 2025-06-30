@@ -11265,6 +11265,30 @@ public final class BatchClient {
     }
 
     /**
+     * Enables the specified Job, allowing new Tasks to run.
+     *
+     * When you call this API, the Batch service sets a disabled Job to the enabling
+     * state. After this operation is completed, the Job moves to the active
+     * state, and scheduling of new Tasks under the Job resumes. The Batch service
+     * does not allow a Task to remain in the active state for more than 180 days.
+     * Therefore, if you enable a Job containing active Tasks which were added more
+     * than 180 days ago, those Tasks will not run.
+     *
+     * @param jobId The ID of the Job to enable.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the enabling of the Job.
+     * The poller provides {@link BatchJob} instances during polling and returns the last known
+     * {@link BatchJob} on completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchJob, BatchJob> beginEnableJob(String jobId) {
+        PollerFlux<BatchJob, BatchJob> asyncPoller = asyncClient.beginEnableJob(jobId, null, null);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
      * Terminates the specified Job, marking it as completed.
      *
      * When a Terminate Job request is received, the Batch service sets the Job to the
@@ -13012,6 +13036,33 @@ public final class BatchClient {
             requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
         enableJobWithResponse(jobId, requestOptions).getValue();
+    }
+
+    /**
+     * Enables the specified Job, allowing new Tasks to run.
+     *
+     * When you call this API, the Batch service sets a disabled Job to the enabling
+     * state. After this operation is completed, the Job moves to the active
+     * state, and scheduling of new Tasks under the Job resumes. The Batch service
+     * does not allow a Task to remain in the active state for more than 180 days.
+     * Therefore, if you enable a Job containing active Tasks which were added more
+     * than 180 days ago, those Tasks will not run.
+     *
+     * @param jobId The ID of the Job to enable.
+     * @param options Optional parameters for Enable Job operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the enabling of the Job.
+     * The poller provides {@link BatchJob} instances during polling and returns the last known
+     * {@link BatchJob} on completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchJob, BatchJob> beginEnableJob(String jobId, BatchJobEnableOptions options,
+        RequestConditions requestConditions) {
+        PollerFlux<BatchJob, BatchJob> asyncPoller = asyncClient.beginEnableJob(jobId, options, requestConditions);
+        return asyncPoller.getSyncPoller();
     }
 
     /**
