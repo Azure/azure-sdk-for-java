@@ -215,6 +215,13 @@ public class ReactorConnection implements AmqpConnection {
         }).thenReturn(this);
     }
 
+    public void transferState(ReactorConnection fromConnection) {
+        if (fromConnection == null) {
+            return;
+        }
+        this.handler.transferState(fromConnection.handler);
+    }
+
     /**
      * {@inheritDoc}
      */
