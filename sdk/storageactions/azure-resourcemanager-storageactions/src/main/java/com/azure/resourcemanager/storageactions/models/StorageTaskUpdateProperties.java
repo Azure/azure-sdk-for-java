@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storageactions.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -18,7 +17,7 @@ import java.time.OffsetDateTime;
  * Properties of the storage task.
  */
 @Fluent
-public final class StorageTaskProperties implements JsonSerializable<StorageTaskProperties> {
+public final class StorageTaskUpdateProperties implements JsonSerializable<StorageTaskUpdateProperties> {
     /*
      * Storage task version.
      */
@@ -27,7 +26,7 @@ public final class StorageTaskProperties implements JsonSerializable<StorageTask
     /*
      * Storage Task is enabled when set to true and disabled when set to false
      */
-    private boolean enabled;
+    private Boolean enabled;
 
     /*
      * Text that describes the purpose of the storage task
@@ -50,9 +49,9 @@ public final class StorageTaskProperties implements JsonSerializable<StorageTask
     private OffsetDateTime creationTimeInUtc;
 
     /**
-     * Creates an instance of StorageTaskProperties class.
+     * Creates an instance of StorageTaskUpdateProperties class.
      */
-    public StorageTaskProperties() {
+    public StorageTaskUpdateProperties() {
     }
 
     /**
@@ -69,7 +68,7 @@ public final class StorageTaskProperties implements JsonSerializable<StorageTask
      * 
      * @return the enabled value.
      */
-    public boolean enabled() {
+    public Boolean enabled() {
         return this.enabled;
     }
 
@@ -77,9 +76,9 @@ public final class StorageTaskProperties implements JsonSerializable<StorageTask
      * Set the enabled property: Storage Task is enabled when set to true and disabled when set to false.
      * 
      * @param enabled the enabled value to set.
-     * @return the StorageTaskProperties object itself.
+     * @return the StorageTaskUpdateProperties object itself.
      */
-    public StorageTaskProperties withEnabled(boolean enabled) {
+    public StorageTaskUpdateProperties withEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -97,9 +96,9 @@ public final class StorageTaskProperties implements JsonSerializable<StorageTask
      * Set the description property: Text that describes the purpose of the storage task.
      * 
      * @param description the description value to set.
-     * @return the StorageTaskProperties object itself.
+     * @return the StorageTaskUpdateProperties object itself.
      */
-    public StorageTaskProperties withDescription(String description) {
+    public StorageTaskUpdateProperties withDescription(String description) {
         this.description = description;
         return this;
     }
@@ -117,9 +116,9 @@ public final class StorageTaskProperties implements JsonSerializable<StorageTask
      * Set the action property: The storage task action that is executed.
      * 
      * @param action the action value to set.
-     * @return the StorageTaskProperties object itself.
+     * @return the StorageTaskUpdateProperties object itself.
      */
-    public StorageTaskProperties withAction(StorageTaskAction action) {
+    public StorageTaskUpdateProperties withAction(StorageTaskAction action) {
         this.action = action;
         return this;
     }
@@ -148,20 +147,10 @@ public final class StorageTaskProperties implements JsonSerializable<StorageTask
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (description() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property description in model StorageTaskProperties"));
-        }
-        if (action() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property action in model StorageTaskProperties"));
-        } else {
+        if (action() != null) {
             action().validate();
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(StorageTaskProperties.class);
 
     /**
      * {@inheritDoc}
@@ -176,41 +165,40 @@ public final class StorageTaskProperties implements JsonSerializable<StorageTask
     }
 
     /**
-     * Reads an instance of StorageTaskProperties from the JsonReader.
+     * Reads an instance of StorageTaskUpdateProperties from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of StorageTaskProperties if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the StorageTaskProperties.
+     * @return An instance of StorageTaskUpdateProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageTaskUpdateProperties.
      */
-    public static StorageTaskProperties fromJson(JsonReader jsonReader) throws IOException {
+    public static StorageTaskUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            StorageTaskProperties deserializedStorageTaskProperties = new StorageTaskProperties();
+            StorageTaskUpdateProperties deserializedStorageTaskUpdateProperties = new StorageTaskUpdateProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("enabled".equals(fieldName)) {
-                    deserializedStorageTaskProperties.enabled = reader.getBoolean();
+                if ("taskVersion".equals(fieldName)) {
+                    deserializedStorageTaskUpdateProperties.taskVersion = reader.getNullable(JsonReader::getLong);
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedStorageTaskUpdateProperties.enabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("description".equals(fieldName)) {
-                    deserializedStorageTaskProperties.description = reader.getString();
+                    deserializedStorageTaskUpdateProperties.description = reader.getString();
                 } else if ("action".equals(fieldName)) {
-                    deserializedStorageTaskProperties.action = StorageTaskAction.fromJson(reader);
-                } else if ("taskVersion".equals(fieldName)) {
-                    deserializedStorageTaskProperties.taskVersion = reader.getNullable(JsonReader::getLong);
+                    deserializedStorageTaskUpdateProperties.action = StorageTaskAction.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedStorageTaskProperties.provisioningState
+                    deserializedStorageTaskUpdateProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());
                 } else if ("creationTimeInUtc".equals(fieldName)) {
-                    deserializedStorageTaskProperties.creationTimeInUtc = reader
+                    deserializedStorageTaskUpdateProperties.creationTimeInUtc = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedStorageTaskProperties;
+            return deserializedStorageTaskUpdateProperties;
         });
     }
 }
