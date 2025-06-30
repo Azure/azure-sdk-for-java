@@ -266,12 +266,12 @@ class NettyHttpClient implements HttpClient {
         // reacts to the result of the ALPN negotiation that happened during the SSL handshake.
         if (isHttps) {
             // For HTTPS, we delegate the addition of the response handler and codec to the ALPN handler.
-            pipeline.addAfter(SSL, ALPN,
-                new Netty4AlpnHandler(request, responseReference, errorReference, latch));
+            pipeline.addAfter(SSL, ALPN, new Netty4AlpnHandler(request, responseReference, errorReference, latch));
         } else {
             // If there isn't an SslHandler, we can send the request immediately.
             // Add the HTTP/1.1 codec, as we only support HTTP/2 when using SSL ALPN.
-            pipeline.addLast(HTTP_RESPONSE, new Netty4ResponseHandler(request, responseReference, errorReference, latch));
+            pipeline.addLast(HTTP_RESPONSE,
+                new Netty4ResponseHandler(request, responseReference, errorReference, latch));
             String addBefore = addProgressAndTimeoutHandler ? PROGRESS_AND_TIMEOUT : HTTP_RESPONSE;
             pipeline.addBefore(addBefore, HTTP_CODEC, createCodec());
             sendHttp11Request(request, channel, errorReference).addListener(f -> {
