@@ -35,8 +35,6 @@ if ($Parallelization -lt 1) {
   $Parallelization = 1
 }
 
-$global:hasError = $false
-
 $directoryAndScriptTuples = New-Object 'Collections.ArrayList'
 foreach ($serviceDirectory in $ServiceDirectories.Split(',')) {
   if ($serviceDirectory.Contains('/')) {
@@ -68,17 +66,18 @@ No Swagger files to regenerate in directories: $ServiceDirectories.
 }
 
 # Ensure Autorest is installed.
-npm install -g autorest
+npm install -g autorest | Out-Null
 if ($LASTEXITCODE -ne 0) {
   Write-Error "Failed to install Autorest."
   exit 1
 }
-  
+
 $generateScript = {
   $directory = $_.Item1
   $updateCodegenScript = $_.Item2
 
-  $generateOutput = (& $updateCodegenScript.FullName) 
+  # 6>&1 redirects Write-Host calls in the script to the output stream, so we can capture it.
+  $generateOutput = (& $updateCodegenScript.FullName) 6>&1
 
   if ($LastExitCode -ne 0) {
     Write-Host @"
@@ -87,27 +86,26 @@ Error running $updateCodegenScript
 ======================================
 $([String]::Join("`n", $generateOutput))
 "@
-    $global:hasError = $true
+    throw
   } else {
-    Write-Host @"
-======================================
-Successfully ran $updateCodegenScript
-======================================
-"@
-
     # prevent warning related to EOL differences which triggers an exception for some reason
-    & git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "$directory/*.java"
+    (& git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "$directory/*.java") | Out-Null
 
     if ($LastExitCode -ne 0) {
-      $status = git status -s | Out-String
+      $status = (git status -s "$directory" | Out-String)
       Write-Host @"
 ======================================
 The following files in directoy $directory are out of date:
 ======================================
 $status
 "@
-      Write-Host "$status"
-      return $global:hasError = $true
+      throw
+    } else {
+          Write-Host @"
+======================================
+Successfully ran with no diff $updateCodegenScript
+======================================
+"@
     }
   }
 }
@@ -117,10 +115,8 @@ $timeout = 60 * $directoryAndScriptTuples.Count
 
 $job = $directoryAndScriptTuples | ForEach-Object -Parallel $generateScript -ThrottleLimit $Parallelization -AsJob
 
-$job | Wait-Job -Timeout $timeout
-$job | Receive-Job
+# Out-Null to suppress output information from the job and 2>$null to suppress any error messages from Receive-Job.
+$job | Wait-Job -Timeout $timeout | Out-Null
+$job | Receive-Job 2>$null | Out-Null
 
-if ($global:hasError) {
-  exit 1
-}
-exit 0
+exit $job.State -eq 'Failed'
