@@ -16,6 +16,9 @@ import com.azure.storage.common.implementation.structuredmessage.StorageChecksum
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static com.azure.storage.common.implementation.Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 public class BlobMessageEncoderUploadTests extends BlobTestBase {
     private BlobClient bc;
 
@@ -25,12 +28,20 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
     }
 
     @Test
-    public void uploadBinaryDataFull() {
-        BlobClient blob = getBlobClientBuilderWithTokenCredential(bc.getBlobUrl()).buildClient();
-
+    public void uploadBinaryDataFullCRCHeader() {
         BlobParallelUploadOptions options = new BlobParallelUploadOptions(DATA.getDefaultBinaryData())
             .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO);
-        Response<BlockBlobItem> response = blob.uploadWithResponse(options, null, Context.NONE);
+        Response<BlockBlobItem> response = bc.uploadWithResponse(options, null, Context.NONE);
+        assertNotNull(response.getRequest().getHeaders().getValue(CONTENT_CRC64_HEADER_NAME));
+    }
+
+    @Test
+    public void uploadBinaryDataFullStructMess() {
+        BlobParallelUploadOptions options
+            = new BlobParallelUploadOptions(BinaryData.fromBytes(getRandomByteArray(Constants.MB * 16)))
+                .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO);
+        Response<BlockBlobItem> response = bc.uploadWithResponse(options, null, Context.NONE);
+        //assertNotNull(response.getRequest().getHeaders().getValue(CONTENT_CRC64_HEADER_NAME));
     }
 
     @Test

@@ -33,6 +33,11 @@ public final class StructuredMessageConstants {
     public static final int V1_DEFAULT_SEGMENT_CONTENT_LENGTH = 4 * 1024 * 1024; // 4 MiB
 
     /**
+     * The maximum amount of data to encode at once.
+     */
+    public static final int STATIC_MAXIMUM_ENCODED_DATA_LENGTH = 4 * 1024 * 1024; // 4 MiB
+
+    /**
      * The header name for the CRC64 checksum.
      */
     public static final String STRUCTUED_BODY_TYPE = "XSM/1.0; properties=crc64";

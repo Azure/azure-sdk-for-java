@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.StorageCrc64Calculator;
 import com.azure.storage.common.implementation.structuredmessage.StructuredMessageEncoder;
 import com.azure.storage.common.implementation.structuredmessage.StructuredMessageFlags;
@@ -16,6 +17,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
+import java.util.Base64;
 
 import static com.azure.storage.common.implementation.Constants.CONTENT_VALIDATION_BEHAVIOR_KEY;
 import static com.azure.storage.common.implementation.Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME;
@@ -23,6 +25,7 @@ import static com.azure.storage.common.implementation.Constants.HeaderConstants.
 import static com.azure.storage.common.implementation.Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME;
 import static com.azure.storage.common.implementation.Constants.USE_CRC64_CHECKSUM_HEADER_CONTEXT;
 import static com.azure.storage.common.implementation.Constants.USE_STRUCTURED_MESSAGE_CONTEXT;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.STATIC_MAXIMUM_ENCODED_DATA_LENGTH;
 import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.STRUCTUED_BODY_TYPE;
 import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.V1_DEFAULT_SEGMENT_CONTENT_LENGTH;
 
@@ -71,24 +74,43 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
 
     private void applyCRC64Header(HttpPipelineCallContext context) {
         // Implementation for setting the crc64 header
+        System.out.println("using crc64 header");
+
         long contentCRC64 = StorageCrc64Calculator.compute(context.getHttpRequest().getBodyAsBinaryData().toBytes(), 0);
-        context.getHttpRequest().setHeader(CONTENT_CRC64_HEADER_NAME, String.valueOf(contentCRC64));
+
+        // Convert the 64-bit CRC value to 8 bytes in little-endian format
+        byte[] crc64Bytes = new byte[8];
+        for (int i = 0; i < 8; i++) {
+            crc64Bytes[i] = (byte) (contentCRC64 >>> (i * 8));
+        }
+
+        // Base64 encode the binary representation
+        String encodedCRC64 = Base64.getEncoder().encodeToString(crc64Bytes);
+        context.getHttpRequest().setHeader(CONTENT_CRC64_HEADER_NAME, encodedCRC64);
     }
 
     private void applyStructuredMessage(HttpPipelineCallContext context) {
         // Implementation for applying structured message to the request body
+        System.out.println("using struct mess");
         int unencodedContentLength
             = Integer.parseInt(context.getHttpRequest().getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
 
         StructuredMessageEncoder structuredMessageEncoder = new StructuredMessageEncoder(unencodedContentLength,
             V1_DEFAULT_SEGMENT_CONTENT_LENGTH, StructuredMessageFlags.STORAGE_CRC64);
-        //System.out.println("With BinaryData:");
-        //byte[] encodedContent = structuredMessageEncoder.encode(context.getHttpRequest().getBodyAsBinaryData().toByteBuffer()).array();
 
-        System.out.println("With Flux:");
-        Flux<ByteBuffer> encodedContent = structuredMessageEncoder.encode(context.getHttpRequest().getBody());
+        // Create BufferStagingArea with 4MB chunks
+        BufferStagingArea stagingArea
+            = new BufferStagingArea(STATIC_MAXIMUM_ENCODED_DATA_LENGTH, STATIC_MAXIMUM_ENCODED_DATA_LENGTH);
 
-        context.getHttpRequest().setBody(encodedContent);
+        Flux<ByteBuffer> encodedBody = context.getHttpRequest()
+            .getBody()
+            .flatMapSequential(stagingArea::write, 1, 1)
+            .concatWith(Flux.defer(stagingArea::flush))
+            .flatMap(bufferAggregator -> bufferAggregator.asFlux().map(structuredMessageEncoder::encode));
+
+        // Set the encoded body
+        context.getHttpRequest().setBody(encodedBody);
+
         context.getHttpRequest()
             .setHeader(HttpHeaderName.CONTENT_LENGTH, structuredMessageEncoder.getEncodedMessageLength());
         // x-ms-structured-body

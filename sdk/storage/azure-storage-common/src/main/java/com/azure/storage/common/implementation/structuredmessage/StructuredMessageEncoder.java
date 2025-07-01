@@ -132,7 +132,6 @@ public class StructuredMessageEncoder {
      * encoded.
      */
     public ByteBuffer encode(ByteBuffer unencodedBuffer) {
-        System.out.println("remaining: " + unencodedBuffer.remaining());
         StorageImplUtils.assertNotNull("unencodedBuffer", unencodedBuffer);
 
         if (currentContentOffset == contentLength) {

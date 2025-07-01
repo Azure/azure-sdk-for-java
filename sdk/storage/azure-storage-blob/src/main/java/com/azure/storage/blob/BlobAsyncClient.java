@@ -66,6 +66,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.storage.common.implementation.Constants.CONTENT_VALIDATION_BEHAVIOR_KEY;
 import static com.azure.storage.common.implementation.Constants.USE_CRC64_CHECKSUM_HEADER_CONTEXT;
 import static com.azure.storage.common.implementation.Constants.USE_STRUCTURED_MESSAGE_CONTEXT;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.STATIC_MAXIMUM_ENCODED_DATA_LENGTH;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -755,8 +756,14 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                         Contexts.empty().setHttpRequestProgressReporter(progressReporter).getContext()));
                 }
                 if (storageChecksumAlgorithm.resolveAuto() == StorageChecksumAlgorithm.CRC64) {
-                    responseMono = responseMono.contextWrite(FluxUtil.toReactorContext(
-                        new Context(CONTENT_VALIDATION_BEHAVIOR_KEY, USE_CRC64_CHECKSUM_HEADER_CONTEXT)));
+                    String contentValidationContextValue;
+                    if (options.getLength() <= STATIC_MAXIMUM_ENCODED_DATA_LENGTH) {
+                        contentValidationContextValue = USE_CRC64_CHECKSUM_HEADER_CONTEXT;
+                    } else {
+                        contentValidationContextValue = USE_STRUCTURED_MESSAGE_CONTEXT;
+                    }
+                    responseMono = responseMono.contextWrite(FluxUtil
+                        .toReactorContext(new Context(CONTENT_VALIDATION_BEHAVIOR_KEY, contentValidationContextValue)));
                 }
                 return responseMono;
             });
