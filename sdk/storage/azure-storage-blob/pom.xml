@@ -74,7 +74,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.55.5</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.55.5</version> <!-- {x-version-update;com.azure:azure-core;dependency} --> <!-- -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
