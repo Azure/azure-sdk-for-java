@@ -326,7 +326,10 @@ public class NettyHttpClientBuilder {
 
     /**
      * Sets the maximum time a connection is allowed to exist.
-     * After this time, the connection will be closed upon release. A default of null means no lifetime limit.
+     * <p>
+     * After this time, the connection will be closed upon release.
+     * <p>
+     * A {@link Duration} of zero or less, or a null value, will result in connections having no lifetime limit.
      *
      * @param maxConnectionLifetime The maximum connection lifetime.
      * @return The updated builder.
@@ -349,6 +352,8 @@ public class NettyHttpClientBuilder {
 
     /**
      * Sets the maximum number of requests that can be queued waiting for a connection.
+     * <p>
+     * This limit is applied on a per-route (per-host) basis.
      *
      * @param maxPendingAcquires The maximum number of pending acquires.
      * @return The updated builder.
@@ -403,7 +408,8 @@ public class NettyHttpClientBuilder {
                 sslContextModifier, connectionPoolSize, connectionIdleTimeout, maxConnectionLifetime,
                 pendingAcquireTimeout, maxPendingAcquires, maximumHttpVersion);
 
-        return new NettyHttpClient(group, connectionPool, getTimeoutMillis(readTimeout),
+        return new NettyHttpClient(group, connectionPool, buildProxyOptions,
+            new ChannelInitializationProxyHandler(buildProxyOptions), getTimeoutMillis(readTimeout),
             getTimeoutMillis(responseTimeout), getTimeoutMillis(writeTimeout));
     }
 

@@ -43,7 +43,7 @@ public class Netty4ConnectionPoolTests {
     private static LocalTestServer server;
     private static EventLoopGroup eventLoopGroup;
     private static Bootstrap bootstrap;
-    private static SocketAddress serverAddress;
+    private static Netty4ConnectionPoolKey connectionPoolKey;
 
     @BeforeAll
     public static void startTestServerAndEventLoopGroup() {
@@ -51,7 +51,8 @@ public class Netty4ConnectionPoolTests {
         server.start();
         eventLoopGroup = new NioEventLoopGroup(2);
         bootstrap = new Bootstrap().group(eventLoopGroup).channel(NioSocketChannel.class);
-        serverAddress = new InetSocketAddress("localhost", server.getPort());
+        SocketAddress socketAddress = new InetSocketAddress("localhost", server.getPort());
+        connectionPoolKey = new Netty4ConnectionPoolKey(socketAddress, socketAddress);
     }
 
     @AfterAll
@@ -74,7 +75,7 @@ public class Netty4ConnectionPoolTests {
     @Test
     public void testAcquireAndRelease() throws IOException {
         try (Netty4ConnectionPool pool = createPool(1, Duration.ofSeconds(10), null, Duration.ofSeconds(10), 1)) {
-            Future<Channel> future = pool.acquire(serverAddress, false);
+            Future<Channel> future = pool.acquire(connectionPoolKey, false);
             Channel channel = future.awaitUninterruptibly().getNow();
             assertNotNull(channel);
             assertTrue(channel.isActive());
@@ -85,11 +86,11 @@ public class Netty4ConnectionPoolTests {
     @Test
     public void testConnectionIsReusedForSameRemoteAddress() throws IOException {
         try (Netty4ConnectionPool pool = createPool(1, Duration.ofSeconds(10), null, Duration.ofSeconds(10), 1)) {
-            Future<Channel> future1 = pool.acquire(serverAddress, false);
+            Future<Channel> future1 = pool.acquire(connectionPoolKey, false);
             Channel channel1 = future1.awaitUninterruptibly().getNow();
             pool.release(channel1);
 
-            Future<Channel> future2 = pool.acquire(serverAddress, false);
+            Future<Channel> future2 = pool.acquire(connectionPoolKey, false);
             Channel channel2 = future2.awaitUninterruptibly().getNow();
             assertSame(channel1, channel2);
             pool.release(channel2);
@@ -103,11 +104,11 @@ public class Netty4ConnectionPoolTests {
             = createPool(maxConnections, Duration.ofSeconds(10), null, Duration.ofSeconds(10), maxConnections)) {
             List<Channel> channels = new ArrayList<>();
             for (int i = 0; i < maxConnections; i++) {
-                channels.add(pool.acquire(serverAddress, false).awaitUninterruptibly().getNow());
+                channels.add(pool.acquire(connectionPoolKey, false).awaitUninterruptibly().getNow());
             }
             assertEquals(maxConnections, channels.size());
 
-            Future<Channel> pendingFuture = pool.acquire(serverAddress, false);
+            Future<Channel> pendingFuture = pool.acquire(connectionPoolKey, false);
             Thread.sleep(100);
             assertFalse(pendingFuture.isDone());
 
@@ -124,9 +125,9 @@ public class Netty4ConnectionPoolTests {
     @Test
     public void testPendingAcquireTimeout() throws IOException, InterruptedException {
         try (Netty4ConnectionPool pool = createPool(1, Duration.ofSeconds(10), null, Duration.ofMillis(100), 1)) {
-            Channel channel = pool.acquire(serverAddress, false).awaitUninterruptibly().getNow();
+            Channel channel = pool.acquire(connectionPoolKey, false).awaitUninterruptibly().getNow();
 
-            Future<Channel> timeoutFuture = pool.acquire(serverAddress, false);
+            Future<Channel> timeoutFuture = pool.acquire(connectionPoolKey, false);
 
             assertTrue(timeoutFuture.await(500, TimeUnit.MILLISECONDS));
 
@@ -141,12 +142,12 @@ public class Netty4ConnectionPoolTests {
     @Test
     public void testIdleConnectionIsCleanedUp() throws IOException, InterruptedException {
         try (Netty4ConnectionPool pool = createPool(1, Duration.ofSeconds(10), null, Duration.ofSeconds(10), 1)) {
-            Channel channel1 = pool.acquire(serverAddress, false).awaitUninterruptibly().getNow();
+            Channel channel1 = pool.acquire(connectionPoolKey, false).awaitUninterruptibly().getNow();
             pool.release(channel1);
             Thread.sleep(31000); // Wait for cleanup task to run (interval is 30s)
             assertFalse(channel1.isActive());
 
-            Channel channel2 = pool.acquire(serverAddress, false).awaitUninterruptibly().getNow();
+            Channel channel2 = pool.acquire(connectionPoolKey, false).awaitUninterruptibly().getNow();
             assertNotSame(channel1, channel2);
             pool.release(channel2);
         }
@@ -156,13 +157,13 @@ public class Netty4ConnectionPoolTests {
     public void testMaxConnectionLifetimeEnforced() throws IOException, InterruptedException {
         try (Netty4ConnectionPool pool
             = createPool(1, Duration.ofSeconds(10), Duration.ofMillis(500), Duration.ofSeconds(10), 1)) {
-            Channel channel1 = pool.acquire(serverAddress, false).awaitUninterruptibly().getNow();
+            Channel channel1 = pool.acquire(connectionPoolKey, false).awaitUninterruptibly().getNow();
             Thread.sleep(600);
             pool.release(channel1);
             Thread.sleep(100); // Give a moment for close to propagate
             assertFalse(channel1.isActive());
 
-            Channel channel2 = pool.acquire(serverAddress, false).awaitUninterruptibly().getNow();
+            Channel channel2 = pool.acquire(connectionPoolKey, false).awaitUninterruptibly().getNow();
             assertNotSame(channel1, channel2);
             pool.release(channel2);
         }
@@ -171,11 +172,11 @@ public class Netty4ConnectionPoolTests {
     @Test
     public void testUnhealthyConnectionIsDiscarded() throws IOException {
         try (Netty4ConnectionPool pool = createPool(1, Duration.ofSeconds(10), null, Duration.ofSeconds(10), 1)) {
-            Channel channel1 = pool.acquire(serverAddress, false).awaitUninterruptibly().getNow();
+            Channel channel1 = pool.acquire(connectionPoolKey, false).awaitUninterruptibly().getNow();
             pool.release(channel1);
             channel1.close().awaitUninterruptibly();
 
-            Channel channel2 = pool.acquire(serverAddress, false).awaitUninterruptibly().getNow();
+            Channel channel2 = pool.acquire(connectionPoolKey, false).awaitUninterruptibly().getNow();
             assertNotNull(channel2);
             assertTrue(channel2.isActive());
             assertNotSame(channel1, channel2);
@@ -187,7 +188,7 @@ public class Netty4ConnectionPoolTests {
     public void testAcquireOnClosedPoolFails() throws IOException {
         Netty4ConnectionPool pool = createPool(1, Duration.ofSeconds(10), null, Duration.ofSeconds(10), 1);
         pool.close();
-        assertThrows(IllegalStateException.class, () -> pool.acquire(serverAddress, false));
+        assertThrows(IllegalStateException.class, () -> pool.acquire(connectionPoolKey, false));
     }
 
     @Test
@@ -201,12 +202,14 @@ public class Netty4ConnectionPoolTests {
 
             SocketAddress address1 = new InetSocketAddress("localhost", route1Server.getPort());
             SocketAddress address2 = new InetSocketAddress("localhost", route2Server.getPort());
+            Netty4ConnectionPoolKey key1 = new Netty4ConnectionPoolKey(address1, address1);
+            Netty4ConnectionPoolKey key2 = new Netty4ConnectionPoolKey(address2, address2);
 
             try (Netty4ConnectionPool pool = createPool(1, Duration.ofSeconds(10), null, Duration.ofSeconds(10), 1)) {
-                Channel channel1 = pool.acquire(address1, false).awaitUninterruptibly().getNow();
+                Channel channel1 = pool.acquire(key1, false).awaitUninterruptibly().getNow();
                 assertNotNull(channel1);
 
-                Channel channel2 = pool.acquire(address2, false).awaitUninterruptibly().getNow();
+                Channel channel2 = pool.acquire(key2, false).awaitUninterruptibly().getNow();
                 assertNotNull(channel2);
 
                 assertNotSame(channel1, channel2);

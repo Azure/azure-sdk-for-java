@@ -62,11 +62,13 @@ public final class Netty4ConnectionPool implements Closeable {
     public static final AttributeKey<AtomicBoolean> NEW_CHANNEL_KEY = AttributeKey.valueOf("new-channel");
     private static final AttributeKey<OffsetDateTime> CHANNEL_CREATION_TIME
         = AttributeKey.valueOf("channel-creation-time");
+    private static final AttributeKey<Netty4ConnectionPoolKey> CONNECTION_POOL_KEY
+        = AttributeKey.valueOf("connection-pool-key");
 
     private static final ClientLogger LOGGER = new ClientLogger(Netty4ConnectionPool.class);
     private static final String CLOSED_POOL_ERROR_MESSAGE = "Connection pool has been closed.";
 
-    private final ConcurrentMap<SocketAddress, PerRoutePool> pool = new ConcurrentHashMap<>();
+    private final ConcurrentMap<Netty4ConnectionPoolKey, PerRoutePool> pool = new ConcurrentHashMap<>();
     private final ConcurrentMap<Channel, OffsetDateTime> channelIdleSince = new ConcurrentHashMap<>();
     private final AtomicBoolean closed = new AtomicBoolean(false);
 
@@ -116,17 +118,17 @@ public final class Netty4ConnectionPool implements Closeable {
     /**
      * Acquires a channel for the given remote address from the pool.
      *
-     * @param remoteAddress The remote address to connect to.
+     * @param key The composite key representing the connection route.
      * @param isHttps Flag indicating whether connections for this route should be secured using TLS/SSL.
      * @return A {@link Future} that will be notified when a channel is acquired.
      * @throws IllegalStateException if the connection pool has been closed.
      */
-    public Future<Channel> acquire(SocketAddress remoteAddress, boolean isHttps) {
+    public Future<Channel> acquire(Netty4ConnectionPoolKey key, boolean isHttps) {
         if (closed.get()) {
             throw LOGGER.throwableAtError().log(CLOSED_POOL_ERROR_MESSAGE, IllegalStateException::new);
         }
 
-        PerRoutePool perRoutePool = pool.computeIfAbsent(remoteAddress, k -> new PerRoutePool(k, isHttps));
+        PerRoutePool perRoutePool = pool.computeIfAbsent(key, k -> new PerRoutePool(k, isHttps));
         return perRoutePool.acquire();
     }
 
@@ -145,9 +147,11 @@ public final class Netty4ConnectionPool implements Closeable {
             return;
         }
 
-        if (channel.remoteAddress() != null) {
-            PerRoutePool perRoutePool = pool.get(channel.remoteAddress());
+        Netty4ConnectionPoolKey key = channel.attr(CONNECTION_POOL_KEY).get();
+        if (key != null) {
+            PerRoutePool perRoutePool = pool.get(key);
             if (perRoutePool != null) {
+                channel.attr(CONNECTION_POOL_KEY).set(null);
                 perRoutePool.release(channel);
             } else {
                 channel.close();
@@ -204,11 +208,13 @@ public final class Netty4ConnectionPool implements Closeable {
         private final Deque<Channel> idleConnections = new ConcurrentLinkedDeque<>();
         private final Deque<Promise<Channel>> pendingAcquirers = new ConcurrentLinkedDeque<>();
         private final AtomicInteger activeConnections = new AtomicInteger(0);
+        private final Netty4ConnectionPoolKey key;
         private final SocketAddress route;
         private final boolean isHttps;
 
-        PerRoutePool(SocketAddress route, boolean isHttps) {
-            this.route = route;
+        PerRoutePool(Netty4ConnectionPoolKey key, boolean isHttps) {
+            this.key = key;
+            this.route = key.getConnectionTarget();
             this.isHttps = isHttps;
         }
 
@@ -230,6 +236,7 @@ public final class Netty4ConnectionPool implements Closeable {
                     activeConnections.incrementAndGet();
                     channel.attr(NEW_CHANNEL_KEY).set(new AtomicBoolean(false));
                     channelIdleSince.remove(channel);
+                    channel.attr(CONNECTION_POOL_KEY).set(key);
                     return channel.eventLoop().newSucceededFuture(channel);
                 }
                 // Unhealthy idle connection was found and discarded. Don't decrement activeConnections
@@ -326,7 +333,8 @@ public final class Netty4ConnectionPool implements Closeable {
                 public void initChannel(Channel channel) throws SSLException {
                     ChannelPipeline pipeline = channel.pipeline();
                     // Test whether proxying should be applied to this Channel. If so, add it.
-                    boolean hasProxy = channelInitializationProxyHandler.test(route);
+                    // Proxy detection MUST use the final destination address from the key.
+                    boolean hasProxy = channelInitializationProxyHandler.test(key.getFinalDestination());
                     if (hasProxy) {
                         ProxyHandler proxyHandler = channelInitializationProxyHandler.createProxy(proxyChallenges);
                         pipeline.addFirst(PROXY, proxyHandler);
@@ -334,7 +342,7 @@ public final class Netty4ConnectionPool implements Closeable {
 
                     // Add SSL handling if the request is HTTPS.
                     if (isHttps) {
-                        InetSocketAddress inetSocketAddress = (InetSocketAddress) route;
+                        InetSocketAddress inetSocketAddress = (InetSocketAddress) key.getFinalDestination();
                         SslContext ssl = buildSslContext();
                         // SSL handling is added last here. This is done as proxying could require SSL handling too.
                         channel.pipeline()
@@ -365,6 +373,7 @@ public final class Netty4ConnectionPool implements Closeable {
                         if (proxyFuture.isSuccess()) {
                             newChannel.attr(NEW_CHANNEL_KEY).set(new AtomicBoolean(true));
                             newChannel.attr(CHANNEL_CREATION_TIME).set(OffsetDateTime.now(ZoneOffset.UTC));
+                            newChannel.attr(CONNECTION_POOL_KEY).set(key);
                             promise.setSuccess(newChannel);
                         } else {
                             promise.setFailure(proxyFuture.cause());
@@ -379,6 +388,7 @@ public final class Netty4ConnectionPool implements Closeable {
                 } else {
                     newChannel.attr(NEW_CHANNEL_KEY).set(new AtomicBoolean(true));
                     newChannel.attr(CHANNEL_CREATION_TIME).set(OffsetDateTime.now(ZoneOffset.UTC));
+                    newChannel.attr(CONNECTION_POOL_KEY).set(key);
                     promise.setSuccess(newChannel);
                 }
             });

@@ -6,6 +6,7 @@ package io.clientcore.http.netty4;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
@@ -15,9 +16,11 @@ import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.ProgressReporter;
 import io.clientcore.core.utils.ServerSentEventUtils;
+import io.clientcore.http.netty4.implementation.ChannelInitializationProxyHandler;
 import io.clientcore.http.netty4.implementation.Netty4AlpnHandler;
 import io.clientcore.http.netty4.implementation.Netty4ChannelBinaryData;
 import io.clientcore.http.netty4.implementation.Netty4ConnectionPool;
+import io.clientcore.http.netty4.implementation.Netty4ConnectionPoolKey;
 import io.clientcore.http.netty4.implementation.Netty4EagerConsumeChannelHandler;
 import io.clientcore.http.netty4.implementation.Netty4PipelineCleanupHandler;
 import io.clientcore.http.netty4.implementation.Netty4ProgressAndTimeoutHandler;
@@ -67,14 +70,19 @@ class NettyHttpClient implements HttpClient {
 
     private final EventLoopGroup eventLoopGroup;
     private final Netty4ConnectionPool connectionPool;
+    private final ProxyOptions proxyOptions;
+    private final ChannelInitializationProxyHandler channelInitializationProxyHandler;
     private final long readTimeoutMillis;
     private final long responseTimeoutMillis;
     private final long writeTimeoutMillis;
 
-    NettyHttpClient(EventLoopGroup eventLoopGroup, Netty4ConnectionPool connectionPool, long readTimeoutMillis,
+    NettyHttpClient(EventLoopGroup eventLoopGroup, Netty4ConnectionPool connectionPool, ProxyOptions proxyOptions,
+        ChannelInitializationProxyHandler channelInitializationProxyHandler, long readTimeoutMillis,
         long responseTimeoutMillis, long writeTimeoutMillis) {
         this.eventLoopGroup = eventLoopGroup;
         this.connectionPool = connectionPool;
+        this.proxyOptions = proxyOptions;
+        this.channelInitializationProxyHandler = channelInitializationProxyHandler;
         this.readTimeoutMillis = readTimeoutMillis;
         this.responseTimeoutMillis = responseTimeoutMillis;
         this.writeTimeoutMillis = writeTimeoutMillis;
@@ -89,13 +97,15 @@ class NettyHttpClient implements HttpClient {
         final URI uri = request.getUri();
         final boolean isHttps = "https".equalsIgnoreCase(uri.getScheme());
         final int port = uri.getPort() == -1 ? (isHttps ? 443 : 80) : uri.getPort();
-        final SocketAddress remoteAddress = new InetSocketAddress(uri.getHost(), port);
+        final SocketAddress finalDestination = new InetSocketAddress(uri.getHost(), port);
+
+        final Netty4ConnectionPoolKey connectionPoolKey = constructConnectionPoolKey(finalDestination, isHttps);
 
         final CountDownLatch latch = new CountDownLatch(1);
         final AtomicReference<ResponseStateInfo> responseReference = new AtomicReference<>();
         final AtomicReference<Throwable> errorReference = new AtomicReference<>();
 
-        Future<Channel> channelFuture = connectionPool.acquire(remoteAddress, isHttps);
+        Future<Channel> channelFuture = connectionPool.acquire(connectionPoolKey, isHttps);
 
         channelFuture.addListener((GenericFutureListener<Future<Channel>>) future -> {
             if (!future.isSuccess()) {
@@ -303,6 +313,28 @@ class NettyHttpClient implements HttpClient {
         return (serverSentResult != null && serverSentResult.getData() != null)
             ? BinaryData.fromString(String.join("\n", serverSentResult.getData()))
             : BinaryData.empty();
+    }
+
+    private Netty4ConnectionPoolKey constructConnectionPoolKey(SocketAddress finalDestination, boolean isHttps) {
+        final Netty4ConnectionPoolKey key;
+
+        final boolean useProxy = channelInitializationProxyHandler.test(finalDestination);
+        if (useProxy) {
+            SocketAddress proxyAddress = proxyOptions.getAddress();
+            if (isHttps) {
+                // For proxied HTTPS, the pool is keyed by the unique combination of the proxy
+                // and the final destination. This creates dedicated pools for each tunneled destination.
+                key = new Netty4ConnectionPoolKey(proxyAddress, finalDestination);
+            } else {
+                // For proxied plain HTTP, the pool is keyed only by the proxy address.
+                // This allows reusing the same connection to the proxy for different final destinations.
+                key = new Netty4ConnectionPoolKey(proxyAddress, proxyAddress);
+            }
+        } else {
+            key = new Netty4ConnectionPoolKey(finalDestination, finalDestination);
+        }
+
+        return key;
     }
 
 }
