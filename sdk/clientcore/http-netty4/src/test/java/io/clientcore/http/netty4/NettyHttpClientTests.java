@@ -42,6 +42,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URI;
 import java.nio.channels.Channels;
+import java.nio.channels.ClosedChannelException;
 import java.nio.channels.WritableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -302,18 +303,24 @@ public class NettyHttpClientTests {
                 () -> httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(PROXY_TO_ADDRESS))));
 
             Throwable exception = coreException.getCause();
-            assertInstanceOf(ProxyConnectException.class, exception, () -> {
-                StringWriter stringWriter = new StringWriter();
-                stringWriter.write(exception.toString());
-                PrintWriter printWriter = new PrintWriter(stringWriter);
-                exception.printStackTrace(printWriter);
+            assertTrue(exception instanceof ProxyConnectException || exception instanceof ClosedChannelException,
+                "Exception was not of expected type ProxyConnectException or ClosedChannelException, but was "
+                    + exception.getClass().getName());
 
-                return stringWriter.toString();
-            });
+            if (exception instanceof ProxyConnectException) {
+                assertInstanceOf(ProxyConnectException.class, exception, () -> {
+                    StringWriter stringWriter = new StringWriter();
+                    stringWriter.write(exception.toString());
+                    PrintWriter printWriter = new PrintWriter(stringWriter);
+                    exception.printStackTrace(printWriter);
 
-            assertTrue(coreException.getCause().getMessage().contains("Proxy Authentication Required"),
-                () -> "Expected exception message to contain \"Proxy Authentication Required\", it was: "
-                    + coreException.getCause().getMessage());
+                    return stringWriter.toString();
+                });
+
+                assertTrue(coreException.getCause().getMessage().contains("Proxy Authentication Required"),
+                    () -> "Expected exception message to contain \"Proxy Authentication Required\", it was: "
+                        + coreException.getCause().getMessage());
+            }
         }
     }
 

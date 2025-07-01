@@ -30,6 +30,7 @@ public class Netty4PipelineCleanupHandler extends ChannelDuplexHandler {
 
     private final Netty4ConnectionPool connectionPool;
     private final AtomicBoolean cleanedUp = new AtomicBoolean(false);
+    private boolean lastContentRead;
 
     private static final List<String> HANDLERS_TO_REMOVE;
 
@@ -51,16 +52,21 @@ public class Netty4PipelineCleanupHandler extends ChannelDuplexHandler {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        ctx.fireChannelRead(msg);
-
-        boolean lastRead = false;
         if (msg instanceof LastHttpContent) {
-            lastRead = true;
+            this.lastContentRead = true;
         } else if (msg instanceof Http2DataFrame) {
-            lastRead = ((Http2DataFrame) msg).isEndStream();
+            this.lastContentRead = ((Http2DataFrame) msg).isEndStream();
         }
 
-        if (lastRead) {
+        ctx.fireChannelRead(msg);
+    }
+
+    @Override
+    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+        // First, let other handlers process the channelReadComplete event.
+        ctx.fireChannelReadComplete();
+
+        if (lastContentRead) {
             cleanup(ctx);
         }
     }
@@ -75,8 +81,8 @@ public class Netty4PipelineCleanupHandler extends ChannelDuplexHandler {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        ctx.fireChannelInactive();
         cleanup(ctx);
-        super.channelInactive(ctx);
     }
 
     public void cleanup(ChannelHandlerContext ctx) {

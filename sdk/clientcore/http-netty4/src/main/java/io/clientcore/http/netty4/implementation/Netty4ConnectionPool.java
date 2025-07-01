@@ -30,6 +30,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+import java.nio.channels.ClosedChannelException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -371,6 +372,15 @@ public final class Netty4ConnectionPool implements Closeable {
                     // Wait for the proxy handshake to complete if proxy is being used.
                     proxyHandler.connectFuture().addListener(proxyFuture -> {
                         if (proxyFuture.isSuccess()) {
+                            if (!newChannel.isActive()) {
+                                promise.setFailure(new ClosedChannelException());
+
+                                synchronized (this) {
+                                    activeConnections.decrementAndGet();
+                                    satisfyWaiterWithNewConnection();
+                                }
+                                return;
+                            }
                             newChannel.attr(NEW_CHANNEL_KEY).set(new AtomicBoolean(true));
                             newChannel.attr(CHANNEL_CREATION_TIME).set(OffsetDateTime.now(ZoneOffset.UTC));
                             newChannel.attr(CONNECTION_POOL_KEY).set(key);
