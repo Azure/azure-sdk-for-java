@@ -196,9 +196,12 @@ public class MetricsQueryAsyncClientTest extends TestProxyTestBase {
                 Assertions.assertFalse(result.getMetrics().isEmpty(), "Metrics should not be empty");
 
                 // Verify the timespan is in the correct absolute format, not just "PT30M"
-                String timespanString = result.getTimeInterval().toString();
-                Assertions.assertTrue(timespanString.contains("/"), "Time interval should contain '/' separator");
-                Assertions.assertFalse("PT30M".equals(timespanString), "Time interval should not be the raw duration");
+                Assertions.assertNotNull(result.getTimeInterval().getStartTime(), "Start time should be present");
+                Assertions.assertNotNull(result.getTimeInterval().getEndTime(), "End time should be present");
+                Assertions.assertNull(result.getTimeInterval().getDuration(), "Duration should not be present");
+
+                // Verify that the start time and end time are 30 minutes apart
+                Assertions.assertTrue(Duration.between(result.getTimeInterval().getStartTime(), result.getTimeInterval().getEndTime()).toMinutes() == 30, "Start time and end time should be 30 minutes apart");
             })
             .verifyComplete();
     }
@@ -219,9 +222,12 @@ public class MetricsQueryAsyncClientTest extends TestProxyTestBase {
                 Assertions.assertFalse(result.getMetrics().isEmpty(), "Metrics should not be empty");
 
                 // Verify the timespan is in absolute format
-                String timespanString = result.getTimeInterval().toString();
-                Assertions.assertTrue(timespanString.contains("/"), "Time interval should contain '/' separator");
-                Assertions.assertFalse("PT1H".equals(timespanString), "Time interval should not be the raw duration");
+                Assertions.assertNotNull(result.getTimeInterval().getStartTime(), "Start time should be present");
+                Assertions.assertNotNull(result.getTimeInterval().getEndTime(), "End time should be present");
+                Assertions.assertNull(result.getTimeInterval().getDuration(), "Duration should not be present");
+
+                // Verify that the start time and end time are 1 hour apart
+                Assertions.assertTrue(Duration.between(result.getTimeInterval().getStartTime(), result.getTimeInterval().getEndTime()).toHours() == 1, "Start time and end time should be 1 hour apart");
             })
             .verifyComplete();
     }
@@ -242,9 +248,12 @@ public class MetricsQueryAsyncClientTest extends TestProxyTestBase {
                 Assertions.assertFalse(result.getMetrics().isEmpty(), "Metrics should not be empty");
 
                 // Verify the timespan is in absolute format
-                String timespanString = result.getTimeInterval().toString();
-                Assertions.assertTrue(timespanString.contains("/"), "Time interval should contain '/' separator");
-                Assertions.assertFalse("P1D".equals(timespanString), "Time interval should not be the raw duration");
+                Assertions.assertNotNull(result.getTimeInterval().getStartTime(), "Start time should be present");
+                Assertions.assertNotNull(result.getTimeInterval().getEndTime(), "End time should be present");
+                Assertions.assertNull(result.getTimeInterval().getDuration(), "Duration should not be present");
+
+                // Verify that the start time and end time are 1 day apart
+                Assertions.assertTrue(Duration.between(result.getTimeInterval().getStartTime(), result.getTimeInterval().getEndTime()).toDays() == 1, "Start time and end time should be 1 day apart");
             })
             .verifyComplete();
     }
