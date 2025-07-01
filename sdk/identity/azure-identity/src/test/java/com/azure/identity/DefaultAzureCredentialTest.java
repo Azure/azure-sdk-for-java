@@ -687,7 +687,7 @@ public class DefaultAzureCredentialTest {
             "ManagedIdentityCredential",
             "managedidentitycredential",
             "VisualStudioCodeCredential",
-            "visualstudiocodecredential"})
+            "visualstudiocodecredential" })
     public void testTargetedCredentialSelection(String credentialValue) {
         // Setup config with targeted credential value (case-insensitive)
         TestConfigurationSource configSource
