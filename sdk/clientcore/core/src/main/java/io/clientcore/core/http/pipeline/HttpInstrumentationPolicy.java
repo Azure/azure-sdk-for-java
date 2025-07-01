@@ -298,6 +298,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         }
     }
 
+    @SuppressWarnings("try")
     @Override
     public CompletableFuture<Response<BinaryData>> processAsync(HttpRequest request, HttpPipelineNextPolicy next) {
         if (!isTracingEnabled && !isLoggingEnabled && !isMetricsEnabled) {
@@ -330,7 +331,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
 
         logRequest(logger, request, startNs, requestContentLength, redactedUrl, tryCount, currentContext);
 
-        try (TracingScope ignored = span.makeCurrent()) {
+        try (TracingScope scope = span.makeCurrent()) {
             return next.processAsync().thenApply(response -> {
                 if (response == null) {
                     LOGGER.atError()

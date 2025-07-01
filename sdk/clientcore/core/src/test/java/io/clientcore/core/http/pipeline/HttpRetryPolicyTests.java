@@ -6,14 +6,13 @@ package io.clientcore.core.http.pipeline;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
-import io.clientcore.core.http.models.HttpMethod;
-import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.DateTimeRfc1123;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedClass;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -28,21 +27,29 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
+import static io.clientcore.core.http.pipeline.PipelineTestHelpers.sendRequest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Tests {@link HttpRetryPolicy}.
  */
-public class RetryPolicyTests {
+@ParameterizedClass(name = "isAsync={0}")
+@ValueSource(booleans = { false, true })
+public class HttpRetryPolicyTests {
+    private final boolean isAsync;
+
+    public HttpRetryPolicyTests(boolean isAsync) {
+        this.isAsync = isAsync;
+    }
 
     @ParameterizedTest
     @ValueSource(ints = { 408, 500, 502, 503 })
-    public void defaultRetryPolicyRetriesExpectedErrorCodes(int returnCode) throws IOException {
+    public void defaultRetryPolicyRetriesExpectedErrorCodes(int returnCode) {
         AtomicInteger attemptCount = new AtomicInteger();
         HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy()).httpClient(request -> {
             int count = attemptCount.getAndIncrement();
@@ -57,7 +64,7 @@ public class RetryPolicyTests {
             }
         }).build();
 
-        try (Response<?> response = sendRequest(pipeline)) {
+        try (Response<BinaryData> response = sendRequest(pipeline, isAsync)) {
             assertEquals(200, response.getStatusCode());
         }
     }
@@ -76,7 +83,7 @@ public class RetryPolicyTests {
             }
         }).build();
 
-        try (Response<?> response = sendRequest(pipeline)) {
+        try (Response<BinaryData> response = sendRequest(pipeline, isAsync)) {
             assertEquals(returnCode, response.getStatusCode());
         }
     }
@@ -94,7 +101,7 @@ public class RetryPolicyTests {
             }
         }).build();
 
-        try (Response<?> response = sendRequest(pipeline)) {
+        try (Response<BinaryData> response = sendRequest(pipeline, isAsync)) {
             assertEquals(200, response.getStatusCode());
         }
     }
@@ -112,7 +119,7 @@ public class RetryPolicyTests {
             }
         }).build();
 
-        assertThrows(CoreException.class, () -> sendRequest(pipeline));
+        assertThrows(CoreException.class, () -> sendRequest(pipeline, isAsync).close());
     }
 
     @ParameterizedTest
@@ -125,7 +132,7 @@ public class RetryPolicyTests {
                 BinaryData.empty()))
             .build();
 
-        try (Response<?> response = sendRequest(pipeline)) {
+        try (Response<BinaryData> response = sendRequest(pipeline, isAsync)) {
             assertEquals(expectedStatusCode, response.getStatusCode());
         }
     }
@@ -133,17 +140,13 @@ public class RetryPolicyTests {
     @Test
     public void retryMax() {
         final int maxRetries = 5;
-        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new HttpClient() {
-            int count = -1;
-
-            @Override
-            public Response<BinaryData> send(HttpRequest request) {
-                Assertions.assertTrue(count++ < maxRetries);
-                return new Response<>(request, 500, new HttpHeaders(), BinaryData.empty());
-            }
+        AtomicInteger count = new AtomicInteger(-1);
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            Assertions.assertTrue(count.getAndIncrement() < maxRetries);
+            return new Response<>(request, 500, new HttpHeaders(), BinaryData.empty());
         }).addPolicy(new HttpRetryPolicy(new HttpRetryOptions(5, Duration.ofMillis(1)))).build();
 
-        try (Response<?> response = sendRequest(pipeline)) {
+        try (Response<BinaryData> response = sendRequest(pipeline, isAsync)) {
             assertEquals(500, response.getStatusCode());
         }
     }
@@ -152,28 +155,21 @@ public class RetryPolicyTests {
     public void fixedDelayRetry() {
         final int maxRetries = 5;
         final long delayMillis = 500;
-        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new HttpClient() {
-            int count = -1;
-            long previousAttemptMadeAt = -1;
+        AtomicInteger count = new AtomicInteger(-1);
+        AtomicLong previousAttemptMadeAt = new AtomicLong(-1);
 
-            private void beforeSendingRequest() {
-                if (count > 0) {
-                    assertTrue(System.currentTimeMillis() >= previousAttemptMadeAt + delayMillis);
-                }
-
-                assertTrue(count++ < maxRetries);
-
-                previousAttemptMadeAt = System.currentTimeMillis();
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            if (count.get() > 0) {
+                assertTrue(System.currentTimeMillis() >= previousAttemptMadeAt.get() + delayMillis);
             }
 
-            @Override
-            public Response<BinaryData> send(HttpRequest request) {
-                beforeSendingRequest();
-                return new Response<>(request, 500, new HttpHeaders(), BinaryData.empty());
-            }
+            assertTrue(count.getAndIncrement() < maxRetries);
+            previousAttemptMadeAt.set(System.currentTimeMillis());
+
+            return new Response<>(request, 500, new HttpHeaders(), BinaryData.empty());
         }).addPolicy(new HttpRetryPolicy(new HttpRetryOptions(5, Duration.ofMillis(delayMillis)))).build();
 
-        try (Response<?> response = sendRequest(pipeline)) {
+        try (Response<BinaryData> response = sendRequest(pipeline, isAsync)) {
             assertEquals(500, response.getStatusCode());
         }
     }
@@ -183,34 +179,25 @@ public class RetryPolicyTests {
         final int maxRetries = 5;
         final long baseDelayMillis = 100;
         final long maxDelayMillis = 1000;
+        AtomicInteger count = new AtomicInteger(-1);
+        AtomicLong previousAttemptMadeAt = new AtomicLong(-1);
         HttpRetryOptions exponentialBackoff
             = new HttpRetryOptions(5, Duration.ofMillis(baseDelayMillis), Duration.ofMillis(maxDelayMillis));
-        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new HttpClient() {
-            int count = -1;
-            long previousAttemptMadeAt = -1;
-
-            private void beforeSendingRequest() {
-                if (count > 0) {
-                    long requestMadeAt = System.currentTimeMillis();
-                    long expectedToBeMadeAt
-                        = previousAttemptMadeAt + ((1L << (count - 1)) * (long) (baseDelayMillis * 0.95));
-                    assertTrue(requestMadeAt >= expectedToBeMadeAt);
-                }
-
-                assertTrue(count++ < maxRetries);
-
-                previousAttemptMadeAt = System.currentTimeMillis();
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            if (count.get() > 0) {
+                long requestMadeAt = System.currentTimeMillis();
+                long expectedToBeMadeAt
+                    = previousAttemptMadeAt.get() + ((1L << (count.get() - 1)) * (long) (baseDelayMillis * 0.95));
+                assertTrue(requestMadeAt >= expectedToBeMadeAt);
             }
 
-            @Override
-            public Response<BinaryData> send(HttpRequest request) {
-                beforeSendingRequest();
+            assertTrue(count.getAndIncrement() < maxRetries);
+            previousAttemptMadeAt.set(System.currentTimeMillis());
 
-                return new Response<>(request, 503, new HttpHeaders(), BinaryData.empty());
-            }
+            return new Response<>(request, 503, new HttpHeaders(), BinaryData.empty());
         }).addPolicy(new HttpRetryPolicy(exponentialBackoff)).build();
 
-        try (Response<?> response = sendRequest(pipeline)) {
+        try (Response<BinaryData> response = sendRequest(pipeline, isAsync)) {
             assertEquals(503, response.getStatusCode());
         }
     }
@@ -234,7 +221,7 @@ public class RetryPolicyTests {
                 .httpClient(httpClient)
                 .build();
 
-        Response<?> ignored = sendRequest(pipeline);
+        Response<BinaryData> ignored = sendRequest(pipeline, isAsync);
         assertEquals(2, closeCalls.get());
         ignored.close();
     }
@@ -252,24 +239,20 @@ public class RetryPolicyTests {
                 .httpClient(httpClient)
                 .build();
 
-        try {
-            sendRequest(pipeline).close();
-            fail("Should throw");
-        } catch (Exception e) {
-            boolean hasAttempt1 = false;
-            boolean hasAttempt2 = false;
+        Exception ex = assertThrows(Exception.class, () -> sendRequest(pipeline, isAsync).close());
+        boolean hasAttempt1 = false;
+        boolean hasAttempt2 = false;
 
-            for (Throwable suppressed : e.getSuppressed()) {
-                if (suppressed.getMessage().contains("Attempt 1")) {
-                    hasAttempt1 = true;
-                } else if (suppressed.getMessage().contains("Attempt 2")) {
-                    hasAttempt2 = true;
-                }
+        for (Throwable suppressed : ex.getSuppressed()) {
+            if (suppressed.getMessage().contains("Attempt 1")) {
+                hasAttempt1 = true;
+            } else if (suppressed.getMessage().contains("Attempt 2")) {
+                hasAttempt2 = true;
             }
-
-            assertTrue(hasAttempt1, "Did not find suppressed with 'Attempt 1' in message.");
-            assertTrue(hasAttempt2, "Did not find suppressed with 'Attempt 2' in message.");
         }
+
+        assertTrue(hasAttempt1, "Did not find suppressed with 'Attempt 1' in message.");
+        assertTrue(hasAttempt2, "Did not find suppressed with 'Attempt 2' in message.");
     }
 
     @ParameterizedTest
@@ -288,8 +271,7 @@ public class RetryPolicyTests {
                 }
             }).build();
 
-        try (Response<?> response
-            = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/"))) {
+        try (Response<BinaryData> response = sendRequest(pipeline, isAsync)) {
             assertEquals(200, response.getStatusCode());
             assertEquals(2, attemptCount.get());
         }
@@ -312,8 +294,7 @@ public class RetryPolicyTests {
                 }
             }).build();
 
-        try (Response<?> response
-            = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/"))) {
+        try (Response<BinaryData> response = sendRequest(pipeline, isAsync)) {
             assertEquals(503, response.getStatusCode());
             assertEquals(1, attemptCount.get());
         }
@@ -336,8 +317,13 @@ public class RetryPolicyTests {
                 }
             }).build();
 
-        assertThrows(UncheckedIOException.class,
-            () -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/")).close());
+        // TODO (alzimmer): Using the default implementation of HttpClient.sendAsync will not throw an
+        //  UncheckedIOException, as this was previously checking, but a CoreException. Should exceptions from
+        //  HttpClient.sendAsync flow back unwrapped?
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> sendRequest(pipeline, isAsync).close());
+        assertTrue(
+            ex instanceof UncheckedIOException || (ex instanceof CoreException && ex.getCause() instanceof IOException),
+            "Expected an UncheckedIOException or IOException wrapped by CoreException, but got: " + ex);
     }
 
     @Test
@@ -359,8 +345,7 @@ public class RetryPolicyTests {
                 }
             }).build();
 
-        try (Response<?> response
-            = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/"))) {
+        try (Response<BinaryData> response = sendRequest(pipeline, isAsync)) {
             assertEquals(200, response.getStatusCode());
             assertEquals(2, attemptCount.get());
         }
@@ -381,10 +366,6 @@ public class RetryPolicyTests {
             Arguments.of(onlyRetries409And412, new int[] { 412, 404 }, 404),
             Arguments.of(onlyRetries409And412, new int[] { 409, 412, 409 }, 409),
             Arguments.of(onlyRetries409And412, new int[] { 409, 412, 412 }, 412));
-    }
-
-    static Response<?> sendRequest(HttpPipeline pipeline) {
-        return pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/"));
     }
 
     static HttpRetryOptions createStatusCodeRetryStrategy(int... retriableErrorCodes) {

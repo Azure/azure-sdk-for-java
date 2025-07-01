@@ -4,39 +4,38 @@
 package io.clientcore.core.http.pipeline;
 
 import io.clientcore.core.credentials.oauth.AccessToken;
-import io.clientcore.core.credentials.oauth.OAuthTokenCredential;
 import io.clientcore.core.credentials.oauth.OAuthTokenRequestContext;
-import io.clientcore.core.http.models.AuthScheme;
 import io.clientcore.core.http.models.AuthMetadata;
+import io.clientcore.core.http.models.AuthScheme;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.implementation.http.HttpPipelineCallState;
-import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedClass;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 
+import static io.clientcore.core.http.pipeline.PipelineTestHelpers.sendRequest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+@ParameterizedClass(name = "isAsync={0}")
+@ValueSource(booleans = { false, true })
 public class OAuthBearerTokenAuthenticationPolicyTest {
-    private OAuthTokenCredential mockCredential;
-    private OAuthTokenRequestContext baseContext;
-    private OAuthBearerTokenAuthenticationPolicy policy;
+    private final boolean isAsync;
+    private final OAuthBearerTokenAuthenticationPolicy policy;
 
-    @BeforeEach
-    public void setup() {
-        mockCredential = trc -> new AccessToken("dummy-token", OffsetDateTime.now());
-        baseContext = new OAuthTokenRequestContext().setScopes(Collections.singletonList("test.scope"));
-        policy = new OAuthBearerTokenAuthenticationPolicy(mockCredential, baseContext);
+    public OAuthBearerTokenAuthenticationPolicyTest(boolean isAsync) {
+        this.isAsync = isAsync;
+        policy = new OAuthBearerTokenAuthenticationPolicy(trc -> new AccessToken("dummy-token", OffsetDateTime.now()),
+            new OAuthTokenRequestContext().setScopes(Collections.singletonList("test.scope")));
     }
 
     private static HttpRequest createHttpsRequestWithContext(RequestContext context) {
@@ -49,78 +48,58 @@ public class OAuthBearerTokenAuthenticationPolicyTest {
     public void testEmptyAuthSchemeNoBearerTokenSet() {
         AuthMetadata authMetadata = new AuthMetadata().setAuthSchemes(Collections.emptyList());
         RequestContext ctx = RequestContext.builder().putMetadata("IO_CLIENTCORE_AUTH_METADATA", authMetadata).build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(policy)
+            .httpClient(request -> new Response<>(request, 200, new HttpHeaders(), BinaryData.empty()))
+            .build();
+
         HttpRequest request = createHttpsRequestWithContext(ctx);
-
-        HttpPipelineNextPolicy next = new HttpPipelineNextMockPolicy(null);
-
-        policy.process(request, next);
-        assertNull(request.getHeaders().get(HttpHeaderName.AUTHORIZATION));
+        try (Response<BinaryData> response = sendRequest(pipeline, request, isAsync)) {
+            assertEquals(200, response.getStatusCode());
+            assertNull(request.getHeaders().get(HttpHeaderName.AUTHORIZATION));
+        }
     }
 
     @Test
     public void testNoAuthSchemeNoBearerTokenSet() {
         AuthMetadata authMetadata = new AuthMetadata().setAuthSchemes(Collections.emptyList());
         RequestContext ctx = RequestContext.builder().putMetadata("IO_CLIENTCORE_AUTH_METADATA", authMetadata).build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(policy)
+            .httpClient(request -> new Response<>(request, 200, new HttpHeaders(), BinaryData.empty()))
+            .build();
+
         HttpRequest request = createHttpsRequestWithContext(ctx);
-
-        HttpPipelineNextPolicy next = new HttpPipelineNextMockPolicy(null);
-
-        policy.process(request, next);
-        assertNull(request.getHeaders().get(HttpHeaderName.AUTHORIZATION));
+        try (Response<BinaryData> response = sendRequest(pipeline, request, isAsync)) {
+            assertEquals(200, response.getStatusCode());
+            assertNull(request.getHeaders().get(HttpHeaderName.AUTHORIZATION));
+        }
     }
 
     @Test
     public void testOAuth2SchemeTokenSetInHeader() {
         AuthMetadata authMetadata = new AuthMetadata().setAuthSchemes(Collections.singletonList(AuthScheme.OAUTH2));
         RequestContext ctx = RequestContext.builder().putMetadata("IO_CLIENTCORE_AUTH_METADATA", authMetadata).build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(policy)
+            .httpClient(request -> new Response<>(request, 200, new HttpHeaders(), BinaryData.empty()))
+            .build();
+
         HttpRequest request = createHttpsRequestWithContext(ctx);
-
-        HttpPipelineNextPolicy next = new HttpPipelineNextMockPolicy(null);
-
-        policy.process(request, next);
-        assertEquals("Bearer dummy-token", request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+        try (Response<BinaryData> response = sendRequest(pipeline, request, isAsync)) {
+            assertEquals(200, response.getStatusCode());
+            assertEquals("Bearer dummy-token", request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+        }
     }
 
     @Test
     public void testNullAuthMetadataTokenSetInHeader() {
         RequestContext ctx = RequestContext.builder().build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(policy)
+            .httpClient(request -> new Response<>(request, 200, new HttpHeaders(), BinaryData.empty()))
+            .build();
+
         HttpRequest request = createHttpsRequestWithContext(ctx);
-
-        HttpPipelineNextPolicy next = new HttpPipelineNextMockPolicy(null);
-
-        policy.process(request, next);
-        assertEquals("Bearer dummy-token", request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
-    }
-
-    static class HttpPipelineNextMockPolicy extends HttpPipelineNextPolicy {
-        /**
-         * Package-private constructor. Creates an HttpPipelineNextPolicy instance.
-         *
-         * @param state The pipeline call state.
-         */
-        HttpPipelineNextMockPolicy(HttpPipelineCallState state) {
-            super(state);
-        }
-
-        /**
-         * Invokes the next {@link HttpPipelinePolicy}.
-         *
-         * @return The response.
-         * @throws CoreException If an error occurs when sending the request or receiving the response.
-         */
-        public Response<BinaryData> process() {
-            return new Response<>(null, 200, new HttpHeaders(), null);
-        }
-
-        /**
-         * Copies the current state of the {@link HttpPipelineNextPolicy}.
-         * <p>
-         * This method must be used when a re-request is made in the pipeline.
-         *
-         * @return A new instance of this next pipeline policy.
-         */
-        public HttpPipelineNextPolicy copy() {
-            return new HttpPipelineNextMockPolicy(null);
+        try (Response<BinaryData> response = sendRequest(pipeline, request, isAsync)) {
+            assertEquals(200, response.getStatusCode());
+            assertEquals("Bearer dummy-token", request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
         }
     }
 }

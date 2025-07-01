@@ -28,6 +28,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
@@ -252,33 +253,39 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
 
         ClientLogger logger = getLogger(httpRequest);
 
-        return next.copy().processAsync().thenCompose(response -> {
-            if (shouldRetryResponse(response, tryCount, suppressed)) {
-                final Duration delayDuration = determineDelayDuration(response, tryCount, delayFromHeaders);
+        return next.copy().processAsync().handle((response, exception) -> {
+            if (response != null) {
+                if (shouldRetryResponse(response, tryCount, suppressed)) {
+                    final Duration delayDuration = determineDelayDuration(response, tryCount, delayFromHeaders);
 
-                logRetry(logger.atVerbose(), tryCount, delayDuration, null, false, instrumentationContext);
+                    logRetry(logger.atVerbose(), tryCount, delayDuration, null, false, instrumentationContext);
 
-                response.close();
+                    response.close();
 
-                long millis = delayDuration.toMillis();
-                if (millis > 0) {
-                    try {
-                        Thread.sleep(millis);
-                    } catch (InterruptedException ie) {
-                        throw logger.throwableAtError().log(ie, (m, c) -> CoreException.from(m, c, false));
+                    long millis = delayDuration.toMillis();
+                    if (millis > 0) {
+                        try {
+                            Thread.sleep(millis);
+                        } catch (InterruptedException ie) {
+                            throw logger.throwableAtError().log(ie, (m, c) -> CoreException.from(m, c, false));
+                        }
                     }
-                }
 
-                return attemptAsync(httpRequest, next, tryCount + 1, suppressed);
-            } else {
-                if (tryCount >= maxRetries) {
-                    // TODO (limolkova): do we have better heuristic to determine if we're retrying because of error
-                    // or because we got an unsuccessful response?
-                    logRetry(logger.atWarning(), tryCount, null, null, true, instrumentationContext);
+                    return attemptAsync(httpRequest, next, tryCount + 1, suppressed);
+                } else {
+                    if (tryCount >= maxRetries) {
+                        // TODO (limolkova): do we have better heuristic to determine if we're retrying because of error
+                        // or because we got an unsuccessful response?
+                        logRetry(logger.atWarning(), tryCount, null, null, true, instrumentationContext);
+                    }
+                    return CompletableFuture.completedFuture(response);
                 }
-                return CompletableFuture.completedFuture(response);
             }
-        }).exceptionallyCompose(exception -> {
+
+            if (exception instanceof CompletionException) {
+                exception = exception.getCause();
+            }
+
             if (!(exception instanceof Exception)) {
                 CompletableFuture<Response<BinaryData>> failedFuture = new CompletableFuture<>();
                 failedFuture.completeExceptionally(exception);
@@ -325,7 +332,7 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
                 // and also logged retry information above.
                 return createFailedFuture(exception);
             }
-        });
+        }).thenCompose(Function.identity());
     }
 
     private static CompletableFuture<Response<BinaryData>> createFailedFuture(Throwable exception) {
