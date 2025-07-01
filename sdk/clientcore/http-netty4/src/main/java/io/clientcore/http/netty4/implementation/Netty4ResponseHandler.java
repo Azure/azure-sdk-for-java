@@ -17,6 +17,7 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.LastHttpContent;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
@@ -168,12 +169,16 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
         ctx.pipeline().remove(this);
         ctx.fireChannelReadComplete();
 
-        if (complete) {
-            ctx.close();
-        }
-
         responseReference.set(new ResponseStateInfo(ctx.channel(), complete, statusCode, headers, eagerContent,
             ResponseBodyHandling.getBodyHandling(request, headers), false));
+        latch.countDown();
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        setOrSuppressError(errorReference,
+            new IOException("The channel became inactive before a response was received."));
+        ctx.fireChannelInactive();
         latch.countDown();
     }
 }

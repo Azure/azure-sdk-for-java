@@ -97,7 +97,7 @@ public final class Netty4AlpnHandler extends ApplicationProtocolNegotiationHandl
                 .addListener((ChannelFutureListener) sendListener -> {
                     if (!sendListener.isSuccess()) {
                         setOrSuppressError(errorReference, sendListener.cause());
-                        sendListener.channel().close();
+                        sendListener.channel().pipeline().fireExceptionCaught(sendListener.cause());
                         latch.countDown();
                     } else {
                         sendListener.channel().read();
@@ -121,7 +121,7 @@ public final class Netty4AlpnHandler extends ApplicationProtocolNegotiationHandl
                 .addListener((ChannelFutureListener) sendListener -> {
                     if (!sendListener.isSuccess()) {
                         setOrSuppressError(errorReference, sendListener.cause());
-                        sendListener.channel().close();
+                        sendListener.channel().pipeline().fireExceptionCaught(sendListener.cause());
                         latch.countDown();
                     } else {
                         sendListener.channel().read();
