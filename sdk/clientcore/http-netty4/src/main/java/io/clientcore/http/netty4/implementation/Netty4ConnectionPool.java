@@ -296,19 +296,24 @@ public final class Netty4ConnectionPool implements Closeable {
             }
 
             // The channel is healthy. Now, check if anyone is waiting for a connection.
-            Promise<Channel> waiter;
-            while ((waiter = pendingAcquirers.poll()) != null) {
-                // A waiter exists, hand over this channel directly.
-                // The activeConnections count remains the same (one leaves, one joins).
-                if (waiter.trySuccess(connection.channel)) {
-                    return;
-                }
-            }
+            Promise<Channel> waiterToNotify = pendingAcquirers.poll();
 
-            // Channel is healthy and no waiters, return it to the idle queue.
-            activeConnections.decrementAndGet();
-            connection.idleSince = OffsetDateTime.now(ZoneOffset.UTC);
-            idleConnections.offer(connection);
+            if (waiterToNotify != null) {
+                // A waiter exists. Fulfill the promise OUTSIDE the synchronized block.
+                // The activeConnections count remains the same.
+                connection.channel.eventLoop().execute(() -> {
+                    if (!waiterToNotify.trySuccess(connection.channel)) {
+                        // The waiter was cancelled or failed in the meantime.
+                        // Release the connection again so it can be pooled or given to another waiter.
+                        release(connection);
+                    }
+                });
+            } else {
+                // No waiters, return the connection to the idle queue.
+                activeConnections.decrementAndGet();
+                connection.idleSince = OffsetDateTime.now(ZoneOffset.UTC);
+                idleConnections.offer(connection);
+            }
         }
 
         private void satisfyWaiterWithNewConnection() {
