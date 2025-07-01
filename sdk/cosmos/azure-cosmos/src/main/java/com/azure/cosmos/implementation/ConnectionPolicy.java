@@ -62,6 +62,7 @@ public final class ConnectionPolicy {
     private int openConnectionsConcurrency;
     private int aggressiveWarmupConcurrency;
     private boolean serverCertValidationDisabled = false;
+    private boolean isDnsLookupLoggingEnabled = false;
 
     private Integer pendingAcquireMaxCount;
 
@@ -670,6 +671,25 @@ public final class ConnectionPolicy {
         return this;
     }
 
+    /**
+     * Sets whether DNS lookup logging is enabled.
+     *
+     * @return isDnsLookupLoggingEnabled
+     */
+    public ConnectionPolicy setDnsLookupLoggingEnabled(boolean isDnsLookupLoggingEnabled) {
+        this.isDnsLookupLoggingEnabled = isDnsLookupLoggingEnabled;
+        return this;
+    }
+
+    /**
+     * Gets whether DNS lookup logging is enabled.
+     *
+     * @return {@code true} if DNS lookup logging is enabled; {@code false} otherwise.
+     */
+    public boolean isDnsLookupLoggingEnabled() {
+        return this.isDnsLookupLoggingEnabled;
+    }
+
     @Override
     public String toString() {
 
@@ -701,6 +721,7 @@ public final class ConnectionPolicy {
             ", aggressiveWarmupConcurrency=" + aggressiveWarmupConcurrency +
             ", http2ConnectionConfig=" + httpCfgAccessor.toDiagnosticsString(this.http2ConnectionConfig) +
             ", pendingAcquireMaxCount=" + Objects.toString(this.pendingAcquireMaxCount,"DEFAULT") +
+            ", dnsLookupLoggingEnabled=" + isDnsLookupLoggingEnabled +
             '}';
     }
 }
