@@ -11,11 +11,11 @@
   </parent>
 
   <groupId>com.azure.cosmos.spark</groupId>
-  <artifactId>azure-cosmos-spark-account-data-resolver-sample</artifactId>
-  <version>1.0.0-beta.1</version>  <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark-account-data-resolver-sample;current} -->
+  <artifactId>azure-cosmos-spark-account-data-resolver-fabric</artifactId>
+  <version>1.0.0-beta.1</version>  <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark-account-data-resolver-fabric;current} -->
   <packaging>jar</packaging>
-  <name>OLTP Spark Connector for Azure Cosmos DB SQL API account data resolver sample</name>
-  <description>OLTP Spark Connector for Azure Cosmos DB SQL API account data resolver sample</description>
+  <name>OLTP Spark Connector for Azure Cosmos DB SQL API account data resolver for fabric</name>
+  <description>OLTP Spark Connector for Azure Cosmos DB SQL API account data resolver for fabric</description>
   <properties>
     <maven.build.timestamp.format>MM-dd-HH-mm-ss</maven.build.timestamp.format>
     <jacoco.min.branchcoverage>0.17</jacoco.min.branchcoverage>
@@ -23,7 +23,7 @@
     <maven.compiler.source>8</maven.compiler.source>
     <maven.compiler.target>8</maven.compiler.target>
     <jacoco.skip>true</jacoco.skip>
-    <shadingPrefix>azure_cosmos_spark_sample</shadingPrefix>
+    <shadingPrefix>azure_cosmos_spark_fabric</shadingPrefix>
     <legal>
       <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]>
     </legal>
@@ -87,6 +87,11 @@
       <artifactId>scala-library</artifactId>
       <version>2.12.19</version> <!-- {x-version-update;cosmos_org.scala-lang:scala-library;external_dependency} -->
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure.synapse</groupId>
+      <artifactId>synapseutils_2.12</artifactId>
+      <version>1.5.4</version>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
@@ -293,6 +298,7 @@
                 <include>com.fasterxml.jackson.module:jackson-module-scala_2.12:[2.15.2]</include> <!-- {x-include-update;cosmos_com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
                 <include>com.globalmentor:hadoop-bare-naked-local-fs:[0.1.0]</include> <!-- {x-include-update;cosmos_com.globalmentor:hadoop-bare-naked-local-fs;external_dependency} -->
                 <include>com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12:[4.38.0-beta.1]</include> <!-- {x-include-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;current} -->
+                <include>com.microsoft.azure.synapse:synapseutils_2.12:[1.5.4]</include>
               </includes>
             </bannedDependencies>
           </rules>
@@ -440,7 +446,7 @@
                       <shadedPattern>${shadingPrefix}.com.azure</shadedPattern>
                       <excludes>
                         <exclude>com.azure.cosmos.spark.*</exclude>
-                        <exclude>com.azure.cosmos.spark.samples.*</exclude>
+                        <exclude>com.azure.cosmos.spark.fabric.*</exclude>
                         <exclude>com.azure.cosmos.spark.diagnostics.*</exclude>
                         <exclude>com.azure.cosmos.spark.udf.*</exclude>
                         <exclude>com.azure.cosmos.implementation.SparkBridgeInternal</exclude>
@@ -546,7 +552,7 @@
                   </relocations>
                   <filters>
                     <filter>
-                      <artifact>com.azure.cosmos.spark:azure-cosmos-spark-account-data-resolver-sample</artifact>
+                      <artifact>com.azure.cosmos.spark:azure-cosmos-spark-account-data-resolver-fabric</artifact>
                       <includes>
                         <include>**</include>
                       </includes>

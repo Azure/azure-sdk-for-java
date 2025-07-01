@@ -1,4 +1,3 @@
 com.azure.cosmos.spark.samples.ManagedIdentityAccountDataResolver
 com.azure.cosmos.spark.samples.MasterKeyAccountDataResolver
 com.azure.cosmos.spark.samples.ServicePrincipalAccountDataResolver
-com.azure.cosmos.spark.samples.FabricAccountDataResolver

@@ -1,0 +1,1 @@
+## Azure Cosmos DB OLTP Spark 3 Connector Fabric Account Data Resolver

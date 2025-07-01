@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos.spark.samples
+package com.azure.cosmos.spark.fabric
 
 import com.azure.cosmos.spark.AccountDataResolver
 import com.azure.cosmos.spark.CosmosAccessToken
+import com.fasterxml.jackson.databind.ObjectMapper
 
 import java.time.OffsetDateTime
 import scala.collection.concurrent.TrieMap
@@ -17,8 +18,7 @@ class FabricAccountDataResolver extends AccountDataResolver with BasicLoggingTra
   override def getAccountDataConfig(configs: Map[String, String]): Map[String, String] = {
     val configParameters = ConfigParameters.apply(configs)
     if (isEnabled(configParameters)) {
-      configs +
-        ("spark.cosmos.auth.type" -> "AccessToken")
+      configs + ("spark.cosmos.auth.type" -> "AccessToken")
     } else {
       configs
     }
@@ -39,9 +39,24 @@ class FabricAccountDataResolver extends AccountDataResolver with BasicLoggingTra
   private def getAccessTokenProviderImpl(configs: ConfigParameters): Option[List[String] => CosmosAccessToken] = {
     if (isEnabled(configs)) {
       logInfo(s"FabricAccountDataResolver is enabled")
-      Some((tokenRequestContextStrings: List[String]) => {
-        val accessToken = mssparkutils.credentials.getToken(AUDIENCE)
-        CosmosAccessToken(accessToken, OffsetDateTime.now().plusHours(2))
+      Some((_: List[String]) => {
+        var accessToken = ""
+        accessToken = mssparkutils.credentials.getToken(configs.audience.getOrElse(AUDIENCE))
+        if (accessToken.trim.isEmpty) {
+          logError(configs.audience.getOrElse(AUDIENCE))
+          throw new RuntimeException("Failed to retrieve access token within the maximum wait time.")
+        }
+        val parts = accessToken.split("\\.")
+        val payloadJson = new String(java.util.Base64.getUrlDecoder.decode(parts(1)))
+        val mapper = new ObjectMapper()
+        val node = mapper.readTree(payloadJson)
+
+        val expirationEpoch = node.get("exp").asLong()
+        val expirationTime = OffsetDateTime.ofInstant(
+          java.time.Instant.ofEpochSecond(expirationEpoch),
+          java.time.ZoneOffset.UTC
+        )
+        CosmosAccessToken(accessToken, expirationTime)
       })
     } else {
       logInfo(s"FabricAccountDataResolver is disabled")
