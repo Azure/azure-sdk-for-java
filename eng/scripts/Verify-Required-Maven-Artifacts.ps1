@@ -19,7 +19,7 @@ Write-Host "BuildOutputDirectory contents"
 # Capture the names of the files in the $BuildOutputDirectory
 $files = Get-ChildItem -Path $BuildOutputDirectory -Recurse -Name
 # Print the files to the console for debugging purposes
-$files
+$files | Out-Host
 # Filter the files to only include those that are relevant for Maven publishing
 # This file list will then be used further down to verify that all the required files
 # for either the passed $ArtifactsList or the PackageInfoDir are present.
