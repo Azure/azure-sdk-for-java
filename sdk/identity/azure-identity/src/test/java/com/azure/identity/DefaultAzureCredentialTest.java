@@ -669,18 +669,27 @@ public class DefaultAzureCredentialTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {
-        "AzureCliCredential", "azureclicredential", "AZURECLICREDENTIAL",
-        "IntelliJCredential", "intellijcredential",
-        "AzurePowerShellCredential", "azurepowershellcredential",
-        "AzureDeveloperCliCredential", "azuredeveloperclicredential",
-        "EnvironmentCredential", "environmentcredential",
-        "WorkloadIdentityCredential", "workloadidentitycredential",
-        "ManagedIdentityCredential", "managedidentitycredential"
-    })
+    @ValueSource(
+        strings = {
+            "AzureCliCredential",
+            "azureclicredential",
+            "AZURECLICREDENTIAL",
+            "IntelliJCredential",
+            "intellijcredential",
+            "AzurePowerShellCredential",
+            "azurepowershellcredential",
+            "AzureDeveloperCliCredential",
+            "azuredeveloperclicredential",
+            "EnvironmentCredential",
+            "environmentcredential",
+            "WorkloadIdentityCredential",
+            "workloadidentitycredential",
+            "ManagedIdentityCredential",
+            "managedidentitycredential" })
     public void testTargetedCredentialSelection(String credentialValue) {
         // Setup config with targeted credential value (case-insensitive)
-        TestConfigurationSource configSource = new TestConfigurationSource().put("AZURE_TOKEN_CREDENTIALS", credentialValue);
+        TestConfigurationSource configSource
+            = new TestConfigurationSource().put("AZURE_TOKEN_CREDENTIALS", credentialValue);
         Configuration configuration = TestUtils.createTestConfiguration(configSource);
 
         // Build the credential with the test configuration
@@ -691,16 +700,39 @@ public class DefaultAzureCredentialTest {
         assertEquals(1, credentials.size());
 
         // Assert that the only credential matches expected type
-        Class<? extends TokenCredential> expectedType = switch (credentialValue.toLowerCase(Locale.ROOT)) {
-            case "azureclicredential" -> AzureCliCredential.class;
-            case "intellijcredential" -> IntelliJCredential.class;
-            case "azurepowershellcredential" -> AzurePowerShellCredential.class;
-            case "azuredeveloperclicredential" -> AzureDeveloperCliCredential.class;
-            case "environmentcredential" -> EnvironmentCredential.class;
-            case "workloadidentitycredential" -> WorkloadIdentityCredential.class;
-            case "managedidentitycredential" -> ManagedIdentityCredential.class;
-            default -> throw new IllegalArgumentException("Unsupported test value: " + credentialValue);
-        };
+        Class<? extends TokenCredential> expectedType;
+        switch (credentialValue.toLowerCase(Locale.ROOT)) {
+            case "azureclicredential":
+                expectedType = AzureCliCredential.class;
+                break;
+
+            case "intellijcredential":
+                expectedType = IntelliJCredential.class;
+                break;
+
+            case "azurepowershellcredential":
+                expectedType = AzurePowerShellCredential.class;
+                break;
+
+            case "azuredeveloperclicredential":
+                expectedType = AzureDeveloperCliCredential.class;
+                break;
+
+            case "environmentcredential":
+                expectedType = EnvironmentCredential.class;
+                break;
+
+            case "workloadidentitycredential":
+                expectedType = WorkloadIdentityCredential.class;
+                break;
+
+            case "managedidentitycredential":
+                expectedType = ManagedIdentityCredential.class;
+                break;
+
+            default:
+                throw new IllegalArgumentException("Unsupported test value: " + credentialValue);
+        }
 
         assertInstanceOf(expectedType, credentials.get(0));
     }

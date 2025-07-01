@@ -11,7 +11,11 @@ import com.azure.identity.implementation.IdentityLogOptionsImpl;
 import com.azure.identity.implementation.util.IdentityUtil;
 
 import java.time.Duration;
-import java.util.*;
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -275,13 +279,14 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
 
         if (!CoreUtils.isNullOrEmpty(selectedCredential)) {
             selectedCredential = selectedCredential.trim().toLowerCase(Locale.ROOT);
+            selectedCredential = selectedCredential.trim().toLowerCase(Locale.ROOT);
 
             switch (selectedCredential) {
                 case "prod":
                     credentials.add(new EnvironmentCredential(identityClientOptions.clone()));
                     credentials.add(getWorkloadIdentityCredential());
-                    credentials.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, null,
-                        identityClientOptions.clone()));
+                    credentials.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId,
+                        null, identityClientOptions.clone()));
                     return credentials;
 
                 case "dev":
@@ -294,30 +299,36 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
                 case "environmentcredential":
                     credentials.add(new EnvironmentCredential(identityClientOptions.clone()));
                     return credentials;
+
                 case "workloadidentitycredential":
                     credentials.add(getWorkloadIdentityCredential());
                     return credentials;
+
                 case "managedidentitycredential":
-                    credentials.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, null,
-                        identityClientOptions.clone()));
+                    credentials.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId,
+                        null, identityClientOptions.clone()));
                     return credentials;
+
                 case "intellijcredential":
                     credentials.add(new IntelliJCredential(tenantId, identityClientOptions.clone()));
                     return credentials;
+
                 case "azureclicredential":
                     credentials.add(new AzureCliCredential(tenantId, identityClientOptions.clone()));
                     return credentials;
+
                 case "azurepowershellcredential":
                     credentials.add(new AzurePowerShellCredential(tenantId, identityClientOptions.clone()));
                     return credentials;
+
                 case "azuredeveloperclicredential":
                     credentials.add(new AzureDeveloperCliCredential(tenantId, identityClientOptions.clone()));
                     return credentials;
 
                 default:
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                        "Invalid value for AZURE_TOKEN_CREDENTIALS: '" + selectedCredential + "'. "
-                            + "Valid values are: 'prod', 'dev', or one of "
+                    throw LOGGER
+                        .logExceptionAsError(new IllegalArgumentException("Invalid value for AZURE_TOKEN_CREDENTIALS: '"
+                            + selectedCredential + "'. " + "Valid values are: 'prod', 'dev', or one of "
                             + "[EnvironmentCredential, WorkloadIdentityCredential, ManagedIdentityCredential, "
                             + "IntelliJCredential, AzureCliCredential, AzurePowerShellCredential, "
                             + "AzureDeveloperCliCredential, VisualStudioCredential] (case-insensitive)."));
@@ -337,7 +348,6 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
 
         return credentials;
     }
-
 
     private WorkloadIdentityCredential getWorkloadIdentityCredential() {
         Configuration configuration = identityClientOptions.getConfiguration() == null
