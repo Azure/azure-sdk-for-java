@@ -325,6 +325,10 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
                     credentials.add(new AzureDeveloperCliCredential(tenantId, identityClientOptions.clone()));
                     return credentials;
 
+                case "visualstudiocodecredential":
+                    credentials.add(new VisualStudioCodeCredential(tenantId, identityClientOptions.clone()));
+                    return credentials;
+
                 default:
                     throw LOGGER
                         .logExceptionAsError(new IllegalArgumentException("Invalid value for AZURE_TOKEN_CREDENTIALS: '"

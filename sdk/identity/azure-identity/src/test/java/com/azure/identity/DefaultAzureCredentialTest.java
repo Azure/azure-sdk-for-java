@@ -685,7 +685,9 @@ public class DefaultAzureCredentialTest {
             "WorkloadIdentityCredential",
             "workloadidentitycredential",
             "ManagedIdentityCredential",
-            "managedidentitycredential" })
+            "managedidentitycredential",
+            "VisualStudioCodeCredential",
+            "visualstudiocodecredential"})
     public void testTargetedCredentialSelection(String credentialValue) {
         // Setup config with targeted credential value (case-insensitive)
         TestConfigurationSource configSource
@@ -728,6 +730,10 @@ public class DefaultAzureCredentialTest {
 
             case "managedidentitycredential":
                 expectedType = ManagedIdentityCredential.class;
+                break;
+
+            case "visualstudiocodecredential":
+                expectedType = VisualStudioCodeCredential.class;
                 break;
 
             default:
