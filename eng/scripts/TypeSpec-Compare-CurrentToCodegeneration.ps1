@@ -72,7 +72,7 @@ No TypeSpec files to regenerate in directories: $ServiceDirectories.
   exit 0
 }
 
-$output = npm install -g @azure-tools/typespec-client-generator-cli | Out-String
+$output = (& npm install -g @azure-tools/typespec-client-generator-cli) 2>&1
 if ($LastExitCode -ne 0) {
   Write-Host "Error installing @azure-tools/typespec-client-generator-cli"
   Write-Host "$output"
@@ -82,10 +82,9 @@ if ($LastExitCode -ne 0) {
 $generateScript = {
   $directory = $_
 
-  # 6>&1 redirects Write-Host calls in the script to the output stream, so we can capture it.
   Push-Location $directory
   try {
-    $generateOutput = tsp-client update --skip-install
+    $generateOutput = (& tsp-client update)
     if ($LastExitCode -ne 0) {
       Write-Host @"
 ======================================
@@ -97,7 +96,7 @@ $([String]::Join("`n", $generateOutput))
     }
 
     # Update code snippets before comparing the diff
-    $mvnOutput = mvn --no-transfer-progress codesnippet:update-codesnippet
+    $mvnOutput = (& mvn --no-transfer-progress codesnippet:update-codesnippet)
     if ($LastExitCode -ne 0) {
       Write-Host @"
 ======================================
@@ -127,7 +126,7 @@ $status
   } else {
         Write-Host @"
 ======================================
-Successfully ran with no diff $updateCodegenScript
+Successfully ran tsp-client update in directory with no diff $directory
 ======================================
 "@
   }
@@ -143,7 +142,7 @@ $job | Wait-Job -Timeout $timeout | Out-Null
 $job | Receive-Job 2>$null | Out-Null
 
 # Clean up generated code, so that next step will not be affected.
-git reset --hard | Out-Null
-git clean -fd . | Out-Null
+# git reset --hard | Out-Null
+# git clean -fd . | Out-Null
 
 exit $job.State -eq 'Failed'
