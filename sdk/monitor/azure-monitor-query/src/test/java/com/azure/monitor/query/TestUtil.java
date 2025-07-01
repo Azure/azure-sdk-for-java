@@ -53,7 +53,7 @@ public class TestUtil {
                 TestProxySanitizerType.URL),
             new TestProxySanitizer("workspaces\\/.*?\\/", "workspaces/REDACTED/", TestProxySanitizerType.URL));
         interceptorManager.addMatchers(
-            new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("starttime", "endtime", "api-version"))
+            new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("starttime", "endtime", "api-version", "timespan"))
                 .setComparingBodies(false)
                 .setExcludedHeaders(Arrays.asList("x-ms-content-sha256")));
     }
