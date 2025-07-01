@@ -4,6 +4,7 @@ package com.azure.compute.batch.implementation.lro;
 
 import com.azure.compute.batch.BatchAsyncClient;
 import com.azure.compute.batch.models.BatchJob;
+import com.azure.compute.batch.models.BatchJobDisableParameters;
 import com.azure.compute.batch.models.BatchJobState;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
@@ -17,63 +18,80 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * Async poller class used by {@code beginEnableJob} to implement polling logic for enabling a {@link BatchJob}.
- * Returns {@link BatchJob} values during polling and the final {@link BatchJob} upon successful completion.
+ * Async poller class used by {@code beginDisableJob} to implement polling logic for disabling a {@link BatchJob}.
+ * Returns {@link BatchJob} values during polling and as the final result.
  */
-public final class JobEnablePollerAsync {
+public final class JobDisablePollerAsync {
 
     private final BatchAsyncClient batchAsyncClient;
     private final String jobId;
+    private final BatchJobDisableParameters parameters;
     private final RequestOptions options;
     private final Context requestContext;
 
     /**
-     * Creates a new {@link JobEnablePollerAsync}.
+     * Creates a new {@link JobDisablePollerAsync}.
      *
      * @param batchAsyncClient The {@link BatchAsyncClient} used to interact with the Batch service.
-     * @param jobId The ID of the Job being enabled.
+     * @param jobId The ID of the Job being disabled.
+     * @param parameters The options to use when disabling the Job.
      * @param options Optional request options for service calls.
      */
-    public JobEnablePollerAsync(BatchAsyncClient batchAsyncClient, String jobId, RequestOptions options) {
+    public JobDisablePollerAsync(BatchAsyncClient batchAsyncClient, String jobId, BatchJobDisableParameters parameters,
+        RequestOptions options) {
         this.batchAsyncClient = batchAsyncClient;
         this.jobId = jobId;
+        this.parameters = parameters;
         this.options = options;
         this.requestContext = options == null ? Context.NONE : options.getContext();
     }
 
     /**
-     * Activation operation to start the enable process.
+     * Activation operation to start the disable.
      *
-     * @return A function that initiates the enable request and returns a PollResponse with IN_PROGRESS status.
+     * @return A function that initiates the disable request and returns a PollResponse with IN_PROGRESS status.
      */
     public Function<PollingContext<BatchJob>, Mono<PollResponse<BatchJob>>> getActivationOperation() {
-        return context -> batchAsyncClient.enableJobWithResponse(jobId, options)
-            .thenReturn(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, null));
+        return context -> batchAsyncClient
+            .disableJobWithResponse(jobId, com.azure.core.util.BinaryData.fromObject(parameters), options)
+            .then(batchAsyncClient.getJobWithResponse(jobId, null))
+            .map(response -> {
+                BatchJob job = response.getValue().toObject(BatchJob.class);
+                return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, job);
+            });
     }
 
     /**
-     * Poll operation to check the job's enablement state.
+     * Poll operation to check the job's disablement state.
      *
      * @return A function that polls the Job and returns a PollResponse with the current operation status.
      */
     public Function<PollingContext<BatchJob>, Mono<PollResponse<BatchJob>>> getPollOperation() {
         return context -> {
             RequestOptions pollOptions = new RequestOptions().setContext(this.requestContext);
-            return batchAsyncClient.getJobWithResponse(jobId, pollOptions).map(response -> {
+            return batchAsyncClient.getJobWithResponse(jobId, pollOptions).flatMap(response -> {
                 BatchJob job = response.getValue().toObject(BatchJob.class);
-                LongRunningOperationStatus status = BatchJobState.ENABLING.equals(job.getState())
-                    ? LongRunningOperationStatus.IN_PROGRESS
-                    : LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                return new PollResponse<>(status, job);
+                BatchJobState state = job.getState();
+
+                LongRunningOperationStatus status;
+                if (BatchJobState.DISABLING.equals(state)) {
+                    status = LongRunningOperationStatus.IN_PROGRESS;
+                } else if (BatchJobState.DISABLED.equals(state)) {
+                    status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+                } else {
+                    status = LongRunningOperationStatus.FAILED;
+                }
+
+                return Mono.just(new PollResponse<>(status, job));
             })
                 .onErrorResume(ResourceNotFoundException.class,
-                    ex -> Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null)))
+                    ex -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null)))
                 .onErrorResume(e -> Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null)));
         };
     }
 
     /**
-     * Cancel operation (not supported for enable).
+     * Cancel operation (not supported for disable).
      *
      * @return A function that always returns an empty Mono, indicating cancellation is unsupported.
      */
@@ -84,12 +102,12 @@ public final class JobEnablePollerAsync {
     /**
      * Final result fetch operation.
      *
-     * @return A function that fetches the final {@link BatchJob} after successful enablement.
+     * @return A function that fetches the final {@link BatchJob} after successful disablement.
      */
     public Function<PollingContext<BatchJob>, Mono<BatchJob>> getFetchResultOperation() {
         return context -> {
-            RequestOptions resultOptions = new RequestOptions().setContext(this.requestContext);
-            return batchAsyncClient.getJobWithResponse(jobId, resultOptions)
+            RequestOptions fetchOptions = new RequestOptions().setContext(this.requestContext);
+            return batchAsyncClient.getJobWithResponse(jobId, fetchOptions)
                 .map(response -> response.getValue().toObject(BatchJob.class));
         };
     }

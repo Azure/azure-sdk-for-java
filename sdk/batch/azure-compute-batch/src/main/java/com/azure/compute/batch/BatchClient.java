@@ -11281,7 +11281,7 @@ public final class BatchClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BatchJob, BatchJob> beginEnableJob(String jobId) {
-        PollerFlux<BatchJob, BatchJob> asyncPoller = asyncClient.beginEnableJob(jobId, null, null);
+        PollerFlux<BatchJob, BatchJob> asyncPoller = asyncClient.beginEnableJob(jobId);
         return asyncPoller.getSyncPoller();
     }
 
@@ -11328,7 +11328,7 @@ public final class BatchClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BatchJob, BatchJob> beginTerminateJob(String jobId) {
-        PollerFlux<BatchJob, BatchJob> asyncPoller = asyncClient.beginTerminateJob(jobId, null, null);
+        PollerFlux<BatchJob, BatchJob> asyncPoller = asyncClient.beginTerminateJob(jobId);
         return asyncPoller.getSyncPoller();
     }
 
@@ -15223,6 +15223,37 @@ public final class BatchClient {
      *
      * @param jobId The ID of the Job to disable.
      * @param parameters The options to use for disabling the Job.
+     * @param options Optional parameters for Disable Job operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the disabling of the Job.
+     * The poller provides {@link BatchJob} instances during polling and returns the last known
+     * {@link BatchJob} on completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchJob, BatchJob> beginDisableJob(String jobId, BatchJobDisableParameters parameters,
+        BatchJobDisableOptions options, RequestConditions requestConditions) {
+        PollerFlux<BatchJob, BatchJob> asyncPoller
+            = asyncClient.beginDisableJob(jobId, parameters, options, requestConditions);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
+     * Disables the specified Job, preventing new Tasks from running.
+     *
+     * The Batch Service immediately moves the Job to the disabling state. Batch then
+     * uses the disableTasks parameter to determine what to do with the currently
+     * running Tasks of the Job. The Job remains in the disabling state until the
+     * disable operation is completed and all Tasks have been dealt with according to
+     * the disableTasks option; the Job then moves to the disabled state. No new Tasks
+     * are started under the Job until it moves back to active state. If you try to
+     * disable a Job that is in any state other than active, disabling, or disabled,
+     * the request fails with status code 409.
+     *
+     * @param jobId The ID of the Job to disable.
+     * @param parameters The options to use for disabling the Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -15233,6 +15264,33 @@ public final class BatchClient {
         // Generated convenience method for disableJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         disableJobWithResponse(jobId, BinaryData.fromObject(parameters), requestOptions).getValue();
+    }
+
+    /**
+     * Disables the specified Job, preventing new Tasks from running.
+     *
+     * The Batch Service immediately moves the Job to the disabling state. Batch then
+     * uses the disableTasks parameter to determine what to do with the currently
+     * running Tasks of the Job. The Job remains in the disabling state until the
+     * disable operation is completed and all Tasks have been dealt with according to
+     * the disableTasks option; the Job then moves to the disabled state. No new Tasks
+     * are started under the Job until it moves back to active state. If you try to
+     * disable a Job that is in any state other than active, disabling, or disabled,
+     * the request fails with status code 409.
+     *
+     * @param jobId The ID of the Job to disable.
+     * @param parameters The options to use for disabling the Job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the disabling of the Job.
+     * The poller provides {@link BatchJob} instances during polling and returns the last known
+     * {@link BatchJob} on completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchJob, BatchJob> beginDisableJob(String jobId, BatchJobDisableParameters parameters) {
+        PollerFlux<BatchJob, BatchJob> asyncPoller = asyncClient.beginDisableJob(jobId, parameters);
+        return asyncPoller.getSyncPoller();
     }
 
     /**
