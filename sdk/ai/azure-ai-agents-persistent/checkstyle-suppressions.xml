@@ -15,4 +15,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.agents.persistent.FilesAsyncClient.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.agents.persistent.FilesClient.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.agents.persistent.RunsAsyncClient.java" />
+
+  <suppress checks="IllegalImport" files="com.azure.ai.agents.persistent.AgentTracingSample.java" />
+  <suppress checks="IllegalImport" files="com.azure.ai.agents.persistent.SampleUtils.java" />
 </suppressions>
