@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 
+- BingCustomSearchConfiguration to use MarketCode constants instead of String values
+
 ### Bugs Fixed
 
 ### Other Changes
