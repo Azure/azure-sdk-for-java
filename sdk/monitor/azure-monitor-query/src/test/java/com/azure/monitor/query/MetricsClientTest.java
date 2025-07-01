@@ -35,10 +35,12 @@ public class MetricsClientTest extends MetricsClientTestBase {
             = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_METRICS_RESOURCE_URI_2", FAKE_RESOURCE_ID);
         resourceId = resourceId.substring(resourceId.indexOf("/subscriptions"));
 
-        try {
-            configClient.getConfigurationSetting("foo", "bar");
-        } catch (HttpResponseException exception) {
-            // ignore as this is only to generate some metrics
+        if (!interceptorManager.isPlaybackMode()) {
+            try {
+                configClient.getConfigurationSetting("foo", "bar");
+            } catch (HttpResponseException exception) {
+                // ignore as this is only to generate some metrics
+            }
         }
 
         MetricsQueryResourcesOptions options = new MetricsQueryResourcesOptions().setGranularity(Duration.ofMinutes(15))
