@@ -11,7 +11,7 @@ If the regenerated code is different than the current code this will tell the di
 are in, and exit with a failure status.
 
 .PARAMETER ServiceDirectories
-The directories that will be searched for 'Update-Codegeneration.ps1' scripts. If this parameter is not specified,
+The service directories that will be searched for 'Update-Codegeneration.ps1' scripts. If this parameter is not specified,
 the script will not check any directories and will exit with a success status.
 
 .PARAMETER Parallelization
@@ -118,5 +118,9 @@ $job = $directoryAndScriptTuples | ForEach-Object -Parallel $generateScript -Thr
 # Out-Null to suppress output information from the job and 2>$null to suppress any error messages from Receive-Job.
 $job | Wait-Job -Timeout $timeout | Out-Null
 $job | Receive-Job 2>$null | Out-Null
+
+# Clean up generated code, so that next step will not be affected.
+git reset --hard | Out-Null
+git clean -fd . | Out-Null
 
 exit $job.State -eq 'Failed'
