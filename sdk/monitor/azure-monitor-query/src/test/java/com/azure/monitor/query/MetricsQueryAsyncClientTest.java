@@ -201,7 +201,10 @@ public class MetricsQueryAsyncClientTest extends TestProxyTestBase {
                 Assertions.assertNull(result.getTimeInterval().getDuration(), "Duration should not be present");
 
                 // Verify that the start time and end time are 30 minutes apart
-                Assertions.assertTrue(Duration.between(result.getTimeInterval().getStartTime(), result.getTimeInterval().getEndTime()).toMinutes() == 30, "Start time and end time should be 30 minutes apart");
+                Assertions.assertTrue(
+                    Duration.between(result.getTimeInterval().getStartTime(), result.getTimeInterval().getEndTime())
+                        .toMinutes() == 30,
+                    "Start time and end time should be 30 minutes apart");
             })
             .verifyComplete();
     }
@@ -227,7 +230,10 @@ public class MetricsQueryAsyncClientTest extends TestProxyTestBase {
                 Assertions.assertNull(result.getTimeInterval().getDuration(), "Duration should not be present");
 
                 // Verify that the start time and end time are 1 hour apart
-                Assertions.assertTrue(Duration.between(result.getTimeInterval().getStartTime(), result.getTimeInterval().getEndTime()).toHours() == 1, "Start time and end time should be 1 hour apart");
+                Assertions.assertTrue(
+                    Duration.between(result.getTimeInterval().getStartTime(), result.getTimeInterval().getEndTime())
+                        .toHours() == 1,
+                    "Start time and end time should be 1 hour apart");
             })
             .verifyComplete();
     }
@@ -253,7 +259,10 @@ public class MetricsQueryAsyncClientTest extends TestProxyTestBase {
                 Assertions.assertNull(result.getTimeInterval().getDuration(), "Duration should not be present");
 
                 // Verify that the start time and end time are 1 day apart
-                Assertions.assertTrue(Duration.between(result.getTimeInterval().getStartTime(), result.getTimeInterval().getEndTime()).toDays() == 1, "Start time and end time should be 1 day apart");
+                Assertions.assertTrue(
+                    Duration.between(result.getTimeInterval().getStartTime(), result.getTimeInterval().getEndTime())
+                        .toDays() == 1,
+                    "Start time and end time should be 1 day apart");
             })
             .verifyComplete();
     }
