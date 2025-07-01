@@ -11502,6 +11502,34 @@ public final class BatchClient {
     }
 
     /**
+     * Deletes a Certificate from the specified Account.
+     *
+     * You cannot delete a Certificate if a resource (Pool or Compute Node) is using
+     * it. Before you can delete a Certificate, you must therefore make sure that the
+     * Certificate is not associated with any existing Pools, the Certificate is not
+     * installed on any Nodes (even if you remove a Certificate from a Pool, it is not
+     * removed from existing Compute Nodes in that Pool until they restart), and no
+     * running Tasks depend on the Certificate. If you try to delete a Certificate
+     * that is in use, the deletion fails. The Certificate status changes to
+     * deleteFailed. You can use Cancel Delete Certificate to set the status back to
+     * active if you decide that you want to continue using the Certificate.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the Certificate to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the deletion of the Certificate. The poller provides
+     * {@link BatchCertificate} instances during polling and returns {@code null} upon successful deletion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<BatchCertificate, Void> beginDeleteCertificate(String thumbprintAlgorithm, String thumbprint) {
+        PollerFlux<BatchCertificate, Void> asyncPoller
+            = asyncClient.beginDeleteCertificate(thumbprintAlgorithm, thumbprint);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
      * Gets information about the specified Certificate.
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
@@ -13428,6 +13456,36 @@ public final class BatchClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         deleteCertificateWithResponse(thumbprintAlgorithm, thumbprint, requestOptions).getValue();
+    }
+
+    /**
+     * Deletes a Certificate from the specified Account.
+     *
+     * You cannot delete a Certificate if a resource (Pool or Compute Node) is using
+     * it. Before you can delete a Certificate, you must therefore make sure that the
+     * Certificate is not associated with any existing Pools, the Certificate is not
+     * installed on any Nodes (even if you remove a Certificate from a Pool, it is not
+     * removed from existing Compute Nodes in that Pool until they restart), and no
+     * running Tasks depend on the Certificate. If you try to delete a Certificate
+     * that is in use, the deletion fails. The Certificate status changes to
+     * deleteFailed. You can use Cancel Delete Certificate to set the status back to
+     * active if you decide that you want to continue using the Certificate.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the Certificate to be deleted.
+     * @param options Optional parameters for Delete Certificate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the deletion of the Certificate. The poller provides
+     * {@link BatchCertificate} instances during polling and returns {@code null} upon successful deletion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchCertificate, Void> beginDeleteCertificate(String thumbprintAlgorithm, String thumbprint,
+        BatchCertificateDeleteOptions options) {
+        PollerFlux<BatchCertificate, Void> asyncPoller
+            = asyncClient.beginDeleteCertificate(thumbprintAlgorithm, thumbprint, options);
+        return asyncPoller.getSyncPoller();
     }
 
     /**
