@@ -162,18 +162,26 @@ public class JobTests extends BatchClientTestBase {
 
             // DISABLE
             BatchJobDisableParameters disableParams = new BatchJobDisableParameters(DisableBatchJobOption.REQUEUE);
-            SyncAsyncExtension.execute(() -> batchClient.disableJob(jobId, disableParams),
-                () -> batchAsyncClient.disableJob(jobId, disableParams));
 
-            job = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
-            Assertions.assertEquals(BatchJobState.DISABLING, job.getState());
+            SyncPoller<BatchJob, BatchJob> disablePoller = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(
+                () -> batchClient.beginDisableJob(jobId, disableParams),
+                () -> Mono.fromCallable(() -> batchAsyncClient.beginDisableJob(jobId, disableParams).getSyncPoller())));
 
-            sleepIfRunningAgainstService(5000);
+            // Inspect first poll
+            PollResponse<BatchJob> disableFirst = disablePoller.poll();
+            if (disableFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+                BatchJob disableDuringPoll = disableFirst.getValue();
+                Assertions.assertNotNull(disableDuringPoll);
+                Assertions.assertEquals(jobId, disableDuringPoll.getId());
+                Assertions.assertEquals(BatchJobState.DISABLING, disableDuringPoll.getState());
+            }
 
-            job = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
-            Assertions
-                .assertTrue(job.getState() == BatchJobState.DISABLED || job.getState() == BatchJobState.DISABLING);
-            Assertions.assertEquals(BatchAllTasksCompleteMode.NO_ACTION, job.getAllTasksCompleteMode());
+            disablePoller.waitForCompletion();
+
+            BatchJob disabledJob = disablePoller.getFinalResult();
+            Assertions.assertNotNull(disabledJob);
+            Assertions.assertEquals(BatchJobState.DISABLED, disabledJob.getState());
+            Assertions.assertEquals(BatchAllTasksCompleteMode.NO_ACTION, disabledJob.getAllTasksCompleteMode());
 
             // UPDATE
             BatchJobUpdateParameters updateParams
