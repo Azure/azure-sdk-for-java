@@ -15,8 +15,15 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.structuredmessage.StorageChecksumAlgorithm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
+
+import java.io.ByteArrayInputStream;
 
 import static com.azure.storage.common.implementation.Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME;
+import static com.azure.storage.common.implementation.Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.STRUCTUED_BODY_TYPE;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class BlobMessageEncoderUploadTests extends BlobTestBase {
@@ -31,6 +38,7 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
     public void uploadBinaryDataFullCRCHeader() {
         BlobParallelUploadOptions options = new BlobParallelUploadOptions(DATA.getDefaultBinaryData())
             .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO);
+
         Response<BlockBlobItem> response = bc.uploadWithResponse(options, null, Context.NONE);
         assertNotNull(response.getRequest().getHeaders().getValue(CONTENT_CRC64_HEADER_NAME));
     }
@@ -38,33 +46,94 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
     @Test
     public void uploadBinaryDataFullStructMess() {
         BlobParallelUploadOptions options
-            = new BlobParallelUploadOptions(BinaryData.fromBytes(getRandomByteArray(Constants.MB * 16)))
+            = new BlobParallelUploadOptions(BinaryData.fromBytes(getRandomByteArray(Constants.MB * 5)))
                 .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO);
+
         Response<BlockBlobItem> response = bc.uploadWithResponse(options, null, Context.NONE);
-        //assertNotNull(response.getRequest().getHeaders().getValue(CONTENT_CRC64_HEADER_NAME));
+        assertEquals(STRUCTUED_BODY_TYPE,
+            response.getRequest().getHeaders().getValue(STRUCTURED_BODY_TYPE_HEADER_NAME));
     }
 
     @Test
-    public void uploadBinaryDataChunked() {
+    public void uploadBinaryDataChunkedStructMess() {
         BlobParallelUploadOptions options
             = new BlobParallelUploadOptions(BinaryData.fromBytes(getRandomByteArray(Constants.MB * 8)))
                 .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO)
                 .setParallelTransferOptions(
                     new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB * 4));
-        Response<BlockBlobItem> response = bc.uploadWithResponse(options, null, Context.NONE);
+
+        assertDoesNotThrow(() -> bc.uploadWithResponse(options, null, Context.NONE));
+
+        //        Response<BlockBlobItem> response = bc.uploadWithResponse(options, null, Context.NONE);
+        //        assertEquals(STRUCTURED_BODY_TYPE,
+        //            response.getRequest().getHeaders().getValue(STRUCTURED_BODY_TYPE_HEADER_NAME));
     }
 
     @Test
-    public void uploadInputStream() {
+    public void uploadInputStreamFullCRCHeader() {
         BlobParallelUploadOptions options = new BlobParallelUploadOptions(DATA.getDefaultInputStream())
             .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO);
+
         Response<BlockBlobItem> response = bc.uploadWithResponse(options, null, Context.NONE);
+        assertNotNull(response.getRequest().getHeaders().getValue(CONTENT_CRC64_HEADER_NAME));
     }
 
     @Test
-    public void uploadFlux() {
+    public void uploadInputStreamFullStructMess() {
+        byte[] randomData = getRandomByteArray(Constants.MB * 5);
+        ByteArrayInputStream input = new ByteArrayInputStream(randomData);
+        BlobParallelUploadOptions options
+            = new BlobParallelUploadOptions(input).setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO);
+
+        Response<BlockBlobItem> response = bc.uploadWithResponse(options, null, Context.NONE);
+        assertEquals(STRUCTUED_BODY_TYPE,
+            response.getRequest().getHeaders().getValue(STRUCTURED_BODY_TYPE_HEADER_NAME));
+    }
+
+    @Test
+    public void uploadInputStreamChunkedStructMess() {
+        byte[] randomData = getRandomByteArray(Constants.MB * 8);
+        ByteArrayInputStream input = new ByteArrayInputStream(randomData);
+        BlobParallelUploadOptions options
+            = new BlobParallelUploadOptions(input).setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO)
+                .setParallelTransferOptions(
+                    new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB * 4));
+
+        assertDoesNotThrow(() -> bc.uploadWithResponse(options, null, Context.NONE));
+        //        Response<BlockBlobItem> response = bc.uploadWithResponse(options, null, Context.NONE);
+        //        assertEquals(STRUCTURED_BODY_TYPE,
+        //            response.getRequest().getHeaders().getValue(STRUCTURED_BODY_TYPE_HEADER_NAME));
+    }
+
+    @Test
+    public void uploadFluxFullCRCHeader() {
         BlobParallelUploadOptions options = new BlobParallelUploadOptions(DATA.getDefaultFlux())
             .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO);
+
         Response<BlockBlobItem> response = bc.uploadWithResponse(options, null, Context.NONE);
+        assertNotNull(response.getRequest().getHeaders().getValue(CONTENT_CRC64_HEADER_NAME));
+    }
+
+    @Test
+    public void uploadFluxFullStructMess() {
+        BlobParallelUploadOptions options = new BlobParallelUploadOptions(Flux.just(getRandomData(Constants.MB * 5)))
+            .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO);
+
+        Response<BlockBlobItem> response = bc.uploadWithResponse(options, null, Context.NONE);
+        assertEquals(STRUCTUED_BODY_TYPE,
+            response.getRequest().getHeaders().getValue(STRUCTURED_BODY_TYPE_HEADER_NAME));
+    }
+
+    @Test
+    public void uploadFluxChunkedStructMess() {
+        BlobParallelUploadOptions options = new BlobParallelUploadOptions(Flux.just(getRandomData(Constants.MB * 8)))
+            .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO)
+            .setParallelTransferOptions(
+                new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB * 4));
+
+        assertDoesNotThrow(() -> bc.uploadWithResponse(options, null, Context.NONE));
+        //        Response<BlockBlobItem> response = bc.uploadWithResponse(options, null, Context.NONE);
+        //        assertEquals(STRUCTURED_BODY_TYPE,
+        //            response.getRequest().getHeaders().getValue(STRUCTURED_BODY_TYPE_HEADER_NAME));
     }
 }

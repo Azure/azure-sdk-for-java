@@ -74,8 +74,6 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
 
     private void applyCRC64Header(HttpPipelineCallContext context) {
         // Implementation for setting the crc64 header
-        System.out.println("using crc64 header");
-
         long contentCRC64 = StorageCrc64Calculator.compute(context.getHttpRequest().getBodyAsBinaryData().toBytes(), 0);
 
         // Convert the 64-bit CRC value to 8 bytes in little-endian format
@@ -91,7 +89,6 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
 
     private void applyStructuredMessage(HttpPipelineCallContext context) {
         // Implementation for applying structured message to the request body
-        System.out.println("using struct mess");
         int unencodedContentLength
             = Integer.parseInt(context.getHttpRequest().getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
 
