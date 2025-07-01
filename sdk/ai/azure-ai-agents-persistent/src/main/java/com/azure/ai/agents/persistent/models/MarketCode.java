@@ -122,7 +122,7 @@ public final class MarketCode extends ExpandableStringEnum<MarketCode> {
     /** MarketCode 'zh-TW' for Traditional Chinese - Taiwan. */
     public static final MarketCode ZH_TW = fromString("zh-TW");
 
-    /** MarketCode 'tr-TR' for Turkish - Türkiye. */
+    /** MarketCode 'tr-TR' for Turkish - Turkey. */
     public static final MarketCode TR_TR = fromString("tr-TR");
 
     /** MarketCode 'en-GB' for English - United Kingdom. */
