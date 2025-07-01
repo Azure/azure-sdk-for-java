@@ -72,7 +72,7 @@ public final class EnterpriseCustomerOperationsClientImpl implements EnterpriseC
      * by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ConnectedCacheManage")
+    @ServiceInterface(name = "ConnectedCacheManagementClientEnterpriseCustomerOperations")
     public interface EnterpriseCustomerOperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseCustomers/{customerResourceName}")

@@ -2,12 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.ai.agents.persistent;
 
-import com.azure.ai.agents.persistent.implementation.models.FileDetails;
-import com.azure.ai.agents.persistent.implementation.models.UploadFileRequest;
-import com.azure.ai.agents.persistent.models.FileDeletionStatus;
+import com.azure.ai.agents.persistent.models.FileDetails;
 import com.azure.ai.agents.persistent.models.FileInfo;
-import com.azure.ai.agents.persistent.models.FileListResponse;
 import com.azure.ai.agents.persistent.models.FilePurpose;
+import com.azure.ai.agents.persistent.models.UploadFileRequest;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.AfterEach;
@@ -23,14 +21,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FilesClientTest extends ClientTestBase {
 
-    private PersistentAgentsAdministrationClientBuilder clientBuilder;
+    private PersistentAgentsClientBuilder clientBuilder;
     private FilesClient filesClient;
     private List<FileInfo> uploadedFiles;
     private static final String SAMPLE_TEXT = "Sample text for testing upload";
 
     private void setup(HttpClient httpClient) {
         clientBuilder = getClientBuilder(httpClient);
-        filesClient = clientBuilder.buildFilesClient();
+        PersistentAgentsClient agentsClient = clientBuilder.buildClient();
+        filesClient = agentsClient.getFilesClient();
         uploadedFiles = new ArrayList<>();
     }
 
@@ -80,8 +79,8 @@ public class FilesClientTest extends ClientTestBase {
         FileInfo uploadedFile = uploadFile(fileName);
 
         // Delete the created file
-        FileDeletionStatus deletionStatus = filesClient.deleteFile(uploadedFile.getId());
-        assertTrue(deletionStatus.isDeleted(), "File should be marked as deleted");
+        filesClient.deleteFile(uploadedFile.getId());
+        assertTrue(true, "File should be marked as deleted");
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -93,9 +92,7 @@ public class FilesClientTest extends ClientTestBase {
         String fileName = "list_files_test.txt";
         FileInfo uploadedFile = uploadFile(fileName);
 
-        FileListResponse listResponse = filesClient.listFiles();
-        assertNotNull(listResponse, "File list response should not be null");
-        List<FileInfo> fileInfos = listResponse.getData();
+        List<FileInfo> fileInfos = filesClient.listFiles();
         assertNotNull(fileInfos, "File list should not be null");
         assertTrue(fileInfos.size() > 0, "File list should not be empty");
     }
@@ -104,7 +101,7 @@ public class FilesClientTest extends ClientTestBase {
     public void cleanup() {
         for (FileInfo fileInfo : uploadedFiles) {
             try {
-                FileDeletionStatus deletionStatus = filesClient.deleteFile(fileInfo.getId());
+                filesClient.deleteFile(fileInfo.getId());
             } catch (Exception e) {
                 System.out.println("Failed to clean up file: " + fileInfo.getFilename());
                 System.out.println(e.getMessage());

@@ -14,6 +14,7 @@ import com.azure.json.JsonWriter;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /**
  * The ChatParticipant model.
@@ -39,6 +40,12 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
      */
     private OffsetDateTime shareHistoryTime;
 
+    /*
+     * Contextual metadata for the chat participant. The metadata consists of name/value pairs. The total size of all
+     * metadata pairs can be up to 1KB in size.
+     */
+    private Map<String, String> metadata;
+
     /**
      * Creates a new instance of {@link ChatParticipant}.
      */
@@ -46,7 +53,7 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
     }
 
     /**
-     * Get the communicationIdentifier property: Identifies a participant in Azure Communication services. A participant
+     * Gets the communicationIdentifier property: Identifies a participant in Azure Communication services. A participant
      * is, for example, a phone number or an Azure communication user. This model must be interpreted as a union: Apart
      * from rawId, at most one further property may be set.
      *
@@ -57,7 +64,7 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
     }
 
     /**
-     * Set the communicationIdentifier property: Identifies a participant in Azure Communication services. A participant
+     * Sets the communicationIdentifier property: Identifies a participant in Azure Communication services. A participant
      * is, for example, a phone number or an Azure communication user. This model must be interpreted as a union: Apart
      * from rawId, at most one further property may be set.
      *
@@ -70,7 +77,7 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
     }
 
     /**
-     * Get the displayName property: Display name for the chat participant.
+     * Gets the display name for the chat participant.
      *
      * @return the displayName value.
      */
@@ -79,7 +86,7 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
     }
 
     /**
-     * Set the displayName property: Display name for the chat participant.
+     * Sets the display name for the chat participant.
      *
      * @param displayName the displayName value to set.
      * @return the ChatParticipant object itself.
@@ -90,7 +97,7 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
     }
 
     /**
-     * Get the shareHistoryTime property: Time from which the chat history is shared with the chat participant.
+     * Gets the time from which the chat history is shared with the chat participant.
      * The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      *
      * @return the shareHistoryTime value.
@@ -100,7 +107,7 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
     }
 
     /**
-     * Set the shareHistoryTime property: Time from which the chat history is shared with the chat participant.
+     * Sets the time from which the chat history is shared with the chat participant.
      * The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      *
      * @param shareHistoryTime the shareHistoryTime value to set.
@@ -108,6 +115,28 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
      */
     public ChatParticipant setShareHistoryTime(OffsetDateTime shareHistoryTime) {
         this.shareHistoryTime = shareHistoryTime;
+        return this;
+    }
+
+    /**
+     * Gets the contextual metadata for the chat participant. The metadata consists of name/value
+     * pairs. The total size of all metadata pairs can be up to 1KB in size.
+     *
+     * @return the metadata value.
+     */
+    public Map<String, String> getMetadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Sets the contextual metadata for the chat participant. The metadata consists of name/value
+     * pairs. The total size of all metadata pairs can be up to 1KB in size.
+     *
+     * @param metadata the metadata value to set.
+     * @return the ChatParticipant object itself.
+     */
+    public ChatParticipant setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
         return this;
     }
 
@@ -122,6 +151,7 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
         jsonWriter.writeJsonField("communicationIdentifier", identifier);
         jsonWriter.writeStringField("displayName", displayName);
         jsonWriter.writeStringField("startDateTime", shareHistoryTime.toString());
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -147,6 +177,9 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
                     participant.displayName = reader.getString();
                 } else if ("startDateTime".equals(fieldName)) {
                     participant.shareHistoryTime = OffsetDateTime.parse(reader.getString());
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    participant.metadata = metadata;
                 } else {
                     reader.skipChildren();
                 }

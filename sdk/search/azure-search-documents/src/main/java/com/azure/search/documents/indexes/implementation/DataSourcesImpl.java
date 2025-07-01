@@ -62,7 +62,7 @@ public final class DataSourcesImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "SearchServiceClientD")
+    @ServiceInterface(name = "SearchServiceClientDataSources")
     public interface DataSourcesService {
         @Put("/datasources('{dataSourceName}')")
         @ExpectedResponses({ 200, 201 })

@@ -70,7 +70,7 @@ public final class PureStoragePoliciesClientImpl implements PureStoragePoliciesC
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AvsClientPureStorage")
+    @ServiceInterface(name = "AvsClientPureStoragePolicies")
     public interface PureStoragePoliciesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/pureStoragePolicies")

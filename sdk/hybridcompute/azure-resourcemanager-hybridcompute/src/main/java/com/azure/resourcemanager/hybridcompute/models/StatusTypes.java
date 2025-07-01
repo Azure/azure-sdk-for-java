@@ -27,6 +27,11 @@ public final class StatusTypes extends ExpandableStringEnum<StatusTypes> {
     public static final StatusTypes ERROR = fromString("Error");
 
     /**
+     * Static value AwaitingConnection for StatusTypes.
+     */
+    public static final StatusTypes AWAITING_CONNECTION = fromString("AwaitingConnection");
+
+    /**
      * Creates a new instance of StatusTypes value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

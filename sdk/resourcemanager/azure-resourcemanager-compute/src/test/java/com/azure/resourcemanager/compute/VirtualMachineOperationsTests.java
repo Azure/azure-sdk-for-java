@@ -6,6 +6,10 @@ package com.azure.resourcemanager.compute;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
@@ -44,6 +48,7 @@ import com.azure.resourcemanager.compute.models.RunCommandInputParameter;
 import com.azure.resourcemanager.compute.models.RunCommandResult;
 import com.azure.resourcemanager.compute.models.SecurityTypes;
 import com.azure.resourcemanager.compute.models.Sku;
+import com.azure.resourcemanager.compute.models.Snapshot;
 import com.azure.resourcemanager.compute.models.StorageAccountTypes;
 import com.azure.resourcemanager.compute.models.UpgradeMode;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
@@ -82,6 +87,7 @@ import com.azure.security.keyvault.keys.models.KeyType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -110,13 +116,11 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     private final String availabilitySetName = "availset1";
     private final String availabilitySetName2 = "availset2";
     private final ProximityPlacementGroupType proxGroupType = ProximityPlacementGroupType.STANDARD;
-    private AzureProfile profile;
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         rgName = generateRandomResourceName("javacsmrg", 15);
         rgName2 = generateRandomResourceName("javacsmrg2", 15);
-        this.profile = profile;
         super.initializeClients(httpPipeline, profile);
     }
 
@@ -2311,55 +2315,115 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     }
 
     @Test
-    public void canBeginCreateWithContext() {
+    public void canBeginCreateAndDeleteWithContext() {
+        rgName = null;
         final String vmName = generateRandomResourceName("jvm", 15);
+        final String diskName = generateRandomResourceName("jvdsk", 15);
+        final String snapshotName = generateRandomResourceName("jvss", 15);
         final String correlationId = UUID.randomUUID().toString();
         final String correlationKey = "x-ms-correlation-id";
         final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
         final AtomicInteger createCounter = new AtomicInteger(0);
-        HttpPipelinePolicy verificationPolicy = (context, next) -> {
-            if (context.getHttpRequest().getHttpMethod() == HttpMethod.PUT) {
-                // verify that all co-related resource creation requests will have the Context information
-                Object correlationData = context.getContext().getData(correlationKey).get();
-                Assertions.assertEquals(correlationId, correlationData);
-                createCounter.incrementAndGet();
+        final AtomicInteger deleteCounter = new AtomicInteger(0);
+        final AtomicInteger getCounter = new AtomicInteger();
+        HttpPipelinePolicy verificationPolicy = new HttpPipelinePolicy() {
+            @Override
+            public HttpPipelinePosition getPipelinePosition() {
+                return HttpPipelinePosition.PER_CALL;
             }
-            return next.process();
-        };
-        ComputeManager localComputeManager = buildComputeManager(computeManager.httpPipeline(), verificationPolicy);
 
-        Accepted<VirtualMachine> accepted = localComputeManager.virtualMachines()
+            @Override
+            public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+
+                if (context.getHttpRequest().getHttpMethod() == HttpMethod.PUT) {
+                    // verify that all co-related resource creation requests will have the Context information
+                    Object correlationData = context.getContext().getData(correlationKey).get();
+                    Assertions.assertEquals(correlationId, correlationData);
+                    createCounter.incrementAndGet();
+                } else if (context.getHttpRequest().getHttpMethod() == HttpMethod.DELETE) {
+                    // verify that all co-related resource deletion requests will have the Context information
+                    Object correlationData = context.getContext().getData(correlationKey).get();
+                    Assertions.assertEquals(correlationId, correlationData);
+                    deleteCounter.incrementAndGet();
+                } else if (context.getHttpRequest().getHttpMethod() == HttpMethod.GET) {
+                    // some GET requests are nested inside implementations, thus only verify methods we are interested in
+                    context.getData(correlationKey).ifPresent(data -> {
+                        Assertions.assertEquals(correlationId, data);
+                        getCounter.incrementAndGet();
+                    });
+                }
+                return next.process();
+            }
+        };
+        ComputeManager computeManagerWithPolicy
+            = buildManager(ComputeManager.class, computeManager.httpPipeline(), verificationPolicy);
+        Context context = new Context(correlationKey, correlationId);
+
+        Disk disk = computeManagerWithPolicy.disks()
+            .define(diskName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName2)
+            .withData()
+            .withSizeInGB(1)
+            .beginCreate(context)
+            .getFinalResult();
+
+        Snapshot snapshot = computeManagerWithPolicy.snapshots()
+            .define(snapshotName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName2)
+            .withDataFromDisk(disk)
+            .beginCreate(context)
+            .getFinalResult();
+
+        Accepted<VirtualMachine> accepted = computeManagerWithPolicy.virtualMachines()
             .define(vmName)
             .withRegion(region)
-            .withNewResourceGroup(rgName)
+            .withExistingResourceGroup(rgName2)
             .withNewPrimaryNetwork("10.0.0.0/28")
             .withPrimaryPrivateIPAddressDynamic()
             .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS)
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
+            .withExistingDataDisk(disk, disk.sizeInGB(), -1,
+                new VirtualMachineDiskOptions().withDeleteOptions(DeleteOptions.DETACH))
             .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
-            .beginCreate(new Context(correlationKey, correlationId));
-        accepted.getFinalResult();
+            .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DETACH)
+            .beginCreate(context);
+        VirtualMachine vm = accepted.getFinalResult();
 
-        // resourceGroup + network + neworkInterface + publicIp + VM = 5
-        Assertions.assertEquals(5, createCounter.get());
+        int getCountWithContext = getCounter.get();
+        String nicId = vm.getPrimaryNetworkInterface(context).id();
+        Assertions.assertEquals(1, getCounter.get() - getCountWithContext);
+
+        // resourceGroup + disk + snapshot + network + neworkInterface + publicIp + VM = 7
+        Assertions.assertEquals(7, createCounter.get());
+
+        computeManagerWithPolicy.virtualMachines().beginDeleteById(vm.id(), false, context).getFinalResult();
+        computeManagerWithPolicy.networkManager().networkInterfaces().beginDeleteById(nicId, context);
+        computeManagerWithPolicy.snapshots().beginDeleteById(snapshot.id(), context).getFinalResult();
+        computeManagerWithPolicy.disks().beginDeleteById(disk.id(), context).getFinalResult();
+        computeManagerWithPolicy.resourceManager().resourceGroups().beginDeleteByName(rgName2, context);
+
+        // vm + nic + snapshot + disk + resourcegroup = 5
+        Assertions.assertEquals(5, deleteCounter.get());
     }
 
     // *********************************** helper methods ***********************************
-    private ComputeManager buildComputeManager(HttpPipeline httpPipeline, HttpPipelinePolicy policy) {
+    private <T> T buildManager(Class<T> managerClazz, HttpPipeline httpPipeline, HttpPipelinePolicy policy) {
         List<HttpPipelinePolicy> pipelinePolicies = new ArrayList<>();
         for (int i = 0; i < httpPipeline.getPolicyCount(); i++) {
             pipelinePolicies.add(httpPipeline.getPolicy(i));
         }
 
-        pipelinePolicies.add(policy);
+        pipelinePolicies.add(0, policy);
 
         HttpPipeline newPipeline = new HttpPipelineBuilder().httpClient(httpPipeline.getHttpClient())
             .policies(pipelinePolicies.toArray(new HttpPipelinePolicy[0]))
             .tracer(httpPipeline.getTracer())
             .build();
-        ComputeManager manager = ComputeManager.authenticate(newPipeline, profile);
+        T manager = buildManager(managerClazz, newPipeline, profile());
         ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
         internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         setInternalContext(internalContext, manager);

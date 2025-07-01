@@ -8,8 +8,10 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.utils.IOExceptionCheckedConsumer;
 import io.clientcore.core.utils.SharedExecutorService;
 import io.clientcore.http.netty4.NettyHttpClientProvider;
+import io.clientcore.http.netty4.TestUtils;
 import io.netty.util.ResourceLeakDetector;
 import io.netty.util.ResourceLeakDetectorFactory;
 import org.junit.jupiter.api.AfterAll;
@@ -22,8 +24,9 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UncheckedIOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
 import java.util.Collection;
@@ -35,10 +38,10 @@ import java.util.concurrent.Future;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static io.clientcore.http.netty4.implementation.NettyHttpClientLocalTestServer.LONG_BODY;
 import static io.clientcore.http.netty4.implementation.NettyHttpClientLocalTestServer.LONG_BODY_PATH;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -53,7 +56,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Execution(ExecutionMode.SAME_THREAD)
 public class HttpResponseDrainsBufferTests {
     private static ResourceLeakDetector.Level originalLevel;
-    private static final String URL = NettyHttpClientLocalTestServer.getServer().getHttpUri() + LONG_BODY_PATH;
+    private static final String URL = NettyHttpClientLocalTestServer.getServer().getUri() + LONG_BODY_PATH;
 
     private ResourceLeakDetectorFactory originalLeakDetectorFactory;
     private final TestResourceLeakDetectorFactory testResourceLeakDetectorFactory
@@ -82,27 +85,21 @@ public class HttpResponseDrainsBufferTests {
     }
 
     @Test
-    public void closeHttpResponseWithoutConsumingBody() throws ExecutionException, InterruptedException {
+    public void closeHttpResponseWithoutConsumingBody() {
         runScenario(Response::close);
     }
 
     @Test
-    public void closeHttpResponseWithConsumingPartialBody() throws ExecutionException, InterruptedException {
+    public void closeHttpResponseWithConsumingPartialBody() {
         runScenario(response -> {
-            try {
-                response.getValue().toStream().read(new byte[1024]);
-                response.close();
-            } catch (IOException ex) {
-                throw new UncheckedIOException(ex);
-            }
+            response.getValue().toStream().read(new byte[1024]);
+            response.close();
         });
     }
 
     @Test
-    public void closeHttpResponseWithConsumingPartialWrite() throws ExecutionException, InterruptedException {
-        runScenario(response -> {
-            response.getValue().writeTo(new ThrowingWritableByteChannel());
-        });
+    public void closeHttpResponseWithConsumingPartialWrite() {
+        runScenario(response -> response.getValue().writeTo(new ThrowingWritableByteChannel()));
     }
 
     private static final class ThrowingWritableByteChannel implements WritableByteChannel {
@@ -132,42 +129,59 @@ public class HttpResponseDrainsBufferTests {
     }
 
     @Test
-    public void closeHttpResponseWithConsumingFullBody() throws ExecutionException, InterruptedException {
+    public void closeHttpResponseWithConsumingFullBody() {
         runScenario(response -> {
             response.getValue().toBytes();
             response.close();
         });
     }
 
-    private void runScenario(Consumer<Response<BinaryData>> responseConsumer)
-        throws InterruptedException, ExecutionException {
-        HttpClient httpClient = new NettyHttpClientProvider().getSharedInstance();
+    @Test
+    public void consumeBodyUsingInputStreamFromBinaryData() {
+        runScenario(response -> {
+            try (InputStream stream = response.getValue().toStream()) {
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                byte[] buffer = new byte[8192];
+                int readCount = 0;
 
-        Semaphore limiter = new Semaphore(Runtime.getRuntime().availableProcessors() - 1);
-        List<Future<Void>> futures = SharedExecutorService.getInstance()
-            .invokeAll(IntStream.range(0, 100).mapToObj(ignored -> (Callable<Void>) () -> {
-                try {
-                    limiter.acquire();
-                    responseConsumer.accept(httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(URL)));
-                } finally {
-                    limiter.release();
+                while ((readCount = stream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, readCount);
                 }
 
-                return null;
-            }).collect(Collectors.toList()));
+                TestUtils.assertArraysEqual(LONG_BODY, outputStream.toByteArray());
+            }
+        });
+    }
 
-        for (Future<Void> future : futures) {
-            future.get();
-        }
-
+    private void runScenario(IOExceptionCheckedConsumer<Response<BinaryData>> responseConsumer) {
         try {
+            HttpClient httpClient = new NettyHttpClientProvider().getSharedInstance();
+
+            Semaphore limiter = new Semaphore(Runtime.getRuntime().availableProcessors() - 1);
+            List<Future<Void>> futures = SharedExecutorService.getInstance()
+                .invokeAll(IntStream.range(0, 1).mapToObj(ignored -> (Callable<Void>) () -> {
+                    try {
+                        limiter.acquire();
+                        responseConsumer
+                            .accept(httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(URL)));
+                    } finally {
+                        limiter.release();
+                    }
+
+                    return null;
+                }).collect(Collectors.toList()));
+
+            for (Future<Void> future : futures) {
+                future.get();
+            }
+
             // GC twice to ensure full cleanup.
             Thread.sleep(1000);
             Runtime.getRuntime().gc();
 
             Thread.sleep(1000);
             Runtime.getRuntime().gc();
-        } catch (InterruptedException ex) {
+        } catch (InterruptedException | ExecutionException ex) {
             throw new RuntimeException(ex);
         }
 

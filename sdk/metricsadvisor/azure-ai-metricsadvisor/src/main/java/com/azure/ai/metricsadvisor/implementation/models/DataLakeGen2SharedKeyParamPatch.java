@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class DataLakeGen2SharedKeyParamPatch implements JsonSerializable<D
     /*
      * The account key to access the Azure Data Lake Storage Gen2.
      */
+    @Generated
     private String accountKey;
 
     /**
      * Creates an instance of DataLakeGen2SharedKeyParamPatch class.
      */
+    @Generated
     public DataLakeGen2SharedKeyParamPatch() {
     }
 
@@ -32,6 +35,7 @@ public final class DataLakeGen2SharedKeyParamPatch implements JsonSerializable<D
      * 
      * @return the accountKey value.
      */
+    @Generated
     public String getAccountKey() {
         return this.accountKey;
     }
@@ -42,6 +46,7 @@ public final class DataLakeGen2SharedKeyParamPatch implements JsonSerializable<D
      * @param accountKey the accountKey value to set.
      * @return the DataLakeGen2SharedKeyParamPatch object itself.
      */
+    @Generated
     public DataLakeGen2SharedKeyParamPatch setAccountKey(String accountKey) {
         this.accountKey = accountKey;
         return this;
@@ -50,6 +55,7 @@ public final class DataLakeGen2SharedKeyParamPatch implements JsonSerializable<D
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +71,7 @@ public final class DataLakeGen2SharedKeyParamPatch implements JsonSerializable<D
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DataLakeGen2SharedKeyParamPatch.
      */
+    @Generated
     public static DataLakeGen2SharedKeyParamPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataLakeGen2SharedKeyParamPatch deserializedDataLakeGen2SharedKeyParamPatch

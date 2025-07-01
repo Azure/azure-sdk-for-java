@@ -6,9 +6,9 @@ package com.azure.resourcemanager.dnsresolver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dnsresolver.DnsResolverManager;
 import com.azure.resourcemanager.dnsresolver.models.VirtualNetworkLink;
@@ -24,27 +24,26 @@ public final class VirtualNetworkLinksCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"etag\":\"ho\",\"properties\":{\"virtualNetwork\":{\"id\":\"qzudphq\"},\"metadata\":{\"nwcvtbvkayhmtnv\":\"dkfw\",\"zcjaesgvvsccy\":\"qiatkzwpcnp\",\"hwyg\":\"jguq\",\"semdwzrmu\":\"lvdnkfx\"},\"provisioningState\":\"Succeeded\"},\"id\":\"cqdpsqxqvpsvuoym\",\"name\":\"ccelve\",\"type\":\"rypqlmfeo\"}";
+            = "{\"etag\":\"qcaaewdaomdjvl\",\"properties\":{\"virtualNetwork\":{\"id\":\"x\"},\"metadata\":{\"geivsiykzkdncj\":\"brm\"},\"provisioningState\":\"Succeeded\"},\"id\":\"bzo\",\"name\":\"gculap\",\"type\":\"wyrpgogtqxepnyl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DnsResolverManager manager = DnsResolverManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         VirtualNetworkLink response = manager.virtualNetworkLinks()
-            .define("rgz")
-            .withExistingDnsForwardingRuleset("lfzxiavrmbzonoki", "rjqc")
-            .withVirtualNetwork(new SubResource().withId("indfpwpjyl"))
-            .withMetadata(mapOf("gofel", "lhflsjcdhszfjvf", "rqmq", "a", "tvsexsowuel", "ldvriiiojnalghfk", "wws",
-                "qhhahhxvrhmzkwpj"))
-            .withIfMatch("syqtfi")
-            .withIfNoneMatch("whbotzingamv")
+            .define("iogsjkmnwq")
+            .withExistingDnsForwardingRuleset("wjplma", "stcyohpfkyrkdbd")
+            .withVirtualNetwork(new SubResource().withId("m"))
+            .withMetadata(mapOf("alxlllchp", "pmvmemfnczdwvv", "evwrdnhfuk", "db", "fcvlerch", "vsjcswsmystuluqy"))
+            .withIfMatch("g")
+            .withIfNoneMatch("ddrihpf")
             .create();
 
-        Assertions.assertEquals("qzudphq", response.virtualNetwork().id());
-        Assertions.assertEquals("dkfw", response.metadata().get("nwcvtbvkayhmtnv"));
+        Assertions.assertEquals("x", response.virtualNetwork().id());
+        Assertions.assertEquals("brm", response.metadata().get("geivsiykzkdncj"));
     }
 
     // Use "Map.of" if available

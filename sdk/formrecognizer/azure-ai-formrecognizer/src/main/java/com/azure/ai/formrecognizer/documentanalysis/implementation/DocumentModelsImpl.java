@@ -89,7 +89,7 @@ public final class DocumentModelsImpl {
      * perform REST calls.
      */
     @Host("{endpoint}/formrecognizer")
-    @ServiceInterface(name = "FormRecognizerClient")
+    @ServiceInterface(name = "FormRecognizerClientDocumentModels")
     public interface DocumentModelsService {
         @Post("/documentModels/{modelId}:analyze")
         @ExpectedResponses({ 202 })

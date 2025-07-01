@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,28 +21,33 @@ public final class DynamicsSink extends CopySink {
     /*
      * Copy sink type.
      */
+    @Generated
     private String type = "DynamicsSink";
 
     /*
      * The write behavior for the operation.
      */
+    @Generated
     private DynamicsSinkWriteBehavior writeBehavior;
 
     /*
      * The flag indicating whether ignore null values from input dataset (except key fields) during write operation.
      * Default is false. Type: boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object ignoreNullValues;
 
     /*
      * The logical name of the alternate key which will be used when upserting records. Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private Object alternateKeyName;
 
     /**
      * Creates an instance of DynamicsSink class.
      */
+    @Generated
     public DynamicsSink() {
     }
 
@@ -50,6 +56,7 @@ public final class DynamicsSink extends CopySink {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -60,6 +67,7 @@ public final class DynamicsSink extends CopySink {
      * 
      * @return the writeBehavior value.
      */
+    @Generated
     public DynamicsSinkWriteBehavior getWriteBehavior() {
         return this.writeBehavior;
     }
@@ -70,6 +78,7 @@ public final class DynamicsSink extends CopySink {
      * @param writeBehavior the writeBehavior value to set.
      * @return the DynamicsSink object itself.
      */
+    @Generated
     public DynamicsSink setWriteBehavior(DynamicsSinkWriteBehavior writeBehavior) {
         this.writeBehavior = writeBehavior;
         return this;
@@ -81,6 +90,7 @@ public final class DynamicsSink extends CopySink {
      * 
      * @return the ignoreNullValues value.
      */
+    @Generated
     public Object getIgnoreNullValues() {
         return this.ignoreNullValues;
     }
@@ -92,6 +102,7 @@ public final class DynamicsSink extends CopySink {
      * @param ignoreNullValues the ignoreNullValues value to set.
      * @return the DynamicsSink object itself.
      */
+    @Generated
     public DynamicsSink setIgnoreNullValues(Object ignoreNullValues) {
         this.ignoreNullValues = ignoreNullValues;
         return this;
@@ -103,6 +114,7 @@ public final class DynamicsSink extends CopySink {
      * 
      * @return the alternateKeyName value.
      */
+    @Generated
     public Object getAlternateKeyName() {
         return this.alternateKeyName;
     }
@@ -114,6 +126,7 @@ public final class DynamicsSink extends CopySink {
      * @param alternateKeyName the alternateKeyName value to set.
      * @return the DynamicsSink object itself.
      */
+    @Generated
     public DynamicsSink setAlternateKeyName(Object alternateKeyName) {
         this.alternateKeyName = alternateKeyName;
         return this;
@@ -122,6 +135,7 @@ public final class DynamicsSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DynamicsSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
@@ -131,6 +145,7 @@ public final class DynamicsSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DynamicsSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
@@ -140,6 +155,7 @@ public final class DynamicsSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DynamicsSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
@@ -149,6 +165,7 @@ public final class DynamicsSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DynamicsSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
@@ -158,6 +175,7 @@ public final class DynamicsSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DynamicsSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -167,18 +185,33 @@ public final class DynamicsSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
-        jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
-        jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
-        jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getWriteBatchSize() != null) {
+            jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
+        }
+        if (getWriteBatchTimeout() != null) {
+            jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
+        }
+        if (getSinkRetryCount() != null) {
+            jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
+        }
+        if (getSinkRetryWait() != null) {
+            jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("writeBehavior", this.writeBehavior == null ? null : this.writeBehavior.toString());
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("ignoreNullValues", this.ignoreNullValues);
-        jsonWriter.writeUntypedField("alternateKeyName", this.alternateKeyName);
+        if (this.ignoreNullValues != null) {
+            jsonWriter.writeUntypedField("ignoreNullValues", this.ignoreNullValues);
+        }
+        if (this.alternateKeyName != null) {
+            jsonWriter.writeUntypedField("alternateKeyName", this.alternateKeyName);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -196,6 +229,7 @@ public final class DynamicsSink extends CopySink {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DynamicsSink.
      */
+    @Generated
     public static DynamicsSink fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DynamicsSink deserializedDynamicsSink = new DynamicsSink();

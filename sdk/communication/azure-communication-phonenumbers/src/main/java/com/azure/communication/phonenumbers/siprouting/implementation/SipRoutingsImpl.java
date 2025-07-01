@@ -54,7 +54,7 @@ public final class SipRoutingsImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "SipRoutingAdminClien")
+    @ServiceInterface(name = "SipRoutingAdminClientSipRoutings")
     public interface SipRoutingsService {
         @Get("/sip")
         @ExpectedResponses({ 200 })

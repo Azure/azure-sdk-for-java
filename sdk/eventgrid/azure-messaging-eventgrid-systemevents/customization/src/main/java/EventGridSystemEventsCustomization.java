@@ -3,7 +3,6 @@
 
 import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
-import com.azure.autorest.customization.Editor;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.ast.CompilationUnit;
@@ -14,9 +13,8 @@ import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithJavadoc;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.javadoc.Javadoc;
-import org.slf4j.Logger;
-
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,6 +24,7 @@ import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
 
 import static com.github.javaparser.StaticJavaParser.parseBlock;
 import static com.github.javaparser.StaticJavaParser.parseExpression;
@@ -39,8 +38,6 @@ public class EventGridSystemEventsCustomization extends Customization {
 
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
-        customizeModuleInfo(customization);
-
         PackageCustomization systemEvent = customization.getPackage("com.azure.messaging.eventgrid.systemevents" +
             ".models");
         // Manual listing of classes in the package until a bug is fixed in TypeSpec Java.
@@ -162,26 +159,45 @@ public class EventGridSystemEventsCustomization extends Customization {
         customizeAcsRecordingFileStatusUpdatedEventDataDuration(systemEvent);
         customizeStorageDirectoryDeletedEventData(systemEvent);
         customizeAcsMessageEventDataAndInheritingClasses(systemEvent);
+        customizeIothubEventData(systemEvent);
+        customizeEventGridMQTTClientEventData(systemEvent);
     }
 
+    public void customizeEventGridMQTTClientEventData(PackageCustomization customization) {
+        customization.getClass("EventGridMqttClientEventData").customizeAst(ast ->
+            ast.getClassByName("EventGridMqttClientEventData")
+                .ifPresent(clazz -> clazz.getMethodsByName("setClientName")
+                    .forEach(method -> method.setModifiers(Modifier.Keyword.PRIVATE))));
 
-    /**
-     * Customize the module-info.java file. This is necessary due to having a models subpackage logically; we
-     * end up with an export for a package with no types, so we remove the export.
-     *
-     * @param customization The LibraryCustomization object.
-     */
-    public void customizeModuleInfo(LibraryCustomization customization) {
+        //// For inherited classes, remove the getClientName method entirely to avoid override conflicts
+        //List<String> inheritedClassNames = Arrays.asList("EventGridMqttClientCreatedOrUpdatedEventData",
+        //    "EventGridMqttClientDeletedEventData", "EventGridMqttClientSessionConnectedEventData",
+        //    "EventGridMqttClientSessionDisconnectedEventData");
+        //
+        //for (String className : inheritedClassNames) {
+        //    customization.getClass(className).customizeAst(ast -> {
+        //        ast.getClassByName(className).ifPresent(clazz -> {
+        //            // Remove the getClientName method from inherited classes
+        //            clazz.getMethodsByName("getClientName")
+        //                .forEach(method -> clazz.remove(method));
+        //        });
+        //    });
+        //}
+    }
 
-        Editor editor = customization.getRawEditor();
-        List<String> lines = editor.getFileLines("src/main/java/module-info.java");
-        StringBuilder sb = new StringBuilder();
-        lines.forEach(line -> {
-            if (!line.trim().equals("exports com.azure.messaging.eventgrid.systemevents;")) {
-                sb.append(line).append('\n');
-            }
-        });
-        editor.replaceFile("src/main/java/module-info.java", sb.toString());
+    public void customizeIothubEventData(PackageCustomization customization) {
+        customization.getClass("DeviceTwinMetadata").customizeAst(ast -> ast.getClassByName("DeviceTwinMetadata")
+            .ifPresent(clazz -> clazz.getMethodsByName("getLastUpdated").forEach(m -> m.setType(OffsetDateTime.class)
+                .setBody(parseBlock("{ return lastUpdated == null ? null : OffsetDateTime.parse(lastUpdated); }")))));
+
+        customization.getClass("DeviceTwinInfo").customizeAst(ast -> ast.getClassByName("DeviceTwinInfo")
+            .ifPresent(clazz -> clazz.getMethodsByName("getLastActivityTime").forEach(m -> m.setType(OffsetDateTime.class)
+                .setBody(parseBlock("{ return lastActivityTime == null ? null : OffsetDateTime.parse" +
+                    "(lastActivityTime); }")))));
+
+        customization.getClass("DeviceTwinInfo").customizeAst(ast -> ast.getClassByName("DeviceTwinInfo")
+            .ifPresent(clazz -> clazz.getMethodsByName("getStatusUpdateTime").forEach(m -> m.setType(OffsetDateTime.class)
+                .setBody(parseBlock("{ return statusUpdateTime == null ? null : OffsetDateTime.parse(statusUpdateTime); }")))));
     }
 
     public void customizeAcsRouterEvents(PackageCustomization customization) {
@@ -263,5 +279,4 @@ public class EventGridSystemEventsCustomization extends Customization {
         }
         return result.toUpperCase();
     }
-
 }

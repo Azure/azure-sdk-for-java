@@ -70,7 +70,7 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AvsClientAuthorizati")
+    @ServiceInterface(name = "AvsClientAuthorizations")
     public interface AuthorizationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/authorizations")

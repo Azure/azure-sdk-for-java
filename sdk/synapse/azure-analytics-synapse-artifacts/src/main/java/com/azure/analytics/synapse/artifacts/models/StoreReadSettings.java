@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,22 +22,26 @@ public class StoreReadSettings implements JsonSerializable<StoreReadSettings> {
     /*
      * The read setting type.
      */
+    @Generated
     private String type = "StoreReadSettings";
 
     /*
      * The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType
      * integer).
      */
+    @Generated
     private Object maxConcurrentConnections;
 
     /*
      * Connector read setting.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of StoreReadSettings class.
      */
+    @Generated
     public StoreReadSettings() {
     }
 
@@ -45,6 +50,7 @@ public class StoreReadSettings implements JsonSerializable<StoreReadSettings> {
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -55,6 +61,7 @@ public class StoreReadSettings implements JsonSerializable<StoreReadSettings> {
      * 
      * @return the maxConcurrentConnections value.
      */
+    @Generated
     public Object getMaxConcurrentConnections() {
         return this.maxConcurrentConnections;
     }
@@ -66,6 +73,7 @@ public class StoreReadSettings implements JsonSerializable<StoreReadSettings> {
      * @param maxConcurrentConnections the maxConcurrentConnections value to set.
      * @return the StoreReadSettings object itself.
      */
+    @Generated
     public StoreReadSettings setMaxConcurrentConnections(Object maxConcurrentConnections) {
         this.maxConcurrentConnections = maxConcurrentConnections;
         return this;
@@ -76,6 +84,7 @@ public class StoreReadSettings implements JsonSerializable<StoreReadSettings> {
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -86,6 +95,7 @@ public class StoreReadSettings implements JsonSerializable<StoreReadSettings> {
      * @param additionalProperties the additionalProperties value to set.
      * @return the StoreReadSettings object itself.
      */
+    @Generated
     public StoreReadSettings setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -94,11 +104,14 @@ public class StoreReadSettings implements JsonSerializable<StoreReadSettings> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("maxConcurrentConnections", this.maxConcurrentConnections);
+        if (this.maxConcurrentConnections != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", this.maxConcurrentConnections);
+        }
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -115,6 +128,7 @@ public class StoreReadSettings implements JsonSerializable<StoreReadSettings> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the StoreReadSettings.
      */
+    @Generated
     public static StoreReadSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -162,6 +176,7 @@ public class StoreReadSettings implements JsonSerializable<StoreReadSettings> {
         });
     }
 
+    @Generated
     static StoreReadSettings fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             StoreReadSettings deserializedStoreReadSettings = new StoreReadSettings();

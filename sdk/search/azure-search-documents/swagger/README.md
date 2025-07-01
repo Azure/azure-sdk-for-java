@@ -180,14 +180,13 @@ This swagger is ready for C# and Java.
 ``` yaml
 output-folder: ../
 java: true
-use: '@autorest/java@4.1.50'
+use: '@autorest/java@4.1.52'
 enable-sync-stack: true
 generate-client-as-impl: true
 required-fields-as-ctor-args: true
 license-header: MICROSOFT_MIT_SMALL_NO_VERSION
 disable-client-builder: true
 include-read-only-in-constructor-args: true
-use-eclipse-language-server: false
 ```
 
 ### Set odata.metadata Accept header in operations

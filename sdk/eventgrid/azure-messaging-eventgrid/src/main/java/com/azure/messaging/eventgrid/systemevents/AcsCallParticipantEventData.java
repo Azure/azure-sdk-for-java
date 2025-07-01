@@ -12,8 +12,12 @@ import java.io.IOException;
 
 /**
  * Schema of common properties of participant events.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Fluent
+@Deprecated
 public class AcsCallParticipantEventData extends AcsCallingEventProperties {
 
     /*

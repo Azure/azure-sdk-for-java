@@ -21,32 +21,25 @@ public final class AppServicePlanEventTypeDetail implements JsonSerializable<App
      * Kind of environment where app service plan is.
      */
     @Generated
-    private final StampKind stampKind;
+    private StampKind stampKind;
 
     /*
      * Type of action on the app service plan.
      */
     @Generated
-    private final AppServicePlanAction action;
+    private AppServicePlanAction action;
 
     /*
      * Asynchronous operation status of the operation on the app service plan.
      */
     @Generated
-    private final AsyncStatus status;
+    private AsyncStatus status;
 
     /**
      * Creates an instance of AppServicePlanEventTypeDetail class.
-     * 
-     * @param stampKind the stampKind value to set.
-     * @param action the action value to set.
-     * @param status the status value to set.
      */
     @Generated
-    private AppServicePlanEventTypeDetail(StampKind stampKind, AppServicePlanAction action, AsyncStatus status) {
-        this.stampKind = stampKind;
-        this.action = action;
-        this.status = status;
+    private AppServicePlanEventTypeDetail() {
     }
 
     /**
@@ -98,30 +91,30 @@ public final class AppServicePlanEventTypeDetail implements JsonSerializable<App
      * @param jsonReader The JsonReader being read.
      * @return An instance of AppServicePlanEventTypeDetail if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AppServicePlanEventTypeDetail.
      */
     @Generated
     public static AppServicePlanEventTypeDetail fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            StampKind stampKind = null;
-            AppServicePlanAction action = null;
-            AsyncStatus status = null;
+            AppServicePlanEventTypeDetail deserializedAppServicePlanEventTypeDetail
+                = new AppServicePlanEventTypeDetail();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("stampKind".equals(fieldName)) {
-                    stampKind = StampKind.fromString(reader.getString());
+                    deserializedAppServicePlanEventTypeDetail.stampKind = StampKind.fromString(reader.getString());
                 } else if ("action".equals(fieldName)) {
-                    action = AppServicePlanAction.fromString(reader.getString());
+                    deserializedAppServicePlanEventTypeDetail.action
+                        = AppServicePlanAction.fromString(reader.getString());
                 } else if ("status".equals(fieldName)) {
-                    status = AsyncStatus.fromString(reader.getString());
+                    deserializedAppServicePlanEventTypeDetail.status = AsyncStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new AppServicePlanEventTypeDetail(stampKind, action, status);
+
+            return deserializedAppServicePlanEventTypeDetail;
         });
     }
 }

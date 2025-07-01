@@ -1,16 +1,26 @@
 # Release History
 
-## 2.52.0-beta.1 (Unreleased)
+## 2.53.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Supported `beginCreate(Context)` in `VirtualMachine`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.52.0 (2025-06-27)
+
+### Features Added
+
+- Supported `beginCreate(Context)` in `VirtualMachine`.
+- Supported `beginDeleteByResourceGroup(Context)` and `beginDeleteById(Context)` in `VirtualMachines`.
+- Supported `beginCreate` in `Snapshot`.
+- Supported `beginDeleteByResourceGroup` and `beginDeleteById` in `Snapshots`.
+- Supported `beginCreate(Context)` in `Disk`.
+- Supported `beginDeleteByResourceGroup(Context)` and `beginDeleteById(Context)` in `Disks`.
+- Supported `getPrimaryNetworkInterface(Context)` in `VirtualMachine`.
 
 ## 2.51.0 (2025-05-26)
 

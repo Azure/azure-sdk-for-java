@@ -61,7 +61,7 @@ public final class ImpactCategoriesClientImpl implements ImpactCategoriesClient 
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ImpactReportingMgmtC")
+    @ServiceInterface(name = "ImpactReportingMgmtClientImpactCategories")
     public interface ImpactCategoriesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Impact/impactCategories/{impactCategoryName}")

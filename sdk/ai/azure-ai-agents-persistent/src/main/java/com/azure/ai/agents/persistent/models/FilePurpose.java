@@ -13,18 +13,6 @@ import java.util.Collection;
 public final class FilePurpose extends ExpandableStringEnum<FilePurpose> {
 
     /**
-     * Indicates a file is used for fine tuning input.
-     */
-    @Generated
-    public static final FilePurpose FINE_TUNE = fromString("fine-tune");
-
-    /**
-     * Indicates a file is used for fine tuning results.
-     */
-    @Generated
-    public static final FilePurpose FINE_TUNE_RESULTS = fromString("fine-tune-results");
-
-    /**
      * Indicates a file is used as input to agents.
      */
     @Generated
@@ -35,18 +23,6 @@ public final class FilePurpose extends ExpandableStringEnum<FilePurpose> {
      */
     @Generated
     public static final FilePurpose AGENTS_OUTPUT = fromString("assistants_output");
-
-    /**
-     * Indicates a file is used as input to .
-     */
-    @Generated
-    public static final FilePurpose BATCH = fromString("batch");
-
-    /**
-     * Indicates a file is used as output by a vector store batch operation.
-     */
-    @Generated
-    public static final FilePurpose BATCH_OUTPUT = fromString("batch_output");
 
     /**
      * Indicates a file is used as input to a vision operation.

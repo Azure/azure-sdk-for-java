@@ -22,7 +22,7 @@ public final class WebSlotSwapWithPreviewStartedEventData
      * Detail of action on the app.
      */
     @Generated
-    private final AppEventTypeDetail appEventTypeDetail;
+    private AppEventTypeDetail appEventTypeDetail;
 
     /*
      * name of the web site that had this event.
@@ -62,12 +62,9 @@ public final class WebSlotSwapWithPreviewStartedEventData
 
     /**
      * Creates an instance of WebSlotSwapWithPreviewStartedEventData class.
-     *
-     * @param appEventTypeDetail the appEventTypeDetail value to set.
      */
     @Generated
-    private WebSlotSwapWithPreviewStartedEventData(AppEventTypeDetail appEventTypeDetail) {
-        this.appEventTypeDetail = appEventTypeDetail;
+    private WebSlotSwapWithPreviewStartedEventData() {
     }
 
     /**
@@ -166,48 +163,35 @@ public final class WebSlotSwapWithPreviewStartedEventData
      * @param jsonReader The JsonReader being read.
      * @return An instance of WebSlotSwapWithPreviewStartedEventData if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WebSlotSwapWithPreviewStartedEventData.
      */
     @Generated
     public static WebSlotSwapWithPreviewStartedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AppEventTypeDetail appEventTypeDetail = null;
-            String name = null;
-            String clientRequestId = null;
-            String correlationRequestId = null;
-            String requestId = null;
-            String address = null;
-            String verb = null;
+            WebSlotSwapWithPreviewStartedEventData deserializedWebSlotSwapWithPreviewStartedEventData
+                = new WebSlotSwapWithPreviewStartedEventData();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("appEventTypeDetail".equals(fieldName)) {
-                    appEventTypeDetail = AppEventTypeDetail.fromJson(reader);
+                    deserializedWebSlotSwapWithPreviewStartedEventData.appEventTypeDetail
+                        = AppEventTypeDetail.fromJson(reader);
                 } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
+                    deserializedWebSlotSwapWithPreviewStartedEventData.name = reader.getString();
                 } else if ("clientRequestId".equals(fieldName)) {
-                    clientRequestId = reader.getString();
+                    deserializedWebSlotSwapWithPreviewStartedEventData.clientRequestId = reader.getString();
                 } else if ("correlationRequestId".equals(fieldName)) {
-                    correlationRequestId = reader.getString();
+                    deserializedWebSlotSwapWithPreviewStartedEventData.correlationRequestId = reader.getString();
                 } else if ("requestId".equals(fieldName)) {
-                    requestId = reader.getString();
+                    deserializedWebSlotSwapWithPreviewStartedEventData.requestId = reader.getString();
                 } else if ("address".equals(fieldName)) {
-                    address = reader.getString();
+                    deserializedWebSlotSwapWithPreviewStartedEventData.address = reader.getString();
                 } else if ("verb".equals(fieldName)) {
-                    verb = reader.getString();
+                    deserializedWebSlotSwapWithPreviewStartedEventData.verb = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            WebSlotSwapWithPreviewStartedEventData deserializedWebSlotSwapWithPreviewStartedEventData
-                = new WebSlotSwapWithPreviewStartedEventData(appEventTypeDetail);
-            deserializedWebSlotSwapWithPreviewStartedEventData.name = name;
-            deserializedWebSlotSwapWithPreviewStartedEventData.clientRequestId = clientRequestId;
-            deserializedWebSlotSwapWithPreviewStartedEventData.correlationRequestId = correlationRequestId;
-            deserializedWebSlotSwapWithPreviewStartedEventData.requestId = requestId;
-            deserializedWebSlotSwapWithPreviewStartedEventData.address = address;
-            deserializedWebSlotSwapWithPreviewStartedEventData.verb = verb;
             return deserializedWebSlotSwapWithPreviewStartedEventData;
         });
     }
