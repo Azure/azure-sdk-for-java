@@ -15,8 +15,12 @@ import java.util.Map;
 /**
  * Job Output Progress Event Data. Schema of the Data property of an EventGridEvent for a
  * Microsoft.Media.JobOutputProgress event.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Fluent
+@Deprecated
 public final class MediaJobOutputProgressEventData implements JsonSerializable<MediaJobOutputProgressEventData> {
 
     /*

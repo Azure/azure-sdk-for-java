@@ -27,7 +27,7 @@ public final class StartTranscriptionRequestInternal implements JsonSerializable
      * Endpoint where the custom model was deployed.
      */
     @Generated
-    private String speechRecognitionModelEndpointId;
+    private String speechModelEndpointId;
 
     /*
      * The value to identify context of the operation.
@@ -72,25 +72,24 @@ public final class StartTranscriptionRequestInternal implements JsonSerializable
     }
 
     /**
-     * Get the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     * Get the speechModelEndpointId property: Endpoint where the custom model was deployed.
      * 
-     * @return the speechRecognitionModelEndpointId value.
+     * @return the speechModelEndpointId value.
      */
     @Generated
-    public String getSpeechRecognitionModelEndpointId() {
-        return this.speechRecognitionModelEndpointId;
+    public String getSpeechModelEndpointId() {
+        return this.speechModelEndpointId;
     }
 
     /**
-     * Set the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     * Set the speechModelEndpointId property: Endpoint where the custom model was deployed.
      * 
-     * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId value to set.
+     * @param speechModelEndpointId the speechModelEndpointId value to set.
      * @return the StartTranscriptionRequestInternal object itself.
      */
     @Generated
-    public StartTranscriptionRequestInternal
-        setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
-        this.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
+    public StartTranscriptionRequestInternal setSpeechModelEndpointId(String speechModelEndpointId) {
+        this.speechModelEndpointId = speechModelEndpointId;
         return this;
     }
 
@@ -150,7 +149,7 @@ public final class StartTranscriptionRequestInternal implements JsonSerializable
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("locale", this.locale);
-        jsonWriter.writeStringField("speechRecognitionModelEndpointId", this.speechRecognitionModelEndpointId);
+        jsonWriter.writeStringField("speechModelEndpointId", this.speechModelEndpointId);
         jsonWriter.writeStringField("operationContext", this.operationContext);
         jsonWriter.writeStringField("operationCallbackUri", this.operationCallbackUri);
         return jsonWriter.writeEndObject();
@@ -175,8 +174,8 @@ public final class StartTranscriptionRequestInternal implements JsonSerializable
 
                 if ("locale".equals(fieldName)) {
                     deserializedStartTranscriptionRequestInternal.locale = reader.getString();
-                } else if ("speechRecognitionModelEndpointId".equals(fieldName)) {
-                    deserializedStartTranscriptionRequestInternal.speechRecognitionModelEndpointId = reader.getString();
+                } else if ("speechModelEndpointId".equals(fieldName)) {
+                    deserializedStartTranscriptionRequestInternal.speechModelEndpointId = reader.getString();
                 } else if ("operationContext".equals(fieldName)) {
                     deserializedStartTranscriptionRequestInternal.operationContext = reader.getString();
                 } else if ("operationCallbackUri".equals(fieldName)) {

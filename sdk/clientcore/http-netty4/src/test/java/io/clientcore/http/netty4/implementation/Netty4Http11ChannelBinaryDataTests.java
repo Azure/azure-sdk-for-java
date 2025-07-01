@@ -30,11 +30,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Tests {@link Netty4ChannelBinaryData}.
  */
 @Timeout(value = 3, unit = TimeUnit.MINUTES)
-public class Netty4ChannelBinaryDataTests {
+public class Netty4Http11ChannelBinaryDataTests {
     @Test
     public void toBytesWillThrowIsLengthIsTooLarge() {
         assertThrows(IllegalStateException.class,
-            () -> new Netty4ChannelBinaryData(null, null, Long.MAX_VALUE).toBytes());
+            () -> new Netty4ChannelBinaryData(null, null, Long.MAX_VALUE, false).toBytes());
     }
 
     @Test
@@ -45,7 +45,7 @@ public class Netty4ChannelBinaryDataTests {
         eagerContent.write(expected);
 
         Netty4ChannelBinaryData binaryData
-            = new Netty4ChannelBinaryData(eagerContent, channelWithNoData(), (long) expected.length);
+            = new Netty4ChannelBinaryData(eagerContent, channelWithNoData(), (long) expected.length, false);
 
         assertArraysEqual(expected, binaryData.toBytes());
         assertArraysEqual(expected, binaryData.toBytes());
@@ -60,7 +60,7 @@ public class Netty4ChannelBinaryDataTests {
         eagerContent.write(bytes);
 
         Netty4ChannelBinaryData binaryData
-            = new Netty4ChannelBinaryData(eagerContent, channelWithNoData(), (long) bytes.length);
+            = new Netty4ChannelBinaryData(eagerContent, channelWithNoData(), (long) bytes.length, false);
 
         assertEquals(expected, binaryData.toString());
     }
@@ -74,7 +74,7 @@ public class Netty4ChannelBinaryDataTests {
         eagerContent.write(bytes);
 
         Netty4ChannelBinaryData binaryData
-            = new Netty4ChannelBinaryData(eagerContent, channelWithNoData(), (long) bytes.length);
+            = new Netty4ChannelBinaryData(eagerContent, channelWithNoData(), (long) bytes.length, false);
 
         assertEquals(expected, binaryData.toByteBuffer());
     }
@@ -87,7 +87,7 @@ public class Netty4ChannelBinaryDataTests {
         eagerContent.write(expected);
 
         Netty4ChannelBinaryData binaryData
-            = new Netty4ChannelBinaryData(eagerContent, channelWithNoData(), (long) expected.length);
+            = new Netty4ChannelBinaryData(eagerContent, channelWithNoData(), (long) expected.length, false);
 
         assertArraysEqual(expected, binaryData.toBytes());
 
@@ -112,7 +112,7 @@ public class Netty4ChannelBinaryDataTests {
         eagerContent.write(expected);
 
         Netty4ChannelBinaryData binaryData
-            = new Netty4ChannelBinaryData(eagerContent, channelWithNoData(), (long) expected.length);
+            = new Netty4ChannelBinaryData(eagerContent, channelWithNoData(), (long) expected.length, false);
 
         assertArraysEqual(expected, binaryData.toBytes());
 
@@ -124,17 +124,17 @@ public class Netty4ChannelBinaryDataTests {
 
     @Test
     public void channelBinaryDataLengthIsKnown() {
-        assertEquals(1, new Netty4ChannelBinaryData(null, null, 1L).getLength());
+        assertEquals(1, new Netty4ChannelBinaryData(null, null, 1L, false).getLength());
     }
 
     @Test
     public void channelBinaryDataLengthIsUnknown() {
-        assertNull(new Netty4ChannelBinaryData(null, null, null).getLength());
+        assertNull(new Netty4ChannelBinaryData(null, null, null, false).getLength());
     }
 
     @Test
     public void channelBinaryDataIsNeverReplayable() {
-        assertFalse(new Netty4ChannelBinaryData(null, null, null).isReplayable());
+        assertFalse(new Netty4ChannelBinaryData(null, null, null, false).isReplayable());
     }
 
     @Test
@@ -145,7 +145,7 @@ public class Netty4ChannelBinaryDataTests {
         eagerContent.write(expected);
 
         Netty4ChannelBinaryData binaryData
-            = new Netty4ChannelBinaryData(eagerContent, channelWithNoData(), (long) expected.length);
+            = new Netty4ChannelBinaryData(eagerContent, channelWithNoData(), (long) expected.length, false);
 
         BinaryData replayable = binaryData.toReplayableBinaryData();
         assertInstanceOf(ByteArrayBinaryData.class, replayable);
