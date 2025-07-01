@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Evaluation respo   nse for agent evaluation run.
+ * Evaluation response for agent evaluation run.
  */
 @Immutable
 public final class AgentEvaluation implements JsonSerializable<AgentEvaluation> {

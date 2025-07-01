@@ -72,7 +72,7 @@ No TypeSpec files to regenerate in directories: $ServiceDirectories.
   exit 0
 }
 
-$output = (& npm install -g @azure-tools/typespec-client-generator-cli) 2>&1
+$output = (& npm install -g @azure-tools/typespec-client-generator-cli)
 if ($LastExitCode -ne 0) {
   Write-Host "Error installing @azure-tools/typespec-client-generator-cli"
   Write-Host "$output"
@@ -84,7 +84,7 @@ $generateScript = {
 
   Push-Location $directory
   try {
-    $generateOutput = (& tsp-client update)
+    $generateOutput = (& tsp-client update 2>&1)
     if ($LastExitCode -ne 0) {
       Write-Host @"
 ======================================
@@ -96,7 +96,7 @@ $([String]::Join("`n", $generateOutput))
     }
 
     # Update code snippets before comparing the diff
-    $mvnOutput = (& mvn --no-transfer-progress codesnippet:update-codesnippet)
+    $mvnOutput = (& mvn --no-transfer-progress codesnippet:update-codesnippet 2>&1)
     if ($LastExitCode -ne 0) {
       Write-Host @"
 ======================================
