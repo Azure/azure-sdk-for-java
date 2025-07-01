@@ -556,3 +556,17 @@ directive:
   transform: >
     $.name = "AudioFormatInternal";
 ```
+
+### Configure participantRawId to skip path encoding
+
+getParticipant participantRawId is not encoded which results HMAC failures on the backend, to fix the issue, currently
+overriding the getParticipant signature and sending the participantRawId as encoded
+This needs to be fixed in the GA release
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.paths["/calling/callConnections/{callConnectionId}/participants/{participantRawId}"].get.parameters
+  transform: >
+    $.find(param => param.name === "participantRawId")["x-ms-skip-url-encoding"] = true;
+```
