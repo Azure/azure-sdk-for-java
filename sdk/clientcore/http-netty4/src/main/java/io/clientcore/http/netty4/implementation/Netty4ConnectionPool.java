@@ -37,7 +37,6 @@ import java.time.ZoneOffset;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentMap;
@@ -56,21 +55,13 @@ import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.SSL_IN
  */
 public final class Netty4ConnectionPool implements Closeable {
 
-    /**
-     * An attribute key to mark a channel as new, so that certain handlers (e.g. proxy, ssl)
-     * are only added once.
-     */
-    public static final AttributeKey<AtomicBoolean> NEW_CHANNEL_KEY = AttributeKey.valueOf("new-channel");
-    private static final AttributeKey<OffsetDateTime> CHANNEL_CREATION_TIME
-        = AttributeKey.valueOf("channel-creation-time");
-    private static final AttributeKey<Netty4ConnectionPoolKey> CONNECTION_POOL_KEY
-        = AttributeKey.valueOf("connection-pool-key");
+    private static final AttributeKey<PooledConnection> POOLED_CONNECTION_KEY
+        = AttributeKey.valueOf("pooled-connection-key");
 
     private static final ClientLogger LOGGER = new ClientLogger(Netty4ConnectionPool.class);
     private static final String CLOSED_POOL_ERROR_MESSAGE = "Connection pool has been closed.";
 
     private final ConcurrentMap<Netty4ConnectionPoolKey, PerRoutePool> pool = new ConcurrentHashMap<>();
-    private final ConcurrentMap<Channel, OffsetDateTime> channelIdleSince = new ConcurrentHashMap<>();
     private final AtomicBoolean closed = new AtomicBoolean(false);
 
     private final Bootstrap bootstrap;
@@ -143,22 +134,23 @@ public final class Netty4ConnectionPool implements Closeable {
         if (channel == null) {
             return;
         }
-        if (closed.get()) {
+
+        PooledConnection pooledConnection = channel.attr(POOLED_CONNECTION_KEY).get();
+        if (pooledConnection == null) {
             channel.close();
             return;
         }
 
-        Netty4ConnectionPoolKey key = channel.attr(CONNECTION_POOL_KEY).get();
-        if (key != null) {
-            PerRoutePool perRoutePool = pool.get(key);
-            if (perRoutePool != null) {
-                channel.attr(CONNECTION_POOL_KEY).set(null);
-                perRoutePool.release(channel);
-            } else {
-                channel.close();
-            }
+        if (closed.get()) {
+            pooledConnection.close();
+            return;
+        }
+
+        PerRoutePool perRoutePool = pool.get(pooledConnection.key);
+        if (perRoutePool != null) {
+            perRoutePool.release(pooledConnection);
         } else {
-            channel.close();
+            pooledConnection.close();
         }
     }
 
@@ -166,19 +158,12 @@ public final class Netty4ConnectionPool implements Closeable {
      * Periodically cleans up connections that have been idle for too long.
      */
     private void cleanupIdleConnections() {
-        if (idleTimeoutNanos <= 0 || channelIdleSince.isEmpty()) {
+        if (idleTimeoutNanos <= 0 || pool.isEmpty()) {
             return;
         }
 
-        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
-        for (Iterator<Map.Entry<Channel, OffsetDateTime>> it = channelIdleSince.entrySet().iterator(); it.hasNext();) {
-            Map.Entry<Channel, OffsetDateTime> entry = it.next();
-            if (Duration.between(entry.getValue(), now).toNanos() >= idleTimeoutNanos) {
-                it.remove();
-                if (entry.getKey().isActive()) {
-                    entry.getKey().close();
-                }
-            }
+        for (PerRoutePool perRoutePool : pool.values()) {
+            perRoutePool.cleanup();
         }
     }
 
@@ -190,7 +175,6 @@ public final class Netty4ConnectionPool implements Closeable {
             }
             pool.values().forEach(PerRoutePool::close);
             pool.clear();
-            channelIdleSince.clear();
         }
     }
 
@@ -203,10 +187,35 @@ public final class Netty4ConnectionPool implements Closeable {
     }
 
     /**
+     * A wrapper for a Netty Channel that holds pooling-related metadata.
+     */
+    private static final class PooledConnection {
+        private final Channel channel;
+        private final Netty4ConnectionPoolKey key;
+        private final OffsetDateTime creationTime;
+        private volatile OffsetDateTime idleSince;
+
+        PooledConnection(Channel channel, Netty4ConnectionPoolKey key) {
+            this.channel = channel;
+            this.key = key;
+            this.creationTime = OffsetDateTime.now(ZoneOffset.UTC);
+            channel.attr(POOLED_CONNECTION_KEY).set(this);
+        }
+
+        private boolean isActiveAndWriteable() {
+            return channel.isActive() && channel.isWritable();
+        }
+
+        private void close() {
+            channel.close();
+        }
+    }
+
+    /**
      * Manages connections and pending acquirers for a single route.
      */
     private class PerRoutePool {
-        private final Deque<Channel> idleConnections = new ConcurrentLinkedDeque<>();
+        private final Deque<PooledConnection> idleConnections = new ConcurrentLinkedDeque<>();
         private final Deque<Promise<Channel>> pendingAcquirers = new ConcurrentLinkedDeque<>();
         private final AtomicInteger activeConnections = new AtomicInteger(0);
         private final Netty4ConnectionPoolKey key;
@@ -229,20 +238,18 @@ public final class Netty4ConnectionPool implements Closeable {
                     .newFailedFuture(new IllegalStateException(CLOSED_POOL_ERROR_MESSAGE));
             }
 
-            Channel channel;
-            while ((channel = idleConnections.poll()) != null) {
-                if (isHealthy(channel)) {
+            PooledConnection connection;
+            while ((connection = idleConnections.poll()) != null) {
+                if (isHealthy(connection)) {
                     // Acquired an existing healthy connection. activeConnections count is not
                     // yet incremented for idle channels, so we do it here.
                     activeConnections.incrementAndGet();
-                    channel.attr(NEW_CHANNEL_KEY).set(new AtomicBoolean(false));
-                    channelIdleSince.remove(channel);
-                    channel.attr(CONNECTION_POOL_KEY).set(key);
-                    return channel.eventLoop().newSucceededFuture(channel);
+                    connection.idleSince = null; // Mark as active
+                    return connection.channel.eventLoop().newSucceededFuture(connection.channel);
                 }
                 // Unhealthy idle connection was found and discarded. Don't decrement activeConnections
                 // as it was already decremented when the channel was released to the idle queue.
-                channel.close();
+                connection.close();
             }
 
             // No idle connections available, create a new one.
@@ -277,10 +284,10 @@ public final class Netty4ConnectionPool implements Closeable {
             return promise;
         }
 
-        synchronized void release(Channel channel) {
-            if (!isHealthy(channel)) {
+        synchronized void release(PooledConnection connection) {
+            if (!isHealthy(connection)) {
                 activeConnections.decrementAndGet();
-                channel.close();
+                connection.close();
 
                 // Since a connection slot has been freed, we should try to create a new,
                 // healthy connection for any request that might be waiting.
@@ -293,17 +300,15 @@ public final class Netty4ConnectionPool implements Closeable {
             while ((waiter = pendingAcquirers.poll()) != null) {
                 // A waiter exists, hand over this channel directly.
                 // The activeConnections count remains the same (one leaves, one joins).
-                if (waiter.trySuccess(channel)) {
+                if (waiter.trySuccess(connection.channel)) {
                     return;
                 }
             }
 
             // Channel is healthy and no waiters, return it to the idle queue.
             activeConnections.decrementAndGet();
-            idleConnections.offer(channel);
-            if (idleTimeoutNanos > 0) {
-                channelIdleSince.put(channel, OffsetDateTime.now(ZoneOffset.UTC));
-            }
+            connection.idleSince = OffsetDateTime.now(ZoneOffset.UTC);
+            idleConnections.offer(connection);
         }
 
         private void satisfyWaiterWithNewConnection() {
@@ -332,6 +337,9 @@ public final class Netty4ConnectionPool implements Closeable {
             newConnectionBootstrap.handler(new ChannelInitializer<Channel>() {
                 @Override
                 public void initChannel(Channel channel) throws SSLException {
+                    // Create the connection wrapper and attach it to the channel.
+                    new PooledConnection(channel, key);
+
                     ChannelPipeline pipeline = channel.pipeline();
                     // Test whether proxying should be applied to this Channel. If so, add it.
                     // Proxy detection MUST use the final destination address from the key.
@@ -381,9 +389,6 @@ public final class Netty4ConnectionPool implements Closeable {
                                 }
                                 return;
                             }
-                            newChannel.attr(NEW_CHANNEL_KEY).set(new AtomicBoolean(true));
-                            newChannel.attr(CHANNEL_CREATION_TIME).set(OffsetDateTime.now(ZoneOffset.UTC));
-                            newChannel.attr(CONNECTION_POOL_KEY).set(key);
                             promise.setSuccess(newChannel);
                         } else {
                             promise.setFailure(proxyFuture.cause());
@@ -396,9 +401,6 @@ public final class Netty4ConnectionPool implements Closeable {
                         }
                     });
                 } else {
-                    newChannel.attr(NEW_CHANNEL_KEY).set(new AtomicBoolean(true));
-                    newChannel.attr(CHANNEL_CREATION_TIME).set(OffsetDateTime.now(ZoneOffset.UTC));
-                    newChannel.attr(CONNECTION_POOL_KEY).set(key);
                     promise.setSuccess(newChannel);
                 }
             });
@@ -436,25 +438,40 @@ public final class Netty4ConnectionPool implements Closeable {
             return sslContextBuilder.build();
         }
 
-        private boolean isHealthy(Channel channel) {
-            if (!channel.isActive() || !channel.isWritable()) {
+        private boolean isHealthy(PooledConnection connection) {
+            if (!connection.isActiveAndWriteable()) {
                 return false;
             }
 
             if (maxLifetimeNanos > 0) {
-                OffsetDateTime creationTime = channel.attr(CHANNEL_CREATION_TIME).get();
                 OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
-                if (creationTime != null && Duration.between(creationTime, now).toNanos() >= maxLifetimeNanos) {
+                if (Duration.between(connection.creationTime, now).toNanos() >= maxLifetimeNanos) {
                     return false;
                 }
             }
             return true;
         }
 
+        synchronized void cleanup() {
+            if (idleConnections.isEmpty()) {
+                return;
+            }
+
+            OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
+            for (Iterator<PooledConnection> it = idleConnections.iterator(); it.hasNext();) {
+                PooledConnection connection = it.next();
+                if (connection.idleSince != null
+                    && Duration.between(connection.idleSince, now).toNanos() >= idleTimeoutNanos) {
+                    it.remove();
+                    connection.close();
+                }
+            }
+        }
+
         synchronized void close() {
-            Channel channel;
-            while ((channel = idleConnections.poll()) != null) {
-                channel.close();
+            PooledConnection connection;
+            while ((connection = idleConnections.poll()) != null) {
+                connection.close();
             }
             Promise<Channel> waiter;
             while ((waiter = pendingAcquirers.poll()) != null) {
