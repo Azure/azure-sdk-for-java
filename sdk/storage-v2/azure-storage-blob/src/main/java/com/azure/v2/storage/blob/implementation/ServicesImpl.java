@@ -280,7 +280,8 @@ public final class ServicesImpl {
             marker, maxresults, listBlobContainersIncludeTypeConverted, timeout, this.client.getVersion(), requestId,
             accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getBlobContainerItems(), null, res.getValue().getNextMarker(), null, null, null);
+            res.getValue().getBlobContainerItems(), null,
+            res.getValue().getNextMarker() != null ? res.getValue().getNextMarker() : null, null, null, null);
     }
 
     /**
@@ -325,7 +326,8 @@ public final class ServicesImpl {
             marker, maxresults, listBlobContainersIncludeTypeConverted, timeout, this.client.getVersion(), requestId,
             accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getBlobContainerItems(), null, res.getValue().getNextMarker(), null, null, null);
+            res.getValue().getBlobContainerItems(), null,
+            res.getValue().getNextMarker() != null ? res.getValue().getNextMarker() : null, null, null, null);
     }
 
     /**
@@ -585,7 +587,8 @@ public final class ServicesImpl {
         Response<BlobContainersSegment> res = service.listBlobContainersSegmentNext(nextLink, this.client.getUrl(),
             this.client.getVersion(), requestId, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getBlobContainerItems(), null, res.getValue().getNextMarker(), null, null, null);
+            res.getValue().getBlobContainerItems(), null,
+            res.getValue().getNextMarker() != null ? res.getValue().getNextMarker() : null, null, null, null);
     }
 
     /**
@@ -607,7 +610,8 @@ public final class ServicesImpl {
         Response<BlobContainersSegment> res = service.listBlobContainersSegmentNext(nextLink, this.client.getUrl(),
             this.client.getVersion(), requestId, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getBlobContainerItems(), null, res.getValue().getNextMarker(), null, null, null);
+            res.getValue().getBlobContainerItems(), null,
+            res.getValue().getNextMarker() != null ? res.getValue().getNextMarker() : null, null, null, null);
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ServicesImpl.class);
