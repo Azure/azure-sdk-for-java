@@ -228,9 +228,7 @@ public final class Netty4ConnectionPool implements Closeable {
             this.isHttps = isHttps;
         }
 
-        //TODO: Maybe this should be using CAS atomics and loops instead of synchronized
-        // in case the http-netty4 is also used in async flows instead of just sync
-        synchronized Future<Channel> acquire() {
+        Future<Channel> acquire() {
             if (closed.get()) {
                 return bootstrap.config()
                     .group()
@@ -238,8 +236,13 @@ public final class Netty4ConnectionPool implements Closeable {
                     .newFailedFuture(new IllegalStateException(CLOSED_POOL_ERROR_MESSAGE));
             }
 
-            PooledConnection connection;
-            while ((connection = idleConnections.poll()) != null) {
+            // First, optimistically try to acquire an existing idle connection.
+            while (true) {
+                PooledConnection connection = idleConnections.poll();
+                if (connection == null) {
+                    break; // No idle connections available.
+                }
+
                 if (isHealthy(connection)) {
                     // Acquired an existing healthy connection. activeConnections count is not
                     // yet incremented for idle channels, so we do it here.
@@ -247,96 +250,111 @@ public final class Netty4ConnectionPool implements Closeable {
                     connection.idleSince = null; // Mark as active
                     return connection.channel.eventLoop().newSucceededFuture(connection.channel);
                 }
+
                 // Unhealthy idle connection was found and discarded. Don't decrement activeConnections
                 // as it was already decremented when the channel was released to the idle queue.
                 connection.close();
             }
 
-            // No idle connections available, create a new one.
-            if (activeConnections.get() < maxConnectionsPerRoute) {
-                return createNewConnection();
-            }
-
-            // Pool is full, queue the request if there is space.
-            if (pendingAcquirers.size() >= maxPendingAcquires) {
-                return bootstrap.config()
-                    .group()
-                    .next()
-                    .newFailedFuture(CoreException.from("Pending acquisition queue is full."));
-            }
-
-            Promise<Channel> promise = bootstrap.config().group().next().newPromise();
-            promise.addListener(future -> {
-                if (future.isCancelled()) {
-                    pendingAcquirers.remove(promise);
-                }
-            });
-            pendingAcquirers.offer(promise);
-
-            if (pendingAcquireTimeout != null) {
-                bootstrap.config().group().schedule(() -> {
-                    if (!promise.isDone()) {
-                        promise.tryFailure(
-                            CoreException.from("Connection acquisition timed out after " + pendingAcquireTimeout));
+            // No idle connections. Try to create a new one or queue the request.
+            while (true) {
+                int currentActive = activeConnections.get();
+                if (currentActive < maxConnectionsPerRoute) {
+                    // Try to reserve a slot for a new connection.
+                    if (activeConnections.compareAndSet(currentActive, currentActive + 1)) {
+                        return createNewConnection();
                     }
-                }, pendingAcquireTimeout.toMillis(), TimeUnit.MILLISECONDS);
+                    // CAS failed, another thread changed the count. Loop to retry.
+                } else {
+                    // Pool is full, queue the request if there is space.
+                    if (pendingAcquirers.size() >= maxPendingAcquires) {
+                        return bootstrap.config()
+                            .group()
+                            .next()
+                            .newFailedFuture(CoreException.from("Pending acquisition queue is full."));
+                    }
+
+                    Promise<Channel> promise = bootstrap.config().group().next().newPromise();
+                    promise.addListener(future -> {
+                        if (future.isCancelled()) {
+                            pendingAcquirers.remove(promise);
+                        }
+                    });
+                    pendingAcquirers.offer(promise);
+
+                    if (pendingAcquireTimeout != null) {
+                        bootstrap.config().group().schedule(() -> {
+                            if (!promise.isDone()) {
+                                promise.tryFailure(CoreException
+                                    .from("Connection acquisition timed out after " + pendingAcquireTimeout));
+                            }
+                        }, pendingAcquireTimeout.toMillis(), TimeUnit.MILLISECONDS);
+                    }
+                    return promise;
+                }
             }
-            return promise;
         }
 
-        synchronized void release(PooledConnection connection) {
+        void release(PooledConnection connection) {
             if (!isHealthy(connection)) {
                 activeConnections.decrementAndGet();
                 connection.close();
-
-                // Since a connection slot has been freed, we should try to create a new,
-                // healthy connection for any request that might be waiting.
+                // A slot has been freed. Try to satisfy a waiting acquirer with a new connection.
                 satisfyWaiterWithNewConnection();
                 return;
             }
 
             // The channel is healthy. Now, check if anyone is waiting for a connection.
-            Promise<Channel> waiterToNotify = pendingAcquirers.poll();
+            while (true) {
+                Promise<Channel> waiterToNotify = pendingAcquirers.poll();
+                if (waiterToNotify == null) {
+                    // No waiters, return the connection to the idle queue.
+                    activeConnections.decrementAndGet();
+                    connection.idleSince = OffsetDateTime.now(ZoneOffset.UTC);
+                    idleConnections.offer(connection);
+                    break;
+                }
 
-            if (waiterToNotify != null) {
-                // A waiter exists. Fulfill the promise OUTSIDE the synchronized block.
-                // The activeConnections count remains the same.
-                connection.channel.eventLoop().execute(() -> {
-                    if (!waiterToNotify.trySuccess(connection.channel)) {
-                        // The waiter was cancelled or failed in the meantime.
-                        // Release the connection again so it can be pooled or given to another waiter.
-                        release(connection);
-                    }
-                });
-            } else {
-                // No waiters, return the connection to the idle queue.
-                activeConnections.decrementAndGet();
-                connection.idleSince = OffsetDateTime.now(ZoneOffset.UTC);
-                idleConnections.offer(connection);
+                // A waiter exists. Fulfill the promise. Active connection count remains the same.
+                if (waiterToNotify.trySuccess(connection.channel)) {
+                    // Waiter was notified successfully
+                    return;
+                }
+                // If trySuccess fails, the waiter was cancelled. Loop again to find another waiter.
             }
         }
 
         private void satisfyWaiterWithNewConnection() {
-            // This method MUST be called from within a thread-safe block/method.
-            if (activeConnections.get() < maxConnectionsPerRoute) {
-                Promise<Channel> waiter = pendingAcquirers.poll();
-                if (waiter != null) {
-                    // A waiter exists, and we have capacity, create a new connection for them.
-                    Future<Channel> newConnectionFuture = createNewConnection();
-                    newConnectionFuture.addListener(future -> {
-                        if (future.isSuccess()) {
-                            waiter.trySuccess((Channel) future.getNow());
-                        } else {
-                            waiter.tryFailure(future.cause());
-                        }
-                    });
+            // This method is called when a connection slot is freed.
+            while (true) {
+                int currentActive = activeConnections.get();
+                if (currentActive >= maxConnectionsPerRoute || pendingAcquirers.isEmpty()) {
+                    return;
                 }
+
+                if (activeConnections.compareAndSet(currentActive, currentActive + 1)) {
+                    Promise<Channel> waiter = pendingAcquirers.poll();
+                    if (waiter != null) {
+                        // A waiter exists, and we have capacity, create a new connection for them.
+                        Future<Channel> newConnectionFuture = createNewConnection();
+                        newConnectionFuture.addListener(future -> {
+                            if (future.isSuccess()) {
+                                waiter.trySuccess((Channel) future.getNow());
+                            } else {
+                                waiter.tryFailure(future.cause());
+                            }
+                        });
+                    } else {
+                        // A waiter disappeared after we reserved a slot. Release the slot.
+                        activeConnections.decrementAndGet();
+                    }
+                    return; // Exit after attempting to satisfy one waiter.
+                }
+                // CAS failed, another thread is operating. Loop to re-evaluate.
             }
         }
 
         private Future<Channel> createNewConnection() {
-            // This method MUST be called from within a thread-safe block/method.
-            activeConnections.incrementAndGet();
             Bootstrap newConnectionBootstrap = bootstrap.clone();
 
             newConnectionBootstrap.handler(new ChannelInitializer<Channel>() {
@@ -370,10 +388,9 @@ public final class Netty4ConnectionPool implements Closeable {
             Promise<Channel> promise = newConnectionBootstrap.config().group().next().newPromise();
             newConnectionBootstrap.connect(route).addListener(future -> {
                 if (!future.isSuccess()) {
-                    synchronized (this) {
-                        activeConnections.decrementAndGet();
-                        satisfyWaiterWithNewConnection();
-                    }
+                    // Connect failed, release the slot and try to satisfy a waiter.
+                    activeConnections.decrementAndGet();
+                    satisfyWaiterWithNewConnection();
                     promise.setFailure(future.cause());
                     return;
                 }
@@ -387,22 +404,16 @@ public final class Netty4ConnectionPool implements Closeable {
                         if (proxyFuture.isSuccess()) {
                             if (!newChannel.isActive()) {
                                 promise.setFailure(new ClosedChannelException());
-
-                                synchronized (this) {
-                                    activeConnections.decrementAndGet();
-                                    satisfyWaiterWithNewConnection();
-                                }
+                                activeConnections.decrementAndGet();
+                                satisfyWaiterWithNewConnection();
                                 return;
                             }
                             promise.setSuccess(newChannel);
                         } else {
                             promise.setFailure(proxyFuture.cause());
                             newChannel.close();
-
-                            synchronized (this) {
-                                activeConnections.decrementAndGet();
-                                satisfyWaiterWithNewConnection();
-                            }
+                            activeConnections.decrementAndGet();
+                            satisfyWaiterWithNewConnection();
                         }
                     });
                 } else {
@@ -457,7 +468,7 @@ public final class Netty4ConnectionPool implements Closeable {
             return true;
         }
 
-        synchronized void cleanup() {
+        void cleanup() {
             if (idleConnections.isEmpty()) {
                 return;
             }
@@ -473,7 +484,7 @@ public final class Netty4ConnectionPool implements Closeable {
             }
         }
 
-        synchronized void close() {
+        void close() {
             PooledConnection connection;
             while ((connection = idleConnections.poll()) != null) {
                 connection.close();

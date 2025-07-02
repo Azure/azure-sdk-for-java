@@ -168,7 +168,7 @@ public final class Netty4ProgressAndTimeoutHandler extends ChannelDuplexHandler 
 
     private void disposeWriteTimeoutWatcher() {
         trackingWriteTimeout = false;
-        if (writeTimeoutWatcher != null && !writeTimeoutWatcher.isDone()) {
+        if (writeTimeoutWatcher != null) {
             writeTimeoutWatcher.cancel(false);
             writeTimeoutWatcher = null;
         }
@@ -211,7 +211,7 @@ public final class Netty4ProgressAndTimeoutHandler extends ChannelDuplexHandler 
 
     private void disposeResponseTimeoutWatcher() {
         trackingResponseTimeout = false;
-        if (responseTimeoutWatcher != null && !responseTimeoutWatcher.isDone()) {
+        if (responseTimeoutWatcher != null) {
             responseTimeoutWatcher.cancel(false);
             responseTimeoutWatcher = null;
         }
@@ -283,7 +283,7 @@ public final class Netty4ProgressAndTimeoutHandler extends ChannelDuplexHandler 
 
     private void disposeReadTimeoutWatcher() {
         trackingReadTimeout = false;
-        if (readTimeoutWatcher != null && !readTimeoutWatcher.isDone()) {
+        if (readTimeoutWatcher != null) {
             readTimeoutWatcher.cancel(false);
             readTimeoutWatcher = null;
         }
