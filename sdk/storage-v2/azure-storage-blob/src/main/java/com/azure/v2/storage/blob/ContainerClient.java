@@ -105,7 +105,8 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void create(String containerName, Integer timeout, Map<String, String> metadata, PublicAccessType access,
         String requestId, BlobContainerEncryptionScope blobContainerEncryptionScope) {
-        this.serviceClient.create(containerName, timeout, metadata, access, requestId, blobContainerEncryptionScope);
+        createWithResponse(containerName, timeout, metadata, access, requestId, blobContainerEncryptionScope,
+            RequestContext.none());
     }
 
     /**
@@ -150,7 +151,7 @@ public final class ContainerClient {
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void getProperties(String containerName, Integer timeout, String leaseId, String requestId) {
-        this.serviceClient.getProperties(containerName, timeout, leaseId, requestId);
+        getPropertiesWithResponse(containerName, timeout, leaseId, requestId, RequestContext.none());
     }
 
     /**
@@ -206,7 +207,8 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String containerName, Integer timeout, String leaseId, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String requestId) {
-        this.serviceClient.delete(containerName, timeout, leaseId, ifModifiedSince, ifUnmodifiedSince, requestId);
+        deleteWithResponse(containerName, timeout, leaseId, ifModifiedSince, ifUnmodifiedSince, requestId,
+            RequestContext.none());
     }
 
     /**
@@ -267,7 +269,8 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void setMetadata(String containerName, Integer timeout, String leaseId, Map<String, String> metadata,
         OffsetDateTime ifModifiedSince, String requestId) {
-        this.serviceClient.setMetadata(containerName, timeout, leaseId, metadata, ifModifiedSince, requestId);
+        setMetadataWithResponse(containerName, timeout, leaseId, metadata, ifModifiedSince, requestId,
+            RequestContext.none());
     }
 
     /**
@@ -315,7 +318,8 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobSignedIdentifierWrapper getAccessPolicy(String containerName, Integer timeout, String leaseId,
         String requestId) {
-        return this.serviceClient.getAccessPolicy(containerName, timeout, leaseId, requestId);
+        return getAccessPolicyWithResponse(containerName, timeout, leaseId, requestId, RequestContext.none())
+            .getValue();
     }
 
     /**
@@ -376,8 +380,8 @@ public final class ContainerClient {
     public void setAccessPolicy(String containerName, Integer timeout, String leaseId, PublicAccessType access,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId,
         List<BlobSignedIdentifier> containerAcl) {
-        this.serviceClient.setAccessPolicy(containerName, timeout, leaseId, access, ifModifiedSince, ifUnmodifiedSince,
-            requestId, containerAcl);
+        setAccessPolicyWithResponse(containerName, timeout, leaseId, access, ifModifiedSince, ifUnmodifiedSince,
+            requestId, containerAcl, RequestContext.none());
     }
 
     /**
@@ -428,7 +432,8 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restore(String containerName, Integer timeout, String requestId, String deletedContainerName,
         String deletedContainerVersion) {
-        this.serviceClient.restore(containerName, timeout, requestId, deletedContainerName, deletedContainerVersion);
+        restoreWithResponse(containerName, timeout, requestId, deletedContainerName, deletedContainerVersion,
+            RequestContext.none());
     }
 
     /**
@@ -477,7 +482,8 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void rename(String containerName, String sourceContainerName, Integer timeout, String requestId,
         String sourceLeaseId) {
-        this.serviceClient.rename(containerName, sourceContainerName, timeout, requestId, sourceLeaseId);
+        renameWithResponse(containerName, sourceContainerName, timeout, requestId, sourceLeaseId,
+            RequestContext.none());
     }
 
     /**
@@ -530,8 +536,8 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InputStream submitBatch(String containerName, long contentLength, String multipartContentType,
         BinaryData body, Integer timeout, String requestId) {
-        return this.serviceClient.submitBatch(containerName, contentLength, multipartContentType, body, timeout,
-            requestId);
+        return submitBatchWithResponse(containerName, contentLength, multipartContentType, body, timeout, requestId,
+            RequestContext.none()).getValue();
     }
 
     /**
@@ -602,7 +608,8 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FilterBlobSegment filterBlobs(String containerName, Integer timeout, String requestId, String where,
         String marker, Integer maxresults, List<FilterBlobsIncludeItem> include) {
-        return this.serviceClient.filterBlobs(containerName, timeout, requestId, where, marker, maxresults, include);
+        return filterBlobsWithResponse(containerName, timeout, requestId, where, marker, maxresults, include,
+            RequestContext.none()).getValue();
     }
 
     /**
@@ -668,8 +675,8 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void acquireLease(String containerName, Integer timeout, Integer duration, String proposedLeaseId,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
-        this.serviceClient.acquireLease(containerName, timeout, duration, proposedLeaseId, ifModifiedSince,
-            ifUnmodifiedSince, requestId);
+        acquireLeaseWithResponse(containerName, timeout, duration, proposedLeaseId, ifModifiedSince, ifUnmodifiedSince,
+            requestId, RequestContext.none());
     }
 
     /**
@@ -725,7 +732,8 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void releaseLease(String containerName, String leaseId, Integer timeout, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String requestId) {
-        this.serviceClient.releaseLease(containerName, leaseId, timeout, ifModifiedSince, ifUnmodifiedSince, requestId);
+        releaseLeaseWithResponse(containerName, leaseId, timeout, ifModifiedSince, ifUnmodifiedSince, requestId,
+            RequestContext.none());
     }
 
     /**
@@ -781,7 +789,8 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void renewLease(String containerName, String leaseId, Integer timeout, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String requestId) {
-        this.serviceClient.renewLease(containerName, leaseId, timeout, ifModifiedSince, ifUnmodifiedSince, requestId);
+        renewLeaseWithResponse(containerName, leaseId, timeout, ifModifiedSince, ifUnmodifiedSince, requestId,
+            RequestContext.none());
     }
 
     /**
@@ -847,8 +856,8 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void breakLease(String containerName, Integer timeout, Integer breakPeriod, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String requestId) {
-        this.serviceClient.breakLease(containerName, timeout, breakPeriod, ifModifiedSince, ifUnmodifiedSince,
-            requestId);
+        breakLeaseWithResponse(containerName, timeout, breakPeriod, ifModifiedSince, ifUnmodifiedSince, requestId,
+            RequestContext.none());
     }
 
     /**
@@ -910,8 +919,8 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void changeLease(String containerName, String leaseId, String proposedLeaseId, Integer timeout,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
-        this.serviceClient.changeLease(containerName, leaseId, proposedLeaseId, timeout, ifModifiedSince,
-            ifUnmodifiedSince, requestId);
+        changeLeaseWithResponse(containerName, leaseId, proposedLeaseId, timeout, ifModifiedSince, ifUnmodifiedSince,
+            requestId, RequestContext.none());
     }
 
     /**
@@ -980,8 +989,8 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ListBlobsFlatSegmentResponse listBlobFlatSegment(String containerName, String prefix, String marker,
         Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
-        return this.serviceClient.listBlobFlatSegment(containerName, prefix, marker, maxresults, include, timeout,
-            requestId);
+        return listBlobFlatSegmentWithResponse(containerName, prefix, marker, maxresults, include, timeout, requestId,
+            RequestContext.none()).getValue();
     }
 
     /**
@@ -1057,8 +1066,8 @@ public final class ContainerClient {
     public ListBlobsHierarchySegmentResponse listBlobHierarchySegment(String containerName, String delimiter,
         String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout,
         String requestId) {
-        return this.serviceClient.listBlobHierarchySegment(containerName, delimiter, prefix, marker, maxresults,
-            include, timeout, requestId);
+        return listBlobHierarchySegmentWithResponse(containerName, delimiter, prefix, marker, maxresults, include,
+            timeout, requestId, RequestContext.none()).getValue();
     }
 
     /**
@@ -1099,6 +1108,6 @@ public final class ContainerClient {
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void getAccountInfo(String containerName, Integer timeout, String requestId) {
-        this.serviceClient.getAccountInfo(containerName, timeout, requestId);
+        getAccountInfoWithResponse(containerName, timeout, requestId, RequestContext.none());
     }
 }

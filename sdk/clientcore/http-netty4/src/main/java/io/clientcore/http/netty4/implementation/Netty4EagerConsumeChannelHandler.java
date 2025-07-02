@@ -9,6 +9,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandler;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.LastHttpContent;
+import io.netty.handler.codec.http2.Http2DataFrame;
 import io.netty.util.ReferenceCountUtil;
 
 import java.io.IOException;
@@ -22,6 +23,7 @@ import java.util.function.Consumer;
 public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandlerAdapter {
     private final CountDownLatch latch;
     private final IOExceptionCheckedConsumer<ByteBuf> byteBufConsumer;
+    private final boolean isHttp2;
 
     private boolean lastRead;
     private Throwable exception;
@@ -31,10 +33,13 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
      *
      * @param latch The latch to count down when the response is fully read, or an exception occurs.
      * @param byteBufConsumer The consumer to process the {@link ByteBuf ByteBufs} as they are read.
+     * @param isHttp2 Flag indicating whether the handler is used for HTTP/2 or not.
      */
-    public Netty4EagerConsumeChannelHandler(CountDownLatch latch, IOExceptionCheckedConsumer<ByteBuf> byteBufConsumer) {
+    public Netty4EagerConsumeChannelHandler(CountDownLatch latch, IOExceptionCheckedConsumer<ByteBuf> byteBufConsumer,
+        boolean isHttp2) {
         this.latch = latch;
         this.byteBufConsumer = byteBufConsumer;
+        this.isHttp2 = isHttp2;
     }
 
     @Override
@@ -56,7 +61,11 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
             }
         }
 
-        lastRead = msg instanceof LastHttpContent;
+        if (isHttp2) {
+            lastRead = msg instanceof Http2DataFrame && ((Http2DataFrame) msg).isEndStream();
+        } else {
+            lastRead = msg instanceof LastHttpContent;
+        }
         ctx.fireChannelRead(msg);
     }
 

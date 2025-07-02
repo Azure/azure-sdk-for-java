@@ -22,8 +22,7 @@ pr:
     exclude:
     - eng/versioning/external_dependencies.txt
     - eng/versioning/version_client.txt
-    - eng/versioning/version_data.txt
-    - eng/versioning/version_data_java_files.txt
+    - eng/versioning/version_java_files.txt
     - sdk/batch/microsoft-azure-batch/ # track 1
     - sdk/boms/ # pom only release pipeline
     - sdk/cosmos/ # emulator tests
@@ -71,8 +70,7 @@ extends:
     ExcludePaths:
     - eng/versioning/external_dependencies.txt
     - eng/versioning/version_client.txt
-    - eng/versioning/version_data.txt
-    - eng/versioning/version_data_java_files.txt
+    - eng/versioning/version_java_files.txt
     - sdk/batch/microsoft-azure-batch/ # track 1
     - sdk/boms/ # pom only release pipeline
     - sdk/cosmos/ # emulator tests

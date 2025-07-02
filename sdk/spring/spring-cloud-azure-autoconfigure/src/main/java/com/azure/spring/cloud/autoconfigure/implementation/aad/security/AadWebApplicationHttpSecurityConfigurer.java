@@ -142,7 +142,7 @@ public class AadWebApplicationHttpSecurityConfigurer extends AbstractHttpConfigu
      *
      * @return the access token response client
      */
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({"deprecation", "removal"})
     protected OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
         DefaultAuthorizationCodeTokenResponseClient result = new DefaultAuthorizationCodeTokenResponseClient();
         result.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));

@@ -1,6 +1,6 @@
 # Release History
 
-## 4.31.0-beta.1 (Unreleased)
+## 4.32.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,11 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.31.0 (2025-06-26)
+
+### Breaking Changes
+- Deprecated system events from `azure-messaging-eventgrid` package. Users should migrate to the new `azure-messaging-eventgrid-systemevents` package for system events.
 
 ## 4.30.1 (2025-06-19)
 
