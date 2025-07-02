@@ -43,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.messaging.webpubsub.models.WebPubSubGroupMember;
+import com.azure.messaging.webpubsub.models.WebPubSubGroupConnection;
 
 public class WebPubSubServiceClientTests extends TestProxyTestBase {
 
@@ -458,8 +458,8 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
             options.addQueryParam("top", String.valueOf(top));
         }
 
-        PagedIterable<WebPubSubGroupMember> pages = client.listConnectionsInGroup(groupName, options);
-        for (PagedResponse<WebPubSubGroupMember> page : pages.iterableByPage()) {
+        PagedIterable<WebPubSubGroupConnection> pages = client.listConnectionsInGroup(groupName, options);
+        for (PagedResponse<WebPubSubGroupConnection> page : pages.iterableByPage()) {
             actualPageCount++;
             actualConnectionCount += page.getValue().size();
         }
