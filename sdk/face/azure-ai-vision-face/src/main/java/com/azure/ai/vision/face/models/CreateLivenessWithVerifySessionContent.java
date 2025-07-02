@@ -46,8 +46,7 @@ public final class CreateLivenessWithVerifySessionContent {
 
     /*
      * Threshold for confidence of the face verification. Please refer to the documentation for more details.
-     * https://learn.microsoft.com/legal/cognitive-services/face/characteristics-and-limitations?context=%2Fazure%2Fai-
-     * services%2Fcomputer-vision%2Fcontext%2Fcontext#recognition-confidence-score
+     * https://learn.microsoft.com/legal/cognitive-services/face/characteristics-and-limitations?context=%2Fazure%2Fai-services%2Fcomputer-vision%2Fcontext%2Fcontext#recognition-confidence-score
      */
     @Generated
     private Double verifyConfidenceThreshold;
@@ -73,7 +72,7 @@ public final class CreateLivenessWithVerifySessionContent {
 
     /**
      * Creates an instance of CreateLivenessWithVerifySessionContent class.
-     * 
+     *
      * @param livenessOperationMode the livenessOperationMode value to set.
      * @param verifyImage the verifyImage value to set.
      */
@@ -86,7 +85,7 @@ public final class CreateLivenessWithVerifySessionContent {
 
     /**
      * Get the livenessOperationMode property: Type of liveness mode the client should follow.
-     * 
+     *
      * @return the livenessOperationMode value.
      */
     @Generated
@@ -98,7 +97,7 @@ public final class CreateLivenessWithVerifySessionContent {
      * Get the deviceCorrelationIdSetInClient property: Whether or not to allow client to set their own
      * 'deviceCorrelationId' via the Vision SDK. Default is false, and 'deviceCorrelationId' must be set in this request
      * body.
-     * 
+     *
      * @return the deviceCorrelationIdSetInClient value.
      */
     @Generated
@@ -110,7 +109,7 @@ public final class CreateLivenessWithVerifySessionContent {
      * Set the deviceCorrelationIdSetInClient property: Whether or not to allow client to set their own
      * 'deviceCorrelationId' via the Vision SDK. Default is false, and 'deviceCorrelationId' must be set in this request
      * body.
-     * 
+     *
      * @param deviceCorrelationIdSetInClient the deviceCorrelationIdSetInClient value to set.
      * @return the CreateLivenessWithVerifySessionContent object itself.
      */
@@ -123,7 +122,7 @@ public final class CreateLivenessWithVerifySessionContent {
 
     /**
      * Get the enableSessionImage property: Whether or not store the session image.
-     * 
+     *
      * @return the enableSessionImage value.
      */
     @Generated
@@ -133,7 +132,7 @@ public final class CreateLivenessWithVerifySessionContent {
 
     /**
      * Set the enableSessionImage property: Whether or not store the session image.
-     * 
+     *
      * @param enableSessionImage the enableSessionImage value to set.
      * @return the CreateLivenessWithVerifySessionContent object itself.
      */
@@ -146,7 +145,7 @@ public final class CreateLivenessWithVerifySessionContent {
     /**
      * Get the livenessModelVersion property: The model version used for liveness classification. This is an optional
      * parameter, and if this is not specified, then the latest supported model version will be chosen.
-     * 
+     *
      * @return the livenessModelVersion value.
      */
     @Generated
@@ -157,7 +156,7 @@ public final class CreateLivenessWithVerifySessionContent {
     /**
      * Set the livenessModelVersion property: The model version used for liveness classification. This is an optional
      * parameter, and if this is not specified, then the latest supported model version will be chosen.
-     * 
+     *
      * @param livenessModelVersion the livenessModelVersion value to set.
      * @return the CreateLivenessWithVerifySessionContent object itself.
      */
@@ -169,7 +168,7 @@ public final class CreateLivenessWithVerifySessionContent {
 
     /**
      * Get the returnVerifyImageHash property: Whether or not return the verify image hash.
-     * 
+     *
      * @return the returnVerifyImageHash value.
      */
     @Generated
@@ -179,7 +178,7 @@ public final class CreateLivenessWithVerifySessionContent {
 
     /**
      * Set the returnVerifyImageHash property: Whether or not return the verify image hash.
-     * 
+     *
      * @param returnVerifyImageHash the returnVerifyImageHash value to set.
      * @return the CreateLivenessWithVerifySessionContent object itself.
      */
@@ -193,7 +192,7 @@ public final class CreateLivenessWithVerifySessionContent {
      * Get the verifyConfidenceThreshold property: Threshold for confidence of the face verification. Please refer to
      * the documentation for more details.
      * https://learn.microsoft.com/legal/cognitive-services/face/characteristics-and-limitations?context=%2Fazure%2Fai-services%2Fcomputer-vision%2Fcontext%2Fcontext#recognition-confidence-score.
-     * 
+     *
      * @return the verifyConfidenceThreshold value.
      */
     @Generated
@@ -205,7 +204,7 @@ public final class CreateLivenessWithVerifySessionContent {
      * Set the verifyConfidenceThreshold property: Threshold for confidence of the face verification. Please refer to
      * the documentation for more details.
      * https://learn.microsoft.com/legal/cognitive-services/face/characteristics-and-limitations?context=%2Fazure%2Fai-services%2Fcomputer-vision%2Fcontext%2Fcontext#recognition-confidence-score.
-     * 
+     *
      * @param verifyConfidenceThreshold the verifyConfidenceThreshold value to set.
      * @return the CreateLivenessWithVerifySessionContent object itself.
      */
@@ -218,7 +217,7 @@ public final class CreateLivenessWithVerifySessionContent {
     /**
      * Get the verifyImage property: The image stream for verify. Content-Disposition header field for this part must
      * have filename.
-     * 
+     *
      * @return the verifyImage value.
      */
     @Generated
@@ -230,7 +229,7 @@ public final class CreateLivenessWithVerifySessionContent {
      * Get the deviceCorrelationId property: Unique Guid per each end-user device. This is to provide rate limiting and
      * anti-hammering. If 'deviceCorrelationIdSetInClient' is true in this request, this 'deviceCorrelationId' must be
      * null.
-     * 
+     *
      * @return the deviceCorrelationId value.
      */
     @Generated
@@ -242,7 +241,7 @@ public final class CreateLivenessWithVerifySessionContent {
      * Set the deviceCorrelationId property: Unique Guid per each end-user device. This is to provide rate limiting and
      * anti-hammering. If 'deviceCorrelationIdSetInClient' is true in this request, this 'deviceCorrelationId' must be
      * null.
-     * 
+     *
      * @param deviceCorrelationId the deviceCorrelationId value to set.
      * @return the CreateLivenessWithVerifySessionContent object itself.
      */
@@ -255,7 +254,7 @@ public final class CreateLivenessWithVerifySessionContent {
     /**
      * Get the authTokenTimeToLiveInSeconds property: Seconds the session should last for. Range is 60 to 86400 seconds.
      * Default value is 600.
-     * 
+     *
      * @return the authTokenTimeToLiveInSeconds value.
      */
     @Generated
@@ -266,7 +265,7 @@ public final class CreateLivenessWithVerifySessionContent {
     /**
      * Set the authTokenTimeToLiveInSeconds property: Seconds the session should last for. Range is 60 to 86400 seconds.
      * Default value is 600.
-     * 
+     *
      * @param authTokenTimeToLiveInSeconds the authTokenTimeToLiveInSeconds value to set.
      * @return the CreateLivenessWithVerifySessionContent object itself.
      */

@@ -59,7 +59,7 @@ public class DetectLiveness {
 
             // Get the details of all the attempts for liveness check for this sessions
             List<LivenessSessionAttempt> attempts = sessionResult.getResults().getAttempts();
-            logObject("List all livenss session attempts: ", attempts, true);
+            logObject("List all liveness session attempts: ", attempts, true);
 
         } finally {
             // Delete this session

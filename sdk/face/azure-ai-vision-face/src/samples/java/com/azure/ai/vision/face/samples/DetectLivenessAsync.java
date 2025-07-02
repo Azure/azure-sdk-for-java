@@ -45,7 +45,7 @@ public class DetectLivenessAsync {
             .block();
 
         logObject("Create a liveness session: ", livenessSessionCreationResult, true);
-        
+
         try {
             // 3. Pass the AuthToken to client device
             // Client device will process the step 4, 5, 6 in the documentation 'Orchestrate the liveness solution'
@@ -61,7 +61,7 @@ public class DetectLivenessAsync {
             logObject("Get liveness session result after client device complete liveness check: ", sessionResult);
 
             List<LivenessSessionAttempt> attempts = sessionResult.getResults().getAttempts();
-            logObject("List all livenss session attempts: ", attempts, true);
+            logObject("List all liveness session attempts: ", attempts, true);
         } finally {
             String sessionId = livenessSessionCreationResult.getSessionId();
             logObject("Delete liveness sessions: ", sessionId);
