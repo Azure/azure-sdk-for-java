@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class SapHanaAuthenticationType extends ExpandableStringEnum<SapHan
     /**
      * Static value Basic for SapHanaAuthenticationType.
      */
+    @Generated
     public static final SapHanaAuthenticationType BASIC = fromString("Basic");
 
     /**
      * Static value Windows for SapHanaAuthenticationType.
      */
+    @Generated
     public static final SapHanaAuthenticationType WINDOWS = fromString("Windows");
 
     /**
@@ -26,6 +29,7 @@ public final class SapHanaAuthenticationType extends ExpandableStringEnum<SapHan
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SapHanaAuthenticationType() {
     }
@@ -36,6 +40,7 @@ public final class SapHanaAuthenticationType extends ExpandableStringEnum<SapHan
      * @param name a name to look for.
      * @return the corresponding SapHanaAuthenticationType.
      */
+    @Generated
     public static SapHanaAuthenticationType fromString(String name) {
         return fromString(name, SapHanaAuthenticationType.class);
     }
@@ -45,6 +50,7 @@ public final class SapHanaAuthenticationType extends ExpandableStringEnum<SapHan
      * 
      * @return known SapHanaAuthenticationType values.
      */
+    @Generated
     public static Collection<SapHanaAuthenticationType> values() {
         return values(SapHanaAuthenticationType.class);
     }

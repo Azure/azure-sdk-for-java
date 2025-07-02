@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class HiveAuthenticationType extends ExpandableStringEnum<HiveAuthe
     /**
      * Static value Anonymous for HiveAuthenticationType.
      */
+    @Generated
     public static final HiveAuthenticationType ANONYMOUS = fromString("Anonymous");
 
     /**
      * Static value Username for HiveAuthenticationType.
      */
+    @Generated
     public static final HiveAuthenticationType USERNAME = fromString("Username");
 
     /**
      * Static value UsernameAndPassword for HiveAuthenticationType.
      */
+    @Generated
     public static final HiveAuthenticationType USERNAME_AND_PASSWORD = fromString("UsernameAndPassword");
 
     /**
      * Static value WindowsAzureHDInsightService for HiveAuthenticationType.
      */
+    @Generated
     public static final HiveAuthenticationType WINDOWS_AZURE_HDINSIGHT_SERVICE
         = fromString("WindowsAzureHDInsightService");
 
@@ -37,6 +42,7 @@ public final class HiveAuthenticationType extends ExpandableStringEnum<HiveAuthe
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public HiveAuthenticationType() {
     }
@@ -47,6 +53,7 @@ public final class HiveAuthenticationType extends ExpandableStringEnum<HiveAuthe
      * @param name a name to look for.
      * @return the corresponding HiveAuthenticationType.
      */
+    @Generated
     public static HiveAuthenticationType fromString(String name) {
         return fromString(name, HiveAuthenticationType.class);
     }
@@ -56,6 +63,7 @@ public final class HiveAuthenticationType extends ExpandableStringEnum<HiveAuthe
      * 
      * @return known HiveAuthenticationType values.
      */
+    @Generated
     public static Collection<HiveAuthenticationType> values() {
         return values(HiveAuthenticationType.class);
     }

@@ -22,6 +22,10 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
@@ -32,13 +36,15 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in Runs.
+ * Initializes a new instance of the Runs type.
  */
 public final class RunsImpl {
     /**
@@ -47,19 +53,25 @@ public final class RunsImpl {
     private final RunsService service;
 
     /**
-     * The service client containing this operation class.
+     * Project endpoint in the form of:
+     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
      */
-    private final PersistentAgentsClientImpl client;
+    private final String endpoint;
 
     /**
-     * Initializes an instance of RunsImpl.
+     * Gets Project endpoint in the form of:
+     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
      * 
-     * @param client the instance of the service client containing this operation class.
+     * @return the endpoint value.
      */
-    RunsImpl(PersistentAgentsClientImpl client) {
-        this.service = RestProxy.create(RunsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
+    public String getEndpoint() {
+        return this.endpoint;
     }
+
+    /**
+     * Service version.
+     */
+    private final PersistentAgentsServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
@@ -67,15 +79,84 @@ public final class RunsImpl {
      * @return the serviceVersion value.
      */
     public PersistentAgentsServiceVersion getServiceVersion() {
-        return client.getServiceVersion();
+        return this.serviceVersion;
     }
 
     /**
-     * The interface defining all the services for PersistentAgentsClientRuns to be used by the proxy service to perform
-     * REST calls.
+     * The HTTP pipeline to send requests through.
+     */
+    private final HttpPipeline httpPipeline;
+
+    /**
+     * Gets The HTTP pipeline to send requests through.
+     * 
+     * @return the httpPipeline value.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return this.httpPipeline;
+    }
+
+    /**
+     * The serializer to serialize an object into a string.
+     */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     * 
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
+    /**
+     * Initializes an instance of Runs client.
+     * 
+     * @param endpoint Project endpoint in the form of:
+     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
+     * @param serviceVersion Service version.
+     */
+    public RunsImpl(String endpoint, PersistentAgentsServiceVersion serviceVersion) {
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
+    }
+
+    /**
+     * Initializes an instance of Runs client.
+     * 
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param endpoint Project endpoint in the form of:
+     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
+     * @param serviceVersion Service version.
+     */
+    public RunsImpl(HttpPipeline httpPipeline, String endpoint, PersistentAgentsServiceVersion serviceVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
+    }
+
+    /**
+     * Initializes an instance of Runs client.
+     * 
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param endpoint Project endpoint in the form of:
+     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
+     * @param serviceVersion Service version.
+     */
+    public RunsImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
+        PersistentAgentsServiceVersion serviceVersion) {
+        this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
+        this.endpoint = endpoint;
+        this.serviceVersion = serviceVersion;
+        this.service = RestProxy.create(RunsService.class, this.httpPipeline, this.getSerializerAdapter());
+    }
+
+    /**
+     * The interface defining all the services for Runs to be used by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PersistentAgentsClientRuns")
+    @ServiceInterface(name = "Runs")
     public interface RunsService {
         @Post("/threads/{threadId}/runs")
         @ExpectedResponses({ 200 })
@@ -435,8 +516,8 @@ public final class RunsImpl {
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.createRun(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+        return FluxUtil
+            .withContext(context -> service.createRun(this.getEndpoint(), this.getServiceVersion().getVersion(),
                 threadId, contentType, accept, createRunRequest, requestOptions, context));
     }
 
@@ -616,8 +697,8 @@ public final class RunsImpl {
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createRunSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), threadId,
-            contentType, accept, createRunRequest, requestOptions, Context.NONE);
+        return service.createRunSync(this.getEndpoint(), this.getServiceVersion().getVersion(), threadId, contentType,
+            accept, createRunRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -748,8 +829,8 @@ public final class RunsImpl {
     private Mono<PagedResponse<BinaryData>> listRunsSinglePageAsync(String threadId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listRuns(this.client.getEndpoint(), threadId,
-                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .withContext(context -> service.listRuns(this.getEndpoint(), threadId,
+                this.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
     }
@@ -1008,8 +1089,8 @@ public final class RunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listRunsSinglePage(String threadId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listRunsSync(this.client.getEndpoint(), threadId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listRunsSync(this.getEndpoint(), threadId,
+            this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
     }
@@ -1254,8 +1335,8 @@ public final class RunsImpl {
     public Mono<Response<BinaryData>> getRunWithResponseAsync(String threadId, String runId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getRun(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), threadId, runId, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getRun(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            threadId, runId, accept, requestOptions, context));
     }
 
     /**
@@ -1368,8 +1449,8 @@ public final class RunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getRunWithResponse(String threadId, String runId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getRunSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), threadId,
-            runId, accept, requestOptions, Context.NONE);
+        return service.getRunSync(this.getEndpoint(), this.getServiceVersion().getVersion(), threadId, runId, accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -1498,8 +1579,8 @@ public final class RunsImpl {
         BinaryData updateRunRequest, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.updateRun(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+        return FluxUtil
+            .withContext(context -> service.updateRun(this.getEndpoint(), this.getServiceVersion().getVersion(),
                 threadId, runId, contentType, accept, updateRunRequest, requestOptions, context));
     }
 
@@ -1628,8 +1709,8 @@ public final class RunsImpl {
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateRunSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), threadId,
-            runId, contentType, accept, updateRunRequest, requestOptions, Context.NONE);
+        return service.updateRunSync(this.getEndpoint(), this.getServiceVersion().getVersion(), threadId, runId,
+            contentType, accept, updateRunRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -1762,9 +1843,9 @@ public final class RunsImpl {
         BinaryData submitToolOutputsToRunRequest, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.submitToolOutputsToRun(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), threadId, runId, contentType, accept,
-            submitToolOutputsToRunRequest, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.submitToolOutputsToRun(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                threadId, runId, contentType, accept, submitToolOutputsToRunRequest, requestOptions, context));
     }
 
     /**
@@ -1896,9 +1977,8 @@ public final class RunsImpl {
         BinaryData submitToolOutputsToRunRequest, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.submitToolOutputsToRunSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), threadId, runId, contentType, accept,
-            submitToolOutputsToRunRequest, requestOptions, Context.NONE);
+        return service.submitToolOutputsToRunSync(this.getEndpoint(), this.getServiceVersion().getVersion(), threadId,
+            runId, contentType, accept, submitToolOutputsToRunRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -2013,8 +2093,8 @@ public final class RunsImpl {
     public Mono<Response<BinaryData>> cancelRunWithResponseAsync(String threadId, String runId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.cancelRun(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), threadId, runId, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.cancelRun(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), threadId, runId, accept, requestOptions, context));
     }
 
     /**
@@ -2127,8 +2207,8 @@ public final class RunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> cancelRunWithResponse(String threadId, String runId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.cancelRunSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), threadId,
-            runId, accept, requestOptions, Context.NONE);
+        return service.cancelRunSync(this.getEndpoint(), this.getServiceVersion().getVersion(), threadId, runId, accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -2205,8 +2285,8 @@ public final class RunsImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listRunSteps(this.client.getEndpoint(), threadId, runId,
-                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .withContext(context -> service.listRunSteps(this.getEndpoint(), threadId, runId,
+                this.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
     }
@@ -2356,8 +2436,8 @@ public final class RunsImpl {
     private PagedResponse<BinaryData> listRunStepsSinglePage(String threadId, String runId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listRunStepsSync(this.client.getEndpoint(), threadId, runId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listRunStepsSync(this.getEndpoint(), threadId, runId,
+            this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
     }
@@ -2498,8 +2578,8 @@ public final class RunsImpl {
     public Mono<Response<BinaryData>> getRunStepWithResponseAsync(String threadId, String runId, String stepId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getRunStep(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), threadId, runId, stepId, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getRunStep(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), threadId, runId, stepId, accept, requestOptions, context));
     }
 
     /**
@@ -2564,8 +2644,8 @@ public final class RunsImpl {
     public Response<BinaryData> getRunStepWithResponse(String threadId, String runId, String stepId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getRunStepSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), threadId,
-            runId, stepId, accept, requestOptions, Context.NONE);
+        return service.getRunStepSync(this.getEndpoint(), this.getServiceVersion().getVersion(), threadId, runId,
+            stepId, accept, requestOptions, Context.NONE);
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

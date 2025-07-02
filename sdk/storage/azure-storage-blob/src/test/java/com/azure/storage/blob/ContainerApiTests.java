@@ -59,7 +59,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayInputStream;
 import java.net.URL;
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Base64;
@@ -1070,40 +1069,6 @@ public class ContainerApiTests extends BlobTestBase {
         assertThrows(BlobStorageException.class, () -> cc.listBlobs().iterator().hasNext());
     }
 
-    @Test
-    public void listBlobsFlatWithTimeoutStillBackedByPagedStream() {
-        int numBlobs = 5;
-        int pageResults = 3;
-
-        for (int i = 0; i < numBlobs; i++) {
-            BlockBlobClient blob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
-            blob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
-        }
-
-        // when: "Consume results by page, then still have paging functionality"
-        assertDoesNotThrow(
-            () -> cc.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageResults), Duration.ofSeconds(10))
-                .streamByPage()
-                .count());
-    }
-
-    @Test
-    public void listBlobsHierWithTimeoutStillBackedByPagedStream() {
-        int numBlobs = 5;
-        int pageResults = 3;
-
-        for (int i = 0; i < numBlobs; i++) {
-            BlockBlobClient blob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
-            blob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
-        }
-
-        // when: "Consume results by page, then still have paging functionality"
-        assertDoesNotThrow(() -> cc
-            .listBlobsByHierarchy("/", new ListBlobsOptions().setMaxResultsPerPage(pageResults), Duration.ofSeconds(10))
-            .streamByPage()
-            .count());
-    }
-
     /*
     This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
@@ -1654,28 +1619,6 @@ public class ContainerApiTests extends BlobTestBase {
     @Test
     public void findBlobsError() {
         assertThrows(BlobStorageException.class, () -> cc.findBlobsByTags("garbageTag").streamByPage().count());
-    }
-
-    @SuppressWarnings("deprecation")
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-04-10")
-    @Test
-    public void findBlobsWithTimeoutStillBackedByPagedStream() {
-        int numBlobs = 5;
-        int pageResults = 3;
-        Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
-
-        for (int i = 0; i < numBlobs; i++) {
-            cc.getBlobClient(generateBlobName())
-                .uploadWithResponse(
-                    new BlobParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSize())
-                        .setTags(tags),
-                    null, null);
-        }
-
-        // when: "Consume results by page, still have paging functionality"
-        assertDoesNotThrow(() -> cc.findBlobsByTags(
-            new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(pageResults),
-            Duration.ofSeconds(10), Context.NONE).streamByPage().count());
     }
 
     @ParameterizedTest

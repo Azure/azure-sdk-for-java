@@ -27,11 +27,12 @@ public class AgentEnterpriseFileSearchAsyncSample {
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build());
 
-        PersistentAgentsAdministrationAsyncClient agentsAsyncClient = clientBuilder.buildPersistentAgentsAdministrationAsyncClient();
-        ThreadsAsyncClient threadsAsyncClient = clientBuilder.buildThreadsAsyncClient();
-        MessagesAsyncClient messagesAsyncClient = clientBuilder.buildMessagesAsyncClient();
-        RunsAsyncClient runsAsyncClient = clientBuilder.buildRunsAsyncClient();
-        VectorStoresAsyncClient vectorStoresAsyncClient = clientBuilder.buildVectorStoresAsyncClient();
+        PersistentAgentsAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
+        PersistentAgentsAdministrationAsyncClient administrationAsyncClient = agentsAsyncClient.getPersistentAgentsAdministrationAsyncClient();
+        ThreadsAsyncClient threadsAsyncClient = agentsAsyncClient.getThreadsAsyncClient();
+        MessagesAsyncClient messagesAsyncClient = agentsAsyncClient.getMessagesAsyncClient();
+        RunsAsyncClient runsAsyncClient = agentsAsyncClient.getRunsAsyncClient();
+        VectorStoresAsyncClient vectorStoresAsyncClient = agentsAsyncClient.getVectorStoresAsyncClient();
 
         // Track resources for cleanup
         AtomicReference<String> agentId = new AtomicReference<>();
@@ -69,7 +70,7 @@ public class AgentEnterpriseFileSearchAsyncSample {
                     .setToolResources(new ToolResources().setFileSearch(fileSearchToolResource));
 
                 // Create the agent
-                return agentsAsyncClient.createAgent(createAgentOptions);
+                return administrationAsyncClient.createAgent(createAgentOptions);
             })
             .flatMap(agent -> {
                 agentId.set(agent.getId());
@@ -116,7 +117,7 @@ public class AgentEnterpriseFileSearchAsyncSample {
 
                 // Delete agent
                 if (agentId.get() != null) {
-                    agentsAsyncClient.deleteAgent(agentId.get()).block();
+                    administrationAsyncClient.deleteAgent(agentId.get()).block();
                     System.out.println("Deleted agent: " + agentId.get());
                 }
 

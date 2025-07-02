@@ -59,7 +59,7 @@ public final class CommunicationIdentitiesImpl {
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "CommunicationIdentit")
+    @ServiceInterface(name = "CommunicationIdentityClientCommunicationIdentities")
     public interface CommunicationIdentitiesService {
         @Post("/identities")
         @ExpectedResponses({ 201 })

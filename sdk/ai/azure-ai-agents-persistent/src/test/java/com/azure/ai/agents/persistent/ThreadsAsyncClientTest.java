@@ -20,15 +20,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ThreadsAsyncClientTest extends ClientTestBase {
 
     private PersistentAgentsClientBuilder clientBuilder;
-    private PersistentAgentsAdministrationAsyncClient agentsAsyncClient;
+    private PersistentAgentsAdministrationAsyncClient administrationAsyncClient;
     private ThreadsAsyncClient threadsAsyncClient;
     private PersistentAgent agent;
     private PersistentAgentThread thread;
 
     private void setup(HttpClient httpClient) {
         clientBuilder = getClientBuilder(httpClient);
-        agentsAsyncClient = clientBuilder.buildPersistentAgentsAdministrationAsyncClient();
-        threadsAsyncClient = clientBuilder.buildThreadsAsyncClient();
+        PersistentAgentsAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
+        administrationAsyncClient = agentsAsyncClient.getPersistentAgentsAdministrationAsyncClient();
+        threadsAsyncClient = agentsAsyncClient.getThreadsAsyncClient();
         createAgent();
     }
 
@@ -36,7 +37,7 @@ public class ThreadsAsyncClientTest extends ClientTestBase {
         CreateAgentOptions options
             = new CreateAgentOptions("gpt-4o-mini").setName("TestAgent").setInstructions("You are a helpful agent");
 
-        agent = agentsAsyncClient.createAgent(options).block();
+        agent = administrationAsyncClient.createAgent(options).block();
         assertNotNull(agent, "Persistent agent should not be null");
     }
 
@@ -127,7 +128,7 @@ public class ThreadsAsyncClientTest extends ClientTestBase {
             }
         }
         if (agent != null) {
-            agentsAsyncClient.deleteAgent(agent.getId()).block();
+            administrationAsyncClient.deleteAgent(agent.getId()).block();
         }
     }
 }

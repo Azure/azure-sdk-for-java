@@ -1,6 +1,5 @@
 package com.azure.openrewrite.core.credential;
 
-import com.azure.openrewrite.util.ConfiguredParserJavaTemplateBuilder;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.Recipe;
 import org.openrewrite.java.JavaIsoVisitor;
@@ -8,6 +7,8 @@ import org.openrewrite.java.JavaTemplate;
 import org.openrewrite.java.MethodMatcher;
 import org.openrewrite.java.tree.J;
 import org.openrewrite.java.tree.Space;
+
+import com.azure.openrewrite.util.ConfiguredParserJavaTemplateBuilder;
 
 /**
  * A custom OpenRewrite recipe to migrate the use of AccessToken.

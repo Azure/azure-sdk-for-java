@@ -6,20 +6,38 @@ package io.clientcore.http.netty4.implementation;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;
 import io.clientcore.core.instrumentation.logging.LoggingEvent;
 import io.clientcore.core.models.CoreException;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.models.binarydata.FileBinaryData;
+import io.clientcore.core.models.binarydata.InputStreamBinaryData;
 import io.clientcore.core.utils.CoreUtils;
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelPipeline;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+import io.netty.handler.codec.http.DefaultFullHttpRequest;
+import io.netty.handler.codec.http.DefaultHttpRequest;
+import io.netty.handler.codec.http.HttpChunkedInput;
 import io.netty.handler.codec.http.HttpClientCodec;
 import io.netty.handler.codec.http.HttpDecoderConfig;
+import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeadersFactory;
+import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http.HttpVersion;
+import io.netty.handler.stream.ChunkedInput;
+import io.netty.handler.stream.ChunkedNioFile;
+import io.netty.handler.stream.ChunkedStream;
+import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.util.Version;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.channels.FileChannel;
+import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -28,6 +46,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
+
+import static io.netty.handler.codec.http.DefaultHttpHeadersFactory.trailersFactory;
 
 /**
  * Helper class containing utility methods.
@@ -50,15 +70,9 @@ public final class Netty4Utility {
         .asList("netty-transport-native-unix-common", "netty-transport-native-epoll", "netty-transport-native-kqueue");
 
     /**
-     * Name given to the {@link Netty4ProgressAndTimeoutHandler} used in the {@link ChannelPipeline} created by
-     * {@code NettyHttpClient}.
-     */
-    public static final String PROGRESS_AND_TIMEOUT_HANDLER_NAME = "Netty4-Progress-And-Timeout-Handler";
-
-    /**
      * Converts Netty HttpHeaders to ClientCore HttpHeaders.
      * <p>
-     * Most Netty requests should store headers in {@link WrappedHttpHeaders}, but if that doesn't happen this method
+     * Most Netty requests should store headers in {@link WrappedHttp11Headers}, but if that doesn't happen this method
      * can be used to convert the Netty headers to ClientCore headers.
      *
      * @param nettyHeaders Netty HttpHeaders.
@@ -84,7 +98,7 @@ public final class Netty4Utility {
      *
      * @param latch The latch to wait for.
      */
-    static void awaitLatch(CountDownLatch latch) {
+    public static void awaitLatch(CountDownLatch latch) {
         try {
             latch.await();
         } catch (InterruptedException e) {
@@ -119,7 +133,7 @@ public final class Netty4Utility {
 
     /**
      * Creates an {@link HttpClientCodec} that uses a custom {@link HttpDecoderConfig} that injects
-     * {@link WrappedHttpHeaders} functionality.
+     * {@link WrappedHttp11Headers} functionality.
      *
      * @return A new {@link HttpClientCodec} instance.
      */
@@ -131,20 +145,20 @@ public final class Netty4Utility {
     }
 
     /**
-     * Custom implementation of {@link HttpHeadersFactory} that creates {@link WrappedHttpHeaders}.
+     * Custom implementation of {@link HttpHeadersFactory} that creates {@link WrappedHttp11Headers}.
      * <p>
-     * Using {@link WrappedHttpHeaders} is a performance optimization to remove converting Netty's HttpHeaders to
+     * Using {@link WrappedHttp11Headers} is a performance optimization to remove converting Netty's HttpHeaders to
      * ClientCore's HttpHeaders and vice versa.
      */
     private static final class WrappedHttpHeadersFactory implements HttpHeadersFactory {
         @Override
         public io.netty.handler.codec.http.HttpHeaders newHeaders() {
-            return new WrappedHttpHeaders(new io.clientcore.core.http.models.HttpHeaders());
+            return new WrappedHttp11Headers(new io.clientcore.core.http.models.HttpHeaders());
         }
 
         @Override
         public io.netty.handler.codec.http.HttpHeaders newEmptyHeaders() {
-            return new WrappedHttpHeaders(new io.clientcore.core.http.models.HttpHeaders());
+            return new WrappedHttp11Headers(new io.clientcore.core.http.models.HttpHeaders());
         }
     }
 
@@ -153,15 +167,15 @@ public final class Netty4Utility {
      * {@link io.netty.handler.codec.http.HttpHeaders}.
      * <p>
      * This method inspects the Netty {@link io.netty.handler.codec.http.HttpHeaders} for being an instance of
-     * {@link WrappedHttpHeaders}. If it is not an instanceof it will use the {@code nettyHeaderName} to retrieve all
+     * {@link WrappedHttp11Headers}. If it is not an instanceof it will use the {@code nettyHeaderName} to retrieve all
      * values. If it is an instanceof it will use the {@code clientCoreHeaderName}.
      * <p>
      * This method is an attempt to optimize retrieval as Netty and ClientCore use different structures for managing
      * headers, where in many cases lookup is faster for ClientCore headers.
      *
      * @param headers The Netty {@link io.netty.handler.codec.http.HttpHeaders} to retrieve all header values from.
-     * @param nettyHeaderName The header name to use when retrieving from a non-{@link WrappedHttpHeaders}.
-     * @param clientCoreHeaderName The header name to use when retrieving from a {@link WrappedHttpHeaders}.
+     * @param nettyHeaderName The header name to use when retrieving from a non-{@link WrappedHttp11Headers}.
+     * @param clientCoreHeaderName The header name to use when retrieving from a {@link WrappedHttp11Headers}.
      * @return The value for the header name, or null if the header didn't exist in the headers.
      */
     public static String get(io.netty.handler.codec.http.HttpHeaders headers, CharSequence nettyHeaderName,
@@ -175,21 +189,21 @@ public final class Netty4Utility {
      * {@link io.netty.handler.codec.http.HttpHeaders}.
      * <p>
      * This method inspects the Netty {@link io.netty.handler.codec.http.HttpHeaders} for being an instance of
-     * {@link WrappedHttpHeaders}. If it is not an instanceof it will use the {@code nettyHeaderName} to retrieve all
+     * {@link WrappedHttp11Headers}. If it is not an instanceof it will use the {@code nettyHeaderName} to retrieve all
      * values. If it is an instanceof it will use the {@code clientCoreHeaderName}.
      * <p>
      * This method is an attempt to optimize retrieval as Netty and ClientCore use different structures for managing
      * headers, where in many cases lookup is faster for ClientCore headers.
      *
      * @param headers The Netty {@link io.netty.handler.codec.http.HttpHeaders} to retrieve all header values from.
-     * @param nettyHeaderName The header name to use when retrieving from a non-{@link WrappedHttpHeaders}.
-     * @param clientCoreHeaderName The header name to use when retrieving from a {@link WrappedHttpHeaders}.
+     * @param nettyHeaderName The header name to use when retrieving from a non-{@link WrappedHttp11Headers}.
+     * @param clientCoreHeaderName The header name to use when retrieving from a {@link WrappedHttp11Headers}.
      * @return The list of values for the header name, or an empty list if the header didn't exist in the headers.
      */
     public static List<String> getAll(io.netty.handler.codec.http.HttpHeaders headers, CharSequence nettyHeaderName,
         HttpHeaderName clientCoreHeaderName) {
-        if (headers instanceof WrappedHttpHeaders) {
-            HttpHeader header = ((WrappedHttpHeaders) headers).getCoreHeaders().get(clientCoreHeaderName);
+        if (headers instanceof WrappedHttp11Headers) {
+            HttpHeader header = ((WrappedHttp11Headers) headers).getCoreHeaders().get(clientCoreHeaderName);
             return (header == null) ? Collections.emptyList() : header.getValues();
         } else {
             return headers.getAll(nettyHeaderName);
@@ -218,6 +232,80 @@ public final class Netty4Utility {
                 return existing;
             }
         });
+    }
+
+    /**
+     * Sends an HTTP/1.1 request using the provided {@link Channel}.
+     *
+     * @param request The HTTP request to send.
+     * @param channel The Channel to send the request.
+     * @param errorReference An AtomicReference tracking exceptions seen during the request lifecycle.
+     * @return A ChannelFuture that will complete once the request has been sent.
+     */
+    public static ChannelFuture sendHttp11Request(HttpRequest request, Channel channel,
+        AtomicReference<Throwable> errorReference) {
+        HttpMethod nettyMethod = HttpMethod.valueOf(request.getHttpMethod().toString());
+        String uri = request.getUri().toString();
+        WrappedHttp11Headers wrappedHttp11Headers = new WrappedHttp11Headers(request.getHeaders());
+
+        // TODO (alzimmer): This will mutate the underlying ClientCore HttpHeaders. Will need to think about this design
+        //  more once it's closer to completion.
+        wrappedHttp11Headers.getCoreHeaders().set(HttpHeaderName.HOST, request.getUri().getHost());
+
+        BinaryData requestBody = request.getBody();
+        if (requestBody instanceof FileBinaryData) {
+            FileBinaryData fileBinaryData = (FileBinaryData) requestBody;
+            try {
+                return sendChunkedHttp11(channel,
+                    new ChunkedNioFile(FileChannel.open(fileBinaryData.getFile(), StandardOpenOption.READ),
+                        fileBinaryData.getPosition(), fileBinaryData.getLength(), 8192),
+                    new DefaultHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, wrappedHttp11Headers),
+                    errorReference);
+            } catch (IOException ex) {
+                return channel.newFailedFuture(ex);
+            }
+        } else if (requestBody instanceof InputStreamBinaryData) {
+            return sendChunkedHttp11(channel, new ChunkedStream(requestBody.toStream()),
+                new DefaultHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, wrappedHttp11Headers), errorReference);
+        } else {
+            ByteBuf body = Unpooled.EMPTY_BUFFER;
+            if (requestBody != null && requestBody != BinaryData.empty()) {
+                // Longer term, see if there is a way to have BinaryData act as the ByteBuf body to further eliminate
+                // copying of byte[]s.
+                body = Unpooled.wrappedBuffer(requestBody.toBytes());
+            }
+            if (body.readableBytes() > 0) {
+                // TODO (alzimmer): Should we be setting Content-Length here again? Shouldn't this be handled externally
+                //  by the creator of the HttpRequest?
+                wrappedHttp11Headers.getCoreHeaders()
+                    .set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(body.readableBytes()));
+            }
+
+            Throwable error = errorReference.get();
+            if (error != null) {
+                return channel.newFailedFuture(error);
+            }
+
+            return channel.writeAndFlush(new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, body,
+                wrappedHttp11Headers, trailersFactory().newHeaders()));
+        }
+    }
+
+    private static ChannelFuture sendChunkedHttp11(Channel channel, ChunkedInput<ByteBuf> chunkedInput,
+        io.netty.handler.codec.http.HttpRequest initialLineAndHeaders, AtomicReference<Throwable> errorReference) {
+        if (channel.pipeline().get(Netty4HandlerNames.CHUNKED_WRITER) == null) {
+            // Add the ChunkedWriteHandler which will handle sending the chunkedInput.
+            channel.pipeline()
+                .addAfter(Netty4HandlerNames.HTTP_CODEC, Netty4HandlerNames.CHUNKED_WRITER, new ChunkedWriteHandler());
+        }
+
+        Throwable error = errorReference.get();
+        if (error != null) {
+            return channel.newFailedFuture(error);
+        }
+
+        channel.write(initialLineAndHeaders);
+        return channel.writeAndFlush(new HttpChunkedInput(chunkedInput));
     }
 
     /**
@@ -306,6 +394,47 @@ public final class Netty4Utility {
                 + "the versions used by http-netty. If your application runs without issue this message can be "
                 + "ignored, otherwise please align the Netty versions used in your application. For more information, "
                 + "see https://aka.ms/azsdk/java/dependency/troubleshoot.");
+        }
+    }
+
+    /**
+     * Helper method that hot paths some well-known AsciiString HttpHeaderNames that are known to be used by Netty
+     * internally.
+     *
+     * @param asciiString The CharSequence to check for a known HttpHeaderName.
+     * @return The corresponding HttpHeaderName if it matches a known one, otherwise a new HttpHeaderName created from
+     * the given CharSequence.
+     */
+    @SuppressWarnings("deprecation")
+    public static HttpHeaderName fromPossibleAsciiString(CharSequence asciiString) {
+        if (HttpHeaderNames.ACCEPT_ENCODING == asciiString) {
+            return HttpHeaderName.ACCEPT_ENCODING;
+        } else if (HttpHeaderNames.CONNECTION == asciiString) {
+            return HttpHeaderName.CONNECTION;
+        } else if (HttpHeaderNames.CONTENT_ENCODING == asciiString) {
+            return HttpHeaderName.CONTENT_ENCODING;
+        } else if (HttpHeaderNames.CONTENT_LENGTH == asciiString) {
+            return HttpHeaderName.CONTENT_LENGTH;
+        } else if (HttpHeaderNames.CONTENT_TYPE == asciiString) {
+            return HttpHeaderName.CONTENT_TYPE;
+        } else if (HttpHeaderNames.COOKIE == asciiString) {
+            return HttpHeaderName.COOKIE;
+        } else if (HttpHeaderNames.EXPECT == asciiString) {
+            return HttpHeaderName.EXPECT;
+        } else if (HttpHeaderNames.HOST == asciiString) {
+            return HttpHeaderName.HOST;
+        } else if (HttpHeaderNames.KEEP_ALIVE == asciiString) {
+            return HttpHeaderName.KEEP_ALIVE;
+        } else if (HttpHeaderNames.PROXY_AUTHORIZATION == asciiString) {
+            return HttpHeaderName.PROXY_AUTHORIZATION;
+        } else if (HttpHeaderNames.TE == asciiString) {
+            return HttpHeaderName.TE;
+        } else if (HttpHeaderNames.TRAILER == asciiString) {
+            return HttpHeaderName.TRAILER;
+        } else if (HttpHeaderNames.TRANSFER_ENCODING == asciiString) {
+            return HttpHeaderName.TRANSFER_ENCODING;
+        } else {
+            return HttpHeaderName.fromString(asciiString.toString());
         }
     }
 

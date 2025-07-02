@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,16 +22,19 @@ public class ScheduleTrigger extends MultiplePipelineTrigger {
     /*
      * Trigger type.
      */
+    @Generated
     private String type = "ScheduleTrigger";
 
     /*
      * Recurrence schedule configuration.
      */
+    @Generated
     private ScheduleTriggerRecurrence recurrence;
 
     /**
      * Creates an instance of ScheduleTrigger class.
      */
+    @Generated
     public ScheduleTrigger() {
     }
 
@@ -39,6 +43,7 @@ public class ScheduleTrigger extends MultiplePipelineTrigger {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -49,6 +54,7 @@ public class ScheduleTrigger extends MultiplePipelineTrigger {
      * 
      * @return the recurrence value.
      */
+    @Generated
     public ScheduleTriggerRecurrence getRecurrence() {
         return this.recurrence;
     }
@@ -59,6 +65,7 @@ public class ScheduleTrigger extends MultiplePipelineTrigger {
      * @param recurrence the recurrence value to set.
      * @return the ScheduleTrigger object itself.
      */
+    @Generated
     public ScheduleTrigger setRecurrence(ScheduleTriggerRecurrence recurrence) {
         this.recurrence = recurrence;
         return this;
@@ -67,6 +74,7 @@ public class ScheduleTrigger extends MultiplePipelineTrigger {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ScheduleTrigger setPipelines(List<TriggerPipelineReference> pipelines) {
         super.setPipelines(pipelines);
@@ -76,6 +84,7 @@ public class ScheduleTrigger extends MultiplePipelineTrigger {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ScheduleTrigger setDescription(String description) {
         super.setDescription(description);
@@ -85,6 +94,7 @@ public class ScheduleTrigger extends MultiplePipelineTrigger {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ScheduleTrigger setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -94,6 +104,7 @@ public class ScheduleTrigger extends MultiplePipelineTrigger {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -123,6 +134,7 @@ public class ScheduleTrigger extends MultiplePipelineTrigger {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ScheduleTrigger.
      */
+    @Generated
     public static ScheduleTrigger fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ScheduleTrigger deserializedScheduleTrigger = new ScheduleTrigger();

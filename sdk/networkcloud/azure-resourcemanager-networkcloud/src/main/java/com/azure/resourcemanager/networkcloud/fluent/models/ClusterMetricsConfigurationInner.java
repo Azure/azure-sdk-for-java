@@ -24,6 +24,11 @@ import java.util.Map;
 @Fluent
 public final class ClusterMetricsConfigurationInner extends Resource {
     /*
+     * Resource ETag.
+     */
+    private String etag;
+
+    /*
      * The extended location of the cluster associated with the resource.
      */
     private ExtendedLocation extendedLocation;
@@ -57,6 +62,15 @@ public final class ClusterMetricsConfigurationInner extends Resource {
      * Creates an instance of ClusterMetricsConfigurationInner class.
      */
     public ClusterMetricsConfigurationInner() {
+    }
+
+    /**
+     * Get the etag property: Resource ETag.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -300,6 +314,8 @@ public final class ClusterMetricsConfigurationInner extends Resource {
                 } else if ("properties".equals(fieldName)) {
                     deserializedClusterMetricsConfigurationInner.innerProperties
                         = ClusterMetricsConfigurationProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedClusterMetricsConfigurationInner.etag = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
                     deserializedClusterMetricsConfigurationInner.systemData = SystemData.fromJson(reader);
                 } else {

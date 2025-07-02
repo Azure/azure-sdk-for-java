@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,6 +21,7 @@ public class WebLinkedServiceTypeProperties implements JsonSerializable<WebLinke
     /*
      * Type of authentication used to connect to the web table source.
      */
+    @Generated
     private WebAuthenticationType authenticationType
         = WebAuthenticationType.fromString("WebLinkedServiceTypeProperties");
 
@@ -27,11 +29,13 @@ public class WebLinkedServiceTypeProperties implements JsonSerializable<WebLinke
      * The URL of the web service endpoint, e.g. http://www.microsoft.com . Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object url;
 
     /**
      * Creates an instance of WebLinkedServiceTypeProperties class.
      */
+    @Generated
     public WebLinkedServiceTypeProperties() {
     }
 
@@ -40,6 +44,7 @@ public class WebLinkedServiceTypeProperties implements JsonSerializable<WebLinke
      * 
      * @return the authenticationType value.
      */
+    @Generated
     public WebAuthenticationType getAuthenticationType() {
         return this.authenticationType;
     }
@@ -50,6 +55,7 @@ public class WebLinkedServiceTypeProperties implements JsonSerializable<WebLinke
      * 
      * @return the url value.
      */
+    @Generated
     public Object getUrl() {
         return this.url;
     }
@@ -61,6 +67,7 @@ public class WebLinkedServiceTypeProperties implements JsonSerializable<WebLinke
      * @param url the url value to set.
      * @return the WebLinkedServiceTypeProperties object itself.
      */
+    @Generated
     public WebLinkedServiceTypeProperties setUrl(Object url) {
         this.url = url;
         return this;
@@ -69,6 +76,7 @@ public class WebLinkedServiceTypeProperties implements JsonSerializable<WebLinke
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -87,6 +95,7 @@ public class WebLinkedServiceTypeProperties implements JsonSerializable<WebLinke
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WebLinkedServiceTypeProperties.
      */
+    @Generated
     public static WebLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -116,6 +125,7 @@ public class WebLinkedServiceTypeProperties implements JsonSerializable<WebLinke
         });
     }
 
+    @Generated
     static WebLinkedServiceTypeProperties fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WebLinkedServiceTypeProperties deserializedWebLinkedServiceTypeProperties

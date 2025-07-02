@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.6.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,25 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.5.0 (2025-06-19)
+
+- Azure Resource Manager RecoveryServices client library for Java. This package contains Microsoft Azure SDK for RecoveryServices Management SDK. Recovery Services Client. Package tag package-2025-02-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.State` was added
+
+* `models.SourceScanConfiguration` was added
+
+* `models.AssociatedIdentity` was added
+
+* `models.IdentityType` was added
+
+#### `models.SecuritySettings` was modified
+
+* `sourceScanConfiguration()` was added
+* `withSourceScanConfiguration(models.SourceScanConfiguration)` was added
 
 ## 1.4.0 (2024-12-23)
 

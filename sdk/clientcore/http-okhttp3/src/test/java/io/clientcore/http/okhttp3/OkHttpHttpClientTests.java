@@ -4,6 +4,7 @@
 package io.clientcore.http.okhttp3;
 
 import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.http.client.HttpProtocolVersion;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
@@ -12,23 +13,18 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
-import io.clientcore.core.shared.InsecureTrustManager;
 import io.clientcore.core.shared.LocalTestServer;
-import org.conscrypt.Conscrypt;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.X509TrustManager;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -55,7 +51,7 @@ public class OkHttpHttpClientTests {
 
     @BeforeAll
     public static void startTestServer() {
-        server = new LocalTestServer((req, resp, requestBody) -> {
+        server = new LocalTestServer(HttpProtocolVersion.HTTP_1_1, false, (req, resp, requestBody) -> {
             String path = req.getServletPath();
             boolean get = "GET".equalsIgnoreCase(req.getMethod());
             boolean post = "POST".equalsIgnoreCase(req.getMethod());
@@ -88,7 +84,7 @@ public class OkHttpHttpClientTests {
             } else {
                 throw new ServletException("Unexpected request: " + req.getMethod() + " " + path);
             }
-        }, 20);
+        });
 
         server.start();
     }
@@ -174,36 +170,9 @@ public class OkHttpHttpClientTests {
         }
     }
 
-    @Test
-    public void testCustomSslSocketFactory() throws GeneralSecurityException {
-        SSLContext sslContext = SSLContext.getInstance("TLSv1.2", Conscrypt.newProvider());
-
-        // Initialize the SSL context with a trust manager that trusts all certificates.
-        X509TrustManager[] trustManagers = new X509TrustManager[] { new InsecureTrustManager() };
-        sslContext.init(null, trustManagers, null);
-
-        HttpClient httpClient
-            = new OkHttpHttpClientBuilder().sslSocketFactory(sslContext.getSocketFactory(), trustManagers[0])
-                .hostnameVerifier((hostname, session) -> true)
-                .build();
-
-        try (Response<BinaryData> response
-            = httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(httpsUri(server, "/short")))) {
-            TestUtils.assertArraysEqual(SHORT_BODY, response.getValue().toBytes());
-        }
-    }
-
     static URI uri(LocalTestServer server, String path) {
         try {
-            return new URI(server.getHttpUri() + path);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    static URI httpsUri(LocalTestServer server, String path) {
-        try {
-            return new URI(server.getHttpsUri() + path);
+            return new URI(server.getUri() + path);
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }

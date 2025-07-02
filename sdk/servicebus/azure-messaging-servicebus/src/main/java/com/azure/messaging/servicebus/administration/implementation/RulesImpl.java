@@ -55,7 +55,7 @@ public final class RulesImpl {
      * perform REST calls.
      */
     @Host("https://{endpoint}")
-    @ServiceInterface(name = "ServiceBusManagement")
+    @ServiceInterface(name = "ServiceBusManagementClientRules")
     public interface RulesService {
         @Get("/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}")
         @ExpectedResponses({ 200 })
