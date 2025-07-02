@@ -68,8 +68,6 @@ public final class BlobStorageError implements JsonSerializable<BlobStorageError
             .writeStringField("QueryParameterValue", this.queryParameterValue)
             .writeStringField("Reason", this.reason)
             .writeStringField("ExtendedErrorDetail", this.extendedErrorDetail)
-            .writeStringField("HeaderName", this.headerName)
-            .writeStringField("HeaderValue", this.headerValue)
             .writeEndObject();
     }
 
@@ -126,10 +124,6 @@ public final class BlobStorageError implements JsonSerializable<BlobStorageError
                     deserializedStorageError.reason = reader.getString();
                 } else if ("extendedErrorDetail".equals(fieldName)) {
                     deserializedStorageError.extendedErrorDetail = reader.getString();
-                } else if ("headerName".equals(fieldName)) {
-                    deserializedStorageError.headerName = reader.getString();
-                } else if ("headerValue".equals(fieldName)) {
-                    deserializedStorageError.headerValue = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
