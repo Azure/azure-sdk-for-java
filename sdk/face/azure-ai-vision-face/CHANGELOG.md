@@ -2,7 +2,6 @@
 
 ## 1.0.0-beta.3 (2025-07-11)
 
-### Features Added
 
 ### Breaking Changes
 
