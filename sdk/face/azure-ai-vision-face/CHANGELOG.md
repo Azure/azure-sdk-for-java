@@ -8,7 +8,7 @@
 
 ### Other Changes
 
-## 1.2.0
+## 1.0.0-beta.3
 - Change the default service API version to `v1.2`
 - Liveness API change
   - Unified the `LivenessSession` and removed `CreateLivenessSessionResult`
