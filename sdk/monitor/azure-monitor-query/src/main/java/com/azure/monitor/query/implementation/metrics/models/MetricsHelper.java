@@ -346,7 +346,7 @@ public final class MetricsHelper {
 
         // If we only have duration, calculate absolute start and end times based on current time
         if (timeInterval.getDuration() != null) {
-            OffsetDateTime now = OffsetDateTime.now();
+            OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
             OffsetDateTime startTime = now.minus(timeInterval.getDuration());
             return DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(startTime) + "/" +
                    DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(now);
