@@ -66,7 +66,7 @@ public final class Netty4ChannelBinaryData extends BinaryData {
         }
 
         if (bytes == null) {
-            drainStream();
+            drainStream(true); // Must block to get bytes
             bytes = eagerContent.toByteArray();
             eagerContent = null;
         }
@@ -91,7 +91,8 @@ public final class Netty4ChannelBinaryData extends BinaryData {
     @Override
     public InputStream toStream() {
         if (bytes == null) {
-            return new Netty4ChannelInputStream(eagerContent, channel, isHttp2, this::drainStream);
+            // Pass a non-blocking drain runnable to the stream's onClose handler.
+            return new Netty4ChannelInputStream(eagerContent, channel, isHttp2, () -> drainStream(false));
         } else {
             return new ByteArrayInputStream(bytes);
         }
@@ -179,15 +180,17 @@ public final class Netty4ChannelBinaryData extends BinaryData {
 
     /**
      * Ensures the underlying network stream is fully consumed but does not close the channel,
-     * allowing it to be reused by the connection pool.
+     * allowing it to be reused by the connection pool. This is a non-blocking operation
+     * that initiates the draining process.
      */
     @Override
     public void close() {
-        drainStream();
+        drainStream(false);
     }
 
-    private void drainStream() {
+    private void drainStream(boolean block) {
         if (streamDrained.compareAndSet(false, true)) {
+            // If the handler is already in the pipeline, another drain is in progress.
             if (channel.pipeline().get(Netty4EagerConsumeChannelHandler.class) != null) {
                 return;
             }
@@ -203,14 +206,17 @@ public final class Netty4ChannelBinaryData extends BinaryData {
             channel.config().setAutoRead(true);
 
             channel.eventLoop().execute(channel::read);
-            awaitLatch(latch);
 
-            Throwable exception = handler.channelException();
-            if (exception != null) {
-                if (exception instanceof Error) {
-                    throw (Error) exception;
-                } else {
-                    throw CoreException.from(exception);
+            if (block) {
+                awaitLatch(latch);
+
+                Throwable exception = handler.channelException();
+                if (exception != null) {
+                    if (exception instanceof Error) {
+                        throw (Error) exception;
+                    } else {
+                        throw CoreException.from(exception);
+                    }
                 }
             }
         }

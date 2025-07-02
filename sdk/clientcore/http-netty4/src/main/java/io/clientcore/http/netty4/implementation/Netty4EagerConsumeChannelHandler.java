@@ -62,7 +62,7 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
         } catch (IOException | RuntimeException ex) {
             ReferenceCountUtil.release(msg);
             ctx.fireExceptionCaught(ex);
-            cleanup(ctx);
+            triggerRequestComplete(ctx);
         }
     }
 
@@ -70,7 +70,7 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
     public void channelReadComplete(ChannelHandlerContext ctx) {
         ctx.fireChannelReadComplete();
         if (lastRead) {
-            cleanup(ctx);
+            triggerRequestComplete(ctx);
         }
     }
 
@@ -78,7 +78,7 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         this.exception = cause;
         ctx.fireExceptionCaught(cause);
-        cleanup(ctx);
+        triggerRequestComplete(ctx);
     }
 
     Throwable channelException() {
@@ -88,13 +88,13 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
     // TODO (alzimmer): Are the latch countdowns needed for unregistering and inactivity?
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) {
-        cleanup(ctx);
+        triggerRequestComplete(ctx);
         ctx.fireChannelUnregistered();
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
-        cleanup(ctx);
+        triggerRequestComplete(ctx);
         ctx.fireChannelInactive();
     }
 
@@ -109,11 +109,18 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
         }
     }
 
-    private void cleanup(ChannelHandlerContext ctx) {
-        if (ctx.pipeline().get(Netty4EagerConsumeChannelHandler.class) != null) {
-            ctx.pipeline().remove(this);
+    private void triggerRequestComplete(ChannelHandlerContext ctx) {
+        if (ctx.pipeline().get(Netty4EagerConsumeChannelHandler.class) == null) {
+            return;
         }
 
         latch.countDown();
+
+        Netty4PipelineCleanupHandler cleanupHandler = ctx.pipeline().get(Netty4PipelineCleanupHandler.class);
+        if (cleanupHandler != null) {
+            cleanupHandler.requestComplete(ctx);
+        } else {
+            ctx.pipeline().remove(this);
+        }
     }
 }

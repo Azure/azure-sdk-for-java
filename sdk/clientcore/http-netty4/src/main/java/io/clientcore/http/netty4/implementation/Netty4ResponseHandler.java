@@ -166,12 +166,19 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
             return;
         }
 
-        ctx.pipeline().remove(this);
         ctx.fireChannelReadComplete();
 
         responseReference.set(new ResponseStateInfo(ctx.channel(), complete, statusCode, headers, eagerContent,
             ResponseBodyHandling.getBodyHandling(request, headers), false));
+
         latch.countDown();
+
+        Netty4PipelineCleanupHandler cleanupHandler = ctx.pipeline().get(Netty4PipelineCleanupHandler.class);
+        ctx.pipeline().remove(this);
+
+        if (complete && cleanupHandler != null) {
+            cleanupHandler.requestComplete(ctx);
+        }
     }
 
     @Override
