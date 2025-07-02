@@ -212,9 +212,8 @@ public class ModelHelper {
      * @return The public exception.
      */
     public static DataLakeStorageException mapToDataLakeStorageException(DataLakeStorageExceptionInternal internal) {
-        String code = internal.getValue() == null ? null : internal.getValue().getCode();
         return new DataLakeStorageException(
-            StorageImplUtils.convertStorageExceptionMessage(internal.getMessage(), internal.getResponse(), code, null),
+            StorageImplUtils.convertStorageExceptionMessage(internal.getMessage(), internal.getResponse()),
             internal.getResponse(), internal.getValue());
     }
 
