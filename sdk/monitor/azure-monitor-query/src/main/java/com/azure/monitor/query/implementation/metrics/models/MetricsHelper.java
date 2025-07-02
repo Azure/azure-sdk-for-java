@@ -330,33 +330,46 @@ public final class MetricsHelper {
 
         // If we have both start and end times, use them directly
         if (timeInterval.getStartTime() != null && timeInterval.getEndTime() != null) {
-            return DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(timeInterval.getStartTime()) + "/"
-                + DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(timeInterval.getEndTime());
+            return formatForMetrics(timeInterval.getStartTime()) + "/" + formatForMetrics(timeInterval.getEndTime());
         }
 
         // If we have start time and duration, calculate end time
         if (timeInterval.getStartTime() != null && timeInterval.getDuration() != null) {
-            return DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(timeInterval.getStartTime()) + "/"
-                + DateTimeFormatter.ISO_OFFSET_DATE_TIME
-                    .format(timeInterval.getStartTime().plus(timeInterval.getDuration()));
+            return formatForMetrics(timeInterval.getStartTime()) + "/"
+                + formatForMetrics(timeInterval.getStartTime().plus(timeInterval.getDuration()));
         }
 
         // If we have duration and end time, calculate start time
         if (timeInterval.getDuration() != null && timeInterval.getEndTime() != null) {
-            return DateTimeFormatter.ISO_OFFSET_DATE_TIME
-                .format(timeInterval.getEndTime().minus(timeInterval.getDuration())) + "/"
-                + DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(timeInterval.getEndTime());
+            return formatForMetrics(timeInterval.getEndTime().minus(timeInterval.getDuration())) + "/"
+                + formatForMetrics(timeInterval.getEndTime());
         }
 
         // If we only have duration, calculate absolute start and end times based on current time
         if (timeInterval.getDuration() != null) {
             OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
             OffsetDateTime startTime = now.minus(timeInterval.getDuration());
-            return DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(startTime) + "/"
-                + DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(now);
+            return formatForMetrics(startTime) + "/" + formatForMetrics(now);
         }
 
         return null;
+    }
+
+    /**
+     * Formats an OffsetDateTime for Azure Monitor Metrics API.
+     * Uses ISO format but omits seconds when they are zero.
+     *
+     * @param dateTime The datetime to format.
+     * @return Formatted string.
+     */
+    private static String formatForMetrics(OffsetDateTime dateTime) {
+        if (dateTime.getSecond() == 0 && dateTime.getNano() == 0) {
+            // Format without seconds when they are zero: 2025-01-01T00:00Z
+            return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mmXXX"));
+        } else {
+            // Format with full precision when seconds are non-zero
+            return dateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        }
     }
 
 }
