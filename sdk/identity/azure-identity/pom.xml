@@ -146,7 +146,7 @@
         <configuration>
           <java>
             <excludes>
-              <exclude>**/PowershellUtil.java</exclude>
+              <exclude>**/PowerShellUtil.java</exclude>
             </excludes>
           </java>
         </configuration>
