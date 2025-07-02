@@ -19,7 +19,7 @@ from utils import update_service_files_for_new_lib
 from utils import update_root_pom
 from utils import ListIndentDumper
 
-from generate_utils import generate_typespec_project, clean_sdk_folder_if_swagger
+from generate_utils import generate_typespec_project, clean_sdk_folder
 
 GROUP_ID = "com.azure"
 DPG_ARGUMENTS = "--sdk-integration --generate-samples --generate-tests"
@@ -42,8 +42,8 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
     )
 
     if not succeeded:
-        # check whether this is migration from Swagger
-        clean_sdk_folder_succeeded = clean_sdk_folder_if_swagger(sdk_root, sdk_folder)
+        # fallback to generate from a clean folder
+        clean_sdk_folder_succeeded = clean_sdk_folder(sdk_root, sdk_folder)
         if clean_sdk_folder_succeeded:
             # re-generate
             succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
@@ -71,8 +71,8 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
                 module,
             )
         else:
-            # check whether this is migration from Swagger
-            clean_sdk_folder_succeeded = clean_sdk_folder_if_swagger(sdk_root, sdk_folder)
+            # fallback to generate from a clean folder
+            clean_sdk_folder_succeeded = clean_sdk_folder(sdk_root, sdk_folder)
             if clean_sdk_folder_succeeded:
                 # re-generate
                 succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(

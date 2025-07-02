@@ -514,7 +514,7 @@ def find_sdk_folder(sdk_root: str):
     return sdk_folder
 
 
-def clean_sdk_folder_if_swagger(sdk_root: str, sdk_folder: str) -> bool:
+def clean_sdk_folder(sdk_root: str, sdk_folder: str) -> bool:
     succeeded = False
     # try to find the sdk_folder
     if not sdk_folder:
@@ -528,8 +528,8 @@ def clean_sdk_folder_if_swagger(sdk_root: str, sdk_folder: str) -> bool:
                 "Existing package in SDK was from Swagger. It cannot be automatically converted to package from TypeSpec. Generate a fresh package from TypeSpec.",
                 file=sys.stderr,
             )
-            # delete the folder
-            shutil.rmtree(sdk_path, ignore_errors=True)
 
-            succeeded = True
+        # delete the folder regardless of Swagger or not
+        shutil.rmtree(sdk_path, ignore_errors=True)
+        succeeded = True
     return succeeded
