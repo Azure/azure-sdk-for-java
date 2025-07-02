@@ -4,6 +4,7 @@
 package io.clientcore.http.netty4;
 
 import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.http.client.HttpProtocolVersion;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.ProxyOptions;
@@ -52,6 +53,7 @@ import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.PIPELI
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.PROGRESS_AND_TIMEOUT;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.SSL;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.awaitLatch;
+import static io.clientcore.http.netty4.implementation.Netty4Utility.configureHttpsPipeline;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.createCodec;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.sendHttp11Request;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.setOrSuppressError;
@@ -275,8 +277,17 @@ class NettyHttpClient implements HttpClient {
         // guaranteed to be complete by the time we get the channel because the Netty4AlpnHandler
         // reacts to the result of the ALPN negotiation that happened during the SSL handshake.
         if (isHttps) {
-            // For HTTPS, we delegate the addition of the response handler and codec to the ALPN handler.
-            pipeline.addAfter(SSL, ALPN, new Netty4AlpnHandler(request, responseReference, errorReference, latch));
+            HttpProtocolVersion protocolVersion = channel.attr(Netty4AlpnHandler.HTTP_PROTOCOL_VERSION_KEY).get();
+            if (protocolVersion != null) {
+                // Connection is being reused, ALPN is already done.
+                // Manually configure the pipeline based on the stored protocol.
+                configureHttpsPipeline(pipeline, request, protocolVersion, responseReference, errorReference, latch);
+                send(request, channel, errorReference, latch);
+            } else {
+                // This is a new connection, let ALPN do the work.
+                // For HTTPS, we delegate the addition of the response handler and codec to the ALPN handler.
+                pipeline.addAfter(SSL, ALPN, new Netty4AlpnHandler(request, responseReference, errorReference, latch));
+            }
         } else {
             // If there isn't an SslHandler, we can send the request immediately.
             // Add the HTTP/1.1 codec, as we only support HTTP/2 when using SSL ALPN.
@@ -284,16 +295,21 @@ class NettyHttpClient implements HttpClient {
                 new Netty4ResponseHandler(request, responseReference, errorReference, latch));
             String addBefore = addProgressAndTimeoutHandler ? PROGRESS_AND_TIMEOUT : HTTP_RESPONSE;
             pipeline.addBefore(addBefore, HTTP_CODEC, createCodec());
-            sendHttp11Request(request, channel, errorReference).addListener(f -> {
-                if (f.isSuccess()) {
-                    channel.read();
-                } else {
-                    setOrSuppressError(errorReference, f.cause());
-                    pipeline.fireExceptionCaught(f.cause());
-                    latch.countDown();
-                }
-            });
+            send(request, channel, errorReference, latch);
         }
+    }
+
+    private void send(HttpRequest request, Channel channel, AtomicReference<Throwable> errorReference,
+        CountDownLatch latch) {
+        sendHttp11Request(request, channel, errorReference).addListener(f -> {
+            if (f.isSuccess()) {
+                channel.read();
+            } else {
+                setOrSuppressError(errorReference, f.cause());
+                channel.pipeline().fireExceptionCaught(f.cause());
+                latch.countDown();
+            }
+        });
     }
 
     public void close() {

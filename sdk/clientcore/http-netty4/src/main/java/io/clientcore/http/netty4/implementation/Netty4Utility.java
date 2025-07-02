@@ -3,6 +3,7 @@
 
 package io.clientcore.http.netty4.implementation;
 
+import io.clientcore.core.http.client.HttpProtocolVersion;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
@@ -19,6 +20,8 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.DefaultHttpRequest;
 import io.netty.handler.codec.http.HttpChunkedInput;
@@ -28,6 +31,13 @@ import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeadersFactory;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpVersion;
+import io.netty.handler.codec.http2.DefaultHttp2Connection;
+import io.netty.handler.codec.http2.DelegatingDecompressorFrameListener;
+import io.netty.handler.codec.http2.Http2Connection;
+import io.netty.handler.codec.http2.Http2FrameListener;
+import io.netty.handler.codec.http2.Http2Settings;
+import io.netty.handler.codec.http2.HttpToHttp2ConnectionHandlerBuilder;
+import io.netty.handler.codec.http2.InboundHttp2ToHttpAdapterBuilder;
 import io.netty.handler.stream.ChunkedInput;
 import io.netty.handler.stream.ChunkedNioFile;
 import io.netty.handler.stream.ChunkedStream;
@@ -68,6 +78,8 @@ public final class Netty4Utility {
             "netty-handler", "netty-handler-proxy", "netty-resolver", "netty-resolver-dns", "netty-transport");
     private static final List<String> OPTIONAL_NETTY_VERSION_ARTIFACTS = Arrays
         .asList("netty-transport-native-unix-common", "netty-transport-native-epoll", "netty-transport-native-kqueue");
+
+    private static final int TWO_FIFTY_SIX_KB = 256 * 1024;
 
     /**
      * Converts Netty HttpHeaders to ClientCore HttpHeaders.
@@ -435,6 +447,60 @@ public final class Netty4Utility {
             return HttpHeaderName.TRANSFER_ENCODING;
         } else {
             return HttpHeaderName.fromString(asciiString.toString());
+        }
+    }
+
+    /**
+     * Configures the pipeline for either HTTP/1.1 or HTTP/2 based on the negotiated protocol.
+     * <p>
+     * This method adds the appropriate {@link Netty4HandlerNames#HTTP_CODEC} and
+     * {@link Netty4HandlerNames#HTTP_RESPONSE} handlers to the pipeline, positioned correctly
+     * relative to the {@link Netty4HandlerNames#PROGRESS_AND_TIMEOUT} or {@link Netty4HandlerNames#SSL} handlers.
+     *
+     * @param pipeline The channel pipeline to configure.
+     * @param request The HTTP request.
+     * @param protocol The negotiated HTTP protocol version.
+     * @param responseReference The atomic reference to hold the response state.
+     * @param errorReference The atomic reference to hold any errors.
+     * @param latch The countdown latch to signal completion.
+     */
+    public static void configureHttpsPipeline(ChannelPipeline pipeline, HttpRequest request,
+        HttpProtocolVersion protocol, AtomicReference<ResponseStateInfo> responseReference,
+        AtomicReference<Throwable> errorReference, CountDownLatch latch) {
+        final ChannelHandler httpCodec;
+        if (HttpProtocolVersion.HTTP_2 == protocol) {
+            // TODO (alzimmer): InboundHttp2ToHttpAdapter buffers the entire response into a FullHttpResponse. Need to
+            //  create a streaming version of this to support huge response payloads.
+            Http2Connection http2Connection = new DefaultHttp2Connection(false);
+            Http2Settings settings = new Http2Settings().headerTableSize(4096)
+                .maxHeaderListSize(TWO_FIFTY_SIX_KB)
+                .pushEnabled(false)
+                .initialWindowSize(TWO_FIFTY_SIX_KB);
+            Http2FrameListener frameListener = new DelegatingDecompressorFrameListener(http2Connection,
+                new InboundHttp2ToHttpAdapterBuilder(http2Connection).maxContentLength(Integer.MAX_VALUE)
+                    .propagateSettings(true)
+                    .validateHttpHeaders(true)
+                    .build());
+
+            httpCodec = new HttpToHttp2ConnectionHandlerBuilder().initialSettings(settings)
+                .frameListener(frameListener)
+                .connection(http2Connection)
+                .validateHeaders(true)
+                .build();
+        } else { // HTTP/1.1
+            httpCodec = createCodec();
+        }
+
+        Netty4ResponseHandler responseHandler
+            = new Netty4ResponseHandler(request, responseReference, errorReference, latch);
+
+        if (pipeline.get(Netty4HandlerNames.PROGRESS_AND_TIMEOUT) != null) {
+            pipeline.addAfter(Netty4HandlerNames.PROGRESS_AND_TIMEOUT, Netty4HandlerNames.HTTP_RESPONSE,
+                responseHandler);
+            pipeline.addBefore(Netty4HandlerNames.PROGRESS_AND_TIMEOUT, Netty4HandlerNames.HTTP_CODEC, httpCodec);
+        } else {
+            pipeline.addAfter(Netty4HandlerNames.SSL, Netty4HandlerNames.HTTP_CODEC, httpCodec);
+            pipeline.addAfter(Netty4HandlerNames.HTTP_CODEC, Netty4HandlerNames.HTTP_RESPONSE, responseHandler);
         }
     }
 
