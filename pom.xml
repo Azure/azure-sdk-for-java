@@ -58,6 +58,7 @@
     <module>sdk/containerregistry</module>
     <module>sdk/containerservicefleet</module>
     <module>sdk/contentsafety</module>
+    <module>sdk/contosowidgetmanager</module>
     <module>sdk/core</module>
     <module>sdk/core-v2</module>
     <module>sdk/cosmos</module>
