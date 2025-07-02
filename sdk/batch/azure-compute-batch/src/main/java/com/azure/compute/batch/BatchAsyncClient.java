@@ -11,6 +11,7 @@ import com.azure.compute.batch.implementation.lro.JobEnablePollerAsync;
 import com.azure.compute.batch.implementation.lro.JobScheduleDeletePollerAsync;
 import com.azure.compute.batch.implementation.lro.JobScheduleTerminatePollerAsync;
 import com.azure.compute.batch.implementation.lro.JobTerminatePollerAsync;
+import com.azure.compute.batch.implementation.lro.PoolDeletePollerAsync;
 import com.azure.compute.batch.implementation.task.AsyncTaskSubmitter;
 import com.azure.compute.batch.implementation.task.TaskManager;
 import com.azure.compute.batch.implementation.task.TaskSubmitter;
@@ -11059,6 +11060,37 @@ public final class BatchAsyncClient {
     }
 
     /**
+     * Deletes a Pool from the specified Account.
+     *
+     * When you request that a Pool be deleted, the following actions occur: the Pool
+     * state is set to deleting; any ongoing resize operation on the Pool are stopped;
+     * the Batch service starts resizing the Pool to zero Compute Nodes; any Tasks
+     * running on existing Compute Nodes are terminated and requeued (as if a resize
+     * Pool operation had been requested with the default requeue option); finally,
+     * the Pool is removed from the system. Because running Tasks are requeued, the
+     * user can rerun these Tasks by updating their Job to target a different Pool.
+     * The Tasks can then run on the new Pool. If you want to override the requeue
+     * behavior, then you should call resize Pool explicitly to shrink the Pool to
+     * zero size before deleting the Pool. If you call an Update, Patch or Delete API
+     * on a Pool in the deleting state, it will fail with HTTP status code 409 with
+     * error code PoolBeingDeleted.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link PollerFlux} that polls the deletion of the Pool. The poller provides
+     * {@link BatchPool} instances during polling and returns {@code null} upon successful deletion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BatchPool, Void> beginDeletePool(String poolId) {
+        RequestOptions requestOptions = new RequestOptions();
+        PoolDeletePollerAsync poller = new PoolDeletePollerAsync(this, poolId, requestOptions);
+        return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
+            poller.getCancelOperation(), poller.getFetchResultOperation());
+    }
+
+    /**
      * Gets basic properties of a Pool.
      *
      * @param poolId The ID of the Pool to get.
@@ -12934,6 +12966,62 @@ public final class BatchAsyncClient {
             requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
         return deletePoolWithResponse(poolId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes a Pool from the specified Account.
+     *
+     * When you request that a Pool be deleted, the following actions occur: the Pool
+     * state is set to deleting; any ongoing resize operation on the Pool are stopped;
+     * the Batch service starts resizing the Pool to zero Compute Nodes; any Tasks
+     * running on existing Compute Nodes are terminated and requeued (as if a resize
+     * Pool operation had been requested with the default requeue option); finally,
+     * the Pool is removed from the system. Because running Tasks are requeued, the
+     * user can rerun these Tasks by updating their Job to target a different Pool.
+     * The Tasks can then run on the new Pool. If you want to override the requeue
+     * behavior, then you should call resize Pool explicitly to shrink the Pool to
+     * zero size before deleting the Pool. If you call an Update, Patch or Delete API
+     * on a Pool in the deleting state, it will fail with HTTP status code 409 with
+     * error code PoolBeingDeleted.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param options Optional parameters for Delete Pool operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link PollerFlux} that polls the deletion of the Pool. The poller provides
+     * {@link BatchPool} instances during polling and returns {@code null} upon successful deletion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BatchPool, Void> beginDeletePool(String poolId, BatchPoolDeleteOptions options,
+        RequestConditions requestConditions) {
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        PoolDeletePollerAsync poller = new PoolDeletePollerAsync(this, poolId, requestOptions);
+        return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
+            poller.getCancelOperation(), poller.getFetchResultOperation());
     }
 
     /**
