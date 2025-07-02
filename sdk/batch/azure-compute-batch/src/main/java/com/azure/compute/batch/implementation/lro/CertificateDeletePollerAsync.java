@@ -36,7 +36,7 @@ public final class CertificateDeletePollerAsync {
      * @param options Optional request options for service calls.
      */
     public CertificateDeletePollerAsync(BatchAsyncClient batchAsyncClient, String thumbprintAlgorithm,
-                                        String thumbprint, RequestOptions options) {
+        String thumbprint, RequestOptions options) {
         this.batchAsyncClient = batchAsyncClient;
         this.thumbprintAlgorithm = thumbprintAlgorithm;
         this.thumbprint = thumbprint;
@@ -75,7 +75,8 @@ public final class CertificateDeletePollerAsync {
     /**
      * Cancel operation (not supported for certificate deletion).
      */
-    public BiFunction<PollingContext<BatchCertificate>, PollResponse<BatchCertificate>, Mono<BatchCertificate>> getCancelOperation() {
+    public BiFunction<PollingContext<BatchCertificate>, PollResponse<BatchCertificate>, Mono<BatchCertificate>>
+        getCancelOperation() {
         return (context, pollResponse) -> Mono.empty();
     }
 
