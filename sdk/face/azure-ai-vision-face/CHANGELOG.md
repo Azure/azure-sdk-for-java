@@ -1,20 +1,24 @@
 # Release History
 
+## 1.0.0-beta.3 (2025-07-11)
+
 ### Features Added
 
 ### Breaking Changes
 
-### Bugs Fixed
+- Change the default service API version to `v1.2`
+- Removed `CreateLivenessSessionResult` and use `LivenessSession` for liveness session creation and get session.
+- Unified `CreateLivenessWithVerifySession` and require the verify image when creating a liveness with verify session.
+- Update model `LivenessSession`, `CreateLivenessSessionContent`, and `CreateLivenessWithVerifySessionContent`.
+- Removed `LivenessSessionAudit`
+- Removed `GetLivenessSessions` and `GetLivenessWithVerifySessions`
+- Removed `PersonDirectory` operations
 
 ### Other Changes
 
-## 1.0.0-beta.3 (2025-7-11)
-
-- Change the default service API version to `v1.2`
-- Liveness API change
-  - Unified the `LivenessSession` and removed `CreateLivenessSessionResult`
-  - Unified the `CreateLivenessWithVerifySession`
-  - Updated model `LivenessSession` and `CreateLivenesSessionContent`
+- Removed FaceClient customizations
+- Liveness
+  - Added `LivenessSessionAttempt`
 
 ## 1.0.0-beta.2 (2024-10-23)
 
