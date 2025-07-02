@@ -57,6 +57,7 @@ import com.azure.cosmos.models.CosmosClientEncryptionKeyResponse;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosDatabaseAccountResponse;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -1899,6 +1900,45 @@ public class ImplementationBridgeHelpers {
                 OperationType operationType,
                 ReadConsistencyStrategy desiredReadConsistencyStrategyOfOperation,
                 ReadConsistencyStrategy clientLevelReadConsistencyStrategy);
+        }
+    }
+
+    public static final class CosmosDatabaseAccountResponseHelper {
+        private static final AtomicReference<CosmosDatabaseAccountResponseAccessor> accessor = new AtomicReference<>();
+        private static final AtomicBoolean cosmosDatabaseAccountResponseClassLoaded = new AtomicBoolean(false);
+
+        private CosmosDatabaseAccountResponseHelper() {}
+
+        public static void setCosmosDatabaseAccountResponseAccessor(final CosmosDatabaseAccountResponseAccessor newAccessor) {
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("CosmosDatabaseAccountResponseAccessor already initialized!");
+            } else {
+                logger.debug("Setting CosmosDatabaseAccountResponseAccessor...");
+                cosmosDatabaseAccountResponseClassLoaded.set(true);
+            }
+        }
+
+        public static CosmosDatabaseAccountResponseAccessor getCosmosDatabaseAccountResponseAccessor() {
+            if (!cosmosDatabaseAccountResponseClassLoaded.get()) {
+                logger.debug("Initializing CosmosDatabaseAccountResponseAccessor...");
+                initializeAllAccessors();
+            }
+
+            CosmosDatabaseAccountResponseAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosDatabaseAccountResponseAccessor is not initialized yet!");
+            }
+
+            return snapshot;
+        }
+
+        public interface CosmosDatabaseAccountResponseAccessor {
+            CosmosDatabaseAccountResponse build(
+                String id,
+                List<String> readableRegions,
+                List<String> writeableRegions,
+                boolean isMultiWriteAccount,
+                ConsistencyLevel consistencyLevel);
         }
     }
 }

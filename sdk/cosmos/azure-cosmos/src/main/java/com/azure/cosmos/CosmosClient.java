@@ -6,6 +6,7 @@ package com.azure.cosmos;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CosmosContainerIdentity;
+import com.azure.cosmos.models.CosmosDatabaseAccountResponse;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
@@ -225,6 +226,19 @@ public final class CosmosClient implements Closeable {
         }
     }
 
+    CosmosDatabaseAccountResponse blockReadDatabaseAccount(Mono<CosmosDatabaseAccountResponse> databaseAccountMono) {
+        try {
+            return databaseAccountMono.block();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+            if (throwable instanceof CosmosException) {
+                throw (CosmosException) throwable;
+            } else {
+                throw Exceptions.propagate(ex);
+            }
+        }
+    }
+
     /**
      * Reads all Cosmos databases.
      * <!-- src_embed com.azure.cosmos.CosmosClient.readAllDatabases -->
@@ -309,6 +323,16 @@ public final class CosmosClient implements Closeable {
      */
     public CosmosDatabase getDatabase(String id) {
         return new CosmosDatabase(id, this, asyncClientWrapper.getDatabase(id));
+    }
+
+    /**
+     * Reads the Cosmos database account.
+     *
+     * @param shouldUseCache a boolean flag to determine whether to use the CosmosClient's-internal cache for reading the database account (setting shouldUseFlag to true can return stale data).
+     * @return the {@link CosmosDatabaseAccountResponse} with the read database account.
+     */
+    public CosmosDatabaseAccountResponse readDatabaseAccount(boolean shouldUseCache) {
+        return blockReadDatabaseAccount(this.asyncClientWrapper.readDatabaseAccount(shouldUseCache));
     }
 
     CosmosAsyncClient asyncClient() {
