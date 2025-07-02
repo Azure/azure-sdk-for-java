@@ -364,6 +364,7 @@ def generate_typespec_project(
     api_version: str = None,
     generate_beta_sdk: bool = True,
     version: str = None,  # SDK version
+    disable_customization: bool = False,
     **kwargs,
 ):
 
@@ -386,7 +387,7 @@ def generate_typespec_project(
         tspconfig_valid = True
         if url_match:
             # generate from remote url
-            tsp_cmd = [
+            tsp_cmd_base = [
                 "npx" + (".cmd" if is_windows() else ""),
                 "tsp-client",
                 "init",
@@ -399,7 +400,7 @@ def generate_typespec_project(
             tsp_dir = os.path.join(spec_root, tsp_project) if spec_root else tsp_project
             tspconfig_valid = validate_tspconfig(tsp_dir)
             repo = remove_prefix(repo_url, "https://github.com/")
-            tsp_cmd = [
+            tsp_cmd_base = [
                 "npx" + (".cmd" if is_windows() else ""),
                 "tsp-client",
                 "init",
@@ -414,7 +415,16 @@ def generate_typespec_project(
                 tsp_dir,
             ]
 
+        emitter_options = []
+
         if tspconfig_valid:
+            tsp_cmd = tsp_cmd_base
+            if disable_customization:
+                emitter_options.append("customization-class=null")
+
+            if emitter_options:
+                tsp_cmd.append("--emitter-options")
+                tsp_cmd.append(";".join(emitter_options))
             check_call(tsp_cmd, sdk_root)
 
             sdk_folder = find_sdk_folder(sdk_root)
@@ -446,12 +456,15 @@ def generate_typespec_project(
                     _, current_version = set_or_increase_version(
                         sdk_root, group_id, module, version=version, preview=generate_beta_sdk
                     )
-                    tsp_cmd.append("--emitter-options")
-                    emitter_options = f"package-version={current_version}"
+
+                    emitter_options.append(f"package-version={current_version}")
                     # currently for self-serve, may also need it in regular generation
                     if api_version:
-                        emitter_options += f";api-version={api_version}"
-                    tsp_cmd.append(emitter_options)
+                        emitter_options.append(f"api-version={api_version}")
+
+                    if emitter_options:
+                        tsp_cmd.append("--emitter-options")
+                        tsp_cmd.append(";".join(emitter_options))
                     # regenerate
                     check_call(tsp_cmd, sdk_root)
                 succeeded = True

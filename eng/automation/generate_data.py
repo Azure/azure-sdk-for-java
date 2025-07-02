@@ -47,7 +47,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
         if clean_sdk_folder_succeeded:
             # re-generate
             succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
-                tsp_project, sdk_root, spec_root, head_sha, repo_url
+                tsp_project, sdk_root, spec_root, head_sha, repo_url, disable_customization=True
             )
 
     if succeeded:
@@ -76,7 +76,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
             if clean_sdk_folder_succeeded:
                 # re-generate
                 succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
-                    tsp_project, sdk_root, spec_root, head_sha, repo_url
+                    tsp_project, sdk_root, spec_root, head_sha, repo_url, disable_customization=True
                 )
                 stable_version, _ = set_or_default_version(sdk_root, GROUP_ID, module)
                 current_version = DEFAULT_VERSION
