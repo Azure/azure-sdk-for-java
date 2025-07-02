@@ -112,7 +112,7 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
         // Make sure the context is not modified during redirect, except for the URI
         Response<BinaryData> response = next.copy().process();
 
-        if (shouldAttemptRedirect(response, redirectAttempt, logger,attemptedRedirectUris, context)) {
+        if (shouldAttemptRedirect(response, redirectAttempt, logger, attemptedRedirectUris, context)) {
             createRedirectRequest(response);
             return attemptRedirect(logger, next, redirectAttempt + 1, attemptedRedirectUris, context);
         }
@@ -130,7 +130,7 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
 
         // Make sure the context is not modified during redirect, except for the URI
         return next.copy().processAsync().thenCompose(response -> {
-            if (shouldAttemptRedirect(response, redirectAttempt, logger,attemptedRedirectUris, context)) {
+            if (shouldAttemptRedirect(response, redirectAttempt, logger, attemptedRedirectUris, context)) {
                 createRedirectRequest(response);
                 return attemptRedirectAsync(logger, next, redirectAttempt + 1, attemptedRedirectUris, context);
             }
