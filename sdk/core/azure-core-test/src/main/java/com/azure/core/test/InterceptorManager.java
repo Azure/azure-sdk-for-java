@@ -4,15 +4,11 @@ package com.azure.core.test;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.test.http.PlaybackClient;
 import com.azure.core.test.http.TestProxyPlaybackClient;
-import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
-import com.azure.core.test.models.RecordingRedactor;
 import com.azure.core.test.models.TestProxyRecordingOptions;
 import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
-import com.azure.core.test.policy.RecordNetworkCallPolicy;
 import com.azure.core.test.policy.TestProxyRecordPolicy;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.CoreUtils;
@@ -30,7 +26,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,7 +33,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Queue;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -154,81 +148,6 @@ public class InterceptorManager implements AutoCloseable {
     }
 
     /**
-     * Creates a new InterceptorManager that replays test session records. It takes a set of
-     * {@code textReplacementRules}, that can be used by {@link PlaybackClient} to replace values in a
-     * {@link NetworkCallRecord#getResponse()}.
-     *
-     * The test session records are read from: "<i>session-records/{@code testName}.json</i>"
-     *
-     * @param testName Name of the test session record.
-     * @param textReplacementRules A set of rules to replace text in {@link NetworkCallRecord#getResponse()} when
-     * playing back network calls.
-     * @throws UncheckedIOException An existing test session record could not be located or the data could not be
-     * deserialized into an instance of {@link RecordedData}.
-     * @throws NullPointerException If {@code testName} or {@code textReplacementRules} is {@code null}.
-     * @deprecated Use {@link #InterceptorManager(String, Map, boolean)} instead.
-     */
-    @Deprecated
-    public InterceptorManager(String testName, Map<String, String> textReplacementRules) {
-        this(testName, textReplacementRules, false, testName);
-    }
-
-    /**
-     * Creates a new InterceptorManager that replays test session records. It takes a set of
-     * {@code textReplacementRules}, that can be used by {@link PlaybackClient} to replace values in a
-     * {@link NetworkCallRecord#getResponse()}.
-     *
-     * The test session records are read from: "<i>session-records/{@code testName}.json</i>"
-     *
-     * @param testName Name of the test session record.
-     * @param textReplacementRules A set of rules to replace text in {@link NetworkCallRecord#getResponse()} when
-     * playing back network calls.
-     * @param doNotRecord Flag indicating whether network calls should be record or played back.
-     * @throws UncheckedIOException An existing test session record could not be located or the data could not be
-     * deserialized into an instance of {@link RecordedData}.
-     * @throws NullPointerException If {@code testName} or {@code textReplacementRules} is {@code null}.
-     * @deprecated Use {@link #InterceptorManager(String, Map, boolean, String)} instead.
-     */
-    @Deprecated
-    public InterceptorManager(String testName, Map<String, String> textReplacementRules, boolean doNotRecord) {
-        this(testName, textReplacementRules, doNotRecord, testName);
-    }
-
-    /**
-     * Creates a new InterceptorManager that replays test session records. It takes a set of
-     * {@code textReplacementRules}, that can be used by {@link PlaybackClient} to replace values in a
-     * {@link NetworkCallRecord#getResponse()}.
-     *
-     * The test session records are read from: "<i>session-records/{@code testName}.json</i>"
-     *
-     * @param testName Name of the test.
-     * @param textReplacementRules A set of rules to replace text in {@link NetworkCallRecord#getResponse()} when
-     * playing back network calls.
-     * @param doNotRecord Flag indicating whether network calls should be record or played back.
-     * @param playbackRecordName Full name of the test including its iteration, used as the playback record name.
-     * @throws UncheckedIOException An existing test session record could not be located or the data could not be
-     * deserialized into an instance of {@link RecordedData}.
-     * @throws NullPointerException If {@code testName} or {@code textReplacementRules} is {@code null}.
-     */
-    public InterceptorManager(String testName, Map<String, String> textReplacementRules, boolean doNotRecord,
-        String playbackRecordName) {
-        Objects.requireNonNull(testName, "'testName' cannot be null.");
-        Objects.requireNonNull(textReplacementRules, "'textReplacementRules' cannot be null.");
-
-        this.testName = testName;
-        this.playbackRecordName = CoreUtils.isNullOrEmpty(playbackRecordName) ? testName : playbackRecordName;
-        this.testMode = TestMode.PLAYBACK;
-        this.allowedToReadRecordedValues = !doNotRecord;
-        this.allowedToRecordValues = false;
-        this.testProxyEnabled = false;
-        this.skipRecordingRequestBody = false;
-        this.testClassPath = null;
-
-        this.recordedData = allowedToReadRecordedValues ? readDataFromFile() : null;
-        this.textReplacementRules = textReplacementRules;
-    }
-
-    /**
      * Gets whether this InterceptorManager is in playback mode.
      *
      * @return true if the InterceptorManager is in playback mode and false otherwise.
@@ -294,36 +213,24 @@ public class InterceptorManager implements AutoCloseable {
      * {@link InterceptorManager}.
      *
      * @return HttpPipelinePolicy to record network calls.
-     * @throws IllegalStateException A recording policy was requested when the test proxy is enabled and test mode is not RECORD.
+     * @throws IllegalStateException A recording policy was requested when the test proxy is enabled and test mode is
+     * not RECORD.
+     * @throws UnsupportedOperationException If Test Proxy isn't enabled.
      */
     public HttpPipelinePolicy getRecordPolicy() {
         if (testProxyEnabled) {
             return getProxyRecordingPolicy();
         }
-        return getRecordPolicy(Collections.emptyList());
-    }
-
-    /**
-     * Gets a new HTTP pipeline policy that records network calls. The recorded content is redacted by the given list of
-     * redactor functions to hide sensitive information.
-     *
-     * @param recordingRedactors The custom redactor functions that are applied in addition to the default redactor
-     * functions defined in {@link RecordingRedactor}.
-     * @return {@link HttpPipelinePolicy} to record network calls.
-     * @throws IllegalStateException A recording policy was requested when the test proxy is enabled and test mode is not RECORD.
-     */
-    public HttpPipelinePolicy getRecordPolicy(List<Function<String, String>> recordingRedactors) {
-        if (testProxyEnabled) {
-            return getProxyRecordingPolicy();
-        }
-        return new RecordNetworkCallPolicy(recordedData, recordingRedactors);
+        throw new UnsupportedOperationException("Only Test Proxy-based tests are supported.");
     }
 
     /**
      * Gets a new HTTP client that plays back test session records managed by {@link InterceptorManager}.
      *
      * @return An HTTP client that plays back network calls from its recorded data.
-     * @throws IllegalStateException A playback client was requested when the test proxy is enabled and test mode is LIVE.
+     * @throws IllegalStateException A playback client was requested when the test proxy is enabled and test mode is
+     * LIVE.
+     * @throws UnsupportedOperationException If Test Proxy isn't enabled.
      */
     public HttpClient getPlaybackClient() {
         if (testProxyEnabled) {
@@ -338,13 +245,13 @@ public class InterceptorManager implements AutoCloseable {
             }
             return testProxyPlaybackClient;
         } else {
-            return new PlaybackClient(recordedData, textReplacementRules);
+            throw new UnsupportedOperationException("Only Test Proxy-based testing is allowed.");
         }
     }
 
     /**
      * Disposes of resources used by this InterceptorManager.
-     *
+     * <p>
      * If {@code testMode} is {@link TestMode#RECORD}, all the network calls are persisted to:
      * "<i>session-records/{@code testName}.json</i>"
      */

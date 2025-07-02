@@ -5,8 +5,6 @@ package com.azure.core.test;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-
 import static com.azure.core.test.FakeTestClass.DONOTRECORD_FALSE_SKIPINPLAYBACK;
 import static com.azure.core.test.FakeTestClass.METHOD_WITHOUT_DONOTRECORD;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -32,7 +30,6 @@ public class InterceptorManagerTests {
      * Validates that {@link InterceptorManager#getRecordedData()} is {@code null} when {@code doNotRecord} is passed as
      * {@code true}.
      */
-    @SuppressWarnings("deprecation")
     @Test
     public void recordedDataIsNullWhenDoNotRecord() {
         assertNull(new InterceptorManager(
@@ -44,6 +41,5 @@ public class InterceptorManagerTests {
         assertNull(new InterceptorManager(
             new TestContextManager(DONOTRECORD_FALSE_SKIPINPLAYBACK, TestMode.PLAYBACK, false, false, null))
                 .getRecordedData());
-        assertNull(new InterceptorManager("testName", new HashMap<>(), true).getRecordedData());
     }
 }
