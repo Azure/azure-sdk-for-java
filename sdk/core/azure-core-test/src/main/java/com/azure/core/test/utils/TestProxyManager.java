@@ -112,12 +112,13 @@ public final class TestProxyManager {
                 return false;
             }
 
-            try {
-                HttpResponse response = client.sendSync(request, Context.NONE);
-                if (response != null && response.getStatusCode() == 200) {
-                    return true;
+            try (HttpResponse response = client.sendSync(request, Context.NONE)) {
+                if (response != null) {
+                    if (response.getStatusCode() == 200) {
+                        return true;
+                    }
+                    TestProxyUtils.checkForTestProxyErrors(response);
                 }
-                TestProxyUtils.checkForTestProxyErrors(response);
             } catch (Exception ignored) {
             }
 
