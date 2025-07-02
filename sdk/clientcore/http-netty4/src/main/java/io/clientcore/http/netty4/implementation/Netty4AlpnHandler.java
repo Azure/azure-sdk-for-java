@@ -31,6 +31,7 @@ public final class Netty4AlpnHandler extends ApplicationProtocolNegotiationHandl
      */
     public static final AttributeKey<HttpProtocolVersion> HTTP_PROTOCOL_VERSION_KEY
         = AttributeKey.valueOf("http-protocol-version");
+    private static final int TWO_FIFTY_SIX_KB = 256 * 1024;
     private final HttpRequest request;
     private final AtomicReference<ResponseStateInfo> responseReference;
     private final AtomicReference<Throwable> errorReference;
