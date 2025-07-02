@@ -6,7 +6,7 @@ import com.azure.cosmos.spark.AccountDataResolver
 import com.azure.cosmos.spark.CosmosAccessToken
 import com.fasterxml.jackson.databind.ObjectMapper
 
-import java.time.OffsetDateTime
+import java.time.{Instant, OffsetDateTime, ZoneOffset}
 import scala.collection.concurrent.TrieMap
 
 class FabricAccountDataResolver extends AccountDataResolver with BasicLoggingTrait {
@@ -42,10 +42,6 @@ class FabricAccountDataResolver extends AccountDataResolver with BasicLoggingTra
       Some((_: List[String]) => {
         var accessToken = ""
         accessToken = mssparkutils.credentials.getToken(configs.audience.getOrElse(AUDIENCE))
-        if (accessToken.trim.isEmpty) {
-          logError(configs.audience.getOrElse(AUDIENCE))
-          throw new RuntimeException("Failed to retrieve access token within the maximum wait time.")
-        }
         val parts = accessToken.split("\\.")
         val payloadJson = new String(java.util.Base64.getUrlDecoder.decode(parts(1)))
         val mapper = new ObjectMapper()
@@ -53,8 +49,8 @@ class FabricAccountDataResolver extends AccountDataResolver with BasicLoggingTra
 
         val expirationEpoch = node.get("exp").asLong()
         val expirationTime = OffsetDateTime.ofInstant(
-          java.time.Instant.ofEpochSecond(expirationEpoch),
-          java.time.ZoneOffset.UTC
+          Instant.ofEpochSecond(expirationEpoch),
+          ZoneOffset.UTC
         )
         CosmosAccessToken(accessToken, expirationTime)
       })

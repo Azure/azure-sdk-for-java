@@ -109,6 +109,7 @@ com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12;4.37.2;4.38.0-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12;4.37.2;4.38.0-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;4.37.2;4.38.0-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark-account-data-resolver-sample;1.0.0-beta.1;1.0.0-beta.1
+com.azure.cosmos.spark:azure-cosmos-spark-fabric-account-data-resolver;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-cosmos-test;1.0.0-beta.12;1.0.0-beta.13
 com.azure:azure-cosmos-tests;1.0.0-beta.1;1.0.0-beta.1
 com.azure.cosmos.kafka:azure-cosmos-kafka-connect;2.3.1;2.4.0-beta.1
