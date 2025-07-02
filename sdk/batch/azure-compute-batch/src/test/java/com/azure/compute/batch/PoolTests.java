@@ -3,9 +3,13 @@
 package com.azure.compute.batch;
 
 import com.azure.compute.batch.models.*;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.test.SyncAsyncExtension;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.annotation.SyncAsyncTest;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 
@@ -34,7 +38,6 @@ public class PoolTests extends BatchClientTestBase {
                 try {
                     livePool = createIfNotExistIaaSPool(poolId);
                 } catch (Exception e) {
-                    // TODO (NickKouds): Auto-generated catch block
                     e.printStackTrace();
                 }
                 Assertions.assertNotNull(livePool);
@@ -114,15 +117,15 @@ public class PoolTests extends BatchClientTestBase {
             Assertions.assertEquals(diskSizeGB,
                 pool.getVirtualMachineConfiguration().getDataDisks().get(0).getDiskSizeGb());
         } finally {
+            // DELETE
             try {
-                boolean exists = SyncAsyncExtension.execute(() -> poolExists(batchClient, poolId),
-                    () -> poolExists(batchAsyncClient, poolId));
-                if (exists) {
-                    SyncAsyncExtension.execute(() -> batchClient.deletePool(poolId),
-                        () -> batchAsyncClient.deletePool(poolId));
-                }
+                SyncPoller<BatchPool, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+                    SyncAsyncExtension.execute(() -> batchClient.beginDeletePool(poolId),
+                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeletePool(poolId).getSyncPoller())));
+
+                deletePoller.waitForCompletion();
             } catch (Exception e) {
-                // Ignore exception
+                e.printStackTrace();
             }
         }
     }
@@ -177,9 +180,6 @@ public class PoolTests extends BatchClientTestBase {
             boolean poolExists = SyncAsyncExtension.execute(() -> poolExists(batchClient, poolId),
                 () -> poolExists(batchAsyncClient, poolId));
             Assertions.assertTrue(poolExists, "Pool should exist after creation");
-
-            long startTime = System.currentTimeMillis();
-            long elapsedTime = 0L;
 
             // Wait for the VM to be allocated
             BatchPool pool = SyncAsyncExtension.execute(
@@ -270,39 +270,35 @@ public class PoolTests extends BatchClientTestBase {
             Assertions.assertEquals(1, (long) pool.getTargetDedicatedNodes());
             Assertions.assertEquals(1, (long) pool.getTargetLowPriorityNodes());
 
-            // DELETE
-            boolean deleted = false;
-            SyncAsyncExtension.execute(() -> batchClient.deletePool(poolId), () -> batchAsyncClient.deletePool(poolId));
+            // DELETE using LRO
+            SyncPoller<BatchPool, Void> poller = setPlaybackSyncPollerPollInterval(
+                SyncAsyncExtension.execute(() -> batchClient.beginDeletePool(poolId),
+                    () -> Mono.fromCallable(() -> batchAsyncClient.beginDeletePool(poolId).getSyncPoller())));
 
-            // Wait for the VM to be deallocated
-            while (elapsedTime < poolSteadyTimeoutInMilliseconds) {
-                try {
-                    SyncAsyncExtension.execute(() -> batchClient.getPool(poolId),
-                        () -> batchAsyncClient.getPool(poolId));
-                } catch (Exception err) {
-                    if (!err.getMessage().contains("Status code 404")) {
-                        throw err;
-                    }
-                    deleted = true;
-                    break;
-                }
-
-                System.out.println("wait 15 seconds for pool delete...");
-                sleepIfRunningAgainstService(15 * 1000);
-                elapsedTime = (new Date()).getTime() - startTime;
+            // Validate initial poll result (pool should be in DELETING state)
+            PollResponse<BatchPool> initialResponse = poller.poll();
+            if (initialResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+                BatchPool poolDuringPoll = initialResponse.getValue();
+                Assertions.assertNotNull(poolDuringPoll, "Expected pool data during polling");
+                Assertions.assertEquals(poolId, poolDuringPoll.getId());
+                Assertions.assertEquals(BatchPoolState.DELETING, poolDuringPoll.getState());
             }
-            Assertions.assertTrue(deleted);
+
+            // Wait for LRO to finish
+            poller.waitForCompletion();
+
+            // Final result should be null after successful deletion
+            PollResponse<BatchPool> finalResponse = poller.poll();
+            Assertions.assertNull(finalResponse.getValue(),
+                "Expected final result to be null after successful deletion");
 
         } finally {
+            // Confirm pool is no longer retrievable
             try {
-                boolean poolExists = SyncAsyncExtension.execute(() -> poolExists(batchClient, poolId),
-                    () -> poolExists(batchAsyncClient, poolId));
-                if (poolExists) {
-                    SyncAsyncExtension.execute(() -> batchClient.deletePool(poolId),
-                        () -> batchAsyncClient.deletePool(poolId));
-                }
-            } catch (Exception e) {
-                // Ignore exception
+                SyncAsyncExtension.execute(() -> batchClient.getPool(poolId), () -> batchAsyncClient.getPool(poolId));
+                Assertions.fail("Expected pool to be deleted.");
+            } catch (HttpResponseException ex) {
+                Assertions.assertEquals(404, ex.getResponse().getStatusCode());
             }
         }
     }
@@ -400,16 +396,15 @@ public class PoolTests extends BatchClientTestBase {
             Assertions.assertEquals(SecurityEncryptionTypes.VMGUEST_STATE_ONLY,
                 disk.getManagedDisk().getSecurityProfile().getSecurityEncryptionType());
         } finally {
-            // Clean up by deleting the pool
+            // DELETE
             try {
-                boolean poolExists = SyncAsyncExtension.execute(() -> poolExists(batchClient, poolId),
-                    () -> poolExists(batchAsyncClient, poolId));
-                if (poolExists) {
-                    SyncAsyncExtension.execute(() -> batchClient.deletePool(poolId),
-                        () -> batchAsyncClient.deletePool(poolId));
-                }
+                SyncPoller<BatchPool, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+                    SyncAsyncExtension.execute(() -> batchClient.beginDeletePool(poolId),
+                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeletePool(poolId).getSyncPoller())));
+
+                deletePoller.waitForCompletion();
             } catch (Exception e) {
-                // Ignore exception
+                e.printStackTrace();
             }
         }
     }
@@ -421,7 +416,7 @@ public class PoolTests extends BatchClientTestBase {
             "-deallocateStartNodePool" + testModeSuffix + "-" + System.currentTimeMillis());
 
         // Define the VM size and node count
-        String poolVmSize = "STANDARD_D1_V2";
+        String poolVmSize = "STANDARD_D2s_V3";
         int poolVmCount = 1;
 
         // Check if the pool exists, if not, create it
@@ -506,16 +501,15 @@ public class PoolTests extends BatchClientTestBase {
             Assertions.assertEquals(BatchNodeState.IDLE, computeNode.getState());
 
         } finally {
-            // Clean up by deleting the pool
+            // DELETE
             try {
-                boolean poolExists = SyncAsyncExtension.execute(() -> poolExists(batchClient, poolId),
-                    () -> poolExists(batchAsyncClient, poolId));
-                if (poolExists) {
-                    SyncAsyncExtension.execute(() -> batchClient.deletePool(poolId),
-                        () -> batchAsyncClient.deletePool(poolId));
-                }
+                SyncPoller<BatchPool, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+                    SyncAsyncExtension.execute(() -> batchClient.beginDeletePool(poolId),
+                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeletePool(poolId).getSyncPoller())));
+
+                deletePoller.waitForCompletion();
             } catch (Exception e) {
-                // Ignore exception
+                e.printStackTrace();
             }
         }
     }

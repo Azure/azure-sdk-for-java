@@ -11000,6 +11000,35 @@ public final class BatchClient {
     }
 
     /**
+     * Deletes a Pool from the specified Account.
+     *
+     * When you request that a Pool be deleted, the following actions occur: the Pool
+     * state is set to deleting; any ongoing resize operation on the Pool are stopped;
+     * the Batch service starts resizing the Pool to zero Compute Nodes; any Tasks
+     * running on existing Compute Nodes are terminated and requeued (as if a resize
+     * Pool operation had been requested with the default requeue option); finally,
+     * the Pool is removed from the system. Because running Tasks are requeued, the
+     * user can rerun these Tasks by updating their Job to target a different Pool.
+     * The Tasks can then run on the new Pool. If you want to override the requeue
+     * behavior, then you should call resize Pool explicitly to shrink the Pool to
+     * zero size before deleting the Pool. If you call an Update, Patch or Delete API
+     * on a Pool in the deleting state, it will fail with HTTP status code 409 with
+     * error code PoolBeingDeleted.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the deletion of the Pool. The poller provides
+     * {@link BatchPool} instances during polling and returns {@code null} upon successful deletion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchPool, Void> beginDeletePool(String poolId) {
+        PollerFlux<BatchPool, Void> asyncPoller = asyncClient.beginDeletePool(poolId);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
      * Gets basic properties of a Pool.
      *
      * @param poolId The ID of the Pool to get.
@@ -12649,6 +12678,38 @@ public final class BatchClient {
             requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
         deletePoolWithResponse(poolId, requestOptions).getValue();
+    }
+
+    /**
+     * Deletes a Pool from the specified Account.
+     *
+     * When you request that a Pool be deleted, the following actions occur: the Pool
+     * state is set to deleting; any ongoing resize operation on the Pool are stopped;
+     * the Batch service starts resizing the Pool to zero Compute Nodes; any Tasks
+     * running on existing Compute Nodes are terminated and requeued (as if a resize
+     * Pool operation had been requested with the default requeue option); finally,
+     * the Pool is removed from the system. Because running Tasks are requeued, the
+     * user can rerun these Tasks by updating their Job to target a different Pool.
+     * The Tasks can then run on the new Pool. If you want to override the requeue
+     * behavior, then you should call resize Pool explicitly to shrink the Pool to
+     * zero size before deleting the Pool. If you call an Update, Patch or Delete API
+     * on a Pool in the deleting state, it will fail with HTTP status code 409 with
+     * error code PoolBeingDeleted.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param options Optional parameters for Delete Pool operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the deletion of the Pool. The poller provides
+     * {@link BatchPool} instances during polling and returns {@code null} upon successful deletion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchPool, Void> beginDeletePool(String poolId, BatchPoolDeleteOptions options,
+        RequestConditions requestConditions) {
+        PollerFlux<BatchPool, Void> asyncPoller = asyncClient.beginDeletePool(poolId, options, requestConditions);
+        return asyncPoller.getSyncPoller();
     }
 
     /**
