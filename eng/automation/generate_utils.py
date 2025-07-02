@@ -16,7 +16,7 @@ from typespec_utils import validate_tspconfig
 pwd = os.getcwd()
 # os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
 from parameters import *
-from utils import update_service_files_for_new_lib
+from utils import update_service_files_for_new_lib, remove_customization_config
 from utils import update_root_pom
 from utils import update_version
 from utils import is_windows
@@ -159,7 +159,7 @@ def generate_changelog_and_breaking_change(
 
 def update_changelog(changelog_file, changelog):
     version_pattern = r"^## (\d+\.\d+\.\d+(?:-[\w\d\.]+)?) \((.*?)\)"
-    with open(changelog_file, "r") as fin:
+    with open(changelog_file, "r", encoding="utf-8") as fin:
         old_changelog = fin.read()
 
     first_version = re.search(version_pattern, old_changelog, re.M)
@@ -182,7 +182,7 @@ def update_changelog(changelog_file, changelog):
     if changelog.strip() != "":
         first_version_part += changelog.strip() + "\n\n"
 
-    with open(changelog_file, "w") as fout:
+    with open(changelog_file, "w", encoding="utf-8") as fout:
         fout.write(first_version_part + old_changelog[first_version.end() + second_version.start() :])
 
     logging.info("[Changelog][Success] Write to changelog")
@@ -239,7 +239,7 @@ def get_version(
     version_file = os.path.join(sdk_root, "eng/versioning/version_client.txt")
     project = "{0}:{1}".format(group_id, module)
 
-    with open(version_file, "r") as fin:
+    with open(version_file, "r", encoding="utf-8") as fin:
         for line in fin.readlines():
             version_line = line.strip()
             if version_line.startswith("#"):
@@ -258,7 +258,7 @@ def valid_service(service: str):
 def read_api_specs(api_specs_file: str) -> Tuple[str, dict]:
     # return comment and api_specs
 
-    with open(api_specs_file) as fin:
+    with open(api_specs_file, "r", encoding="utf-8") as fin:
         lines = fin.readlines()
 
     comment = ""
@@ -275,7 +275,7 @@ def read_api_specs(api_specs_file: str) -> Tuple[str, dict]:
 
 
 def write_api_specs(api_specs_file: str, comment: str, api_specs: dict):
-    with open(api_specs_file, "w") as fout:
+    with open(api_specs_file, "w", encoding="utf-8") as fout:
         fout.write(comment)
         fout.write(yaml.dump(api_specs, width=sys.maxsize, Dumper=ListIndentDumper))
 
@@ -415,16 +415,13 @@ def generate_typespec_project(
                 tsp_dir,
             ]
 
+            if disable_customization:
+                remove_customization_config(tsp_dir)
+
         emitter_options = []
 
         if tspconfig_valid:
             tsp_cmd = tsp_cmd_base
-            if disable_customization:
-                emitter_options.append("customization-class=null")
-
-            if emitter_options:
-                tsp_cmd.append("--emitter-options")
-                tsp_cmd.append(";".join(emitter_options))
             check_call(tsp_cmd, sdk_root)
 
             sdk_folder = find_sdk_folder(sdk_root)
