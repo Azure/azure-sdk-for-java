@@ -221,7 +221,7 @@ public interface OrganizationResource {
     /**
      * The template for OrganizationResource update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties, UpdateStages.WithIdentity {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithProperties {
         /**
          * Executes the update request.
          * 
@@ -256,19 +256,6 @@ public interface OrganizationResource {
         }
 
         /**
-         * The stage of the OrganizationResource update allowing to specify properties.
-         */
-        interface WithProperties {
-            /**
-             * Specifies the properties property: The resource-specific properties for this resource..
-             * 
-             * @param properties The resource-specific properties for this resource.
-             * @return the next definition stage.
-             */
-            Update withProperties(OrganizationProperties properties);
-        }
-
-        /**
          * The stage of the OrganizationResource update allowing to specify identity.
          */
         interface WithIdentity {
@@ -279,6 +266,19 @@ public interface OrganizationResource {
              * @return the next definition stage.
              */
             Update withIdentity(ManagedServiceIdentity identity);
+        }
+
+        /**
+         * The stage of the OrganizationResource update allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: The resource-specific properties for this resource..
+             * 
+             * @param properties The resource-specific properties for this resource.
+             * @return the next definition stage.
+             */
+            Update withProperties(OrganizationResourceUpdateProperties properties);
         }
     }
 

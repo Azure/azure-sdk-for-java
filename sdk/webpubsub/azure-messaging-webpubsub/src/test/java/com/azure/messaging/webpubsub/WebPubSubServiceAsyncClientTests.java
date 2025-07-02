@@ -495,8 +495,7 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
             options.addQueryParam("top", String.valueOf(top));
         }
 
-        PagedFlux<WebPubSubGroupMember> pagedFlux
-            = client.listConnectionsInGroup(TestUtils.HUB_NAME, groupName, options);
+        PagedFlux<WebPubSubGroupConnection> pagedFlux = client.listConnectionsInGroup(groupName, options);
         StepVerifier.create(pagedFlux.byPage()).thenConsumeWhile(page -> {
             actualPageCount[0]++;
             actualConnectionCount[0] += page.getValue().size();

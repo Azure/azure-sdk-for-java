@@ -11,6 +11,8 @@ import com.azure.resourcemanager.mongodbatlas.fluent.models.OrganizationResource
 import com.azure.resourcemanager.mongodbatlas.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.mongodbatlas.models.OrganizationProperties;
 import com.azure.resourcemanager.mongodbatlas.models.OrganizationResource;
+import com.azure.resourcemanager.mongodbatlas.models.OrganizationResourceUpdate;
+import com.azure.resourcemanager.mongodbatlas.models.OrganizationResourceUpdateProperties;
 import java.util.Collections;
 import java.util.Map;
 
@@ -81,6 +83,8 @@ public final class OrganizationResourceImpl
 
     private String organizationName;
 
+    private OrganizationResourceUpdate updateProperties;
+
     public OrganizationResourceImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
@@ -107,20 +111,21 @@ public final class OrganizationResourceImpl
     }
 
     public OrganizationResourceImpl update() {
+        this.updateProperties = new OrganizationResourceUpdate();
         return this;
     }
 
     public OrganizationResource apply() {
         this.innerObject = serviceManager.serviceClient()
             .getOrganizations()
-            .update(resourceGroupName, organizationName, this.innerModel(), Context.NONE);
+            .update(resourceGroupName, organizationName, updateProperties, Context.NONE);
         return this;
     }
 
     public OrganizationResource apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getOrganizations()
-            .update(resourceGroupName, organizationName, this.innerModel(), context);
+            .update(resourceGroupName, organizationName, updateProperties, context);
         return this;
     }
 
@@ -159,8 +164,13 @@ public final class OrganizationResourceImpl
     }
 
     public OrganizationResourceImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateProperties.withTags(tags);
+            return this;
+        }
     }
 
     public OrganizationResourceImpl withProperties(OrganizationProperties properties) {
@@ -169,7 +179,21 @@ public final class OrganizationResourceImpl
     }
 
     public OrganizationResourceImpl withIdentity(ManagedServiceIdentity identity) {
-        this.innerModel().withIdentity(identity);
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateProperties.withIdentity(identity);
+            return this;
+        }
+    }
+
+    public OrganizationResourceImpl withProperties(OrganizationResourceUpdateProperties properties) {
+        this.updateProperties.withProperties(properties);
         return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }
