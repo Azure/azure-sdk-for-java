@@ -15,7 +15,7 @@ import java.io.IOException;
  * Represents a connection in a group.
  */
 @Immutable
-public final class WebPubSubGroupMember implements JsonSerializable<WebPubSubGroupMember> {
+public final class WebPubSubGroupConnection implements JsonSerializable<WebPubSubGroupConnection> {
 
     /**
      * The ID of a connection.
@@ -33,7 +33,7 @@ public final class WebPubSubGroupMember implements JsonSerializable<WebPubSubGro
      * @param connectionId the connectionId value to set.
      * @param userId the userId value to set.
      */
-    private WebPubSubGroupMember(String connectionId, String userId) {
+    private WebPubSubGroupConnection(String connectionId, String userId) {
         this.connectionId = connectionId;
         this.userId = userId;
     }
@@ -78,7 +78,7 @@ public final class WebPubSubGroupMember implements JsonSerializable<WebPubSubGro
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WebPubSubGroupMember.
      */
-    public static WebPubSubGroupMember fromJson(JsonReader jsonReader) throws IOException {
+    public static WebPubSubGroupConnection fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String connectionId = null;
             String userId = null;
@@ -96,7 +96,7 @@ public final class WebPubSubGroupMember implements JsonSerializable<WebPubSubGro
             if (connectionId == null) {
                 throw new IllegalStateException("Missing required property: connectionId");
             }
-            return new WebPubSubGroupMember(connectionId, userId);
+            return new WebPubSubGroupConnection(connectionId, userId);
         });
     }
 }

@@ -189,25 +189,6 @@ public final class ServicesImpl {
     }
 
     /**
-     * Sets properties for a storage account's Blob service endpoint, including properties for Storage Analytics and
-     * CORS (Cross-Origin Resource Sharing) rules.
-     * 
-     * @param blobServiceProperties The StorageService properties.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void setProperties(BlobServiceProperties blobServiceProperties, Integer timeout, String requestId) {
-        setPropertiesWithResponse(blobServiceProperties, timeout, requestId, RequestContext.none());
-    }
-
-    /**
      * gets the properties of a storage account's Blob service, including properties for Storage Analytics and CORS
      * (Cross-Origin Resource Sharing) rules.
      * 
@@ -234,26 +215,6 @@ public final class ServicesImpl {
     }
 
     /**
-     * gets the properties of a storage account's Blob service, including properties for Storage Analytics and CORS
-     * (Cross-Origin Resource Sharing) rules.
-     * 
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a storage account's Blob service, including properties for Storage Analytics and CORS
-     * (Cross-Origin Resource Sharing) rules.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BlobServiceProperties getProperties(Integer timeout, String requestId) {
-        return getPropertiesWithResponse(timeout, requestId, RequestContext.none()).getValue();
-    }
-
-    /**
      * Retrieves statistics related to replication for the Blob service. It is only available on the secondary location
      * endpoint when read-access geo-redundant replication is enabled for the storage account.
      * 
@@ -276,25 +237,6 @@ public final class ServicesImpl {
         final String accept = "application/xml";
         return service.getStatistics(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), requestId,
             accept, requestContext);
-    }
-
-    /**
-     * Retrieves statistics related to replication for the Blob service. It is only available on the secondary location
-     * endpoint when read-access geo-redundant replication is enabled for the storage account.
-     * 
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return stats for the storage service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BlobServiceStatistics getStatistics(Integer timeout, String requestId) {
-        return getStatisticsWithResponse(timeout, requestId, RequestContext.none()).getValue();
     }
 
     /**
@@ -535,26 +477,6 @@ public final class ServicesImpl {
     }
 
     /**
-     * Retrieves a user delegation key for the Blob service. This is only a valid operation when using bearer token
-     * authentication.
-     * 
-     * @param keyInfo Key information.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a user delegation key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public UserDelegationKey getUserDelegationKey(KeyInfo keyInfo, Integer timeout, String requestId) {
-        return getUserDelegationKeyWithResponse(keyInfo, timeout, requestId, RequestContext.none()).getValue();
-    }
-
-    /**
      * Returns the sku name and account kind.
      * 
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -575,23 +497,6 @@ public final class ServicesImpl {
         final String accept = "application/xml";
         return service.getAccountInfo(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), requestId,
             accept, requestContext);
-    }
-
-    /**
-     * Returns the sku name and account kind.
-     * 
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getAccountInfo(Integer timeout, String requestId) {
-        getAccountInfoWithResponse(timeout, requestId, RequestContext.none());
     }
 
     /**
@@ -619,30 +524,6 @@ public final class ServicesImpl {
         final String accept = "application/xml";
         return service.submitBatch(this.client.getUrl(), comp, contentLength, multipartContentType, timeout,
             this.client.getVersion(), requestId, body, accept, requestContext);
-    }
-
-    /**
-     * The Batch operation allows multiple API calls to be embedded into a single HTTP request.
-     * 
-     * @param contentLength The length of the request.
-     * @param multipartContentType Required. The value of this header must be multipart/mixed with a batch boundary.
-     * Example header value: multipart/mixed; boundary=batch_&lt;GUID&gt;.
-     * @param body Initial data.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public InputStream submitBatch(long contentLength, String multipartContentType, BinaryData body, Integer timeout,
-        String requestId) {
-        return submitBatchWithResponse(contentLength, multipartContentType, body, timeout, requestId,
-            RequestContext.none()).getValue();
     }
 
     /**
@@ -685,40 +566,6 @@ public final class ServicesImpl {
                 .collect(Collectors.joining(","));
         return service.filterBlobs(this.client.getUrl(), comp, timeout, this.client.getVersion(), requestId, where,
             marker, maxresults, includeConverted, accept, requestContext);
-    }
-
-    /**
-     * The Filter Blobs operation enables callers to list blobs across all containers whose tags match a given search
-     * expression. Filter blobs searches across all containers within a storage account but can be scoped within the
-     * expression to a single container.
-     * 
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @param where Filters the results to return only to return only blobs whose tags match the specified expression.
-     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
-     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
-     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
-     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
-     * is opaque to the client.
-     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
-     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
-     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
-     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
-     * specified by maxresults, or than the default of 5000.
-     * @param include Include this parameter to specify one or more datasets to include in the response.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a Filter Blobs API call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FilterBlobSegment filterBlobs(Integer timeout, String requestId, String where, String marker,
-        Integer maxresults, List<FilterBlobsIncludeItem> include) {
-        return filterBlobsWithResponse(timeout, requestId, where, marker, maxresults, include, RequestContext.none())
-            .getValue();
     }
 
     /**
