@@ -12231,6 +12231,25 @@ public final class BatchClient {
     }
 
     /**
+     * Deallocates the specified Compute Node.
+     *
+     * You can deallocate a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that emits {@link BatchNode} snapshots during polling
+     * and the final {@link BatchNode} when deallocation finishes.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchNode, BatchNode> beginDeallocateNode(String poolId, String nodeId) {
+        PollerFlux<BatchNode, BatchNode> asyncPoller = asyncClient.beginDeallocateNode(poolId, nodeId);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
      * Disables Task scheduling on the specified Compute Node.
      *
      * You can disable Task scheduling on a Compute Node only if its current
@@ -14608,6 +14627,27 @@ public final class BatchClient {
             requestOptions.setBody(BinaryData.fromObject(parameters));
         }
         deallocateNodeWithResponse(poolId, nodeId, requestOptions).getValue();
+    }
+
+    /**
+     * Deallocates the specified Compute Node.
+     *
+     * You can deallocate a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param options Optional parameters for Deallocate Node operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that emits {@link BatchNode} snapshots during polling
+     * and the final {@link BatchNode} when deallocation finishes.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchNode, BatchNode> beginDeallocateNode(String poolId, String nodeId,
+        BatchNodeDeallocateOptions options) {
+        PollerFlux<BatchNode, BatchNode> asyncPoller = asyncClient.beginDeallocateNode(poolId, nodeId, options);
+        return asyncPoller.getSyncPoller();
     }
 
     /**
