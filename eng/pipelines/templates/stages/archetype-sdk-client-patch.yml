@@ -74,13 +74,13 @@ extends:
               displayName: 'Set versions for source build'
               inputs:
                 scriptPath: 'eng/versioning/set_versions.py'
-                arguments: '--build-type client --pst --project-list $(ProjectList)'
+                arguments: '--prep-source-testing --project-list $(ProjectList)'
 
             - task: PythonScript@0
               displayName: 'Update versions for source build'
               inputs:
                 scriptPath: 'eng/versioning/update_versions.py'
-                arguments: '--update-type library --build-type client --sr'
+                arguments: '--skip-readme'
 
             - task: PythonScript@0
               displayName: 'Generate FromSource POM and directories for sparse checkout'
@@ -220,13 +220,13 @@ extends:
               displayName: 'Set versions for source build'
               inputs:
                 scriptPath: 'eng/versioning/set_versions.py'
-                arguments: '--build-type client --pst --project-list $(ProjectList)'
+                arguments: '--prep-source-testing --project-list $(ProjectList)'
 
             - task: PythonScript@0
               displayName: 'Update versions for source build'
               inputs:
                 scriptPath: 'eng/versioning/update_versions.py'
-                arguments: '--update-type library --build-type client --sr'
+                arguments: '--skip-readme'
 
             - task: PythonScript@0
               displayName: 'Generate FromSource POM and directories for sparse checkout'
@@ -263,7 +263,7 @@ extends:
                 $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
                 python --version
                 foreach($artifact in $ArtifactsList) {
-                  python eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --vv --ai $($artifact.name) --gi $($artifact.groupId)
+                  python eng/versioning/set_versions.py --verify-version --artifact-id $($artifact.name) --group-id $($artifact.groupId)
                 }
               displayName: 'Verify artifact versions for release'
 
@@ -320,6 +320,5 @@ extends:
           parameters:
             DependsOn:
               - Build
-            SDKType: ${{ parameters.SDKType }}
             Artifacts: ${{ parameters.Artifacts }}
             TestPipeline: ${{ parameters.TestPipeline }}

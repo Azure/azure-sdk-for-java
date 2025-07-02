@@ -240,4 +240,3 @@ Shipra1Mishra is an invalid user. Ensure the user exists, is public member of Az
 zhusijia26 is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 XiaofeiCao is not a public member of Azure.
 Path entry, /eng/versioning/version_client.txt, is missing owners
-Path entry, /eng/versioning/version_data.txt, is missing owners
