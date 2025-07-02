@@ -13,6 +13,7 @@ import io.netty.handler.codec.http2.Http2DataFrame;
 import io.netty.util.ReferenceCountUtil;
 
 import java.io.IOException;
+import java.nio.channels.ClosedChannelException;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -135,5 +136,16 @@ public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAda
             ctx.pipeline().remove(this);
         }
         ctx.fireChannelInactive();
+    }
+
+    @Override
+    public void handlerAdded(ChannelHandlerContext ctx) {
+        if (!ctx.channel().isActive()) {
+            // In case the read handler is added to a closed channel we fail loudly by firing
+            // an exception. Simply counting down the latch would cause the caller to receive
+            // an empty/incomplete data stream without any indication of the underlying network error.
+            ctx.fireExceptionCaught(new ClosedChannelException());
+            ctx.pipeline().remove(this);
+        }
     }
 }
