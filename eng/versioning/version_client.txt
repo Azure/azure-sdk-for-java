@@ -478,7 +478,7 @@ com.azure.resourcemanager:azure-resourcemanager-weightsandbiases;1.0.0-beta.1;1.
 com.azure.resourcemanager:azure-resourcemanager-carbonoptimization;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-dependencymap;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-portalservicescopilot;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-lambdatesthyperexecute;1.0.0-beta.1;1.0.0
+com.azure.resourcemanager:azure-resourcemanager-lambdatesthyperexecute;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-onlineexperimentation;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-secretsstoreextension;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-programmableconnectivity;1.0.0-beta.1;1.0.0-beta.1
