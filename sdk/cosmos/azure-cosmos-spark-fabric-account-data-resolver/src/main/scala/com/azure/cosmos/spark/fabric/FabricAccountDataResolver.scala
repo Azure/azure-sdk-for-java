@@ -13,6 +13,7 @@ class FabricAccountDataResolver extends AccountDataResolver with BasicLoggingTra
     private val tokenProviders : TrieMap[ConfigParameters, Option[List[String] => CosmosAccessToken]] =
             new TrieMap[ConfigParameters, Option[List[String] => CosmosAccessToken]]()
     private final val AUDIENCE = "https://cosmos.azure.com/.default"
+    private final val objectMapper = new ObjectMapper()
 
 
   override def getAccountDataConfig(configs: Map[String, String]): Map[String, String] = {
@@ -40,13 +41,12 @@ class FabricAccountDataResolver extends AccountDataResolver with BasicLoggingTra
     if (isEnabled(configs)) {
       logInfo(s"FabricAccountDataResolver is enabled")
       Some((_: List[String]) => {
-        var accessToken = ""
-        accessToken = mssparkutils.credentials.getToken(configs.audience.getOrElse(AUDIENCE))
+        // obtains the access token from fabric environment
+        val accessToken = mssparkutils.credentials.getToken(configs.audience.getOrElse(AUDIENCE))
+        // Extract the expiration time from the JWT payload
         val parts = accessToken.split("\\.")
         val payloadJson = new String(java.util.Base64.getUrlDecoder.decode(parts(1)))
-        val mapper = new ObjectMapper()
-        val node = mapper.readTree(payloadJson)
-
+        val node = objectMapper.readTree(payloadJson)
         val expirationEpoch = node.get("exp").asLong()
         val expirationTime = OffsetDateTime.ofInstant(
           Instant.ofEpochSecond(expirationEpoch),
@@ -61,8 +61,8 @@ class FabricAccountDataResolver extends AccountDataResolver with BasicLoggingTra
   }
 
   private[this] object FabricConfigNames {
-    val Audience = "cosmos.auth.fabric.audience"
-    val CustomAuthEnabled = "cosmos.auth.fabric.enabled"
+    val Audience = "spark.cosmos.auth.fabric.audience"
+    val CustomAuthEnabled = "spark.cosmos.auth.fabric.enabled"
   }
 
   private case class ConfigParameters(audience: Option[String], isEnabledConfigValue: Option[String])
