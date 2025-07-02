@@ -15,6 +15,16 @@ import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
+
+import java.io.ByteArrayInputStream;
+
+import static com.azure.storage.common.implementation.Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME;
+import static com.azure.storage.common.implementation.Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.STRUCTUED_BODY_TYPE;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class DataLakeMessageEncoderUploadTests extends DataLakeTestBase {
     private DataLakeFileClient fc;
@@ -25,33 +35,107 @@ public class DataLakeMessageEncoderUploadTests extends DataLakeTestBase {
     }
 
     @Test
-    public void uploadBinaryDataFull() {
+    public void uploadBinaryDataFullCRCHeader() {
         FileParallelUploadOptions options = new FileParallelUploadOptions(DATA.getDefaultBinaryData())
             .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO);
-        Response<PathInfo> response = fc.uploadWithResponse(options, null, Context.NONE);
+
+        // viewed crc64 header through httptoolkit, unable to retrieve header through the response object
+        // due to the response object containing the request and response of the flush operation, not the append
+        // Response<PathInfo> response = fc.uploadWithResponse(options, null, Context.NONE);
+        // assertNotNull(response.getRequest().getHeaders().getValue(CONTENT_CRC64_HEADER_NAME));
+        assertDoesNotThrow(() -> fc.uploadWithResponse(options, null, Context.NONE));
     }
 
     @Test
-    public void uploadBinaryDataChunked() {
+    public void uploadBinaryDataFullStructMess() {
+        FileParallelUploadOptions options
+            = new FileParallelUploadOptions(BinaryData.fromBytes(getRandomByteArray(Constants.MB * 5)))
+                .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO);
+
+        // viewed structured body type header through httptoolkit, unable to retrieve it through the response object
+        // Response<PathInfo> response = fc.uploadWithResponse(options, null, Context.NONE);
+        // assertEquals(STRUCTUED_BODY_TYPE, response.getRequest().getHeaders().getValue(STRUCTURED_BODY_TYPE_HEADER_NAME));
+        assertDoesNotThrow(() -> fc.uploadWithResponse(options, null, Context.NONE));
+    }
+
+    @Test
+    public void uploadBinaryDataChunkedStructMess() {
         FileParallelUploadOptions options
             = new FileParallelUploadOptions(BinaryData.fromBytes(getRandomByteArray(Constants.MB * 8)))
                 .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO)
                 .setParallelTransferOptions(
                     new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB * 4));
-        Response<PathInfo> response = fc.uploadWithResponse(options, null, Context.NONE);
+
+        assertDoesNotThrow(() -> fc.uploadWithResponse(options, null, Context.NONE));
     }
 
     @Test
-    public void uploadInputStream() {
+    public void uploadInputStreamFullCRCHeader() {
         FileParallelUploadOptions options = new FileParallelUploadOptions(DATA.getDefaultInputStream())
             .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO);
-        Response<PathInfo> response = fc.uploadWithResponse(options, null, Context.NONE);
+
+        // viewed structured body type header through httptoolkit, unable to retrieve it through the response object
+        //Response<PathInfo> response = fc.uploadWithResponse(options, null, Context.NONE);
+        //assertNotNull(response.getRequest().getHeaders().getValue(CONTENT_CRC64_HEADER_NAME));
+        assertDoesNotThrow(() -> fc.uploadWithResponse(options, null, Context.NONE));
     }
 
     @Test
-    public void uploadFlux() {
+    public void uploadInputStreamFullStructMess() {
+        byte[] randomData = getRandomByteArray(Constants.MB * 5);
+        ByteArrayInputStream input = new ByteArrayInputStream(randomData);
+        FileParallelUploadOptions options
+            = new FileParallelUploadOptions(input).setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO);
+
+        // viewed structured body type header through httptoolkit, unable to retrieve it through the response object
+        //Response<PathInfo> response = fc.uploadWithResponse(options, null, Context.NONE);
+        //assertEquals(STRUCTUED_BODY_TYPE,
+        //  response.getRequest().getHeaders().getValue(STRUCTURED_BODY_TYPE_HEADER_NAME));
+        assertDoesNotThrow(() -> fc.uploadWithResponse(options, null, Context.NONE));
+    }
+
+    @Test
+    public void uploadInputStreamChunkedStructMess() {
+        byte[] randomData = getRandomByteArray(Constants.MB * 8);
+        ByteArrayInputStream input = new ByteArrayInputStream(randomData);
+        FileParallelUploadOptions options
+            = new FileParallelUploadOptions(input).setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO)
+                .setParallelTransferOptions(
+                    new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB * 4));
+
+        assertDoesNotThrow(() -> fc.uploadWithResponse(options, null, Context.NONE));
+    }
+
+    @Test
+    public void uploadFluxFullCRCHeader() {
         FileParallelUploadOptions options = new FileParallelUploadOptions(DATA.getDefaultFlux())
             .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO);
-        Response<PathInfo> response = fc.uploadWithResponse(options, null, Context.NONE);
+
+        // viewed structured body type header through httptoolkit, unable to retrieve it through the response object
+        // Response<PathInfo> response = fc.uploadWithResponse(options, null, Context.NONE);
+        // assertNotNull(response.getRequest().getHeaders().getValue(CONTENT_CRC64_HEADER_NAME));
+        assertDoesNotThrow(() -> fc.uploadWithResponse(options, null, Context.NONE));
+    }
+
+    @Test
+    public void uploadFluxFullStructMess() {
+        FileParallelUploadOptions options = new FileParallelUploadOptions(Flux.just(getRandomData(Constants.MB * 5)))
+            .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO);
+
+        // viewed structured body type header through httptoolkit, unable to retrieve it through the response object
+        //Response<PathInfo> response = fc.uploadWithResponse(options, null, Context.NONE);
+        //assertEquals(STRUCTUED_BODY_TYPE,
+        //response.getRequest().getHeaders().getValue(STRUCTURED_BODY_TYPE_HEADER_NAME));
+        assertDoesNotThrow(() -> fc.uploadWithResponse(options, null, Context.NONE));
+    }
+
+    @Test
+    public void uploadFluxChunkedStructMess() {
+        FileParallelUploadOptions options = new FileParallelUploadOptions(Flux.just(getRandomData(Constants.MB * 8)))
+            .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO)
+            .setParallelTransferOptions(
+                new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB * 4));
+
+        assertDoesNotThrow(() -> fc.uploadWithResponse(options, null, Context.NONE));
     }
 }

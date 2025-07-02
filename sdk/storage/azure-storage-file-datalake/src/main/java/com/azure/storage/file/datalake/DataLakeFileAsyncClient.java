@@ -84,6 +84,7 @@ import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.storage.common.implementation.Constants.CONTENT_VALIDATION_BEHAVIOR_KEY;
 import static com.azure.storage.common.implementation.Constants.USE_CRC64_CHECKSUM_HEADER_CONTEXT;
 import static com.azure.storage.common.implementation.Constants.USE_STRUCTURED_MESSAGE_CONTEXT;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.STATIC_MAXIMUM_ENCODED_DATA_LENGTH;
 
 /**
  * This class provides a client that contains file operations for Azure Storage Data Lake. Operations provided by
@@ -709,8 +710,14 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         }
         if (storageChecksumAlgorithm != null
             && storageChecksumAlgorithm.resolveAuto() == StorageChecksumAlgorithm.CRC64) {
-            appendContexts = Contexts.with(appendContexts.getContext()
-                .addData(CONTENT_VALIDATION_BEHAVIOR_KEY, USE_CRC64_CHECKSUM_HEADER_CONTEXT));
+            String contentValidationContextValue;
+            if (length <= STATIC_MAXIMUM_ENCODED_DATA_LENGTH) {
+                contentValidationContextValue = USE_CRC64_CHECKSUM_HEADER_CONTEXT;
+            } else {
+                contentValidationContextValue = USE_STRUCTURED_MESSAGE_CONTEXT;
+            }
+            appendContexts = Contexts.with(
+                appendContexts.getContext().addData(CONTENT_VALIDATION_BEHAVIOR_KEY, contentValidationContextValue));
         }
         return appendWithResponse(data, fileOffset, length,
             new DataLakeFileAppendOptions().setLeaseId(requestConditions.getLeaseId()), appendContexts.getContext())
