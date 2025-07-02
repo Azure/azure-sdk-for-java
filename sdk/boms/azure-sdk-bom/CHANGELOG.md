@@ -1,5 +1,12 @@
 # Release History
 
+## 1.2.36 (2025-06-30)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+- Added ARM libraries to the BOM.
+
 ## 1.2.35 (2025-05-27)
 
 ### Dependency Updates

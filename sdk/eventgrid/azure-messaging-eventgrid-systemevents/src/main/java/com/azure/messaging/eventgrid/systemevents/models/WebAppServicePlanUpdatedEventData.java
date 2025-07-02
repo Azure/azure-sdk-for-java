@@ -21,13 +21,13 @@ public final class WebAppServicePlanUpdatedEventData implements JsonSerializable
      * Detail of action on the app service plan.
      */
     @Generated
-    private final AppServicePlanEventTypeDetail appServicePlanEventTypeDetail;
+    private AppServicePlanEventTypeDetail appServicePlanEventTypeDetail;
 
     /*
      * sku of app service plan.
      */
     @Generated
-    private final WebAppServicePlanUpdatedEventDataSku sku;
+    private WebAppServicePlanUpdatedEventDataSku sku;
 
     /*
      * name of the app service plan that had this event.
@@ -69,15 +69,9 @@ public final class WebAppServicePlanUpdatedEventData implements JsonSerializable
 
     /**
      * Creates an instance of WebAppServicePlanUpdatedEventData class.
-     *
-     * @param appServicePlanEventTypeDetail the appServicePlanEventTypeDetail value to set.
-     * @param sku the sku value to set.
      */
     @Generated
-    private WebAppServicePlanUpdatedEventData(AppServicePlanEventTypeDetail appServicePlanEventTypeDetail,
-        WebAppServicePlanUpdatedEventDataSku sku) {
-        this.appServicePlanEventTypeDetail = appServicePlanEventTypeDetail;
-        this.sku = sku;
+    private WebAppServicePlanUpdatedEventData() {
     }
 
     /**
@@ -187,51 +181,38 @@ public final class WebAppServicePlanUpdatedEventData implements JsonSerializable
      * @param jsonReader The JsonReader being read.
      * @return An instance of WebAppServicePlanUpdatedEventData if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WebAppServicePlanUpdatedEventData.
      */
     @Generated
     public static WebAppServicePlanUpdatedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AppServicePlanEventTypeDetail appServicePlanEventTypeDetail = null;
-            WebAppServicePlanUpdatedEventDataSku sku = null;
-            String name = null;
-            String clientRequestId = null;
-            String correlationRequestId = null;
-            String requestId = null;
-            String address = null;
-            String verb = null;
+            WebAppServicePlanUpdatedEventData deserializedWebAppServicePlanUpdatedEventData
+                = new WebAppServicePlanUpdatedEventData();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("appServicePlanEventTypeDetail".equals(fieldName)) {
-                    appServicePlanEventTypeDetail = AppServicePlanEventTypeDetail.fromJson(reader);
+                    deserializedWebAppServicePlanUpdatedEventData.appServicePlanEventTypeDetail
+                        = AppServicePlanEventTypeDetail.fromJson(reader);
                 } else if ("sku".equals(fieldName)) {
-                    sku = WebAppServicePlanUpdatedEventDataSku.fromJson(reader);
+                    deserializedWebAppServicePlanUpdatedEventData.sku
+                        = WebAppServicePlanUpdatedEventDataSku.fromJson(reader);
                 } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
+                    deserializedWebAppServicePlanUpdatedEventData.name = reader.getString();
                 } else if ("clientRequestId".equals(fieldName)) {
-                    clientRequestId = reader.getString();
+                    deserializedWebAppServicePlanUpdatedEventData.clientRequestId = reader.getString();
                 } else if ("correlationRequestId".equals(fieldName)) {
-                    correlationRequestId = reader.getString();
+                    deserializedWebAppServicePlanUpdatedEventData.correlationRequestId = reader.getString();
                 } else if ("requestId".equals(fieldName)) {
-                    requestId = reader.getString();
+                    deserializedWebAppServicePlanUpdatedEventData.requestId = reader.getString();
                 } else if ("address".equals(fieldName)) {
-                    address = reader.getString();
+                    deserializedWebAppServicePlanUpdatedEventData.address = reader.getString();
                 } else if ("verb".equals(fieldName)) {
-                    verb = reader.getString();
+                    deserializedWebAppServicePlanUpdatedEventData.verb = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            WebAppServicePlanUpdatedEventData deserializedWebAppServicePlanUpdatedEventData
-                = new WebAppServicePlanUpdatedEventData(appServicePlanEventTypeDetail, sku);
-            deserializedWebAppServicePlanUpdatedEventData.name = name;
-            deserializedWebAppServicePlanUpdatedEventData.clientRequestId = clientRequestId;
-            deserializedWebAppServicePlanUpdatedEventData.correlationRequestId = correlationRequestId;
-            deserializedWebAppServicePlanUpdatedEventData.requestId = requestId;
-            deserializedWebAppServicePlanUpdatedEventData.address = address;
-            deserializedWebAppServicePlanUpdatedEventData.verb = verb;
             return deserializedWebAppServicePlanUpdatedEventData;
         });
     }

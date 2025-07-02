@@ -15,6 +15,7 @@ import java.util.concurrent.CountDownLatch;
  */
 public final class Netty4ChannelInputStream extends InputStream {
     private final Channel channel;
+    private final boolean isHttp2;
 
     // Indicator for the Channel being fully read.
     // This will become true before 'streamDone' becomes true, but both may become true in the same operation.
@@ -44,8 +45,9 @@ public final class Netty4ChannelInputStream extends InputStream {
      * @param eagerContent Any response body content eagerly read from the {@link Channel} when processing the initial
      * status line and response headers.
      * @param channel The {@link Channel} to read from.
+     * @param isHttp2 Flag indicating whether the Channel is used for HTTP/2 or not.
      */
-    Netty4ChannelInputStream(ByteArrayOutputStream eagerContent, Channel channel) {
+    Netty4ChannelInputStream(ByteArrayOutputStream eagerContent, Channel channel, boolean isHttp2) {
         if (eagerContent != null && eagerContent.size() > 0) {
             this.currentBuffer = eagerContent.toByteArray();
         } else {
@@ -57,6 +59,7 @@ public final class Netty4ChannelInputStream extends InputStream {
         if (channel.pipeline().get(Netty4InitiateOneReadHandler.class) != null) {
             channel.pipeline().remove(Netty4InitiateOneReadHandler.class);
         }
+        this.isHttp2 = isHttp2;
     }
 
     byte[] getCurrentBuffer() {
@@ -168,8 +171,10 @@ public final class Netty4ChannelInputStream extends InputStream {
     public void close() {
         currentBuffer = null;
         additionalBuffers.clear();
-        channel.disconnect();
-        channel.close();
+        if (channel.isOpen() || channel.isActive()) {
+            channel.disconnect();
+            channel.close();
+        }
     }
 
     private boolean setupNextBuffer() throws IOException {
@@ -210,7 +215,7 @@ public final class Netty4ChannelInputStream extends InputStream {
                 byteBuf.readBytes(buffer);
 
                 additionalBuffers.add(buffer);
-            });
+            }, isHttp2);
             channel.pipeline().addLast(Netty4HandlerNames.READ_ONE, handler);
         }
 

@@ -30,7 +30,7 @@ public final class RecordingResultResponse implements JsonSerializable<Recording
      * Container for chunks
      */
     @Generated
-    private RecordingStorageInfo recordingStorageInfo;
+    private RecordingStorageInfoInternal recordingStorageInfo;
 
     /*
      * The errors property.
@@ -85,7 +85,7 @@ public final class RecordingResultResponse implements JsonSerializable<Recording
      * @return the recordingStorageInfo value.
      */
     @Generated
-    public RecordingStorageInfo getRecordingStorageInfo() {
+    public RecordingStorageInfoInternal getRecordingStorageInfo() {
         return this.recordingStorageInfo;
     }
 
@@ -168,7 +168,8 @@ public final class RecordingResultResponse implements JsonSerializable<Recording
                 if ("recordingId".equals(fieldName)) {
                     deserializedRecordingResultResponse.recordingId = reader.getString();
                 } else if ("recordingStorageInfo".equals(fieldName)) {
-                    deserializedRecordingResultResponse.recordingStorageInfo = RecordingStorageInfo.fromJson(reader);
+                    deserializedRecordingResultResponse.recordingStorageInfo
+                        = RecordingStorageInfoInternal.fromJson(reader);
                 } else if ("errors".equals(fieldName)) {
                     List<Error> errors = reader.readArray(reader1 -> Error.fromJson(reader1));
                     deserializedRecordingResultResponse.errors = errors;
