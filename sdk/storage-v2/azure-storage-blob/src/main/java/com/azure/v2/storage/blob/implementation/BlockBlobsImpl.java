@@ -54,7 +54,7 @@ public final class BlockBlobsImpl {
 
     /**
      * Initializes an instance of BlockBlobsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BlockBlobsImpl(AzureBlobStorageImpl client) {
@@ -64,7 +64,7 @@ public final class BlockBlobsImpl {
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
     public AzureBlobStorageServiceVersion getServiceVersion() {
@@ -253,7 +253,7 @@ public final class BlockBlobsImpl {
      * overwrites any existing metadata on the blob. Partial updates are not supported with Put Blob; the content of the
      * existing blob is overwritten with the content of the new blob. To perform a partial update of the content of a
      * block blob, use the Put Block List operation.
-     *
+     * 
      * @param containerName The container name.
      * @param blob The blob name.
      * @param contentLength The length of the request.
@@ -357,18 +357,15 @@ public final class BlockBlobsImpl {
             encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
         }
         String encryptionScope = encryptionScopeInternal;
-        String transactionalContentMD5Converted
-            = transactionalContentMD5 == null ? null : new String(Base64.getEncoder().encode(transactionalContentMD5));
-        String contentMd5Converted = contentMd5 == null ? null : new String(Base64.getEncoder().encode(contentMd5));
+        String transactionalContentMD5Converted = new String(Base64.getEncoder().encode(transactionalContentMD5));
+        String contentMd5Converted = new String(Base64.getEncoder().encode(contentMd5));
         DateTimeRfc1123 ifModifiedSinceConverted
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         DateTimeRfc1123 immutabilityPolicyExpiryConverted
             = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
-        String transactionalContentCrc64Converted = transactionalContentCrc64 == null
-            ? null
-            : new String(Base64.getEncoder().encode(transactionalContentCrc64));
+        String transactionalContentCrc64Converted = new String(Base64.getEncoder().encode(transactionalContentCrc64));
         return service.upload(this.client.getUrl(), containerName, blob, blobType, timeout,
             transactionalContentMD5Converted, contentLength, contentType, contentEncoding, contentLanguage,
             contentMd5Converted, cacheControl, metadata, leaseId, contentDisposition, encryptionKey,
@@ -385,7 +382,7 @@ public final class BlockBlobsImpl {
      * from URL; the content of an existing blob is overwritten with the content of the new blob. To perform partial
      * updates to a block blob's contents using a source URL, use the Put Block from URL API in conjunction with Put
      * Block List.
-     *
+     * 
      * @param containerName The container name.
      * @param blob The blob name.
      * @param contentLength The length of the request.
@@ -521,7 +518,7 @@ public final class BlockBlobsImpl {
 
     /**
      * The Stage Block operation creates a new block to be committed as part of a blob.
-     *
+     * 
      * @param containerName The container name.
      * @param blob The blob name.
      * @param blockId A valid Base64 string value that identifies the block. Prior to encoding, the string must be less
@@ -587,7 +584,7 @@ public final class BlockBlobsImpl {
     /**
      * The Stage Block operation creates a new block to be committed as part of a blob where the contents are read from
      * a URL.
-     *
+     * 
      * @param containerName The container name.
      * @param blob The blob name.
      * @param blockId A valid Base64 string value that identifies the block. Prior to encoding, the string must be less
@@ -669,7 +666,7 @@ public final class BlockBlobsImpl {
      * committing the new and existing blocks together. You can do this by specifying whether to commit a block from the
      * committed block list or from the uncommitted block list, or to commit the most recently uploaded version of the
      * block, whichever list it may belong to.
-     *
+     * 
      * @param containerName The container name.
      * @param blob The blob name.
      * @param blocks Blob Blocks.
@@ -788,7 +785,7 @@ public final class BlockBlobsImpl {
 
     /**
      * The Get Block List operation retrieves the list of blocks that have been uploaded as part of a block blob.
-     *
+     * 
      * @param containerName The container name.
      * @param blob The blob name.
      * @param listType Specifies whether to return the list of committed blocks, the list of uncommitted blocks, or both

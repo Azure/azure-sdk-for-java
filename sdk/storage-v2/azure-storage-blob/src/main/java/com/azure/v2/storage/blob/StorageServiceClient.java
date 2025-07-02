@@ -248,9 +248,8 @@ public final class StorageServiceClient {
     public PagedIterable<BlobContainerItem> listBlobContainersSegment(String prefix, String marker, Integer maxresults,
         List<ListBlobContainersIncludeType> listBlobContainersIncludeType, Integer timeout, String requestId,
         RequestContext requestContext) {
-        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.ListBlobContainersSegment", requestContext,
-            updatedContext -> this.serviceClient.listBlobContainersSegment(prefix, marker, maxresults,
-                listBlobContainersIncludeType, timeout, requestId, updatedContext));
+        return this.serviceClient.listBlobContainersSegment(prefix, marker, maxresults, listBlobContainersIncludeType,
+            timeout, requestId, requestContext);
     }
 
     /**
