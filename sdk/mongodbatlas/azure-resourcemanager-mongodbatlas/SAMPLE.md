@@ -131,8 +131,8 @@ public final class OrganizationsDeleteSamples {
 ```java
 import com.azure.resourcemanager.mongodbatlas.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.mongodbatlas.models.ManagedServiceIdentityType;
-import com.azure.resourcemanager.mongodbatlas.models.OrganizationProperties;
 import com.azure.resourcemanager.mongodbatlas.models.OrganizationResource;
+import com.azure.resourcemanager.mongodbatlas.models.OrganizationResourceUpdateProperties;
 import com.azure.resourcemanager.mongodbatlas.models.PartnerProperties;
 import com.azure.resourcemanager.mongodbatlas.models.UserDetails;
 import java.util.HashMap;
@@ -157,7 +157,9 @@ public final class OrganizationsUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf())
-            .withProperties(new OrganizationProperties()
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf()))
+            .withProperties(new OrganizationResourceUpdateProperties()
                 .withUser(new UserDetails().withFirstName("btyhwmlbzzihjfimviefebg")
                     .withLastName("xx")
                     .withEmailAddress(".K_@e7N-g1.xjqnbPs")
@@ -167,8 +169,6 @@ public final class OrganizationsUpdateSamples {
                 .withPartnerProperties(new PartnerProperties().withOrganizationId("vugtqrobendjkinziswxlqueouo")
                     .withRedirectUrl("cbxwtehraetlluocdihfgchvjzockn")
                     .withOrganizationName("U.1-:7")))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
-                .withUserAssignedIdentities(mapOf()))
             .apply();
     }
 
