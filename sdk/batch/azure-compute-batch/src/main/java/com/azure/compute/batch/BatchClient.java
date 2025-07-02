@@ -12191,6 +12191,26 @@ public final class BatchClient {
     }
 
     /**
+     * Starts the specified Compute Node.
+     *
+     * You can start a Compute Node only if it has been deallocated.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the starting of the Node.
+     * The poller provides {@link BatchNode} instances during polling and returns the last known
+     * {@link BatchNode} on completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchNode, BatchNode> beginStartNode(String poolId, String nodeId) {
+        PollerFlux<BatchNode, BatchNode> asyncPoller = asyncClient.beginStartNode(poolId, nodeId);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
      * Reinstalls the operating system on the specified Compute Node.
      *
      * You can reinstall the operating system on a Compute Node only if it is in an
@@ -14569,6 +14589,28 @@ public final class BatchClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         startNodeWithResponse(poolId, nodeId, requestOptions).getValue();
+    }
+
+    /**
+     * Starts the specified Compute Node.
+     *
+     * You can start a Compute Node only if it has been deallocated.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param options Optional parameters for Start Node operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the starting of the Node.
+     * The poller provides {@link BatchNode} instances during polling and returns the last known
+     * {@link BatchNode} on completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchNode, BatchNode> beginStartNode(String poolId, String nodeId,
+        BatchNodeStartOptions options) {
+        PollerFlux<BatchNode, BatchNode> asyncPoller = asyncClient.beginStartNode(poolId, nodeId, options);
+        return asyncPoller.getSyncPoller();
     }
 
     /**
