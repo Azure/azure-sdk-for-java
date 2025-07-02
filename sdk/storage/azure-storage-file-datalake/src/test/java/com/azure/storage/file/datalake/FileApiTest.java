@@ -20,7 +20,6 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
-import com.azure.storage.common.test.shared.policy.InvalidServiceVersionPipelinePolicy;
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy;
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
@@ -74,7 +73,6 @@ import com.azure.storage.file.datalake.sas.FileSystemSasPermission;
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClient;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -116,7 +114,6 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import static com.azure.storage.common.implementation.StorageImplUtils.INVALID_VERSION_HEADER_MESSAGE;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -3619,23 +3616,5 @@ public class FileApiTest extends DataLakeTestBase {
     @Test
     public void pathGetSystemPropertiesFileMin() {
         assertNotNull(fc.getSystemProperties());
-    }
-
-    @Test
-    @Disabled // temporary
-    public void invalidServiceVersion() {
-        DataLakeServiceClient serviceClient = instrument(
-            new DataLakeServiceClientBuilder().endpoint(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint())
-                .credential(ENVIRONMENT.getDataLakeAccount().getCredential())
-                .addPolicy(new InvalidServiceVersionPipelinePolicy())).buildClient();
-
-        DataLakeFileSystemClient fileSystemClient = serviceClient.getFileSystemClient(generateFileSystemName());
-        DataLakeFileClient fileClient = fileSystemClient.getFileClient(generatePathName());
-
-        DataLakeStorageException exception
-            = assertThrows(DataLakeStorageException.class, fileClient::createIfNotExists);
-
-        assertEquals(400, exception.getStatusCode());
-        assertTrue(exception.getMessage().contains(INVALID_VERSION_HEADER_MESSAGE));
     }
 }

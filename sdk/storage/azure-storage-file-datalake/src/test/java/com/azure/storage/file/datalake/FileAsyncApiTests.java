@@ -14,7 +14,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressListener;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.storage.common.test.shared.policy.InvalidServiceVersionPipelinePolicy;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.ParallelTransferOptions;
@@ -73,7 +72,6 @@ import com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -120,7 +118,6 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.azure.storage.common.implementation.StorageImplUtils.INVALID_VERSION_HEADER_MESSAGE;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -4402,25 +4399,6 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     @Test
     public void pathGetSystemPropertiesFileMin() {
         StepVerifier.create(fc.getSystemProperties()).expectNextCount(1).verifyComplete();
-    }
-
-    @Test
-    @Disabled // temporary
-    public void invalidServiceVersion() {
-        DataLakeServiceAsyncClient serviceClient
-            = instrument(new DataLakeServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
-                .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
-                .addPolicy(new InvalidServiceVersionPipelinePolicy())).buildAsyncClient();
-
-        DataLakeFileSystemAsyncClient fileSystemClient
-            = serviceClient.getFileSystemAsyncClient(generateFileSystemName());
-        DataLakeFileAsyncClient fileClient = fileSystemClient.getFileAsyncClient(generatePathName());
-
-        StepVerifier.create(fileClient.createIfNotExists()).verifyErrorSatisfies(ex -> {
-            DataLakeStorageException exception = assertInstanceOf(DataLakeStorageException.class, ex);
-            assertEquals(400, exception.getStatusCode());
-            assertTrue(exception.getMessage().contains(INVALID_VERSION_HEADER_MESSAGE));
-        });
     }
 
 }

@@ -213,9 +213,9 @@ public class ModelHelper {
      */
     public static DataLakeStorageException mapToDataLakeStorageException(DataLakeStorageExceptionInternal internal) {
         String code = internal.getValue() == null ? null : internal.getValue().getCode();
-        String headerName = internal.getValue() == null ? null : internal.getValue().getHeaderName();
-        return new DataLakeStorageException(StorageImplUtils.convertStorageExceptionMessage(internal.getMessage(),
-            internal.getResponse(), code, headerName), internal.getResponse(), internal.getValue());
+        return new DataLakeStorageException(
+            StorageImplUtils.convertStorageExceptionMessage(internal.getMessage(), internal.getResponse(), code, null),
+            internal.getResponse(), internal.getValue());
     }
 
     public static PathSystemProperties
