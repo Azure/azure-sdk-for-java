@@ -523,13 +523,18 @@ def clean_sdk_folder(sdk_root: str, sdk_folder: str) -> bool:
         sdk_path = os.path.join(sdk_root, sdk_folder)
         # check whether this is migration from Swagger
         if os.path.exists(os.path.join(sdk_path, "swagger")):
-            logging.info(f"[GENERATE] Delete folder: {sdk_folder}")
             print(
                 "Existing package in SDK was from Swagger. It cannot be automatically converted to package from TypeSpec. Generate a fresh package from TypeSpec.",
                 file=sys.stderr,
             )
+        else:
+            print(
+                "Generate a fresh package from TypeSpec. If there was prior customization on the package, please check whether it causes failure, and fix them before apiview.",
+                file=sys.stderr,
+            )
 
         # delete the folder regardless of Swagger or not
+        logging.info(f"[GENERATE] Delete folder: {sdk_folder}")
         shutil.rmtree(sdk_path, ignore_errors=True)
         succeeded = True
     return succeeded
