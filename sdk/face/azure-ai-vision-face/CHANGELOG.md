@@ -8,14 +8,13 @@
 
 ### Other Changes
 
-## 1.0.0-beta.3
+## 1.0.0-beta.3 (2025-7-11)
 
 - Change the default service API version to `v1.2`
 - Liveness API change
   - Unified the `LivenessSession` and removed `CreateLivenessSessionResult`
   - Unified the `CreateLivenessWithVerifySession`
   - Updated model `LivenessSession` and `CreateLivenesSessionContent`
-
 
 ## 1.0.0-beta.2 (2024-10-23)
 
