@@ -91,7 +91,7 @@
     <dependency>
       <groupId>com.microsoft.azure.synapse</groupId>
       <artifactId>synapseutils_2.12</artifactId>
-      <version>1.5.4</version> <!-- {x-version-update;com.microsoft.azure.synapse:commons-io;external_dependency} -->
+      <version>1.5.4</version> <!-- {x-version-update;cosmos_com.microsoft.azure.synapse:commons-io;external_dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -306,7 +306,7 @@
                 <include>com.globalmentor:hadoop-bare-naked-local-fs:[0.1.0]</include> <!-- {x-include-update;cosmos_com.globalmentor:hadoop-bare-naked-local-fs;external_dependency} -->
                 <include>com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12:[4.38.0-beta.1]</include> <!-- {x-include-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;current} -->
                 <include>com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12:[4.38.0-beta.1]</include> <!-- {x-include-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;current} -->
-                <include>com.microsoft.azure.synapse:synapseutils_2.12:[1.5.4]</include> <!-- {x-include-update;com.microsoft.azure.synapse:synapseutils_2.12;current} -->
+                <include>com.microsoft.azure.synapse:synapseutils_2.12:[1.5.4]</include> <!-- {x-include-update;cosmos_com.microsoft.azure.synapse:synapseutils_2.12;current} -->
               </includes>
             </bannedDependencies>
           </rules>
