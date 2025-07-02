@@ -107,7 +107,6 @@ function Build-Dependency-Hash-From-File {
 $Path = Resolve-Path ($PSScriptRoot + "/../../")
 $libHash = @{}
 Build-Dependency-Hash-From-File $libHash $Path\eng\versioning\version_client.txt
-Build-Dependency-Hash-From-File $libHash $Path\eng\versioning\version_data.txt
 $foundError = $false
 
 # Check for the existence of the files in the build directory. The resulting built artifacts

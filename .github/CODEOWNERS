@@ -935,9 +935,8 @@
 /.github/workflows/                                           @Azure/azure-sdk-eng
 /.config/1espt/                                               @benbp @weshaggard
 
-# Removing owners for these files to not require codeowner approval for changes to them given they are shared with project
+# Removing owners for this file to not require codeowner approval for changes to them given they are shared with project
 /eng/versioning/version_client.txt
-/eng/versioning/version_data.txt
 
 # Add owners for notifications for specific pipelines
 /eng/pipelines/aggregate-reports.yml                          @joshfree @jonathangiles @Azure/azure-java-sdk
