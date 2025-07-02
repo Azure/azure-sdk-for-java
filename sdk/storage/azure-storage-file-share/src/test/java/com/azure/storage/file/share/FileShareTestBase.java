@@ -162,7 +162,7 @@ public class FileShareTestBase extends TestProxyTestBase {
         return StorageCommonTestUtils.getRandomByteArray(size, testResourceNamer);
     }
 
-    ByteBuffer getRandomByteBuffer(int size) {
+    protected ByteBuffer getRandomByteBuffer(int size) {
         return StorageCommonTestUtils.getRandomData(size, testResourceNamer);
     }
 

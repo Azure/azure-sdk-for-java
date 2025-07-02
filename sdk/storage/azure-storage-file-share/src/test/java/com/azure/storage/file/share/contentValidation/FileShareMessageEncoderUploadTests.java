@@ -15,8 +15,15 @@ import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
 
 import java.io.ByteArrayInputStream;
+
+import static com.azure.storage.common.implementation.Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME;
+import static com.azure.storage.common.implementation.Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.STRUCTUED_BODY_TYPE;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class FileShareMessageEncoderUploadTests extends FileShareTestBase {
     private ShareFileClient fc;
@@ -30,28 +37,73 @@ public class FileShareMessageEncoderUploadTests extends FileShareTestBase {
     }
 
     @Test
-    public void uploadInputStream() {
+    public void uploadInputStreamFullCRCHeader() {
+        fc.create(DATA.getDefaultDataSize());
         ShareFileUploadOptions options = new ShareFileUploadOptions(DATA.getDefaultInputStream())
             .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO);
+
         Response<ShareFileUploadInfo> response = fc.uploadWithResponse(options, null, Context.NONE);
+        assertNotNull(response.getRequest().getHeaders().getValue(CONTENT_CRC64_HEADER_NAME));
     }
 
     @Test
-    public void uploadInputStreamChunked() {
-        byte[] randomData = getRandomByteArray(Constants.MB * 8);
+    public void uploadInputStreamFullStructMess() {
+        byte[] randomData = getRandomByteArray(Constants.MB * 5);
+        fc.create(randomData.length);
         ByteArrayInputStream input = new ByteArrayInputStream(randomData);
+        ShareFileUploadOptions options
+            = new ShareFileUploadOptions(input).setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO);
+        Response<ShareFileUploadInfo> response = fc.uploadWithResponse(options, null, Context.NONE);
+        assertEquals(STRUCTUED_BODY_TYPE,
+            response.getRequest().getHeaders().getValue(STRUCTURED_BODY_TYPE_HEADER_NAME));
+    }
 
+    @Test
+    public void uploadInputStreamChunkedStructMess() {
+        byte[] randomData = getRandomByteArray(Constants.MB * 8);
+        fc.create(randomData.length);
+        ByteArrayInputStream input = new ByteArrayInputStream(randomData);
         ShareFileUploadOptions options
             = new ShareFileUploadOptions(input).setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO)
                 .setParallelTransferOptions(
                     new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB * 4));
+
         Response<ShareFileUploadInfo> response = fc.uploadWithResponse(options, null, Context.NONE);
+        assertEquals(STRUCTUED_BODY_TYPE,
+            response.getRequest().getHeaders().getValue(STRUCTURED_BODY_TYPE_HEADER_NAME));
     }
 
     @Test
-    public void uploadFlux() {
+    public void uploadFluxFullCRCHeader() {
+        fc.create(DATA.getDefaultDataSize());
         ShareFileUploadOptions options = new ShareFileUploadOptions(DATA.getDefaultFlux())
             .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO);
+
         Response<ShareFileUploadInfo> response = fc.uploadWithResponse(options, null, Context.NONE);
+        assertNotNull(response.getRequest().getHeaders().getValue(CONTENT_CRC64_HEADER_NAME));
+    }
+
+    @Test
+    public void uploadFluxFullStructMess() {
+        fc.create(Constants.MB * 5);
+        ShareFileUploadOptions options = new ShareFileUploadOptions(Flux.just(getRandomByteBuffer(Constants.MB * 5)))
+            .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO);
+
+        Response<ShareFileUploadInfo> response = fc.uploadWithResponse(options, null, Context.NONE);
+        assertEquals(STRUCTUED_BODY_TYPE,
+            response.getRequest().getHeaders().getValue(STRUCTURED_BODY_TYPE_HEADER_NAME));
+    }
+
+    @Test
+    public void uploadFluxChunkedStructMess() {
+        fc.create(Constants.MB * 8);
+        ShareFileUploadOptions options = new ShareFileUploadOptions(Flux.just(getRandomByteBuffer(Constants.MB * 8)))
+            .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO)
+            .setParallelTransferOptions(
+                new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB * 4));
+
+        Response<ShareFileUploadInfo> response = fc.uploadWithResponse(options, null, Context.NONE);
+        assertEquals(STRUCTUED_BODY_TYPE,
+            response.getRequest().getHeaders().getValue(STRUCTURED_BODY_TYPE_HEADER_NAME));
     }
 }

@@ -3,7 +3,6 @@
 
 package com.azure.storage.file.datalake.contentValidation;
 
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.storage.common.ParallelTransferOptions;
@@ -11,7 +10,6 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.structuredmessage.StorageChecksumAlgorithm;
 import com.azure.storage.file.datalake.DataLakeFileClient;
 import com.azure.storage.file.datalake.DataLakeTestBase;
-import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,12 +17,7 @@ import reactor.core.publisher.Flux;
 
 import java.io.ByteArrayInputStream;
 
-import static com.azure.storage.common.implementation.Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME;
-import static com.azure.storage.common.implementation.Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME;
-import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.STRUCTUED_BODY_TYPE;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class DataLakeMessageEncoderUploadTests extends DataLakeTestBase {
     private DataLakeFileClient fc;
