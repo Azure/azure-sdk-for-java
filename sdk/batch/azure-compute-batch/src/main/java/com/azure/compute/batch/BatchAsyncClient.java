@@ -11,6 +11,7 @@ import com.azure.compute.batch.implementation.lro.JobEnablePollerAsync;
 import com.azure.compute.batch.implementation.lro.JobScheduleDeletePollerAsync;
 import com.azure.compute.batch.implementation.lro.JobScheduleTerminatePollerAsync;
 import com.azure.compute.batch.implementation.lro.JobTerminatePollerAsync;
+import com.azure.compute.batch.implementation.lro.NodeDeallocatePollerAsync;
 import com.azure.compute.batch.implementation.lro.PoolDeletePollerAsync;
 import com.azure.compute.batch.implementation.task.AsyncTaskSubmitter;
 import com.azure.compute.batch.implementation.task.TaskManager;
@@ -12450,6 +12451,28 @@ public final class BatchAsyncClient {
     }
 
     /**
+     * Deallocates the specified Compute Node.
+     *
+     * You can deallocate a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link PollerFlux} that polls until the node reaches the {@code deallocated} state.
+     * It provides {@link BatchNode} snapshots during polling and returns the
+     * final {@link BatchNode} once deallocation completes.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BatchNode, BatchNode> beginDeallocateNode(String poolId, String nodeId) {
+        RequestOptions requestOptions = new RequestOptions();
+        NodeDeallocatePollerAsync poller = new NodeDeallocatePollerAsync(this, poolId, nodeId, requestOptions);
+        return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
+            poller.getCancelOperation(), poller.getFetchResultOperation());
+    }
+
+    /**
      * Disables Task scheduling on the specified Compute Node.
      *
      * You can disable Task scheduling on a Compute Node only if its current
@@ -15210,6 +15233,38 @@ public final class BatchAsyncClient {
             requestOptions.setBody(BinaryData.fromObject(parameters));
         }
         return deallocateNodeWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deallocates the specified Compute Node.
+     *
+     * You can deallocate a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param options Optional parameters for Deallocate Node operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link PollerFlux} that polls until the node reaches the {@code deallocated} state.
+     * It provides {@link BatchNode} snapshots during polling and returns the
+     * final {@link BatchNode} once deallocation completes.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BatchNode, BatchNode> beginDeallocateNode(String poolId, String nodeId,
+        BatchNodeDeallocateOptions options) {
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        BatchNodeDeallocateParameters parameters = options == null ? null : options.getParameters();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        }
+        if (parameters != null) {
+            requestOptions.setBody(BinaryData.fromObject(parameters));
+        }
+        NodeDeallocatePollerAsync poller = new NodeDeallocatePollerAsync(this, poolId, nodeId, requestOptions);
+        return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
+            poller.getCancelOperation(), poller.getFetchResultOperation());
     }
 
     /**
