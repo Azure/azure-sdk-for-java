@@ -190,14 +190,14 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             .setExpectedRegionsContactedCount(1);
 
         ExpectedResponseCharacteristics expectedResponseCharacteristicsBeforeFailoverForRequestTimeout = new ExpectedResponseCharacteristics()
-            .setExpectedMinRetryCount(1)
-            .setShouldFinalResponseHaveSuccess(true)
-            .setExpectedRegionsContactedCount(2);
+            .setExpectedMinRetryCount(0)
+            .setShouldFinalResponseHaveSuccess(false)
+            .setExpectedRegionsContactedCount(1);
 
         ExpectedResponseCharacteristics expectedResponseCharacteristicsBeforeFailoverForGatewayEndpointReadTimeout = new ExpectedResponseCharacteristics()
-            .setExpectedMinRetryCount(1)
-            .setShouldFinalResponseHaveSuccess(true)
-            .setExpectedRegionsContactedCount(2);
+            .setExpectedMinRetryCount(0)
+            .setShouldFinalResponseHaveSuccess(false)
+            .setExpectedRegionsContactedCount(1);
 
         ExpectedResponseCharacteristics expectedResponseCharacteristicsBeforeFailoverForGatewayEndpointUnavailable = new ExpectedResponseCharacteristics()
             .setExpectedMinRetryCount(1)
@@ -222,6 +222,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 false,
                 false,
                 false,
+                false,
                 ONLY_DIRECT_MODE
             },
             {
@@ -232,6 +233,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
                 false,
                 false,
                 false,
@@ -248,6 +250,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 false,
                 false,
                 false,
+                false,
                 ONLY_DIRECT_MODE
             },
             {
@@ -258,6 +261,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 HttpConstants.StatusCodes.NOT_MODIFIED,
                 expectedResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
                 false,
                 false,
                 false,
@@ -274,6 +278,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 false,
                 false,
                 false,
+                false,
                 ONLY_DIRECT_MODE
             },
             {
@@ -284,6 +289,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
                 false,
                 false,
                 false,
@@ -300,6 +306,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 false,
                 false,
                 false,
+                false,
                 ALL_CONNECTION_MODES
             },
             {
@@ -310,6 +317,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
                 false,
                 false,
                 false,
@@ -326,6 +334,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 false,
                 false,
                 false,
+                false,
                 ALL_CONNECTION_MODES
             },
             {
@@ -336,6 +345,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 HttpConstants.StatusCodes.NOT_MODIFIED,
                 expectedResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
                 false,
                 false,
                 false,
@@ -352,6 +362,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 false,
                 false,
                 false,
+                false,
                 ALL_CONNECTION_MODES
             },
             {
@@ -362,6 +373,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
                 false,
                 false,
                 false,
@@ -378,6 +390,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 false,
                 false,
                 false,
+                false,
                 ALL_CONNECTION_MODES
             },
             {
@@ -388,6 +401,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
                 false,
                 false,
                 false,
@@ -404,6 +418,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 false,
                 false,
                 false,
+                false,
                 ALL_CONNECTION_MODES
             },
             {
@@ -414,6 +429,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 HttpConstants.StatusCodes.NOT_MODIFIED,
                 expectedResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
                 false,
                 false,
                 false,
@@ -430,6 +446,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 false,
                 false,
                 false,
+                false,
                 ALL_CONNECTION_MODES
             },
             {
@@ -443,6 +460,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 false,
                 false,
                 false,
+                false,
                 ALL_CONNECTION_MODES
             },
             {
@@ -456,6 +474,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 false,
                 false,
                 false,
+                true,
                 ALL_CONNECTION_MODES
             },
             {
@@ -469,6 +488,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 false,
                 false,
                 false,
+                true,
                 ALL_CONNECTION_MODES
             },
             {
@@ -482,6 +502,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 false,
                 false,
                 false,
+                true,
                 ALL_CONNECTION_MODES
             },
             {
@@ -495,6 +516,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 false,
                 false,
                 false,
+                true,
                 ALL_CONNECTION_MODES
             },
             {
@@ -508,6 +530,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 false,
                 false,
                 false,
+                true,
                 ALL_CONNECTION_MODES
             },
             {
@@ -521,6 +544,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 false,
                 false,
                 false,
+                true,
                 ALL_CONNECTION_MODES
             },
             {
@@ -534,6 +558,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 true,
                 true,
                 false,
+                true,
                 ONLY_GATEWAY_MODE
             },
             {
@@ -547,6 +572,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 true,
                 true,
                 false,
+                true,
                 ONLY_GATEWAY_MODE
             },
             {
@@ -560,6 +586,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 true,
                 true,
                 false,
+                true,
                 ONLY_GATEWAY_MODE
             },
             {
@@ -573,6 +600,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 true,
                 true,
                 false,
+                true,
                 ONLY_GATEWAY_MODE
             },
             {
@@ -586,6 +614,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 true,
                 true,
                 false,
+                true,
                 ONLY_GATEWAY_MODE
             },
             {
@@ -599,6 +628,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 true,
                 true,
                 false,
+                true,
                 ONLY_GATEWAY_MODE
             },
             {
@@ -612,6 +642,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 true,
                 true,
                 false,
+                true,
                 ONLY_GATEWAY_MODE
             },
             {
@@ -625,6 +656,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 true,
                 true,
                 false,
+                true,
                 ONLY_GATEWAY_MODE
             },
             {
@@ -638,6 +670,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 true,
                 true,
                 false,
+                true,
                 ONLY_GATEWAY_MODE
             },
             {
@@ -651,6 +684,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 true,
                 true,
                 false,
+                true,
                 ONLY_GATEWAY_MODE
             },
             {
@@ -664,6 +698,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 true,
                 true,
                 false,
+                true,
                 ONLY_GATEWAY_MODE
             },
             {
@@ -677,6 +712,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 true,
                 true,
                 false,
+                true,
                 ONLY_GATEWAY_MODE
             },
             {
@@ -688,6 +724,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 expectedResponseCharacteristicsBeforeFailoverForGatewayEndpointUnavailable,
                 expectedResponseCharacteristicsAfterFailover,
                 true,
+                false,
                 false,
                 false,
                 ONLY_GATEWAY_MODE
@@ -703,6 +740,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 true,
                 false,
                 false,
+                false,
                 ONLY_GATEWAY_MODE
             },
             {
@@ -714,6 +752,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 expectedResponseCharacteristicsBeforeFailoverForGatewayEndpointUnavailable,
                 expectedResponseCharacteristicsAfterFailover,
                 true,
+                false,
                 false,
                 false,
                 ONLY_GATEWAY_MODE
@@ -729,6 +768,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 true,
                 false,
                 false,
+                false,
                 ONLY_GATEWAY_MODE
             },
             {
@@ -740,6 +780,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 expectedResponseCharacteristicsBeforeFailoverForGatewayEndpointUnavailable,
                 expectedResponseCharacteristicsAfterFailover,
                 true,
+                false,
                 false,
                 false,
                 ONLY_GATEWAY_MODE
@@ -755,6 +796,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 true,
                 false,
                 false,
+                false,
                 ONLY_GATEWAY_MODE
             },
             {
@@ -768,6 +810,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 false,
                 false,
                 true,
+                false,
                 ONLY_DIRECT_MODE
             },
             {
@@ -781,6 +824,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 false,
                 false,
                 true,
+                false,
                 ONLY_DIRECT_MODE
             },
             {
@@ -794,6 +838,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 false,
                 false,
                 true,
+                false,
                 ONLY_DIRECT_MODE
             },
             {
@@ -807,6 +852,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 false,
                 false,
                 true,
+                false,
                 ONLY_DIRECT_MODE
             },
             {
@@ -820,6 +866,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 false,
                 false,
                 true,
+                false,
                 ONLY_DIRECT_MODE
             },
             {
@@ -833,6 +880,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 false,
                 false,
                 true,
+                false,
                 ONLY_DIRECT_MODE
             },
             {
@@ -846,6 +894,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 false,
                 false,
                 true,
+                false,
                 ONLY_GATEWAY_MODE
             },
             {
@@ -859,6 +908,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 false,
                 false,
                 true,
+                false,
                 ONLY_GATEWAY_MODE
             },
             {
@@ -872,6 +922,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 false,
                 false,
                 true,
+                false,
                 ONLY_GATEWAY_MODE
             },
             {
@@ -885,6 +936,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 false,
                 false,
                 true,
+                false,
                 ONLY_GATEWAY_MODE
             },
             {
@@ -898,6 +950,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 false,
                 false,
                 true,
+                false,
                 ONLY_GATEWAY_MODE
             },
             {
@@ -911,6 +964,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 false,
                 false,
                 true,
+                false,
                 ONLY_GATEWAY_MODE
             }
         };
@@ -939,6 +993,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         boolean shouldThrowNetworkError,
         boolean shouldThrowReadTimeoutExceptionWhenNetworkError,
         boolean shouldUseE2ETimeout,
+        boolean isRequestHittingTimeout,
         Set<ConnectionMode> allowedConnectionModes) {
 
         ConnectionPolicy connectionPolicy = COSMOS_CLIENT_BUILDER_ACCESSOR.getConnectionPolicy(getClientBuilder());
@@ -957,8 +1012,8 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
             try {
 
-                if (shouldUseE2ETimeout) {
-                    System.setProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF", "2");
+                if (shouldUseE2ETimeout || isRequestHittingTimeout) {
+                    System.setProperty("COSMOS.REQUEST_TIMEOUT_HIT_THRESHOLD_AND_PPAF", "2");
                 }
 
                 System.setProperty("COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED", "true");
@@ -1025,9 +1080,9 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 operationInvocationParamsWrapper.itemRequestOptions = shouldUseE2ETimeout ? new CosmosItemRequestOptions().setCosmosEndToEndOperationLatencyPolicyConfig(THREE_SEC_E2E_TIMEOUT_POLICY) : new CosmosItemRequestOptions();
                 operationInvocationParamsWrapper.patchItemRequestOptions = shouldUseE2ETimeout ? new CosmosPatchItemRequestOptions().setCosmosEndToEndOperationLatencyPolicyConfig(THREE_SEC_E2E_TIMEOUT_POLICY) : new CosmosPatchItemRequestOptions();
 
-                if (shouldUseE2ETimeout) {
+                if (shouldUseE2ETimeout || isRequestHittingTimeout) {
 
-                    int iterationsToRun = Configs.getAllowedE2ETimeoutHitCountForPPAF();
+                    int iterationsToRun = Configs.getAllowedRequestTimeoutHitThresholdForPPAF();
 
                     for (int i = 1; i <= iterationsToRun + 1; i++) {
                         ResponseWrapper<?> responseBeforeFailover = dataPlaneOperation.apply(operationInvocationParamsWrapper);
@@ -1043,7 +1098,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             } catch (Exception e) {
                 Assertions.fail("The test ran into an exception {}", e);
             } finally {
-                System.clearProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF");
+                System.clearProperty("COSMOS.REQUEST_TIMEOUT_HIT_THRESHOLD_AND_PPAF");
                 System.clearProperty("COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED");
                 safeClose(cosmosAsyncClientValueHolder.v);
             }
@@ -1057,8 +1112,8 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
             try {
 
-                if (shouldUseE2ETimeout) {
-                    System.setProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF", "2");
+                if (shouldUseE2ETimeout || isRequestHittingTimeout) {
+                    System.setProperty("COSMOS.REQUEST_TIMEOUT_HIT_THRESHOLD_AND_PPAF", "2");
                 }
 
                 System.setProperty("COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED", "true");
@@ -1119,9 +1174,9 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 operationInvocationParamsWrapper.itemRequestOptions = shouldUseE2ETimeout ? new CosmosItemRequestOptions().setCosmosEndToEndOperationLatencyPolicyConfig(THREE_SEC_E2E_TIMEOUT_POLICY) : new CosmosItemRequestOptions();
                 operationInvocationParamsWrapper.patchItemRequestOptions = shouldUseE2ETimeout ? new CosmosPatchItemRequestOptions().setCosmosEndToEndOperationLatencyPolicyConfig(THREE_SEC_E2E_TIMEOUT_POLICY) : new CosmosPatchItemRequestOptions();
 
-                if (shouldUseE2ETimeout) {
+                if (shouldUseE2ETimeout || isRequestHittingTimeout) {
 
-                    int iterationsToRun = Configs.getAllowedE2ETimeoutHitCountForPPAF();
+                    int iterationsToRun = Configs.getAllowedRequestTimeoutHitThresholdForPPAF();
 
                     for (int i = 1; i <= iterationsToRun + 1; i++) {
                         ResponseWrapper<?> responseBeforeFailover = dataPlaneOperation.apply(operationInvocationParamsWrapper);
@@ -1139,7 +1194,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             } catch (Exception e) {
                 Assertions.fail("The test ran into an exception {}", e);
             } finally {
-                System.clearProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF");
+                System.clearProperty("COSMOS.REQUEST_TIMEOUT_HIT_THRESHOLD_AND_PPAF");
                 System.clearProperty("COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED");
                 safeClose(cosmosAsyncClientValueHolder.v);
             }
@@ -1327,7 +1382,6 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             return storeResponseBuilder.build();
         }
     }
-
 
     private static class AccountLevelLocationContext {
         private final List<String> serviceOrderedReadableRegions;

@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fix request timeout handling for PPAF-enabled accounts to prevent possible idempotency violations. - See [PR 45870](https://github.com/Azure/azure-sdk-for-java/pull/45870)
 
 #### Other Changes
 
