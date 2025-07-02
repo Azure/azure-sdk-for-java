@@ -178,4 +178,92 @@ public class MetricsQueryAsyncClientTest extends TestProxyTestBase {
             .assertNext(namespaces -> assertEquals(1, namespaces.size()))
             .verifyComplete();
     }
+
+    @Test
+    public void testDurationBasedQueryTimeIntervalLast30Minutes() {
+        // Test the specific case mentioned in issue #45283
+        StepVerifier.create(client.queryResourceWithResponse(resourceUri, Arrays.asList("SuccessfulRequests"),
+            new MetricsQueryOptions().setMetricNamespace("Microsoft.EventHub/namespaces")
+                .setTimeInterval(QueryTimeInterval.LAST_30_MINUTES)
+                .setGranularity(Duration.ofMinutes(5))
+                .setAggregations(Arrays.asList(AggregationType.COUNT))))
+            .assertNext(response -> {
+                MetricsQueryResult result = response.getValue();
+
+                // Verify that the service accepted the timespan and returned a valid result
+                Assertions.assertNotNull(result, "Metrics result should not be null");
+                Assertions.assertNotNull(result.getTimeInterval(), "Time interval should be present in response");
+                Assertions.assertFalse(result.getMetrics().isEmpty(), "Metrics should not be empty");
+
+                // Verify the timespan is in the correct absolute format, not just "PT30M"
+                Assertions.assertNotNull(result.getTimeInterval().getStartTime(), "Start time should be present");
+                Assertions.assertNotNull(result.getTimeInterval().getEndTime(), "End time should be present");
+                Assertions.assertNull(result.getTimeInterval().getDuration(), "Duration should not be present");
+
+                // Verify that the start time and end time are 30 minutes apart
+                Assertions.assertTrue(
+                    Duration.between(result.getTimeInterval().getStartTime(), result.getTimeInterval().getEndTime())
+                        .toMinutes() == 30,
+                    "Start time and end time should be 30 minutes apart");
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void testDurationBasedQueryTimeIntervalLast1Hour() {
+        StepVerifier.create(client.queryResourceWithResponse(resourceUri, Arrays.asList("SuccessfulRequests"),
+            new MetricsQueryOptions().setMetricNamespace("Microsoft.EventHub/namespaces")
+                .setTimeInterval(QueryTimeInterval.LAST_1_HOUR)
+                .setGranularity(Duration.ofMinutes(15))
+                .setAggregations(Arrays.asList(AggregationType.COUNT))))
+            .assertNext(response -> {
+                MetricsQueryResult result = response.getValue();
+
+                // Verify that the service accepted the timespan and returned a valid result
+                Assertions.assertNotNull(result, "Metrics result should not be null");
+                Assertions.assertNotNull(result.getTimeInterval(), "Time interval should be present in response");
+                Assertions.assertFalse(result.getMetrics().isEmpty(), "Metrics should not be empty");
+
+                // Verify the timespan is in absolute format
+                Assertions.assertNotNull(result.getTimeInterval().getStartTime(), "Start time should be present");
+                Assertions.assertNotNull(result.getTimeInterval().getEndTime(), "End time should be present");
+                Assertions.assertNull(result.getTimeInterval().getDuration(), "Duration should not be present");
+
+                // Verify that the start time and end time are 1 hour apart
+                Assertions.assertTrue(
+                    Duration.between(result.getTimeInterval().getStartTime(), result.getTimeInterval().getEndTime())
+                        .toHours() == 1,
+                    "Start time and end time should be 1 hour apart");
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void testDurationBasedQueryTimeIntervalLastDay() {
+        StepVerifier.create(client.queryResourceWithResponse(resourceUri, Arrays.asList("SuccessfulRequests"),
+            new MetricsQueryOptions().setMetricNamespace("Microsoft.EventHub/namespaces")
+                .setTimeInterval(QueryTimeInterval.LAST_DAY)
+                .setGranularity(Duration.ofHours(1))
+                .setAggregations(Arrays.asList(AggregationType.COUNT))))
+            .assertNext(response -> {
+                MetricsQueryResult result = response.getValue();
+
+                // Verify that the service accepted the timespan and returned a valid result
+                Assertions.assertNotNull(result, "Metrics result should not be null");
+                Assertions.assertNotNull(result.getTimeInterval(), "Time interval should be present in response");
+                Assertions.assertFalse(result.getMetrics().isEmpty(), "Metrics should not be empty");
+
+                // Verify the timespan is in absolute format
+                Assertions.assertNotNull(result.getTimeInterval().getStartTime(), "Start time should be present");
+                Assertions.assertNotNull(result.getTimeInterval().getEndTime(), "End time should be present");
+                Assertions.assertNull(result.getTimeInterval().getDuration(), "Duration should not be present");
+
+                // Verify that the start time and end time are 1 day apart
+                Assertions.assertTrue(
+                    Duration.between(result.getTimeInterval().getStartTime(), result.getTimeInterval().getEndTime())
+                        .toDays() == 1,
+                    "Start time and end time should be 1 day apart");
+            })
+            .verifyComplete();
+    }
 }

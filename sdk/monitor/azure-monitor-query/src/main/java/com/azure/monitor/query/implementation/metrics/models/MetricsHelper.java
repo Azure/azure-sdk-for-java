@@ -7,11 +7,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.CoreUtils;
-import com.azure.monitor.query.LogsQueryAsyncClient;
 import com.azure.monitor.query.implementation.metricsbatch.models.MetricResultsResponseValuesItem;
 import com.azure.monitor.query.implementation.metricsdefinitions.models.LocalizableString;
 import com.azure.monitor.query.models.AggregationType;
-import com.azure.monitor.query.models.LogsBatchQuery;
 import com.azure.monitor.query.models.MetricAvailability;
 import com.azure.monitor.query.models.MetricClass;
 import com.azure.monitor.query.models.MetricDefinition;
@@ -23,12 +21,15 @@ import com.azure.monitor.query.models.NamespaceClassification;
 import com.azure.monitor.query.models.QueryTimeInterval;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Helper to access package-private method of {@link LogsBatchQuery} from {@link LogsQueryAsyncClient}.
+ * Helper for metrics-related utilities and conversions.
  */
 public final class MetricsHelper {
     private static MetricDefinitionAccessor metricDefinitionAccessor;
@@ -78,23 +79,57 @@ public final class MetricsHelper {
         MetricsHelper.metricDefinitionAccessor = metricDefinitionAccessor;
     }
 
+    /**
+     * Sets the accessor instance.
+     * @param metricAvailabilityAccessor the accessor instance
+     */
     public static void setMetricAvailabilityAccessor(final MetricAvailabilityAccessor metricAvailabilityAccessor) {
         MetricsHelper.metricAvailabilityAccessor = metricAvailabilityAccessor;
     }
 
+    /**
+     * Sets the accessor instance.
+     * @param metricNamespaceAccessor the accessor instance
+     */
     public static void setMetricNamespaceAccessor(MetricNamespaceAccessor metricNamespaceAccessor) {
         MetricsHelper.metricNamespaceAccessor = metricNamespaceAccessor;
     }
 
+    /**
+     * Sets the accessor instance.
+     * @param accessor the accessor instance
+     */
     public static void setMetricsQueryResultAccessor(final MetricsQueryResultResourceIdAccessor accessor) {
         MetricsHelper.metricsQueryResultResourceIdAccessor = accessor;
     }
 
+    /**
+     * Sets the resource ID property on a MetricsQueryResult.
+     * @param metricsQueryResult the metrics query result to update
+     * @param resourceId the resource ID to set
+     */
     public static void setMetricsQueryResultResourceIdProperty(MetricsQueryResult metricsQueryResult,
         String resourceId) {
         metricsQueryResultResourceIdAccessor.setMetricsQueryResultResourceIdProperty(metricsQueryResult, resourceId);
     }
 
+    /**
+     * Sets properties on a MetricDefinition.
+     * @param metricDefinition the metric definition to update
+     * @param dimensionRequired whether dimensions are required
+     * @param resourceId the resource ID
+     * @param namespace the namespace
+     * @param name the name
+     * @param displayDescription the display description
+     * @param category the category
+     * @param metricClass the metric class
+     * @param unit the unit
+     * @param primaryAggregationType the primary aggregation type
+     * @param supportedAggregationTypes the supported aggregation types
+     * @param metricAvailabilities the metric availabilities
+     * @param id the ID
+     * @param dimensions the dimensions
+     */
     public static void setMetricDefinitionProperties(MetricDefinition metricDefinition, Boolean dimensionRequired,
         String resourceId, String namespace, String name, String displayDescription, String category,
         MetricClass metricClass, MetricUnit unit, AggregationType primaryAggregationType,
@@ -105,17 +140,30 @@ public final class MetricsHelper {
             supportedAggregationTypes, metricAvailabilities, id, dimensions);
     }
 
+    /**
+     * Sets properties on a MetricAvailability.
+     * @param metricAvailability the metric availability to update
+     * @param retention the retention period
+     * @param granularity the granularity
+     */
     public static void setMetricAvailabilityProperties(MetricAvailability metricAvailability, Duration retention,
         Duration granularity) {
         metricAvailabilityAccessor.setMetricAvailabilityProperties(metricAvailability, retention, granularity);
-
     }
 
+    /**
+     * Sets properties on a MetricNamespace.
+     * @param metricNamespace the metric namespace to update
+     * @param classification the namespace classification
+     * @param id the ID
+     * @param name the name
+     * @param fullyQualifiedName the fully qualified name
+     * @param type the type
+     */
     public static void setMetricNamespaceProperties(MetricNamespace metricNamespace,
         NamespaceClassification classification, String id, String name, String fullyQualifiedName, String type) {
         metricNamespaceAccessor.setMetricNamespaceProperties(metricNamespace, classification, id, name,
             fullyQualifiedName, type);
-
     }
 
     public static Response<MetricsQueryResult> convertToMetricsQueryResult(Response<MetricsResponse> response) {
@@ -266,6 +314,49 @@ public final class MetricsHelper {
         int i = s.indexOf("subscriptions/") + 14;
         String subscriptionId = s.substring(i, s.indexOf("/", i));
         return subscriptionId;
+    }
+
+    /**
+     * Converts a {@link QueryTimeInterval} to ISO 8601 string format suitable for Azure Monitor Metrics API.
+     * For duration-only intervals, this method converts them to absolute start/end times based on current time.
+     *
+     * @param timeInterval The time interval to convert.
+     * @return ISO 8601 formatted string representation with absolute start/end times.
+     */
+    public static String toMetricsTimespan(QueryTimeInterval timeInterval) {
+        if (timeInterval == null) {
+            return null;
+        }
+
+        // If we have both start and end times, use them directly
+        if (timeInterval.getStartTime() != null && timeInterval.getEndTime() != null) {
+            return DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(timeInterval.getStartTime()) + "/"
+                + DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(timeInterval.getEndTime());
+        }
+
+        // If we have start time and duration, calculate end time
+        if (timeInterval.getStartTime() != null && timeInterval.getDuration() != null) {
+            return DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(timeInterval.getStartTime()) + "/"
+                + DateTimeFormatter.ISO_OFFSET_DATE_TIME
+                    .format(timeInterval.getStartTime().plus(timeInterval.getDuration()));
+        }
+
+        // If we have duration and end time, calculate start time
+        if (timeInterval.getDuration() != null && timeInterval.getEndTime() != null) {
+            return DateTimeFormatter.ISO_OFFSET_DATE_TIME
+                .format(timeInterval.getEndTime().minus(timeInterval.getDuration())) + "/"
+                + DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(timeInterval.getEndTime());
+        }
+
+        // If we only have duration, calculate absolute start and end times based on current time
+        if (timeInterval.getDuration() != null) {
+            OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
+            OffsetDateTime startTime = now.minus(timeInterval.getDuration());
+            return DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(startTime) + "/"
+                + DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(now);
+        }
+
+        return null;
     }
 
 }
