@@ -450,38 +450,45 @@ public class PoolTests extends BatchClientTestBase {
             // Retrieve the nodes
             Iterable<BatchNode> nodesPaged = SyncAsyncExtension.execute(() -> batchClient.listNodes(poolId),
                 () -> Mono.fromCallable(() -> batchAsyncClient.listNodes(poolId).toIterable()));
+
             BatchNode firstNode = null;
             for (BatchNode node : nodesPaged) {
                 firstNode = node;  // Get the first node
                 break;
             }
+            Assertions.assertNotNull(firstNode, "Expected at least one compute node in pool");
 
-            Assertions.assertNotNull(firstNode); // Assert there is at least one compute node
             String nodeId = firstNode.getId();
-            BatchNode computeNode = SyncAsyncExtension.execute(() -> batchClient.getNode(poolId, nodeId),
-                () -> batchAsyncClient.getNode(poolId, nodeId));
 
-            // Deallocate the node using the compute node operations
-            BatchNodeDeallocateParameters deallocateParameters
+            // DEALLOCATE using LRO
+            BatchNodeDeallocateParameters deallocateParams
                 = new BatchNodeDeallocateParameters().setNodeDeallocateOption(BatchNodeDeallocateOption.TERMINATE);
-            BatchNodeDeallocateOptions options = new BatchNodeDeallocateOptions();
-            options.setTimeOutInSeconds(Duration.ofSeconds(30));
-            options.setParameters(deallocateParameters);
-            SyncAsyncExtension.execute(() -> batchClient.deallocateNode(poolId, nodeId, options),
-                () -> batchAsyncClient.deallocateNode(poolId, nodeId, options));
 
-            // Wait for the node to be deallocated
-            boolean isDeallocated = false;
-            while (!isDeallocated) {
-                computeNode = SyncAsyncExtension.execute(() -> batchClient.getNode(poolId, nodeId),
-                    () -> batchAsyncClient.getNode(poolId, nodeId));
-                if (computeNode.getState().equals(BatchNodeState.DEALLOCATED)) {
-                    isDeallocated = true;
-                } else {
-                    sleepIfRunningAgainstService(15 * 1000);
-                }
+            BatchNodeDeallocateOptions deallocateOptions
+                = new BatchNodeDeallocateOptions().setTimeOutInSeconds(Duration.ofSeconds(30))
+                    .setParameters(deallocateParams);
+
+            SyncPoller<BatchNode, BatchNode> deallocatePoller = setPlaybackSyncPollerPollInterval(
+                SyncAsyncExtension.execute(() -> batchClient.beginDeallocateNode(poolId, nodeId, deallocateOptions),
+                    () -> Mono
+                        .fromCallable(() -> batchAsyncClient.beginDeallocateNode(poolId, nodeId, deallocateOptions)
+                            .getSyncPoller())));
+
+            // Validate first poll
+            PollResponse<BatchNode> firstPoll = deallocatePoller.poll();
+            if (firstPoll.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+                BatchNode nodeDuringPoll = firstPoll.getValue();
+                Assertions.assertNotNull(nodeDuringPoll);
+                Assertions.assertEquals(nodeId, nodeDuringPoll.getId());
+                Assertions.assertEquals(BatchNodeState.DEALLOCATING, nodeDuringPoll.getState());
             }
-            Assertions.assertEquals(BatchNodeState.DEALLOCATED, computeNode.getState());
+
+            // Wait for completion and validate final state
+            deallocatePoller.waitForCompletion();
+            BatchNode deallocatedNode = deallocatePoller.getFinalResult();
+
+            Assertions.assertNotNull(deallocatedNode, "Final result should contain the node object");
+            Assertions.assertEquals(BatchNodeState.DEALLOCATED, deallocatedNode.getState());
 
             // Start the node again
             SyncAsyncExtension.execute(() -> batchClient.startNode(poolId, nodeId),
@@ -490,15 +497,15 @@ public class PoolTests extends BatchClientTestBase {
             // Wait for the node to become idle again
             boolean isIdle = false;
             while (!isIdle) {
-                computeNode = SyncAsyncExtension.execute(() -> batchClient.getNode(poolId, nodeId),
+                BatchNode current = SyncAsyncExtension.execute(() -> batchClient.getNode(poolId, nodeId),
                     () -> batchAsyncClient.getNode(poolId, nodeId));
-                if (computeNode.getState().equals(BatchNodeState.IDLE)) {
+                if (current.getState().equals(BatchNodeState.IDLE)) {
                     isIdle = true;
                 } else {
                     sleepIfRunningAgainstService(15 * 1000);
                 }
             }
-            Assertions.assertEquals(BatchNodeState.IDLE, computeNode.getState());
+            Assertions.assertTrue(isIdle, "Node should return to IDLE state after start");
 
         } finally {
             // DELETE
