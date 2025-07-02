@@ -13,8 +13,9 @@ import com.azure.core.util.SharedExecutorService;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.implementation.util.IdentityUtil;
+import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.LoggingUtil;
-import com.azure.identity.implementation.util.PowershellUtil;
+import com.azure.identity.implementation.util.PowerShellUtil;
 import com.azure.identity.implementation.util.ScopeUtil;
 import com.azure.identity.implementation.util.ValidationUtil;
 import com.azure.json.JsonProviders;
@@ -442,7 +443,7 @@ public class IdentityClient extends IdentityClientBase {
         return Mono.defer(() -> {
             String sep = System.lineSeparator();
 
-            String command = PowershellUtil.getPwshCommand(tenantId, scope, sep);
+            String command = PowerShellUtil.getPwshCommand(tenantId, scope, sep);
 
             return powershellManager.runCommand(command).flatMap(output -> {
                 if (output.contains("VersionTooOld")) {

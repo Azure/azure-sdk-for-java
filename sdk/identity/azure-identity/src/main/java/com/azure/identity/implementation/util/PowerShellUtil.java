@@ -6,7 +6,7 @@ package com.azure.identity.implementation.util;
 /**
  * Utility class for powershell auth related ops .
  */
-public class PowershellUtil {
+public class PowerShellUtil {
     public static String getPwshCommand(String tenantId, String scope, String sep) {
         return "$ErrorActionPreference = 'Stop'" + sep
             + "[version]$minimumVersion = '2.2.0'" + sep
