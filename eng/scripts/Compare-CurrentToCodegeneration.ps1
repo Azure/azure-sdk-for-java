@@ -58,77 +58,24 @@ class GenerationInformation {
 
 function Find-GenerationInformation {
   param (
-    [System.Collections.ArrayList]$generationInformations,
+    [System.Collections.ArrayList]$GenerationInformations,
     [string]$ServiceDirectory,
     [string]$RegenerationType
   )
 
-  $path = "sdk/$serviceDirectory"
+  $path = "sdk/$ServiceDirectory"
   if ($RegenerationType -eq 'Swagger' -or $RegenerationType -eq 'All') {
     # Search for 'Update-Codegeneration.ps1' script in the specified service directory.
     Get-ChildItem -Path $path -Filter "Update-Codegeneration.ps1" -Recurse | ForEach-Object {
-      $generationInformations.Add([GenerationInformation]::new($path, $_, 'Swagger')) | Out-Null
+      $GenerationInformations.Add([GenerationInformation]::new($path, $_, 'Swagger')) | Out-Null
     }
   }
 
   if ($RegenerationType -eq 'TypeSpec' -or $RegenerationType -eq 'All') {
     # Search for 'tsp-location.yaml' script in the specified service directory.
     Get-ChildItem -Path $path -Filter "tsp-location.yaml" -Recurse | ForEach-Object {
-      $generationInformations.Add([GenerationInformation]::new($path, $_, 'TypeSpec')) | Out-Null
+      $GenerationInformations.Add([GenerationInformation]::new($path, $_, 'TypeSpec')) | Out-Null
     }
-  }
-}
-
-function Test-TypeSpecRegeneration {
-  [string]$Directory
-
-  Push-Location $Directory
-  try {
-    $generateOutput = (& tsp-client update 2>&1)
-    if ($LastExitCode -ne 0) {
-      Write-Host @"
-======================================
-Error running tsp-client update in directory $Directory
-======================================
-$([String]::Join("`n", $generateOutput))
-"@
-      throw
-    }
-
-    # Update code snippets before comparing the diff
-    $mvnOutput = (& mvn --no-transfer-progress codesnippet:update-codesnippet 2>&1)
-    if ($LastExitCode -ne 0) {
-      Write-Host @"
-======================================
-Error updating TypeSpec codesnippets in directory $Directory
-======================================
-$([String]::Join("`n", $mvnOutput))
-"@
-      throw
-    }
-  } finally {
-    Pop-Location
-  }
-  
-  # prevent warning related to EOL differences which triggers an exception for some reason
-  (& git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "$Directory/*.java" ":(exclude)**/src/test/**" ":
-(exclude)**/src/samples/**" ":(exclude)**/src/main/**/implementation/**" ":(exclude)**/src/main/**/resourcemanager/**/*Manager.java") | Out-Null
-
-  if ($LastExitCode -ne 0) {
-    $status = (git status -s "$Directory" | Out-String)
-    Write-Host @"
-======================================
-The following TypeSpec files in directoy $Directory are out of date:
-======================================
-$status
-"@
-    throw
-  } else {
-    Write-Host @"
-======================================
-Successfully ran TypeSpec update in directory with no diff $Directory
-======================================
-"@
   }
 }
 
@@ -158,20 +105,12 @@ foreach ($serviceDirectory in $ServiceDirectories.Split(',')) {
     # Search for all libraries under the service directory.
     foreach ($libraryFolder in Get-ChildItem -Path "sdk/$serviceDirectory" -Directory) {
       Find-GenerationInformation $generationInformations "$serviceDirectory/$($libraryFolder.Name)" $RegenerationType
-      $path = "sdk/$serviceDirectory/$($libraryFolder.Name)"
     }
   }
 }
 
 if ($generationInformations.Count -eq 0) {
-  $kind
-  if ($RegenerationType -eq 'Swagger') {
-    $kind = 'Swagger' 
-  } elseif ($RegenerationType -eq 'TypeSpec') {
-    $kind = 'TypeSpec' 
-  } else {
-    $kind = 'Swagger or TypeSpec' 
-  }
+  $kind = $RegenerationType -eq 'All' ? 'Swagger or TypeSpec' : $RegenerationType
   Write-Host @"
 ======================================
 No $kind generation files to regenerate in directories: $ServiceDirectories.
@@ -205,10 +144,10 @@ $generateScript = {
 
   if ($_.Type -eq 'Swagger') {
     # 6>&1 redirects Write-Host calls in the script to the output stream, so we can capture it.
-    $generateOutput = (& $updateCodegenScript.FullName) 6>&1
+    $generateOutput = (& $updateCodegenScript 6>&1)
 
     if ($LastExitCode -ne 0) {
-      return @"
+      Write-Host @"
 ======================================
 Error running Swagger regeneration $updateCodegenScript
 ======================================
@@ -243,7 +182,7 @@ Successfully ran Swagger regneration with no diff $updateCodegenScript
       if ($LastExitCode -ne 0) {
         Write-Host @"
 ======================================
-Error running tsp-client update in directory $Directory
+Error running TypeSpec regeneration in directory $Directory
 ======================================
 $([String]::Join("`n", $generateOutput))
 "@
