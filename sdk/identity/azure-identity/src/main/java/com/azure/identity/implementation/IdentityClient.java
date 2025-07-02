@@ -12,9 +12,9 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.SharedExecutorService;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
-import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.LoggingUtil;
+import com.azure.identity.implementation.util.PowershellUtil;
 import com.azure.identity.implementation.util.ScopeUtil;
 import com.azure.identity.implementation.util.ValidationUtil;
 import com.azure.json.JsonProviders;
@@ -442,41 +442,7 @@ public class IdentityClient extends IdentityClientBase {
         return Mono.defer(() -> {
             String sep = System.lineSeparator();
 
-            String command = "$ErrorActionPreference = 'Stop'" + sep
-                + "[version]$minimumVersion = '2.2.0'" + sep
-                + "$m = Import-Module Az.Accounts -MinimumVersion $minimumVersion -PassThru -ErrorAction SilentlyContinue" + sep
-                + "if (! $m) {" + sep
-                + "    Write-Output 'VersionTooOld'" + sep
-                + "    exit" + sep
-                + "}" + sep
-                + "$params = @{ 'ResourceUrl' = '" + scope + "'; 'WarningAction' = 'Ignore' }" + sep
-                + "$tenantId = '" + tenantId + "'" + sep
-                + "if ($tenantId.Length -gt 0) {" + sep
-                + "    $params['TenantId'] = $tenantId" + sep
-                + "}" + sep
-                + "if ($m.Version -ge [version]'2.17.0' -and $m.Version -lt [version]'5.0.0') {" + sep
-                + "    $params['AsSecureString'] = $true" + sep
-                + "}" + sep
-                + "$token = Get-AzAccessToken @params" + sep
-                + "$tokenValue = $token.Token" + sep
-                + "if ($tokenValue -is [System.Security.SecureString]) {" + sep
-                + "    if ($PSVersionTable.PSVersion.Major -lt 7) {" + sep
-                + "        $ssPtr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($tokenValue)" + sep
-                + "        try {" + sep
-                + "            $tokenValue = [System.Runtime.InteropServices.Marshal]::PtrToStringBSTR($ssPtr)" + sep
-                + "        }" + sep
-                + "        finally {" + sep
-                + "            [System.Runtime.InteropServices.Marshal]::ZeroFreeBSTR($ssPtr)" + sep
-                + "        }" + sep
-                + "    } else {" + sep
-                + "        $tokenValue = $tokenValue | ConvertFrom-SecureString -AsPlainText" + sep
-                + "    }" + sep
-                + "}" + sep
-                + "$customToken = [PSCustomObject]@{" + sep
-                + "    Token = $tokenValue" + sep
-                + "    ExpiresOn = $token.ExpiresOn" + sep
-                + "}" + sep
-                + "$customToken | ConvertTo-Json -Compress";
+            String command = PowershellUtil.getPwshCommand(tenantId, scope, sep);
 
             return powershellManager.runCommand(command).flatMap(output -> {
                 if (output.contains("VersionTooOld")) {
