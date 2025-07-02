@@ -286,8 +286,8 @@ Successfully ran TypeSpec update in directory with no diff $Directory
 "@
     }
   } else {
-    Write-Error "Unknown generation type: $($_.Type)"
-    exit 1
+    Write-Error "Unknown generation type: $($_.Type), directory: $directory"
+    throw
   }
 }
 
@@ -301,7 +301,7 @@ $job | Wait-Job -Timeout $timeout | Out-Null
 $job | Receive-Job 2>$null | Out-Null
 
 # Clean up generated code, so that next step will not be affected.
-# git reset --hard | Out-Null
-# git clean -fd . | Out-Null
+git reset --hard | Out-Null
+git clean -fd . | Out-Null
 
 exit $job.State -eq 'Failed'
