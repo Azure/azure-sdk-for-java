@@ -40,6 +40,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static io.clientcore.core.implementation.UrlRedactionUtil.getRedactedUri;
@@ -332,24 +333,15 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         logRequest(logger, request, startNs, requestContentLength, redactedUrl, tryCount, currentContext);
 
         try (TracingScope scope = span.makeCurrent()) {
-            return next.processAsync().thenApply(response -> {
-                if (response == null) {
-                    LOGGER.atError()
-                        .setInstrumentationContext(span.getInstrumentationContext())
-                        .addKeyValue(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod())
-                        .addKeyValue(URL_FULL_KEY, redactedUrl)
-                        .log(
-                            "HTTP response is null and no exception is thrown. Please report it to the client library maintainers.");
-                    return response;
-                }
-
-                addDetails(request, response.getStatusCode(), tryCount, span, metricAttributes);
-                response = logResponse(logger, response, startNs, requestContentLength, redactedUrl, tryCount,
-                    currentContext);
-                span.end();
-                return response;
-            }).whenComplete((ignoredResult, exception) -> {
-                if (exception != null) {
+            return next.processAsync().handle((response, exception) -> {
+                CompletableFuture<Response<BinaryData>> future;
+                if (response != null) {
+                    addDetails(request, response.getStatusCode(), tryCount, span, metricAttributes);
+                    response = logResponse(logger, response, startNs, requestContentLength, redactedUrl, tryCount,
+                        currentContext);
+                    span.end();
+                    future = CompletableFuture.completedFuture(response);
+                } else if (exception != null) {
                     Throwable cause = unwrap(exception);
                     if (metricAttributes != null) {
                         metricAttributes.put(ERROR_TYPE_KEY, cause.getClass().getCanonicalName());
@@ -357,13 +349,27 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
                     span.end(cause);
                     logException(logger, request, null, exception, startNs, null, requestContentLength, redactedUrl,
                         tryCount, currentContext);
+
+                    future = new CompletableFuture<>();
+                    future.completeExceptionally(exception);
+                } else {
+                    LOGGER.atError()
+                        .setInstrumentationContext(span.getInstrumentationContext())
+                        .addKeyValue(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod())
+                        .addKeyValue(URL_FULL_KEY, redactedUrl)
+                        .log("HTTP response is null and no exception is thrown. "
+                            + "Please report it to the client library maintainers.");
+
+                    future = CompletableFuture.completedFuture(null);
                 }
 
                 if (isMetricsEnabled) {
                     httpRequestDuration.record((System.nanoTime() - startNs) / 1_000_000_000.0,
                         instrumentation.createAttributes(metricAttributes), currentContext);
                 }
-            });
+
+                return future;
+            }).thenCompose(Function.identity());
         }
     }
 

@@ -155,7 +155,7 @@ public class OAuthBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
      * used for re-authentication.
      *
      * <p>
-     * The default implementation doesn't handle challenges. You can override and your implementation as needed.
+     * The default implementation doesn't handle challenges. You can override in your implementation as needed.
      * </p>
      *
      * @param httpRequest The http request.
@@ -172,7 +172,7 @@ public class OAuthBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
      * used for re-authentication.
      *
      * <p>
-     * The default implementation doesn't handle challenges. You can override and your implementation as needed.
+     * The default implementation doesn't handle challenges. You can override in your implementation as needed.
      * </p>
      *
      * @param httpRequest The http request.

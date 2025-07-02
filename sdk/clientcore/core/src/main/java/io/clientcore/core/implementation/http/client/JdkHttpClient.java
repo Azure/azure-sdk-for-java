@@ -9,13 +9,12 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 
-import java.net.HttpURLConnection;
 import java.time.Duration;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * HttpClient implementation using {@link HttpURLConnection} to send requests and receive responses.
+ * HttpClient implementation using the JDK {@code HttpClient} to send requests and receive responses.
  */
 public final class JdkHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClient.class);
@@ -23,11 +22,11 @@ public final class JdkHttpClient implements HttpClient {
     private static final String ERROR_MESSAGE = "It is recommended that libraries be deployed on the latest LTS "
         + "version of Java, however the Java client will support down to Java 8. In the case where the client is to "
         + "operate on Java versions below Java 11, it is required to include additional dependencies. Usage of "
-        + "DefaultHttpClient is only available when using Java 12 or higher. For support with Java 11 or lower, "
-        + "include a dependency on io.clientcore:http-okhttp3.";
+        + "JdkHttpClient is only available when using Java 12 or higher. For support with Java 11 or lower, include a "
+        + "dependency on io.clientcore:http-netty4 or io.clientcore:http-okhttp3.";
 
     /**
-     * Creates an instance of DefaultHttpClient.
+     * Creates an instance of JdkHttpClient.
      *
      * @param httpClient The wrapped http client.
      * @param restrictedHeaders The set of headers that are restricted from being set by the user.

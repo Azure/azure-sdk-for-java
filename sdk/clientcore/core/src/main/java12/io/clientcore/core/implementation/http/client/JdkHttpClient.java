@@ -17,7 +17,6 @@ import io.clientcore.core.utils.ServerSentEventUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.Set;
@@ -32,7 +31,7 @@ import static io.clientcore.core.utils.ServerSentEventUtils.isTextEventStreamCon
 import static io.clientcore.core.utils.ServerSentEventUtils.processTextEventStream;
 
 /**
- * HttpClient implementation using {@link HttpURLConnection} to send requests and receive responses.
+ * HttpClient implementation using the JDK {@code HttpClient} to send requests and receive responses.
  */
 public final class JdkHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClient.class);

@@ -71,9 +71,7 @@ public final class HttpPipeline {
      * @return An {@link Response}.
      */
     public Response<BinaryData> send(HttpRequest request) {
-        HttpPipelineNextPolicy next = new HttpPipelineNextPolicy(new HttpPipelineCallState(this, request));
-
-        return next.process();
+        return new HttpPipelineNextPolicy(new HttpPipelineCallState(this, request)).process();
     }
 
     /**
@@ -84,7 +82,6 @@ public final class HttpPipeline {
      * the request could not be sent or the response could not be received.
      */
     public CompletableFuture<Response<BinaryData>> sendAsync(HttpRequest request) {
-        HttpPipelineNextPolicy next = new HttpPipelineNextPolicy(new HttpPipelineCallState(this, request));
-        return next.processAsync();
+        return new HttpPipelineNextPolicy(new HttpPipelineCallState(this, request)).processAsync();
     }
 }
