@@ -137,7 +137,9 @@ public class CosmosLatestCommittedItemTests extends TestSuiteBase {
 
         String id = UUID.randomUUID().toString();
         ObjectNode properties = getDocumentDefinition(id, id);
-        container.createItem(properties);
+        CosmosItemResponse<ObjectNode> createResponse = container.createItem(properties);
+        assertThat(createResponse.getDiagnostics().getDiagnosticsContext().getEffectiveReadConsistencyStrategy())
+            .isEqualTo(ReadConsistencyStrategy.DEFAULT);
 
         String query = String.format("SELECT * from c where c.id = '%s'", id);
         CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions()
@@ -211,7 +213,9 @@ public class CosmosLatestCommittedItemTests extends TestSuiteBase {
 
         String id = UUID.randomUUID().toString();
         ObjectNode properties = getDocumentDefinition(id, id);
-        container.createItem(properties);
+        CosmosItemResponse<ObjectNode> createResponse = container.createItem(properties);
+        assertThat(createResponse.getDiagnostics().getDiagnosticsContext().getEffectiveReadConsistencyStrategy())
+            .isEqualTo(ReadConsistencyStrategy.DEFAULT);
 
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions()
             .setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
@@ -260,11 +264,15 @@ public class CosmosLatestCommittedItemTests extends TestSuiteBase {
         String pk = UUID.randomUUID().toString();
         String id1 = UUID.randomUUID().toString();
         ObjectNode properties1 = getDocumentDefinition(id1, pk);
-        container.createItem(properties1);
+        CosmosItemResponse<ObjectNode> createResponse = container.createItem(properties1);
+        assertThat(createResponse.getDiagnostics().getDiagnosticsContext().getEffectiveReadConsistencyStrategy())
+            .isEqualTo(ReadConsistencyStrategy.DEFAULT);
 
         String id2 = UUID.randomUUID().toString();
         ObjectNode properties2 = getDocumentDefinition(id2, pk);
-        container.createItem(properties2);
+        createResponse = container.createItem(properties2);
+        assertThat(createResponse.getDiagnostics().getDiagnosticsContext().getEffectiveReadConsistencyStrategy())
+            .isEqualTo(ReadConsistencyStrategy.DEFAULT);
 
         List<CosmosItemIdentity> identities = new ArrayList<>();
         identities.add(new CosmosItemIdentity(new PartitionKey(pk), id1));
@@ -317,7 +325,9 @@ public class CosmosLatestCommittedItemTests extends TestSuiteBase {
         String pk = UUID.randomUUID().toString();
         String id1 = UUID.randomUUID().toString();
         ObjectNode properties1 = getDocumentDefinition(id1, pk);
-        container.createItem(properties1);
+        CosmosItemResponse<ObjectNode> createResponse = container.createItem(properties1);
+        assertThat(createResponse.getDiagnostics().getDiagnosticsContext().getEffectiveReadConsistencyStrategy())
+            .isEqualTo(ReadConsistencyStrategy.DEFAULT);
 
         List<CosmosItemIdentity> identities = new ArrayList<>();
         identities.add(new CosmosItemIdentity(new PartitionKey(pk), id1));
@@ -369,7 +379,9 @@ public class CosmosLatestCommittedItemTests extends TestSuiteBase {
         String pk = UUID.randomUUID().toString();
         String id1 = UUID.randomUUID().toString();
         ObjectNode properties1 = getDocumentDefinition(id1, pk);
-        container.createItem(properties1);
+        CosmosItemResponse<ObjectNode> createResponse = container.createItem(properties1);
+        assertThat(createResponse.getDiagnostics().getDiagnosticsContext().getEffectiveReadConsistencyStrategy())
+            .isEqualTo(ReadConsistencyStrategy.DEFAULT);
 
         List<CosmosItemIdentity> identities = new ArrayList<>();
         identities.add(new CosmosItemIdentity(new PartitionKey(pk), id1));

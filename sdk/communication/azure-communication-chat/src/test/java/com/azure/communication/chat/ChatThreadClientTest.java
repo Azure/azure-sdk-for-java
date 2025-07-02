@@ -110,8 +110,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
         CreateChatThreadOptions threadRequest
             = ChatOptionsProvider.createThreadOptions(firstParticipant.getId(), secondParticipant.getId());
-        threadRequest
-            .setRetentionPolicy(new ThreadCreationDateRetentionPolicy().setDeleteThreadAfterDays(deleteAfterDays));
+        threadRequest.setRetentionPolicy(new ThreadCreationDateRetentionPolicy(deleteAfterDays));
 
         CreateChatThreadResult createChatThreadResult = client.createChatThread(threadRequest);
         chatThreadClient = client.getChatThreadClient(createChatThreadResult.getChatThread().getId());
@@ -184,8 +183,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
             "canUpdateThreadPropertiesWithThreadCreationDateRetentionPolicy", 50);
 
         String newTopic = "Updated Topic";
-        ThreadCreationDateRetentionPolicy updatedPolicy
-            = new ThreadCreationDateRetentionPolicy().setDeleteThreadAfterDays(90); // changed from 50 → 90
+        ThreadCreationDateRetentionPolicy updatedPolicy = new ThreadCreationDateRetentionPolicy(90); // changed from 50 → 90
 
         UpdateChatThreadOptions options
             = new UpdateChatThreadOptions().setTopic(newTopic).setRetentionPolicy(updatedPolicy);
@@ -291,8 +289,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         // Arrange
         setupTest(httpClient, "canUpdateThreadWithRetentionPolicy");
         String newTopic = "Topic with Retention";
-        ThreadCreationDateRetentionPolicy retentionPolicy
-            = new ThreadCreationDateRetentionPolicy().setDeleteThreadAfterDays(90);
+        ThreadCreationDateRetentionPolicy retentionPolicy = new ThreadCreationDateRetentionPolicy(90);
         UpdateChatThreadOptions options
             = new UpdateChatThreadOptions().setTopic(newTopic).setRetentionPolicy(retentionPolicy);
 

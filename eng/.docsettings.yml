@@ -19,7 +19,6 @@ omitted_paths:
   - sdk/*/*-stress/*
   - doc/*
   - eng/*
-  - common/smoke-tests/*
   - samples/*
 language: java
 root_check_enabled: True

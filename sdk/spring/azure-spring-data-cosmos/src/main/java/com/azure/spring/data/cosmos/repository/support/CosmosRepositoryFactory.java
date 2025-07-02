@@ -13,7 +13,6 @@ import org.springframework.data.repository.core.RepositoryInformation;
 import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
 import org.springframework.data.repository.query.QueryLookupStrategy;
-import org.springframework.data.repository.query.QueryMethodEvaluationContextProvider;
 import org.springframework.data.repository.query.RepositoryQuery;
 import org.springframework.util.Assert;
 
@@ -54,18 +53,18 @@ public class CosmosRepositoryFactory extends RepositoryFactorySupport {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    protected Optional<QueryLookupStrategy> getQueryLookupStrategy(
-            QueryLookupStrategy.Key key, QueryMethodEvaluationContextProvider evaluationContextProvider) {
+    @SuppressWarnings({"deprecation", "removal"})
+    protected Optional<QueryLookupStrategy> getQueryLookupStrategy(QueryLookupStrategy.Key key,
+        org.springframework.data.repository.query.QueryMethodEvaluationContextProvider evaluationContextProvider) {
         return Optional.of(new CosmosDbQueryLookupStrategy(cosmosOperations, evaluationContextProvider));
     }
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({"deprecation", "removal"})
     private static class CosmosDbQueryLookupStrategy implements QueryLookupStrategy {
         private final CosmosOperations dbOperations;
 
-        CosmosDbQueryLookupStrategy(
-                CosmosOperations operations, QueryMethodEvaluationContextProvider provider) {
+        CosmosDbQueryLookupStrategy(CosmosOperations operations,
+            org.springframework.data.repository.query.QueryMethodEvaluationContextProvider provider) {
             this.dbOperations = operations;
         }
 

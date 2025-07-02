@@ -20,8 +20,12 @@ import java.util.Map;
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceDeleteSuccess event. This is
  * raised when a resource delete operation succeeds.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Fluent
+@Deprecated
 public final class ResourceDeleteSuccessEventData implements JsonSerializable<ResourceDeleteSuccessEventData> {
 
     /*

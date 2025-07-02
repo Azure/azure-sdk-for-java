@@ -193,8 +193,8 @@ public final class IndexesClient {
      * </pre>
      *
      * @param name The name of the resource.
-     * @param version The specific version id of the Index to create or replace.
-     * @param body The definition of the Index to create or update.
+     * @param version The specific version id of the Index to create or update.
+     * @param index The Index to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -204,9 +204,9 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateIndexVersionWithResponse(String name, String version, BinaryData body,
+    public Response<BinaryData> createOrUpdateIndexVersionWithResponse(String name, String version, BinaryData index,
         RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateIndexVersionWithResponse(name, version, body, requestOptions);
+        return this.serviceClient.createOrUpdateIndexVersionWithResponse(name, version, index, requestOptions);
     }
 
     /**
@@ -294,8 +294,8 @@ public final class IndexesClient {
      * Create a new or update an existing Index with the given version id.
      *
      * @param name The name of the resource.
-     * @param version The specific version id of the Index to create or replace.
-     * @param body The definition of the Index to create or update.
+     * @param version The specific version id of the Index to create or update.
+     * @param index The Index to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -306,15 +306,15 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Index createOrUpdateIndexVersion(String name, String version, Index body) {
+    public Index createOrUpdateIndexVersion(String name, String version, Index index) {
         // Generated convenience method for createOrUpdateIndexVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getIndexAccessor().prepareModelForJsonMergePatch(body, true);
-        BinaryData bodyInBinaryData = BinaryData.fromObject(body);
+        JsonMergePatchHelper.getIndexAccessor().prepareModelForJsonMergePatch(index, true);
+        BinaryData indexInBinaryData = BinaryData.fromObject(index);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        bodyInBinaryData.getLength();
-        JsonMergePatchHelper.getIndexAccessor().prepareModelForJsonMergePatch(body, false);
-        return createOrUpdateIndexVersionWithResponse(name, version, bodyInBinaryData, requestOptions).getValue()
+        indexInBinaryData.getLength();
+        JsonMergePatchHelper.getIndexAccessor().prepareModelForJsonMergePatch(index, false);
+        return createOrUpdateIndexVersionWithResponse(name, version, indexInBinaryData, requestOptions).getValue()
             .toObject(Index.class);
     }
 }

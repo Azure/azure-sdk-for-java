@@ -80,5 +80,8 @@ public interface NicIpConfigurationBase extends HasSubnet, HasPrivateIpAddress {
      * @param context the {@link Context} of the request
      * @return the application security groups associated with this network IP configuration
      */
-    List<ApplicationSecurityGroup> listAssociatedApplicationSecurityGroups(Context context);
+    default List<ApplicationSecurityGroup> listAssociatedApplicationSecurityGroups(Context context) {
+        throw new UnsupportedOperationException(
+            "[listAssociatedApplicationSecurityGroups(Context)] is not supported in " + getClass());
+    }
 }

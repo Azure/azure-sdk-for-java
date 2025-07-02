@@ -27,7 +27,10 @@ public interface HasNetworkInterfaces extends HasId {
      * @param context the {@link Context} of the request
      * @return the primary network interface associated with this resource
      */
-    NetworkInterface getPrimaryNetworkInterface(Context context);
+    default NetworkInterface getPrimaryNetworkInterface(Context context) {
+        throw new UnsupportedOperationException(
+            "[getPrimaryNetworkInterface(Context)] is not supported in " + getClass());
+    }
 
     /**
      * Gets the primary network interface.

@@ -59,7 +59,7 @@ public final class UsagesClientImpl implements UsagesClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "StorageManagementCli")
+    @ServiceInterface(name = "StorageManagementClientUsages")
     public interface UsagesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Storage/locations/{location}/usages")

@@ -6,6 +6,7 @@ import com.azure.ai.projects.models.Evaluation;
 import com.azure.ai.projects.models.EvaluatorConfiguration;
 import com.azure.ai.projects.models.EvaluatorId;
 import com.azure.ai.projects.models.InputDataset;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -23,7 +24,6 @@ public class EvaluationsAsyncSample {
     private static DatasetsAsyncClient datasetsAsyncClient = clientBuilder.buildDatasetsAsyncClient();
 
     public static void main(String[] args) {
-        // Using block() to wait for the async operations to complete in the sample
         //createEvaluation().block();
         //getEvaluation().block();
         listEvaluations().blockLast();
@@ -37,7 +37,6 @@ public class EvaluationsAsyncSample {
             .doOnNext(evaluation -> {
                 System.out.println("Display Name: " + evaluation.getDisplayName());
                 System.out.println("Status: " + evaluation.getStatus());
-                System.out.println("Data Type: " + evaluation.getData().getType());
                 
                 if (evaluation.getDescription() != null) {
                     System.out.println("Description: " + evaluation.getDescription());
@@ -95,9 +94,13 @@ public class EvaluationsAsyncSample {
         // BEGIN:com.azure.ai.projects.EvaluationsAsyncSample.createEvaluation
 
         // Create an evaluation definition
-        String datasetName = Configuration.getGlobalConfiguration().get("DATASET_NAME", "test");
-        String version = Configuration.getGlobalConfiguration().get("DATASET_VERSION", "1");
-        
+        String datasetName = Configuration.getGlobalConfiguration().get("DATASET_NAME", "my-dataset");
+        String version = Configuration.getGlobalConfiguration().get("DATASET_VERSION", "1.0");
+        String modelEndpoint = Configuration.getGlobalConfiguration().get("MODEL_ENDPOINT", "https://your-model-endpoint.com");
+        String modelApiKey = Configuration.getGlobalConfiguration().get("MODEL_API_KEY", "your-model-api-key");
+        String modelName = Configuration.getGlobalConfiguration().get("MODEL_NAME", "gpt-4o-mini");
+
+
         return datasetsAsyncClient.getDatasetVersion(datasetName, version)
             .flatMap(datasetVersion -> {
                 InputDataset dataset = new InputDataset(datasetVersion.getId());
@@ -105,12 +108,17 @@ public class EvaluationsAsyncSample {
                     dataset,
                     mapOf("relevance",
                         new EvaluatorConfiguration(EvaluatorId.RELEVANCE.getValue())
-                            .setInitParams(mapOf("deployment_name", BinaryData.fromObject("gpt-4o")))))
+                            .setInitParams(mapOf("deployment_name", BinaryData.fromObject(modelName)))))
                     .setDisplayName("Sample Evaluation")
                     .setDescription("This is a sample evaluation created using the SDK");
 
                 // Create the evaluation
-                return evaluationsAsyncClient.createEvaluation(evaluation);
+                RequestOptions requestOptions = new RequestOptions();
+                requestOptions.setHeader("model-endpoint", modelEndpoint);
+                requestOptions.setHeader("api-key", modelApiKey);
+
+                return evaluationsAsyncClient.createEvaluationWithResponse(BinaryData.fromObject(evaluation), requestOptions)
+                    .map(response -> response.getValue().toObject(Evaluation.class));
             })
             .doOnNext(createdEvaluation -> {
                 System.out.println("Created evaluation:");
