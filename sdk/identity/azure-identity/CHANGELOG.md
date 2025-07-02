@@ -2,13 +2,20 @@
 
 ## 1.17.0-beta.1 (Unreleased)
 
+
 ### Features Added
+
+- **Visual Studio Code Credential** has been re-enabled and now supports **broker authentication** using the Azure account signed in via Visual Studio Code. [#45715](https://github.com/Azure/azure-sdk-for-java/pull/45715)
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### Behavioral Breaking Changes
+
+- Removed `SharedTokenCacheCredential` from the `DefaultAzureCredential` authentication chain. [#45795](https://github.com/Azure/azure-sdk-for-java/pull/45795)
 
 ### Other Changes
+
+- Deprecated `SharedTokenCacheCredential` and `SharedTokenCacheCredentialBuilder`. [#45795](https://github.com/Azure/azure-sdk-for-java/pull/45795)
 
 ## 1.16.2 (2025-06-09)
 

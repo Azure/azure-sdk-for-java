@@ -15,7 +15,6 @@ import com.azure.ai.vision.face.samples.utils.Resources;
 import com.azure.ai.vision.face.samples.utils.Utils;
 import com.azure.ai.vision.face.tests.commands.liveness.ILivenessWithVerifySessionSyncCommands;
 import com.azure.ai.vision.face.tests.commands.liveness.LivenessSessionWithVerifyCommandsProvider;
-import com.azure.ai.vision.face.tests.utils.FaceDisplayNameGenerator;
 import com.azure.ai.vision.face.tests.utils.TestUtils;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.BinaryData;
@@ -23,6 +22,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -33,7 +33,7 @@ import java.util.UUID;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-@DisplayNameGeneration(FaceDisplayNameGenerator.class)
+@DisplayNameGeneration(DisplayNameGenerator.Standard.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @RecordWithoutRequestBody
 public class LivenessSessionWithVerifyTest extends FaceClientTestBase {
@@ -77,7 +77,7 @@ public class LivenessSessionWithVerifyTest extends FaceClientTestBase {
         LivenessWithVerifySession livenessSession
             = livenessCommands.getLivenessWithVerifySessionResultSync(result.getSessionId());
         Assertions.assertNotNull(livenessSession);
-        Assertions.assertEquals(livenessSession.getAuthTokenTimeToLiveInSeconds(), authTokenTimeToLiveInSeconds);
+        Assertions.assertEquals(authTokenTimeToLiveInSeconds, livenessSession.getAuthTokenTimeToLiveInSeconds());
     }
 
     @BeforeEach

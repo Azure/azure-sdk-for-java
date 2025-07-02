@@ -4,6 +4,7 @@
 package io.clientcore.core.shared;
 
 import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.http.client.HttpProtocolVersion;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.serialization.json.JsonSerializer;
@@ -71,8 +72,16 @@ public class HttpClientTestsServer {
         HUGE_HEADER_VALUE = sb.toString();
     }
 
-    public static LocalTestServer getHttpClientTestsServer() {
-        return new LocalTestServer((req, resp, requestBody) -> {
+    /**
+     * Gets the {@link LocalTestServer}.
+     *
+     * @param supportedProtocol The protocol supported by this server. If null, {@link HttpProtocolVersion#HTTP_1_1}
+     * will be the supported protocol.
+     * @param includeTls Flag indicating if TLS will be included.
+     * @return The {@link LocalTestServer}.
+     */
+    public static LocalTestServer getHttpClientTestsServer(HttpProtocolVersion supportedProtocol, boolean includeTls) {
+        return new LocalTestServer(supportedProtocol, includeTls, (req, resp, requestBody) -> {
             String path = req.getServletPath();
             boolean get = "GET".equalsIgnoreCase(req.getMethod());
             boolean post = "POST".equalsIgnoreCase(req.getMethod());
@@ -158,7 +167,7 @@ public class HttpClientTestsServer {
             } else {
                 throw new ServletException("Unexpected request " + req.getMethod() + " " + path);
             }
-        }, 100);
+        });
     }
 
     /**

@@ -54,7 +54,7 @@ try {
 
     # Reset each package to the latest stable release and update CHANGELOG, POM and README for patch release.
     foreach ($packageData in $packagesData) {
-        . "${PSScriptRoot}/generatepatch.ps1" -ArtifactIds $packageData["name"] -ServiceDirectoryName $packageData["ServiceDirectory"] -BranchName $branchName
+        . "${PSScriptRoot}/generatepatch.ps1" -ArtifactIds $packageData["name"] -ServiceDirectoryName $packageData["ServiceDirectory"] -BranchName $branchName -GroupId $packageData["groupId"]
         $libraryList += $packageData["groupId"] + ":" + $packageData["name"] + ","
     }
 
