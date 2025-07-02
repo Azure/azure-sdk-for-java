@@ -25,6 +25,12 @@ public final class PhoneNumberType extends ExpandableStringEnum<PhoneNumberType>
     public static final PhoneNumberType TOLL_FREE = fromString("tollFree");
 
     /**
+     * Static value mobile for PhoneNumberType.
+     */
+    @Generated
+    public static final PhoneNumberType MOBILE = fromString("mobile");
+
+    /**
      * Creates a new instance of PhoneNumberType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
