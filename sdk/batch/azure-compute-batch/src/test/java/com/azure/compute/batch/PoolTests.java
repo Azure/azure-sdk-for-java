@@ -490,22 +490,23 @@ public class PoolTests extends BatchClientTestBase {
             Assertions.assertNotNull(deallocatedNode, "Final result should contain the node object");
             Assertions.assertEquals(BatchNodeState.DEALLOCATED, deallocatedNode.getState());
 
-            // Start the node again
-            SyncAsyncExtension.execute(() -> batchClient.startNode(poolId, nodeId),
-                () -> batchAsyncClient.startNode(poolId, nodeId));
+            // Start the node
+            SyncPoller<BatchNode, BatchNode> startPoller = setPlaybackSyncPollerPollInterval(
+                SyncAsyncExtension.execute(() -> batchClient.beginStartNode(poolId, nodeId),
+                    () -> Mono.fromCallable(() -> batchAsyncClient.beginStartNode(poolId, nodeId).getSyncPoller())));
 
-            // Wait for the node to become idle again
-            boolean isIdle = false;
-            while (!isIdle) {
-                BatchNode current = SyncAsyncExtension.execute(() -> batchClient.getNode(poolId, nodeId),
-                    () -> batchAsyncClient.getNode(poolId, nodeId));
-                if (current.getState().equals(BatchNodeState.IDLE)) {
-                    isIdle = true;
-                } else {
-                    sleepIfRunningAgainstService(15 * 1000);
-                }
+            // First poll
+            PollResponse<BatchNode> startFirst = startPoller.poll();
+            if (startFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+                BatchNodeState startState = startFirst.getValue().getState();
+                Assertions.assertTrue(startState == BatchNodeState.CREATING || startState == BatchNodeState.STARTING,
+                    "Unexpected interim state: " + startState);
             }
-            Assertions.assertTrue(isIdle, "Node should return to IDLE state after start");
+
+            startPoller.waitForCompletion();
+            BatchNode startedNode = startPoller.getFinalResult();
+            Assertions.assertNotNull(startedNode);
+            Assertions.assertEquals(BatchNodeState.IDLE, startedNode.getState(), "Node should reach IDLE after start");
 
         } finally {
             // DELETE
