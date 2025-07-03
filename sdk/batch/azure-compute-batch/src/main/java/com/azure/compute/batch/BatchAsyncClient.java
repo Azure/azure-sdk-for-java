@@ -12,6 +12,7 @@ import com.azure.compute.batch.implementation.lro.JobScheduleDeletePollerAsync;
 import com.azure.compute.batch.implementation.lro.JobScheduleTerminatePollerAsync;
 import com.azure.compute.batch.implementation.lro.JobTerminatePollerAsync;
 import com.azure.compute.batch.implementation.lro.NodeDeallocatePollerAsync;
+import com.azure.compute.batch.implementation.lro.NodeRebootPollerAsync;
 import com.azure.compute.batch.implementation.lro.NodeStartPollerAsync;
 import com.azure.compute.batch.implementation.lro.PoolDeletePollerAsync;
 import com.azure.compute.batch.implementation.lro.PoolResizePollerAsync;
@@ -12391,6 +12392,28 @@ public final class BatchAsyncClient {
     }
 
     /**
+     * Restarts the specified Compute Node.
+     *
+     * You can restart a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link PollerFlux} that polls until the node leaves {@code rebooting} and returns to
+     * {@code idle} / {@code running}. Provides {@link BatchNode} snapshots while in progress
+     * and the final {@link BatchNode} on completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BatchNode, BatchNode> beginRebootNode(String poolId, String nodeId) {
+        RequestOptions requestOptions = new RequestOptions();
+        NodeRebootPollerAsync poller = new NodeRebootPollerAsync(this, poolId, nodeId, requestOptions);
+        return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
+            poller.getCancelOperation(), poller.getFetchResultOperation());
+    }
+
+    /**
      * Starts the specified Compute Node.
      *
      * You can start a Compute Node only if it has been deallocated.
@@ -15171,6 +15194,38 @@ public final class BatchAsyncClient {
             requestOptions.setBody(BinaryData.fromObject(parameters));
         }
         return rebootNodeWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Restarts the specified Compute Node.
+     *
+     * You can restart a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param options Optional parameters for Reboot Node operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link PollerFlux} that polls until the node leaves {@code rebooting} and returns to
+     * {@code idle} / {@code running}. Provides {@link BatchNode} snapshots while in progress
+     * and the final {@link BatchNode} on completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BatchNode, BatchNode> beginRebootNode(String poolId, String nodeId,
+        BatchNodeRebootOptions options) {
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        BatchNodeRebootParameters parameters = options == null ? null : options.getParameters();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        }
+        if (parameters != null) {
+            requestOptions.setBody(BinaryData.fromObject(parameters));
+        }
+        NodeRebootPollerAsync poller = new NodeRebootPollerAsync(this, poolId, nodeId, requestOptions);
+        return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
+            poller.getCancelOperation(), poller.getFetchResultOperation());
     }
 
     /**
