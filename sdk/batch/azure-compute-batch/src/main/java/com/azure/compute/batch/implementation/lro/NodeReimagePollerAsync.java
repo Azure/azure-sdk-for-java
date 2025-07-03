@@ -18,10 +18,10 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * Async poller class used by {@code beginRebootNode} to implement polling logic for rebooting a {@link BatchNode}.
- * Returns {@link BatchNode} values during polling and the final {@link BatchNode} upon successful completion.
+ * Async poller class used by {@code beginReimageNode} to implement polling logic for re-imaging a {@link BatchNode}.
+ * Returns {@link BatchNode} snapshots while polling and the final {@link BatchNode} upon successful completion.
  */
-public final class NodeRebootPollerAsync {
+public final class NodeReimagePollerAsync {
 
     private final BatchAsyncClient batchAsyncClient;
     private final String poolId;
@@ -30,14 +30,14 @@ public final class NodeRebootPollerAsync {
     private final Context requestContext;
 
     /**
-     * Creates a new {@link NodeRebootPollerAsync}.
+     * Creates a new {@link NodeReimagePollerAsync}.
      *
-     * @param batchAsyncClient The {@link BatchAsyncClient} used to interact with the Batch service.
-     * @param poolId The ID of the pool that contains the node.
-     * @param nodeId The ID of the node to reboot.
-     * @param options Optional request options for service calls.
+     * @param batchAsyncClient Client used to call the Batch service.
+     * @param poolId           Pool that contains the node.
+     * @param nodeId           Node to re-image.
+     * @param options          Optional request options (may be {@code null}).
      */
-    public NodeRebootPollerAsync(BatchAsyncClient batchAsyncClient, String poolId, String nodeId,
+    public NodeReimagePollerAsync(BatchAsyncClient batchAsyncClient, String poolId, String nodeId,
         RequestOptions options) {
         this.batchAsyncClient = batchAsyncClient;
         this.poolId = poolId;
@@ -47,25 +47,37 @@ public final class NodeRebootPollerAsync {
     }
 
     /**
-     * Activation operation to start the reboot.
+     * Activation operation to start the re-image process.
+     *
+     * @return A function that initiates the re-image call and returns a {@link PollResponse}
+     *         with {@link LongRunningOperationStatus#IN_PROGRESS}.
      */
     public Function<PollingContext<BatchNode>, Mono<PollResponse<BatchNode>>> getActivationOperation() {
-        return ctx -> batchAsyncClient.rebootNodeWithResponse(poolId, nodeId, options)
+        return ctx -> batchAsyncClient.reimageNodeWithResponse(poolId, nodeId, options)
             .thenReturn(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, null));
     }
 
     /**
-     * Poll operation – watches the node until it leaves {@code rebooting} and reaches {@code idle} or {@code running}.
+     * Poll operation to track the node’s state.
+     *
+     * @return A function that polls the node and returns a {@link PollResponse}
+     *         reflecting the current long-running operation status.
      */
     public Function<PollingContext<BatchNode>, Mono<PollResponse<BatchNode>>> getPollOperation() {
         return ctx -> {
             RequestOptions pollOpts = new RequestOptions().setContext(requestContext);
+
             return batchAsyncClient.getNodeWithResponse(poolId, nodeId, pollOpts).flatMap(resp -> {
                 BatchNode node = resp.getValue().toObject(BatchNode.class);
                 BatchNodeState state = node.getState();
 
                 LongRunningOperationStatus status;
-                if (state == BatchNodeState.REBOOTING || state == BatchNodeState.STARTING) {
+                if (state == BatchNodeState.REIMAGING
+                    || state == BatchNodeState.CREATING
+                    || state == BatchNodeState.STARTING
+                    || state == BatchNodeState.WAITING_FOR_START_TASK
+                    || state == BatchNodeState.REBOOTING
+                    || state == BatchNodeState.UPGRADING_OS) {
                     status = LongRunningOperationStatus.IN_PROGRESS;
                 } else if (state == BatchNodeState.IDLE || state == BatchNodeState.RUNNING) {
                     status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
@@ -77,16 +89,24 @@ public final class NodeRebootPollerAsync {
             })
                 .onErrorResume(ResourceNotFoundException.class,
                     ex -> Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null)))
-                .onErrorResume(e -> Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null)));
+                .onErrorResume(ex -> Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null)));
         };
     }
 
-    /** Cancel operation (not supported for reboot). */
+    /**
+     * Cancel operation – not supported for re-image.
+     *
+     * @return A function that always returns an empty {@link Mono}, indicating cancellation is unsupported.
+     */
     public BiFunction<PollingContext<BatchNode>, PollResponse<BatchNode>, Mono<BatchNode>> getCancelOperation() {
         return (ctx, resp) -> Mono.empty();
     }
 
-    /** Final result fetch operation. */
+    /**
+     * Final-result fetch operation.
+     *
+     * @return A function that returns the final {@link BatchNode} from the latest poll response.
+     */
     public Function<PollingContext<BatchNode>, Mono<BatchNode>> getFetchResultOperation() {
         return ctx -> Mono.justOrEmpty(ctx.getLatestResponse().getValue());
     }
