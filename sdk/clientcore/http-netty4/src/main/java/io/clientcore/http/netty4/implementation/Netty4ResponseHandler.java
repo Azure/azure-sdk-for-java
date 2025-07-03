@@ -175,12 +175,10 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void channelInactive(ChannelHandlerContext ctx) {
-        if (!started) {
-            setOrSuppressError(errorReference,
-                new IOException("The channel became inactive before a response was received."));
-            latch.countDown();
-        }
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        setOrSuppressError(errorReference,
+            new IOException("The channel became inactive before a response was received."));
         ctx.fireChannelInactive();
+        latch.countDown();
     }
 }
