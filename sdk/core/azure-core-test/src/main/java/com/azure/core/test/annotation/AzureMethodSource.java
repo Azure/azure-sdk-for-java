@@ -33,7 +33,7 @@ public @interface AzureMethodSource {
      * The source supplier method must be static and have a return type of {@code Stream<Arguments>}. If either of these
      * don't hold true an {@link IllegalArgumentException} will be thrown during runtime.
      * <p>
-     * By default no additional parameterized testing values are expected.
+     * By default, no additional parameterized testing values are expected.
      *
      * @return The name of the method, either fully-qualified or relative, which provides parameterized testing values.
      */

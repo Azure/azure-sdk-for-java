@@ -14,7 +14,6 @@ import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.Assertions;
 import reactor.core.publisher.Mono;
 
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -33,8 +32,6 @@ import java.util.concurrent.ThreadLocalRandom;
 public final class TestUtils {
 
     private static final ClientLogger LOGGER = new ClientLogger(TestUtils.class);
-
-    private static final String RECORD_FOLDER = "session-records/";
 
     private static final HttpHeaderName UPSTREAM_URI_HEADER = HttpHeaderName.fromString("X-Upstream-Base-Uri");
     private static final HttpHeaderName HTTP_FAULT_INJECTOR_RESPONSE_HEADER
@@ -128,26 +125,6 @@ public final class TestUtils {
     }
 
     /**
-     * Get the {@link File} pointing to the folder where session records live.
-     *
-     * @return The session-records folder.
-     * @throws IllegalStateException if the session-records folder cannot be found.
-     */
-    public static File getRecordFolder() {
-        URL folderUrl = TestUtils.class.getClassLoader().getResource(RECORD_FOLDER);
-
-        if (folderUrl != null) {
-            // Use toURI as getResource will return a URL encoded file path that can only be cleaned up using the
-            // URI-based constructor of File.
-            return new File(toURI(folderUrl));
-        }
-
-        throw new IllegalStateException("Unable to locate session-records folder. Please create a session-records "
-            + "folder in '/src/test/resources' of the module (ex. for azure-core-test this is "
-            + "'/sdk/core/azure-core-test/src/test/resources/session-records').");
-    }
-
-    /**
      *  Returns a {@link java.net.URI} equivalent to this URL.
      * @param url the url to be converted to URI
      * @return the URI
@@ -174,7 +151,7 @@ public final class TestUtils {
     public static Path getRepoRootResolveUntil(Path testClassPath, String resolveFolder) {
         String repoName = "\\azure-sdk-for-java";
         Path path = testClassPath;
-        Path candidate = null;
+        Path candidate;
         while (path != null && !path.endsWith(repoName)) {
             candidate = path.resolve(resolveFolder);
             if (Files.exists(candidate)) {
