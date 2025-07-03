@@ -11,6 +11,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.common.test.shared.policy.InvalidServiceVersionPipelinePolicy;
 import com.azure.storage.queue.models.PeekedMessageItem;
 import com.azure.storage.queue.models.QueueAccessPolicy;
 import com.azure.storage.queue.models.QueueAudience;
@@ -45,6 +46,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
+import static com.azure.storage.common.implementation.StorageImplUtils.INVALID_VERSION_HEADER_MESSAGE;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -957,6 +959,21 @@ public class QueueApiTests extends QueueTestBase {
         assertEquals(Long.MAX_VALUE, properties.getApproximateMessagesCountLong());
         int expectedOverflowValue = (int) Long.MAX_VALUE;
         assertEquals(expectedOverflowValue, properties.getApproximateMessagesCount());
+    }
+
+    @Test
+    public void invalidServiceVersion() {
+        QueueServiceClient serviceClient
+            = instrument(new QueueServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getQueueEndpoint())
+                .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+                .addPolicy(new InvalidServiceVersionPipelinePolicy())).buildClient();
+
+        QueueClient queueClient = serviceClient.getQueueClient(getRandomName(60));
+
+        QueueStorageException exception = assertThrows(QueueStorageException.class, queueClient::createIfNotExists);
+
+        assertEquals(400, exception.getStatusCode());
+        assertTrue(exception.getMessage().contains(INVALID_VERSION_HEADER_MESSAGE));
     }
 
 }

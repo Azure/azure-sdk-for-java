@@ -8,6 +8,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.common.test.shared.policy.InvalidServiceVersionPipelinePolicy;
 import com.azure.storage.queue.models.PeekedMessageItem;
 import com.azure.storage.queue.models.QueueAccessPolicy;
 import com.azure.storage.queue.models.QueueAudience;
@@ -15,6 +16,7 @@ import com.azure.storage.queue.models.QueueErrorCode;
 import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
+import com.azure.storage.queue.models.QueueStorageException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,6 +42,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
+import static com.azure.storage.common.implementation.StorageImplUtils.INVALID_VERSION_HEADER_MESSAGE;
 import static com.azure.storage.queue.QueueApiTests.CREATE_METADATA;
 import static com.azure.storage.queue.QueueApiTests.TEST_METADATA;
 import static com.azure.storage.queue.QueueTestHelper.assertAsyncResponseStatusCode;
@@ -47,9 +50,11 @@ import static com.azure.storage.queue.QueueTestHelper.assertExceptionStatusCodeA
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class QueueAsyncApiTests extends QueueTestBase {
     private String queueName;
@@ -933,5 +938,21 @@ public class QueueAsyncApiTests extends QueueTestBase {
             int expectedOverflowValue = (int) Long.MAX_VALUE;
             assertEquals(expectedOverflowValue, response.getApproximateMessagesCount());
         }).verifyComplete();
+    }
+
+    @Test
+    public void invalidServiceVersion() {
+        QueueServiceAsyncClient serviceClient
+            = instrument(new QueueServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getQueueEndpoint())
+                .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+                .addPolicy(new InvalidServiceVersionPipelinePolicy())).buildAsyncClient();
+
+        QueueAsyncClient queueClient = serviceClient.getQueueAsyncClient(getRandomName(60));
+
+        StepVerifier.create(queueClient.createIfNotExists()).verifyErrorSatisfies(ex -> {
+            QueueStorageException exception = assertInstanceOf(QueueStorageException.class, ex);
+            assertEquals(400, exception.getStatusCode());
+            assertTrue(exception.getMessage().contains(INVALID_VERSION_HEADER_MESSAGE));
+        });
     }
 }

@@ -258,6 +258,10 @@ public final class Constants {
 
         public static final String NFS_PROTOCOL = "NFS";
 
+        public static final String VERSION = "x-ms-version";
+
+        public static final String INVALID_HEADER_VALUE = "InvalidHeaderValue";
+
         private HeaderConstants() {
             // Private to prevent construction.
         }
