@@ -156,17 +156,12 @@ class NettyHttpClient implements HttpClient {
             }
 
             response = new Response<>(request, info.getStatusCode(), info.getHeaders(), body);
-            Channel channel = info.getResponseChannel();
-            if (channel != null) {
-                cleanupPipeline(channel.pipeline());
-            }
         } else {
             // Otherwise we aren't finished, handle the remaining content according to the documentation in
             // 'channelRead()'.
             BinaryData body = BinaryData.empty();
             ResponseBodyHandling bodyHandling = info.getResponseBodyHandling();
             Channel channel = info.getResponseChannel();
-            ChannelPipeline pipeline = channel.pipeline();
             if (bodyHandling == ResponseBodyHandling.IGNORE) {
                 // We're ignoring the response content.
                 CountDownLatch drainLatch = new CountDownLatch(1);
@@ -174,8 +169,6 @@ class NettyHttpClient implements HttpClient {
                 }, info.isHttp2()));
                 channel.config().setAutoRead(true);
                 awaitLatch(drainLatch);
-
-                cleanupPipeline(pipeline);
             } else if (bodyHandling == ResponseBodyHandling.STREAM) {
                 // Body streaming uses a special BinaryData that tracks the firstContent read and the Channel it came
                 // from so it can be consumed when the BinaryData is being used.
@@ -204,8 +197,6 @@ class NettyHttpClient implements HttpClient {
                 }, info.isHttp2()));
                 channel.config().setAutoRead(true);
                 awaitLatch(drainLatch);
-
-                cleanupPipeline(pipeline);
 
                 body = BinaryData.fromBytes(info.getEagerContent().toByteArray());
             }
@@ -360,13 +351,6 @@ class NettyHttpClient implements HttpClient {
         }
 
         return key;
-    }
-
-    private void cleanupPipeline(ChannelPipeline pipeline) {
-        Netty4PipelineCleanupHandler pipelineCleanupHandler = pipeline.get(Netty4PipelineCleanupHandler.class);
-        if (pipelineCleanupHandler != null) {
-            pipelineCleanupHandler.cleanup(pipeline.context(pipelineCleanupHandler), false);
-        }
     }
 
 }

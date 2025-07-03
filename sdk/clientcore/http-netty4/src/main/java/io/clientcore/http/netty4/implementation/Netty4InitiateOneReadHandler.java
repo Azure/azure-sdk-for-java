@@ -95,6 +95,9 @@ public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAda
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
         latch.countDown();
+        if (lastRead) {
+            ctx.pipeline().remove(this);
+        }
         ctx.fireChannelReadComplete();
     }
 
@@ -106,6 +109,9 @@ public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAda
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         this.exception = cause;
         latch.countDown();
+        if (ctx.pipeline().get(Netty4InitiateOneReadHandler.class) != null) {
+            ctx.pipeline().remove(this);
+        }
         ctx.fireExceptionCaught(cause);
     }
 
@@ -117,12 +123,18 @@ public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAda
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) {
         latch.countDown();
+        if (ctx.pipeline().get(Netty4InitiateOneReadHandler.class) != null) {
+            ctx.pipeline().remove(this);
+        }
         ctx.fireChannelUnregistered();
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
         latch.countDown();
+        if (ctx.pipeline().get(Netty4InitiateOneReadHandler.class) != null) {
+            ctx.pipeline().remove(this);
+        }
         ctx.fireChannelInactive();
     }
 
@@ -133,6 +145,7 @@ public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAda
             // an exception. Simply counting down the latch would cause the caller to receive
             // an empty/incomplete data stream without any indication of the underlying network error.
             ctx.fireExceptionCaught(new ClosedChannelException());
+            ctx.pipeline().remove(this);
         }
     }
 }

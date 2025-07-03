@@ -6,6 +6,8 @@ package io.clientcore.http.netty4.implementation;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
+import io.netty.handler.codec.http.LastHttpContent;
+import io.netty.handler.codec.http2.Http2DataFrame;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,6 +30,7 @@ public class Netty4PipelineCleanupHandler extends ChannelDuplexHandler {
 
     private final Netty4ConnectionPool connectionPool;
     private final AtomicBoolean cleanedUp = new AtomicBoolean(false);
+    private boolean lastContentRead;
 
     private static final List<String> HANDLERS_TO_REMOVE;
 
@@ -48,25 +51,44 @@ public class Netty4PipelineCleanupHandler extends ChannelDuplexHandler {
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        //ctx.fireExceptionCaught(cause);
-        cleanup(ctx, true);
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        if (msg instanceof LastHttpContent) {
+            this.lastContentRead = true;
+        } else if (msg instanceof Http2DataFrame) {
+            this.lastContentRead = ((Http2DataFrame) msg).isEndStream();
+        }
+
+        ctx.fireChannelRead(msg);
     }
 
     @Override
-    public void channelInactive(ChannelHandlerContext ctx) {
-        ctx.fireChannelInactive();
-        cleanup(ctx, true);
+    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+        // First, let other handlers process the channelReadComplete event.
+        ctx.fireChannelReadComplete();
+
+        if (lastContentRead) {
+            cleanup(ctx);
+        }
     }
 
-    public void cleanup(ChannelHandlerContext ctx, boolean closeChannel) {
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        // An exception has occurred, which means the channel is likely in a bad state.
+        // We handle this by closing the channel. This prevents it from being
+        // returned to the connection pool.
+        ctx.close();
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        ctx.fireChannelInactive();
+        cleanup(ctx);
+    }
+
+    public void cleanup(ChannelHandlerContext ctx) {
         if (!cleanedUp.compareAndSet(false, true)) {
             return;
         }
-
-        // Always reset autoRead to false before returning a channel to the pool
-        // to ensure predictable behavior for the next request.
-        ctx.channel().config().setAutoRead(false);
 
         ChannelPipeline pipeline = ctx.channel().pipeline();
         for (String handlerName : HANDLERS_TO_REMOVE) {
@@ -79,10 +101,6 @@ public class Netty4PipelineCleanupHandler extends ChannelDuplexHandler {
             pipeline.remove(this);
         }
 
-        if (closeChannel) {
-            ctx.channel().close();
-        } else {
-            connectionPool.release(ctx.channel());
-        }
+        connectionPool.release(ctx.channel());
     }
 }
