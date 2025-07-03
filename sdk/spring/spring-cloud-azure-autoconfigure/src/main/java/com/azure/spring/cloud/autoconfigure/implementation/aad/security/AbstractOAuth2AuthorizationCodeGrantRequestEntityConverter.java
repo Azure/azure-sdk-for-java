@@ -16,7 +16,7 @@ import java.util.UUID;
 /**
  * When using "auth-code" in AAD and AAD B2C, it's used to expand head and body parameters of the request.
  */
-@SuppressWarnings("deprecation")
+@SuppressWarnings({"deprecation", "removal"})
 public abstract class AbstractOAuth2AuthorizationCodeGrantRequestEntityConverter
         extends OAuth2AuthorizationCodeGrantRequestEntityConverter {
 

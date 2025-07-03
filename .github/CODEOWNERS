@@ -458,8 +458,8 @@
 /sdk/eventgrid/                                      @samvaity @srnagar @lmolkova @Azure/azure-java-sdk
 
 # ServiceLabel: %Event Grid
-# AzureSdkOwners:                                    @samvaity
-# ServiceOwners:                                     @Kishp01 @ahamad-MS
+# AzureSdkOwners:                                    @Kishp01 @shankarsama @rajeshka
+# ServiceOwners:                                     @Kishp01 @shankarsama @rajeshka
 
 # PRLabel: %Event Hubs
 /sdk/eventhubs/                                      @conniey @anuchandy @lmolkova @Azure/azure-java-sdk
@@ -830,7 +830,7 @@
 /sdk/translation/azure-ai-translation-text/         @MikeyMCZ
 
 # PRLabel: %EngSys
-/sdk/template/                                       @hallipr @weshaggard
+/sdk/template/                                       @raych1 @weshaggard
 
 # ServiceLabel:  %TimeseriesInsights
 # ServiceOwners:                                     @Shipra1Mishra
@@ -924,8 +924,8 @@
 
 # ######## Eng Sys ########
 
-/eng/                                                         @hallipr @weshaggard @benbp
-/eng/automation/                                              @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @hallipr @weshaggard @benbp
+/eng/                                                         @raych1 @weshaggard @benbp
+/eng/automation/                                              @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @raych1 @weshaggard @benbp
 /eng/bomgenerator/                                            @vcolin7 @alzimmermsft @srnagar @jonathangiles @Azure/azure-java-sdk
 /eng/code-quality-reports/                                    @JonathanGiles @alzimmermsft @srnagar @rujche @netyyyy @saragluna @moarychan @Azure/azure-java-sdk
 /eng/common/                                                  @Azure/azure-sdk-eng
@@ -935,14 +935,13 @@
 /.github/workflows/                                           @Azure/azure-sdk-eng
 /.config/1espt/                                               @benbp @weshaggard
 
-# Removing owners for these files to not require codeowner approval for changes to them given they are shared with project
+# Removing owners for this file to not require codeowner approval for changes to them given they are shared with project
 /eng/versioning/version_client.txt
-/eng/versioning/version_data.txt
 
 # Add owners for notifications for specific pipelines
 /eng/pipelines/aggregate-reports.yml                          @joshfree @jonathangiles @Azure/azure-java-sdk
 /eng/common/pipelines/codeowners-linter.yml                   @alzimmermsft @srnagar @lmolkova @Azure/azure-java-sdk
-/eng/pipelines/docindex.yml                                   @danieljurek @hallipr @weshaggard @benbp
+/eng/pipelines/docindex.yml                                   @danieljurek @raych1 @weshaggard @benbp
 
 # Add Cosmos source owners as the owners of their specialized matrix
 /eng/pipelines/templates/stages/cosmos-emulator-matrix.json   @kirankumarkolli @Azure/azure-cosmos-java-sdk-connectors
