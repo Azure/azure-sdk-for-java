@@ -952,7 +952,6 @@ public class CosmosContainer {
     private <T> CosmosPagedIterable<T> getCosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux) {
         return new CosmosPagedIterable<>(cosmosPagedFlux);
     }
-
     /**
      * Obtains a list of {@link FeedRange} that can be used to parallelize Feed
      * operations.

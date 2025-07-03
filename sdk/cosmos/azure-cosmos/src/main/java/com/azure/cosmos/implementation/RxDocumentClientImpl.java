@@ -125,7 +125,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -185,6 +184,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private static final ImplementationBridgeHelpers.ReadConsistencyStrategyHelper.ReadConsistencyStrategyAccessor readConsistencyStrategyAccessor =
         ImplementationBridgeHelpers.ReadConsistencyStrategyHelper.getReadConsistencyStrategyAccessor();
+
+    private static final ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.CosmosBulkExecutionOptionsAccessor bulkExecutionOptionsAccessor =
+        ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.getCosmosBulkExecutionOptionsAccessor();
 
     private static final String tempMachineId = "uuid:" + UUIDs.nonBlockingRandomUUID();
     private static final AtomicInteger activeClientsCnt = new AtomicInteger(0);
@@ -1174,26 +1176,35 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this, getOperationContextAndListenerTuple(nonNullQueryOptions));
 
-        // Trying to put this logic as low as the query pipeline
-        // Since for parallelQuery, each partition will have its own request, so at this point, there will be no request associate with this retry policy.
-        // For default document context, it already wired up InvalidPartitionExceptionRetry, but there is no harm to wire it again here
-        InvalidPartitionExceptionRetryPolicy invalidPartitionExceptionRetryPolicy = new InvalidPartitionExceptionRetryPolicy(
-            this.collectionCache,
-            null,
-            resourceLink,
-            ModelBridgeInternal.getPropertiesFromQueryRequestOptions(nonNullQueryOptions),
-            this.sessionContainer);
-
         final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(innerDiagnosticsFactory, false);
         state.registerDiagnosticsFactory(
             diagnosticsFactory::reset,
             diagnosticsFactory::merge);
 
+        // Trying to put this logic as low as the query pipeline
+        // Since for parallelQuery, each partition will have its own request, so at this point, there will be no request associate with this retry policy.
+        StaledResourceRetryPolicy staledResourceRetryPolicy = new StaledResourceRetryPolicy(
+            this.collectionCache,
+            null,
+            resourceLink,
+            qryOptAccessor.getProperties(nonNullQueryOptions),
+            qryOptAccessor.getHeaders(nonNullQueryOptions),
+            this.sessionContainer,
+            diagnosticsFactory);
+
         return
             ObservableHelper.fluxInlineIfPossibleAsObs(
                                 () -> createQueryInternal(
-                                    diagnosticsFactory, resourceLink, sqlQuery, state.getQueryOptions(), klass, resourceTypeEnum, queryClient, correlationActivityId, isQueryCancelledOnTimeout),
-                                invalidPartitionExceptionRetryPolicy
+                                    diagnosticsFactory,
+                                    resourceLink,
+                                    sqlQuery,
+                                    state.getQueryOptions(),
+                                    klass,
+                                    resourceTypeEnum,
+                                    queryClient,
+                                    correlationActivityId,
+                                    isQueryCancelledOnTimeout),
+                                staledResourceRetryPolicy
                             ).flatMap(result -> {
                                 diagnosticsFactory.merge(state.getDiagnosticsContextSnapshot());
                                 return Mono.just(result);
@@ -2440,14 +2451,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRxDocumentServiceRequest) {
 
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
-        DocumentClientRetryPolicy requestRetryPolicy =
-            this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
-        RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
-        if (nonNullRequestOptions.getPartitionKey() == null) {
-            requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(collectionCache, requestRetryPolicy, collectionLink, nonNullRequestOptions);
-        }
 
-        DocumentClientRetryPolicy finalRetryPolicyInstance = requestRetryPolicy;
+        RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
+
+        DocumentClientRetryPolicy finalRetryPolicyInstance =
+            this.getRetryPolicyForPointOperation(
+                scopedDiagnosticsFactory,
+                nonNullRequestOptions,
+                collectionLink);
+
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
         Consumer<CosmosException> gwModeE2ETimeoutDiagnosticHandler
@@ -2472,7 +2484,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         scopedDiagnosticsFactory,
                         requestReference,
                         crossRegionAvailabilityContextForRxDocumentServiceRequest),
-                requestRetryPolicy),
+                finalRetryPolicyInstance),
             scopedDiagnosticsFactory
         ), requestReference, endToEndPolicyConfig);
     }
@@ -2828,12 +2840,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
-        DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
-        if (nonNullRequestOptions.getPartitionKey() == null) {
-            requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(collectionCache, requestRetryPolicy, collectionLink, nonNullRequestOptions);
-        }
 
-        DocumentClientRetryPolicy finalRetryPolicyInstance = requestRetryPolicy;
+        DocumentClientRetryPolicy finalRetryPolicyInstance =
+            this.getRetryPolicyForPointOperation(
+                scopedDiagnosticsFactory,
+                nonNullRequestOptions,
+                collectionLink);;
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
         Consumer<CosmosException> gwModeE2ETimeoutDiagnosticHandler
@@ -2970,14 +2982,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
-        DocumentClientRetryPolicy requestRetryPolicy =
-            this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
-        if (nonNullRequestOptions.getPartitionKey() == null) {
-            String collectionLink = Utils.getCollectionName(documentLink);
-            requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(
-                collectionCache, requestRetryPolicy, collectionLink, nonNullRequestOptions);
-        }
-        DocumentClientRetryPolicy finalRequestRetryPolicy = requestRetryPolicy;
+
+        DocumentClientRetryPolicy finalRequestRetryPolicy =
+            this.getRetryPolicyForPointOperation(
+                scopedDiagnosticsFactory,
+                nonNullRequestOptions,
+                Utils.getCollectionName(documentLink));
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
         Consumer<CosmosException> gwModeE2ETimeoutDiagnosticHandler
@@ -3001,7 +3011,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         scopedDiagnosticsFactory,
                         requestReference,
                         crossRegionAvailabilityContextForRequest),
-                    requestRetryPolicy),
+                    finalRequestRetryPolicy),
                 scopedDiagnosticsFactory), requestReference, endToEndPolicyConfig);
     }
 
@@ -3306,7 +3316,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
-        DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
+        DocumentClientRetryPolicy documentClientRetryPolicy =
+            this.getRetryPolicyForPointOperation(
+                scopedDiagnosticsFactory,
+                nonNullRequestOptions,
+                Utils.getCollectionName(documentLink));
 
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
@@ -3516,7 +3530,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
         DocumentClientRetryPolicy requestRetryPolicy =
-            this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
+            this.getRetryPolicyForPointOperation(
+                scopedDiagnosticsFactory,
+                nonNullRequestOptions,
+                Utils.getCollectionName(documentLink));
 
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
@@ -3704,7 +3721,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
+        DocumentClientRetryPolicy retryPolicyInstance =
+            this.getRetryPolicyForPointOperation(
+                scopedDiagnosticsFactory,
+                nonNullRequestOptions,
+                Utils.getCollectionName(documentLink));
 
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
@@ -4491,7 +4512,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     public <T> Flux<FeedResponse<T>> queryDocumentChangeFeed(
         final DocumentCollection collection,
         final CosmosChangeFeedRequestOptions requestOptions,
-        Class<T> classOfT) {
+        Class<T> classOfT,
+        DiagnosticsClientContext diagnosticsClientContext) {
 
         checkNotNull(collection, "Argument 'collection' must not be null.");
 
@@ -4502,45 +4524,95 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             classOfT,
             collection.getAltLink(),
             collection.getResourceId(),
-            requestOptions);
+            requestOptions,
+            diagnosticsClientContext);
 
         return changeFeedQueryImpl.executeAsync();
     }
 
     @Override
-    public <T> Flux<FeedResponse<T>> queryDocumentChangeFeedFromPagedFlux(DocumentCollection collection, ChangeFeedOperationState state, Class<T> classOfT) {
+    public <T> Flux<FeedResponse<T>> queryDocumentChangeFeedFromPagedFlux(
+        String collectionLink,
+        ChangeFeedOperationState state,
+        Class<T> classOfT) {
 
-        CosmosChangeFeedRequestOptions clonedOptions = changeFeedOptionsAccessor.clone(state.getChangeFeedOptions());
+        final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(this, false);
+        state.registerDiagnosticsFactory(
+            diagnosticsFactory::reset,
+            diagnosticsFactory::merge);
 
-        CosmosChangeFeedRequestOptionsImpl optionsImpl = changeFeedOptionsAccessor.getImpl(clonedOptions);
+        // Trying to put this logic as low as the query pipeline
+        // Since for parallelQuery, each partition will have its own request, so at this point, there will be no request associate with this retry policy.
+        // For default document context, it already wired up InvalidPartitionExceptionRetry, but there is no harm to wire it again here
+        StaledResourceRetryPolicy staledResourceRetryPolicy = new StaledResourceRetryPolicy(
+            this.collectionCache,
+            null,
+            collectionLink,
+            changeFeedOptionsAccessor.getProperties(state.getChangeFeedOptions()), // TODO: figure out whether to use the cloned options
+            changeFeedOptionsAccessor.getHeaders(state.getChangeFeedOptions()),
+            this.sessionContainer,
+            diagnosticsFactory);
 
-        CosmosOperationDetails operationDetails = operationDetailsAccessor.create(optionsImpl, state.getDiagnosticsContextSnapshot());
-        this.operationPolicies.forEach(policy -> {
-            try {
-                policy.process(operationDetails);
-            } catch (RuntimeException exception) {
-                logger.info("The following exception was thrown by a custom policy on changeFeed operation" + exception.getMessage());
-                throw(exception);
-            }
-        });
+        return ObservableHelper
+            .fluxInlineIfPossibleAsObs(
+                () -> this.queryDocumentChangeFeedFromPagedFluxInternal(collectionLink, state, classOfT, diagnosticsFactory),
+                staledResourceRetryPolicy)
+            .flatMap(result -> {
+                diagnosticsFactory.merge(state.getDiagnosticsContextSnapshot());
+                return Mono.just(result);
+            })
+            .onErrorMap(throwable -> {
+                diagnosticsFactory.merge(state.getDiagnosticsContextSnapshot());
+                return throwable;
+            })
+            .doOnCancel(() -> diagnosticsFactory.merge(state.getDiagnosticsContextSnapshot()));
+    }
 
-        ReadConsistencyStrategy requestLevelReadConsistencyStrategy = optionsImpl != null
-            ? optionsImpl.getReadConsistencyStrategy()
-            : null;
+    public <T> Flux<FeedResponse<T>> queryDocumentChangeFeedFromPagedFluxInternal(
+        String collectionLink,
+        ChangeFeedOperationState state,
+        Class<T> classOfT,
+        DiagnosticsClientContext diagnosticsClientContext) {
 
-        ReadConsistencyStrategy effectiveReadConsistencyStrategy = readConsistencyStrategyAccessor
-            .getEffectiveReadConsistencyStrategy(
-                ResourceType.Document,
-                OperationType.ReadFeed,
-                requestLevelReadConsistencyStrategy,
-                this.readConsistencyStrategy);
+        return this.getCollectionCache()
+            .resolveByNameAsync(null, collectionLink, null)
+            .flatMapMany(collection -> {
+                if (collection == null) {
+                    throw new IllegalStateException("Collection can not be null");
+                }
 
-        ctxAccessor.setRequestOptions(
-            state.getDiagnosticsContextSnapshot(),
-            optionsImpl,
-            effectiveReadConsistencyStrategy);
+                CosmosChangeFeedRequestOptions clonedOptions = changeFeedOptionsAccessor.clone(state.getChangeFeedOptions());
 
-        return queryDocumentChangeFeed(collection, clonedOptions, classOfT);
+                CosmosChangeFeedRequestOptionsImpl optionsImpl = changeFeedOptionsAccessor.getImpl(clonedOptions);
+
+                CosmosOperationDetails operationDetails = operationDetailsAccessor.create(optionsImpl, state.getDiagnosticsContextSnapshot());
+                this.operationPolicies.forEach(policy -> {
+                    try {
+                        policy.process(operationDetails);
+                    } catch (RuntimeException exception) {
+                        logger.info("The following exception was thrown by a custom policy on changeFeed operation" + exception.getMessage());
+                        throw(exception);
+                    }
+                });
+
+                ReadConsistencyStrategy requestLevelReadConsistencyStrategy = optionsImpl != null
+                    ? optionsImpl.getReadConsistencyStrategy()
+                    : null;
+
+                ReadConsistencyStrategy effectiveReadConsistencyStrategy = readConsistencyStrategyAccessor
+                    .getEffectiveReadConsistencyStrategy(
+                        ResourceType.Document,
+                        OperationType.ReadFeed,
+                        requestLevelReadConsistencyStrategy,
+                        this.readConsistencyStrategy);
+
+                ctxAccessor.setRequestOptions(
+                    state.getDiagnosticsContextSnapshot(),
+                    optionsImpl,
+                    effectiveReadConsistencyStrategy);
+
+                return queryDocumentChangeFeed(collection, clonedOptions, classOfT, diagnosticsClientContext);
+            });
     }
 
     @Override
@@ -4617,13 +4689,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             // Trying to put this logic as low as the query pipeline
             // Since for parallelQuery, each partition will have its own request, so at this point, there will be no request associate with this retry policy.
-            // For default document context, it already wired up InvalidPartitionExceptionRetry, but there is no harm to wire it again here
-            InvalidPartitionExceptionRetryPolicy invalidPartitionExceptionRetryPolicy = new InvalidPartitionExceptionRetryPolicy(
+            StaledResourceRetryPolicy staledResourceRetryPolicy = new StaledResourceRetryPolicy(
                 this.collectionCache,
                 null,
                 resourceLink,
-                ModelBridgeInternal.getPropertiesFromQueryRequestOptions(effectiveOptions),
-                this.sessionContainer);
+                qryOptAccessor.getProperties(effectiveOptions),
+                qryOptAccessor.getHeaders(effectiveOptions),
+                this.sessionContainer,
+                diagnosticsFactory);
 
             Flux<FeedResponse<T>> innerFlux = ObservableHelper.fluxInlineIfPossibleAsObs(
                 () -> {
@@ -4663,7 +4736,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             isQueryCancelledOnTimeout);
                     });
                 },
-                invalidPartitionExceptionRetryPolicy);
+                staledResourceRetryPolicy);
 
             if (orderedApplicableRegionsForSpeculation.size() < 2) {
                 return innerFlux;
@@ -4922,7 +4995,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     public Mono<CosmosBatchResponse> executeBatchRequest(String collectionLink,
                                                          ServerBatchRequest serverBatchRequest,
                                                          RequestOptions options,
-                                                         boolean disableAutomaticIdGeneration) {
+                                                         boolean disableAutomaticIdGeneration,
+                                                         boolean disableStaledResourceExceptionHandling) {
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
         Consumer<CosmosException> gwModeE2ETimeoutDiagnosticHandler
@@ -4939,6 +5013,19 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         scopedDiagnosticsFactory.setGwModeE2ETimeoutDiagnosticsHandler(gwModeE2ETimeoutDiagnosticHandler);
 
         DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
+        if (!disableStaledResourceExceptionHandling) {
+            documentClientRetryPolicy = new StaledResourceRetryPolicy(
+                this.collectionCache,
+                documentClientRetryPolicy,
+                collectionLink,
+                nonNullRequestOptions.getProperties(),
+                nonNullRequestOptions.getHeaders(),
+                this.sessionContainer,
+                scopedDiagnosticsFactory);
+        }
+
+        final DocumentClientRetryPolicy finalRetryPolicy = documentClientRetryPolicy;
+
         return handleCircuitBreakingFeedbackForPointOperation(
             getPointOperationResponseMonoWithE2ETimeout(
                 nonNullRequestOptions,
@@ -4948,7 +5035,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         collectionLink,
                         serverBatchRequest,
                         options,
-                        documentClientRetryPolicy,
+                        finalRetryPolicy,
                         disableAutomaticIdGeneration,
                         requestReference), documentClientRetryPolicy),
                 scopedDiagnosticsFactory
@@ -6338,12 +6425,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<List<FeedRange>> getFeedRanges(String collectionLink, boolean forceRefresh) {
-        InvalidPartitionExceptionRetryPolicy invalidPartitionExceptionRetryPolicy = new InvalidPartitionExceptionRetryPolicy(
+        StaledResourceRetryPolicy staledResourceRetryPolicy = new StaledResourceRetryPolicy(
             this.collectionCache,
             null,
             collectionLink,
             new HashMap<>(),
-            this.sessionContainer);
+            new HashMap<>(),
+            this.sessionContainer,
+            null);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
             this,
@@ -6352,22 +6441,27 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             collectionLink,
             null);
 
-        invalidPartitionExceptionRetryPolicy.onBeforeSendRequest(request);
+        staledResourceRetryPolicy.onBeforeSendRequest(request);
 
         return ObservableHelper.inlineIfPossibleAsObs(
-            () -> getFeedRangesInternal(request, collectionLink, forceRefresh),
-            invalidPartitionExceptionRetryPolicy);
+            () -> getFeedRangesInternal(request, collectionLink, forceRefresh, staledResourceRetryPolicy),
+            staledResourceRetryPolicy);
     }
 
     private Mono<List<FeedRange>> getFeedRangesInternal(
         RxDocumentServiceRequest request,
         String collectionLink,
-        boolean forceRefresh) {
+        boolean forceRefresh,
+        DocumentClientRetryPolicy retryPolicy) {
 
         logger.debug("getFeedRange collectionLink=[{}] - forceRefresh={}", collectionLink, forceRefresh);
 
         if (StringUtils.isEmpty(collectionLink)) {
             throw new IllegalArgumentException("collectionLink");
+        }
+
+        if (request != null) {
+            retryPolicy.onBeforeSendRequest(request);
         }
 
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(null,
@@ -7693,6 +7787,30 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             && this.globalEndpointManager.hasThinClientReadLocations()
             && ((request.getResourceType() == ResourceType.Document &&
                 (request.getOperationType().isPointOperation() || request.getOperationType() == OperationType.Query)));
+    }
+
+    private DocumentClientRetryPolicy getRetryPolicyForPointOperation(
+        DiagnosticsClientContext diagnosticsClientContext,
+        RequestOptions requestOptions,
+        String collectionLink) {
+
+        checkNotNull(requestOptions, "Argument 'requestOptions' can not be null");
+
+        DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(diagnosticsClientContext);
+        if (requestOptions.getPartitionKey() == null) {
+            requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(collectionCache, requestRetryPolicy, collectionLink, requestOptions);
+        }
+
+        requestRetryPolicy = new StaledResourceRetryPolicy(
+            this.collectionCache,
+            requestRetryPolicy,
+            collectionLink,
+            requestOptions.getProperties(),
+            requestOptions.getHeaders(),
+            this.sessionContainer,
+            diagnosticsClientContext);
+
+        return requestRetryPolicy;
     }
 
     @FunctionalInterface

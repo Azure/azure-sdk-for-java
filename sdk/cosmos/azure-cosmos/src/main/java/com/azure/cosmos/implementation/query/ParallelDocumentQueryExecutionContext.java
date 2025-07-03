@@ -463,9 +463,6 @@ public class ParallelDocumentQueryExecutionContext<T>
                 .collect(Collectors.toList());
 
         int fluxConcurrency = fluxSequentialMergeConcurrency(cosmosQueryRequestOptions, obs.size());
-        if (fluxConcurrency <= 0) {
-            logger.error("how this happen");
-        }
         int fluxPrefetch = fluxSequentialMergePrefetch(cosmosQueryRequestOptions, obs.size(),
             maxPageSize, fluxConcurrency);
 

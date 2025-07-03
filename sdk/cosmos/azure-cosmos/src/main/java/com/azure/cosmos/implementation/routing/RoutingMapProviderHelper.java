@@ -84,8 +84,6 @@ public final class RoutingMapProviderHelper {
         IRoutingMapProvider routingMapProvider,
         String resourceId, List<Range<String>> sortedRanges) {
 
-        System.out.println("Calling getOverlappingRanges " + resourceId);
-
         if (routingMapProvider == null){
             throw new IllegalArgumentException("routingMapProvider");
         }

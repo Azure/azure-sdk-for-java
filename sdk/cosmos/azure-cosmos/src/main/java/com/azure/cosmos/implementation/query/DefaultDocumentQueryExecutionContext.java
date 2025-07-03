@@ -168,7 +168,7 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
                 partitionKeyRangeCache,
                 PathsHelper.getCollectionPath(super.resourceLink),
                 retryPolicyInstance,
-                ModelBridgeInternal.getPropertiesFromQueryRequestOptions(this.cosmosQueryRequestOptions));
+                queryRequestOptionsAccessor.getProperties(this.cosmosQueryRequestOptions));
         }
 
         return retryPolicyInstance;

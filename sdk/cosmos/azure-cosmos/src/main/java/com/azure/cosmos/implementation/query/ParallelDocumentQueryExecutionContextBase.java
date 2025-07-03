@@ -68,10 +68,6 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
         int initialPageSize,
         SqlQuerySpec querySpecForInit) {
         Map<String, String> commonRequestHeaders = createCommonHeadersAsync(this.getFeedOptions(null, null));
-        if (feedRangeToContinuationTokenMap.entrySet().size() == 0) {
-            System.out.println("Something is soo wrong");
-        }
-
         for (Map.Entry<FeedRangeEpkImpl, String> entry : feedRangeToContinuationTokenMap.entrySet()) {
             TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc = (feedRange,
                                                                                                            continuationToken, pageSize) -> {

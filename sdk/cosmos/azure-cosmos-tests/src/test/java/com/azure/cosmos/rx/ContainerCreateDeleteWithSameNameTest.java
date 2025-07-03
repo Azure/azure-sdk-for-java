@@ -56,7 +56,7 @@ import static org.assertj.core.api.Assertions.fail;
 public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
     private final static int TIMEOUT = 300000;
     // Delete collections in emulator is not instant,
-    // so to avoid get 500 back, we are adding delay for creating the collection with same name, since in this case we want to test 410/1000
+    // so to avoid get 500 back, we are adding delay for creating the collection with same name
     private final static int COLLECTION_RECREATION_TIME_DELAY = 5000;
     private CosmosAsyncClient client;
     private CosmosAsyncDatabase createdDatabase;
@@ -91,16 +91,9 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
                     .build();
                 validateQuerySuccess(queryFlux.byPage(10), queryValidator);
             } else {
-                // This is after recreate, when we lower the ru from 10100 to 400 , pkrange reduced to 1 from 2
-                // First in-flight query will still fail as the request has been created in query pipeline with wrong pkrange
-                 CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
+                CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
                 CosmosPagedFlux<TestObject> queryFlux = container.queryItems(query, requestOptions, TestObject.class);
-                FailureValidator queryFailureValidator = new FailureValidator.Builder()
-                    .build();
-                validateQueryFailure(queryFlux.byPage(10), queryFailureValidator);
 
-                // Cache should have been refreshed by now and all the subsequent query requests will pass
-                queryFlux = container.queryItems(query, requestOptions, TestObject.class);
                 FeedResponseListValidator<TestObject> queryValidator = new FeedResponseListValidator.Builder<TestObject>()
                     .totalSize(1)
                     .numberOfPages(1)

@@ -35,6 +35,10 @@ public class MetadataDiagnosticsContext {
         metadataDiagnosticList.add(metaDataDiagnostic);
     }
 
+    public boolean isEmpty() {
+        return metadataDiagnosticList == null || metadataDiagnosticList.isEmpty();
+    }
+
     @JsonSerialize(using = MetaDataDiagnosticSerializer.class)
     public static class MetadataDiagnostics {
         public volatile Instant startTimeUTC;

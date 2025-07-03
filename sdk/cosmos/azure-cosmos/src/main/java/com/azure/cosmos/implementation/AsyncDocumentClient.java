@@ -770,7 +770,8 @@ public interface AsyncDocumentClient {
     <T> Flux<FeedResponse<T>> queryDocumentChangeFeed(
         DocumentCollection collection,
         CosmosChangeFeedRequestOptions requestOptions,
-        Class<T> classOfT);
+        Class<T> classOfT,
+        DiagnosticsClientContext diagnosticsClientContext);
 
     /**
      * Query for documents change feed in a document collection.
@@ -778,13 +779,13 @@ public interface AsyncDocumentClient {
      * The {@link Flux} will contain one or several feed response pages of the obtained documents.
      * In case of failure the {@link Flux} will error.
      *
-     * @param collection    the parent document collection.
+     * @param collectionLink the link to the parent document collection.
      * @param state the change feed operation state.
      * @param <T> the type parameter
      * @return a {@link Flux} containing one or several feed response pages of the obtained documents or an error.
      */
     <T> Flux<FeedResponse<T>> queryDocumentChangeFeedFromPagedFlux(
-        DocumentCollection collection,
+        String collectionLink,
         ChangeFeedOperationState state,
         Class<T> classOfT);
 
@@ -937,7 +938,8 @@ public interface AsyncDocumentClient {
     Mono<CosmosBatchResponse> executeBatchRequest(String collectionLink,
                                                   ServerBatchRequest serverBatchRequest,
                                                   RequestOptions options,
-                                                  boolean disableAutomaticIdGeneration);
+                                                  boolean disableAutomaticIdGeneration,
+                                                  boolean disableStaledResourceExceptionHandling);
 
     /**
      * Creates a trigger.

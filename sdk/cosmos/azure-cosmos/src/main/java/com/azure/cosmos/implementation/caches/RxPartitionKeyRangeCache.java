@@ -68,13 +68,12 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
                     properties), currentValue -> shouldForceRefresh(previousValue, currentValue))
             .map(Utils.ValueHolder::new)
             .onErrorResume(err -> {
-                logger.info("tryLookupAsync on collectionRid {} encountered failure", collectionRid, err);
+                logger.debug("tryLookupAsync on collectionRid {} encountered failure", collectionRid, err);
                 CosmosException dce = Utils.as(err, CosmosException.class);
 
                 // bubble up in case a 404:1002 is seen to force retries as a part of document retries
                 // todo: revert change when fault injection excludes 404:1002 for master resources
                 if (dce != null && Exceptions.isNotFound(dce) && !Exceptions.isSubStatusCode(dce, HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE)) {
-                    logger.error("Not found for containerrid " + collectionRid);
                     return Mono.just(new Utils.ValueHolder<>(null));
                 }
 
@@ -92,10 +91,6 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
         // is not possible for it to be stale
         if (currentValue == null) {
             return false;
-        }
-
-        if (previousValue != currentValue) {
-            System.out.println("need to force refresh");
         }
 
         return previousValue == currentValue;
