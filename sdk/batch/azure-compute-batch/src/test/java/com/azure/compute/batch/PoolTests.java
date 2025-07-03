@@ -262,13 +262,28 @@ public class PoolTests extends BatchClientTestBase {
             // RESIZE
             BatchPoolResizeParameters resizeParameters
                 = new BatchPoolResizeParameters().setTargetDedicatedNodes(1).setTargetLowPriorityNodes(1);
-            SyncAsyncExtension.execute(() -> batchClient.resizePool(poolId, resizeParameters),
-                () -> batchAsyncClient.resizePool(poolId, resizeParameters));
 
-            pool = SyncAsyncExtension.execute(() -> batchClient.getPool(poolId),
-                () -> batchAsyncClient.getPool(poolId));
-            Assertions.assertEquals(1, (long) pool.getTargetDedicatedNodes());
-            Assertions.assertEquals(1, (long) pool.getTargetLowPriorityNodes());
+            SyncPoller<BatchPool, BatchPool> resizePoller = setPlaybackSyncPollerPollInterval(
+                SyncAsyncExtension.execute(() -> batchClient.beginResizePool(poolId, resizeParameters), () -> Mono
+                    .fromCallable(() -> batchAsyncClient.beginResizePool(poolId, resizeParameters).getSyncPoller())));
+
+            // Inspect first poll
+            PollResponse<BatchPool> resizeFirst = resizePoller.poll();
+            if (resizeFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+                BatchPool poolDuringResize = resizeFirst.getValue();
+                Assertions.assertNotNull(poolDuringResize);
+                Assertions.assertEquals(AllocationState.RESIZING, poolDuringResize.getAllocationState());
+            }
+
+            // Wait for completion
+            resizePoller.waitForCompletion();
+
+            // Final pool after resize
+            BatchPool resizedPool = resizePoller.getFinalResult();
+            Assertions.assertNotNull(resizedPool);
+            Assertions.assertEquals(AllocationState.STEADY, resizedPool.getAllocationState());
+            Assertions.assertEquals(1, (long) resizedPool.getTargetDedicatedNodes());
+            Assertions.assertEquals(1, (long) resizedPool.getTargetLowPriorityNodes());
 
             // DELETE using LRO
             SyncPoller<BatchPool, Void> poller = setPlaybackSyncPollerPollInterval(
