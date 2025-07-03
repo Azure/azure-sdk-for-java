@@ -14,6 +14,7 @@ import com.azure.compute.batch.implementation.lro.JobTerminatePollerAsync;
 import com.azure.compute.batch.implementation.lro.NodeDeallocatePollerAsync;
 import com.azure.compute.batch.implementation.lro.NodeStartPollerAsync;
 import com.azure.compute.batch.implementation.lro.PoolDeletePollerAsync;
+import com.azure.compute.batch.implementation.lro.PoolResizePollerAsync;
 import com.azure.compute.batch.implementation.task.AsyncTaskSubmitter;
 import com.azure.compute.batch.implementation.task.TaskManager;
 import com.azure.compute.batch.implementation.task.TaskSubmitter;
@@ -15833,6 +15834,58 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for resizing the pool.
+     * @param options Optional parameters for Resize Pool operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link PollerFlux} that polls the resize operation, providing {@link BatchPool}
+     * snapshots while in progress and the final snapshot when resizing completes.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BatchPool, BatchPool> beginResizePool(String poolId, BatchPoolResizeParameters parameters,
+        BatchPoolResizeOptions options, RequestConditions requestConditions) {
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        PoolResizePollerAsync poller = new PoolResizePollerAsync(this, poolId, parameters, requestOptions);
+        return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
+            poller.getCancelOperation(), poller.getFetchResultOperation());
+    }
+
+    /**
+     * Changes the number of Compute Nodes that are assigned to a Pool.
+     *
+     * You can only resize a Pool when its allocation state is steady. If the Pool is
+     * already resizing, the request fails with status code 409. When you resize a
+     * Pool, the Pool's allocation state changes from steady to resizing. You cannot
+     * resize Pools which are configured for automatic scaling. If you try to do this,
+     * the Batch service returns an error 409. If you resize a Pool downwards, the
+     * Batch service chooses which Compute Nodes to remove. To remove specific Compute
+     * Nodes, use the Pool remove Compute Nodes API instead.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for resizing the pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -15845,6 +15898,33 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return resizePoolWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
             .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Changes the number of Compute Nodes that are assigned to a Pool.
+     *
+     * You can only resize a Pool when its allocation state is steady. If the Pool is
+     * already resizing, the request fails with status code 409. When you resize a
+     * Pool, the Pool's allocation state changes from steady to resizing. You cannot
+     * resize Pools which are configured for automatic scaling. If you try to do this,
+     * the Batch service returns an error 409. If you resize a Pool downwards, the
+     * Batch service chooses which Compute Nodes to remove. To remove specific Compute
+     * Nodes, use the Pool remove Compute Nodes API instead.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for resizing the pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link PollerFlux} that polls the resize operation, providing {@link BatchPool}
+     * snapshots while in progress and the final snapshot when resizing completes.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BatchPool, BatchPool> beginResizePool(String poolId, BatchPoolResizeParameters parameters) {
+        RequestOptions requestOptions = new RequestOptions();
+        PoolResizePollerAsync poller = new PoolResizePollerAsync(this, poolId, parameters, requestOptions);
+        return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
+            poller.getCancelOperation(), poller.getFetchResultOperation());
     }
 
     /**
