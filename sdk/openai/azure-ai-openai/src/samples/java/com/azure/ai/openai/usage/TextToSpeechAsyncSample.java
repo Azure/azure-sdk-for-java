@@ -37,6 +37,7 @@ public class TextToSpeechAsyncSample {
 
         SpeechGenerationOptions options = new SpeechGenerationOptions(
                 "Today is a wonderful day to build something people love!",
+                "You are a helpful assistant.",
                 SpeechVoice.ALLOY);
 
         client.generateSpeechFromText(deploymentOrModelId, options)

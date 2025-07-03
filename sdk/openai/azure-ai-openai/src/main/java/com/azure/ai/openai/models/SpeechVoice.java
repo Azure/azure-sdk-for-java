@@ -19,6 +19,24 @@ public final class SpeechVoice extends ExpandableStringEnum<SpeechVoice> {
     public static final SpeechVoice ALLOY = fromString("alloy");
 
     /**
+     * The Ash voice.
+     */
+    @Generated
+    public static final SpeechVoice ASH = fromString("ash");
+
+    /**
+     * The Ballad voice.
+     */
+    @Generated
+    public static final SpeechVoice BALLAD = fromString("ballad");
+
+    /**
+     * The Coral voice.
+     */
+    @Generated
+    public static final SpeechVoice CORAL = fromString("coral");
+
+    /**
      * The Echo voice.
      */
     @Generated
@@ -43,10 +61,22 @@ public final class SpeechVoice extends ExpandableStringEnum<SpeechVoice> {
     public static final SpeechVoice NOVA = fromString("nova");
 
     /**
+     * The Sage voice.
+     */
+    @Generated
+    public static final SpeechVoice SAGE = fromString("sage");
+
+    /**
      * The Shimmer voice.
      */
     @Generated
     public static final SpeechVoice SHIMMER = fromString("shimmer");
+
+    /**
+     * The Verse voice.
+     */
+    @Generated
+    public static final SpeechVoice VERSE = fromString("verse");
 
     /**
      * Creates a new instance of SpeechVoice value.
