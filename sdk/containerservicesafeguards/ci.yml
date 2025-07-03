@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/containerservicesafeguards/ci.yml
+      - sdk/containerservicesafeguards/azure-resourcemanager-containerservicesafeguards/
+    exclude:
+      - sdk/containerservicesafeguards/pom.xml
+      - sdk/containerservicesafeguards/azure-resourcemanager-containerservicesafeguards/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/containerservicesafeguards/ci.yml
+      - sdk/containerservicesafeguards/azure-resourcemanager-containerservicesafeguards/
+    exclude:
+      - sdk/containerservicesafeguards/pom.xml
+      - sdk/containerservicesafeguards/azure-resourcemanager-containerservicesafeguards/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagercontainerservicesafeguards
+    displayName: azure-resourcemanager-containerservicesafeguards
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: containerservicesafeguards
+    Artifacts:
+      - name: azure-resourcemanager-containerservicesafeguards
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercontainerservicesafeguards
+        releaseInBatch: ${{ parameters.release_azureresourcemanagercontainerservicesafeguards }}
