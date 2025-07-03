@@ -3,28 +3,32 @@
 
 package io.clientcore.core.http.pipeline;
 
-import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
-import io.clientcore.core.http.models.HttpMethod;
-import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedClass;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.io.IOException;
-
 import static io.clientcore.core.http.models.HttpHeaderName.TRACEPARENT;
+import static io.clientcore.core.http.pipeline.PipelineTestHelpers.TRACESTATE;
+import static io.clientcore.core.http.pipeline.PipelineTestHelpers.sendRequest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+@ParameterizedClass(name = "isAsync={0}")
+@ValueSource(booleans = { false, true })
 public class HttpInstrumentationPolicyFallbackTests {
-    private static final HttpHeaderName TRACESTATE = HttpHeaderName.fromString("tracestate");
+    private final boolean isAsync;
+
+    public HttpInstrumentationPolicyFallbackTests(boolean isAsync) {
+        this.isAsync = isAsync;
+    }
 
     @Test
-    public void simpleRequestTracingDisabled() throws IOException {
+    public void simpleRequestTracingDisabled() {
         HttpInstrumentationOptions tracingOffLoggingOnOptions
             = new HttpInstrumentationOptions().setTracingEnabled(false)
                 .setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.HEADERS);
@@ -35,8 +39,7 @@ public class HttpInstrumentationPolicyFallbackTests {
                 .build();
 
         // should not throw
-        try (Response<?> response
-            = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost/"))) {
+        try (Response<BinaryData> response = sendRequest(pipeline, isAsync)) {
             assertEquals(200, response.getStatusCode());
             assertNull(response.getRequest().getHeaders().get(TRACESTATE));
             assertNull(response.getRequest().getHeaders().get(TRACEPARENT));
@@ -45,7 +48,7 @@ public class HttpInstrumentationPolicyFallbackTests {
 
     @ParameterizedTest
     @ValueSource(ints = { 200, 201, 206, 302, 400, 404, 500, 503 })
-    public void simpleRequestTracingEnabled(int statusCode) throws IOException {
+    public void simpleRequestTracingEnabled(int statusCode) {
         HttpInstrumentationOptions tracingOnLoggingOnOptions
             = new HttpInstrumentationOptions().setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.HEADERS);
 
@@ -55,8 +58,7 @@ public class HttpInstrumentationPolicyFallbackTests {
                 .build();
 
         // should not throw
-        try (Response<?> response
-            = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost/"))) {
+        try (Response<BinaryData> response = sendRequest(pipeline, isAsync)) {
             assertEquals(statusCode, response.getStatusCode());
             assertNull(response.getRequest().getHeaders().get(TRACESTATE));
             assertNotNull(response.getRequest().getHeaders().get(TRACEPARENT));

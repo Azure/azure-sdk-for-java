@@ -13,6 +13,7 @@ import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.CoreUtils;
 
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * The {@link RequestIdPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy is
@@ -68,6 +69,12 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
     public Response<BinaryData> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         setRequestIdHeader(httpRequest, requestIdHeaderName);
         return next.process();
+    }
+
+    @Override
+    public CompletableFuture<Response<BinaryData>> processAsync(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        setRequestIdHeader(httpRequest, requestIdHeaderName);
+        return next.processAsync();
     }
 
     @Override

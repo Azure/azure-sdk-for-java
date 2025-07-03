@@ -12,6 +12,8 @@ import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.configuration.Configuration;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * The {@link UserAgentPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy is
  * used to add a "User-Agent" header to each {@code HttpRequest}.
@@ -79,6 +81,13 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     public Response<BinaryData> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         httpRequest.getHeaders().set(HttpHeaderName.USER_AGENT, userAgent);
         return next.process();
+    }
+
+    @Override
+    public CompletableFuture<Response<BinaryData>> processAsync(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        httpRequest.getHeaders().set(HttpHeaderName.USER_AGENT, userAgent);
+
+        return next.processAsync();
     }
 
     @Override
