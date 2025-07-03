@@ -12252,6 +12252,27 @@ public final class BatchClient {
     }
 
     /**
+     * Reinstalls the operating system on the specified Compute Node.
+     *
+     * You can reinstall the operating system on a Compute Node only if it is in an
+     * idle or running state. This API can be invoked only on Pools created with the
+     * cloud service configuration property.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that emits {@link BatchNode} snapshots during polling
+     * and the final {@link BatchNode} when reimaging finishes.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchNode, BatchNode> beginReimageNode(String poolId, String nodeId) {
+        PollerFlux<BatchNode, BatchNode> asyncPoller = asyncClient.beginReimageNode(poolId, nodeId);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
      * Deallocates the specified Compute Node.
      *
      * You can deallocate a Compute Node only if it is in an idle or running state.
@@ -14683,6 +14704,29 @@ public final class BatchClient {
             requestOptions.setBody(BinaryData.fromObject(parameters));
         }
         reimageNodeWithResponse(poolId, nodeId, requestOptions).getValue();
+    }
+
+    /**
+     * Reinstalls the operating system on the specified Compute Node.
+     *
+     * You can reinstall the operating system on a Compute Node only if it is in an
+     * idle or running state. This API can be invoked only on Pools created with the
+     * cloud service configuration property.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param options Optional parameters for Reimage Node operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that emits {@link BatchNode} snapshots during polling
+     * and the final {@link BatchNode} when reimaging finishes.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchNode, BatchNode> beginReimageNode(String poolId, String nodeId,
+        BatchNodeReimageOptions options) {
+        PollerFlux<BatchNode, BatchNode> asyncPoller = asyncClient.beginReimageNode(poolId, nodeId, options);
+        return asyncPoller.getSyncPoller();
     }
 
     /**
