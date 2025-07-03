@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_ID;
 import static com.azure.core.test.utils.TestProxyUtils.checkForTestProxyErrors;
 import static com.azure.core.test.utils.TestProxyUtils.createAddSanitizersRequest;
 import static com.azure.core.test.utils.TestProxyUtils.getAssetJsonFile;
@@ -43,7 +44,6 @@ import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
  * A {@link HttpPipelinePolicy} for redirecting traffic through the test proxy for recording.
  */
 public class TestProxyRecordPolicy implements HttpPipelinePolicy {
-    private static final HttpHeaderName X_RECORDING_ID = HttpHeaderName.fromString("x-recording-id");
     private final HttpClient client;
     private final URL proxyUrl;
     private final boolean skipRecordingRequestBody;

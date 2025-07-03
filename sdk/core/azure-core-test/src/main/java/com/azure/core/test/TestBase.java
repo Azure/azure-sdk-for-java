@@ -52,11 +52,6 @@ public abstract class TestBase {
     public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_ALL = "ALL";
 
     /**
-     * Specifies to use Netty HttpClient implementation in testing.
-     */
-    public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY = "NettyAsyncHttpClient";
-
-    /**
      * Specifies to use all service versions in testing.
      */
     public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
@@ -173,7 +168,7 @@ public abstract class TestBase {
                 interceptorManager.getRecordPolicy();
             }
         } else {
-            testResourceNamer = new TestResourceNamer(testContextManager, interceptorManager.getRecordedData());
+            throw new UnsupportedOperationException("Only Test Proxy-based tests are allowed.");
         }
         beforeTest();
     }
@@ -217,7 +212,7 @@ public abstract class TestBase {
      *
      * @return The name of the current test.
      * @deprecated This method is deprecated as JUnit 5 provides a simpler mechanism to get the test method name through
-     * {@link TestInfo}. Keeping this for backward compatability of other client libraries that still override this
+     * {@link TestInfo}. Keeping this for backward compatibility of other client libraries that still override this
      * method. This method can be deleted when all client libraries remove this method. See {@link
      * #setupTest(TestContextManager)}.
      */
@@ -285,7 +280,7 @@ public abstract class TestBase {
      * <li>Otherwise, the name of the HttpClient class should match env variable.</li>
      * </ul>
      *
-     * Environment values currently supported are: "ALL", "netty", "okhttp" which is case insensitive.
+     * Environment values currently supported are: "ALL", "netty", "okhttp" which is case-insensitive.
      * Use comma to separate http clients want to test.
      * e.g. {@code set AZURE_TEST_HTTP_CLIENTS = NettyAsyncHttpClient, OkHttpAsyncHttpClient}
      *

@@ -28,17 +28,7 @@ public class TestContextManager {
     /**
      * Constructs a {@link TestContextManager} based on the test method.
      *
-     * @param testMethod Test method being ran.
-     * @param testMode The {@link TestMode} the test is running in.
-     */
-    public TestContextManager(Method testMethod, TestMode testMode) {
-        this(testMethod, testMode, false, false, null);
-    }
-
-    /**
-     * Constructs a {@link TestContextManager} based on the test method.
-     *
-     * @param testMethod Test method being ran.
+     * @param testMethod Test method being run.
      * @param testMode The {@link TestMode} the test is running in.
      * @param enableTestProxy True if the external test proxy is in use.
      * @param recordWithoutRequestBodyClassAnnotation flag indicating if {@code RecordWithoutRequestBody} annotation
@@ -54,7 +44,7 @@ public class TestContextManager {
     /**
      * Constructs a {@link TestContextManager} based on the test method.
      *
-     * @param testMethod Test method being ran.
+     * @param testMethod Test method being run.
      * @param testMode The {@link TestMode} the test is running in.
      * @param enableTestProxy True if the external test proxy is in use.
      * @param recordWithoutRequestBodyClassAnnotation flag indicating if {@code RecordWithoutRequestBody} annotation
@@ -88,7 +78,7 @@ public class TestContextManager {
     }
 
     /**
-     * Returns the name of the test being ran.
+     * Returns the name of the test being run.
      *
      * @return The test name.
      */
@@ -106,7 +96,7 @@ public class TestContextManager {
     }
 
     /**
-     * Returns the name of the playback record for the test being ran.
+     * Returns the name of the playback record for the test being run.
      *
      * @return The playback record name.
      */
@@ -158,9 +148,9 @@ public class TestContextManager {
     }
 
     /**
-     * Returns whether the current test was ran.
+     * Returns whether the current test was run.
      *
-     * @return Flag indicating whether the current test was ran.
+     * @return Flag indicating whether the current test was run.
      */
     public boolean didTestRun() {
         return testRan;

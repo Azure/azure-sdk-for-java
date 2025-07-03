@@ -5,7 +5,6 @@ package com.azure.core.test;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.http.TestProxyPlaybackClient;
-import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.models.TestProxyRecordingOptions;
 import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
@@ -13,23 +12,13 @@ import com.azure.core.test.policy.TestProxyRecordPolicy;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonWriter;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Queue;
 import java.util.function.Consumer;
@@ -54,16 +43,12 @@ import java.util.function.Supplier;
  */
 public class InterceptorManager implements AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(InterceptorManager.class);
-    private final Map<String, String> textReplacementRules;
     private final String testName;
     private final String playbackRecordName;
     private final TestMode testMode;
     private final boolean allowedToReadRecordedValues;
     private final boolean allowedToRecordValues;
 
-    // Stores a map of all the HTTP properties in a session
-    // A state machine ensuring a test is always reset before another one is setup
-    private final RecordedData recordedData;
     private final boolean testProxyEnabled;
     private final boolean skipRecordingRequestBody;
     private TestProxyRecordPolicy testProxyRecordPolicy;
@@ -81,40 +66,14 @@ public class InterceptorManager implements AutoCloseable {
      *     record to read network calls from.</li>
      *     <li>If {@code testMode} is {@link TestMode#RECORD}, the manager creates a new test session record and saves
      *     all the network calls to it.</li>
-     * </ul>
-     *
-     * The test session records are persisted in the path: "<i>session-records/{@code testName}.json</i>"
-     *
-     * @param testName Name of the test session record.
-     * @param testMode The {@link TestMode} for this interceptor.
-     * @throws UncheckedIOException If {@code testMode} is {@link TestMode#PLAYBACK} and an existing test session record
-     * could not be located or the data could not be deserialized into an instance of {@link RecordedData}.
-     * @throws NullPointerException If {@code testName} is {@code null}.
-     * @deprecated Use {@link #InterceptorManager(TestContextManager)} instead.
-     */
-    @Deprecated
-    public InterceptorManager(String testName, TestMode testMode) {
-        this(testName, testName, testMode, false, false, false, null);
-    }
-
-    /**
-     * Creates a new InterceptorManager that either replays test-session records or saves them.
-     *
-     * <ul>
-     *     <li>If {@code testMode} is {@link TestMode#PLAYBACK}, the manager tries to find an existing test session
-     *     record to read network calls from.</li>
-     *     <li>If {@code testMode} is {@link TestMode#RECORD}, the manager creates a new test session record and saves
-     *     all the network calls to it.</li>
      *     <li>If {@code testMode} is {@link TestMode#LIVE}, the manager won't attempt to read or create a test session
      *     record.</li>
      * </ul>
      *
      * The test session records are persisted in the path: "<i>session-records/{@code testName}.json</i>"
      *
-     * @param testContextManager Contextual information about the test being ran, such as test name, {@link TestMode},
+     * @param testContextManager Contextual information about the test being run, such as test name, {@link TestMode},
      * and others.
-     * @throws UncheckedIOException If {@code testMode} is {@link TestMode#PLAYBACK} and an existing test session record
-     * could not be located or the data could not be deserialized into an instance of {@link RecordedData}.
      * @throws NullPointerException If {@code testName} is {@code null}.
      */
     public InterceptorManager(TestContextManager testContextManager) {
@@ -132,19 +91,11 @@ public class InterceptorManager implements AutoCloseable {
         this.testName = testName;
         this.playbackRecordName = CoreUtils.isNullOrEmpty(playbackRecordName) ? testName : playbackRecordName;
         this.testMode = testMode;
-        this.textReplacementRules = new HashMap<>();
         this.skipRecordingRequestBody = skipRecordingRequestBody;
         this.testClassPath = testClassPath;
 
         this.allowedToReadRecordedValues = (testMode == TestMode.PLAYBACK && !doNotRecord);
         this.allowedToRecordValues = (testMode == TestMode.RECORD && !doNotRecord);
-        if (!enableTestProxy && allowedToReadRecordedValues) {
-            this.recordedData = readDataFromFile();
-        } else if (!enableTestProxy && allowedToRecordValues) {
-            this.recordedData = new RecordedData();
-        } else {
-            this.recordedData = null;
-        }
     }
 
     /**
@@ -172,15 +123,6 @@ public class InterceptorManager implements AutoCloseable {
      */
     public boolean isRecordMode() {
         return testMode == TestMode.RECORD;
-    }
-
-    /**
-     * Gets the recorded data InterceptorManager is keeping track of.
-     *
-     * @return The recorded data managed by InterceptorManager.
-     */
-    public RecordedData getRecordedData() {
-        return recordedData;
     }
 
     /**
@@ -260,28 +202,9 @@ public class InterceptorManager implements AutoCloseable {
         if (allowedToRecordValues) {
             if (testProxyEnabled) {
                 testProxyRecordPolicy.stopRecording(proxyVariableQueue);
-            } else {
-                try (BufferedWriter writer = Files.newBufferedWriter(createRecordFile(playbackRecordName).toPath());
-                    JsonWriter jsonWriter = JsonProviders.createWriter(writer)) {
-                    jsonWriter.writeJson(recordedData).flush();
-                } catch (IOException ex) {
-                    throw LOGGER
-                        .logExceptionAsError(new UncheckedIOException("Unable to write data to playback file.", ex));
-                }
             }
         } else if (isPlaybackMode() && testProxyEnabled && allowedToReadRecordedValues) {
             testProxyPlaybackClient.stopPlayback();
-        }
-    }
-
-    private RecordedData readDataFromFile() {
-        File recordFile = getRecordFile();
-
-        try (BufferedReader reader = Files.newBufferedReader(recordFile.toPath());
-            JsonReader jsonReader = JsonProviders.createReader(reader)) {
-            return RecordedData.fromJson(jsonReader);
-        } catch (IOException ex) {
-            throw LOGGER.logExceptionAsWarning(new UncheckedIOException(ex));
         }
     }
 
@@ -309,65 +232,11 @@ public class InterceptorManager implements AutoCloseable {
         return repoRoot.relativize(filePath).toFile();
     }
 
-    /*
-     * Attempts to retrieve the playback file, if it is not found an exception is thrown as playback can't continue.
-     */
-    private File getRecordFile() {
-        File recordFolder = TestUtils.getRecordFolder();
-        File playbackFile = new File(recordFolder, playbackRecordName + ".json");
-        File oldPlaybackFile = new File(recordFolder, testName + ".json");
-
-        if (!playbackFile.exists() && !oldPlaybackFile.exists()) {
-            throw LOGGER.logExceptionAsError(
-                new RuntimeException(String.format("Missing both new and old playback files. Files are %s and %s.",
-                    playbackFile.getPath(), oldPlaybackFile.getPath())));
-        }
-
-        if (playbackFile.exists()) {
-            LOGGER.info("==> Playback file path: {}", playbackFile.getPath());
-            return playbackFile;
-        } else {
-            LOGGER.info("==> Playback file path: {}", oldPlaybackFile.getPath());
-            return oldPlaybackFile;
-        }
-    }
-
-    /*
-     * Retrieves or creates the file that will be used to store the recorded test values.
-     */
-    private File createRecordFile(String testName) throws IOException {
-        File recordFolder = TestUtils.getRecordFolder();
-        if (!recordFolder.exists()) {
-            if (recordFolder.mkdir()) {
-                LOGGER.verbose("Created directory: {}", recordFolder.getPath());
-            }
-        }
-
-        File recordFile = new File(recordFolder, testName + ".json");
-        if (recordFile.createNewFile()) {
-            LOGGER.verbose("Created record file: {}", recordFile.getPath());
-        }
-
-        LOGGER.info("==> Playback file path: " + recordFile);
-        return recordFile;
-    }
-
-    /**
-     * Add text replacement rule (regex as key, the replacement text as value) into
-     * {@link InterceptorManager#textReplacementRules}
-     *
-     * @param regex the pattern to locate the position of replacement
-     * @param replacement the replacement text
-     */
-    public void addTextReplacementRule(String regex, String replacement) {
-        textReplacementRules.put(regex, replacement);
-    }
-
     /**
      * Add sanitizer rule for sanitization during record or playback.
      *
      * @param testProxySanitizers the list of replacement regex and rules.
-     * @throws RuntimeException Neither playback or record has started.
+     * @throws RuntimeException Neither playback nor record has started.
      */
     public void addSanitizers(List<TestProxySanitizer> testProxySanitizers) {
         if (CoreUtils.isNullOrEmpty(testProxySanitizers)) {
@@ -385,8 +254,8 @@ public class InterceptorManager implements AutoCloseable {
     /**
      * Disable common sanitizer rule for sanitization during record or playback.
      *
-     * @param testProxySanitizersId the list of sanitizer rule Id to disable.
-     * @throws RuntimeException Neither playback or record has started.
+     * @param testProxySanitizersId the list of sanitizer rule ID to disable.
+     * @throws RuntimeException Neither playback nor record has started.
      */
     public void removeSanitizers(String... testProxySanitizersId) {
         if (CoreUtils.isNullOrEmpty(testProxySanitizersId)) {

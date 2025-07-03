@@ -3,29 +3,19 @@
 
 package com.azure.communication.callingserver;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.annotation.LiveOnly;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
-
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringJoiner;
-import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 // Package marked to be deprecated
 @LiveOnly()
@@ -62,81 +52,62 @@ public class CallAutomationLiveTestBase extends TestProxyTestBase {
         .get("RECORDING_DELETE_URL_404",
             "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141c");
 
-    private static final StringJoiner JSON_PROPERTIES_TO_REDACT = new StringJoiner("\":\"|\"", "\"", "\":\"").add("to");
-
-    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
-        = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT), Pattern.CASE_INSENSITIVE);
-
     protected CallAutomationClientBuilder getCallingServerClientUsingConnectionString(HttpClient httpClient) {
         CallAutomationClientBuilder builder = new CallAutomationClientBuilder().connectionString(CONNECTION_STRING)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
+
         if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data)));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+            // Redactors aren't used in Test Proxy tests
+//            List<Function<String, String>> redactors = new ArrayList<>();
+//            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data)));
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
         return builder;
     }
 
     protected CallAutomationClientBuilder getCallingServerClientUsingTokenCredential(HttpClient httpClient) {
-        TokenCredential tokenCredential
-            = getTestMode() == TestMode.PLAYBACK ? new FakeCredentials() : new DefaultAzureCredentialBuilder().build();
+        TokenCredential tokenCredential = interceptorManager.isPlaybackMode()
+            ? new MockTokenCredential()
+            : new DefaultAzureCredentialBuilder().build();
 
         CallAutomationClientBuilder builder = new CallAutomationClientBuilder().endpoint(ENDPOINT)
             .credential(tokenCredential)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data)));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+            // Redactors aren't used in Test Proxy tests
+//            List<Function<String, String>> redactors = new ArrayList<>();
+//            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data)));
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
         return builder;
     }
 
     protected CallAutomationClientBuilder getCallingServerClientUsingInvalidTokenCredential(HttpClient httpClient) {
-        TokenCredential tokenCredential
-            = getTestMode() == TestMode.PLAYBACK ? new FakeCredentials() : new DefaultAzureCredentialBuilder().build();
+        TokenCredential tokenCredential = interceptorManager.isPlaybackMode()
+            ? new MockTokenCredential()
+            : new DefaultAzureCredentialBuilder().build();
 
         CallAutomationClientBuilder builder = new CallAutomationClientBuilder().credential(tokenCredential)
             .endpoint(ENDPOINT_401)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data)));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+            // Redactors aren't used in Test Proxy tests
+//            List<Function<String, String>> redactors = new ArrayList<>();
+//            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data)));
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
         return builder;
     }
 
     protected Mono<HttpResponse> logHeaders(String testName, HttpPipelineNextPolicy next) {
-        return next.process().flatMap(httpResponse -> {
-            final HttpResponse bufferedResponse = httpResponse.buffer();
-
+        return next.process().map(response -> {
             /* Should sanitize printed response url */
-            LOGGER.log(LogLevel.VERBOSE,
-                () -> "Chain-ID header for " + testName + " request " + bufferedResponse.getRequest().getUrl() + ": "
-                    + bufferedResponse.getHeaderValue("X-Microsoft-Skype-Chain-ID"));
-            return Mono.just(bufferedResponse);
+            LOGGER.log(LogLevel.VERBOSE, () -> "Chain-ID header for " + testName + " request "
+                + response.getRequest().getUrl() + ": " + response.getHeaderValue("X-Microsoft-Skype-Chain-ID"));
+            return response;
         });
-    }
-
-    static class FakeCredentials implements TokenCredential {
-        @Override
-        public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
-            return Mono.just(new AccessToken("someFakeToken", OffsetDateTime.MAX));
-        }
-    }
-
-    private String redact(String content, Matcher matcher) {
-        while (matcher.find()) {
-            String captureGroup = matcher.group(1);
-            if (!CoreUtils.isNullOrEmpty(captureGroup)) {
-                content = content.replace(matcher.group(1), "REDACTED");
-            }
-        }
-        return content;
     }
 }
