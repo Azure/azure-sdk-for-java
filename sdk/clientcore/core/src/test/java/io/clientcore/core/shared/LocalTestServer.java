@@ -60,14 +60,11 @@ public class LocalTestServer {
             httpConfig.addCustomizer(new SecureRequestCustomizer());
         }
 
-        List<ConnectionFactory> connectionFactories = new ArrayList<>();
-
-        // SSL/TLS connection factory
-        if (includeTls) {
-            String nextProtocol = supportedProtocol == null
-                ? HttpVersion.HTTP_1_1.asString()
-                : (supportedProtocol == HttpProtocolVersion.HTTP_1_1) ? HttpVersion.HTTP_1_1.asString() : "alpn";
-
+        final ServerConnector httpConnector;
+        if (!includeTls) {
+            HttpConnectionFactory http11 = new HttpConnectionFactory(httpConfig);
+            httpConnector = new ServerConnector(server, http11);
+        } else {
             Security.addProvider(new OpenSSLProvider());
             SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
             sslContextFactory.setProvider("Conscrypt");
@@ -75,30 +72,29 @@ public class LocalTestServer {
             sslContextFactory.setKeyStorePath(mockKeyStore);
             sslContextFactory.setKeyStorePassword("password");
             sslContextFactory.setKeyManagerPassword("password");
-            sslContextFactory.setKeyStorePath(mockKeyStore);
             sslContextFactory.setTrustStorePassword("password");
             sslContextFactory.setTrustAll(true);
 
-            connectionFactories.add(new SslConnectionFactory(sslContextFactory, nextProtocol));
+            sslContextFactory.setCipherComparator(java.util.Comparator.comparingInt(String::hashCode));
+
+            SslConnectionFactory ssl = new SslConnectionFactory(sslContextFactory, "alpn");
+
+            HttpConnectionFactory http11 = new HttpConnectionFactory(httpConfig);
+
+            if (supportedProtocol == HttpProtocolVersion.HTTP_2) {
+                HTTP2ServerConnectionFactory http2 = new HTTP2ServerConnectionFactory(httpConfig);
+                ALPNServerConnectionFactory alpn = new ALPNServerConnectionFactory();
+                alpn.setDefaultProtocol(http11.getProtocol());
+
+                httpConnector = new ServerConnector(server, ssl, alpn, http2, http11);
+            } else {
+                httpConnector = new ServerConnector(server, ssl, http11);
+            }
         }
 
-        if (supportedProtocol == HttpProtocolVersion.HTTP_2) {
-            // ALPN connection factory
-            // HTTP/2 connection factory
-            ALPNServerConnectionFactory alpn = new ALPNServerConnectionFactory();
-            alpn.setDefaultProtocol("h2");
-            connectionFactories.add(alpn);
-            connectionFactories.add(new HTTP2ServerConnectionFactory(httpConfig));
-        }
-
-        if (supportedProtocol == null || supportedProtocol == HttpProtocolVersion.HTTP_1_1) {
-            // HTTP/1.1 connection factory
-            connectionFactories.add(new HttpConnectionFactory(httpConfig));
-        }
-
-        connector = new ServerConnector(server, connectionFactories.toArray(new ConnectionFactory[0]));
-        connector.setHost("localhost");
-        server.addConnector(connector);
+        this.connector = httpConnector;
+        this.connector.setHost("localhost");
+        server.addConnector(this.connector);
 
         ServletContextHandler servletContextHandler = new ServletContextHandler();
         servletContextHandler.setContextPath("/");

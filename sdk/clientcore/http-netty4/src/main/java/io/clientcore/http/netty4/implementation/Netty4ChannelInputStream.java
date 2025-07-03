@@ -7,8 +7,10 @@ import io.netty.channel.Channel;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.LinkedList;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Implementation of {@link InputStream} that reads contents from a Netty {@link Channel}.
@@ -17,6 +19,9 @@ public final class Netty4ChannelInputStream extends InputStream {
     private final Channel channel;
     private final boolean isHttp2;
     private final Runnable onClose;
+
+    //Ensures the close operation is idempotent.
+    private final AtomicBoolean closed = new AtomicBoolean(false);
 
     // Indicator for the Channel being fully read.
     // This will become true before 'streamDone' becomes true, but both may become true in the same operation.
@@ -28,9 +33,9 @@ public final class Netty4ChannelInputStream extends InputStream {
     // Once this is true, the stream will never return data again.
     private boolean streamDone = false;
 
-    // Linked list of byte[]s that maintains the last available contents from the Channel / eager content.
-    // A list is needed as each Channel.read() may result in many channelRead calls.
-    private final LinkedList<byte[]> additionalBuffers;
+    // Queue of byte[]s that maintains the last available contents from the Channel / eager content.
+    // A queue is needed as each Channel.read() may result in many channelRead calls.
+    private final Queue<byte[]> additionalBuffers;
 
     private byte[] currentBuffer;
 
@@ -57,7 +62,7 @@ public final class Netty4ChannelInputStream extends InputStream {
             this.currentBuffer = new byte[0];
         }
         this.readIndex = 0;
-        this.additionalBuffers = new LinkedList<>();
+        this.additionalBuffers = new ConcurrentLinkedQueue<>();
         this.channel = channel;
         if (channel.pipeline().get(Netty4InitiateOneReadHandler.class) != null) {
             channel.pipeline().remove(Netty4InitiateOneReadHandler.class);
@@ -178,19 +183,21 @@ public final class Netty4ChannelInputStream extends InputStream {
      */
     @Override
     public void close() throws IOException {
-        try {
-            if (onClose != null && !streamDone) {
-                onClose.run();
+        if (closed.compareAndSet(false, true)) {
+            try {
+                if (onClose != null) {
+                    onClose.run();
+                }
+            } finally {
+                super.close();
+                streamDone = true;
             }
-        } finally {
-            super.close();
-            streamDone = true;
         }
     }
 
     private boolean setupNextBuffer() throws IOException {
         if (!additionalBuffers.isEmpty()) {
-            currentBuffer = additionalBuffers.pop();
+            currentBuffer = additionalBuffers.poll();
             readIndex = 0;
             return true;
         } else if (readMore()) {
@@ -225,7 +232,7 @@ public final class Netty4ChannelInputStream extends InputStream {
                 byte[] buffer = new byte[byteBuf.readableBytes()];
                 byteBuf.readBytes(buffer);
 
-                additionalBuffers.add(buffer);
+                additionalBuffers.offer(buffer);
             }, isHttp2);
             channel.pipeline().addLast(Netty4HandlerNames.READ_ONE, handler);
         }
@@ -253,7 +260,7 @@ public final class Netty4ChannelInputStream extends InputStream {
         }
 
         if (!additionalBuffers.isEmpty()) {
-            currentBuffer = additionalBuffers.pop();
+            currentBuffer = additionalBuffers.poll();
             readIndex = 0;
         } else if (channelDone) { // Don't listen to IntelliJ here, channelDone may be false.
             // This read contained no data and the channel completed, therefore the stream is also completed.
