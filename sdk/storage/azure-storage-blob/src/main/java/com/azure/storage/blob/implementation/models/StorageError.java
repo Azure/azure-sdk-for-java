@@ -67,7 +67,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
         this.message = message;
         return this;
     }
-  
+
     /**
      * Get the copySourceStatusCode property: The CopySourceStatusCode property.
      * 
@@ -127,7 +127,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
         this.copySourceErrorMessage = copySourceErrorMessage;
         return this;
     }
-  
+
     @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
