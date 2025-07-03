@@ -581,10 +581,28 @@ public class PoolTests extends BatchClientTestBase {
             String nodeIdB = nodes.get(1).getId();
 
             // Reboot node
-            SyncAsyncExtension.execute(() -> {
-                batchClient.rebootNode(poolId, nodeIdA);
-                return null;
-            }, () -> batchAsyncClient.rebootNode(poolId, nodeIdA));
+            SyncPoller<BatchNode, BatchNode> rebootPoller = setPlaybackSyncPollerPollInterval(
+                SyncAsyncExtension.execute(() -> batchClient.beginRebootNode(poolId, nodeIdA),
+                    () -> Mono.fromCallable(() -> batchAsyncClient.beginRebootNode(poolId, nodeIdA).getSyncPoller())));
+
+            // Validate first poll (node should be rebooting)
+            PollResponse<BatchNode> rebootFirst = rebootPoller.poll();
+            if (rebootFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+                BatchNode nodeDuringReboot = rebootFirst.getValue();
+                Assertions.assertNotNull(nodeDuringReboot);
+                Assertions.assertEquals(nodeIdA, nodeDuringReboot.getId());
+                Assertions.assertTrue(
+                    nodeDuringReboot.getState() == BatchNodeState.REBOOTING
+                        || nodeDuringReboot.getState() == BatchNodeState.STARTING,
+                    "Unexpected interim state: " + nodeDuringReboot.getState());
+            }
+
+            rebootPoller.waitForCompletion();
+            BatchNode rebootedNode = rebootPoller.getFinalResult();
+            Assertions.assertNotNull(rebootedNode, "Final result of beginRebootNode should not be null");
+            Assertions.assertTrue(
+                rebootedNode.getState() == BatchNodeState.IDLE || rebootedNode.getState() == BatchNodeState.RUNNING,
+                "Node should return to IDLE/RUNNING after reboot");
 
             // Reimage node
             SyncAsyncExtension.execute(() -> {
@@ -640,5 +658,4 @@ public class PoolTests extends BatchClientTestBase {
             }
         }
     }
-
 }
