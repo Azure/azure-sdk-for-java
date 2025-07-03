@@ -36,8 +36,6 @@ import java.util.stream.Stream;
 
 import com.azure.ai.vision.face.models.VerifyImageFileDetails;
 
-import com.azure.ai.vision.face.models.VerifyImageFileDetails;
-
 @DisplayNameGeneration(DisplayNameGenerator.Standard.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @RecordWithoutRequestBody
