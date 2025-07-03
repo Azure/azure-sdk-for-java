@@ -208,6 +208,7 @@ FaceSessionClient sessionClient = new FaceSessionClientBuilder()
 String deviceCorrelationId = UUID.randomUUID().toString();
 CreateLivenessSessionContent parameters = new CreateLivenessSessionContent(LivenessOperationMode.PASSIVE)
         .setDeviceCorrelationId(deviceCorrelationId);
+// .setSendResultsToClient(false);
 
 LivenessSession createLivenessSessionResult = sessionClient.createLivenessSession(parameters);
 String sessionId = createLivenessSessionResult.getSessionId();
@@ -250,6 +251,7 @@ System.out.println("Get the liveness detection result.");
 LivenessWithVerifySession session = sessionClient.getLivenessWithVerifySessionResult(sessionId);
 if (session.getResults() != null && session.getResults().getAttempts() != null 
     && !session.getResults().getAttempts().isEmpty()) {
+    // LivenessWithVerifySessionAttempt attempt = session.getResults().getAttempts().get(0);
     LivenessWithVerifySessionAttempt attempt = session.getResults().getAttempts().get(0);
     if (attempt.getResult() != null) {
         FaceLivenessDecision livenessDecision = attempt.getResult().getLivenessDecision();
