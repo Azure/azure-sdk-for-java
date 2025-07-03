@@ -4,7 +4,6 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,13 +14,11 @@ public final class RecordingContentInternal extends ExpandableStringEnum<Recordi
     /**
      * Static value audio for RecordingContentInternal.
      */
-    @Generated
     public static final RecordingContentInternal AUDIO = fromString("audio");
 
     /**
      * Static value audioVideo for RecordingContentInternal.
      */
-    @Generated
     public static final RecordingContentInternal AUDIO_VIDEO = fromString("audioVideo");
 
     /**
@@ -29,7 +26,6 @@ public final class RecordingContentInternal extends ExpandableStringEnum<Recordi
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public RecordingContentInternal() {
     }
@@ -40,7 +36,6 @@ public final class RecordingContentInternal extends ExpandableStringEnum<Recordi
      * @param name a name to look for.
      * @return the corresponding RecordingContentInternal.
      */
-    @Generated
     public static RecordingContentInternal fromString(String name) {
         return fromString(name, RecordingContentInternal.class);
     }
@@ -50,7 +45,6 @@ public final class RecordingContentInternal extends ExpandableStringEnum<Recordi
      * 
      * @return known RecordingContentInternal values.
      */
-    @Generated
     public static Collection<RecordingContentInternal> values() {
         return values(RecordingContentInternal.class);
     }

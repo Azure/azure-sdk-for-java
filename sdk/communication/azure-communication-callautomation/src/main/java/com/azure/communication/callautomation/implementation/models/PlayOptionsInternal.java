@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,26 +19,11 @@ public final class PlayOptionsInternal implements JsonSerializable<PlayOptionsIn
     /*
      * The option to play the provided audio source in loop when set to true
      */
-    @Generated
     private boolean loop;
-
-    /*
-     * If set play can barge into other existing queued-up/currently-processing requests.
-     */
-    @Generated
-    private Boolean interruptCallMediaOperation;
-
-    /*
-     * If set, hold audio will be interrupted, then this request will be played, and then the hold audio will be
-     * resumed.
-     */
-    @Generated
-    private Boolean interruptHoldAudio;
 
     /**
      * Creates an instance of PlayOptionsInternal class.
      */
-    @Generated
     public PlayOptionsInternal() {
     }
 
@@ -48,7 +32,6 @@ public final class PlayOptionsInternal implements JsonSerializable<PlayOptionsIn
      * 
      * @return the loop value.
      */
-    @Generated
     public boolean isLoop() {
         return this.loop;
     }
@@ -59,70 +42,18 @@ public final class PlayOptionsInternal implements JsonSerializable<PlayOptionsIn
      * @param loop the loop value to set.
      * @return the PlayOptionsInternal object itself.
      */
-    @Generated
     public PlayOptionsInternal setLoop(boolean loop) {
         this.loop = loop;
         return this;
     }
 
     /**
-     * Get the interruptCallMediaOperation property: If set play can barge into other existing
-     * queued-up/currently-processing requests.
-     * 
-     * @return the interruptCallMediaOperation value.
-     */
-    @Generated
-    public Boolean isInterruptCallMediaOperation() {
-        return this.interruptCallMediaOperation;
-    }
-
-    /**
-     * Set the interruptCallMediaOperation property: If set play can barge into other existing
-     * queued-up/currently-processing requests.
-     * 
-     * @param interruptCallMediaOperation the interruptCallMediaOperation value to set.
-     * @return the PlayOptionsInternal object itself.
-     */
-    @Generated
-    public PlayOptionsInternal setInterruptCallMediaOperation(Boolean interruptCallMediaOperation) {
-        this.interruptCallMediaOperation = interruptCallMediaOperation;
-        return this;
-    }
-
-    /**
-     * Get the interruptHoldAudio property: If set, hold audio will be interrupted, then this request will be played,
-     * and then the hold audio will be resumed.
-     * 
-     * @return the interruptHoldAudio value.
-     */
-    @Generated
-    public Boolean isInterruptHoldAudio() {
-        return this.interruptHoldAudio;
-    }
-
-    /**
-     * Set the interruptHoldAudio property: If set, hold audio will be interrupted, then this request will be played,
-     * and then the hold audio will be resumed.
-     * 
-     * @param interruptHoldAudio the interruptHoldAudio value to set.
-     * @return the PlayOptionsInternal object itself.
-     */
-    @Generated
-    public PlayOptionsInternal setInterruptHoldAudio(Boolean interruptHoldAudio) {
-        this.interruptHoldAudio = interruptHoldAudio;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("loop", this.loop);
-        jsonWriter.writeBooleanField("interruptCallMediaOperation", this.interruptCallMediaOperation);
-        jsonWriter.writeBooleanField("interruptHoldAudio", this.interruptHoldAudio);
         return jsonWriter.writeEndObject();
     }
 
@@ -135,7 +66,6 @@ public final class PlayOptionsInternal implements JsonSerializable<PlayOptionsIn
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PlayOptionsInternal.
      */
-    @Generated
     public static PlayOptionsInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PlayOptionsInternal deserializedPlayOptionsInternal = new PlayOptionsInternal();
@@ -145,11 +75,6 @@ public final class PlayOptionsInternal implements JsonSerializable<PlayOptionsIn
 
                 if ("loop".equals(fieldName)) {
                     deserializedPlayOptionsInternal.loop = reader.getBoolean();
-                } else if ("interruptCallMediaOperation".equals(fieldName)) {
-                    deserializedPlayOptionsInternal.interruptCallMediaOperation
-                        = reader.getNullable(JsonReader::getBoolean);
-                } else if ("interruptHoldAudio".equals(fieldName)) {
-                    deserializedPlayOptionsInternal.interruptHoldAudio = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

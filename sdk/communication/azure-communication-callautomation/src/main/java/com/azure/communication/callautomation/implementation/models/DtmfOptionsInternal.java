@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,25 +20,21 @@ public final class DtmfOptionsInternal implements JsonSerializable<DtmfOptionsIn
     /*
      * Time to wait between DTMF inputs to stop recognizing.
      */
-    @Generated
     private Integer interToneTimeoutInSeconds;
 
     /*
      * Maximum number of DTMF tones to be collected.
      */
-    @Generated
     private Integer maxTonesToCollect;
 
     /*
      * List of tones that will stop recognizing.
      */
-    @Generated
     private List<DtmfToneInternal> stopTones;
 
     /**
      * Creates an instance of DtmfOptionsInternal class.
      */
-    @Generated
     public DtmfOptionsInternal() {
     }
 
@@ -48,7 +43,6 @@ public final class DtmfOptionsInternal implements JsonSerializable<DtmfOptionsIn
      * 
      * @return the interToneTimeoutInSeconds value.
      */
-    @Generated
     public Integer getInterToneTimeoutInSeconds() {
         return this.interToneTimeoutInSeconds;
     }
@@ -59,7 +53,6 @@ public final class DtmfOptionsInternal implements JsonSerializable<DtmfOptionsIn
      * @param interToneTimeoutInSeconds the interToneTimeoutInSeconds value to set.
      * @return the DtmfOptionsInternal object itself.
      */
-    @Generated
     public DtmfOptionsInternal setInterToneTimeoutInSeconds(Integer interToneTimeoutInSeconds) {
         this.interToneTimeoutInSeconds = interToneTimeoutInSeconds;
         return this;
@@ -70,7 +63,6 @@ public final class DtmfOptionsInternal implements JsonSerializable<DtmfOptionsIn
      * 
      * @return the maxTonesToCollect value.
      */
-    @Generated
     public Integer getMaxTonesToCollect() {
         return this.maxTonesToCollect;
     }
@@ -81,7 +73,6 @@ public final class DtmfOptionsInternal implements JsonSerializable<DtmfOptionsIn
      * @param maxTonesToCollect the maxTonesToCollect value to set.
      * @return the DtmfOptionsInternal object itself.
      */
-    @Generated
     public DtmfOptionsInternal setMaxTonesToCollect(Integer maxTonesToCollect) {
         this.maxTonesToCollect = maxTonesToCollect;
         return this;
@@ -92,7 +83,6 @@ public final class DtmfOptionsInternal implements JsonSerializable<DtmfOptionsIn
      * 
      * @return the stopTones value.
      */
-    @Generated
     public List<DtmfToneInternal> getStopTones() {
         return this.stopTones;
     }
@@ -103,7 +93,6 @@ public final class DtmfOptionsInternal implements JsonSerializable<DtmfOptionsIn
      * @param stopTones the stopTones value to set.
      * @return the DtmfOptionsInternal object itself.
      */
-    @Generated
     public DtmfOptionsInternal setStopTones(List<DtmfToneInternal> stopTones) {
         this.stopTones = stopTones;
         return this;
@@ -112,7 +101,6 @@ public final class DtmfOptionsInternal implements JsonSerializable<DtmfOptionsIn
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -131,7 +119,6 @@ public final class DtmfOptionsInternal implements JsonSerializable<DtmfOptionsIn
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the DtmfOptionsInternal.
      */
-    @Generated
     public static DtmfOptionsInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DtmfOptionsInternal deserializedDtmfOptionsInternal = new DtmfOptionsInternal();

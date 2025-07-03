@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,26 +19,22 @@ public final class RemoveParticipantRequestInternal implements JsonSerializable<
     /*
      * The participants to be removed from the call.
      */
-    @Generated
     private CommunicationIdentifierModel participantToRemove;
 
     /*
      * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
-    @Generated
     private String operationContext;
 
     /*
      * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
      * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      */
-    @Generated
     private String operationCallbackUri;
 
     /**
      * Creates an instance of RemoveParticipantRequestInternal class.
      */
-    @Generated
     public RemoveParticipantRequestInternal() {
     }
 
@@ -48,7 +43,6 @@ public final class RemoveParticipantRequestInternal implements JsonSerializable<
      * 
      * @return the participantToRemove value.
      */
-    @Generated
     public CommunicationIdentifierModel getParticipantToRemove() {
         return this.participantToRemove;
     }
@@ -59,7 +53,6 @@ public final class RemoveParticipantRequestInternal implements JsonSerializable<
      * @param participantToRemove the participantToRemove value to set.
      * @return the RemoveParticipantRequestInternal object itself.
      */
-    @Generated
     public RemoveParticipantRequestInternal setParticipantToRemove(CommunicationIdentifierModel participantToRemove) {
         this.participantToRemove = participantToRemove;
         return this;
@@ -71,7 +64,6 @@ public final class RemoveParticipantRequestInternal implements JsonSerializable<
      * 
      * @return the operationContext value.
      */
-    @Generated
     public String getOperationContext() {
         return this.operationContext;
     }
@@ -83,7 +75,6 @@ public final class RemoveParticipantRequestInternal implements JsonSerializable<
      * @param operationContext the operationContext value to set.
      * @return the RemoveParticipantRequestInternal object itself.
      */
-    @Generated
     public RemoveParticipantRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
@@ -96,7 +87,6 @@ public final class RemoveParticipantRequestInternal implements JsonSerializable<
      * 
      * @return the operationCallbackUri value.
      */
-    @Generated
     public String getOperationCallbackUri() {
         return this.operationCallbackUri;
     }
@@ -109,7 +99,6 @@ public final class RemoveParticipantRequestInternal implements JsonSerializable<
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the RemoveParticipantRequestInternal object itself.
      */
-    @Generated
     public RemoveParticipantRequestInternal setOperationCallbackUri(String operationCallbackUri) {
         this.operationCallbackUri = operationCallbackUri;
         return this;
@@ -118,7 +107,6 @@ public final class RemoveParticipantRequestInternal implements JsonSerializable<
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -137,7 +125,6 @@ public final class RemoveParticipantRequestInternal implements JsonSerializable<
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RemoveParticipantRequestInternal.
      */
-    @Generated
     public static RemoveParticipantRequestInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RemoveParticipantRequestInternal deserializedRemoveParticipantRequestInternal

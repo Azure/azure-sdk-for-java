@@ -4,7 +4,6 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,19 +14,16 @@ public final class CallLocatorKindInternal extends ExpandableStringEnum<CallLoca
     /**
      * Static value groupCallLocator for CallLocatorKindInternal.
      */
-    @Generated
     public static final CallLocatorKindInternal GROUP_CALL_LOCATOR = fromString("groupCallLocator");
 
     /**
      * Static value serverCallLocator for CallLocatorKindInternal.
      */
-    @Generated
     public static final CallLocatorKindInternal SERVER_CALL_LOCATOR = fromString("serverCallLocator");
 
     /**
      * Static value roomCallLocator for CallLocatorKindInternal.
      */
-    @Generated
     public static final CallLocatorKindInternal ROOM_CALL_LOCATOR = fromString("roomCallLocator");
 
     /**
@@ -35,7 +31,6 @@ public final class CallLocatorKindInternal extends ExpandableStringEnum<CallLoca
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public CallLocatorKindInternal() {
     }
@@ -46,7 +41,6 @@ public final class CallLocatorKindInternal extends ExpandableStringEnum<CallLoca
      * @param name a name to look for.
      * @return the corresponding CallLocatorKindInternal.
      */
-    @Generated
     public static CallLocatorKindInternal fromString(String name) {
         return fromString(name, CallLocatorKindInternal.class);
     }
@@ -56,7 +50,6 @@ public final class CallLocatorKindInternal extends ExpandableStringEnum<CallLoca
      * 
      * @return known CallLocatorKindInternal values.
      */
-    @Generated
     public static Collection<CallLocatorKindInternal> values() {
         return values(CallLocatorKindInternal.class);
     }

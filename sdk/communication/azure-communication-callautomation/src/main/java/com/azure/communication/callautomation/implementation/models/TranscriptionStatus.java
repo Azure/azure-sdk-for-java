@@ -4,7 +4,6 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,37 +14,31 @@ public final class TranscriptionStatus extends ExpandableStringEnum<Transcriptio
     /**
      * Static value transcriptionStarted for TranscriptionStatus.
      */
-    @Generated
     public static final TranscriptionStatus TRANSCRIPTION_STARTED = fromString("transcriptionStarted");
 
     /**
      * Static value transcriptionFailed for TranscriptionStatus.
      */
-    @Generated
     public static final TranscriptionStatus TRANSCRIPTION_FAILED = fromString("transcriptionFailed");
 
     /**
      * Static value transcriptionResumed for TranscriptionStatus.
      */
-    @Generated
     public static final TranscriptionStatus TRANSCRIPTION_RESUMED = fromString("transcriptionResumed");
 
     /**
      * Static value transcriptionUpdated for TranscriptionStatus.
      */
-    @Generated
     public static final TranscriptionStatus TRANSCRIPTION_UPDATED = fromString("transcriptionUpdated");
 
     /**
      * Static value transcriptionStopped for TranscriptionStatus.
      */
-    @Generated
     public static final TranscriptionStatus TRANSCRIPTION_STOPPED = fromString("transcriptionStopped");
 
     /**
      * Static value unspecifiedError for TranscriptionStatus.
      */
-    @Generated
     public static final TranscriptionStatus UNSPECIFIED_ERROR = fromString("unspecifiedError");
 
     /**
@@ -53,7 +46,6 @@ public final class TranscriptionStatus extends ExpandableStringEnum<Transcriptio
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public TranscriptionStatus() {
     }
@@ -64,7 +56,6 @@ public final class TranscriptionStatus extends ExpandableStringEnum<Transcriptio
      * @param name a name to look for.
      * @return the corresponding TranscriptionStatus.
      */
-    @Generated
     public static TranscriptionStatus fromString(String name) {
         return fromString(name, TranscriptionStatus.class);
     }
@@ -74,7 +65,6 @@ public final class TranscriptionStatus extends ExpandableStringEnum<Transcriptio
      * 
      * @return known TranscriptionStatus values.
      */
-    @Generated
     public static Collection<TranscriptionStatus> values() {
         return values(TranscriptionStatus.class);
     }

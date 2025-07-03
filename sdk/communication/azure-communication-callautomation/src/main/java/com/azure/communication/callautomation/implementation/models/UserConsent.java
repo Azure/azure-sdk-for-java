@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,13 +19,11 @@ public final class UserConsent implements JsonSerializable<UserConsent> {
     /*
      * The recording property.
      */
-    @Generated
     private Integer recording;
 
     /**
      * Creates an instance of UserConsent class.
      */
-    @Generated
     public UserConsent() {
     }
 
@@ -35,7 +32,6 @@ public final class UserConsent implements JsonSerializable<UserConsent> {
      * 
      * @return the recording value.
      */
-    @Generated
     public Integer getRecording() {
         return this.recording;
     }
@@ -46,7 +42,6 @@ public final class UserConsent implements JsonSerializable<UserConsent> {
      * @param recording the recording value to set.
      * @return the UserConsent object itself.
      */
-    @Generated
     public UserConsent setRecording(Integer recording) {
         this.recording = recording;
         return this;
@@ -55,7 +50,6 @@ public final class UserConsent implements JsonSerializable<UserConsent> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -71,7 +65,6 @@ public final class UserConsent implements JsonSerializable<UserConsent> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the UserConsent.
      */
-    @Generated
     public static UserConsent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             UserConsent deserializedUserConsent = new UserConsent();

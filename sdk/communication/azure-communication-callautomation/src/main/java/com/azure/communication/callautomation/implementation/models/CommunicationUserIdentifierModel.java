@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,13 +19,11 @@ public final class CommunicationUserIdentifierModel implements JsonSerializable<
     /*
      * The Id of the communication user.
      */
-    @Generated
     private String id;
 
     /**
      * Creates an instance of CommunicationUserIdentifierModel class.
      */
-    @Generated
     public CommunicationUserIdentifierModel() {
     }
 
@@ -35,7 +32,6 @@ public final class CommunicationUserIdentifierModel implements JsonSerializable<
      * 
      * @return the id value.
      */
-    @Generated
     public String getId() {
         return this.id;
     }
@@ -46,7 +42,6 @@ public final class CommunicationUserIdentifierModel implements JsonSerializable<
      * @param id the id value to set.
      * @return the CommunicationUserIdentifierModel object itself.
      */
-    @Generated
     public CommunicationUserIdentifierModel setId(String id) {
         this.id = id;
         return this;
@@ -55,7 +50,6 @@ public final class CommunicationUserIdentifierModel implements JsonSerializable<
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -72,7 +66,6 @@ public final class CommunicationUserIdentifierModel implements JsonSerializable<
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CommunicationUserIdentifierModel.
      */
-    @Generated
     public static CommunicationUserIdentifierModel fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CommunicationUserIdentifierModel deserializedCommunicationUserIdentifierModel

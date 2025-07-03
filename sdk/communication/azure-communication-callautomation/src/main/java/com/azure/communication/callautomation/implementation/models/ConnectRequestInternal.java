@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,43 +19,36 @@ public final class ConnectRequestInternal implements JsonSerializable<ConnectReq
     /*
      * The call locator.
      */
-    @Generated
     private CallLocatorInternal callLocator;
 
     /*
      * The callback URI.
      */
-    @Generated
     private String callbackUri;
 
     /*
      * Used by customers to correlate the request to the response event.
      */
-    @Generated
     private String operationContext;
 
     /*
      * AI options for the call.
      */
-    @Generated
     private CallIntelligenceOptionsInternal callIntelligenceOptions;
 
     /*
      * Media Streaming Options.
      */
-    @Generated
     private MediaStreamingOptionsInternal mediaStreamingOptions;
 
     /*
      * Transcription Options.
      */
-    @Generated
     private TranscriptionOptionsInternal transcriptionOptions;
 
     /**
      * Creates an instance of ConnectRequestInternal class.
      */
-    @Generated
     public ConnectRequestInternal() {
     }
 
@@ -65,7 +57,6 @@ public final class ConnectRequestInternal implements JsonSerializable<ConnectReq
      * 
      * @return the callLocator value.
      */
-    @Generated
     public CallLocatorInternal getCallLocator() {
         return this.callLocator;
     }
@@ -76,7 +67,6 @@ public final class ConnectRequestInternal implements JsonSerializable<ConnectReq
      * @param callLocator the callLocator value to set.
      * @return the ConnectRequestInternal object itself.
      */
-    @Generated
     public ConnectRequestInternal setCallLocator(CallLocatorInternal callLocator) {
         this.callLocator = callLocator;
         return this;
@@ -87,7 +77,6 @@ public final class ConnectRequestInternal implements JsonSerializable<ConnectReq
      * 
      * @return the callbackUri value.
      */
-    @Generated
     public String getCallbackUri() {
         return this.callbackUri;
     }
@@ -98,7 +87,6 @@ public final class ConnectRequestInternal implements JsonSerializable<ConnectReq
      * @param callbackUri the callbackUri value to set.
      * @return the ConnectRequestInternal object itself.
      */
-    @Generated
     public ConnectRequestInternal setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
         return this;
@@ -109,7 +97,6 @@ public final class ConnectRequestInternal implements JsonSerializable<ConnectReq
      * 
      * @return the operationContext value.
      */
-    @Generated
     public String getOperationContext() {
         return this.operationContext;
     }
@@ -120,7 +107,6 @@ public final class ConnectRequestInternal implements JsonSerializable<ConnectReq
      * @param operationContext the operationContext value to set.
      * @return the ConnectRequestInternal object itself.
      */
-    @Generated
     public ConnectRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
@@ -131,7 +117,6 @@ public final class ConnectRequestInternal implements JsonSerializable<ConnectReq
      * 
      * @return the callIntelligenceOptions value.
      */
-    @Generated
     public CallIntelligenceOptionsInternal getCallIntelligenceOptions() {
         return this.callIntelligenceOptions;
     }
@@ -142,7 +127,6 @@ public final class ConnectRequestInternal implements JsonSerializable<ConnectReq
      * @param callIntelligenceOptions the callIntelligenceOptions value to set.
      * @return the ConnectRequestInternal object itself.
      */
-    @Generated
     public ConnectRequestInternal setCallIntelligenceOptions(CallIntelligenceOptionsInternal callIntelligenceOptions) {
         this.callIntelligenceOptions = callIntelligenceOptions;
         return this;
@@ -153,7 +137,6 @@ public final class ConnectRequestInternal implements JsonSerializable<ConnectReq
      * 
      * @return the mediaStreamingOptions value.
      */
-    @Generated
     public MediaStreamingOptionsInternal getMediaStreamingOptions() {
         return this.mediaStreamingOptions;
     }
@@ -164,7 +147,6 @@ public final class ConnectRequestInternal implements JsonSerializable<ConnectReq
      * @param mediaStreamingOptions the mediaStreamingOptions value to set.
      * @return the ConnectRequestInternal object itself.
      */
-    @Generated
     public ConnectRequestInternal setMediaStreamingOptions(MediaStreamingOptionsInternal mediaStreamingOptions) {
         this.mediaStreamingOptions = mediaStreamingOptions;
         return this;
@@ -175,7 +157,6 @@ public final class ConnectRequestInternal implements JsonSerializable<ConnectReq
      * 
      * @return the transcriptionOptions value.
      */
-    @Generated
     public TranscriptionOptionsInternal getTranscriptionOptions() {
         return this.transcriptionOptions;
     }
@@ -186,7 +167,6 @@ public final class ConnectRequestInternal implements JsonSerializable<ConnectReq
      * @param transcriptionOptions the transcriptionOptions value to set.
      * @return the ConnectRequestInternal object itself.
      */
-    @Generated
     public ConnectRequestInternal setTranscriptionOptions(TranscriptionOptionsInternal transcriptionOptions) {
         this.transcriptionOptions = transcriptionOptions;
         return this;
@@ -195,7 +175,6 @@ public final class ConnectRequestInternal implements JsonSerializable<ConnectReq
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -217,7 +196,6 @@ public final class ConnectRequestInternal implements JsonSerializable<ConnectReq
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ConnectRequestInternal.
      */
-    @Generated
     public static ConnectRequestInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ConnectRequestInternal deserializedConnectRequestInternal = new ConnectRequestInternal();

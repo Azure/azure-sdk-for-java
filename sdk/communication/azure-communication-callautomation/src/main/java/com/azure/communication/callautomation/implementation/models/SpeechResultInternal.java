@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,19 +19,16 @@ public final class SpeechResultInternal implements JsonSerializable<SpeechResult
     /*
      * The recognized speech in string.
      */
-    @Generated
     private String speech;
 
     /*
-     * The confidence of the recognized speech.
+     * The confidence level of the recognized speech, if available, ranges from 0.0 to 1.0.
      */
-    @Generated
     private Double confidence;
 
     /**
      * Creates an instance of SpeechResultInternal class.
      */
-    @Generated
     public SpeechResultInternal() {
     }
 
@@ -41,7 +37,6 @@ public final class SpeechResultInternal implements JsonSerializable<SpeechResult
      * 
      * @return the speech value.
      */
-    @Generated
     public String getSpeech() {
         return this.speech;
     }
@@ -52,29 +47,26 @@ public final class SpeechResultInternal implements JsonSerializable<SpeechResult
      * @param speech the speech value to set.
      * @return the SpeechResultInternal object itself.
      */
-    @Generated
     public SpeechResultInternal setSpeech(String speech) {
         this.speech = speech;
         return this;
     }
 
     /**
-     * Get the confidence property: The confidence of the recognized speech.
+     * Get the confidence property: The confidence level of the recognized speech, if available, ranges from 0.0 to 1.0.
      * 
      * @return the confidence value.
      */
-    @Generated
     public Double getConfidence() {
         return this.confidence;
     }
 
     /**
-     * Set the confidence property: The confidence of the recognized speech.
+     * Set the confidence property: The confidence level of the recognized speech, if available, ranges from 0.0 to 1.0.
      * 
      * @param confidence the confidence value to set.
      * @return the SpeechResultInternal object itself.
      */
-    @Generated
     public SpeechResultInternal setConfidence(Double confidence) {
         this.confidence = confidence;
         return this;
@@ -83,7 +75,6 @@ public final class SpeechResultInternal implements JsonSerializable<SpeechResult
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -100,7 +91,6 @@ public final class SpeechResultInternal implements JsonSerializable<SpeechResult
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SpeechResultInternal.
      */
-    @Generated
     public static SpeechResultInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SpeechResultInternal deserializedSpeechResultInternal = new SpeechResultInternal();

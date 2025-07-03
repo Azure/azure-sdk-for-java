@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,25 +20,21 @@ public final class MediaStreamingSubscriptionInternal implements JsonSerializabl
     /*
      * Subscription Id.
      */
-    @Generated
     private String id;
 
     /*
      * Media streaming subscription state.
      */
-    @Generated
     private MediaStreamingSubscriptionStateInternal state;
 
     /*
      * Subscribed media streaming content types.
      */
-    @Generated
     private List<MediaStreamingContentTypeInternal> subscribedContentTypes;
 
     /**
      * Creates an instance of MediaStreamingSubscriptionInternal class.
      */
-    @Generated
     public MediaStreamingSubscriptionInternal() {
     }
 
@@ -48,7 +43,6 @@ public final class MediaStreamingSubscriptionInternal implements JsonSerializabl
      * 
      * @return the id value.
      */
-    @Generated
     public String getId() {
         return this.id;
     }
@@ -59,7 +53,6 @@ public final class MediaStreamingSubscriptionInternal implements JsonSerializabl
      * @param id the id value to set.
      * @return the MediaStreamingSubscriptionInternal object itself.
      */
-    @Generated
     public MediaStreamingSubscriptionInternal setId(String id) {
         this.id = id;
         return this;
@@ -70,7 +63,6 @@ public final class MediaStreamingSubscriptionInternal implements JsonSerializabl
      * 
      * @return the state value.
      */
-    @Generated
     public MediaStreamingSubscriptionStateInternal getState() {
         return this.state;
     }
@@ -81,7 +73,6 @@ public final class MediaStreamingSubscriptionInternal implements JsonSerializabl
      * @param state the state value to set.
      * @return the MediaStreamingSubscriptionInternal object itself.
      */
-    @Generated
     public MediaStreamingSubscriptionInternal setState(MediaStreamingSubscriptionStateInternal state) {
         this.state = state;
         return this;
@@ -92,7 +83,6 @@ public final class MediaStreamingSubscriptionInternal implements JsonSerializabl
      * 
      * @return the subscribedContentTypes value.
      */
-    @Generated
     public List<MediaStreamingContentTypeInternal> getSubscribedContentTypes() {
         return this.subscribedContentTypes;
     }
@@ -103,7 +93,6 @@ public final class MediaStreamingSubscriptionInternal implements JsonSerializabl
      * @param subscribedContentTypes the subscribedContentTypes value to set.
      * @return the MediaStreamingSubscriptionInternal object itself.
      */
-    @Generated
     public MediaStreamingSubscriptionInternal
         setSubscribedContentTypes(List<MediaStreamingContentTypeInternal> subscribedContentTypes) {
         this.subscribedContentTypes = subscribedContentTypes;
@@ -113,7 +102,6 @@ public final class MediaStreamingSubscriptionInternal implements JsonSerializabl
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -132,7 +120,6 @@ public final class MediaStreamingSubscriptionInternal implements JsonSerializabl
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the MediaStreamingSubscriptionInternal.
      */
-    @Generated
     public static MediaStreamingSubscriptionInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MediaStreamingSubscriptionInternal deserializedMediaStreamingSubscriptionInternal

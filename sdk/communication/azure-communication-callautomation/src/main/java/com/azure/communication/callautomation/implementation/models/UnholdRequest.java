@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,19 +20,22 @@ public final class UnholdRequest implements JsonSerializable<UnholdRequest> {
      * Participants to be hold from the call.
      * Only ACS Users are supported.
      */
-    @Generated
     private CommunicationIdentifierModel targetParticipant;
 
     /*
      * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
-    @Generated
     private String operationContext;
+
+    /*
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     */
+    private String operationCallbackUri;
 
     /**
      * Creates an instance of UnholdRequest class.
      */
-    @Generated
     public UnholdRequest() {
     }
 
@@ -43,7 +45,6 @@ public final class UnholdRequest implements JsonSerializable<UnholdRequest> {
      * 
      * @return the targetParticipant value.
      */
-    @Generated
     public CommunicationIdentifierModel getTargetParticipant() {
         return this.targetParticipant;
     }
@@ -55,7 +56,6 @@ public final class UnholdRequest implements JsonSerializable<UnholdRequest> {
      * @param targetParticipant the targetParticipant value to set.
      * @return the UnholdRequest object itself.
      */
-    @Generated
     public UnholdRequest setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
         this.targetParticipant = targetParticipant;
         return this;
@@ -67,7 +67,6 @@ public final class UnholdRequest implements JsonSerializable<UnholdRequest> {
      * 
      * @return the operationContext value.
      */
-    @Generated
     public String getOperationContext() {
         return this.operationContext;
     }
@@ -79,21 +78,44 @@ public final class UnholdRequest implements JsonSerializable<UnholdRequest> {
      * @param operationContext the operationContext value to set.
      * @return the UnholdRequest object itself.
      */
-    @Generated
     public UnholdRequest setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
 
     /**
+     * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * 
+     * @return the operationCallbackUri value.
+     */
+    public String getOperationCallbackUri() {
+        return this.operationCallbackUri;
+    }
+
+    /**
+     * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * 
+     * @param operationCallbackUri the operationCallbackUri value to set.
+     * @return the UnholdRequest object itself.
+     */
+    public UnholdRequest setOperationCallbackUri(String operationCallbackUri) {
+        this.operationCallbackUri = operationCallbackUri;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("targetParticipant", this.targetParticipant);
         jsonWriter.writeStringField("operationContext", this.operationContext);
+        jsonWriter.writeStringField("operationCallbackUri", this.operationCallbackUri);
         return jsonWriter.writeEndObject();
     }
 
@@ -106,7 +128,6 @@ public final class UnholdRequest implements JsonSerializable<UnholdRequest> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the UnholdRequest.
      */
-    @Generated
     public static UnholdRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             UnholdRequest deserializedUnholdRequest = new UnholdRequest();
@@ -118,6 +139,8 @@ public final class UnholdRequest implements JsonSerializable<UnholdRequest> {
                     deserializedUnholdRequest.targetParticipant = CommunicationIdentifierModel.fromJson(reader);
                 } else if ("operationContext".equals(fieldName)) {
                     deserializedUnholdRequest.operationContext = reader.getString();
+                } else if ("operationCallbackUri".equals(fieldName)) {
+                    deserializedUnholdRequest.operationCallbackUri = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,19 +19,16 @@ public final class SsmlSourceInternal implements JsonSerializable<SsmlSourceInte
     /*
      * Ssml string for the cognitive service to be played
      */
-    @Generated
     private String ssmlText;
 
     /*
      * Endpoint where the custom voice was deployed.
      */
-    @Generated
     private String customVoiceEndpointId;
 
     /**
      * Creates an instance of SsmlSourceInternal class.
      */
-    @Generated
     public SsmlSourceInternal() {
     }
 
@@ -41,7 +37,6 @@ public final class SsmlSourceInternal implements JsonSerializable<SsmlSourceInte
      * 
      * @return the ssmlText value.
      */
-    @Generated
     public String getSsmlText() {
         return this.ssmlText;
     }
@@ -52,7 +47,6 @@ public final class SsmlSourceInternal implements JsonSerializable<SsmlSourceInte
      * @param ssmlText the ssmlText value to set.
      * @return the SsmlSourceInternal object itself.
      */
-    @Generated
     public SsmlSourceInternal setSsmlText(String ssmlText) {
         this.ssmlText = ssmlText;
         return this;
@@ -63,7 +57,6 @@ public final class SsmlSourceInternal implements JsonSerializable<SsmlSourceInte
      * 
      * @return the customVoiceEndpointId value.
      */
-    @Generated
     public String getCustomVoiceEndpointId() {
         return this.customVoiceEndpointId;
     }
@@ -74,7 +67,6 @@ public final class SsmlSourceInternal implements JsonSerializable<SsmlSourceInte
      * @param customVoiceEndpointId the customVoiceEndpointId value to set.
      * @return the SsmlSourceInternal object itself.
      */
-    @Generated
     public SsmlSourceInternal setCustomVoiceEndpointId(String customVoiceEndpointId) {
         this.customVoiceEndpointId = customVoiceEndpointId;
         return this;
@@ -83,7 +75,6 @@ public final class SsmlSourceInternal implements JsonSerializable<SsmlSourceInte
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -101,7 +92,6 @@ public final class SsmlSourceInternal implements JsonSerializable<SsmlSourceInte
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SsmlSourceInternal.
      */
-    @Generated
     public static SsmlSourceInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SsmlSourceInternal deserializedSsmlSourceInternal = new SsmlSourceInternal();

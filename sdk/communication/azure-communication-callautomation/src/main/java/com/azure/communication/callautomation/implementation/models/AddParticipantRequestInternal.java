@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,52 +20,44 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
      * The source caller Id, a phone number, that's shown to the PSTN participant being invited.
      * Required only when inviting a PSTN participant.
      */
-    @Generated
     private PhoneNumberIdentifierModel sourceCallerIdNumber;
 
     /*
      * (Optional) The display name of the source that is associated with this invite operation when
-     * adding a PSTN participant or teams user. Note: Will not update the display name in the roster.
+     * adding a PSTN participant or teams user.  Note: Will not update the display name in the roster.
      */
-    @Generated
     private String sourceDisplayName;
 
     /*
      * The participant to invite.
      */
-    @Generated
     private CommunicationIdentifierModel participantToAdd;
 
     /*
      * Gets or sets the timeout to wait for the invited participant to pickup.
      * The maximum value of this is 180 seconds
      */
-    @Generated
     private Integer invitationTimeoutInSeconds;
 
     /*
      * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
-    @Generated
     private String operationContext;
 
     /*
      * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
      * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      */
-    @Generated
     private String operationCallbackUri;
 
     /*
      * Used by customer to send custom calling context to targets
      */
-    @Generated
     private CustomCallingContext customCallingContext;
 
     /**
      * Creates an instance of AddParticipantRequestInternal class.
      */
-    @Generated
     public AddParticipantRequestInternal() {
     }
 
@@ -77,7 +68,6 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
      * 
      * @return the sourceCallerIdNumber value.
      */
-    @Generated
     public PhoneNumberIdentifierModel getSourceCallerIdNumber() {
         return this.sourceCallerIdNumber;
     }
@@ -90,7 +80,6 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
      * @param sourceCallerIdNumber the sourceCallerIdNumber value to set.
      * @return the AddParticipantRequestInternal object itself.
      */
-    @Generated
     public AddParticipantRequestInternal setSourceCallerIdNumber(PhoneNumberIdentifierModel sourceCallerIdNumber) {
         this.sourceCallerIdNumber = sourceCallerIdNumber;
         return this;
@@ -103,7 +92,6 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
      * 
      * @return the sourceDisplayName value.
      */
-    @Generated
     public String getSourceDisplayName() {
         return this.sourceDisplayName;
     }
@@ -116,7 +104,6 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
      * @param sourceDisplayName the sourceDisplayName value to set.
      * @return the AddParticipantRequestInternal object itself.
      */
-    @Generated
     public AddParticipantRequestInternal setSourceDisplayName(String sourceDisplayName) {
         this.sourceDisplayName = sourceDisplayName;
         return this;
@@ -127,7 +114,6 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
      * 
      * @return the participantToAdd value.
      */
-    @Generated
     public CommunicationIdentifierModel getParticipantToAdd() {
         return this.participantToAdd;
     }
@@ -138,7 +124,6 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
      * @param participantToAdd the participantToAdd value to set.
      * @return the AddParticipantRequestInternal object itself.
      */
-    @Generated
     public AddParticipantRequestInternal setParticipantToAdd(CommunicationIdentifierModel participantToAdd) {
         this.participantToAdd = participantToAdd;
         return this;
@@ -151,7 +136,6 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
      * 
      * @return the invitationTimeoutInSeconds value.
      */
-    @Generated
     public Integer getInvitationTimeoutInSeconds() {
         return this.invitationTimeoutInSeconds;
     }
@@ -164,7 +148,6 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
      * @param invitationTimeoutInSeconds the invitationTimeoutInSeconds value to set.
      * @return the AddParticipantRequestInternal object itself.
      */
-    @Generated
     public AddParticipantRequestInternal setInvitationTimeoutInSeconds(Integer invitationTimeoutInSeconds) {
         this.invitationTimeoutInSeconds = invitationTimeoutInSeconds;
         return this;
@@ -176,7 +159,6 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
      * 
      * @return the operationContext value.
      */
-    @Generated
     public String getOperationContext() {
         return this.operationContext;
     }
@@ -188,7 +170,6 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
      * @param operationContext the operationContext value to set.
      * @return the AddParticipantRequestInternal object itself.
      */
-    @Generated
     public AddParticipantRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
@@ -201,7 +182,6 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
      * 
      * @return the operationCallbackUri value.
      */
-    @Generated
     public String getOperationCallbackUri() {
         return this.operationCallbackUri;
     }
@@ -214,7 +194,6 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the AddParticipantRequestInternal object itself.
      */
-    @Generated
     public AddParticipantRequestInternal setOperationCallbackUri(String operationCallbackUri) {
         this.operationCallbackUri = operationCallbackUri;
         return this;
@@ -225,7 +204,6 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
      * 
      * @return the customCallingContext value.
      */
-    @Generated
     public CustomCallingContext getCustomCallingContext() {
         return this.customCallingContext;
     }
@@ -236,7 +214,6 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
      * @param customCallingContext the customCallingContext value to set.
      * @return the AddParticipantRequestInternal object itself.
      */
-    @Generated
     public AddParticipantRequestInternal setCustomCallingContext(CustomCallingContext customCallingContext) {
         this.customCallingContext = customCallingContext;
         return this;
@@ -245,7 +222,6 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -268,7 +244,6 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AddParticipantRequestInternal.
      */
-    @Generated
     public static AddParticipantRequestInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AddParticipantRequestInternal deserializedAddParticipantRequestInternal

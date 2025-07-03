@@ -4,7 +4,6 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,13 +14,11 @@ public final class RecordingStateInternal extends ExpandableStringEnum<Recording
     /**
      * Static value active for RecordingStateInternal.
      */
-    @Generated
     public static final RecordingStateInternal ACTIVE = fromString("active");
 
     /**
      * Static value inactive for RecordingStateInternal.
      */
-    @Generated
     public static final RecordingStateInternal INACTIVE = fromString("inactive");
 
     /**
@@ -29,7 +26,6 @@ public final class RecordingStateInternal extends ExpandableStringEnum<Recording
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public RecordingStateInternal() {
     }
@@ -40,7 +36,6 @@ public final class RecordingStateInternal extends ExpandableStringEnum<Recording
      * @param name a name to look for.
      * @return the corresponding RecordingStateInternal.
      */
-    @Generated
     public static RecordingStateInternal fromString(String name) {
         return fromString(name, RecordingStateInternal.class);
     }
@@ -50,7 +45,6 @@ public final class RecordingStateInternal extends ExpandableStringEnum<Recording
      * 
      * @return known RecordingStateInternal values.
      */
-    @Generated
     public static Collection<RecordingStateInternal> values() {
         return values(RecordingStateInternal.class);
     }

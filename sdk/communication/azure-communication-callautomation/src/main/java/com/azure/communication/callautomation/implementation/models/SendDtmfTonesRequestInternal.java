@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,32 +20,27 @@ public final class SendDtmfTonesRequestInternal implements JsonSerializable<Send
     /*
      * List of tones to be sent to target participant.
      */
-    @Generated
     private List<DtmfToneInternal> tones;
 
     /*
      * Target participant of send Dtmf tones.
      */
-    @Generated
     private CommunicationIdentifierModel targetParticipant;
 
     /*
      * The value to identify context of the operation.
      */
-    @Generated
     private String operationContext;
 
     /*
      * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
      * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      */
-    @Generated
     private String operationCallbackUri;
 
     /**
      * Creates an instance of SendDtmfTonesRequestInternal class.
      */
-    @Generated
     public SendDtmfTonesRequestInternal() {
     }
 
@@ -55,7 +49,6 @@ public final class SendDtmfTonesRequestInternal implements JsonSerializable<Send
      * 
      * @return the tones value.
      */
-    @Generated
     public List<DtmfToneInternal> getTones() {
         return this.tones;
     }
@@ -66,7 +59,6 @@ public final class SendDtmfTonesRequestInternal implements JsonSerializable<Send
      * @param tones the tones value to set.
      * @return the SendDtmfTonesRequestInternal object itself.
      */
-    @Generated
     public SendDtmfTonesRequestInternal setTones(List<DtmfToneInternal> tones) {
         this.tones = tones;
         return this;
@@ -77,7 +69,6 @@ public final class SendDtmfTonesRequestInternal implements JsonSerializable<Send
      * 
      * @return the targetParticipant value.
      */
-    @Generated
     public CommunicationIdentifierModel getTargetParticipant() {
         return this.targetParticipant;
     }
@@ -88,7 +79,6 @@ public final class SendDtmfTonesRequestInternal implements JsonSerializable<Send
      * @param targetParticipant the targetParticipant value to set.
      * @return the SendDtmfTonesRequestInternal object itself.
      */
-    @Generated
     public SendDtmfTonesRequestInternal setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
         this.targetParticipant = targetParticipant;
         return this;
@@ -99,7 +89,6 @@ public final class SendDtmfTonesRequestInternal implements JsonSerializable<Send
      * 
      * @return the operationContext value.
      */
-    @Generated
     public String getOperationContext() {
         return this.operationContext;
     }
@@ -110,7 +99,6 @@ public final class SendDtmfTonesRequestInternal implements JsonSerializable<Send
      * @param operationContext the operationContext value to set.
      * @return the SendDtmfTonesRequestInternal object itself.
      */
-    @Generated
     public SendDtmfTonesRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
@@ -123,7 +111,6 @@ public final class SendDtmfTonesRequestInternal implements JsonSerializable<Send
      * 
      * @return the operationCallbackUri value.
      */
-    @Generated
     public String getOperationCallbackUri() {
         return this.operationCallbackUri;
     }
@@ -136,7 +123,6 @@ public final class SendDtmfTonesRequestInternal implements JsonSerializable<Send
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the SendDtmfTonesRequestInternal object itself.
      */
-    @Generated
     public SendDtmfTonesRequestInternal setOperationCallbackUri(String operationCallbackUri) {
         this.operationCallbackUri = operationCallbackUri;
         return this;
@@ -145,7 +131,6 @@ public final class SendDtmfTonesRequestInternal implements JsonSerializable<Send
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -166,7 +151,6 @@ public final class SendDtmfTonesRequestInternal implements JsonSerializable<Send
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SendDtmfTonesRequestInternal.
      */
-    @Generated
     public static SendDtmfTonesRequestInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SendDtmfTonesRequestInternal deserializedSendDtmfTonesRequestInternal = new SendDtmfTonesRequestInternal();

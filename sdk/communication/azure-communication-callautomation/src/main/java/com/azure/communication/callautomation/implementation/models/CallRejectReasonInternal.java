@@ -4,7 +4,6 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,19 +14,16 @@ public final class CallRejectReasonInternal extends ExpandableStringEnum<CallRej
     /**
      * Static value none for CallRejectReasonInternal.
      */
-    @Generated
     public static final CallRejectReasonInternal NONE = fromString("none");
 
     /**
      * Static value busy for CallRejectReasonInternal.
      */
-    @Generated
     public static final CallRejectReasonInternal BUSY = fromString("busy");
 
     /**
      * Static value forbidden for CallRejectReasonInternal.
      */
-    @Generated
     public static final CallRejectReasonInternal FORBIDDEN = fromString("forbidden");
 
     /**
@@ -35,7 +31,6 @@ public final class CallRejectReasonInternal extends ExpandableStringEnum<CallRej
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public CallRejectReasonInternal() {
     }
@@ -46,7 +41,6 @@ public final class CallRejectReasonInternal extends ExpandableStringEnum<CallRej
      * @param name a name to look for.
      * @return the corresponding CallRejectReasonInternal.
      */
-    @Generated
     public static CallRejectReasonInternal fromString(String name) {
         return fromString(name, CallRejectReasonInternal.class);
     }
@@ -56,7 +50,6 @@ public final class CallRejectReasonInternal extends ExpandableStringEnum<CallRej
      * 
      * @return known CallRejectReasonInternal values.
      */
-    @Generated
     public static Collection<CallRejectReasonInternal> values() {
         return values(CallRejectReasonInternal.class);
     }
