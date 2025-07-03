@@ -15165,6 +15165,36 @@ public final class BatchClient {
      *
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for resizing the pool.
+     * @param options Optional parameters for Resize Pool operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the resizing of the Pool.
+     * The poller provides {@link BatchPool} instances during polling and returns the last known
+     * {@link BatchPool} on completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchPool, BatchPool> beginResizePool(String poolId, BatchPoolResizeParameters parameters,
+        BatchPoolResizeOptions options, RequestConditions requestConditions) {
+        PollerFlux<BatchPool, BatchPool> asyncPoller
+            = asyncClient.beginResizePool(poolId, parameters, options, requestConditions);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
+     * Changes the number of Compute Nodes that are assigned to a Pool.
+     *
+     * You can only resize a Pool when its allocation state is steady. If the Pool is
+     * already resizing, the request fails with status code 409. When you resize a
+     * Pool, the Pool's allocation state changes from steady to resizing. You cannot
+     * resize Pools which are configured for automatic scaling. If you try to do this,
+     * the Batch service returns an error 409. If you resize a Pool downwards, the
+     * Batch service chooses which Compute Nodes to remove. To remove specific Compute
+     * Nodes, use the Pool remove Compute Nodes API instead.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for resizing the pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -15175,6 +15205,32 @@ public final class BatchClient {
         // Generated convenience method for resizePoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
         resizePoolWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue();
+    }
+
+    /**
+     * Changes the number of Compute Nodes that are assigned to a Pool.
+     *
+     * You can only resize a Pool when its allocation state is steady. If the Pool is
+     * already resizing, the request fails with status code 409. When you resize a
+     * Pool, the Pool's allocation state changes from steady to resizing. You cannot
+     * resize Pools which are configured for automatic scaling. If you try to do this,
+     * the Batch service returns an error 409. If you resize a Pool downwards, the
+     * Batch service chooses which Compute Nodes to remove. To remove specific Compute
+     * Nodes, use the Pool remove Compute Nodes API instead.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for resizing the pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the resizing of the Pool.
+     * The poller provides {@link BatchPool} instances during polling and returns the last known
+     * {@link BatchPool} on completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchPool, BatchPool> beginResizePool(String poolId, BatchPoolResizeParameters parameters) {
+        PollerFlux<BatchPool, BatchPool> asyncPoller = asyncClient.beginResizePool(poolId, parameters);
+        return asyncPoller.getSyncPoller();
     }
 
     /**
