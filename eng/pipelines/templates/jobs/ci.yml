@@ -64,6 +64,13 @@ parameters:
 
 jobs:
   - job: 'Build'
+    # This timeout is being set high because some tasks in the pullrequest pipeline
+    # run longer depending on the number of libraries being affected. For example,
+    # a version increment for core or identity, AKA something that has a lot of
+    # dependent libraries, which will cause a large number of pom file updates (100+).
+    # All of these updates need to get scanned for API changes which can take a while,
+    # and the default timeout of 60 minutes is just simply not enough.
+    timeoutInMinutes: 120
 
     variables:
       # The ServiceDirectory is an identifier. The pullrequest's ServiceDirectory of
@@ -150,7 +157,6 @@ jobs:
           filePath: eng/pipelines/scripts/Set-Dev-Versioning.ps1
           arguments: >
             -BuildNumber $(Build.BuildNumber)
-            -SdkType ${{parameters.SDKType}}
         env:
           ARTIFACTSJSON: $(ArtifactsJson)
 
@@ -327,15 +333,6 @@ jobs:
           ServiceDirectory: "template"
           TestPipeline: ${{ parameters.TestPipeline }}
 
-      - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
-        - template: /eng/common/pipelines/templates/steps/verify-readmes.yml
-          parameters:
-            PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
-      - ${{ else }}:
-        - template: /eng/common/pipelines/templates/steps/verify-readme.yml
-          parameters:
-            ScanPath: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
-
       - template: /eng/common/pipelines/templates/steps/verify-links.yml
         parameters:
           ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
@@ -462,6 +459,7 @@ jobs:
       ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
         EnablePRGeneration: true
         PRMatrixSparseIndirect: true
+        PRJobBatchSize: 20
         # This key will use the PackageInfo.Name to populate the ArtifactPackageNames
         PRMatrixKey: 'Name'
         SparseCheckoutPaths:

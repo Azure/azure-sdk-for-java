@@ -54,7 +54,7 @@ public final class SipRoutingsImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "SipRoutingAdminClien")
+    @ServiceInterface(name = "SipRoutingAdminClientSipRoutings")
     public interface SipRoutingsService {
         @Get("/sip")
         @ExpectedResponses({ 200 })
@@ -80,9 +80,7 @@ public final class SipRoutingsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SipConfiguration>> getWithResponseAsync() {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> getWithResponseAsync(context));
     }
 
     /**
@@ -167,9 +165,7 @@ public final class SipRoutingsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SipConfiguration>> updateWithResponseAsync(SipConfiguration body) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context));
+        return FluxUtil.withContext(context -> updateWithResponseAsync(body, context));
     }
 
     /**

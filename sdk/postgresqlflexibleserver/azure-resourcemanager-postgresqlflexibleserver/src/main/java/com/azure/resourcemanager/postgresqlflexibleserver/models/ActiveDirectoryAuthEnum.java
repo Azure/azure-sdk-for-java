@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * If Enabled, Azure Active Directory authentication is enabled.
+ * If Enabled, Microsoft Entra authentication is enabled.
  */
 public final class ActiveDirectoryAuthEnum extends ExpandableStringEnum<ActiveDirectoryAuthEnum> {
     /**

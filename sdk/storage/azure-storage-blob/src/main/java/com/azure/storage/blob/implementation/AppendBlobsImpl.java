@@ -72,7 +72,7 @@ public final class AppendBlobsImpl {
      * perform REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureBlobStorageAppe")
+    @ServiceInterface(name = "AzureBlobStorageAppendBlobs")
     public interface AppendBlobsService {
 
         @Put("/{containerName}/{blob}")

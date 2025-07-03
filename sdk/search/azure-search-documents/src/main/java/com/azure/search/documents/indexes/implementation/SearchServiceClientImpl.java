@@ -104,6 +104,20 @@ public final class SearchServiceClientImpl {
     }
 
     /**
+     * The KnowledgeAgentsImpl object to access its operations.
+     */
+    private final KnowledgeAgentsImpl knowledgeAgents;
+
+    /**
+     * Gets the KnowledgeAgentsImpl object to access its operations.
+     * 
+     * @return the KnowledgeAgentsImpl object.
+     */
+    public KnowledgeAgentsImpl getKnowledgeAgents() {
+        return this.knowledgeAgents;
+    }
+
+    /**
      * The DataSourcesImpl object to access its operations.
      */
     private final DataSourcesImpl dataSources;
@@ -223,6 +237,7 @@ public final class SearchServiceClientImpl {
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.apiVersion = apiVersion;
+        this.knowledgeAgents = new KnowledgeAgentsImpl(this);
         this.dataSources = new DataSourcesImpl(this);
         this.indexers = new IndexersImpl(this);
         this.skillsets = new SkillsetsImpl(this);
@@ -519,7 +534,7 @@ public final class SearchServiceClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IndexStatisticsSummary> getIndexStatsSummary(RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> getIndexStatsSummarySinglePage(requestOptions, Context.NONE));
+        return new PagedIterable<>(() -> getIndexStatsSummarySinglePage(requestOptions));
     }
 
     /**

@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,12 +19,14 @@ public final class CustomSingleLabelClassificationTaskParameters extends CustomT
     /**
      * Creates an instance of CustomSingleLabelClassificationTaskParameters class.
      */
+    @Generated
     public CustomSingleLabelClassificationTaskParameters() {
     }
 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CustomSingleLabelClassificationTaskParameters setProjectName(String projectName) {
         super.setProjectName(projectName);
@@ -33,6 +36,7 @@ public final class CustomSingleLabelClassificationTaskParameters extends CustomT
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CustomSingleLabelClassificationTaskParameters setDeploymentName(String deploymentName) {
         super.setDeploymentName(deploymentName);
@@ -42,6 +46,7 @@ public final class CustomSingleLabelClassificationTaskParameters extends CustomT
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CustomSingleLabelClassificationTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
         super.setLoggingOptOut(loggingOptOut);
@@ -51,6 +56,7 @@ public final class CustomSingleLabelClassificationTaskParameters extends CustomT
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -69,6 +75,7 @@ public final class CustomSingleLabelClassificationTaskParameters extends CustomT
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CustomSingleLabelClassificationTaskParameters.
      */
+    @Generated
     public static CustomSingleLabelClassificationTaskParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CustomSingleLabelClassificationTaskParameters deserializedCustomSingleLabelClassificationTaskParameters

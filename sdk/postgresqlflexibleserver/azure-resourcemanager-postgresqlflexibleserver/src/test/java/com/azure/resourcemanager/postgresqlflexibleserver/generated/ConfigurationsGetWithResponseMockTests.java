@@ -6,8 +6,8 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Configuration;
@@ -21,20 +21,20 @@ public final class ConfigurationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"value\":\"vl\",\"description\":\"fcq\",\"defaultValue\":\"rdve\",\"dataType\":\"Integer\",\"allowedValues\":\"dtutnwldu\",\"source\":\"vuzhyr\",\"isDynamicConfig\":true,\"isReadOnly\":true,\"isConfigPendingRestart\":true,\"unit\":\"k\",\"documentationLink\":\"ukuqgsj\"},\"id\":\"undxgketw\",\"name\":\"hhzjhfj\",\"type\":\"hvvmuvgpmun\"}";
+            = "{\"properties\":{\"value\":\"hgfgrwsd\",\"description\":\"ra\",\"defaultValue\":\"vzbglbyvi\",\"dataType\":\"Enumeration\",\"allowedValues\":\"brxkjzwr\",\"source\":\"ffm\",\"isDynamicConfig\":false,\"isReadOnly\":true,\"isConfigPendingRestart\":false,\"unit\":\"ozxwopd\",\"documentationLink\":\"dpizq\"},\"id\":\"lnapxbiygn\",\"name\":\"gjkn\",\"type\":\"smfcttuxuuyilfl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PostgreSqlManager manager = PostgreSqlManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Configuration response = manager.configurations()
-            .getWithResponse("nzqodfvpg", "hoxgsgbpf", "zdjtxvzflbqv", com.azure.core.util.Context.NONE)
+            .getWithResponse("uwnpqxpxiwfcng", "saasiixtmkzj", "kv", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("vl", response.value());
-        Assertions.assertEquals("vuzhyr", response.source());
+        Assertions.assertEquals("hgfgrwsd", response.value());
+        Assertions.assertEquals("ffm", response.source());
     }
 }

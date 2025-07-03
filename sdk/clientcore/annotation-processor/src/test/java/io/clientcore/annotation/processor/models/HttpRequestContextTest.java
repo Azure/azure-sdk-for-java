@@ -18,8 +18,8 @@ public class HttpRequestContextTest {
     @Test
     void testAddMultipleQueryParamValues() {
         HttpRequestContext ctx = new HttpRequestContext();
-        ctx.addQueryParam("foo", "bar", true, false);
-        ctx.addQueryParam("foo", "baz", true, false);
+        ctx.addQueryParam("foo", "bar", true, false, false);
+        ctx.addQueryParam("foo", "baz", true, false, false);
 
         List<String> values = ctx.getQueryParams().get("foo").getValues();
         assertEquals(2, values.size());

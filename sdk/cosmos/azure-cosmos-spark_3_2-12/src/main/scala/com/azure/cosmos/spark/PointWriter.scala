@@ -4,6 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper
+import com.azure.cosmos.implementation.UUIDs
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
 import com.azure.cosmos.implementation.guava25.base.Preconditions.checkState
 import com.azure.cosmos.implementation.spark.{OperationContextAndListenerTuple, OperationListener}
@@ -60,7 +61,7 @@ private class PointWriter(container: CosmosAsyncContainer,
   private val pendingPointWrites = new TrieMap[Future[Unit], Boolean]()
   private val closed = new AtomicBoolean(false)
 
-  private val diagnosticsContext: DiagnosticsContext = DiagnosticsContext(UUID.randomUUID(), "PointWriter")
+  private val diagnosticsContext: DiagnosticsContext = DiagnosticsContext(UUIDs.nonBlockingRandomUUID(), "PointWriter")
 
   private  val taskDiagnosticsContext = SparkTaskContext(diagnosticsContext.correlationActivityId,
     taskContext.stageId(),

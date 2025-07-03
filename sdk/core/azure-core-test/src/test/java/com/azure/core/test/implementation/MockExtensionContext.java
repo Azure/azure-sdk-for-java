@@ -6,11 +6,16 @@ package com.azure.core.test.implementation;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExecutableInvoker;
 import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.MediaType;
 import org.junit.jupiter.api.extension.TestInstances;
+import org.junit.jupiter.api.function.ThrowingConsumer;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
+import java.nio.file.Path;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -62,6 +67,11 @@ final class MockExtensionContext implements ExtensionContext {
     }
 
     @Override
+    public List<Class<?>> getEnclosingTestClasses() {
+        return Collections.emptyList();
+    }
+
+    @Override
     public Optional<TestInstance.Lifecycle> getTestInstanceLifecycle() {
         return Optional.empty();
     }
@@ -98,11 +108,23 @@ final class MockExtensionContext implements ExtensionContext {
 
     @Override
     public void publishReportEntry(Map<String, String> map) {
+    }
 
+    @Override
+    public void publishFile(String name, MediaType mediaType, ThrowingConsumer<Path> action) {
+    }
+
+    @Override
+    public void publishDirectory(String name, ThrowingConsumer<Path> action) {
     }
 
     @Override
     public Store getStore(Namespace namespace) {
+        return null;
+    }
+
+    @Override
+    public Store getStore(StoreScope scope, Namespace namespace) {
         return null;
     }
 

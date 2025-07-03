@@ -90,7 +90,9 @@ public final class DataFlowStagingInfo implements JsonSerializable<DataFlowStagi
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedService", this.linkedService);
-        jsonWriter.writeUntypedField("folderPath", this.folderPath);
+        if (this.folderPath != null) {
+            jsonWriter.writeUntypedField("folderPath", this.folderPath);
+        }
         return jsonWriter.writeEndObject();
     }
 

@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class RecordingStateResponseInternal implements JsonSerializable<Re
     /*
      * The recordingId property.
      */
+    @Generated
     private String recordingId;
 
     /*
      * The recordingState property.
      */
+    @Generated
     private RecordingStateInternal recordingState;
 
     /*
      * The recordingKind property.
      */
+    @Generated
     private RecordingKindInternal recordingKind;
 
     /**
      * Creates an instance of RecordingStateResponseInternal class.
      */
+    @Generated
     public RecordingStateResponseInternal() {
     }
 
@@ -42,6 +47,7 @@ public final class RecordingStateResponseInternal implements JsonSerializable<Re
      * 
      * @return the recordingId value.
      */
+    @Generated
     public String getRecordingId() {
         return this.recordingId;
     }
@@ -52,6 +58,7 @@ public final class RecordingStateResponseInternal implements JsonSerializable<Re
      * @param recordingId the recordingId value to set.
      * @return the RecordingStateResponseInternal object itself.
      */
+    @Generated
     public RecordingStateResponseInternal setRecordingId(String recordingId) {
         this.recordingId = recordingId;
         return this;
@@ -62,6 +69,7 @@ public final class RecordingStateResponseInternal implements JsonSerializable<Re
      * 
      * @return the recordingState value.
      */
+    @Generated
     public RecordingStateInternal getRecordingState() {
         return this.recordingState;
     }
@@ -72,6 +80,7 @@ public final class RecordingStateResponseInternal implements JsonSerializable<Re
      * @param recordingState the recordingState value to set.
      * @return the RecordingStateResponseInternal object itself.
      */
+    @Generated
     public RecordingStateResponseInternal setRecordingState(RecordingStateInternal recordingState) {
         this.recordingState = recordingState;
         return this;
@@ -82,6 +91,7 @@ public final class RecordingStateResponseInternal implements JsonSerializable<Re
      * 
      * @return the recordingKind value.
      */
+    @Generated
     public RecordingKindInternal getRecordingKind() {
         return this.recordingKind;
     }
@@ -92,6 +102,7 @@ public final class RecordingStateResponseInternal implements JsonSerializable<Re
      * @param recordingKind the recordingKind value to set.
      * @return the RecordingStateResponseInternal object itself.
      */
+    @Generated
     public RecordingStateResponseInternal setRecordingKind(RecordingKindInternal recordingKind) {
         this.recordingKind = recordingKind;
         return this;
@@ -100,6 +111,7 @@ public final class RecordingStateResponseInternal implements JsonSerializable<Re
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -118,6 +130,7 @@ public final class RecordingStateResponseInternal implements JsonSerializable<Re
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the RecordingStateResponseInternal.
      */
+    @Generated
     public static RecordingStateResponseInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RecordingStateResponseInternal deserializedRecordingStateResponseInternal

@@ -73,7 +73,7 @@ public abstract class ReflectionUtils {
     public static ReflectiveInvoker getMethodInvoker(Class<?> targetClass, Method method, boolean scopeToClientCore)
         throws Exception {
         if (method == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'method' cannot be null."));
+            throw LOGGER.throwableAtError().log("'method' cannot be null.", NullPointerException::new);
         }
 
         targetClass = (targetClass == null) ? method.getDeclaringClass() : targetClass;
@@ -123,7 +123,7 @@ public abstract class ReflectionUtils {
     public static ReflectiveInvoker getConstructorInvoker(Class<?> targetClass, Constructor<?> constructor,
         boolean scopeToClientCore) throws Exception {
         if (constructor == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'constructor' cannot be null."));
+            throw LOGGER.throwableAtError().log("'constructor' cannot be null.", NullPointerException::new);
         }
 
         targetClass = (targetClass == null) ? constructor.getDeclaringClass() : targetClass;

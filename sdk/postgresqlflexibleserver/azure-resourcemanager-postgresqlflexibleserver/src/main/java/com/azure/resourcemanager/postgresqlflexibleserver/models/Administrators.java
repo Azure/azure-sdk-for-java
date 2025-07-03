@@ -13,7 +13,7 @@ import com.azure.core.util.Context;
  */
 public interface Administrators {
     /**
-     * Deletes an Active Directory Administrator associated with the server.
+     * Deletes an Microsoft Entra Administrator associated with the server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -25,7 +25,7 @@ public interface Administrators {
     void delete(String resourceGroupName, String serverName, String objectId);
 
     /**
-     * Deletes an Active Directory Administrator associated with the server.
+     * Deletes an Microsoft Entra Administrator associated with the server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -73,7 +73,7 @@ public interface Administrators {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of active directory administrators as paginated response with {@link PagedIterable}.
+     * @return a list of Microsoft Entra Administrators as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ActiveDirectoryAdministrator> listByServer(String resourceGroupName, String serverName);
 
@@ -86,7 +86,7 @@ public interface Administrators {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of active directory administrators as paginated response with {@link PagedIterable}.
+     * @return a list of Microsoft Entra Administrators as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ActiveDirectoryAdministrator> listByServer(String resourceGroupName, String serverName,
         Context context);
@@ -115,7 +115,7 @@ public interface Administrators {
     Response<ActiveDirectoryAdministrator> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes an Active Directory Administrator associated with the server.
+     * Deletes an Microsoft Entra Administrator associated with the server.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -125,7 +125,7 @@ public interface Administrators {
     void deleteById(String id);
 
     /**
-     * Deletes an Active Directory Administrator associated with the server.
+     * Deletes an Microsoft Entra Administrator associated with the server.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.

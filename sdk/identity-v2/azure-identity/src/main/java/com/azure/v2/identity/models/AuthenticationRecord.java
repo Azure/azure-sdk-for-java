@@ -6,6 +6,7 @@ package com.azure.v2.identity.models;
 import com.azure.v2.identity.InteractiveBrowserCredential;
 import com.azure.v2.identity.InteractiveBrowserCredentialBuilder;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
@@ -118,7 +119,7 @@ public final class AuthenticationRecord {
             writer.writeStringField("clientId", clientId);
             writer.writeEndObject();
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -156,7 +157,7 @@ public final class AuthenticationRecord {
                 return new AuthenticationRecord(authority, homeAccountId, username, tenantId, clientId);
             });
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 }

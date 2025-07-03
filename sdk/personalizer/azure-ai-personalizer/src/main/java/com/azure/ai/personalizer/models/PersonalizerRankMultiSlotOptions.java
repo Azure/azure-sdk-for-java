@@ -4,6 +4,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -26,6 +27,7 @@ public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<
      * Features should not include personally identifiable information (PII),
      * unique UserIDs, or precise timestamps.
      */
+    @Generated
     private List<BinaryData> contextFeatures;
 
     /*
@@ -35,12 +37,14 @@ public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<
      * should match the sequence your application would have used to display them.
      * The first item in the array will be used as Baseline item in Offline Evaluations.
      */
+    @Generated
     private List<PersonalizerRankableAction> actions;
 
     /*
      * The set of slots the Personalizer service should select actions for.
      * The set should not contain more than 50 slots.
      */
+    @Generated
     private List<PersonalizerSlotOptions> slots;
 
     /*
@@ -49,6 +53,7 @@ public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<
      * associating this request with its reward, as well as seeding the pseudo-random
      * generator when making a Personalizer call.
      */
+    @Generated
     private String eventId;
 
     /*
@@ -58,11 +63,13 @@ public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<
      * (e.g. because the page is rendering later, or the Rank results may be overridden by code further downstream).
      * You must call the Activate Event API if the event output is shown to users, otherwise Rewards will be ignored.
      */
+    @Generated
     private Boolean deferActivation;
 
     /**
      * Creates an instance of PersonalizerRankMultiSlotOptions class.
      */
+    @Generated
     public PersonalizerRankMultiSlotOptions() {
     }
 
@@ -76,6 +83,7 @@ public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<
      *
      * @return the contextFeatures value.
      */
+    @Generated
     public List<BinaryData> getContextFeatures() {
         return this.contextFeatures;
     }
@@ -91,6 +99,7 @@ public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<
      * @param contextFeatures the contextFeatures value to set.
      * @return the PersonalizerRankMultiSlotOptions object itself.
      */
+    @Generated
     public PersonalizerRankMultiSlotOptions setContextFeatures(List<BinaryData> contextFeatures) {
         this.contextFeatures = contextFeatures;
         return this;
@@ -105,6 +114,7 @@ public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<
      *
      * @return the actions value.
      */
+    @Generated
     public List<PersonalizerRankableAction> getActions() {
         return this.actions;
     }
@@ -119,6 +129,7 @@ public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<
      * @param actions the actions value to set.
      * @return the PersonalizerRankMultiSlotOptions object itself.
      */
+    @Generated
     public PersonalizerRankMultiSlotOptions setActions(List<PersonalizerRankableAction> actions) {
         this.actions = actions;
         return this;
@@ -130,6 +141,7 @@ public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<
      *
      * @return the slots value.
      */
+    @Generated
     public List<PersonalizerSlotOptions> getSlots() {
         return this.slots;
     }
@@ -141,6 +153,7 @@ public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<
      * @param slots the slots value to set.
      * @return the PersonalizerRankMultiSlotOptions object itself.
      */
+    @Generated
     public PersonalizerRankMultiSlotOptions setSlots(List<PersonalizerSlotOptions> slots) {
         this.slots = slots;
         return this;
@@ -154,6 +167,7 @@ public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<
      *
      * @return the eventId value.
      */
+    @Generated
     public String getEventId() {
         return this.eventId;
     }
@@ -167,6 +181,7 @@ public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<
      * @param eventId the eventId value to set.
      * @return the PersonalizerRankMultiSlotOptions object itself.
      */
+    @Generated
     public PersonalizerRankMultiSlotOptions setEventId(String eventId) {
         this.eventId = eventId;
         return this;
@@ -182,6 +197,7 @@ public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<
      *
      * @return the deferActivation value.
      */
+    @Generated
     public Boolean isDeferActivation() {
         return this.deferActivation;
     }
@@ -197,6 +213,7 @@ public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<
      * @param deferActivation the deferActivation value to set.
      * @return the PersonalizerRankMultiSlotOptions object itself.
      */
+    @Generated
     public PersonalizerRankMultiSlotOptions setDeferActivation(Boolean deferActivation) {
         this.deferActivation = deferActivation;
         return this;
@@ -205,6 +222,7 @@ public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -226,6 +244,7 @@ public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PersonalizerRankMultiSlotOptions.
      */
+    @Generated
     public static PersonalizerRankMultiSlotOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PersonalizerRankMultiSlotOptions deserializedPersonalizerRankMultiSlotOptions

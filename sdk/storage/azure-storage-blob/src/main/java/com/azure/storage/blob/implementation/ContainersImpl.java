@@ -96,7 +96,7 @@ public final class ContainersImpl {
      * REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureBlobStorageCont")
+    @ServiceInterface(name = "AzureBlobStorageContainers")
     public interface ContainersService {
 
         @Put("/{containerName}")

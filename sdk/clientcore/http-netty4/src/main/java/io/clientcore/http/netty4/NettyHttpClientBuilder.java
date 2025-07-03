@@ -4,6 +4,7 @@
 package io.clientcore.http.netty4;
 
 import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.http.client.HttpProtocolVersion;
 import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.configuration.Configuration;
@@ -16,12 +17,14 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.ssl.SslContext;
+import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.util.concurrent.DefaultThreadFactory;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.time.Duration;
 import java.util.concurrent.ThreadFactory;
+import java.util.function.Consumer;
 
 /**
  * Builder for creating instances of NettyHttpClient.
@@ -122,7 +125,7 @@ public class NettyHttpClientBuilder {
 
     private EventLoopGroup eventLoopGroup;
     private Class<? extends SocketChannel> channelClass;
-    private SslContext sslContext;
+    private Consumer<SslContextBuilder> sslContextModifier;
 
     private Configuration configuration;
     private ProxyOptions proxyOptions;
@@ -130,6 +133,7 @@ public class NettyHttpClientBuilder {
     private Duration readTimeout;
     private Duration responseTimeout;
     private Duration writeTimeout;
+    private HttpProtocolVersion maximumHttpVersion = HttpProtocolVersion.HTTP_2;
 
     /**
      * Creates a new instance of {@link NettyHttpClientBuilder}.
@@ -172,15 +176,18 @@ public class NettyHttpClientBuilder {
     }
 
     /**
-     * Sets the {@link SslContext} that will be used to configure SSL/TLS when establishing secure connections.
+     * Sets a {@link Consumer} that modifies the {@link SslContextBuilder} creating the {@link SslContext} that will be
+     * used to establish SSL/TLS connections.
      * <p>
-     * If this is left unset a default {@link SslContext} will be used to establish secure connections.
+     * If this is left unset the Netty-based {@link HttpClient} will create an {@link SslContext} with default
+     * configurations.
      *
-     * @param sslContext The {@link SslContext} for SSL/TLS.
+     * @param sslContextModifier The {@link Consumer} that modifies the {@link SslContextBuilder} before the
+     * {@link SslContext} is created.
      * @return The updated builder.
      */
-    public NettyHttpClientBuilder sslContext(SslContext sslContext) {
-        this.sslContext = sslContext;
+    public NettyHttpClientBuilder sslContextModifier(Consumer<SslContextBuilder> sslContextModifier) {
+        this.sslContextModifier = sslContextModifier;
         return this;
     }
 
@@ -254,13 +261,36 @@ public class NettyHttpClientBuilder {
     }
 
     /**
+     * Sets the maximum {@link HttpProtocolVersion HTTP protocol version} that the HTTP client will support.
+     * <p>
+     * By default, the maximum HTTP protocol version is set to {@link HttpProtocolVersion#HTTP_2 HTTP_2}.
+     * <p>
+     * If {@code httpVersion} is null, it will reset the maximum HTTP protocol version to
+     * {@link HttpProtocolVersion#HTTP_2 HTTP_2}.
+     *
+     * @param httpVersion The maximum HTTP protocol version that the HTTP client will support.
+     * @return The updated builder.
+     */
+    public NettyHttpClientBuilder maximumHttpVersion(HttpProtocolVersion httpVersion) {
+        if (httpVersion != null) {
+            this.maximumHttpVersion = httpVersion;
+        } else {
+            this.maximumHttpVersion = HttpProtocolVersion.HTTP_2;
+        }
+
+        return this;
+    }
+
+    /**
      * Builds the NettyHttpClient.
      *
      * @return A configured NettyHttpClient instance.
      */
     public HttpClient build() {
-        EventLoopGroup group = getEventLoopGroupToUse();
-        Class<? extends Channel> channelClass = getChannelClass(group);
+        EventLoopGroup group = getEventLoopGroupToUse(this.eventLoopGroup, this.channelClass, IS_EPOLL_AVAILABLE,
+            EPOLL_EVENT_LOOP_GROUP_CREATOR, IS_KQUEUE_AVAILABLE, KQUEUE_EVENT_LOOP_GROUP_CREATOR);
+        Class<? extends Channel> channelClass
+            = getChannelClass(this.channelClass, group.getClass(), IS_EPOLL_AVAILABLE, IS_KQUEUE_AVAILABLE);
 
         // Leave breadcrumbs about the NettyHttpClient configuration, in case troubleshooting is needed.
         LOGGER.atVerbose()
@@ -282,8 +312,9 @@ public class NettyHttpClientBuilder {
         ProxyOptions buildProxyOptions
             = (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration, true) : proxyOptions;
 
-        return new NettyHttpClient(bootstrap, sslContext, new ChannelInitializationProxyHandler(buildProxyOptions),
-            getTimeoutMillis(readTimeout), getTimeoutMillis(responseTimeout), getTimeoutMillis(writeTimeout));
+        return new NettyHttpClient(bootstrap, sslContextModifier, maximumHttpVersion,
+            new ChannelInitializationProxyHandler(buildProxyOptions), getTimeoutMillis(readTimeout),
+            getTimeoutMillis(responseTimeout), getTimeoutMillis(writeTimeout));
     }
 
     static long getTimeoutMillis(Duration duration) {
@@ -310,18 +341,20 @@ public class NettyHttpClientBuilder {
         return (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration, true) : proxyOptions;
     }
 
-    private EventLoopGroup getEventLoopGroupToUse() {
-        if (this.eventLoopGroup != null) {
-            return this.eventLoopGroup;
+    static EventLoopGroup getEventLoopGroupToUse(EventLoopGroup configuredGroup,
+        Class<? extends SocketChannel> configuredChannelClass, boolean isEpollAvailable,
+        MethodHandle epollEventLoopGroupCreator, boolean isKqueueAvailable, MethodHandle kqueueEventLoopGroupCreator) {
+        if (configuredGroup != null) {
+            return configuredGroup;
         }
 
-        ThreadFactory threadFactory = new DefaultThreadFactory("clientcore-netty-client");
+        ThreadFactory threadFactory = new DefaultThreadFactory("clientcore-netty-client", true);
 
         // Use EpollEventLoopGroup if Epoll is available and 'channelClass' wasn't configured or was configured to
         // EpollSocketChannel.
-        if (IS_EPOLL_AVAILABLE && (this.channelClass == null || this.channelClass == EPOLL_CHANNEL_CLASS)) {
+        if (isEpollAvailable && (configuredChannelClass == null || configuredChannelClass == EPOLL_CHANNEL_CLASS)) {
             try {
-                return (EventLoopGroup) EPOLL_EVENT_LOOP_GROUP_CREATOR.invoke(threadFactory);
+                return (EventLoopGroup) epollEventLoopGroupCreator.invoke(threadFactory);
             } catch (Throwable ex) {
                 LOGGER.atVerbose().setThrowable(ex).log("Failed to create an EpollEventLoopGroup.");
             }
@@ -329,9 +362,9 @@ public class NettyHttpClientBuilder {
 
         // Use KQueueEventLoopGroup if KQueue is available and 'channelClass' wasn't configured or was configured to
         // KQueueSocketChannel.
-        if (IS_KQUEUE_AVAILABLE && (this.channelClass == null || this.channelClass == KQUEUE_CHANNEL_CLASS)) {
+        if (isKqueueAvailable && (configuredChannelClass == null || configuredChannelClass == KQUEUE_CHANNEL_CLASS)) {
             try {
-                return (EventLoopGroup) KQUEUE_EVENT_LOOP_GROUP_CREATOR.invoke(threadFactory);
+                return (EventLoopGroup) kqueueEventLoopGroupCreator.invoke(threadFactory);
             } catch (Throwable ex) {
                 LOGGER.atVerbose().setThrowable(ex).log("Failed to create a KQueueEventLoopGroup.");
             }
@@ -341,14 +374,15 @@ public class NettyHttpClientBuilder {
         return new NioEventLoopGroup(threadFactory);
     }
 
-    private Class<? extends SocketChannel> getChannelClass(EventLoopGroup eventLoopGroup) {
-        if (this.channelClass != null) {
+    static Class<? extends SocketChannel> getChannelClass(Class<? extends SocketChannel> configuredChannelClass,
+        Class<? extends EventLoopGroup> configuredGroupClass, boolean isEpollAvailable, boolean isKqueueAvailable) {
+        if (configuredChannelClass != null) {
             // If the Channel class was manually set, use it.
-            return this.channelClass;
-        } else if (IS_EPOLL_AVAILABLE && eventLoopGroup.getClass() == EPOLL_EVENT_LOOP_GROUP_CLASS) {
+            return configuredChannelClass;
+        } else if (isEpollAvailable && configuredGroupClass == EPOLL_EVENT_LOOP_GROUP_CLASS) {
             // If Epoll is available and the EventLoopGroup is EpollEventLoopGroup, use EpollSocketChannel.
             return EPOLL_CHANNEL_CLASS;
-        } else if (IS_KQUEUE_AVAILABLE && eventLoopGroup.getClass() == KQUEUE_EVENT_LOOP_GROUP_CLASS) {
+        } else if (isKqueueAvailable && configuredGroupClass == KQUEUE_EVENT_LOOP_GROUP_CLASS) {
             // If KQueue is available and the EventLoopGroup is KQueueEventLoopGroup, use KQueueSocketChannel.
             return KQUEUE_CHANNEL_CLASS;
         } else {

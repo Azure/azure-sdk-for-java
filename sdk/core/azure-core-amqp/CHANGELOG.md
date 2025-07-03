@@ -1,14 +1,40 @@
 # Release History
 
-## 2.10.0-beta.1 (Unreleased)
+## 2.11.0-beta.1 (Unreleased)
 
 ### Features Added
+
+- Added functionality to resume proxy handshake on a new connection if the challenge response closes the existing connection. ([45698](https://github.com/Azure/azure-sdk-for-java/pull/45698)) ([69](https://github.com/Azure/qpid-proton-j-extensions/pull/69))
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `qpid-proton-j-extensions` from `1.2.5` to `1.2.6`.
+
+## 2.10.1 (2025-06-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.4` to `1.55.5`.
+
+## 2.10.0 (2025-06-05)
+
+### Features Added
+
+- Added an `AmqpRetryOptions` constant in `MessageFlux` to configure retries on terminal completion events but propagates terminal errors. ([45400](https://github.com/Azure/azure-sdk-for-java/pull/45400))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.3` to `1.55.4`.
 
 ## 2.9.16 (2025-03-10)
 

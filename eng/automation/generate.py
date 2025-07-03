@@ -127,14 +127,16 @@ def sdk_automation(input_file: str, output_file: str):
         logging.error("[GENERATE] Code generation failed. Unknown exception", exc_info=True)
         if packages and len(packages) == 1:
             packages[0]["result"] = "failed"
-        else:
-            sys.exit(1)
+        sys.exit(1)
 
     with open(output_file, "w", encoding="utf-8") as fout:
         output = {
             "packages": packages,
         }
         json.dump(output, fout)
+
+    if packages and len(packages) == 1 and packages[0]["result"] == "failed":
+        sys.exit(1)
 
 
 def sdk_automation_autorest(config: dict) -> List[dict]:
@@ -151,7 +153,7 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
 
     for readme in config["relatedReadmeMdFiles"]:
         match = re.search(
-            "specification/([^/]+)/resource-manager(/.*)*/readme.md",
+            r"specification/([^/]+)/resource-manager((?:/[^/]+)*)/readme.md",
             readme,
             re.IGNORECASE,
         )
@@ -250,8 +252,22 @@ def sdk_automation_typespec(config: dict) -> List[dict]:
         tsp_projects = [tsp_projects]
 
     for tsp_project in tsp_projects:
+        # folder structure v2: specification/{service}/[data-plane|resource-manager]/{provider}/
+        folder_structure_v2_pattern = r"specification/.*/(data-plane|resource-manager)"
+        match = re.compile(folder_structure_v2_pattern).search(tsp_project)
+        if match:
+            sdk_type = match.group(1)
+            if sdk_type == "data-plane":
+                logging.info("[GENERATE] Generating data-plane from folder structure v2: " + tsp_project)
+                packages.append(sdk_automation_typespec_project_data(tsp_project, config))
+            elif sdk_type == "resource-manager":
+                logging.info("[GENERATE] Generating mgmt-plane from folder structure v2: " + tsp_project)
+                packages.append(sdk_automation_typespec_project(tsp_project, config))
+            else:
+                raise ValueError("Unexpected sdk type: " + sdk_type)
+        # folder structure v1
         # mgmt tsp project folder follow the pattern, e.g. specification/deviceregistry/DeviceRegistry.Management
-        if re.match(r"specification[\\/](.*)[\\/](.*)[\\.]Management", tsp_project):
+        elif re.match(r"specification[\\/](.*)[\\/](.*)[\\.]Management", tsp_project):
             packages.append(sdk_automation_typespec_project(tsp_project, config))
         else:
             packages.append(sdk_automation_typespec_project_data(tsp_project, config))
@@ -437,7 +453,7 @@ def main():
 
         readme = args["readme"]
         match = re.match(
-            r"specification/([^/]+)/resource-manager(/.*)*/readme.md",
+            r"specification/([^/]+)/resource-manager((?:/[^/]+)*)/readme.md",
             readme,
             re.IGNORECASE,
         )
@@ -451,8 +467,9 @@ def main():
         args["readme"] = readme
         args["spec"] = spec
 
-        update_parameters(args.get("suffix") or get_suffix_from_api_specs(api_specs_file, spec))
-        service = get_and_update_service_from_api_specs(api_specs_file, spec, args["service"])
+        suffix = args.get("suffix") or get_suffix_from_api_specs(api_specs_file, spec)
+        update_parameters(suffix)
+        service = get_and_update_service_from_api_specs(api_specs_file, spec, args["service"], suffix)
         args["service"] = service
         module = ARTIFACT_FORMAT.format(service)
         stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module, **args)

@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,11 +17,13 @@ public final class IndexProjectionMode extends ExpandableStringEnum<IndexProject
     /**
      * The source document will be skipped from writing into the indexer's target index.
      */
+    @Generated
     public static final IndexProjectionMode SKIP_INDEXING_PARENT_DOCUMENTS = fromString("skipIndexingParentDocuments");
 
     /**
      * The source document will be written into the indexer's target index. This is the default pattern.
      */
+    @Generated
     public static final IndexProjectionMode INCLUDE_INDEXING_PARENT_DOCUMENTS
         = fromString("includeIndexingParentDocuments");
 
@@ -29,6 +32,7 @@ public final class IndexProjectionMode extends ExpandableStringEnum<IndexProject
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public IndexProjectionMode() {
     }
@@ -39,6 +43,7 @@ public final class IndexProjectionMode extends ExpandableStringEnum<IndexProject
      * @param name a name to look for.
      * @return the corresponding IndexProjectionMode.
      */
+    @Generated
     public static IndexProjectionMode fromString(String name) {
         return fromString(name, IndexProjectionMode.class);
     }
@@ -48,6 +53,7 @@ public final class IndexProjectionMode extends ExpandableStringEnum<IndexProject
      * 
      * @return known IndexProjectionMode values.
      */
+    @Generated
     public static Collection<IndexProjectionMode> values() {
         return values(IndexProjectionMode.class);
     }

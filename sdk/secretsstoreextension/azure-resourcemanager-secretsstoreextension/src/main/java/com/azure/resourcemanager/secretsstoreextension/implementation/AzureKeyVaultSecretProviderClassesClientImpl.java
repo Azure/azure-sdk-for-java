@@ -28,8 +28,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.secretsstoreextension.fluent.AzureKeyVaultSecretProviderClassesClient;
@@ -70,13 +72,23 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
      * be used by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "SecretsStoreExtensio")
+    @ServiceInterface(name = "SecretsStoreExtensionMgmtClientAzureKeyVaultSecretProviderClasses")
     public interface AzureKeyVaultSecretProviderClassesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses/{azureKeyVaultSecretProviderClassName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AzureKeyVaultSecretProviderClassInner>> getByResourceGroup(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("azureKeyVaultSecretProviderClassName") String azureKeyVaultSecretProviderClassName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses/{azureKeyVaultSecretProviderClassName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AzureKeyVaultSecretProviderClassInner> getByResourceGroupSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("azureKeyVaultSecretProviderClassName") String azureKeyVaultSecretProviderClassName,
@@ -92,10 +104,30 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") AzureKeyVaultSecretProviderClassInner resource, Context context);
 
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses/{azureKeyVaultSecretProviderClassName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("azureKeyVaultSecretProviderClassName") String azureKeyVaultSecretProviderClassName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") AzureKeyVaultSecretProviderClassInner resource, Context context);
+
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses/{azureKeyVaultSecretProviderClassName}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("azureKeyVaultSecretProviderClassName") String azureKeyVaultSecretProviderClassName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") AzureKeyVaultSecretProviderClassUpdate properties, Context context);
+
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses/{azureKeyVaultSecretProviderClassName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> updateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("azureKeyVaultSecretProviderClassName") String azureKeyVaultSecretProviderClassName,
@@ -113,6 +145,16 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses/{azureKeyVaultSecretProviderClassName}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("azureKeyVaultSecretProviderClassName") String azureKeyVaultSecretProviderClassName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -123,10 +165,28 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AzureKeyVaultSecretProviderClassListResult> listByResourceGroupSync(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AzureKeyVaultSecretProviderClassListResult>> list(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AzureKeyVaultSecretProviderClassListResult> listSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -142,7 +202,23 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AzureKeyVaultSecretProviderClassListResult> listByResourceGroupNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AzureKeyVaultSecretProviderClassListResult>> listBySubscriptionNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AzureKeyVaultSecretProviderClassListResult> listBySubscriptionNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -190,43 +266,6 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureKeyVaultSecretProviderClassName The name of the AzureKeyVaultSecretProviderClass.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of an AzureKeyVaultSecretProviderClass instance along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AzureKeyVaultSecretProviderClassInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String azureKeyVaultSecretProviderClassName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (azureKeyVaultSecretProviderClassName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter azureKeyVaultSecretProviderClassName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, azureKeyVaultSecretProviderClassName, accept, context);
-    }
-
-    /**
-     * Gets the properties of an AzureKeyVaultSecretProviderClass instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureKeyVaultSecretProviderClassName The name of the AzureKeyVaultSecretProviderClass.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -253,8 +292,28 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AzureKeyVaultSecretProviderClassInner> getByResourceGroupWithResponse(String resourceGroupName,
         String azureKeyVaultSecretProviderClassName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, azureKeyVaultSecretProviderClassName, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (azureKeyVaultSecretProviderClassName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter azureKeyVaultSecretProviderClassName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, azureKeyVaultSecretProviderClassName, accept, context);
     }
 
     /**
@@ -325,41 +384,89 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureKeyVaultSecretProviderClassName The name of the AzureKeyVaultSecretProviderClass.
      * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AzureKeyVaultSecretProviderClass resource along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return the AzureKeyVaultSecretProviderClass resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String azureKeyVaultSecretProviderClassName, AzureKeyVaultSecretProviderClassInner resource, Context context) {
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName,
+        String azureKeyVaultSecretProviderClassName, AzureKeyVaultSecretProviderClassInner resource) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (azureKeyVaultSecretProviderClassName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter azureKeyVaultSecretProviderClassName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter azureKeyVaultSecretProviderClassName is required and cannot be null."));
         }
         if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
         } else {
             resource.validate();
         }
         final String contentType = "application/json";
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, azureKeyVaultSecretProviderClassName, contentType,
+            accept, resource, Context.NONE);
+    }
+
+    /**
+     * Creates, or updates, an AzureKeyVaultSecretProviderClass instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param azureKeyVaultSecretProviderClassName The name of the AzureKeyVaultSecretProviderClass.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the AzureKeyVaultSecretProviderClass resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName,
+        String azureKeyVaultSecretProviderClassName, AzureKeyVaultSecretProviderClassInner resource, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (azureKeyVaultSecretProviderClassName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter azureKeyVaultSecretProviderClassName is required and cannot be null."));
+        }
+        if (resource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+        } else {
+            resource.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, azureKeyVaultSecretProviderClassName, contentType,
             accept, resource, context);
     }
@@ -392,30 +499,6 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureKeyVaultSecretProviderClassName The name of the AzureKeyVaultSecretProviderClass.
      * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the AzureKeyVaultSecretProviderClass resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AzureKeyVaultSecretProviderClassInner>, AzureKeyVaultSecretProviderClassInner>
-        beginCreateOrUpdateAsync(String resourceGroupName, String azureKeyVaultSecretProviderClassName,
-            AzureKeyVaultSecretProviderClassInner resource, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName,
-            azureKeyVaultSecretProviderClassName, resource, context);
-        return this.client.<AzureKeyVaultSecretProviderClassInner, AzureKeyVaultSecretProviderClassInner>getLroResult(
-            mono, this.client.getHttpPipeline(), AzureKeyVaultSecretProviderClassInner.class,
-            AzureKeyVaultSecretProviderClassInner.class, context);
-    }
-
-    /**
-     * Creates, or updates, an AzureKeyVaultSecretProviderClass instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureKeyVaultSecretProviderClassName The name of the AzureKeyVaultSecretProviderClass.
-     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -425,8 +508,11 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
     public SyncPoller<PollResult<AzureKeyVaultSecretProviderClassInner>, AzureKeyVaultSecretProviderClassInner>
         beginCreateOrUpdate(String resourceGroupName, String azureKeyVaultSecretProviderClassName,
             AzureKeyVaultSecretProviderClassInner resource) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, azureKeyVaultSecretProviderClassName, resource)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, azureKeyVaultSecretProviderClassName, resource);
+        return this.client.<AzureKeyVaultSecretProviderClassInner, AzureKeyVaultSecretProviderClassInner>getLroResult(
+            response, AzureKeyVaultSecretProviderClassInner.class, AzureKeyVaultSecretProviderClassInner.class,
+            Context.NONE);
     }
 
     /**
@@ -445,8 +531,11 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
     public SyncPoller<PollResult<AzureKeyVaultSecretProviderClassInner>, AzureKeyVaultSecretProviderClassInner>
         beginCreateOrUpdate(String resourceGroupName, String azureKeyVaultSecretProviderClassName,
             AzureKeyVaultSecretProviderClassInner resource, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, azureKeyVaultSecretProviderClassName, resource, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, azureKeyVaultSecretProviderClassName, resource, context);
+        return this.client.<AzureKeyVaultSecretProviderClassInner, AzureKeyVaultSecretProviderClassInner>getLroResult(
+            response, AzureKeyVaultSecretProviderClassInner.class, AzureKeyVaultSecretProviderClassInner.class,
+            context);
     }
 
     /**
@@ -473,26 +562,6 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureKeyVaultSecretProviderClassName The name of the AzureKeyVaultSecretProviderClass.
      * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AzureKeyVaultSecretProviderClass resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AzureKeyVaultSecretProviderClassInner> createOrUpdateAsync(String resourceGroupName,
-        String azureKeyVaultSecretProviderClassName, AzureKeyVaultSecretProviderClassInner resource, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, azureKeyVaultSecretProviderClassName, resource, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates, or updates, an AzureKeyVaultSecretProviderClass instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureKeyVaultSecretProviderClassName The name of the AzureKeyVaultSecretProviderClass.
-     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -501,7 +570,7 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureKeyVaultSecretProviderClassInner createOrUpdate(String resourceGroupName,
         String azureKeyVaultSecretProviderClassName, AzureKeyVaultSecretProviderClassInner resource) {
-        return createOrUpdateAsync(resourceGroupName, azureKeyVaultSecretProviderClassName, resource).block();
+        return beginCreateOrUpdate(resourceGroupName, azureKeyVaultSecretProviderClassName, resource).getFinalResult();
     }
 
     /**
@@ -519,7 +588,8 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureKeyVaultSecretProviderClassInner createOrUpdate(String resourceGroupName,
         String azureKeyVaultSecretProviderClassName, AzureKeyVaultSecretProviderClassInner resource, Context context) {
-        return createOrUpdateAsync(resourceGroupName, azureKeyVaultSecretProviderClassName, resource, context).block();
+        return beginCreateOrUpdate(resourceGroupName, azureKeyVaultSecretProviderClassName, resource, context)
+            .getFinalResult();
     }
 
     /**
@@ -573,43 +643,92 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureKeyVaultSecretProviderClassName The name of the AzureKeyVaultSecretProviderClass.
      * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AzureKeyVaultSecretProviderClass resource along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return the AzureKeyVaultSecretProviderClass resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
-        String azureKeyVaultSecretProviderClassName, AzureKeyVaultSecretProviderClassUpdate properties,
-        Context context) {
+    private Response<BinaryData> updateWithResponse(String resourceGroupName,
+        String azureKeyVaultSecretProviderClassName, AzureKeyVaultSecretProviderClassUpdate properties) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (azureKeyVaultSecretProviderClassName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter azureKeyVaultSecretProviderClassName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter azureKeyVaultSecretProviderClassName is required and cannot be null."));
         }
         if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
         } else {
             properties.validate();
         }
         final String contentType = "application/json";
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, azureKeyVaultSecretProviderClassName, contentType, accept, properties, context);
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, azureKeyVaultSecretProviderClassName, contentType,
+            accept, properties, Context.NONE);
+    }
+
+    /**
+     * Updates an AzureKeyVaultSecretProviderClass instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param azureKeyVaultSecretProviderClassName The name of the AzureKeyVaultSecretProviderClass.
+     * @param properties The resource properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the AzureKeyVaultSecretProviderClass resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> updateWithResponse(String resourceGroupName,
+        String azureKeyVaultSecretProviderClassName, AzureKeyVaultSecretProviderClassUpdate properties,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (azureKeyVaultSecretProviderClassName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter azureKeyVaultSecretProviderClassName is required and cannot be null."));
+        }
+        if (properties == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, azureKeyVaultSecretProviderClassName, contentType,
+            accept, properties, context);
     }
 
     /**
@@ -640,30 +759,6 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureKeyVaultSecretProviderClassName The name of the AzureKeyVaultSecretProviderClass.
      * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the AzureKeyVaultSecretProviderClass resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AzureKeyVaultSecretProviderClassInner>, AzureKeyVaultSecretProviderClassInner>
-        beginUpdateAsync(String resourceGroupName, String azureKeyVaultSecretProviderClassName,
-            AzureKeyVaultSecretProviderClassUpdate properties, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateWithResponseAsync(resourceGroupName, azureKeyVaultSecretProviderClassName, properties, context);
-        return this.client.<AzureKeyVaultSecretProviderClassInner, AzureKeyVaultSecretProviderClassInner>getLroResult(
-            mono, this.client.getHttpPipeline(), AzureKeyVaultSecretProviderClassInner.class,
-            AzureKeyVaultSecretProviderClassInner.class, context);
-    }
-
-    /**
-     * Updates an AzureKeyVaultSecretProviderClass instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureKeyVaultSecretProviderClassName The name of the AzureKeyVaultSecretProviderClass.
-     * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -673,8 +768,11 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
     public SyncPoller<PollResult<AzureKeyVaultSecretProviderClassInner>, AzureKeyVaultSecretProviderClassInner>
         beginUpdate(String resourceGroupName, String azureKeyVaultSecretProviderClassName,
             AzureKeyVaultSecretProviderClassUpdate properties) {
-        return this.beginUpdateAsync(resourceGroupName, azureKeyVaultSecretProviderClassName, properties)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = updateWithResponse(resourceGroupName, azureKeyVaultSecretProviderClassName, properties);
+        return this.client.<AzureKeyVaultSecretProviderClassInner, AzureKeyVaultSecretProviderClassInner>getLroResult(
+            response, AzureKeyVaultSecretProviderClassInner.class, AzureKeyVaultSecretProviderClassInner.class,
+            Context.NONE);
     }
 
     /**
@@ -693,8 +791,11 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
     public SyncPoller<PollResult<AzureKeyVaultSecretProviderClassInner>, AzureKeyVaultSecretProviderClassInner>
         beginUpdate(String resourceGroupName, String azureKeyVaultSecretProviderClassName,
             AzureKeyVaultSecretProviderClassUpdate properties, Context context) {
-        return this.beginUpdateAsync(resourceGroupName, azureKeyVaultSecretProviderClassName, properties, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = updateWithResponse(resourceGroupName, azureKeyVaultSecretProviderClassName, properties, context);
+        return this.client.<AzureKeyVaultSecretProviderClassInner, AzureKeyVaultSecretProviderClassInner>getLroResult(
+            response, AzureKeyVaultSecretProviderClassInner.class, AzureKeyVaultSecretProviderClassInner.class,
+            context);
     }
 
     /**
@@ -721,26 +822,6 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureKeyVaultSecretProviderClassName The name of the AzureKeyVaultSecretProviderClass.
      * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AzureKeyVaultSecretProviderClass resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AzureKeyVaultSecretProviderClassInner> updateAsync(String resourceGroupName,
-        String azureKeyVaultSecretProviderClassName, AzureKeyVaultSecretProviderClassUpdate properties,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, azureKeyVaultSecretProviderClassName, properties, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Updates an AzureKeyVaultSecretProviderClass instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureKeyVaultSecretProviderClassName The name of the AzureKeyVaultSecretProviderClass.
-     * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -749,7 +830,7 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureKeyVaultSecretProviderClassInner update(String resourceGroupName,
         String azureKeyVaultSecretProviderClassName, AzureKeyVaultSecretProviderClassUpdate properties) {
-        return updateAsync(resourceGroupName, azureKeyVaultSecretProviderClassName, properties).block();
+        return beginUpdate(resourceGroupName, azureKeyVaultSecretProviderClassName, properties).getFinalResult();
     }
 
     /**
@@ -768,7 +849,8 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
     public AzureKeyVaultSecretProviderClassInner update(String resourceGroupName,
         String azureKeyVaultSecretProviderClassName, AzureKeyVaultSecretProviderClassUpdate properties,
         Context context) {
-        return updateAsync(resourceGroupName, azureKeyVaultSecretProviderClassName, properties, context).block();
+        return beginUpdate(resourceGroupName, azureKeyVaultSecretProviderClassName, properties, context)
+            .getFinalResult();
     }
 
     /**
@@ -811,35 +893,75 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureKeyVaultSecretProviderClassName The name of the AzureKeyVaultSecretProviderClass.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName,
+        String azureKeyVaultSecretProviderClassName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (azureKeyVaultSecretProviderClassName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter azureKeyVaultSecretProviderClassName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, azureKeyVaultSecretProviderClassName, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Deletes an AzureKeyVaultSecretProviderClass instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param azureKeyVaultSecretProviderClassName The name of the AzureKeyVaultSecretProviderClass.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName,
         String azureKeyVaultSecretProviderClassName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (azureKeyVaultSecretProviderClassName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter azureKeyVaultSecretProviderClassName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter azureKeyVaultSecretProviderClassName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, azureKeyVaultSecretProviderClassName, accept, context);
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, azureKeyVaultSecretProviderClassName, accept, context);
     }
 
     /**
@@ -866,27 +988,6 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureKeyVaultSecretProviderClassName The name of the AzureKeyVaultSecretProviderClass.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
-        String azureKeyVaultSecretProviderClassName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, azureKeyVaultSecretProviderClassName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Deletes an AzureKeyVaultSecretProviderClass instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureKeyVaultSecretProviderClassName The name of the AzureKeyVaultSecretProviderClass.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -895,7 +996,8 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName,
         String azureKeyVaultSecretProviderClassName) {
-        return this.beginDeleteAsync(resourceGroupName, azureKeyVaultSecretProviderClassName).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, azureKeyVaultSecretProviderClassName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -912,7 +1014,9 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName,
         String azureKeyVaultSecretProviderClassName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, azureKeyVaultSecretProviderClassName, context).getSyncPoller();
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, azureKeyVaultSecretProviderClassName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -936,31 +1040,13 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureKeyVaultSecretProviderClassName The name of the AzureKeyVaultSecretProviderClass.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String azureKeyVaultSecretProviderClassName,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, azureKeyVaultSecretProviderClassName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes an AzureKeyVaultSecretProviderClass instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureKeyVaultSecretProviderClassName The name of the AzureKeyVaultSecretProviderClass.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String azureKeyVaultSecretProviderClassName) {
-        deleteAsync(resourceGroupName, azureKeyVaultSecretProviderClassName).block();
+        beginDelete(resourceGroupName, azureKeyVaultSecretProviderClassName).getFinalResult();
     }
 
     /**
@@ -975,7 +1061,7 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String azureKeyVaultSecretProviderClassName, Context context) {
-        deleteAsync(resourceGroupName, azureKeyVaultSecretProviderClassName, context).block();
+        beginDelete(resourceGroupName, azureKeyVaultSecretProviderClassName, context).getFinalResult();
     }
 
     /**
@@ -1016,41 +1102,6 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
      * Lists the AzureKeyVaultSecretProviderClass instances within a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AzureKeyVaultSecretProviderClass list operation along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AzureKeyVaultSecretProviderClassInner>>
-        listByResourceGroupSinglePageAsync(String resourceGroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Lists the AzureKeyVaultSecretProviderClass instances within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1067,18 +1118,69 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
      * Lists the AzureKeyVaultSecretProviderClass instances within a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a AzureKeyVaultSecretProviderClass list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AzureKeyVaultSecretProviderClassInner>
+        listByResourceGroupSinglePage(String resourceGroupName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<AzureKeyVaultSecretProviderClassListResult> res
+            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Lists the AzureKeyVaultSecretProviderClass instances within a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AzureKeyVaultSecretProviderClass list operation as paginated response with
-     * {@link PagedFlux}.
+     * @return the response of a AzureKeyVaultSecretProviderClass list operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AzureKeyVaultSecretProviderClassInner> listByResourceGroupAsync(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AzureKeyVaultSecretProviderClassInner> listByResourceGroupSinglePage(String resourceGroupName,
         Context context) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<AzureKeyVaultSecretProviderClassListResult> res
+            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1093,7 +1195,8 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureKeyVaultSecretProviderClassInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink));
     }
 
     /**
@@ -1110,7 +1213,8 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureKeyVaultSecretProviderClassInner> listByResourceGroup(String resourceGroupName,
         Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1143,35 +1247,6 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
     /**
      * Lists the AzureKeyVaultSecretProviderClass instances within an Azure subscription.
      * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AzureKeyVaultSecretProviderClass list operation along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AzureKeyVaultSecretProviderClassInner>> listSinglePageAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
-                context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Lists the AzureKeyVaultSecretProviderClass instances within an Azure subscription.
-     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a AzureKeyVaultSecretProviderClass list operation as paginated response with
@@ -1186,17 +1261,55 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
     /**
      * Lists the AzureKeyVaultSecretProviderClass instances within an Azure subscription.
      * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a AzureKeyVaultSecretProviderClass list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AzureKeyVaultSecretProviderClassInner> listSinglePage() {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<AzureKeyVaultSecretProviderClassListResult> res = service.listSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Lists the AzureKeyVaultSecretProviderClass instances within an Azure subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AzureKeyVaultSecretProviderClass list operation as paginated response with
-     * {@link PagedFlux}.
+     * @return the response of a AzureKeyVaultSecretProviderClass list operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AzureKeyVaultSecretProviderClassInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context),
-            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AzureKeyVaultSecretProviderClassInner> listSinglePage(Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<AzureKeyVaultSecretProviderClassListResult> res = service.listSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1209,7 +1322,7 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureKeyVaultSecretProviderClassInner> list() {
-        return new PagedIterable<>(listAsync());
+        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
     }
 
     /**
@@ -1224,7 +1337,8 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureKeyVaultSecretProviderClassInner> list(Context context) {
-        return new PagedIterable<>(listAsync(context));
+        return new PagedIterable<>(() -> listSinglePage(context),
+            nextLink -> listBySubscriptionNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1260,28 +1374,56 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a AzureKeyVaultSecretProviderClass list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AzureKeyVaultSecretProviderClassInner> listByResourceGroupNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<AzureKeyVaultSecretProviderClassListResult> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AzureKeyVaultSecretProviderClass list operation along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return the response of a AzureKeyVaultSecretProviderClass list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AzureKeyVaultSecretProviderClassInner>>
-        listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<AzureKeyVaultSecretProviderClassInner> listByResourceGroupNextSinglePage(String nextLink,
+        Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<AzureKeyVaultSecretProviderClassListResult> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1317,27 +1459,57 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a AzureKeyVaultSecretProviderClass list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AzureKeyVaultSecretProviderClassInner> listBySubscriptionNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<AzureKeyVaultSecretProviderClassListResult> res
+            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AzureKeyVaultSecretProviderClass list operation along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return the response of a AzureKeyVaultSecretProviderClass list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AzureKeyVaultSecretProviderClassInner>>
-        listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<AzureKeyVaultSecretProviderClassInner> listBySubscriptionNextSinglePage(String nextLink,
+        Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<AzureKeyVaultSecretProviderClassListResult> res
+            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureKeyVaultSecretProviderClassesClientImpl.class);
 }

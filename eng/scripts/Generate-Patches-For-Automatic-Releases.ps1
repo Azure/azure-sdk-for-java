@@ -54,7 +54,7 @@ try {
 
     # Reset each package to the latest stable release and update CHANGELOG, POM and README for patch release.
     foreach ($packageData in $packagesData) {
-        . "${PSScriptRoot}/generatepatch.ps1" -ArtifactIds $packageData["name"] -ServiceDirectoryName $packageData["ServiceDirectory"] -BranchName $branchName
+        . "${PSScriptRoot}/generatepatch.ps1" -ArtifactIds $packageData["name"] -ServiceDirectoryName $packageData["ServiceDirectory"] -BranchName $branchName -GroupId $packageData["groupId"]
         $libraryList += $packageData["groupId"] + ":" + $packageData["name"] + ","
     }
 
@@ -64,7 +64,7 @@ try {
     git checkout $branchName
 
     # Update POMs for all libraries with dependencies on the libraries to patch. Also, update the READMEs of the latter.
-    python "${PSScriptRoot}/../versioning/update_versions.py" --update-type library --build-type client --ll $libraryList
+    python "${PSScriptRoot}/../versioning/update_versions.py" --library-list $libraryList
 } catch {
     LogError "Failed to update dependencies in libraries and READMEs via version_client.txt"
     exit 1

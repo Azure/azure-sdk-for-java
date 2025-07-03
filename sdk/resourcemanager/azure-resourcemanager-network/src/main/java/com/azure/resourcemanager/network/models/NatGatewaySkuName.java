@@ -17,6 +17,11 @@ public final class NatGatewaySkuName extends ExpandableStringEnum<NatGatewaySkuN
     public static final NatGatewaySkuName STANDARD = fromString("Standard");
 
     /**
+     * Static value StandardV2 for NatGatewaySkuName.
+     */
+    public static final NatGatewaySkuName STANDARD_V2 = fromString("StandardV2");
+
+    /**
      * Creates a new instance of NatGatewaySkuName value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

@@ -65,4 +65,6 @@
   <suppress files="com.azure.search.documents.models.VectorizableImageUrlQuery.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
   <suppress files="com.azure.search.documents.models.VectorQuery.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
   <suppress files="com.azure.search.documents.models.VectorThreshold.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
+  <suppress files="com.azure.search.documents.indexes.implementation.KnowledgeAgentsImpl.java" checks="MissingJavadocMethodCheck" />
+  <suppress files="com.azure.search.documents.agents.implementation.KnowledgeRetrievalsImpl.java" checks="MissingJavadocMethodCheck" />
 </suppressions>

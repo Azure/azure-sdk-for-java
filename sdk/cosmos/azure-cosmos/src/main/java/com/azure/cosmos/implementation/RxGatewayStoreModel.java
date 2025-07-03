@@ -92,7 +92,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             userAgentContainer = new UserAgentContainer();
         }
 
-        this.defaultHeaders = this.getDefaultHeaders(apiType, userAgentContainer, defaultConsistencyLevel);
+        this.defaultHeaders = this.getDefaultHeaders(apiType, userAgentContainer);
 
         this.defaultConsistencyLevel = defaultConsistencyLevel;
         this.globalEndpointManager = globalEndpointManager;
@@ -115,12 +115,11 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
     protected Map<String, String> getDefaultHeaders(
         ApiType apiType,
-        UserAgentContainer userAgentContainer,
-        ConsistencyLevel clientDefaultConsistencyLevel) {
+        UserAgentContainer userAgentContainer) {
 
         checkNotNull(userAgentContainer, "Argument 'userAGentContainer' must not be null.");
 
-        Map<String, String> defaultHeaders = new HashMap<>();
+        Map<String, String> defaultHeaders = new HashMap<>(6 * 4 / 3); // load factor is 0.75
         defaultHeaders.put(HttpConstants.HttpHeaders.CACHE_CONTROL,
             "no-cache");
         defaultHeaders.put(HttpConstants.HttpHeaders.VERSION,
@@ -133,16 +132,11 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             defaultHeaders.put(HttpConstants.HttpHeaders.API_TYPE, apiType.toString());
         }
 
-        if (userAgentContainer == null) {
-            userAgentContainer = new UserAgentContainer();
-        }
+        String userAgent = userAgentContainer == null
+            ? UserAgentContainer.BASE_USER_AGENT_STRING
+            : userAgentContainer.getUserAgent();
 
-        defaultHeaders.put(HttpConstants.HttpHeaders.USER_AGENT, userAgentContainer.getUserAgent());
-
-        if (clientDefaultConsistencyLevel != null) {
-            defaultHeaders.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL,
-                clientDefaultConsistencyLevel.toString());
-        }
+        defaultHeaders.put(HttpConstants.HttpHeaders.USER_AGENT, userAgent);
 
         return defaultHeaders;
     }
@@ -376,7 +370,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                                                                       RxDocumentServiceRequest request,
                                                                       HttpRequest httpRequest) {
 
-        return httpResponseMono.flatMap(httpResponse -> {
+        return httpResponseMono.publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC).flatMap(httpResponse -> {
 
             // header key/value pairs
             HttpHeaders httpResponseHeaders = httpResponse.headers();
@@ -384,7 +378,9 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
             Mono<ByteBuf> contentObservable = httpResponse
                 .body()
-                .switchIfEmpty(Mono.just(Unpooled.EMPTY_BUFFER));
+                .switchIfEmpty(Mono.just(Unpooled.EMPTY_BUFFER))
+                .map(bodyByteBuf -> bodyByteBuf.retain())
+                .publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC);
 
             return contentObservable
                 .map(content -> {

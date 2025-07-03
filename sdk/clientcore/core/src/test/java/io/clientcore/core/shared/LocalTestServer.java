@@ -1,8 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package io.clientcore.core.shared;
 
+import io.clientcore.core.http.client.HttpProtocolVersion;
+import org.conscrypt.OpenSSLProvider;
+import org.eclipse.jetty.alpn.server.ALPNServerConnectionFactory;
+import org.eclipse.jetty.http.HttpVersion;
+import org.eclipse.jetty.http2.server.HTTP2ServerConnectionFactory;
+import org.eclipse.jetty.server.ConnectionFactory;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.Request;
@@ -24,6 +29,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.Security;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -31,76 +39,87 @@ import java.util.Objects;
  */
 public class LocalTestServer {
     private final Server server;
-    private final ServerConnector httpConnector;
-    private final ServerConnector httpsConnector;
+    private final ServerConnector connector;
 
     /**
      * Creates a new instance of {@link LocalTestServer} that will reply to requests based on the passed
      * RequestHandler.
      *
+     * @param supportedProtocol The protocol supported by this server. If null, {@link HttpProtocolVersion#HTTP_1_1}
+     * will be the supported protocol.
+     * @param includeTls Flag indicating if TLS will be included.
      * @param requestHandler The request handler that will be used to process requests.
-     *
      * @throws RuntimeException If the server cannot configure SSL.
      */
-    public LocalTestServer(RequestHandler requestHandler) {
-        this(requestHandler, 10);
-    }
+    public LocalTestServer(HttpProtocolVersion supportedProtocol, boolean includeTls, RequestHandler requestHandler) {
+        this.server = new Server(new ExecutorThreadPool());
 
-    /**
-     * Creates a new instance of {@link LocalTestServer} that will reply to requests based on the passed
-     * RequestHandler.
-     *
-     * @param requestHandler The request handler that will be used to process requests.
-     * @param maxThreads The maximum number of threads that the server will use to process requests.
-     *
-     * @throws RuntimeException If the server cannot configure SSL.
-     */
-    public LocalTestServer(RequestHandler requestHandler, int maxThreads) {
-        this.server = new Server(new ExecutorThreadPool(maxThreads));
+        HttpConfiguration httpConfig = new HttpConfiguration();
+        httpConfig.setResponseHeaderSize(16 * 1024);
+        if (includeTls) {
+            httpConfig.addCustomizer(new SecureRequestCustomizer());
+        }
 
-        HttpConnectionFactory httpConnectionFactory = new HttpConnectionFactory();
-        this.httpConnector = new ServerConnector(server, httpConnectionFactory);
-        this.httpConnector.setHost("localhost");
+        List<ConnectionFactory> connectionFactories = new ArrayList<>();
 
-        server.addConnector(this.httpConnector);
+        // SSL/TLS connection factory
+        if (includeTls) {
+            String nextProtocol = supportedProtocol == null
+                ? HttpVersion.HTTP_1_1.asString()
+                : (supportedProtocol == HttpProtocolVersion.HTTP_1_1) ? HttpVersion.HTTP_1_1.asString() : "alpn";
 
-        SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
-        String mockKeyStore = Objects.toString(LocalTestServer.class.getResource("/keystore.jks"), null);
-        sslContextFactory.setKeyStorePath(mockKeyStore);
-        sslContextFactory.setKeyStorePassword("password");
-        sslContextFactory.setKeyManagerPassword("password");
-        sslContextFactory.setTrustStorePassword("password");
-        sslContextFactory.setTrustAll(true);
+            Security.addProvider(new OpenSSLProvider());
+            SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
+            sslContextFactory.setProvider("Conscrypt");
+            String mockKeyStore = Objects.toString(LocalTestServer.class.getResource("/keystore.jks"), null);
+            sslContextFactory.setKeyStorePath(mockKeyStore);
+            sslContextFactory.setKeyStorePassword("password");
+            sslContextFactory.setKeyManagerPassword("password");
+            sslContextFactory.setKeyStorePath(mockKeyStore);
+            sslContextFactory.setTrustStorePassword("password");
+            sslContextFactory.setTrustAll(true);
 
-        SslConnectionFactory sslConnectionFactory
-            = new SslConnectionFactory(sslContextFactory, httpConnectionFactory.getProtocol());
+            connectionFactories.add(new SslConnectionFactory(sslContextFactory, nextProtocol));
+        }
 
-        HttpConfiguration httpConfiguration = new HttpConfiguration();
-        httpConfiguration.addCustomizer(new SecureRequestCustomizer());
+        if (supportedProtocol == HttpProtocolVersion.HTTP_2) {
+            // ALPN connection factory
+            // HTTP/2 connection factory
+            ALPNServerConnectionFactory alpn = new ALPNServerConnectionFactory();
+            alpn.setDefaultProtocol("h2");
+            connectionFactories.add(alpn);
+            connectionFactories.add(new HTTP2ServerConnectionFactory(httpConfig));
+        }
 
-        this.httpsConnector
-            = new ServerConnector(server, sslConnectionFactory, new HttpConnectionFactory(httpConfiguration));
-        this.httpsConnector.setHost("localhost");
+        if (supportedProtocol == null || supportedProtocol == HttpProtocolVersion.HTTP_1_1) {
+            // HTTP/1.1 connection factory
+            connectionFactories.add(new HttpConnectionFactory(httpConfig));
+        }
 
-        server.addConnector(this.httpsConnector);
+        connector = new ServerConnector(server, connectionFactories.toArray(new ConnectionFactory[0]));
+        connector.setHost("localhost");
+        server.addConnector(connector);
 
         ServletContextHandler servletContextHandler = new ServletContextHandler();
         servletContextHandler.setContextPath("/");
-
         server.setHandler(servletContextHandler);
 
-        ServletHolder servletHolder = new ServletHolder(new HttpServlet() {
-            @Override
-            protected void service(HttpServletRequest req, HttpServletResponse resp)
-                throws ServletException, IOException {
-
-                byte[] requestBody = fullyReadRequest(req.getInputStream());
-
-                requestHandler.handle((Request) req, (Response) resp, requestBody);
-            }
-        });
-
+        ServletHolder servletHolder = new ServletHolder(new CoreTestHttpServlet(requestHandler));
         servletContextHandler.addServlet(servletHolder, "/");
+    }
+
+    private static final class CoreTestHttpServlet extends HttpServlet {
+        private final RequestHandler requestHandler;
+
+        private CoreTestHttpServlet(RequestHandler requestHandler) {
+            this.requestHandler = requestHandler;
+        }
+
+        @Override
+        protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+            byte[] requestBody = fullyReadRequest(req.getInputStream());
+            requestHandler.handle((Request) req, (Response) resp, requestBody);
+        }
     }
 
     /**
@@ -130,7 +149,7 @@ public class LocalTestServer {
             || serverState.equals(AbstractLifeCycle.STOPPING)
             || serverState.equals(AbstractLifeCycle.STOPPED)) {
             throw new RuntimeException(
-                "Server has reached an unexpected state while waiting for it to start: " + serverState);
+                "Server state has reached an unexpected state while waiting for it to start: " + serverState);
         }
 
         return serverState.equals(AbstractLifeCycle.STARTED) || serverState.equals(AbstractLifeCycle.RUNNING);
@@ -154,21 +173,12 @@ public class LocalTestServer {
     }
 
     /**
-     * Gets the HTTP port that the local server is listening on.
+     * Gets the port that the local server is listening on.
      *
-     * @return The HTTP port that the local server is listening on.
+     * @return The port that the local server is listening on.
      */
-    public int getHttpPort() {
-        return httpConnector.getLocalPort();
-    }
-
-    /**
-     * Gets the HTTPS port that the local server is listening on.
-     *
-     * @return The HTTPS port that the local server is listening on.
-     */
-    public int getHttpsPort() {
-        return httpsConnector.getLocalPort();
+    public int getPort() {
+        return connector.getLocalPort();
     }
 
     /**
@@ -176,8 +186,8 @@ public class LocalTestServer {
      *
      * @return The HTTP URI that the local server is listening on.
      */
-    public String getHttpUri() {
-        return "http://localhost:" + getHttpPort();
+    public String getUri() {
+        return "http://localhost:" + getPort();
     }
 
     /**
@@ -186,9 +196,7 @@ public class LocalTestServer {
      * @return The HTTPS URI that the local server is listening on.
      */
     public String getHttpsUri() {
-        server.getURI();
-
-        return "https://localhost:" + getHttpsPort();
+        return "https://localhost:" + getPort();
     }
 
     /**
@@ -201,7 +209,6 @@ public class LocalTestServer {
          * @param req The request.
          * @param resp The response.
          * @param requestBody The request body.
-         *
          * @throws IOException If an IO error occurs.
          * @throws ServletException If a servlet error occurs.
          */
@@ -210,9 +217,7 @@ public class LocalTestServer {
 
     private static byte[] fullyReadRequest(InputStream requestBody) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
         HttpClientTests.inputStreamToOutputStream(requestBody, outputStream);
-
         return outputStream.toByteArray();
     }
 }

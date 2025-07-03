@@ -1841,8 +1841,10 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .verifyComplete();
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
+    public void audienceErrorBearerChallengeRetry() {
         String fileName = generatePathName();
         ShareFileAsyncClient fileClient = fileBuilderHelper(shareName, fileName).buildFileAsyncClient();
         ShareServiceAsyncClient oAuthServiceClient
@@ -1851,10 +1853,9 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
         ShareFileAsyncClient aadFileClient = oAuthServiceClient.getShareAsyncClient(shareName).getFileClient(fileName);
 
-        StepVerifier.create(fileClient.create(Constants.KB).then(aadFileClient.exists())).verifyErrorSatisfies(r -> {
-            ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
-            assertEquals(ShareErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
-        });
+        StepVerifier.create(fileClient.create(Constants.KB).then(aadFileClient.exists()))
+            .assertNext(Assertions::assertNotNull)
+            .verifyComplete();
     }
 
     @Test

@@ -6,6 +6,7 @@ package com.azure.storage.file.share;
 import com.azure.core.http.rest.Response;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.policy.InvalidServiceVersionPipelinePolicy;
@@ -1005,8 +1006,10 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             .verifyComplete();
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
+    public void audienceErrorBearerChallengeRetry() {
         ShareAsyncClient aadShareClient = getOAuthShareClientBuilder(new ShareClientBuilder()).shareName(shareName)
             .shareTokenIntent(ShareTokenIntent.BACKUP)
             .audience(ShareAudience.createShareServiceAccountAudience("badaudience"))
@@ -1017,10 +1020,8 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             + "188441444-3053964)S:NO_ACCESS_CONTROL";
 
         StepVerifier.create(primaryShareAsyncClient.create().then(aadShareClient.createPermission(permission)))
-            .verifyErrorSatisfies(r -> {
-                ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
-                assertEquals(ShareErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
-            });
+            .assertNext(Assertions::assertNotNull)
+            .verifyComplete();
     }
 
     @Test

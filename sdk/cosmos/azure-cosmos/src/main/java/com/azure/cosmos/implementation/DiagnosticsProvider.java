@@ -17,6 +17,7 @@ import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
@@ -957,6 +958,10 @@ public final class DiagnosticsProvider {
             ? clientAccessor.getEffectiveDiagnosticsThresholds(client, requestOptions.getDiagnosticsThresholds())
             : clientAccessor.getEffectiveDiagnosticsThresholds(client, null);
 
+        ReadConsistencyStrategy requestLevelReadConsistencyStrategy = requestOptions != null
+            ? requestOptions.getReadConsistencyStrategy()
+            : null;
+
         CosmosDiagnosticsContext cosmosCtx = cosmosCtxFromUpstream != null
             ? cosmosCtxFromUpstream
             : ctxAccessor.create(
@@ -969,6 +974,7 @@ public final class DiagnosticsProvider {
                 operationType,
                 null,
                 clientAccessor.getEffectiveConsistencyLevel(client, operationType, consistencyLevel),
+                clientAccessor.getEffectiveReadConsistencyStrategy(client, resourceType, operationType, requestLevelReadConsistencyStrategy),
                 maxItemCount,
                 thresholds,
                 trackingId,
@@ -1533,8 +1539,16 @@ public final class DiagnosticsProvider {
                 Integer.toString(cosmosCtx.getSubStatusCode()),
                 context);
             tracer.setAttribute(
+                "azure.cosmosdb.response.sub_status_code",
+                (Integer)cosmosCtx.getSubStatusCode(),
+                context);
+            tracer.setAttribute(
                 "db.cosmosdb.request_charge",
                 Float.toString(cosmosCtx.getTotalRequestCharge()),
+                context);
+            tracer.setAttribute(
+                "azure.cosmosdb.operation.request_charge",
+                (double) cosmosCtx.getTotalRequestCharge(),
                 context);
             tracer.setAttribute("db.cosmosdb.request_content_length",cosmosCtx.getMaxRequestPayloadSizeInBytes(), context);
             tracer.setAttribute("db.cosmosdb.max_response_content_length_bytes",cosmosCtx.getMaxResponsePayloadSizeInBytes(), context);

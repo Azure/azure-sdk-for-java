@@ -23,7 +23,7 @@ public final class ProjectsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"entityId\":\"okvjgbzsxebrslt\",\"entityName\":\"yhcdjwsuoardnag\",\"createdAt\":\"pufpbpgnrholhu\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"iplkysolsyjprxs\",\"value\":\"whdmcvhtbbz\"},{\"name\":\"hfvhuwzbxpcqz\",\"value\":\"ihotjecohmxv\"},{\"name\":\"lrrskap\",\"value\":\"xwieexuyade\"}],\"regionId\":\"tfo\",\"storage\":47887958579734245,\"pgVersion\":935611244,\"historyRetention\":424856717,\"defaultEndpointSettings\":{\"autoscalingLimitMinCu\":98.68591392968551,\"autoscalingLimitMaxCu\":2.367622336840902},\"branch\":{\"entityId\":\"xzznnui\",\"entityName\":\"rsejegprkj\",\"createdAt\":\"wrjmwv\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"kxxi\",\"value\":\"wgxql\"},{\"name\":\"ekotjgxi\",\"value\":\"qfkyfhiwvjaqu\"},{\"name\":\"by\",\"value\":\"nvskpaj\"}],\"projectId\":\"geumexm\",\"parentId\":\"xcbccwkqmt\",\"roleName\":\"p\",\"databaseName\":\"iscr\",\"roles\":[{\"entityId\":\"ftr\",\"entityName\":\"ejdaahuqimld\",\"createdAt\":\"lfxlmuifmuadj\",\"provisioningState\":\"Canceled\",\"attributes\":[{\"name\":\"skiioshjgczetybn\",\"value\":\"gztlcgc\"},{\"name\":\"j\",\"value\":\"hfjv\"},{\"name\":\"ywjzebecuvlbefvw\",\"value\":\"ljkxpylrwoxz\"}],\"branchId\":\"psyxjije\",\"permissions\":[\"vrbkerdkdkgaw\",\"wjxildfkcefeyg\"],\"isSuperUser\":false},{\"entityId\":\"oisfmnaybdjn\",\"entityName\":\"mentqo\",\"createdAt\":\"why\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"lwivqt\",\"value\":\"wlhlsycoybajasq\"},{\"name\":\"bfajcywhjqwmchq\",\"value\":\"htfxcpupuki\"},{\"name\":\"mjzpwdlvwtiwsm\",\"value\":\"sa\"},{\"name\":\"nhqnampp\",\"value\":\"ltassaekewna\"}],\"branchId\":\"ajbk\",\"permissions\":[\"cyizy\",\"dcvxodkrvfsxxby\",\"e\"],\"isSuperUser\":true},{\"entityId\":\"gecpwgoljtzx\",\"entityName\":\"xsdobygoogxqapjx\",\"createdAt\":\"zyjfuc\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"nosdkvi\",\"value\":\"fasgm\"},{\"name\":\"trnzpducdaaktu\",\"value\":\"ktz\"}],\"branchId\":\"imyfpqdo\",\"permissions\":[\"pnw\",\"ytfvpctfji\",\"ffffg\",\"uhznwhvuldbk\"],\"isSuperUser\":false}],\"databases\":[{\"entityId\":\"igaw\",\"entityName\":\"zmxjqif\",\"createdAt\":\"jjsbcmlzaahzbhur\",\"provisioningState\":\"Canceled\",\"attributes\":[{\"name\":\"lirh\",\"value\":\"mojusuz\"},{\"name\":\"fjzc\",\"value\":\"aaxoialahfxwcc\"},{\"name\":\"kdxkuk\",\"value\":\"kczynuhhoqeqsh\"},{\"name\":\"vl\",\"value\":\"q\"}],\"branchId\":\"yrqolnthbbnkgz\",\"ownerName\":\"wdrnzkj\"}],\"endpoints\":[{\"entityId\":\"eyjncjmlfuy\",\"entityName\":\"bpfiddhlrufz\",\"createdAt\":\"yjmqrf\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"selqkrsazrhxud\",\"value\":\"qmdtffi\"},{\"name\":\"jmr\",\"value\":\"khmwdmd\"}],\"projectId\":\"yqixokwtjawhv\",\"branchId\":\"nqf\",\"endpointType\":\"read_only\"},{\"entityId\":\"cvmyolcaymjchtv\",\"entityName\":\"vlaqdnzyzawa\",\"createdAt\":\"wqkokbczothymg\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"snwgwimaa\",\"value\":\"eakhtmhobcya\"}],\"projectId\":\"fvqtvkhgvoo\",\"branchId\":\"kfnaoaqymhc\",\"endpointType\":\"read_write\"}]},\"roles\":[{\"entityId\":\"wyrnskbyh\",\"entityName\":\"hczygxvhajpxe\",\"createdAt\":\"qnwhscozawmvg\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"npwirfljf\",\"value\":\"wxqouoxudnmc\"},{\"name\":\"aprhknqiijgencdg\",\"value\":\"oqueqihkkyowltj\"},{\"name\":\"uwhldxwhieproqks\",\"value\":\"fxmcvprstvk\"}],\"branchId\":\"b\",\"permissions\":[\"dyotnplfacqoccq\",\"qxwetjtd\",\"hutfdoadtxopge\"],\"isSuperUser\":false},{\"entityId\":\"k\",\"entityName\":\"zgssz\",\"createdAt\":\"ctkbbxuha\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"ncclabvoyngsuxxc\",\"value\":\"bmyqjog\"},{\"name\":\"dsaidjanormovdxx\",\"value\":\"rntu\"}],\"branchId\":\"oilunwemhdee\",\"permissions\":[\"lkyozdsfzj\",\"egrhrh\"],\"isSuperUser\":false},{\"entityId\":\"jtv\",\"entityName\":\"nxvgjb\",\"createdAt\":\"obpnjodf\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"wmtqsmoxsaz\",\"value\":\"xej\"}],\"branchId\":\"ecywn\",\"permissions\":[\"zzaczsinqbdn\",\"dbbo\"],\"isSuperUser\":false},{\"entityId\":\"rmkjmyitrchwudlx\",\"entityName\":\"ihtpmnoejhql\",\"createdAt\":\"sibz\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"xkyd\",\"value\":\"mypgfqvmty\"},{\"name\":\"hl\",\"value\":\"kxp\"}],\"branchId\":\"pewpyj\",\"permissions\":[\"ampqcrzgeuq\",\"b\"],\"isSuperUser\":false}],\"databases\":[{\"entityId\":\"aujegqdtadra\",\"entityName\":\"ddhjkr\",\"createdAt\":\"izyh\",\"provisioningState\":\"Canceled\",\"attributes\":[{\"name\":\"qsktxqf\",\"value\":\"jbqggweeiwdhdm\"},{\"name\":\"cgbfzuscstun\",\"value\":\"lhxd\"}],\"branchId\":\"klciichgjsysm\",\"ownerName\":\"o\"}],\"endpoints\":[{\"entityId\":\"f\",\"entityName\":\"sifcuvbdujgc\",\"createdAt\":\"vecb\",\"provisioningState\":\"Canceled\",\"attributes\":[{\"name\":\"dxrizagb\",\"value\":\"giarksykpgdqxw\"},{\"name\":\"b\",\"value\":\"rwiqrxhacl\"},{\"name\":\"dosqkptjqg\",\"value\":\"ifmmainwh\"},{\"name\":\"d\",\"value\":\"kp\"}],\"projectId\":\"wuntobuiz\",\"branchId\":\"zelwgvydjufbnkl\",\"endpointType\":\"read_only\"},{\"entityId\":\"peg\",\"entityName\":\"dabalfdxaglzfytl\",\"createdAt\":\"lqhopxouvmrs\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"y\",\"value\":\"pzkgxfxfmyrqsd\"},{\"name\":\"pokszanmhwgpt\",\"value\":\"rdiuwkirksk\"},{\"name\":\"ztsdetjygow\",\"value\":\"fcqpol\"},{\"name\":\"kg\",\"value\":\"sdgzyy\"}],\"projectId\":\"oxlvocptvdxxheig\",\"branchId\":\"ilwzghj\",\"endpointType\":\"read_write\"},{\"entityId\":\"abzzbwaybfmdafb\",\"entityName\":\"mqtnap\",\"createdAt\":\"ojxrjnbsconxavi\",\"provisioningState\":\"Canceled\",\"attributes\":[{\"name\":\"hbjizqfsgnwdx\",\"value\":\"edpqlrfbo\"}],\"projectId\":\"ipmlnfyzavf\",\"branchId\":\"ypi\",\"endpointType\":\"read_write\"},{\"entityId\":\"pdjtaqh\",\"entityName\":\"q\",\"createdAt\":\"pdgonjhxs\",\"provisioningState\":\"Canceled\",\"attributes\":[{\"name\":\"pczqulptkbvcp\",\"value\":\"tzhigqqbtim\"},{\"name\":\"kjblornsihqh\",\"value\":\"dsmusuaawjakxwj\"},{\"name\":\"fczmnn\",\"value\":\"ixyxvqbanosjt\"}],\"projectId\":\"rnbg\",\"branchId\":\"m\",\"endpointType\":\"read_write\"}]},\"id\":\"gm\",\"name\":\"nltwmpftmfoeajog\",\"type\":\"yxwe\"}]}";
+            = "{\"value\":[{\"properties\":{\"entityId\":\"disnuepywyjln\",\"entityName\":\"pxottd\",\"createdAt\":\"aocqibzjih\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"ph\",\"value\":\"yv\"},{\"name\":\"jw\",\"value\":\"w\"},{\"name\":\"qsratjhd\",\"value\":\"zybspijhfrzgdkk\"}],\"regionId\":\"v\",\"storage\":1532180759590076345,\"pgVersion\":1402758121,\"historyRetention\":313271072,\"defaultEndpointSettings\":{\"autoscalingLimitMinCu\":67.08368890829829,\"autoscalingLimitMaxCu\":17.210906246412183},\"branch\":{\"entityId\":\"wilzzhnijmriprlk\",\"entityName\":\"eyttlrcxiv\",\"createdAt\":\"kutpu\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"fluxynbpvz\",\"value\":\"qywauyqnjc\"}],\"projectId\":\"mocgjshg\",\"parentId\":\"a\",\"roleName\":\"wvixq\",\"databaseName\":\"gljkybsj\",\"roles\":[{\"entityId\":\"vtzqnrbctbhp\",\"entityName\":\"xpc\",\"createdAt\":\"dnyeita\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"y\",\"value\":\"zjahwriuomz\"},{\"name\":\"zfkiceevsaaxwsp\",\"value\":\"axikhfjqebglcxk\"},{\"name\":\"gzzromv\",\"value\":\"g\"}],\"branchId\":\"emtm\",\"permissions\":[\"fsvpink\"],\"isSuperUser\":true},{\"entityId\":\"qtdiswxspvckoj\",\"entityName\":\"bbg\",\"createdAt\":\"ft\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"pvpvd\",\"value\":\"lyt\"},{\"name\":\"ovqseusrfjbdx\",\"value\":\"fxnxml\"},{\"name\":\"muoswkjmdih\",\"value\":\"cy\"}],\"branchId\":\"zlwhbwzjnufzrfgm\",\"permissions\":[\"nn\",\"zrtftedzuubjt\"],\"isSuperUser\":true}],\"databases\":[{\"entityId\":\"tyjjvavdpwwobt\",\"entityName\":\"htitsffofwan\",\"createdAt\":\"k\",\"provisioningState\":\"Canceled\",\"attributes\":[{\"name\":\"azcg\",\"value\":\"dfriwgybj\"}],\"branchId\":\"zokscvg\",\"ownerName\":\"ixdgbyfgwewqkj\"},{\"entityId\":\"prwpxsoohu\",\"entityName\":\"lcsklt\",\"createdAt\":\"uugggzlfbgrd\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"rtmdylperpil\",\"value\":\"tjzgczfcm\"},{\"name\":\"pfb\",\"value\":\"detres\"},{\"name\":\"gvtshu\",\"value\":\"ft\"},{\"name\":\"ai\",\"value\":\"muqkevzgjypanhx\"}],\"branchId\":\"dxxzetwwzjwotn\",\"ownerName\":\"kf\"}],\"endpoints\":[{\"entityId\":\"rfo\",\"entityName\":\"wecr\",\"createdAt\":\"hpcselqxovp\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"kklvzrlrmlccmet\",\"value\":\"scz\"},{\"name\":\"vfqbqna\",\"value\":\"dsyenzsieuscpl\"},{\"name\":\"yvdgxlyzk\",\"value\":\"itdshezsvkolru\"}],\"projectId\":\"ovmozsayebraz\",\"branchId\":\"lpzbtzuykykipf\",\"endpointType\":\"read_only\"},{\"entityId\":\"pfnocm\",\"entityName\":\"zacfpztgazw\",\"createdAt\":\"ejgaaokct\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"kqzkcyzmff\",\"value\":\"gdyfcixrhlcqvhoe\"},{\"name\":\"goiutgw\",\"value\":\"mkahpqha\"},{\"name\":\"yntacihnco\",\"value\":\"mip\"},{\"name\":\"mliqmvlb\",\"value\":\"i\"}],\"projectId\":\"aqgrv\",\"branchId\":\"omxp\",\"endpointType\":\"read_only\"}]},\"roles\":[{\"entityId\":\"fjyi\",\"entityName\":\"ocwiqbuoutmpyzgl\",\"createdAt\":\"f\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"wwzvdaj\",\"value\":\"wnncfmaciqg\"},{\"name\":\"jrlhiqlwixvtboug\",\"value\":\"xtndopgjttbasua\"},{\"name\":\"ap\",\"value\":\"lndbeaqbkixv\"}],\"branchId\":\"wy\",\"permissions\":[\"bfqvzfjmspu\"],\"isSuperUser\":true},{\"entityId\":\"uzjljm\",\"entityName\":\"fkyezolgjzm\",\"createdAt\":\"uydoccnx\",\"provisioningState\":\"Canceled\",\"attributes\":[{\"name\":\"bui\",\"value\":\"dh\"},{\"name\":\"atecaa\",\"value\":\"sdohz\"},{\"name\":\"iucbda\",\"value\":\"mbwiinjdllwktl\"},{\"name\":\"pow\",\"value\":\"vvqxua\"}],\"branchId\":\"cqwulynkgfcfd\",\"permissions\":[\"si\",\"xxtclhuulri\",\"byokvjgbzsxe\",\"rsltt\"],\"isSuperUser\":true},{\"entityId\":\"djws\",\"entityName\":\"ardnagttpufpbpgn\",\"createdAt\":\"olhujbfwxiplkyso\",\"provisioningState\":\"Canceled\",\"attributes\":[{\"name\":\"rxslwhdmcv\",\"value\":\"tbbzj\"}],\"branchId\":\"vhuw\",\"permissions\":[\"pcqzg\"],\"isSuperUser\":true}],\"databases\":[{\"entityId\":\"cohm\",\"entityName\":\"vlrrskapbxwieexu\",\"createdAt\":\"derltfokyksyim\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"vkcxzznn\",\"value\":\"i\"}],\"branchId\":\"rsejegprkj\",\"ownerName\":\"wrjmwv\"},{\"entityId\":\"tu\",\"entityName\":\"xximwgxq\",\"createdAt\":\"ekotjgxi\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"fh\",\"value\":\"wvjaq\"},{\"name\":\"pbyynvskpajbm\",\"value\":\"eumexmjbxc\"}],\"branchId\":\"cwkqmtxape\",\"ownerName\":\"scrpilgftrqrej\"}],\"endpoints\":[{\"entityId\":\"uqimldahlfxl\",\"entityName\":\"ifmuadjnfsncsk\",\"createdAt\":\"oshjgcze\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"gztlcgc\",\"value\":\"j\"},{\"name\":\"hfjv\",\"value\":\"ywjzebecuvlbefvw\"},{\"name\":\"ljkxpylrwoxz\",\"value\":\"wpsyxjij\"}],\"projectId\":\"pdvrbkerdkdkga\",\"branchId\":\"wjxildfkcefeyg\",\"endpointType\":\"read_only\"},{\"entityId\":\"oisfmnaybdjn\",\"entityName\":\"mentqo\",\"createdAt\":\"why\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"lwivqt\",\"value\":\"wlhlsycoybajasq\"},{\"name\":\"bfajcywhjqwmchq\",\"value\":\"htfxcpupuki\"},{\"name\":\"mjzpwdlvwtiwsm\",\"value\":\"sa\"},{\"name\":\"nhqnampp\",\"value\":\"ltassaekewna\"}],\"projectId\":\"ajbk\",\"branchId\":\"lcyizyddcvxo\",\"endpointType\":\"read_write\"}]},\"id\":\"fsxxby\",\"name\":\"e\",\"type\":\"qlvge\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,81 +33,86 @@ public final class ProjectsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Project> response
-            = manager.projects().list("si", "xxtclhuulri", com.azure.core.util.Context.NONE);
+            = manager.projects().list("ipsejbsvsia", "eswhd", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yhcdjwsuoardnag", response.iterator().next().properties().entityName());
-        Assertions.assertEquals("iplkysolsyjprxs", response.iterator().next().properties().attributes().get(0).name());
-        Assertions.assertEquals("whdmcvhtbbz", response.iterator().next().properties().attributes().get(0).value());
-        Assertions.assertEquals("tfo", response.iterator().next().properties().regionId());
-        Assertions.assertEquals(47887958579734245L, response.iterator().next().properties().storage());
-        Assertions.assertEquals(935611244, response.iterator().next().properties().pgVersion());
-        Assertions.assertEquals(424856717, response.iterator().next().properties().historyRetention());
-        Assertions.assertEquals(98.68591392968551,
+        Assertions.assertEquals("pxottd", response.iterator().next().properties().entityName());
+        Assertions.assertEquals("ph", response.iterator().next().properties().attributes().get(0).name());
+        Assertions.assertEquals("yv", response.iterator().next().properties().attributes().get(0).value());
+        Assertions.assertEquals("v", response.iterator().next().properties().regionId());
+        Assertions.assertEquals(1532180759590076345L, response.iterator().next().properties().storage());
+        Assertions.assertEquals(1402758121, response.iterator().next().properties().pgVersion());
+        Assertions.assertEquals(313271072, response.iterator().next().properties().historyRetention());
+        Assertions.assertEquals(67.08368890829829,
             response.iterator().next().properties().defaultEndpointSettings().autoscalingLimitMinCu());
-        Assertions.assertEquals(2.367622336840902,
+        Assertions.assertEquals(17.210906246412183,
             response.iterator().next().properties().defaultEndpointSettings().autoscalingLimitMaxCu());
-        Assertions.assertEquals("rsejegprkj", response.iterator().next().properties().branch().entityName());
-        Assertions.assertEquals("kxxi", response.iterator().next().properties().branch().attributes().get(0).name());
-        Assertions.assertEquals("wgxql", response.iterator().next().properties().branch().attributes().get(0).value());
-        Assertions.assertEquals("geumexm", response.iterator().next().properties().branch().projectId());
-        Assertions.assertEquals("xcbccwkqmt", response.iterator().next().properties().branch().parentId());
-        Assertions.assertEquals("p", response.iterator().next().properties().branch().roleName());
-        Assertions.assertEquals("iscr", response.iterator().next().properties().branch().databaseName());
-        Assertions.assertEquals("ejdaahuqimld",
-            response.iterator().next().properties().branch().roles().get(0).entityName());
-        Assertions.assertEquals("skiioshjgczetybn",
+        Assertions.assertEquals("eyttlrcxiv", response.iterator().next().properties().branch().entityName());
+        Assertions.assertEquals("fluxynbpvz",
+            response.iterator().next().properties().branch().attributes().get(0).name());
+        Assertions.assertEquals("qywauyqnjc",
+            response.iterator().next().properties().branch().attributes().get(0).value());
+        Assertions.assertEquals("mocgjshg", response.iterator().next().properties().branch().projectId());
+        Assertions.assertEquals("a", response.iterator().next().properties().branch().parentId());
+        Assertions.assertEquals("wvixq", response.iterator().next().properties().branch().roleName());
+        Assertions.assertEquals("gljkybsj", response.iterator().next().properties().branch().databaseName());
+        Assertions.assertEquals("xpc", response.iterator().next().properties().branch().roles().get(0).entityName());
+        Assertions.assertEquals("y",
             response.iterator().next().properties().branch().roles().get(0).attributes().get(0).name());
-        Assertions.assertEquals("gztlcgc",
+        Assertions.assertEquals("zjahwriuomz",
             response.iterator().next().properties().branch().roles().get(0).attributes().get(0).value());
-        Assertions.assertEquals("psyxjije", response.iterator().next().properties().branch().roles().get(0).branchId());
-        Assertions.assertEquals("vrbkerdkdkgaw",
+        Assertions.assertEquals("emtm", response.iterator().next().properties().branch().roles().get(0).branchId());
+        Assertions.assertEquals("fsvpink",
             response.iterator().next().properties().branch().roles().get(0).permissions().get(0));
-        Assertions.assertFalse(response.iterator().next().properties().branch().roles().get(0).isSuperUser());
-        Assertions.assertEquals("zmxjqif",
+        Assertions.assertTrue(response.iterator().next().properties().branch().roles().get(0).isSuperUser());
+        Assertions.assertEquals("htitsffofwan",
             response.iterator().next().properties().branch().databases().get(0).entityName());
-        Assertions.assertEquals("lirh",
+        Assertions.assertEquals("azcg",
             response.iterator().next().properties().branch().databases().get(0).attributes().get(0).name());
-        Assertions.assertEquals("mojusuz",
+        Assertions.assertEquals("dfriwgybj",
             response.iterator().next().properties().branch().databases().get(0).attributes().get(0).value());
-        Assertions.assertEquals("yrqolnthbbnkgz",
+        Assertions.assertEquals("zokscvg",
             response.iterator().next().properties().branch().databases().get(0).branchId());
-        Assertions.assertEquals("wdrnzkj",
+        Assertions.assertEquals("ixdgbyfgwewqkj",
             response.iterator().next().properties().branch().databases().get(0).ownerName());
-        Assertions.assertEquals("bpfiddhlrufz",
+        Assertions.assertEquals("wecr",
             response.iterator().next().properties().branch().endpoints().get(0).entityName());
-        Assertions.assertEquals("selqkrsazrhxud",
+        Assertions.assertEquals("kklvzrlrmlccmet",
             response.iterator().next().properties().branch().endpoints().get(0).attributes().get(0).name());
-        Assertions.assertEquals("qmdtffi",
+        Assertions.assertEquals("scz",
             response.iterator().next().properties().branch().endpoints().get(0).attributes().get(0).value());
-        Assertions.assertEquals("yqixokwtjawhv",
+        Assertions.assertEquals("ovmozsayebraz",
             response.iterator().next().properties().branch().endpoints().get(0).projectId());
-        Assertions.assertEquals("nqf", response.iterator().next().properties().branch().endpoints().get(0).branchId());
+        Assertions.assertEquals("lpzbtzuykykipf",
+            response.iterator().next().properties().branch().endpoints().get(0).branchId());
         Assertions.assertEquals(EndpointType.READ_ONLY,
             response.iterator().next().properties().branch().endpoints().get(0).endpointType());
-        Assertions.assertEquals("hczygxvhajpxe", response.iterator().next().properties().roles().get(0).entityName());
-        Assertions.assertEquals("npwirfljf",
+        Assertions.assertEquals("ocwiqbuoutmpyzgl",
+            response.iterator().next().properties().roles().get(0).entityName());
+        Assertions.assertEquals("wwzvdaj",
             response.iterator().next().properties().roles().get(0).attributes().get(0).name());
-        Assertions.assertEquals("wxqouoxudnmc",
+        Assertions.assertEquals("wnncfmaciqg",
             response.iterator().next().properties().roles().get(0).attributes().get(0).value());
-        Assertions.assertEquals("b", response.iterator().next().properties().roles().get(0).branchId());
-        Assertions.assertEquals("dyotnplfacqoccq",
+        Assertions.assertEquals("wy", response.iterator().next().properties().roles().get(0).branchId());
+        Assertions.assertEquals("bfqvzfjmspu",
             response.iterator().next().properties().roles().get(0).permissions().get(0));
-        Assertions.assertFalse(response.iterator().next().properties().roles().get(0).isSuperUser());
-        Assertions.assertEquals("ddhjkr", response.iterator().next().properties().databases().get(0).entityName());
-        Assertions.assertEquals("qsktxqf",
+        Assertions.assertTrue(response.iterator().next().properties().roles().get(0).isSuperUser());
+        Assertions.assertEquals("vlrrskapbxwieexu",
+            response.iterator().next().properties().databases().get(0).entityName());
+        Assertions.assertEquals("vkcxzznn",
             response.iterator().next().properties().databases().get(0).attributes().get(0).name());
-        Assertions.assertEquals("jbqggweeiwdhdm",
+        Assertions.assertEquals("i",
             response.iterator().next().properties().databases().get(0).attributes().get(0).value());
-        Assertions.assertEquals("klciichgjsysm", response.iterator().next().properties().databases().get(0).branchId());
-        Assertions.assertEquals("o", response.iterator().next().properties().databases().get(0).ownerName());
-        Assertions.assertEquals("sifcuvbdujgc",
+        Assertions.assertEquals("rsejegprkj", response.iterator().next().properties().databases().get(0).branchId());
+        Assertions.assertEquals("wrjmwv", response.iterator().next().properties().databases().get(0).ownerName());
+        Assertions.assertEquals("ifmuadjnfsncsk",
             response.iterator().next().properties().endpoints().get(0).entityName());
-        Assertions.assertEquals("dxrizagb",
+        Assertions.assertEquals("gztlcgc",
             response.iterator().next().properties().endpoints().get(0).attributes().get(0).name());
-        Assertions.assertEquals("giarksykpgdqxw",
+        Assertions.assertEquals("j",
             response.iterator().next().properties().endpoints().get(0).attributes().get(0).value());
-        Assertions.assertEquals("wuntobuiz", response.iterator().next().properties().endpoints().get(0).projectId());
-        Assertions.assertEquals("zelwgvydjufbnkl",
+        Assertions.assertEquals("pdvrbkerdkdkga",
+            response.iterator().next().properties().endpoints().get(0).projectId());
+        Assertions.assertEquals("wjxildfkcefeyg",
             response.iterator().next().properties().endpoints().get(0).branchId());
         Assertions.assertEquals(EndpointType.READ_ONLY,
             response.iterator().next().properties().endpoints().get(0).endpointType());

@@ -4,6 +4,7 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,6 +16,7 @@ public final class MediaStreamingTransportTypeInternal
     /**
      * Static value websocket for MediaStreamingTransportTypeInternal.
      */
+    @Generated
     public static final MediaStreamingTransportTypeInternal WEBSOCKET = fromString("websocket");
 
     /**
@@ -22,6 +24,7 @@ public final class MediaStreamingTransportTypeInternal
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public MediaStreamingTransportTypeInternal() {
     }
@@ -32,6 +35,7 @@ public final class MediaStreamingTransportTypeInternal
      * @param name a name to look for.
      * @return the corresponding MediaStreamingTransportTypeInternal.
      */
+    @Generated
     public static MediaStreamingTransportTypeInternal fromString(String name) {
         return fromString(name, MediaStreamingTransportTypeInternal.class);
     }
@@ -41,6 +45,7 @@ public final class MediaStreamingTransportTypeInternal
      * 
      * @return known MediaStreamingTransportTypeInternal values.
      */
+    @Generated
     public static Collection<MediaStreamingTransportTypeInternal> values() {
         return values(MediaStreamingTransportTypeInternal.class);
     }

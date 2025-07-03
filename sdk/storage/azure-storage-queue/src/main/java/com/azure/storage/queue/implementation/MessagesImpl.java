@@ -64,7 +64,7 @@ public final class MessagesImpl {
      * REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureQueueStorageMes")
+    @ServiceInterface(name = "AzureQueueStorageMessages")
     public interface MessagesService {
 
         @Get("/{queueName}/messages")

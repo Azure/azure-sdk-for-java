@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class ZendeskAuthenticationType extends ExpandableStringEnum<Zendes
     /**
      * Static value Basic for ZendeskAuthenticationType.
      */
+    @Generated
     public static final ZendeskAuthenticationType BASIC = fromString("Basic");
 
     /**
      * Static value Token for ZendeskAuthenticationType.
      */
+    @Generated
     public static final ZendeskAuthenticationType TOKEN = fromString("Token");
 
     /**
@@ -26,6 +29,7 @@ public final class ZendeskAuthenticationType extends ExpandableStringEnum<Zendes
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ZendeskAuthenticationType() {
     }
@@ -36,6 +40,7 @@ public final class ZendeskAuthenticationType extends ExpandableStringEnum<Zendes
      * @param name a name to look for.
      * @return the corresponding ZendeskAuthenticationType.
      */
+    @Generated
     public static ZendeskAuthenticationType fromString(String name) {
         return fromString(name, ZendeskAuthenticationType.class);
     }
@@ -45,6 +50,7 @@ public final class ZendeskAuthenticationType extends ExpandableStringEnum<Zendes
      * 
      * @return known ZendeskAuthenticationType values.
      */
+    @Generated
     public static Collection<ZendeskAuthenticationType> values() {
         return values(ZendeskAuthenticationType.class);
     }
