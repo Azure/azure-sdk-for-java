@@ -213,6 +213,11 @@ public final class Netty4ChannelBinaryData extends BinaryData {
                     throw CoreException.from(exception);
                 }
             }
+
+            Netty4PipelineCleanupHandler cleanupHandler = channel.pipeline().get(Netty4PipelineCleanupHandler.class);
+            if (cleanupHandler != null) {
+                cleanupHandler.cleanup(channel.pipeline().context(cleanupHandler), false);
+            }
         }
     }
 }
