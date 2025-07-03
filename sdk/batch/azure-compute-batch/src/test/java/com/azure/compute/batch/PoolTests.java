@@ -605,10 +605,29 @@ public class PoolTests extends BatchClientTestBase {
                 "Node should return to IDLE/RUNNING after reboot");
 
             // Reimage node
-            SyncAsyncExtension.execute(() -> {
-                batchClient.reimageNode(poolId, nodeIdB);
-                return null;
-            }, () -> batchAsyncClient.reimageNode(poolId, nodeIdB));
+            SyncPoller<BatchNode, BatchNode> reimagePoller = setPlaybackSyncPollerPollInterval(
+                SyncAsyncExtension.execute(() -> batchClient.beginReimageNode(poolId, nodeIdB),
+                    () -> Mono.fromCallable(() -> batchAsyncClient.beginReimageNode(poolId, nodeIdB).getSyncPoller())));
+
+            // First poll – should be re-imaging / boot-strapping
+            PollResponse<BatchNode> reimageFirst = reimagePoller.poll();
+            if (reimageFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+                BatchNode nodeDuringReimage = reimageFirst.getValue();
+                Assertions.assertNotNull(nodeDuringReimage);
+                Assertions.assertEquals(nodeIdB, nodeDuringReimage.getId());
+                BatchNodeState st = nodeDuringReimage.getState();
+                Assertions.assertTrue(
+                    st == BatchNodeState.REIMAGING || st == BatchNodeState.STARTING || st == BatchNodeState.CREATING,
+                    "Unexpected interim state: " + st);
+            }
+
+            // Wait until the OS has been re-applied and the node is usable
+            reimagePoller.waitForCompletion();
+            BatchNode reimagedNode = reimagePoller.getFinalResult();
+            Assertions.assertNotNull(reimagedNode, "Final result of beginReimageNode should not be null");
+            Assertions.assertTrue(
+                reimagedNode.getState() == BatchNodeState.IDLE || reimagedNode.getState() == BatchNodeState.RUNNING,
+                "Node should return to IDLE/RUNNING after re-image");
 
             // Shrink pool by one node
             BatchNodeRemoveParameters removeParams = new BatchNodeRemoveParameters(Collections.singletonList(nodeIdB))
