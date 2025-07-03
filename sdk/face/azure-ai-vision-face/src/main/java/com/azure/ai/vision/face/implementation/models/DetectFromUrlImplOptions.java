@@ -17,12 +17,6 @@ import java.util.List;
 public final class DetectFromUrlImplOptions {
 
     /*
-     * URL of input image.
-     */
-    @Generated
-    private final String url;
-
-    /*
      * The 'detectionModel' associated with the detected faceIds. Supported 'detectionModel' values include
      * 'detection_01', 'detection_02' and 'detection_03'. The default value is 'detection_01'. 'detection_03' is
      * recommended since its accuracy is improved on smaller faces (64x64 pixels) and rotated face orientations.
@@ -71,6 +65,12 @@ public final class DetectFromUrlImplOptions {
     @Generated
     private Integer faceIdTimeToLive;
 
+    /*
+     * URL of input image.
+     */
+    @Generated
+    private final String url;
+
     /**
      * Creates an instance of DetectFromUrlImplOptions class.
      *
@@ -79,16 +79,6 @@ public final class DetectFromUrlImplOptions {
     @Generated
     public DetectFromUrlImplOptions(String url) {
         this.url = url;
-    }
-
-    /**
-     * Get the url property: URL of input image.
-     *
-     * @return the url value.
-     */
-    @Generated
-    public String getUrl() {
-        return this.url;
     }
 
     /**
@@ -267,5 +257,15 @@ public final class DetectFromUrlImplOptions {
     public DetectFromUrlImplOptions setFaceIdTimeToLive(Integer faceIdTimeToLive) {
         this.faceIdTimeToLive = faceIdTimeToLive;
         return this;
+    }
+
+    /**
+     * Get the url property: URL of input image.
+     *
+     * @return the url value.
+     */
+    @Generated
+    public String getUrl() {
+        return this.url;
     }
 }

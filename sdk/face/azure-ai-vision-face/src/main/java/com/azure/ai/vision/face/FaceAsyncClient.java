@@ -63,269 +63,6 @@ public final class FaceAsyncClient {
     }
 
     /**
-     * Given query face's faceId, to search the similar-looking faces from a faceId array. A faceId array contains the
-     * faces created by Detect.
-     *
-     * Please refer to https://learn.microsoft.com/rest/api/face/face-recognition-operations/find-similar for more
-     * details.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     faceId: String (Required)
-     *     maxNumOfCandidatesReturned: Integer (Optional)
-     *     mode: String(matchPerson/matchFace) (Optional)
-     *     faceIds (Required): [
-     *         String (Required)
-     *     ]
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * [
-     *      (Required){
-     *         confidence: double (Required)
-     *         faceId: String (Optional)
-     *         persistedFaceId: String (Optional)
-     *     }
-     * ]
-     * }
-     * </pre>
-     *
-     * @param findSimilarRequest The findSimilarRequest parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> findSimilarWithResponse(BinaryData findSimilarRequest,
-        RequestOptions requestOptions) {
-        return this.serviceClient.findSimilarWithResponseAsync(findSimilarRequest, requestOptions);
-    }
-
-    /**
-     * Verify whether two faces belong to a same person.
-     *
-     * Please refer to https://learn.microsoft.com/rest/api/face/face-recognition-operations/verify-face-to-face for
-     * more details.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     faceId1: String (Required)
-     *     faceId2: String (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     isIdentical: boolean (Required)
-     *     confidence: double (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param verifyFaceToFaceRequest The verifyFaceToFaceRequest parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return verify result along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> verifyFaceToFaceWithResponse(BinaryData verifyFaceToFaceRequest,
-        RequestOptions requestOptions) {
-        return this.serviceClient.verifyFaceToFaceWithResponseAsync(verifyFaceToFaceRequest, requestOptions);
-    }
-
-    /**
-     * Divide candidate faces into groups based on face similarity.
-     *
-     * Please refer to https://learn.microsoft.com/rest/api/face/face-recognition-operations/group for more details.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     faceIds (Required): [
-     *         String (Required)
-     *     ]
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     groups (Required): [
-     *          (Required)[
-     *             String (Required)
-     *         ]
-     *     ]
-     *     messyGroup (Required): [
-     *         String (Required)
-     *     ]
-     * }
-     * }
-     * </pre>
-     *
-     * @param groupRequest The groupRequest parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response body for group face operation along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> groupWithResponse(BinaryData groupRequest, RequestOptions requestOptions) {
-        return this.serviceClient.groupWithResponseAsync(groupRequest, requestOptions);
-    }
-
-    /**
-     * Given query face's faceId, to search the similar-looking faces from a faceId array. A faceId array contains the
-     * faces created by Detect.
-     *
-     * Please refer to https://learn.microsoft.com/rest/api/face/face-recognition-operations/find-similar for more
-     * details.
-     *
-     * @param faceId faceId of the query face. User needs to call "Detect" first to get a valid faceId. Note that this
-     * faceId is not persisted and will expire 24 hours after the detection call.
-     * @param faceIds An array of candidate faceIds. All of them are created by "Detect" and the faceIds will expire 24
-     * hours after the detection call. The number of faceIds is limited to 1000.
-     * @param maxNumOfCandidatesReturned The number of top similar faces returned. The valid range is [1, 1000]. Default
-     * value is 20.
-     * @param mode Similar face searching mode. It can be 'matchPerson' or 'matchFace'. Default value is 'matchPerson'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<FaceFindSimilarResult>> findSimilar(String faceId, List<String> faceIds,
-        Integer maxNumOfCandidatesReturned, FindSimilarMatchMode mode) {
-        // Generated convenience method for findSimilarWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        FindSimilarRequest findSimilarRequestObj
-            = new FindSimilarRequest(faceId, faceIds).setMaxNumOfCandidatesReturned(maxNumOfCandidatesReturned)
-                .setMode(mode);
-        BinaryData findSimilarRequest = BinaryData.fromObject(findSimilarRequestObj);
-        return findSimilarWithResponse(findSimilarRequest, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_FACE_FIND_SIMILAR_RESULT));
-    }
-
-    /**
-     * Given query face's faceId, to search the similar-looking faces from a faceId array. A faceId array contains the
-     * faces created by Detect.
-     *
-     * Please refer to https://learn.microsoft.com/rest/api/face/face-recognition-operations/find-similar for more
-     * details.
-     *
-     * @param faceId faceId of the query face. User needs to call "Detect" first to get a valid faceId. Note that this
-     * faceId is not persisted and will expire 24 hours after the detection call.
-     * @param faceIds An array of candidate faceIds. All of them are created by "Detect" and the faceIds will expire 24
-     * hours after the detection call. The number of faceIds is limited to 1000.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<FaceFindSimilarResult>> findSimilar(String faceId, List<String> faceIds) {
-        // Generated convenience method for findSimilarWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        FindSimilarRequest findSimilarRequestObj = new FindSimilarRequest(faceId, faceIds);
-        BinaryData findSimilarRequest = BinaryData.fromObject(findSimilarRequestObj);
-        return findSimilarWithResponse(findSimilarRequest, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_FACE_FIND_SIMILAR_RESULT));
-    }
-
-    /**
-     * Verify whether two faces belong to a same person.
-     *
-     * Please refer to https://learn.microsoft.com/rest/api/face/face-recognition-operations/verify-face-to-face for
-     * more details.
-     *
-     * @param faceId1 The faceId of one face, come from "Detect".
-     * @param faceId2 The faceId of another face, come from "Detect".
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return verify result on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FaceVerificationResult> verifyFaceToFace(String faceId1, String faceId2) {
-        // Generated convenience method for verifyFaceToFaceWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        VerifyFaceToFaceRequest verifyFaceToFaceRequestObj = new VerifyFaceToFaceRequest(faceId1, faceId2);
-        BinaryData verifyFaceToFaceRequest = BinaryData.fromObject(verifyFaceToFaceRequestObj);
-        return verifyFaceToFaceWithResponse(verifyFaceToFaceRequest, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(FaceVerificationResult.class));
-    }
-
-    /**
-     * Divide candidate faces into groups based on face similarity.
-     *
-     * Please refer to https://learn.microsoft.com/rest/api/face/face-recognition-operations/group for more details.
-     *
-     * @param faceIds Array of candidate faceIds created by "Detect". The maximum is 1000 faces.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for group face operation on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FaceGroupingResult> group(List<String> faceIds) {
-        // Generated convenience method for groupWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        GroupRequest groupRequestObj = new GroupRequest(faceIds);
-        BinaryData groupRequest = BinaryData.fromObject(groupRequestObj);
-        return groupWithResponse(groupRequest, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(FaceGroupingResult.class));
-    }
-
-    @Generated
-    private static final TypeReference<List<FaceFindSimilarResult>> TYPE_REFERENCE_LIST_FACE_FIND_SIMILAR_RESULT
-        = new TypeReference<List<FaceFindSimilarResult>>() {
-        };
-
-    /**
      * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
      *
      * Please refer to https://learn.microsoft.com/rest/api/face/face-detection-operations/detect-from-url for more
@@ -644,6 +381,295 @@ public final class FaceAsyncClient {
     }
 
     /**
+     * Given query face's faceId, to search the similar-looking faces from a faceId array. A faceId array contains the
+     * faces created by Detect.
+     *
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-recognition-operations/find-similar for more
+     * details.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     faceId: String (Required)
+     *     maxNumOfCandidatesReturned: Integer (Optional)
+     *     mode: String(matchPerson/matchFace) (Optional)
+     *     faceIds (Required): [
+     *         String (Required)
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * [
+     *      (Required){
+     *         confidence: double (Required)
+     *         faceId: String (Optional)
+     *         persistedFaceId: String (Optional)
+     *     }
+     * ]
+     * }
+     * </pre>
+     *
+     * @param findSimilarRequest The findSimilarRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> findSimilarWithResponse(BinaryData findSimilarRequest,
+        RequestOptions requestOptions) {
+        return this.serviceClient.findSimilarWithResponseAsync(findSimilarRequest, requestOptions);
+    }
+
+    /**
+     * Verify whether two faces belong to a same person.
+     *
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-recognition-operations/verify-face-to-face for
+     * more details.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     faceId1: String (Required)
+     *     faceId2: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     isIdentical: boolean (Required)
+     *     confidence: double (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param verifyFaceToFaceRequest The verifyFaceToFaceRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return verify result along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> verifyFaceToFaceWithResponse(BinaryData verifyFaceToFaceRequest,
+        RequestOptions requestOptions) {
+        return this.serviceClient.verifyFaceToFaceWithResponseAsync(verifyFaceToFaceRequest, requestOptions);
+    }
+
+    /**
+     * Divide candidate faces into groups based on face similarity.
+     *
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-recognition-operations/group for more details.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     faceIds (Required): [
+     *         String (Required)
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     groups (Required): [
+     *          (Required)[
+     *             String (Required)
+     *         ]
+     *     ]
+     *     messyGroup (Required): [
+     *         String (Required)
+     *     ]
+     * }
+     * }
+     * </pre>
+     *
+     * @param groupRequest The groupRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response body for group face operation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> groupWithResponse(BinaryData groupRequest, RequestOptions requestOptions) {
+        return this.serviceClient.groupWithResponseAsync(groupRequest, requestOptions);
+    }
+
+    /**
+     * Given query face's faceId, to search the similar-looking faces from a Large Face List. A 'largeFaceListId' is
+     * created by Create Large Face List.
+     *
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/face-recognition-operations/find-similar-from-large-face-list for more
+     * details.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     faceId: String (Required)
+     *     maxNumOfCandidatesReturned: Integer (Optional)
+     *     mode: String(matchPerson/matchFace) (Optional)
+     *     largeFaceListId: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * [
+     *      (Required){
+     *         confidence: double (Required)
+     *         faceId: String (Optional)
+     *         persistedFaceId: String (Optional)
+     *     }
+     * ]
+     * }
+     * </pre>
+     *
+     * @param findSimilarFromLargeFaceListRequest The findSimilarFromLargeFaceListRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> findSimilarFromLargeFaceListWithResponse(
+        BinaryData findSimilarFromLargeFaceListRequest, RequestOptions requestOptions) {
+        return this.serviceClient.findSimilarFromLargeFaceListWithResponseAsync(findSimilarFromLargeFaceListRequest,
+            requestOptions);
+    }
+
+    /**
+     * 1-to-many identification to find the closest matches of the specific query person face from a Large Person Group.
+     *
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-recognition-operations/identify-from-person-group
+     * for more details.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     faceIds (Required): [
+     *         String (Required)
+     *     ]
+     *     largePersonGroupId: String (Required)
+     *     maxNumOfCandidatesReturned: Integer (Optional)
+     *     confidenceThreshold: Double (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * [
+     *      (Required){
+     *         faceId: String (Required)
+     *         candidates (Required): [
+     *              (Required){
+     *                 personId: String (Required)
+     *                 confidence: double (Required)
+     *             }
+     *         ]
+     *     }
+     * ]
+     * }
+     * </pre>
+     *
+     * @param identifyFromLargePersonGroupRequest The identifyFromLargePersonGroupRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> identifyFromLargePersonGroupWithResponse(
+        BinaryData identifyFromLargePersonGroupRequest, RequestOptions requestOptions) {
+        return this.serviceClient.identifyFromLargePersonGroupWithResponseAsync(identifyFromLargePersonGroupRequest,
+            requestOptions);
+    }
+
+    /**
+     * Verify whether a face belongs to a person in a Large Person Group.
+     *
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/face-recognition-operations/verify-from-large-person-group for more
+     * details.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     faceId: String (Required)
+     *     largePersonGroupId: String (Required)
+     *     personId: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     isIdentical: boolean (Required)
+     *     confidence: double (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param verifyFromLargePersonGroupRequest The verifyFromLargePersonGroupRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return verify result along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> verifyFromLargePersonGroupWithResponse(
+        BinaryData verifyFromLargePersonGroupRequest, RequestOptions requestOptions) {
+        return this.serviceClient.verifyFromLargePersonGroupWithResponseAsync(verifyFromLargePersonGroupRequest,
+            requestOptions);
+    }
+
+    /**
      * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
      *
      * Please refer to https://learn.microsoft.com/rest/api/face/face-detection-operations/detect-from-url for more
@@ -790,11 +816,6 @@ public final class FaceAsyncClient {
         return detectImplWithResponse(imageContent, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_FACE_DETECTION_RESULT));
     }
-
-    @Generated
-    private static final TypeReference<List<FaceDetectionResult>> TYPE_REFERENCE_LIST_FACE_DETECTION_RESULT
-        = new TypeReference<List<FaceDetectionResult>>() {
-        };
 
     /**
      * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
@@ -1268,152 +1289,121 @@ public final class FaceAsyncClient {
     }
 
     /**
-     * Given query face's faceId, to search the similar-looking faces from a Large Face List. A 'largeFaceListId' is
-     * created by Create Large Face List.
+     * Given query face's faceId, to search the similar-looking faces from a faceId array. A faceId array contains the
+     * faces created by Detect.
      *
-     * Please refer to
-     * https://learn.microsoft.com/rest/api/face/face-recognition-operations/find-similar-from-large-face-list for more
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-recognition-operations/find-similar for more
      * details.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     faceId: String (Required)
-     *     maxNumOfCandidatesReturned: Integer (Optional)
-     *     mode: String(matchPerson/matchFace) (Optional)
-     *     largeFaceListId: String (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * [
-     *      (Required){
-     *         confidence: double (Required)
-     *         faceId: String (Optional)
-     *         persistedFaceId: String (Optional)
-     *     }
-     * ]
-     * }
-     * </pre>
      *
-     * @param findSimilarFromLargeFaceListRequest The findSimilarFromLargeFaceListRequest parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param faceId faceId of the query face. User needs to call "Detect" first to get a valid faceId. Note that this
+     * faceId is not persisted and will expire 24 hours after the detection call.
+     * @param faceIds An array of candidate faceIds. All of them are created by "Detect" and the faceIds will expire 24
+     * hours after the detection call. The number of faceIds is limited to 1000.
+     * @param maxNumOfCandidatesReturned The number of top similar faces returned. The valid range is [1, 1000]. Default
+     * value is 20.
+     * @param mode Similar face searching mode. It can be 'matchPerson' or 'matchFace'. Default value is 'matchPerson'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> findSimilarFromLargeFaceListWithResponse(
-        BinaryData findSimilarFromLargeFaceListRequest, RequestOptions requestOptions) {
-        return this.serviceClient.findSimilarFromLargeFaceListWithResponseAsync(findSimilarFromLargeFaceListRequest,
-            requestOptions);
+    public Mono<List<FaceFindSimilarResult>> findSimilar(String faceId, List<String> faceIds,
+        Integer maxNumOfCandidatesReturned, FindSimilarMatchMode mode) {
+        // Generated convenience method for findSimilarWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        FindSimilarRequest findSimilarRequestObj
+            = new FindSimilarRequest(faceId, faceIds).setMaxNumOfCandidatesReturned(maxNumOfCandidatesReturned)
+                .setMode(mode);
+        BinaryData findSimilarRequest = BinaryData.fromObject(findSimilarRequestObj);
+        return findSimilarWithResponse(findSimilarRequest, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_FACE_FIND_SIMILAR_RESULT));
     }
 
     /**
-     * 1-to-many identification to find the closest matches of the specific query person face from a Large Person Group.
+     * Given query face's faceId, to search the similar-looking faces from a faceId array. A faceId array contains the
+     * faces created by Detect.
      *
-     * Please refer to https://learn.microsoft.com/rest/api/face/face-recognition-operations/identify-from-person-group
-     * for more details.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     faceIds (Required): [
-     *         String (Required)
-     *     ]
-     *     largePersonGroupId: String (Required)
-     *     maxNumOfCandidatesReturned: Integer (Optional)
-     *     confidenceThreshold: Double (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * [
-     *      (Required){
-     *         faceId: String (Required)
-     *         candidates (Required): [
-     *              (Required){
-     *                 personId: String (Required)
-     *                 confidence: double (Required)
-     *             }
-     *         ]
-     *     }
-     * ]
-     * }
-     * </pre>
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-recognition-operations/find-similar for more
+     * details.
      *
-     * @param identifyFromLargePersonGroupRequest The identifyFromLargePersonGroupRequest parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param faceId faceId of the query face. User needs to call "Detect" first to get a valid faceId. Note that this
+     * faceId is not persisted and will expire 24 hours after the detection call.
+     * @param faceIds An array of candidate faceIds. All of them are created by "Detect" and the faceIds will expire 24
+     * hours after the detection call. The number of faceIds is limited to 1000.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> identifyFromLargePersonGroupWithResponse(
-        BinaryData identifyFromLargePersonGroupRequest, RequestOptions requestOptions) {
-        return this.serviceClient.identifyFromLargePersonGroupWithResponseAsync(identifyFromLargePersonGroupRequest,
-            requestOptions);
+    public Mono<List<FaceFindSimilarResult>> findSimilar(String faceId, List<String> faceIds) {
+        // Generated convenience method for findSimilarWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        FindSimilarRequest findSimilarRequestObj = new FindSimilarRequest(faceId, faceIds);
+        BinaryData findSimilarRequest = BinaryData.fromObject(findSimilarRequestObj);
+        return findSimilarWithResponse(findSimilarRequest, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_FACE_FIND_SIMILAR_RESULT));
     }
 
     /**
-     * Verify whether a face belongs to a person in a Large Person Group.
+     * Verify whether two faces belong to a same person.
      *
-     * Please refer to
-     * https://learn.microsoft.com/rest/api/face/face-recognition-operations/verify-from-large-person-group for more
-     * details.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     faceId: String (Required)
-     *     largePersonGroupId: String (Required)
-     *     personId: String (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     isIdentical: boolean (Required)
-     *     confidence: double (Required)
-     * }
-     * }
-     * </pre>
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-recognition-operations/verify-face-to-face for
+     * more details.
      *
-     * @param verifyFromLargePersonGroupRequest The verifyFromLargePersonGroupRequest parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param faceId1 The faceId of one face, come from "Detect".
+     * @param faceId2 The faceId of another face, come from "Detect".
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return verify result along with {@link Response} on successful completion of {@link Mono}.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return verify result on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> verifyFromLargePersonGroupWithResponse(
-        BinaryData verifyFromLargePersonGroupRequest, RequestOptions requestOptions) {
-        return this.serviceClient.verifyFromLargePersonGroupWithResponseAsync(verifyFromLargePersonGroupRequest,
-            requestOptions);
+    public Mono<FaceVerificationResult> verifyFaceToFace(String faceId1, String faceId2) {
+        // Generated convenience method for verifyFaceToFaceWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        VerifyFaceToFaceRequest verifyFaceToFaceRequestObj = new VerifyFaceToFaceRequest(faceId1, faceId2);
+        BinaryData verifyFaceToFaceRequest = BinaryData.fromObject(verifyFaceToFaceRequestObj);
+        return verifyFaceToFaceWithResponse(verifyFaceToFaceRequest, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(FaceVerificationResult.class));
+    }
+
+    /**
+     * Divide candidate faces into groups based on face similarity.
+     *
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-recognition-operations/group for more details.
+     *
+     * @param faceIds Array of candidate faceIds created by "Detect". The maximum is 1000 faces.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body for group face operation on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FaceGroupingResult> group(List<String> faceIds) {
+        // Generated convenience method for groupWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        GroupRequest groupRequestObj = new GroupRequest(faceIds);
+        BinaryData groupRequest = BinaryData.fromObject(groupRequestObj);
+        return groupWithResponse(groupRequest, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(FaceGroupingResult.class));
     }
 
     /**
@@ -1593,7 +1583,17 @@ public final class FaceAsyncClient {
     }
 
     @Generated
+    private static final TypeReference<List<FaceDetectionResult>> TYPE_REFERENCE_LIST_FACE_DETECTION_RESULT
+        = new TypeReference<List<FaceDetectionResult>>() {
+        };
+
+    @Generated
     private static final TypeReference<List<FaceIdentificationResult>> TYPE_REFERENCE_LIST_FACE_IDENTIFICATION_RESULT
         = new TypeReference<List<FaceIdentificationResult>>() {
+        };
+
+    @Generated
+    private static final TypeReference<List<FaceFindSimilarResult>> TYPE_REFERENCE_LIST_FACE_FIND_SIMILAR_RESULT
+        = new TypeReference<List<FaceFindSimilarResult>>() {
         };
 }
