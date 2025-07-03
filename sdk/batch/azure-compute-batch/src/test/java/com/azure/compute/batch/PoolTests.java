@@ -537,4 +537,108 @@ public class PoolTests extends BatchClientTestBase {
         }
     }
 
+    @SyncAsyncTest
+    public void canRebootReimageRemoveNodesAndStopResize() throws Exception {
+        String modeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
+        String poolId = getStringIdWithUserNamePrefix("-nodeOpsPool" + modeSuffix + "-" + System.currentTimeMillis());
+
+        // Create or ensure a pool with 2 dedicated nodes
+        final int startingDedicated = 2;
+
+        boolean exists = SyncAsyncExtension.execute(() -> poolExists(batchClient, poolId),
+            () -> poolExists(batchAsyncClient, poolId));
+
+        if (!exists) {
+            BatchVmImageReference imgRef = new BatchVmImageReference().setPublisher("microsoftwindowsserver")
+                .setOffer("windowsserver")
+                .setSku("2022-datacenter-smalldisk");
+
+            VirtualMachineConfiguration vmCfg = new VirtualMachineConfiguration(imgRef, "batch.node.windows amd64");
+
+            BatchPoolCreateParameters createParams
+                = new BatchPoolCreateParameters(poolId, "STANDARD_D2S_V3").setTargetDedicatedNodes(startingDedicated)
+                    .setVirtualMachineConfiguration(vmCfg);
+
+            SyncAsyncExtension.execute(() -> batchClient.createPool(createParams),
+                () -> batchAsyncClient.createPool(createParams));
+        }
+
+        try {
+            // Wait for pool to reach steady state
+            BatchPool pool = SyncAsyncExtension.execute(
+                () -> waitForPoolState(poolId, AllocationState.STEADY, 15 * 60 * 1000),
+                () -> Mono.fromCallable(() -> waitForPoolStateAsync(poolId, AllocationState.STEADY, 15 * 60 * 1000)));
+
+            // Grab two node IDs
+            List<BatchNode> nodes = new ArrayList<>();
+            SyncAsyncExtension
+                .execute(() -> batchClient.listNodes(poolId),
+                    () -> Mono.fromCallable(() -> batchAsyncClient.listNodes(poolId).toIterable()))
+                .forEach(nodes::add);
+
+            Assertions.assertTrue(nodes.size() >= 2, "Need at least two nodes for this test.");
+            String nodeIdA = nodes.get(0).getId();
+            String nodeIdB = nodes.get(1).getId();
+
+            // Reboot node
+            SyncAsyncExtension.execute(() -> {
+                batchClient.rebootNode(poolId, nodeIdA);
+                return null;
+            }, () -> batchAsyncClient.rebootNode(poolId, nodeIdA));
+
+            // Reimage node
+            SyncAsyncExtension.execute(() -> {
+                batchClient.reimageNode(poolId, nodeIdB);
+                return null;
+            }, () -> batchAsyncClient.reimageNode(poolId, nodeIdB));
+
+            // Shrink pool by one node
+            BatchNodeRemoveParameters removeParams = new BatchNodeRemoveParameters(Collections.singletonList(nodeIdB))
+                .setNodeDeallocationOption(BatchNodeDeallocationOption.TASK_COMPLETION); // any valid option
+
+            SyncAsyncExtension.execute(() -> {
+                batchClient.removeNodes(poolId, removeParams);
+                return null;
+            }, () -> batchAsyncClient.removeNodes(poolId, removeParams));
+
+            // Wait again for STEADY after auto-resize
+            pool = SyncAsyncExtension.execute(() -> waitForPoolState(poolId, AllocationState.STEADY, 15 * 60 * 1000),
+                () -> Mono.fromCallable(() -> waitForPoolStateAsync(poolId, AllocationState.STEADY, 15 * 60 * 1000)));
+
+            Assertions.assertEquals(Integer.valueOf(1), pool.getTargetDedicatedNodes(),
+                "Pool should have shrunk to one dedicated node after removeNodes.");
+
+            // Start a resize, then stop pool resize
+            BatchPoolResizeParameters grow = new BatchPoolResizeParameters().setTargetDedicatedNodes(2);
+
+            SyncAsyncExtension.execute(() -> {
+                batchClient.resizePool(poolId, grow);
+                return null;
+            }, () -> batchAsyncClient.resizePool(poolId, grow));
+
+            // Immediately stop it
+            SyncAsyncExtension.execute(() -> {
+                batchClient.stopPoolResize(poolId);
+                return null;
+            }, () -> batchAsyncClient.stopPoolResize(poolId));
+
+            pool = SyncAsyncExtension.execute(() -> waitForPoolState(poolId, AllocationState.STEADY, 15 * 60 * 1000),
+                () -> Mono.fromCallable(() -> waitForPoolStateAsync(poolId, AllocationState.STEADY, 15 * 60 * 1000)));
+
+            Assertions.assertNotEquals(AllocationState.RESIZING, pool.getAllocationState(),
+                "Pool should not remain in RESIZING after stopPoolResize.");
+
+        } finally {
+            // Clean-up
+            try {
+                SyncPoller<BatchPool, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+                    SyncAsyncExtension.execute(() -> batchClient.beginDeletePool(poolId),
+                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeletePool(poolId).getSyncPoller())));
+                deletePoller.waitForCompletion();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
