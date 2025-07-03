@@ -7,6 +7,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -39,17 +40,17 @@ import java.util.Map;
 @Fluent
 public final class VirtualMachineInner extends Resource {
     /*
+     * Describes the properties of a Virtual Machine.
+     */
+    private VirtualMachinePropertiesInner innerProperties;
+
+    /*
      * Specifies information about the marketplace image used to create the virtual machine. This element is only used
      * for marketplace images. Before you can use a marketplace image from an API, you must enable the image for
      * programmatic use. In the Azure portal, find the marketplace image that you want to use and then click **Want to
      * deploy programmatically, Get Started ->**. Enter any required information and then click **Save**.
      */
     private Plan plan;
-
-    /*
-     * Describes the properties of a Virtual Machine.
-     */
-    private VirtualMachinePropertiesInner innerProperties;
 
     /*
      * The virtual machine child extension resources.
@@ -62,7 +63,7 @@ public final class VirtualMachineInner extends Resource {
     private VirtualMachineIdentity identity;
 
     /*
-     * The virtual machine zones.
+     * The availability zones.
      */
     private List<String> zones;
 
@@ -90,6 +91,11 @@ public final class VirtualMachineInner extends Resource {
     private Placement placement;
 
     /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
      * The type of the resource.
      */
     private String type;
@@ -108,6 +114,15 @@ public final class VirtualMachineInner extends Resource {
      * Creates an instance of VirtualMachineInner class.
      */
     public VirtualMachineInner() {
+    }
+
+    /**
+     * Get the innerProperties property: Describes the properties of a Virtual Machine.
+     * 
+     * @return the innerProperties value.
+     */
+    private VirtualMachinePropertiesInner innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -136,15 +151,6 @@ public final class VirtualMachineInner extends Resource {
     public VirtualMachineInner withPlan(Plan plan) {
         this.plan = plan;
         return this;
-    }
-
-    /**
-     * Get the innerProperties property: Describes the properties of a Virtual Machine.
-     * 
-     * @return the innerProperties value.
-     */
-    private VirtualMachinePropertiesInner innerProperties() {
-        return this.innerProperties;
     }
 
     /**
@@ -177,7 +183,7 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Get the zones property: The virtual machine zones.
+     * Get the zones property: The availability zones.
      * 
      * @return the zones value.
      */
@@ -186,7 +192,7 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Set the zones property: The virtual machine zones.
+     * Set the zones property: The availability zones.
      * 
      * @param zones the zones value to set.
      * @return the VirtualMachineInner object itself.
@@ -256,6 +262,15 @@ public final class VirtualMachineInner extends Resource {
     public VirtualMachineInner withPlacement(Placement placement) {
         this.placement = placement;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -961,11 +976,11 @@ public final class VirtualMachineInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (plan() != null) {
-            plan().validate();
-        }
         if (innerProperties() != null) {
             innerProperties().validate();
+        }
+        if (plan() != null) {
+            plan().validate();
         }
         if (resources() != null) {
             resources().forEach(e -> e.validate());
@@ -989,8 +1004,8 @@ public final class VirtualMachineInner extends Resource {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("plan", this.plan);
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("plan", this.plan);
         jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
@@ -1025,10 +1040,10 @@ public final class VirtualMachineInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedVirtualMachineInner.withTags(tags);
-                } else if ("plan".equals(fieldName)) {
-                    deserializedVirtualMachineInner.plan = Plan.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedVirtualMachineInner.innerProperties = VirtualMachinePropertiesInner.fromJson(reader);
+                } else if ("plan".equals(fieldName)) {
+                    deserializedVirtualMachineInner.plan = Plan.fromJson(reader);
                 } else if ("resources".equals(fieldName)) {
                     List<VirtualMachineExtensionInner> resources
                         = reader.readArray(reader1 -> VirtualMachineExtensionInner.fromJson(reader1));
@@ -1046,6 +1061,8 @@ public final class VirtualMachineInner extends Resource {
                     deserializedVirtualMachineInner.etag = reader.getString();
                 } else if ("placement".equals(fieldName)) {
                     deserializedVirtualMachineInner.placement = Placement.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedVirtualMachineInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

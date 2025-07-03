@@ -28,9 +28,9 @@ public interface VirtualMachineRunCommandsClient {
     /**
      * Lists all available run commands for a subscription in a location.
      * 
-     * @param location The location upon which run commands is queried.
+     * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Virtual Machine operation response as paginated response with {@link PagedFlux}.
      */
@@ -40,9 +40,9 @@ public interface VirtualMachineRunCommandsClient {
     /**
      * Lists all available run commands for a subscription in a location.
      * 
-     * @param location The location upon which run commands is queried.
+     * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Virtual Machine operation response as paginated response with {@link PagedIterable}.
      */
@@ -52,10 +52,10 @@ public interface VirtualMachineRunCommandsClient {
     /**
      * Lists all available run commands for a subscription in a location.
      * 
-     * @param location The location upon which run commands is queried.
+     * @param location The name of Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Virtual Machine operation response as paginated response with {@link PagedIterable}.
      */
@@ -65,10 +65,10 @@ public interface VirtualMachineRunCommandsClient {
     /**
      * Gets specific run command for a subscription in a location.
      * 
-     * @param location The location upon which run commands is queried.
+     * @param location The name of Azure region.
      * @param commandId The command id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specific run command for a subscription in a location along with {@link Response} on successful
      * completion of {@link Mono}.
@@ -79,10 +79,10 @@ public interface VirtualMachineRunCommandsClient {
     /**
      * Gets specific run command for a subscription in a location.
      * 
-     * @param location The location upon which run commands is queried.
+     * @param location The name of Azure region.
      * @param commandId The command id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specific run command for a subscription in a location on successful completion of {@link Mono}.
      */
@@ -92,11 +92,11 @@ public interface VirtualMachineRunCommandsClient {
     /**
      * Gets specific run command for a subscription in a location.
      * 
-     * @param location The location upon which run commands is queried.
+     * @param location The name of Azure region.
      * @param commandId The command id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specific run command for a subscription in a location along with {@link Response}.
      */
@@ -106,10 +106,10 @@ public interface VirtualMachineRunCommandsClient {
     /**
      * Gets specific run command for a subscription in a location.
      * 
-     * @param location The location upon which run commands is queried.
+     * @param location The name of Azure region.
      * @param commandId The command id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specific run command for a subscription in a location.
      */
@@ -117,11 +117,131 @@ public interface VirtualMachineRunCommandsClient {
     RunCommandDocumentInner get(String location, String commandId);
 
     /**
+     * The operation to get all run commands of a Virtual Machine.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the VirtualMachine.
+     * @param expand The expand expression to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List run command operation response as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<VirtualMachineRunCommandInner> listByVirtualMachineAsync(String resourceGroupName, String vmName,
+        String expand);
+
+    /**
+     * The operation to get all run commands of a Virtual Machine.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the VirtualMachine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List run command operation response as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<VirtualMachineRunCommandInner> listByVirtualMachineAsync(String resourceGroupName, String vmName);
+
+    /**
+     * The operation to get all run commands of a Virtual Machine.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the VirtualMachine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List run command operation response as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<VirtualMachineRunCommandInner> listByVirtualMachine(String resourceGroupName, String vmName);
+
+    /**
+     * The operation to get all run commands of a Virtual Machine.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the VirtualMachine.
+     * @param expand The expand expression to apply on the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List run command operation response as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<VirtualMachineRunCommandInner> listByVirtualMachine(String resourceGroupName, String vmName,
+        String expand, Context context);
+
+    /**
+     * The operation to get the run command.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the VirtualMachine.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
+     * @param expand The expand expression to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<VirtualMachineRunCommandInner>> getByVirtualMachineWithResponseAsync(String resourceGroupName,
+        String vmName, String runCommandName, String expand);
+
+    /**
+     * The operation to get the run command.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the VirtualMachine.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a Virtual Machine run command on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<VirtualMachineRunCommandInner> getByVirtualMachineAsync(String resourceGroupName, String vmName,
+        String runCommandName);
+
+    /**
+     * The operation to get the run command.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the VirtualMachine.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
+     * @param expand The expand expression to apply on the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a Virtual Machine run command along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<VirtualMachineRunCommandInner> getByVirtualMachineWithResponse(String resourceGroupName, String vmName,
+        String runCommandName, String expand, Context context);
+
+    /**
+     * The operation to get the run command.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the VirtualMachine.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a Virtual Machine run command.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VirtualMachineRunCommandInner getByVirtualMachine(String resourceGroupName, String vmName, String runCommandName);
+
+    /**
      * The operation to create or update the run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine where the run command should be created or updated.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the VirtualMachine.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @param runCommand Parameters supplied to the Create Virtual Machine RunCommand operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -136,9 +256,9 @@ public interface VirtualMachineRunCommandsClient {
     /**
      * The operation to create or update the run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine where the run command should be created or updated.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the VirtualMachine.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @param runCommand Parameters supplied to the Create Virtual Machine RunCommand operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -152,9 +272,9 @@ public interface VirtualMachineRunCommandsClient {
     /**
      * The operation to create or update the run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine where the run command should be created or updated.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the VirtualMachine.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @param runCommand Parameters supplied to the Create Virtual Machine RunCommand operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -168,9 +288,9 @@ public interface VirtualMachineRunCommandsClient {
     /**
      * The operation to create or update the run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine where the run command should be created or updated.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the VirtualMachine.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @param runCommand Parameters supplied to the Create Virtual Machine RunCommand operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -186,9 +306,9 @@ public interface VirtualMachineRunCommandsClient {
     /**
      * The operation to create or update the run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine where the run command should be created or updated.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the VirtualMachine.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @param runCommand Parameters supplied to the Create Virtual Machine RunCommand operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -202,9 +322,9 @@ public interface VirtualMachineRunCommandsClient {
     /**
      * The operation to create or update the run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine where the run command should be created or updated.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the VirtualMachine.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @param runCommand Parameters supplied to the Create Virtual Machine RunCommand operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -218,9 +338,9 @@ public interface VirtualMachineRunCommandsClient {
     /**
      * The operation to create or update the run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine where the run command should be created or updated.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the VirtualMachine.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @param runCommand Parameters supplied to the Create Virtual Machine RunCommand operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -235,9 +355,9 @@ public interface VirtualMachineRunCommandsClient {
     /**
      * The operation to update the run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine where the run command should be updated.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the VirtualMachine.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @param runCommand Parameters supplied to the Update Virtual Machine RunCommand operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -252,9 +372,9 @@ public interface VirtualMachineRunCommandsClient {
     /**
      * The operation to update the run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine where the run command should be updated.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the VirtualMachine.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @param runCommand Parameters supplied to the Update Virtual Machine RunCommand operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -268,9 +388,9 @@ public interface VirtualMachineRunCommandsClient {
     /**
      * The operation to update the run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine where the run command should be updated.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the VirtualMachine.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @param runCommand Parameters supplied to the Update Virtual Machine RunCommand operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -284,9 +404,9 @@ public interface VirtualMachineRunCommandsClient {
     /**
      * The operation to update the run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine where the run command should be updated.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the VirtualMachine.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @param runCommand Parameters supplied to the Update Virtual Machine RunCommand operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -302,9 +422,9 @@ public interface VirtualMachineRunCommandsClient {
     /**
      * The operation to update the run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine where the run command should be updated.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the VirtualMachine.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @param runCommand Parameters supplied to the Update Virtual Machine RunCommand operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -318,9 +438,9 @@ public interface VirtualMachineRunCommandsClient {
     /**
      * The operation to update the run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine where the run command should be updated.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the VirtualMachine.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @param runCommand Parameters supplied to the Update Virtual Machine RunCommand operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -334,9 +454,9 @@ public interface VirtualMachineRunCommandsClient {
     /**
      * The operation to update the run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine where the run command should be updated.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the VirtualMachine.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @param runCommand Parameters supplied to the Update Virtual Machine RunCommand operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -351,9 +471,9 @@ public interface VirtualMachineRunCommandsClient {
     /**
      * The operation to delete the run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine where the run command should be deleted.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the VirtualMachine.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -366,9 +486,9 @@ public interface VirtualMachineRunCommandsClient {
     /**
      * The operation to delete the run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine where the run command should be deleted.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the VirtualMachine.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -380,9 +500,9 @@ public interface VirtualMachineRunCommandsClient {
     /**
      * The operation to delete the run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine where the run command should be deleted.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the VirtualMachine.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -394,9 +514,9 @@ public interface VirtualMachineRunCommandsClient {
     /**
      * The operation to delete the run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine where the run command should be deleted.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the VirtualMachine.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -410,9 +530,9 @@ public interface VirtualMachineRunCommandsClient {
     /**
      * The operation to delete the run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine where the run command should be deleted.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the VirtualMachine.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -424,9 +544,9 @@ public interface VirtualMachineRunCommandsClient {
     /**
      * The operation to delete the run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine where the run command should be deleted.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the VirtualMachine.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -437,9 +557,9 @@ public interface VirtualMachineRunCommandsClient {
     /**
      * The operation to delete the run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine where the run command should be deleted.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the VirtualMachine.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -447,124 +567,4 @@ public interface VirtualMachineRunCommandsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String vmName, String runCommandName, Context context);
-
-    /**
-     * The operation to get the run command.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine containing the run command.
-     * @param runCommandName The name of the virtual machine run command.
-     * @param expand The expand expression to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VirtualMachineRunCommandInner>> getByVirtualMachineWithResponseAsync(String resourceGroupName,
-        String vmName, String runCommandName, String expand);
-
-    /**
-     * The operation to get the run command.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine containing the run command.
-     * @param runCommandName The name of the virtual machine run command.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualMachineRunCommandInner> getByVirtualMachineAsync(String resourceGroupName, String vmName,
-        String runCommandName);
-
-    /**
-     * The operation to get the run command.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine containing the run command.
-     * @param runCommandName The name of the virtual machine run command.
-     * @param expand The expand expression to apply on the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualMachineRunCommandInner> getByVirtualMachineWithResponse(String resourceGroupName, String vmName,
-        String runCommandName, String expand, Context context);
-
-    /**
-     * The operation to get the run command.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine containing the run command.
-     * @param runCommandName The name of the virtual machine run command.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineRunCommandInner getByVirtualMachine(String resourceGroupName, String vmName, String runCommandName);
-
-    /**
-     * The operation to get all run commands of a Virtual Machine.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine containing the run command.
-     * @param expand The expand expression to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List run command operation response as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<VirtualMachineRunCommandInner> listByVirtualMachineAsync(String resourceGroupName, String vmName,
-        String expand);
-
-    /**
-     * The operation to get all run commands of a Virtual Machine.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine containing the run command.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List run command operation response as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<VirtualMachineRunCommandInner> listByVirtualMachineAsync(String resourceGroupName, String vmName);
-
-    /**
-     * The operation to get all run commands of a Virtual Machine.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine containing the run command.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List run command operation response as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VirtualMachineRunCommandInner> listByVirtualMachine(String resourceGroupName, String vmName);
-
-    /**
-     * The operation to get all run commands of a Virtual Machine.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine containing the run command.
-     * @param expand The expand expression to apply on the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List run command operation response as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VirtualMachineRunCommandInner> listByVirtualMachine(String resourceGroupName, String vmName,
-        String expand, Context context);
 }

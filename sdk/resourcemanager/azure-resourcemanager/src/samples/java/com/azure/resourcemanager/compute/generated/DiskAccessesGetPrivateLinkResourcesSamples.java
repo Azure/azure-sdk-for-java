@@ -10,11 +10,11 @@ package com.azure.resourcemanager.compute.generated;
 public final class DiskAccessesGetPrivateLinkResourcesSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskAccessExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2025-01-02/examples/diskAccessExamples/
      * DiskAccessPrivateLinkResources_Get.json
      */
     /**
-     * Sample code: List all possible private link resources under disk access resource.
+     * Sample code: list all possible private link resources under disk access resource.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */

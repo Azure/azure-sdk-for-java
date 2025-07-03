@@ -363,8 +363,12 @@ public final class VirtualMachineScaleSetExtensionProperties
         jsonWriter.writeStringField("typeHandlerVersion", this.typeHandlerVersion);
         jsonWriter.writeBooleanField("autoUpgradeMinorVersion", this.autoUpgradeMinorVersion);
         jsonWriter.writeBooleanField("enableAutomaticUpgrade", this.enableAutomaticUpgrade);
-        jsonWriter.writeUntypedField("settings", this.settings);
-        jsonWriter.writeUntypedField("protectedSettings", this.protectedSettings);
+        if (this.settings != null) {
+            jsonWriter.writeUntypedField("settings", this.settings);
+        }
+        if (this.protectedSettings != null) {
+            jsonWriter.writeUntypedField("protectedSettings", this.protectedSettings);
+        }
         jsonWriter.writeArrayField("provisionAfterExtensions", this.provisionAfterExtensions,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeBooleanField("suppressFailures", this.suppressFailures);

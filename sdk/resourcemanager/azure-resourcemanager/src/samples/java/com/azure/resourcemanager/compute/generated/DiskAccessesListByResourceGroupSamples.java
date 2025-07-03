@@ -10,11 +10,11 @@ package com.azure.resourcemanager.compute.generated;
 public final class DiskAccessesListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskAccessExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2025-01-02/examples/diskAccessExamples/
      * DiskAccess_ListByResourceGroup.json
      */
     /**
-     * Sample code: List all disk access resources in a resource group.
+     * Sample code: list all disk access resources in a resource group.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */

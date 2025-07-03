@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -24,15 +25,20 @@ import java.util.Map;
 @Fluent
 public final class DiskEncryptionSetInner extends Resource {
     /*
+     * The properties property.
+     */
+    private EncryptionSetProperties innerProperties;
+
+    /*
      * The managed identity for the disk encryption set. It should be given permission on the key vault before it can be
      * used to encrypt disks.
      */
     private EncryptionSetIdentity identity;
 
     /*
-     * The properties property.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    private EncryptionSetProperties innerProperties;
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -53,6 +59,15 @@ public final class DiskEncryptionSetInner extends Resource {
      * Creates an instance of DiskEncryptionSetInner class.
      */
     public DiskEncryptionSetInner() {
+    }
+
+    /**
+     * Get the innerProperties property: The properties property.
+     * 
+     * @return the innerProperties value.
+     */
+    private EncryptionSetProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -78,12 +93,12 @@ public final class DiskEncryptionSetInner extends Resource {
     }
 
     /**
-     * Get the innerProperties property: The properties property.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
-     * @return the innerProperties value.
+     * @return the systemData value.
      */
-    private EncryptionSetProperties innerProperties() {
-        return this.innerProperties;
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -274,11 +289,11 @@ public final class DiskEncryptionSetInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (identity() != null) {
-            identity().validate();
-        }
         if (innerProperties() != null) {
             innerProperties().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 
@@ -290,8 +305,8 @@ public final class DiskEncryptionSetInner extends Resource {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -322,10 +337,12 @@ public final class DiskEncryptionSetInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedDiskEncryptionSetInner.withTags(tags);
-                } else if ("identity".equals(fieldName)) {
-                    deserializedDiskEncryptionSetInner.identity = EncryptionSetIdentity.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedDiskEncryptionSetInner.innerProperties = EncryptionSetProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedDiskEncryptionSetInner.identity = EncryptionSetIdentity.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedDiskEncryptionSetInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
