@@ -12172,6 +12172,26 @@ public final class BatchClient {
     }
 
     /**
+     * Restarts the specified Compute Node.
+     *
+     * You can restart a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the rebooting of the Node.
+     * The poller provides {@link BatchNode} instances during polling and returns the last known
+     * {@link BatchNode} on completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchNode, BatchNode> beginRebootNode(String poolId, String nodeId) {
+        PollerFlux<BatchNode, BatchNode> asyncPoller = asyncClient.beginRebootNode(poolId, nodeId);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
      * Starts the specified Compute Node.
      *
      * You can start a Compute Node only if it has been deallocated.
@@ -14565,6 +14585,28 @@ public final class BatchClient {
             requestOptions.setBody(BinaryData.fromObject(parameters));
         }
         rebootNodeWithResponse(poolId, nodeId, requestOptions).getValue();
+    }
+
+    /**
+     * Restarts the specified Compute Node.
+     *
+     * You can restart a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param options Optional parameters for Reboot Node operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the rebooting of the Node.
+     * The poller provides {@link BatchNode} instances during polling and returns the last known
+     * {@link BatchNode} on completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchNode, BatchNode> beginRebootNode(String poolId, String nodeId,
+        BatchNodeRebootOptions options) {
+        PollerFlux<BatchNode, BatchNode> asyncPoller = asyncClient.beginRebootNode(poolId, nodeId, options);
+        return asyncPoller.getSyncPoller();
     }
 
     /**
