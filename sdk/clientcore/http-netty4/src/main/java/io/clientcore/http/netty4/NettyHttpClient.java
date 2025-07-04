@@ -26,6 +26,7 @@ import io.clientcore.http.netty4.implementation.Netty4EagerConsumeChannelHandler
 import io.clientcore.http.netty4.implementation.Netty4PipelineCleanupHandler;
 import io.clientcore.http.netty4.implementation.Netty4ProgressAndTimeoutHandler;
 import io.clientcore.http.netty4.implementation.Netty4ResponseHandler;
+import io.clientcore.http.netty4.implementation.Netty4Utility;
 import io.clientcore.http.netty4.implementation.ResponseBodyHandling;
 import io.clientcore.http.netty4.implementation.ResponseStateInfo;
 import io.netty.bootstrap.Bootstrap;
@@ -53,7 +54,6 @@ import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.PIPELI
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.PROGRESS_AND_TIMEOUT;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.SSL;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.awaitLatch;
-import static io.clientcore.http.netty4.implementation.Netty4Utility.configureHttpsPipeline;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.createCodec;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.sendHttp11Request;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.setOrSuppressError;
@@ -144,6 +144,8 @@ class NettyHttpClient implements HttpClient {
         }
 
         Response<BinaryData> response;
+        Channel channelToRelease;
+
         if (info.isChannelConsumptionComplete()) {
             // The network response is already complete, handle creating our Response based on the request method and
             // response headers.
@@ -154,7 +156,7 @@ class NettyHttpClient implements HttpClient {
                 // there was body content.
                 body = BinaryData.fromBytes(eagerContent.toByteArray());
             }
-
+            channelToRelease = info.getResponseChannel();
             response = new Response<>(request, info.getStatusCode(), info.getHeaders(), body);
         } else {
             // Otherwise we aren't finished, handle the remaining content according to the documentation in
@@ -169,7 +171,9 @@ class NettyHttpClient implements HttpClient {
                 }, info.isHttp2()));
                 channel.config().setAutoRead(true);
                 awaitLatch(drainLatch);
+                channelToRelease = channel;
             } else if (bodyHandling == ResponseBodyHandling.STREAM) {
+                channelToRelease = null;
                 // Body streaming uses a special BinaryData that tracks the firstContent read and the Channel it came
                 // from so it can be consumed when the BinaryData is being used.
                 // autoRead should have been disabled already but lets make sure that it is.
@@ -197,11 +201,22 @@ class NettyHttpClient implements HttpClient {
                 }, info.isHttp2()));
                 channel.config().setAutoRead(true);
                 awaitLatch(drainLatch);
+                channelToRelease = channel;
 
                 body = BinaryData.fromBytes(info.getEagerContent().toByteArray());
             }
 
             response = new Response<>(request, info.getStatusCode(), info.getHeaders(), body);
+        }
+
+        if (channelToRelease != null) {
+            channelToRelease.eventLoop().execute(() -> {
+                Netty4PipelineCleanupHandler cleanupHandler
+                    = channelToRelease.pipeline().get(Netty4PipelineCleanupHandler.class);
+                if (cleanupHandler != null) {
+                    cleanupHandler.cleanup(channelToRelease.pipeline().context(cleanupHandler), false);
+                }
+            });
         }
 
         if (response.getValue() != BinaryData.empty()
@@ -281,8 +296,18 @@ class NettyHttpClient implements HttpClient {
             if (protocolVersion != null) {
                 // Connection is being reused, ALPN is already done.
                 // Manually configure the pipeline based on the stored protocol.
-                configureHttpsPipeline(pipeline, request, protocolVersion, responseReference, errorReference, latch);
-                send(request, channel, errorReference, latch);
+                boolean isHttp2 = protocolVersion == HttpProtocolVersion.HTTP_2;
+                pipeline.addLast(HTTP_RESPONSE, new Netty4ResponseHandler(request, responseReference, errorReference, latch, isHttp2));
+
+                if (!isHttp2 && pipeline.get(HTTP_CODEC) == null) {
+                    pipeline.addBefore(HTTP_RESPONSE, HTTP_CODEC, createCodec());
+                }
+
+                if (isHttp2) {
+                    Netty4Utility.sendHttp2Request(request, channel, errorReference, latch);
+                } else {
+                    send(request, channel, errorReference, latch);
+                }
             } else {
                 // This is a new connection, let ALPN do the work.
                 // For HTTPS, we delegate the addition of the response handler and codec to the ALPN handler.
@@ -292,7 +317,7 @@ class NettyHttpClient implements HttpClient {
             // If there isn't an SslHandler, we can send the request immediately.
             // Add the HTTP/1.1 codec, as we only support HTTP/2 when using SSL ALPN.
             pipeline.addLast(HTTP_RESPONSE,
-                new Netty4ResponseHandler(request, responseReference, errorReference, latch));
+                new Netty4ResponseHandler(request, responseReference, errorReference, latch, false));
             String addBefore = addProgressAndTimeoutHandler ? PROGRESS_AND_TIMEOUT : HTTP_RESPONSE;
             pipeline.addBefore(addBefore, HTTP_CODEC, createCodec());
             send(request, channel, errorReference, latch);

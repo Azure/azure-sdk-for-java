@@ -70,7 +70,6 @@ public final class Netty4ChannelBinaryData extends BinaryData {
             bytes = eagerContent.toByteArray();
             eagerContent = null;
         }
-
         return bytes;
     }
 
@@ -91,7 +90,7 @@ public final class Netty4ChannelBinaryData extends BinaryData {
     @Override
     public InputStream toStream() {
         if (bytes == null) {
-            return new Netty4ChannelInputStream(eagerContent, channel, isHttp2, this::drainStream);
+            return new Netty4ChannelInputStream(eagerContent, channel, isHttp2, streamDrained, this::close);
         } else {
             return new ByteArrayInputStream(bytes);
         }
@@ -128,8 +127,6 @@ public final class Netty4ChannelBinaryData extends BinaryData {
                 channel.pipeline().addLast(Netty4HandlerNames.EAGER_CONSUME, handler);
                 channel.config().setAutoRead(true);
 
-                channel.eventLoop().execute(channel::read);
-
                 awaitLatch(latch);
                 streamDrained.set(true);
 
@@ -147,8 +144,6 @@ public final class Netty4ChannelBinaryData extends BinaryData {
             }
         } catch (IOException ex) {
             throw LOGGER.throwableAtError().log(ex, CoreException::from);
-        } finally {
-            close();
         }
     }
 
@@ -184,11 +179,29 @@ public final class Netty4ChannelBinaryData extends BinaryData {
     @Override
     public void close() {
         drainStream();
+
+        Runnable cleanupTask = () -> {
+            if (!this.isHttp2) {
+                Netty4PipelineCleanupHandler cleanupHandler = channel.pipeline().get(Netty4PipelineCleanupHandler.class);
+                if (cleanupHandler != null) {
+                    cleanupHandler.cleanup(channel.pipeline().context(cleanupHandler), false);
+                }
+            }
+        };
+
+        if (channel.eventLoop().inEventLoop()) {
+            cleanupTask.run();
+        } else {
+            channel.eventLoop().execute(cleanupTask);
+        }
     }
 
     private void drainStream() {
         if (streamDrained.compareAndSet(false, true)) {
             if (channel.pipeline().get(Netty4EagerConsumeChannelHandler.class) != null) {
+                return;
+            }
+            if (length != null && eagerContent.size() >= length) {
                 return;
             }
 
@@ -199,10 +212,12 @@ public final class Netty4ChannelBinaryData extends BinaryData {
             CountDownLatch latch = new CountDownLatch(1);
             Netty4EagerConsumeChannelHandler handler = new Netty4EagerConsumeChannelHandler(latch,
                 buf -> buf.readBytes(eagerContent, buf.readableBytes()), isHttp2);
-            channel.pipeline().addLast(Netty4HandlerNames.EAGER_CONSUME, handler);
-            channel.config().setAutoRead(true);
+            Runnable setupAndRead = () -> {
+                channel.pipeline().addLast(Netty4HandlerNames.EAGER_CONSUME, handler);
+                channel.config().setAutoRead(true);
+            };
 
-            channel.eventLoop().execute(channel::read);
+            channel.eventLoop().execute(setupAndRead);
             awaitLatch(latch);
 
             Throwable exception = handler.channelException();

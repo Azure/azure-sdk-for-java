@@ -31,7 +31,6 @@ public final class Netty4AlpnHandler extends ApplicationProtocolNegotiationHandl
      */
     public static final AttributeKey<HttpProtocolVersion> HTTP_PROTOCOL_VERSION_KEY
         = AttributeKey.valueOf("http-protocol-version");
-    private static final int TWO_FIFTY_SIX_KB = 256 * 1024;
     private final HttpRequest request;
     private final AtomicReference<ResponseStateInfo> responseReference;
     private final AtomicReference<Throwable> errorReference;
@@ -75,15 +74,20 @@ public final class Netty4AlpnHandler extends ApplicationProtocolNegotiationHandl
 
         configureHttpsPipeline(ctx.pipeline(), request, protocolVersion, responseReference, errorReference, latch);
 
-        sendHttp11Request(request, ctx.channel(), errorReference).addListener((ChannelFutureListener) sendListener -> {
-            if (!sendListener.isSuccess()) {
-                setOrSuppressError(errorReference, sendListener.cause());
-                sendListener.channel().pipeline().fireExceptionCaught(sendListener.cause());
-                latch.countDown();
-            } else {
-                sendListener.channel().read();
-            }
-        });
+        if (protocolVersion == HttpProtocolVersion.HTTP_2) {
+            Netty4Utility.sendHttp2Request(request, ctx.channel(), errorReference, latch);
+        } else {
+            sendHttp11Request(request, ctx.channel(), errorReference)
+                .addListener((ChannelFutureListener) sendListener -> {
+                if (!sendListener.isSuccess()) {
+                    setOrSuppressError(errorReference, sendListener.cause());
+                    sendListener.channel().pipeline().fireExceptionCaught(sendListener.cause());
+                    latch.countDown();
+                } else {
+                    sendListener.channel().read();
+                }
+            });
+        }
     }
 
     @Override

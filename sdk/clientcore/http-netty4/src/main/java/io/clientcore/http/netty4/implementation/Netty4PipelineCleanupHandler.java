@@ -3,6 +3,7 @@
 
 package io.clientcore.http.netty4.implementation;
 
+import io.clientcore.core.http.client.HttpProtocolVersion;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
@@ -49,9 +50,6 @@ public class Netty4PipelineCleanupHandler extends ChannelDuplexHandler {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        // An exception has occurred, which means the channel is likely in a bad state.
-        // We handle this by closing the channel. This prevents it from being
-        // returned to the connection pool.
         cleanup(ctx, true);
     }
 
@@ -71,7 +69,15 @@ public class Netty4PipelineCleanupHandler extends ChannelDuplexHandler {
         ctx.channel().config().setAutoRead(false);
 
         ChannelPipeline pipeline = ctx.channel().pipeline();
+
+        HttpProtocolVersion protocolVersion = ctx.channel().attr(Netty4AlpnHandler.HTTP_PROTOCOL_VERSION_KEY).get();
+        boolean isHttp2 = protocolVersion == HttpProtocolVersion.HTTP_2;
+
         for (String handlerName : HANDLERS_TO_REMOVE) {
+            if (isHttp2 && HTTP_CODEC.equals(handlerName)) {
+                continue;
+            }
+
             if (pipeline.get(handlerName) != null) {
                 pipeline.remove(handlerName);
             }
@@ -81,7 +87,7 @@ public class Netty4PipelineCleanupHandler extends ChannelDuplexHandler {
             pipeline.remove(this);
         }
 
-        if (closeChannel) {
+        if (closeChannel || !ctx.channel().isActive()) {
             ctx.channel().close();
         } else {
             connectionPool.release(ctx.channel());

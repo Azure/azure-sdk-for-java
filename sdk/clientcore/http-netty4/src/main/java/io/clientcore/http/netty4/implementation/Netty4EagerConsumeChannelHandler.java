@@ -45,6 +45,11 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        if (!(msg instanceof ByteBufHolder) && !(msg instanceof ByteBuf)) {
+            ctx.fireChannelRead(msg);
+            return;
+        }
+
         try {
             ByteBuf buf = (msg instanceof ByteBufHolder) ? ((ByteBufHolder) msg).content() : (ByteBuf) msg;
 
@@ -68,17 +73,18 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
-        ctx.fireChannelReadComplete();
         if (lastRead) {
             latch.countDown();
         }
+        ctx.fireChannelReadComplete();
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         this.exception = cause;
-        ctx.fireExceptionCaught(cause);
+        cleanup(ctx);
         latch.countDown();
+        ctx.fireExceptionCaught(cause);
     }
 
     Throwable channelException() {
@@ -88,12 +94,14 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
     // TODO (alzimmer): Are the latch countdowns needed for unregistering and inactivity?
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) {
+        cleanup(ctx);
         latch.countDown();
         ctx.fireChannelUnregistered();
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
+        cleanup(ctx);
         latch.countDown();
         ctx.fireChannelInactive();
     }
@@ -101,10 +109,21 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) {
         if (!ctx.channel().isActive()) {
-            // In case the read handler is added to a closed channel we fail loudly by firing
+            // In case the read handler is added to a closed channel, we fail loudly by firing
             // an exception. Simply counting down the latch would cause the caller to receive
-            // an empty/incomplete data stream without any indication of the underlying network error.
+            // an empty/incomplete data stream without any sign of the underlying network error.
             ctx.fireExceptionCaught(new ClosedChannelException());
+        }
+    }
+
+    private void cleanup(ChannelHandlerContext ctx) {
+        if (latch.getCount() == 0) {
+            return;
+        }
+
+        Netty4PipelineCleanupHandler cleanupHandler = ctx.pipeline().get(Netty4PipelineCleanupHandler.class);
+        if (cleanupHandler != null) {
+            cleanupHandler.cleanup(ctx, true);
         }
     }
 }

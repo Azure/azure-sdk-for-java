@@ -492,7 +492,7 @@ public final class Netty4Utility {
         }
 
         Netty4ResponseHandler responseHandler
-            = new Netty4ResponseHandler(request, responseReference, errorReference, latch);
+            = new Netty4ResponseHandler(request, responseReference, errorReference, latch, protocol == HttpProtocolVersion.HTTP_2);
 
         if (pipeline.get(Netty4HandlerNames.PROGRESS_AND_TIMEOUT) != null) {
             pipeline.addAfter(Netty4HandlerNames.PROGRESS_AND_TIMEOUT, Netty4HandlerNames.HTTP_RESPONSE,
@@ -501,6 +501,40 @@ public final class Netty4Utility {
         } else {
             pipeline.addAfter(Netty4HandlerNames.SSL, Netty4HandlerNames.HTTP_CODEC, httpCodec);
             pipeline.addAfter(Netty4HandlerNames.HTTP_CODEC, Netty4HandlerNames.HTTP_RESPONSE, responseHandler);
+        }
+    }
+
+    public static void sendHttp2Request(HttpRequest request, Channel channel,
+                                        AtomicReference<Throwable> errorReference, CountDownLatch latch) {
+        io.netty.handler.codec.http.HttpRequest nettyRequest = toNettyHttpRequest(request);
+
+        channel.writeAndFlush(nettyRequest).addListener(future -> {
+            if (future.isSuccess()) {
+                channel.read();
+            } else {
+                setOrSuppressError(errorReference, future.cause());
+                if (latch.getCount() > 0) {
+                    latch.countDown();
+                }
+            }
+        });
+
+        channel.read();
+    }
+
+    private static io.netty.handler.codec.http.HttpRequest toNettyHttpRequest(HttpRequest request) {
+        HttpMethod nettyMethod = HttpMethod.valueOf(request.getHttpMethod().toString());
+        String uri = request.getUri().toString();
+        WrappedHttp11Headers nettyHeaders = new WrappedHttp11Headers(request.getHeaders());
+        nettyHeaders.getCoreHeaders().set(HttpHeaderName.HOST, request.getUri().getHost());
+
+        BinaryData body = request.getBody();
+        if (body == null || body.getLength() == 0) {
+            return new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, Unpooled.EMPTY_BUFFER,
+                nettyHeaders, trailersFactory().newHeaders());
+        } else {
+            return new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri,
+                Unpooled.wrappedBuffer(body.toBytes()), nettyHeaders, trailersFactory().newHeaders());
         }
     }
 

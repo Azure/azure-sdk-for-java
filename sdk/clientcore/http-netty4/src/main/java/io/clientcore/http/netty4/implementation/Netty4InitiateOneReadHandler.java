@@ -105,6 +105,7 @@ public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAda
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         this.exception = cause;
+        performCleanup(ctx);
         latch.countDown();
         ctx.fireExceptionCaught(cause);
     }
@@ -116,12 +117,14 @@ public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAda
     // TODO (alzimmer): Are the latch countdowns needed for unregistering and inactivity?
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) {
+        performCleanup(ctx);
         latch.countDown();
         ctx.fireChannelUnregistered();
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
+        performCleanup(ctx);
         latch.countDown();
         ctx.fireChannelInactive();
     }
@@ -129,10 +132,21 @@ public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAda
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) {
         if (!ctx.channel().isActive()) {
-            // In case the read handler is added to a closed channel we fail loudly by firing
+            // In case the read handler is added to a closed channel, we fail loudly by firing
             // an exception. Simply counting down the latch would cause the caller to receive
-            // an empty/incomplete data stream without any indication of the underlying network error.
+            // an empty/incomplete data stream without any sign of the underlying network error.
             ctx.fireExceptionCaught(new ClosedChannelException());
+        }
+    }
+
+    private void performCleanup(ChannelHandlerContext ctx) {
+        if (latch.getCount() == 0) {
+            return;
+        }
+
+        Netty4PipelineCleanupHandler cleanupHandler = ctx.pipeline().get(Netty4PipelineCleanupHandler.class);
+        if (cleanupHandler != null) {
+            cleanupHandler.cleanup(ctx, true);
         }
     }
 }

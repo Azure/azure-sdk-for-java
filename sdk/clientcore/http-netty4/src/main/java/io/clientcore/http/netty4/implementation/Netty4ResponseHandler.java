@@ -48,6 +48,7 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
     // and initial response body content.
     private final ByteArrayOutputStream eagerContent = new ByteArrayOutputStream();
     private boolean complete;
+    private boolean isHttp2;
 
     /**
      * Creates an instance of {@link Netty4ResponseHandler}.
@@ -61,7 +62,7 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
      * @throws NullPointerException If {@code request}, {@code responseReference}, or {@code latch} is null.
      */
     public Netty4ResponseHandler(HttpRequest request, AtomicReference<ResponseStateInfo> responseReference,
-        AtomicReference<Throwable> errorReference, CountDownLatch latch) {
+        AtomicReference<Throwable> errorReference, CountDownLatch latch, boolean isHttp2) {
         this.request = Objects.requireNonNull(request,
             "Cannot create an instance of CoreResponseHandler with a null 'request'.");
         this.responseReference = Objects.requireNonNull(responseReference,
@@ -166,11 +167,13 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
             return;
         }
 
-        ctx.pipeline().remove(this);
+        if (!isHttp2) {
+            ctx.pipeline().remove(this);
+        }
         ctx.fireChannelReadComplete();
 
         responseReference.set(new ResponseStateInfo(ctx.channel(), complete, statusCode, headers, eagerContent,
-            ResponseBodyHandling.getBodyHandling(request, headers), false));
+            ResponseBodyHandling.getBodyHandling(request, headers), isHttp2));
         latch.countDown();
     }
 
