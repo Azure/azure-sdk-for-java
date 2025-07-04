@@ -49,16 +49,19 @@ public class Netty4PipelineCleanupHandler extends ChannelDuplexHandler {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        cleanup(ctx);
+        // An exception has occurred, which means the channel is likely in a bad state.
+        // We handle this by closing the channel. This prevents it from being
+        // returned to the connection pool.
+        cleanup(ctx, true);
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
-        cleanup(ctx);
         ctx.fireChannelInactive();
+        cleanup(ctx, true);
     }
 
-    public void cleanup(ChannelHandlerContext ctx) {
+    public void cleanup(ChannelHandlerContext ctx, boolean closeChannel) {
         if (!cleanedUp.compareAndSet(false, true)) {
             return;
         }
@@ -78,6 +81,10 @@ public class Netty4PipelineCleanupHandler extends ChannelDuplexHandler {
             pipeline.remove(this);
         }
 
-        connectionPool.release(ctx.channel());
+        if (closeChannel) {
+            ctx.channel().close();
+        } else {
+            connectionPool.release(ctx.channel());
+        }
     }
 }

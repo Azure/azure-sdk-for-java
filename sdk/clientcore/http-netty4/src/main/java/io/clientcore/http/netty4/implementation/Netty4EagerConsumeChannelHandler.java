@@ -107,14 +107,4 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
             ctx.fireExceptionCaught(new ClosedChannelException());
         }
     }
-
-    @Override
-    public void handlerRemoved(ChannelHandlerContext ctx) {
-        if (!lastRead) {
-            if (this.exception == null) {
-                this.exception = new IOException("Handler removed before stream was fully consumed.");
-            }
-            latch.countDown();
-        }
-    }
 }
