@@ -34,7 +34,7 @@ public final class GalleryTargetExtendedLocation implements JsonSerializable<Gal
     /*
      * Specifies the storage account type to be used to store the image. This property is not updatable.
      */
-    private StorageAccountType storageAccountType;
+    private EdgeZoneStorageAccountType storageAccountType;
 
     /*
      * Optional. Allows users to provide customer managed keys for encrypting the OS and data disks in the gallery
@@ -116,7 +116,7 @@ public final class GalleryTargetExtendedLocation implements JsonSerializable<Gal
      * 
      * @return the storageAccountType value.
      */
-    public StorageAccountType storageAccountType() {
+    public EdgeZoneStorageAccountType storageAccountType() {
         return this.storageAccountType;
     }
 
@@ -127,7 +127,7 @@ public final class GalleryTargetExtendedLocation implements JsonSerializable<Gal
      * @param storageAccountType the storageAccountType value to set.
      * @return the GalleryTargetExtendedLocation object itself.
      */
-    public GalleryTargetExtendedLocation withStorageAccountType(StorageAccountType storageAccountType) {
+    public GalleryTargetExtendedLocation withStorageAccountType(EdgeZoneStorageAccountType storageAccountType) {
         this.storageAccountType = storageAccountType;
         return this;
     }
@@ -209,7 +209,7 @@ public final class GalleryTargetExtendedLocation implements JsonSerializable<Gal
                         = reader.getNullable(JsonReader::getInt);
                 } else if ("storageAccountType".equals(fieldName)) {
                     deserializedGalleryTargetExtendedLocation.storageAccountType
-                        = StorageAccountType.fromString(reader.getString());
+                        = EdgeZoneStorageAccountType.fromString(reader.getString());
                 } else if ("encryption".equals(fieldName)) {
                     deserializedGalleryTargetExtendedLocation.encryption = EncryptionImages.fromJson(reader);
                 } else {

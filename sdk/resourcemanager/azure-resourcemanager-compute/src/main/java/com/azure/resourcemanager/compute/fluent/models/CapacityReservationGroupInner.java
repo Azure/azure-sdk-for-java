@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -29,11 +30,14 @@ public final class CapacityReservationGroupInner extends Resource {
     private CapacityReservationGroupProperties innerProperties;
 
     /*
-     * Availability Zones to use for this capacity reservation group. The zones can be assigned only during creation. If
-     * not provided, the group supports only regional resources in the region. If provided, enforces each capacity
-     * reservation in the group to be in one of the zones.
+     * The availability zones.
      */
     private List<String> zones;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -66,9 +70,7 @@ public final class CapacityReservationGroupInner extends Resource {
     }
 
     /**
-     * Get the zones property: Availability Zones to use for this capacity reservation group. The zones can be assigned
-     * only during creation. If not provided, the group supports only regional resources in the region. If provided,
-     * enforces each capacity reservation in the group to be in one of the zones.
+     * Get the zones property: The availability zones.
      * 
      * @return the zones value.
      */
@@ -77,9 +79,7 @@ public final class CapacityReservationGroupInner extends Resource {
     }
 
     /**
-     * Set the zones property: Availability Zones to use for this capacity reservation group. The zones can be assigned
-     * only during creation. If not provided, the group supports only regional resources in the region. If provided,
-     * enforces each capacity reservation in the group to be in one of the zones.
+     * Set the zones property: The availability zones.
      * 
      * @param zones the zones value to set.
      * @return the CapacityReservationGroupInner object itself.
@@ -87,6 +87,15 @@ public final class CapacityReservationGroupInner extends Resource {
     public CapacityReservationGroupInner withZones(List<String> zones) {
         this.zones = zones;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -256,6 +265,8 @@ public final class CapacityReservationGroupInner extends Resource {
                 } else if ("zones".equals(fieldName)) {
                     List<String> zones = reader.readArray(reader1 -> reader1.getString());
                     deserializedCapacityReservationGroupInner.zones = zones;
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedCapacityReservationGroupInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

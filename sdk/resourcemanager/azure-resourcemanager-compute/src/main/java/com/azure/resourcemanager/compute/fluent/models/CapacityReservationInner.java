@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -37,12 +38,14 @@ public final class CapacityReservationInner extends Resource {
     private Sku sku;
 
     /*
-     * Availability Zone to use for this capacity reservation. The zone has to be single value and also should be part
-     * for the list of zones specified during the capacity reservation group creation. The zone can be assigned only
-     * during creation. If not provided, the reservation supports only non-zonal deployments. If provided, enforces
-     * VM/VMSS using this capacity reservation to be in same zone.
+     * The availability zones.
      */
     private List<String> zones;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -101,10 +104,7 @@ public final class CapacityReservationInner extends Resource {
     }
 
     /**
-     * Get the zones property: Availability Zone to use for this capacity reservation. The zone has to be single value
-     * and also should be part for the list of zones specified during the capacity reservation group creation. The zone
-     * can be assigned only during creation. If not provided, the reservation supports only non-zonal deployments. If
-     * provided, enforces VM/VMSS using this capacity reservation to be in same zone.
+     * Get the zones property: The availability zones.
      * 
      * @return the zones value.
      */
@@ -113,10 +113,7 @@ public final class CapacityReservationInner extends Resource {
     }
 
     /**
-     * Set the zones property: Availability Zone to use for this capacity reservation. The zone has to be single value
-     * and also should be part for the list of zones specified during the capacity reservation group creation. The zone
-     * can be assigned only during creation. If not provided, the reservation supports only non-zonal deployments. If
-     * provided, enforces VM/VMSS using this capacity reservation to be in same zone.
+     * Set the zones property: The availability zones.
      * 
      * @param zones the zones value to set.
      * @return the CapacityReservationInner object itself.
@@ -124,6 +121,15 @@ public final class CapacityReservationInner extends Resource {
     public CapacityReservationInner withZones(List<String> zones) {
         this.zones = zones;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -311,6 +317,8 @@ public final class CapacityReservationInner extends Resource {
                 } else if ("zones".equals(fieldName)) {
                     List<String> zones = reader.readArray(reader1 -> reader1.getString());
                     deserializedCapacityReservationInner.zones = zones;
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedCapacityReservationInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

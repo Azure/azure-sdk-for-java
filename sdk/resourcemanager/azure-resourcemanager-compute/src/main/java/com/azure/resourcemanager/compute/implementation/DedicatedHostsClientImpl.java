@@ -73,84 +73,82 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ComputeManagementCli")
+    @ServiceInterface(name = "ComputeManagementClientDedicatedHosts")
     public interface DedicatedHostsService {
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}")
-        @ExpectedResponses({ 200, 201 })
-        @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostGroupName") String hostGroupName,
-            @PathParam("hostName") String hostname, @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") DedicatedHostInner parameters, @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+        Mono<Response<DedicatedHostListResult>> listByHostGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostGroupName") String hostGroupName,
-            @PathParam("hostName") String hostname, @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") DedicatedHostUpdate parameters, @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}")
-        @ExpectedResponses({ 200, 202, 204 })
-        @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostGroupName") String hostGroupName,
-            @PathParam("hostName") String hostname, @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<DedicatedHostInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostGroupName") String hostGroupName,
             @PathParam("hostName") String hostname, @QueryParam("$expand") InstanceViewTypes expand,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts")
-        @ExpectedResponses({ 200 })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<DedicatedHostListResult>> listByHostGroup(@HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostGroupName") String hostGroupName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostGroupName") String hostGroupName,
+            @PathParam("hostName") String hostname, @BodyParam("application/json") DedicatedHostInner parameters,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}/restart")
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> restart(@HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostGroupName") String hostGroupName,
-            @PathParam("hostName") String hostname, @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("hostName") String hostname, @BodyParam("application/json") DedicatedHostUpdate parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}/redeploy")
-        @ExpectedResponses({ 202 })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> redeploy(@HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostGroupName") String hostGroupName,
-            @PathParam("hostName") String hostname, @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("hostName") String hostname, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}/hostSizes")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<DedicatedHostSizeListResult>> listAvailableSizes(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostGroupName") String hostGroupName,
-            @PathParam("hostName") String hostname, @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("hostName") String hostname, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}/redeploy")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<Response<Flux<ByteBuffer>>> redeploy(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostGroupName") String hostGroupName,
+            @PathParam("hostName") String hostname, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}/restart")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<Response<Flux<ByteBuffer>>> restart(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostGroupName") String hostGroupName,
+            @PathParam("hostName") String hostname, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -159,14 +157,314 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         Mono<Response<DedicatedHostListResult>> listByHostGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<Response<DedicatedHostSizeListResult>> listAvailableSizesNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+    }
+
+    /**
+     * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response
+     * to get the next page of dedicated hosts.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param hostGroupName The name of the dedicated host group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list dedicated host operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<DedicatedHostInner>> listByHostGroupSinglePageAsync(String resourceGroupName,
+        String hostGroupName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (hostGroupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter hostGroupName is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listByHostGroup(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, hostGroupName, accept, context))
+            .<PagedResponse<DedicatedHostInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response
+     * to get the next page of dedicated hosts.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param hostGroupName The name of the dedicated host group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list dedicated host operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<DedicatedHostInner>> listByHostGroupSinglePageAsync(String resourceGroupName,
+        String hostGroupName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (hostGroupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter hostGroupName is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listByHostGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                hostGroupName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response
+     * to get the next page of dedicated hosts.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param hostGroupName The name of the dedicated host group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list dedicated host operation response as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DedicatedHostInner> listByHostGroupAsync(String resourceGroupName, String hostGroupName) {
+        return new PagedFlux<>(() -> listByHostGroupSinglePageAsync(resourceGroupName, hostGroupName),
+            nextLink -> listByHostGroupNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response
+     * to get the next page of dedicated hosts.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param hostGroupName The name of the dedicated host group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list dedicated host operation response as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<DedicatedHostInner> listByHostGroupAsync(String resourceGroupName, String hostGroupName,
+        Context context) {
+        return new PagedFlux<>(() -> listByHostGroupSinglePageAsync(resourceGroupName, hostGroupName, context),
+            nextLink -> listByHostGroupNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response
+     * to get the next page of dedicated hosts.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param hostGroupName The name of the dedicated host group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list dedicated host operation response as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DedicatedHostInner> listByHostGroup(String resourceGroupName, String hostGroupName) {
+        return new PagedIterable<>(listByHostGroupAsync(resourceGroupName, hostGroupName));
+    }
+
+    /**
+     * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response
+     * to get the next page of dedicated hosts.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param hostGroupName The name of the dedicated host group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list dedicated host operation response as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DedicatedHostInner> listByHostGroup(String resourceGroupName, String hostGroupName,
+        Context context) {
+        return new PagedIterable<>(listByHostGroupAsync(resourceGroupName, hostGroupName, context));
+    }
+
+    /**
+     * Retrieves information about a dedicated host.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param hostGroupName The name of the dedicated host group.
+     * @param hostname The name of the dedicated host.
+     * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the list of instance
+     * views of the dedicated host. 'UserData' is not supported for dedicated host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the Dedicated host along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DedicatedHostInner>> getWithResponseAsync(String resourceGroupName, String hostGroupName,
+        String hostname, InstanceViewTypes expand) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (hostGroupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter hostGroupName is required and cannot be null."));
+        }
+        if (hostname == null) {
+            return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, hostGroupName, hostname, expand, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Retrieves information about a dedicated host.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param hostGroupName The name of the dedicated host group.
+     * @param hostname The name of the dedicated host.
+     * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the list of instance
+     * views of the dedicated host. 'UserData' is not supported for dedicated host.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the Dedicated host along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<DedicatedHostInner>> getWithResponseAsync(String resourceGroupName, String hostGroupName,
+        String hostname, InstanceViewTypes expand, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (hostGroupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter hostGroupName is required and cannot be null."));
+        }
+        if (hostname == null) {
+            return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            hostGroupName, hostname, expand, accept, context);
+    }
+
+    /**
+     * Retrieves information about a dedicated host.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param hostGroupName The name of the dedicated host group.
+     * @param hostname The name of the dedicated host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the Dedicated host on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DedicatedHostInner> getAsync(String resourceGroupName, String hostGroupName, String hostname) {
+        final InstanceViewTypes expand = null;
+        return getWithResponseAsync(resourceGroupName, hostGroupName, hostname, expand)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Retrieves information about a dedicated host.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param hostGroupName The name of the dedicated host group.
+     * @param hostname The name of the dedicated host.
+     * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the list of instance
+     * views of the dedicated host. 'UserData' is not supported for dedicated host.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the Dedicated host along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DedicatedHostInner> getWithResponse(String resourceGroupName, String hostGroupName, String hostname,
+        InstanceViewTypes expand, Context context) {
+        return getWithResponseAsync(resourceGroupName, hostGroupName, hostname, expand, context).block();
+    }
+
+    /**
+     * Retrieves information about a dedicated host.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param hostGroupName The name of the dedicated host group.
+     * @param hostname The name of the dedicated host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the Dedicated host.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DedicatedHostInner get(String resourceGroupName, String hostGroupName, String hostname) {
+        final InstanceViewTypes expand = null;
+        return getWithResponse(resourceGroupName, hostGroupName, hostname, expand, Context.NONE).getValue();
     }
 
     /**
      * Create or update a dedicated host .
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host .
+     * @param hostname The name of the dedicated host.
      * @param parameters Parameters supplied to the Create Dedicated Host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -181,6 +479,10 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -191,10 +493,6 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         if (hostname == null) {
             return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
@@ -202,18 +500,17 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         }
         final String apiVersion = "2024-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, hostGroupName,
-                hostname, apiVersion, this.client.getSubscriptionId(), parameters, accept, context))
+        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
+            this.client.getSubscriptionId(), resourceGroupName, hostGroupName, hostname, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update a dedicated host .
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host .
+     * @param hostname The name of the dedicated host.
      * @param parameters Parameters supplied to the Create Dedicated Host.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -229,6 +526,10 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -239,10 +540,6 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         if (hostname == null) {
             return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
@@ -251,16 +548,16 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, hostGroupName, hostname, apiVersion,
-            this.client.getSubscriptionId(), parameters, accept, context);
+        return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, hostGroupName, hostname, parameters, accept, context);
     }
 
     /**
      * Create or update a dedicated host .
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host .
+     * @param hostname The name of the dedicated host.
      * @param parameters Parameters supplied to the Create Dedicated Host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -279,9 +576,9 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Create or update a dedicated host .
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host .
+     * @param hostname The name of the dedicated host.
      * @param parameters Parameters supplied to the Create Dedicated Host.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -303,9 +600,9 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Create or update a dedicated host .
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host .
+     * @param hostname The name of the dedicated host.
      * @param parameters Parameters supplied to the Create Dedicated Host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -321,9 +618,9 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Create or update a dedicated host .
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host .
+     * @param hostname The name of the dedicated host.
      * @param parameters Parameters supplied to the Create Dedicated Host.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -341,9 +638,9 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Create or update a dedicated host .
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host .
+     * @param hostname The name of the dedicated host.
      * @param parameters Parameters supplied to the Create Dedicated Host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -360,9 +657,9 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Create or update a dedicated host .
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host .
+     * @param hostname The name of the dedicated host.
      * @param parameters Parameters supplied to the Create Dedicated Host.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -380,9 +677,9 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Create or update a dedicated host .
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host .
+     * @param hostname The name of the dedicated host.
      * @param parameters Parameters supplied to the Create Dedicated Host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -398,9 +695,9 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Create or update a dedicated host .
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host .
+     * @param hostname The name of the dedicated host.
      * @param parameters Parameters supplied to the Create Dedicated Host.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -417,9 +714,9 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Update a dedicated host .
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host .
+     * @param hostname The name of the dedicated host.
      * @param parameters Parameters supplied to the Update Dedicated Host operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -434,6 +731,10 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -444,10 +745,6 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         if (hostname == null) {
             return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
@@ -456,17 +753,18 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, hostGroupName,
-                hostname, apiVersion, this.client.getSubscriptionId(), parameters, accept, context))
+            .withContext(
+                context -> service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, hostGroupName, hostname, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update a dedicated host .
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host .
+     * @param hostname The name of the dedicated host.
      * @param parameters Parameters supplied to the Update Dedicated Host operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -482,6 +780,10 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -492,10 +794,6 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         if (hostname == null) {
             return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
@@ -504,16 +802,16 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), resourceGroupName, hostGroupName, hostname, apiVersion,
-            this.client.getSubscriptionId(), parameters, accept, context);
+        return service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            hostGroupName, hostname, parameters, accept, context);
     }
 
     /**
      * Update a dedicated host .
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host .
+     * @param hostname The name of the dedicated host.
      * @param parameters Parameters supplied to the Update Dedicated Host operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -532,9 +830,9 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Update a dedicated host .
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host .
+     * @param hostname The name of the dedicated host.
      * @param parameters Parameters supplied to the Update Dedicated Host operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -555,9 +853,9 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Update a dedicated host .
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host .
+     * @param hostname The name of the dedicated host.
      * @param parameters Parameters supplied to the Update Dedicated Host operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -573,9 +871,9 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Update a dedicated host .
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host .
+     * @param hostname The name of the dedicated host.
      * @param parameters Parameters supplied to the Update Dedicated Host operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -592,9 +890,9 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Update a dedicated host .
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host .
+     * @param hostname The name of the dedicated host.
      * @param parameters Parameters supplied to the Update Dedicated Host operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -611,9 +909,9 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Update a dedicated host .
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host .
+     * @param hostname The name of the dedicated host.
      * @param parameters Parameters supplied to the Update Dedicated Host operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -631,9 +929,9 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Update a dedicated host .
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host .
+     * @param hostname The name of the dedicated host.
      * @param parameters Parameters supplied to the Update Dedicated Host operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -649,9 +947,9 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Update a dedicated host .
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host .
+     * @param hostname The name of the dedicated host.
      * @param parameters Parameters supplied to the Update Dedicated Host operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -668,7 +966,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Delete a dedicated host.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -683,6 +981,10 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -693,22 +995,18 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         if (hostname == null) {
             return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, hostGroupName,
-                hostname, apiVersion, this.client.getSubscriptionId(), accept, context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, hostGroupName, hostname, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a dedicated host.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
      * @param context The context to associate with this operation.
@@ -724,6 +1022,10 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -734,21 +1036,17 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         if (hostname == null) {
             return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), resourceGroupName, hostGroupName, hostname, apiVersion,
-            this.client.getSubscriptionId(), accept, context);
+        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            hostGroupName, hostname, accept, context);
     }
 
     /**
      * Delete a dedicated host.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -767,7 +1065,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Delete a dedicated host.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
      * @param context The context to associate with this operation.
@@ -789,7 +1087,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Delete a dedicated host.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -806,7 +1104,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Delete a dedicated host.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
      * @param context The context to associate with this operation.
@@ -824,7 +1122,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Delete a dedicated host.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -841,7 +1139,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Delete a dedicated host.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
      * @param context The context to associate with this operation.
@@ -859,7 +1157,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Delete a dedicated host.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -874,7 +1172,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Delete a dedicated host.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
      * @param context The context to associate with this operation.
@@ -888,25 +1186,28 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     }
 
     /**
-     * Retrieves information about a dedicated host.
+     * Lists all available dedicated host sizes to which the specified dedicated host can be resized. NOTE: The
+     * dedicated host sizes provided can be used to only scale up the existing dedicated host.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
-     * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the list of instance
-     * views of the dedicated host. 'UserData' is not supported for dedicated host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Dedicated host along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return the List Dedicated Host sizes operation response along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DedicatedHostInner>> getWithResponseAsync(String resourceGroupName, String hostGroupName,
-        String hostname, InstanceViewTypes expand) {
+    private Mono<PagedResponse<String>> listAvailableSizesSinglePageAsync(String resourceGroupName,
+        String hostGroupName, String hostname) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -918,39 +1219,40 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         if (hostname == null) {
             return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, hostGroupName, hostname,
-                expand, apiVersion, this.client.getSubscriptionId(), accept, context))
+            .withContext(context -> service.listAvailableSizes(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, hostGroupName, hostname, accept, context))
+            .<PagedResponse<String>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Retrieves information about a dedicated host.
+     * Lists all available dedicated host sizes to which the specified dedicated host can be resized. NOTE: The
+     * dedicated host sizes provided can be used to only scale up the existing dedicated host.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
-     * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the list of instance
-     * views of the dedicated host. 'UserData' is not supported for dedicated host.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Dedicated host along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return the List Dedicated Host sizes operation response along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DedicatedHostInner>> getWithResponseAsync(String resourceGroupName, String hostGroupName,
-        String hostname, InstanceViewTypes expand, Context context) {
+    private Mono<PagedResponse<String>> listAvailableSizesSinglePageAsync(String resourceGroupName,
+        String hostGroupName, String hostname, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -961,474 +1263,90 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         }
         if (hostname == null) {
             return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2024-11-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), resourceGroupName, hostGroupName, hostname, expand, apiVersion,
-            this.client.getSubscriptionId(), accept, context);
-    }
-
-    /**
-     * Retrieves information about a dedicated host.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Dedicated host on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DedicatedHostInner> getAsync(String resourceGroupName, String hostGroupName, String hostname) {
-        final InstanceViewTypes expand = null;
-        return getWithResponseAsync(resourceGroupName, hostGroupName, hostname, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves information about a dedicated host.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host.
-     * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the list of instance
-     * views of the dedicated host. 'UserData' is not supported for dedicated host.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Dedicated host along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DedicatedHostInner> getWithResponse(String resourceGroupName, String hostGroupName, String hostname,
-        InstanceViewTypes expand, Context context) {
-        return getWithResponseAsync(resourceGroupName, hostGroupName, hostname, expand, context).block();
-    }
-
-    /**
-     * Retrieves information about a dedicated host.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Dedicated host.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DedicatedHostInner get(String resourceGroupName, String hostGroupName, String hostname) {
-        final InstanceViewTypes expand = null;
-        return getWithResponse(resourceGroupName, hostGroupName, hostname, expand, Context.NONE).getValue();
-    }
-
-    /**
-     * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response
-     * to get the next page of dedicated hosts.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param hostGroupName The name of the dedicated host group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list dedicated host operation response along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DedicatedHostInner>> listByHostGroupSinglePageAsync(String resourceGroupName,
-        String hostGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (hostGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hostGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2024-11-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listByHostGroup(this.client.getEndpoint(), resourceGroupName, hostGroupName,
-                apiVersion, this.client.getSubscriptionId(), accept, context))
-            .<PagedResponse<DedicatedHostInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response
-     * to get the next page of dedicated hosts.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list dedicated host operation response along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DedicatedHostInner>> listByHostGroupSinglePageAsync(String resourceGroupName,
-        String hostGroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (hostGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hostGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByHostGroup(this.client.getEndpoint(), resourceGroupName, hostGroupName, apiVersion,
-                this.client.getSubscriptionId(), accept, context)
+            .listAvailableSizes(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, hostGroupName, hostname, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
-     * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response
-     * to get the next page of dedicated hosts.
+     * Lists all available dedicated host sizes to which the specified dedicated host can be resized. NOTE: The
+     * dedicated host sizes provided can be used to only scale up the existing dedicated host.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
+     * @param hostname The name of the dedicated host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list dedicated host operation response as paginated response with {@link PagedFlux}.
+     * @return the List Dedicated Host sizes operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DedicatedHostInner> listByHostGroupAsync(String resourceGroupName, String hostGroupName) {
-        return new PagedFlux<>(() -> listByHostGroupSinglePageAsync(resourceGroupName, hostGroupName),
-            nextLink -> listByHostGroupNextSinglePageAsync(nextLink));
+    public PagedFlux<String> listAvailableSizesAsync(String resourceGroupName, String hostGroupName, String hostname) {
+        return new PagedFlux<>(() -> listAvailableSizesSinglePageAsync(resourceGroupName, hostGroupName, hostname),
+            nextLink -> listAvailableSizesNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response
-     * to get the next page of dedicated hosts.
+     * Lists all available dedicated host sizes to which the specified dedicated host can be resized. NOTE: The
+     * dedicated host sizes provided can be used to only scale up the existing dedicated host.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
+     * @param hostname The name of the dedicated host.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list dedicated host operation response as paginated response with {@link PagedFlux}.
+     * @return the List Dedicated Host sizes operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DedicatedHostInner> listByHostGroupAsync(String resourceGroupName, String hostGroupName,
+    private PagedFlux<String> listAvailableSizesAsync(String resourceGroupName, String hostGroupName, String hostname,
         Context context) {
-        return new PagedFlux<>(() -> listByHostGroupSinglePageAsync(resourceGroupName, hostGroupName, context),
-            nextLink -> listByHostGroupNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(
+            () -> listAvailableSizesSinglePageAsync(resourceGroupName, hostGroupName, hostname, context),
+            nextLink -> listAvailableSizesNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response
-     * to get the next page of dedicated hosts.
+     * Lists all available dedicated host sizes to which the specified dedicated host can be resized. NOTE: The
+     * dedicated host sizes provided can be used to only scale up the existing dedicated host.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
+     * @param hostname The name of the dedicated host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list dedicated host operation response as paginated response with {@link PagedIterable}.
+     * @return the List Dedicated Host sizes operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DedicatedHostInner> listByHostGroup(String resourceGroupName, String hostGroupName) {
-        return new PagedIterable<>(listByHostGroupAsync(resourceGroupName, hostGroupName));
+    public PagedIterable<String> listAvailableSizes(String resourceGroupName, String hostGroupName, String hostname) {
+        return new PagedIterable<>(listAvailableSizesAsync(resourceGroupName, hostGroupName, hostname));
     }
 
     /**
-     * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response
-     * to get the next page of dedicated hosts.
+     * Lists all available dedicated host sizes to which the specified dedicated host can be resized. NOTE: The
+     * dedicated host sizes provided can be used to only scale up the existing dedicated host.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
+     * @param hostname The name of the dedicated host.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list dedicated host operation response as paginated response with {@link PagedIterable}.
+     * @return the List Dedicated Host sizes operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DedicatedHostInner> listByHostGroup(String resourceGroupName, String hostGroupName,
+    public PagedIterable<String> listAvailableSizes(String resourceGroupName, String hostGroupName, String hostname,
         Context context) {
-        return new PagedIterable<>(listByHostGroupAsync(resourceGroupName, hostGroupName, context));
-    }
-
-    /**
-     * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
-     * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
-     * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName, String hostGroupName,
-        String hostname) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (hostGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hostGroupName is required and cannot be null."));
-        }
-        if (hostname == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2024-11-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.restart(this.client.getEndpoint(), resourceGroupName, hostGroupName,
-                hostname, apiVersion, this.client.getSubscriptionId(), accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
-     * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
-     * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName, String hostGroupName,
-        String hostname, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (hostGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hostGroupName is required and cannot be null."));
-        }
-        if (hostname == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2024-11-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.restart(this.client.getEndpoint(), resourceGroupName, hostGroupName, hostname, apiVersion,
-            this.client.getSubscriptionId(), accept, context);
-    }
-
-    /**
-     * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
-     * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
-     * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String hostGroupName,
-        String hostname) {
-        Mono<Response<Flux<ByteBuffer>>> mono = restartWithResponseAsync(resourceGroupName, hostGroupName, hostname);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
-    }
-
-    /**
-     * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
-     * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
-     * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String hostGroupName,
-        String hostname, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = restartWithResponseAsync(resourceGroupName, hostGroupName, hostname, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
-     * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
-     * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String hostGroupName,
-        String hostname) {
-        return this.beginRestartAsync(resourceGroupName, hostGroupName, hostname).getSyncPoller();
-    }
-
-    /**
-     * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
-     * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
-     * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String hostGroupName,
-        String hostname, Context context) {
-        return this.beginRestartAsync(resourceGroupName, hostGroupName, hostname, context).getSyncPoller();
-    }
-
-    /**
-     * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
-     * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
-     * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> restartAsync(String resourceGroupName, String hostGroupName, String hostname) {
-        return beginRestartAsync(resourceGroupName, hostGroupName, hostname).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
-     * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
-     * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> restartAsync(String resourceGroupName, String hostGroupName, String hostname, Context context) {
-        return beginRestartAsync(resourceGroupName, hostGroupName, hostname, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
-     * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
-     * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void restart(String resourceGroupName, String hostGroupName, String hostname) {
-        restartAsync(resourceGroupName, hostGroupName, hostname).block();
-    }
-
-    /**
-     * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
-     * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
-     * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void restart(String resourceGroupName, String hostGroupName, String hostname, Context context) {
-        restartAsync(resourceGroupName, hostGroupName, hostname, context).block();
+        return new PagedIterable<>(listAvailableSizesAsync(resourceGroupName, hostGroupName, hostname, context));
     }
 
     /**
@@ -1437,7 +1355,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * the Resource Health Center in the Azure Portal. Please refer to
      * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1452,6 +1370,10 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1462,15 +1384,11 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         if (hostname == null) {
             return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.redeploy(this.client.getEndpoint(), resourceGroupName, hostGroupName,
-                hostname, apiVersion, this.client.getSubscriptionId(), accept, context))
+            .withContext(context -> service.redeploy(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, hostGroupName, hostname, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1480,7 +1398,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * the Resource Health Center in the Azure Portal. Please refer to
      * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
      * @param context The context to associate with this operation.
@@ -1496,6 +1414,10 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1506,15 +1428,11 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         if (hostname == null) {
             return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.redeploy(this.client.getEndpoint(), resourceGroupName, hostGroupName, hostname, apiVersion,
-            this.client.getSubscriptionId(), accept, context);
+        return service.redeploy(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, hostGroupName, hostname, accept, context);
     }
 
     /**
@@ -1523,7 +1441,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * the Resource Health Center in the Azure Portal. Please refer to
      * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1545,7 +1463,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * the Resource Health Center in the Azure Portal. Please refer to
      * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
      * @param context The context to associate with this operation.
@@ -1570,7 +1488,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * the Resource Health Center in the Azure Portal. Please refer to
      * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1590,7 +1508,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * the Resource Health Center in the Azure Portal. Please refer to
      * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
      * @param context The context to associate with this operation.
@@ -1611,7 +1529,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * the Resource Health Center in the Azure Portal. Please refer to
      * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1631,7 +1549,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * the Resource Health Center in the Azure Portal. Please refer to
      * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
      * @param context The context to associate with this operation.
@@ -1652,7 +1570,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * the Resource Health Center in the Azure Portal. Please refer to
      * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1670,7 +1588,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * the Resource Health Center in the Azure Portal. Please refer to
      * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
      * @param context The context to associate with this operation.
@@ -1684,24 +1602,29 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     }
 
     /**
-     * Lists all available dedicated host sizes to which the specified dedicated host can be resized. NOTE: The
-     * dedicated host sizes provided can be used to only scale up the existing dedicated host.
+     * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
+     * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
+     * Health Center in the Azure Portal. Please refer to
+     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Dedicated Host sizes operation response along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<String>> listAvailableSizesSinglePageAsync(String resourceGroupName,
-        String hostGroupName, String hostname) {
+    public Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName, String hostGroupName,
+        String hostname) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1712,41 +1635,40 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         }
         if (hostname == null) {
             return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listAvailableSizes(this.client.getEndpoint(), resourceGroupName,
-                hostGroupName, hostname, apiVersion, this.client.getSubscriptionId(), accept, context))
-            .<PagedResponse<String>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
-                res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.restart(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, hostGroupName, hostname, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Lists all available dedicated host sizes to which the specified dedicated host can be resized. NOTE: The
-     * dedicated host sizes provided can be used to only scale up the existing dedicated host.
+     * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
+     * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
+     * Health Center in the Azure Portal. Please refer to
+     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Dedicated Host sizes operation response along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<String>> listAvailableSizesSinglePageAsync(String resourceGroupName,
-        String hostGroupName, String hostname, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName, String hostGroupName,
+        String hostname, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1758,91 +1680,177 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         if (hostname == null) {
             return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAvailableSizes(this.client.getEndpoint(), resourceGroupName, hostGroupName, hostname, apiVersion,
-                this.client.getSubscriptionId(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), null, null));
+        return service.restart(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, hostGroupName, hostname, accept, context);
     }
 
     /**
-     * Lists all available dedicated host sizes to which the specified dedicated host can be resized. NOTE: The
-     * dedicated host sizes provided can be used to only scale up the existing dedicated host.
+     * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
+     * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
+     * Health Center in the Azure Portal. Please refer to
+     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Dedicated Host sizes operation response as paginated response with {@link PagedFlux}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> listAvailableSizesAsync(String resourceGroupName, String hostGroupName, String hostname) {
-        return new PagedFlux<>(() -> listAvailableSizesSinglePageAsync(resourceGroupName, hostGroupName, hostname));
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String hostGroupName,
+        String hostname) {
+        Mono<Response<Flux<ByteBuffer>>> mono = restartWithResponseAsync(resourceGroupName, hostGroupName, hostname);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
-     * Lists all available dedicated host sizes to which the specified dedicated host can be resized. NOTE: The
-     * dedicated host sizes provided can be used to only scale up the existing dedicated host.
+     * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
+     * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
+     * Health Center in the Azure Portal. Please refer to
+     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Dedicated Host sizes operation response as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<String> listAvailableSizesAsync(String resourceGroupName, String hostGroupName, String hostname,
-        Context context) {
-        return new PagedFlux<>(
-            () -> listAvailableSizesSinglePageAsync(resourceGroupName, hostGroupName, hostname, context));
-    }
-
-    /**
-     * Lists all available dedicated host sizes to which the specified dedicated host can be resized. NOTE: The
-     * dedicated host sizes provided can be used to only scale up the existing dedicated host.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Dedicated Host sizes operation response as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> listAvailableSizes(String resourceGroupName, String hostGroupName, String hostname) {
-        return new PagedIterable<>(listAvailableSizesAsync(resourceGroupName, hostGroupName, hostname));
-    }
-
-    /**
-     * Lists all available dedicated host sizes to which the specified dedicated host can be resized. NOTE: The
-     * dedicated host sizes provided can be used to only scale up the existing dedicated host.
-     * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Dedicated Host sizes operation response as paginated response with {@link PagedIterable}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> listAvailableSizes(String resourceGroupName, String hostGroupName, String hostname,
-        Context context) {
-        return new PagedIterable<>(listAvailableSizesAsync(resourceGroupName, hostGroupName, hostname, context));
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String hostGroupName,
+        String hostname, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = restartWithResponseAsync(resourceGroupName, hostGroupName, hostname, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
+     * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
+     * Health Center in the Azure Portal. Please refer to
+     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param hostGroupName The name of the dedicated host group.
+     * @param hostname The name of the dedicated host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String hostGroupName,
+        String hostname) {
+        return this.beginRestartAsync(resourceGroupName, hostGroupName, hostname).getSyncPoller();
+    }
+
+    /**
+     * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
+     * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
+     * Health Center in the Azure Portal. Please refer to
+     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param hostGroupName The name of the dedicated host group.
+     * @param hostname The name of the dedicated host.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String hostGroupName,
+        String hostname, Context context) {
+        return this.beginRestartAsync(resourceGroupName, hostGroupName, hostname, context).getSyncPoller();
+    }
+
+    /**
+     * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
+     * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
+     * Health Center in the Azure Portal. Please refer to
+     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param hostGroupName The name of the dedicated host group.
+     * @param hostname The name of the dedicated host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> restartAsync(String resourceGroupName, String hostGroupName, String hostname) {
+        return beginRestartAsync(resourceGroupName, hostGroupName, hostname).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
+     * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
+     * Health Center in the Azure Portal. Please refer to
+     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param hostGroupName The name of the dedicated host group.
+     * @param hostname The name of the dedicated host.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> restartAsync(String resourceGroupName, String hostGroupName, String hostname, Context context) {
+        return beginRestartAsync(resourceGroupName, hostGroupName, hostname, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
+     * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
+     * Health Center in the Azure Portal. Please refer to
+     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param hostGroupName The name of the dedicated host group.
+     * @param hostname The name of the dedicated host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void restart(String resourceGroupName, String hostGroupName, String hostname) {
+        restartAsync(resourceGroupName, hostGroupName, hostname).block();
+    }
+
+    /**
+     * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
+     * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
+     * Health Center in the Azure Portal. Please refer to
+     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param hostGroupName The name of the dedicated host group.
+     * @param hostname The name of the dedicated host.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void restart(String resourceGroupName, String hostGroupName, String hostname, Context context) {
+        restartAsync(resourceGroupName, hostGroupName, hostname, context).block();
     }
 
     /**
@@ -1896,6 +1904,61 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listByHostGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Dedicated Host sizes operation response along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<String>> listAvailableSizesNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.listAvailableSizesNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<String>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Dedicated Host sizes operation response along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<String>> listAvailableSizesNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listAvailableSizesNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
