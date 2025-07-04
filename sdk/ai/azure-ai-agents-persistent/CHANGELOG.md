@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added support for tracing
+
 ### Breaking Changes
 
 ### Bugs Fixed
