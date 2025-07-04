@@ -8,9 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The tier of a managed cluster SKU.
- * 
- * If not specified, the default is 'Free'. See [AKS Pricing
+ * The tier of a managed cluster SKU. If not specified, the default is 'Free'. See [AKS Pricing
  * Tier](https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers) for more details.
  */
 public final class ManagedClusterSkuTier extends ExpandableStringEnum<ManagedClusterSkuTier> {

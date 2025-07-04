@@ -17,31 +17,33 @@ import java.io.IOException;
 @Fluent
 public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoolUpgradeSettings> {
     /*
-     * This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it is
-     * the percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are
-     * rounded up. If not specified, the default is 10%. For more information, including best practices, see:
+     * The maximum number or percentage of nodes that are surged during upgrade. This can either be set to an integer
+     * (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it is the percentage of the total agent
+     * pool size at the time of the upgrade. For percentages, fractional nodes are rounded up. If not specified, the
+     * default is 10%. For more information, including best practices, see:
      * https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster
      */
     private String maxSurge;
 
     /*
-     * This can either be set to an integer (e.g. '1') or a percentage (e.g. '5%'). If a percentage is specified, it is
-     * the percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are
-     * rounded up. If not specified, the default is 0. For more information, including best practices, see:
+     * The maximum number or percentage of nodes that can be simultaneously unavailable during upgrade. This can either
+     * be set to an integer (e.g. '1') or a percentage (e.g. '5%'). If a percentage is specified, it is the percentage
+     * of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are rounded up. If not
+     * specified, the default is 0. For more information, including best practices, see:
      * https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster
      */
     private String maxUnavailable;
 
     /*
-     * The amount of time (in minutes) to wait on eviction of pods and graceful termination per node. This eviction wait
-     * time honors waiting on pod disruption budgets. If this time is exceeded, the upgrade fails. If not specified, the
-     * default is 30 minutes.
+     * The drain timeout for a node. The amount of time (in minutes) to wait on eviction of pods and graceful
+     * termination per node. This eviction wait time honors waiting on pod disruption budgets. If this time is exceeded,
+     * the upgrade fails. If not specified, the default is 30 minutes.
      */
     private Integer drainTimeoutInMinutes;
 
     /*
-     * The amount of time (in minutes) to wait after draining a node and before reimaging it and moving on to next node.
-     * If not specified, the default is 0 minutes.
+     * The soak duration for a node. The amount of time (in minutes) to wait after draining a node and before reimaging
+     * it and moving on to next node. If not specified, the default is 0 minutes.
      */
     private Integer nodeSoakDurationInMinutes;
 
@@ -59,10 +61,11 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
     }
 
     /**
-     * Get the maxSurge property: This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a
-     * percentage is specified, it is the percentage of the total agent pool size at the time of the upgrade. For
-     * percentages, fractional nodes are rounded up. If not specified, the default is 10%. For more information,
-     * including best practices, see: https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster.
+     * Get the maxSurge property: The maximum number or percentage of nodes that are surged during upgrade. This can
+     * either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it is the
+     * percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are rounded
+     * up. If not specified, the default is 10%. For more information, including best practices, see:
+     * https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster.
      * 
      * @return the maxSurge value.
      */
@@ -71,10 +74,11 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
     }
 
     /**
-     * Set the maxSurge property: This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a
-     * percentage is specified, it is the percentage of the total agent pool size at the time of the upgrade. For
-     * percentages, fractional nodes are rounded up. If not specified, the default is 10%. For more information,
-     * including best practices, see: https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster.
+     * Set the maxSurge property: The maximum number or percentage of nodes that are surged during upgrade. This can
+     * either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it is the
+     * percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are rounded
+     * up. If not specified, the default is 10%. For more information, including best practices, see:
+     * https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster.
      * 
      * @param maxSurge the maxSurge value to set.
      * @return the AgentPoolUpgradeSettings object itself.
@@ -85,10 +89,11 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
     }
 
     /**
-     * Get the maxUnavailable property: This can either be set to an integer (e.g. '1') or a percentage (e.g. '5%'). If
-     * a percentage is specified, it is the percentage of the total agent pool size at the time of the upgrade. For
-     * percentages, fractional nodes are rounded up. If not specified, the default is 0. For more information, including
-     * best practices, see: https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster.
+     * Get the maxUnavailable property: The maximum number or percentage of nodes that can be simultaneously unavailable
+     * during upgrade. This can either be set to an integer (e.g. '1') or a percentage (e.g. '5%'). If a percentage is
+     * specified, it is the percentage of the total agent pool size at the time of the upgrade. For percentages,
+     * fractional nodes are rounded up. If not specified, the default is 0. For more information, including best
+     * practices, see: https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster.
      * 
      * @return the maxUnavailable value.
      */
@@ -97,10 +102,11 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
     }
 
     /**
-     * Set the maxUnavailable property: This can either be set to an integer (e.g. '1') or a percentage (e.g. '5%'). If
-     * a percentage is specified, it is the percentage of the total agent pool size at the time of the upgrade. For
-     * percentages, fractional nodes are rounded up. If not specified, the default is 0. For more information, including
-     * best practices, see: https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster.
+     * Set the maxUnavailable property: The maximum number or percentage of nodes that can be simultaneously unavailable
+     * during upgrade. This can either be set to an integer (e.g. '1') or a percentage (e.g. '5%'). If a percentage is
+     * specified, it is the percentage of the total agent pool size at the time of the upgrade. For percentages,
+     * fractional nodes are rounded up. If not specified, the default is 0. For more information, including best
+     * practices, see: https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster.
      * 
      * @param maxUnavailable the maxUnavailable value to set.
      * @return the AgentPoolUpgradeSettings object itself.
@@ -111,9 +117,9 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
     }
 
     /**
-     * Get the drainTimeoutInMinutes property: The amount of time (in minutes) to wait on eviction of pods and graceful
-     * termination per node. This eviction wait time honors waiting on pod disruption budgets. If this time is exceeded,
-     * the upgrade fails. If not specified, the default is 30 minutes.
+     * Get the drainTimeoutInMinutes property: The drain timeout for a node. The amount of time (in minutes) to wait on
+     * eviction of pods and graceful termination per node. This eviction wait time honors waiting on pod disruption
+     * budgets. If this time is exceeded, the upgrade fails. If not specified, the default is 30 minutes.
      * 
      * @return the drainTimeoutInMinutes value.
      */
@@ -122,9 +128,9 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
     }
 
     /**
-     * Set the drainTimeoutInMinutes property: The amount of time (in minutes) to wait on eviction of pods and graceful
-     * termination per node. This eviction wait time honors waiting on pod disruption budgets. If this time is exceeded,
-     * the upgrade fails. If not specified, the default is 30 minutes.
+     * Set the drainTimeoutInMinutes property: The drain timeout for a node. The amount of time (in minutes) to wait on
+     * eviction of pods and graceful termination per node. This eviction wait time honors waiting on pod disruption
+     * budgets. If this time is exceeded, the upgrade fails. If not specified, the default is 30 minutes.
      * 
      * @param drainTimeoutInMinutes the drainTimeoutInMinutes value to set.
      * @return the AgentPoolUpgradeSettings object itself.
@@ -135,8 +141,9 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
     }
 
     /**
-     * Get the nodeSoakDurationInMinutes property: The amount of time (in minutes) to wait after draining a node and
-     * before reimaging it and moving on to next node. If not specified, the default is 0 minutes.
+     * Get the nodeSoakDurationInMinutes property: The soak duration for a node. The amount of time (in minutes) to wait
+     * after draining a node and before reimaging it and moving on to next node. If not specified, the default is 0
+     * minutes.
      * 
      * @return the nodeSoakDurationInMinutes value.
      */
@@ -145,8 +152,9 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
     }
 
     /**
-     * Set the nodeSoakDurationInMinutes property: The amount of time (in minutes) to wait after draining a node and
-     * before reimaging it and moving on to next node. If not specified, the default is 0 minutes.
+     * Set the nodeSoakDurationInMinutes property: The soak duration for a node. The amount of time (in minutes) to wait
+     * after draining a node and before reimaging it and moving on to next node. If not specified, the default is 0
+     * minutes.
      * 
      * @param nodeSoakDurationInMinutes the nodeSoakDurationInMinutes value to set.
      * @return the AgentPoolUpgradeSettings object itself.

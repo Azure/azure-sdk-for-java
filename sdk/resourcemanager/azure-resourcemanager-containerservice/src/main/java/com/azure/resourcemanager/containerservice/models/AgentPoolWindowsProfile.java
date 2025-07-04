@@ -17,8 +17,8 @@ import java.io.IOException;
 @Fluent
 public final class AgentPoolWindowsProfile implements JsonSerializable<AgentPoolWindowsProfile> {
     /*
-     * The default value is false. Outbound NAT can only be disabled if the cluster outboundType is NAT Gateway and the
-     * Windows agent pool does not have node public IP enabled.
+     * Whether to disable OutboundNAT in windows nodes. The default value is false. Outbound NAT can only be disabled if
+     * the cluster outboundType is NAT Gateway and the Windows agent pool does not have node public IP enabled.
      */
     private Boolean disableOutboundNat;
 
@@ -29,8 +29,9 @@ public final class AgentPoolWindowsProfile implements JsonSerializable<AgentPool
     }
 
     /**
-     * Get the disableOutboundNat property: The default value is false. Outbound NAT can only be disabled if the cluster
-     * outboundType is NAT Gateway and the Windows agent pool does not have node public IP enabled.
+     * Get the disableOutboundNat property: Whether to disable OutboundNAT in windows nodes. The default value is false.
+     * Outbound NAT can only be disabled if the cluster outboundType is NAT Gateway and the Windows agent pool does not
+     * have node public IP enabled.
      * 
      * @return the disableOutboundNat value.
      */
@@ -39,8 +40,9 @@ public final class AgentPoolWindowsProfile implements JsonSerializable<AgentPool
     }
 
     /**
-     * Set the disableOutboundNat property: The default value is false. Outbound NAT can only be disabled if the cluster
-     * outboundType is NAT Gateway and the Windows agent pool does not have node public IP enabled.
+     * Set the disableOutboundNat property: Whether to disable OutboundNAT in windows nodes. The default value is false.
+     * Outbound NAT can only be disabled if the cluster outboundType is NAT Gateway and the Windows agent pool does not
+     * have node public IP enabled.
      * 
      * @param disableOutboundNat the disableOutboundNat value to set.
      * @return the AgentPoolWindowsProfile object itself.

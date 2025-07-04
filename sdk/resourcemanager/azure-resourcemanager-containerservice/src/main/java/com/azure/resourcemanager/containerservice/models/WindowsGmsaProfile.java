@@ -17,7 +17,7 @@ import java.io.IOException;
 @Fluent
 public final class WindowsGmsaProfile implements JsonSerializable<WindowsGmsaProfile> {
     /*
-     * Specifies whether to enable Windows gMSA in the managed cluster.
+     * Whether to enable Windows gMSA. Specifies whether to enable Windows gMSA in the managed cluster.
      */
     private Boolean enabled;
 
@@ -40,7 +40,8 @@ public final class WindowsGmsaProfile implements JsonSerializable<WindowsGmsaPro
     }
 
     /**
-     * Get the enabled property: Specifies whether to enable Windows gMSA in the managed cluster.
+     * Get the enabled property: Whether to enable Windows gMSA. Specifies whether to enable Windows gMSA in the managed
+     * cluster.
      * 
      * @return the enabled value.
      */
@@ -49,7 +50,8 @@ public final class WindowsGmsaProfile implements JsonSerializable<WindowsGmsaPro
     }
 
     /**
-     * Set the enabled property: Specifies whether to enable Windows gMSA in the managed cluster.
+     * Set the enabled property: Whether to enable Windows gMSA. Specifies whether to enable Windows gMSA in the managed
+     * cluster.
      * 
      * @param enabled the enabled value to set.
      * @return the WindowsGmsaProfile object itself.

@@ -13,42 +13,44 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Kubelet configurations of agent nodes.
- * 
- * See [AKS custom node configuration](https://docs.microsoft.com/azure/aks/custom-node-configuration) for more details.
+ * Kubelet configurations of agent nodes. See [AKS custom node
+ * configuration](https://docs.microsoft.com/azure/aks/custom-node-configuration) for more details.
  */
 @Fluent
 public final class KubeletConfig implements JsonSerializable<KubeletConfig> {
     /*
-     * The default is 'none'. See [Kubernetes CPU management
+     * The CPU Manager policy to use. The default is 'none'. See [Kubernetes CPU management
      * policies](https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/#cpu-management-policies)
      * for more information. Allowed values are 'none' and 'static'.
      */
     private String cpuManagerPolicy;
 
     /*
-     * The default is true.
+     * If CPU CFS quota enforcement is enabled for containers that specify CPU limits. The default is true.
      */
     private Boolean cpuCfsQuota;
 
     /*
-     * The default is '100ms.' Valid values are a sequence of decimal numbers with an optional fraction and a unit
-     * suffix. For example: '300ms', '2h45m'. Supported units are 'ns', 'us', 'ms', 's', 'm', and 'h'.
+     * The CPU CFS quota period value. The default is '100ms.' Valid values are a sequence of decimal numbers with an
+     * optional fraction and a unit suffix. For example: '300ms', '2h45m'. Supported units are 'ns', 'us', 'ms', 's',
+     * 'm', and 'h'.
      */
     private String cpuCfsQuotaPeriod;
 
     /*
-     * To disable image garbage collection, set to 100. The default is 85%
+     * The percent of disk usage after which image garbage collection is always run. To disable image garbage
+     * collection, set to 100. The default is 85%
      */
     private Integer imageGcHighThreshold;
 
     /*
-     * This cannot be set higher than imageGcHighThreshold. The default is 80%
+     * The percent of disk usage before which image garbage collection is never run. This cannot be set higher than
+     * imageGcHighThreshold. The default is 80%
      */
     private Integer imageGcLowThreshold;
 
     /*
-     * For more information see [Kubernetes Topology
+     * The Topology Manager policy to use. For more information see [Kubernetes Topology
      * Manager](https://kubernetes.io/docs/tasks/administer-cluster/topology-manager). The default is 'none'. Allowed
      * values are 'none', 'best-effort', 'restricted', and 'single-numa-node'.
      */
@@ -86,7 +88,8 @@ public final class KubeletConfig implements JsonSerializable<KubeletConfig> {
     }
 
     /**
-     * Get the cpuManagerPolicy property: The default is 'none'. See [Kubernetes CPU management
+     * Get the cpuManagerPolicy property: The CPU Manager policy to use. The default is 'none'. See [Kubernetes CPU
+     * management
      * policies](https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/#cpu-management-policies)
      * for more information. Allowed values are 'none' and 'static'.
      * 
@@ -97,7 +100,8 @@ public final class KubeletConfig implements JsonSerializable<KubeletConfig> {
     }
 
     /**
-     * Set the cpuManagerPolicy property: The default is 'none'. See [Kubernetes CPU management
+     * Set the cpuManagerPolicy property: The CPU Manager policy to use. The default is 'none'. See [Kubernetes CPU
+     * management
      * policies](https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/#cpu-management-policies)
      * for more information. Allowed values are 'none' and 'static'.
      * 
@@ -110,7 +114,8 @@ public final class KubeletConfig implements JsonSerializable<KubeletConfig> {
     }
 
     /**
-     * Get the cpuCfsQuota property: The default is true.
+     * Get the cpuCfsQuota property: If CPU CFS quota enforcement is enabled for containers that specify CPU limits. The
+     * default is true.
      * 
      * @return the cpuCfsQuota value.
      */
@@ -119,7 +124,8 @@ public final class KubeletConfig implements JsonSerializable<KubeletConfig> {
     }
 
     /**
-     * Set the cpuCfsQuota property: The default is true.
+     * Set the cpuCfsQuota property: If CPU CFS quota enforcement is enabled for containers that specify CPU limits. The
+     * default is true.
      * 
      * @param cpuCfsQuota the cpuCfsQuota value to set.
      * @return the KubeletConfig object itself.
@@ -130,9 +136,9 @@ public final class KubeletConfig implements JsonSerializable<KubeletConfig> {
     }
 
     /**
-     * Get the cpuCfsQuotaPeriod property: The default is '100ms.' Valid values are a sequence of decimal numbers with
-     * an optional fraction and a unit suffix. For example: '300ms', '2h45m'. Supported units are 'ns', 'us', 'ms', 's',
-     * 'm', and 'h'.
+     * Get the cpuCfsQuotaPeriod property: The CPU CFS quota period value. The default is '100ms.' Valid values are a
+     * sequence of decimal numbers with an optional fraction and a unit suffix. For example: '300ms', '2h45m'. Supported
+     * units are 'ns', 'us', 'ms', 's', 'm', and 'h'.
      * 
      * @return the cpuCfsQuotaPeriod value.
      */
@@ -141,9 +147,9 @@ public final class KubeletConfig implements JsonSerializable<KubeletConfig> {
     }
 
     /**
-     * Set the cpuCfsQuotaPeriod property: The default is '100ms.' Valid values are a sequence of decimal numbers with
-     * an optional fraction and a unit suffix. For example: '300ms', '2h45m'. Supported units are 'ns', 'us', 'ms', 's',
-     * 'm', and 'h'.
+     * Set the cpuCfsQuotaPeriod property: The CPU CFS quota period value. The default is '100ms.' Valid values are a
+     * sequence of decimal numbers with an optional fraction and a unit suffix. For example: '300ms', '2h45m'. Supported
+     * units are 'ns', 'us', 'ms', 's', 'm', and 'h'.
      * 
      * @param cpuCfsQuotaPeriod the cpuCfsQuotaPeriod value to set.
      * @return the KubeletConfig object itself.
@@ -154,7 +160,8 @@ public final class KubeletConfig implements JsonSerializable<KubeletConfig> {
     }
 
     /**
-     * Get the imageGcHighThreshold property: To disable image garbage collection, set to 100. The default is 85%.
+     * Get the imageGcHighThreshold property: The percent of disk usage after which image garbage collection is always
+     * run. To disable image garbage collection, set to 100. The default is 85%.
      * 
      * @return the imageGcHighThreshold value.
      */
@@ -163,7 +170,8 @@ public final class KubeletConfig implements JsonSerializable<KubeletConfig> {
     }
 
     /**
-     * Set the imageGcHighThreshold property: To disable image garbage collection, set to 100. The default is 85%.
+     * Set the imageGcHighThreshold property: The percent of disk usage after which image garbage collection is always
+     * run. To disable image garbage collection, set to 100. The default is 85%.
      * 
      * @param imageGcHighThreshold the imageGcHighThreshold value to set.
      * @return the KubeletConfig object itself.
@@ -174,7 +182,8 @@ public final class KubeletConfig implements JsonSerializable<KubeletConfig> {
     }
 
     /**
-     * Get the imageGcLowThreshold property: This cannot be set higher than imageGcHighThreshold. The default is 80%.
+     * Get the imageGcLowThreshold property: The percent of disk usage before which image garbage collection is never
+     * run. This cannot be set higher than imageGcHighThreshold. The default is 80%.
      * 
      * @return the imageGcLowThreshold value.
      */
@@ -183,7 +192,8 @@ public final class KubeletConfig implements JsonSerializable<KubeletConfig> {
     }
 
     /**
-     * Set the imageGcLowThreshold property: This cannot be set higher than imageGcHighThreshold. The default is 80%.
+     * Set the imageGcLowThreshold property: The percent of disk usage before which image garbage collection is never
+     * run. This cannot be set higher than imageGcHighThreshold. The default is 80%.
      * 
      * @param imageGcLowThreshold the imageGcLowThreshold value to set.
      * @return the KubeletConfig object itself.
@@ -194,9 +204,9 @@ public final class KubeletConfig implements JsonSerializable<KubeletConfig> {
     }
 
     /**
-     * Get the topologyManagerPolicy property: For more information see [Kubernetes Topology
-     * Manager](https://kubernetes.io/docs/tasks/administer-cluster/topology-manager). The default is 'none'. Allowed
-     * values are 'none', 'best-effort', 'restricted', and 'single-numa-node'.
+     * Get the topologyManagerPolicy property: The Topology Manager policy to use. For more information see [Kubernetes
+     * Topology Manager](https://kubernetes.io/docs/tasks/administer-cluster/topology-manager). The default is 'none'.
+     * Allowed values are 'none', 'best-effort', 'restricted', and 'single-numa-node'.
      * 
      * @return the topologyManagerPolicy value.
      */
@@ -205,9 +215,9 @@ public final class KubeletConfig implements JsonSerializable<KubeletConfig> {
     }
 
     /**
-     * Set the topologyManagerPolicy property: For more information see [Kubernetes Topology
-     * Manager](https://kubernetes.io/docs/tasks/administer-cluster/topology-manager). The default is 'none'. Allowed
-     * values are 'none', 'best-effort', 'restricted', and 'single-numa-node'.
+     * Set the topologyManagerPolicy property: The Topology Manager policy to use. For more information see [Kubernetes
+     * Topology Manager](https://kubernetes.io/docs/tasks/administer-cluster/topology-manager). The default is 'none'.
+     * Allowed values are 'none', 'best-effort', 'restricted', and 'single-numa-node'.
      * 
      * @param topologyManagerPolicy the topologyManagerPolicy value to set.
      * @return the KubeletConfig object itself.
