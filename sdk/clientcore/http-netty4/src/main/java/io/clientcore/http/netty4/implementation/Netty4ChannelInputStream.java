@@ -180,11 +180,13 @@ public final class Netty4ChannelInputStream extends InputStream {
     @Override
     public void close() throws IOException {
         try {
-            if (onClose != null && !streamDone) {
+            if (onClose != null) {
                 onClose.run();
             }
         } finally {
             super.close();
+            currentBuffer = null;
+            additionalBuffers.clear();
             streamDone = true;
         }
     }
