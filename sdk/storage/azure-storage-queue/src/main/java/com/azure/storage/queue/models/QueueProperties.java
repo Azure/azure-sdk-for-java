@@ -13,7 +13,19 @@ import java.util.Map;
 @Immutable
 public final class QueueProperties {
     private final Map<String, String> metadata;
-    private final int approximateMessagesCount;
+    private final long approximateMessagesCount;
+
+    /**
+     * Creates an instance that contains properties of a queue.
+     *
+     * @param metadata Metadata associated with the queue.
+     * @param approximateMessagesCount Approximate number of messages contained in the queue.
+     * @deprecated Use {@link #QueueProperties(Map, long)} instead.
+     */
+    @Deprecated
+    public QueueProperties(Map<String, String> metadata, int approximateMessagesCount) {
+        this(metadata, Long.valueOf(approximateMessagesCount));
+    }
 
     /**
      * Creates an instance that contains properties of a queue.
@@ -21,7 +33,8 @@ public final class QueueProperties {
      * @param metadata Metadata associated with the queue.
      * @param approximateMessagesCount Approximate number of messages contained in the queue.
      */
-    public QueueProperties(Map<String, String> metadata, int approximateMessagesCount) {
+
+    public QueueProperties(Map<String, String> metadata, long approximateMessagesCount) {
         this.metadata = metadata;
         this.approximateMessagesCount = approximateMessagesCount;
     }
@@ -39,8 +52,19 @@ public final class QueueProperties {
      * Gets the approximate number of messages contained in the queue at the time of properties retrieval.
      *
      * @return the approximate number of messages contained in the queue at the time of properties retrieval.
+     * @deprecated Use {@link #QueueProperties(Map, long)} instead.
      */
+    @Deprecated
     public int getApproximateMessagesCount() {
+        return (int) this.approximateMessagesCount;
+    }
+
+    /**
+     * Gets the approximate number of messages contained in the queue at the time of properties retrieval.
+     *
+     * @return the approximate number of messages contained in the queue at the time of properties retrieval.
+     */
+    public long getApproximateMessagesCountLong() {
         return approximateMessagesCount;
     }
 }

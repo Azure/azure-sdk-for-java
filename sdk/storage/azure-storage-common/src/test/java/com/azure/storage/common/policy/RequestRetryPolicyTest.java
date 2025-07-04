@@ -3,6 +3,7 @@
 
 package com.azure.storage.common.policy;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
@@ -229,26 +230,40 @@ public class RequestRetryPolicyTest {
         assertEquals(shouldBeRetried, RequestRetryPolicy.shouldErrorBeRetried(throwable, 0, 1).canBeRetried);
     }
 
-    /*@ParameterizedTest
+    @ParameterizedTest
     @MethodSource("retryPolicyRetriesStatusCodeSupplier")
     public void retryPolicyRetriesStatusCode(int statusCode, boolean isPrimary, boolean shouldBeRetried) {
-        assertEquals(shouldBeRetried, RequestRetryPolicy.shouldResponseBeRetried(statusCode, isPrimary, null));
+        assertEquals(shouldBeRetried, RequestRetryPolicy.shouldStatusCodeBeRetried(statusCode, isPrimary, null));
     }
-    
+
     @ParameterizedTest
     @MethodSource("retryPolicyRetriesStatusCodeSupplier")
     public void retryPolicyRetriesResponse(int statusCode, boolean isPrimary, boolean shouldBeRetried) {
         MockHttpResponse response = new MockHttpResponse(null, 404,
             new HttpHeaders().set(HttpHeaderName.fromString("x-ms-copy-source-error-code"), "" + statusCode));
-    
-        assertEquals(shouldBeRetried, RequestRetryPolicy.shouldResponseBeRetried(0, isPrimary, response));
-    
-    }*/
+
+        assertEquals(shouldBeRetried, RequestRetryPolicy.shouldStatusCodeBeRetried(statusCode, isPrimary, response));
+
+    }
 
     @ParameterizedTest
-    @MethodSource("retryPolicyRetriesStatusCodeSupplier")
-    public void retryPolicyRetriesStatusCode(int statusCode, boolean isPrimary, boolean shouldBeRetried) {
-        assertEquals(shouldBeRetried, RequestRetryPolicy.shouldStatusCodeBeRetried(statusCode, isPrimary));
+    @MethodSource("retryPolicyRetriesErrorCodeSupplier")
+    public void retryPolicyRetriesHeaderBasedResponse(String errorCodeHeader, String statusCodeHeader,
+        boolean isPrimary, boolean shouldBeRetried) {
+
+        HttpHeaders headers = new HttpHeaders();
+
+        if (errorCodeHeader != null) {
+            headers.set(HttpHeaderName.fromString("x-ms-copy-source-error-code"), errorCodeHeader);
+        }
+
+        if (statusCodeHeader != null) {
+            headers.set(HttpHeaderName.fromString("x-ms-copy-source-status-code"), statusCodeHeader);
+        }
+
+        MockHttpResponse response = new MockHttpResponse(null, 200, headers);
+
+        assertEquals(shouldBeRetried, RequestRetryPolicy.shouldStatusCodeBeRetried(0, isPrimary, response));
     }
 
     private static Mono<HttpResponse> sendRequest(HttpPipeline pipeline) {
@@ -285,5 +300,12 @@ public class RequestRetryPolicyTest {
         return Stream.of(Arguments.of(429, true, true), Arguments.of(429, false, true), Arguments.of(500, true, true),
             Arguments.of(500, false, true), Arguments.of(503, true, true), Arguments.of(503, false, true),
             Arguments.of(404, true, false), Arguments.of(404, false, true), Arguments.of(400, true, false));
+    }
+
+    static Stream<Arguments> retryPolicyRetriesErrorCodeSupplier() {
+        return Stream.of(Arguments.of("InternalError", null, true, true),
+            Arguments.of("OperationTimedOut", null, true, true), Arguments.of("ServerBusy", null, true, true),
+            Arguments.of(null, "404", false, true), Arguments.of(null, "404", true, false),
+            Arguments.of("SomeOtherError", null, true, false), Arguments.of(null, null, true, false));
     }
 }

@@ -6,6 +6,7 @@ package com.azure.storage.queue.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
@@ -28,7 +29,7 @@ public final class QueuesGetPropertiesHeaders {
      * The x-ms-approximate-messages-count property.
      */
     @Generated
-    private Integer xMsApproximateMessagesCount;
+    private Long xMsApproximateMessagesCount;
 
     /*
      * The x-ms-meta- property.
@@ -56,38 +57,35 @@ public final class QueuesGetPropertiesHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of QueuesGetPropertiesHeaders class.
-     * 
+     *
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public QueuesGetPropertiesHeaders(HttpHeaders rawHeaders) {
         this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         String xMsApproximateMessagesCount = rawHeaders.getValue(X_MS_APPROXIMATE_MESSAGES_COUNT);
         if (xMsApproximateMessagesCount != null) {
-            this.xMsApproximateMessagesCount = Integer.parseInt(xMsApproximateMessagesCount);
-        } else {
-            this.xMsApproximateMessagesCount = null;
+            this.xMsApproximateMessagesCount = Long.parseLong(xMsApproximateMessagesCount);
         }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
-        } else {
-            this.date = null;
         }
         Map<String, String> xMsMetaHeaderCollection = new LinkedHashMap<>();
 
-        rawHeaders.stream().forEach(header -> {
+        for (HttpHeader header : rawHeaders) {
             String headerName = header.getName();
             if (headerName.startsWith("x-ms-meta-")) {
                 xMsMetaHeaderCollection.put(headerName.substring(10), header.getValue());
             }
-        });
+        }
+
         this.xMsMeta = xMsMetaHeaderCollection;
     }
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
-     * 
+     *
      * @return the xMsVersion value.
      */
     @Generated
@@ -97,7 +95,7 @@ public final class QueuesGetPropertiesHeaders {
 
     /**
      * Set the xMsVersion property: The x-ms-version property.
-     * 
+     *
      * @param xMsVersion the xMsVersion value to set.
      * @return the QueuesGetPropertiesHeaders object itself.
      */
@@ -109,29 +107,31 @@ public final class QueuesGetPropertiesHeaders {
 
     /**
      * Get the xMsApproximateMessagesCount property: The x-ms-approximate-messages-count property.
-     * 
+     *
      * @return the xMsApproximateMessagesCount value.
      */
+
     @Generated
-    public Integer getXMsApproximateMessagesCount() {
+    public Long getXMsApproximateMessagesCount() {
         return this.xMsApproximateMessagesCount;
     }
 
     /**
      * Set the xMsApproximateMessagesCount property: The x-ms-approximate-messages-count property.
-     * 
+     *
      * @param xMsApproximateMessagesCount the xMsApproximateMessagesCount value to set.
      * @return the QueuesGetPropertiesHeaders object itself.
      */
+
     @Generated
-    public QueuesGetPropertiesHeaders setXMsApproximateMessagesCount(Integer xMsApproximateMessagesCount) {
+    public QueuesGetPropertiesHeaders setXMsApproximateMessagesCount(Long xMsApproximateMessagesCount) {
         this.xMsApproximateMessagesCount = xMsApproximateMessagesCount;
         return this;
     }
 
     /**
      * Get the xMsMeta property: The x-ms-meta- property.
-     * 
+     *
      * @return the xMsMeta value.
      */
     @Generated
@@ -141,7 +141,7 @@ public final class QueuesGetPropertiesHeaders {
 
     /**
      * Set the xMsMeta property: The x-ms-meta- property.
-     * 
+     *
      * @param xMsMeta the xMsMeta value to set.
      * @return the QueuesGetPropertiesHeaders object itself.
      */
@@ -153,7 +153,7 @@ public final class QueuesGetPropertiesHeaders {
 
     /**
      * Get the xMsRequestId property: The x-ms-request-id property.
-     * 
+     *
      * @return the xMsRequestId value.
      */
     @Generated
@@ -163,7 +163,7 @@ public final class QueuesGetPropertiesHeaders {
 
     /**
      * Set the xMsRequestId property: The x-ms-request-id property.
-     * 
+     *
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the QueuesGetPropertiesHeaders object itself.
      */
@@ -175,7 +175,7 @@ public final class QueuesGetPropertiesHeaders {
 
     /**
      * Get the date property: The Date property.
-     * 
+     *
      * @return the date value.
      */
     @Generated
@@ -188,7 +188,7 @@ public final class QueuesGetPropertiesHeaders {
 
     /**
      * Set the date property: The Date property.
-     * 
+     *
      * @param date the date value to set.
      * @return the QueuesGetPropertiesHeaders object itself.
      */

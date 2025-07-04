@@ -5,7 +5,6 @@ package com.azure.storage.blob.models;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
-import com.azure.storage.common.implementation.StorageImplUtils;
 
 import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE_HEADER_NAME;
 
@@ -31,7 +30,7 @@ public final class BlobStorageException extends HttpResponseException {
      * @param value the error code of the exception.
      */
     public BlobStorageException(String message, HttpResponse response, Object value) {
-        super(StorageImplUtils.convertStorageExceptionMessage(message, response), response, value);
+        super(message, response, value);
     }
 
     /**

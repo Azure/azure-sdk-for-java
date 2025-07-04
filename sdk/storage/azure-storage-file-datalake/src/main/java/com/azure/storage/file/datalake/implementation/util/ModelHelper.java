@@ -206,13 +206,15 @@ public class ModelHelper {
      * <p>
      * The internal exception is required as the public exception was created using Object as the exception value. This
      * was incorrect and should have been a specific type that was XML deserializable. So, an internal exception was
-     * added to handle this and we map that to the public exception, keeping the API the same.
+     * added to handle this, and we map that to the public exception, keeping the API the same.
      *
      * @param internal The internal exception.
      * @return The public exception.
      */
     public static DataLakeStorageException mapToDataLakeStorageException(DataLakeStorageExceptionInternal internal) {
-        return new DataLakeStorageException(internal.getMessage(), internal.getResponse(), internal.getValue());
+        return new DataLakeStorageException(
+            StorageImplUtils.convertStorageExceptionMessage(internal.getMessage(), internal.getResponse()),
+            internal.getResponse(), internal.getValue());
     }
 
     public static PathSystemProperties
